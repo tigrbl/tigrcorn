@@ -1,0 +1,7 @@
+{
+  "description": "permessage-deflate negotiation, RSV1 semantics, fragmented compression, and compressed payload handling.",
+  "fixture": "tests/test_websocket_rfc7692.py",
+  "name": "websocket-permessage-deflate",
+  "protocol": "websocket-compression",
+  "rfc": "7692"
+}

@@ -1,0 +1,7 @@
+{
+  "alpn": "h2",
+  "implementation": "python-h2",
+  "protocol": "h2",
+  "scheme": "https",
+  "server_name": "localhost"
+}

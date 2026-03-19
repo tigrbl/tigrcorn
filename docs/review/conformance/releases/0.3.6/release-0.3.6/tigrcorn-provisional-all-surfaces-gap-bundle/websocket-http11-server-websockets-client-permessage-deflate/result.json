@@ -1,0 +1,21 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/websocket-http11-server-websockets-client-permessage-deflate",
+  "carrier": "http1.1",
+  "commit_hash": "release-0.3.6-offline-provisional-all-surfaces-gap-bundle",
+  "feature": "permessage-deflate",
+  "generated_at": "2026-03-16T22:47:44.627333+00:00",
+  "passed": true,
+  "peer": "websockets",
+  "provisional_non_certifying_substitution": true,
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 7692",
+    "RFC 6455"
+  ],
+  "scenario_id": "websocket-http11-server-websockets-client-permessage-deflate",
+  "source_fixture": "tests/test_websocket_rfc7692.py",
+  "source_local_conformance_vector": "websocket-permessage-deflate",
+  "strict_profile_only": true,
+  "substitution_note": "Derived from local conformance vector metadata because the repository does not yet preserve the corresponding third-party artifacts for the stricter all-surfaces-independent profile.",
+  "vector_description": "permessage-deflate negotiation, RSV1 semantics, fragmented compression, and compressed payload handling."
+}

@@ -1,0 +1,18 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http11-content-coding-curl-client",
+  "bundle_kind": "provisional_local_conformance_substitution",
+  "carrier": "http1.1",
+  "feature": "content-coding",
+  "gap_note": "Independent content-coding evidence is still missing for the HTTP/1.1 carrier.",
+  "generated_at": "2026-03-16T22:47:44.635304+00:00",
+  "mapped_strict_profile_scenario": "http11-content-coding-curl-client",
+  "note": "This directory is an offline provisional substitution generated from the local conformance corpus. It is useful for stricter-profile review and bundle-shape planning, but it is not independent-certification evidence and must not be used to satisfy release gates.",
+  "peer": "curl",
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 9110 \u00a78"
+  ],
+  "source_fixture": "tests/test_http_content_coding_rfc9110.py",
+  "source_local_conformance_vector": "http-content-coding",
+  "strict_profile_only": true
+}

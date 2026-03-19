@@ -1,0 +1,7 @@
+{
+  "alpn": null,
+  "implementation": "python-h2",
+  "protocol": "h2c",
+  "scheme": "http",
+  "server_name": "127.0.0.1"
+}

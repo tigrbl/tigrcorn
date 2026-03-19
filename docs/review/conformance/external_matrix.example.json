@@ -1,0 +1,80 @@
+{
+  "name": "tigrcorn-release-interop",
+  "metadata": {
+    "description": "Example external interoperability matrix for release gating"
+  },
+  "scenarios": [
+    {
+      "id": "http1-server-fixture-client",
+      "protocol": "http1",
+      "role": "server",
+      "feature": "post-echo",
+      "peer": "fixture-http-client",
+      "sut": {
+        "name": "tigrcorn-http1",
+        "adapter": "subprocess",
+        "role": "server",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http1",
+          "--disable-websocket",
+          "--no-access-log",
+          "--lifespan",
+          "off"
+        ],
+        "ready_pattern": "listening on"
+      },
+      "peer_process": {
+        "name": "fixture-http-client",
+        "adapter": "subprocess",
+        "role": "client",
+        "command": ["python", "-m", "tests.fixtures_pkg.interop_http_client"]
+      },
+      "assertions": [
+        {"path": "peer.exit_code", "equals": 0},
+        {"path": "transcript.peer.response.status", "equals": 200}
+      ]
+    },
+    {
+      "id": "quic-client-fixture-server",
+      "protocol": "quic",
+      "transport": "udp",
+      "role": "client",
+      "feature": "observer-qlog",
+      "peer": "fixture-udp-echo",
+      "ip_family": "ipv4",
+      "retry": true,
+      "resumption": true,
+      "zero_rtt": true,
+      "key_update": true,
+      "migration": true,
+      "goaway": true,
+      "qpack_blocking": true,
+      "sut": {
+        "name": "fixture-quic-client",
+        "adapter": "subprocess",
+        "role": "client",
+        "command": ["python", "-m", "tests.fixtures_pkg.interop_quic_client"]
+      },
+      "peer_process": {
+        "name": "fixture-udp-echo",
+        "adapter": "subprocess",
+        "role": "server",
+        "command": ["python", "-m", "tests.fixtures_pkg.interop_udp_echo_server"],
+        "ready_pattern": "READY"
+      },
+      "assertions": [
+        {"path": "sut.exit_code", "equals": 0},
+        {"path": "artifacts.qlog.exists", "equals": true}
+      ]
+    }
+  ]
+}

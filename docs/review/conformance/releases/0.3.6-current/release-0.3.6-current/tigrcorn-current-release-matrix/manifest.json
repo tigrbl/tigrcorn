@@ -1,0 +1,132 @@
+{
+  "commit_hash": "release-0.3.6-current",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "feature": [
+      "https-post-echo",
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "text-echo",
+      "websocket-extended-connect",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "goaway": [
+      false,
+      true
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false,
+      true
+    ],
+    "peer": [
+      "curl",
+      "python-h2",
+      "tigrcorn-public-client",
+      "websockets"
+    ],
+    "protocol": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket"
+    ],
+    "qpack_blocking": [
+      false,
+      true
+    ],
+    "resumption": [
+      false,
+      true
+    ],
+    "retry": [
+      false,
+      true
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false,
+      true
+    ]
+  },
+  "environment": {
+    "generated_at": "2026-03-15T02:12:19.026375+00:00",
+    "platform": {
+      "machine": "x86_64",
+      "platform": "Linux-4.4.0-x86_64-with-glibc2.36",
+      "release": "4.4.0",
+      "system": "Linux"
+    },
+    "python": {
+      "executable": "/usr/local/bin/python",
+      "implementation": "CPython",
+      "version": "3.11.8"
+    },
+    "tigrcorn": {
+      "commit_hash": "release-0.3.6-current",
+      "source_tree_sha256": "6b48cb673a6010de486a9d4fbf777d513404a198d5d6bb7adb1f7ccccf956dca",
+      "version": "0.3.6"
+    },
+    "tools": {
+      "curl": {
+        "available": true,
+        "command": [
+          "curl",
+          "--version"
+        ],
+        "executable": "/usr/local/bin/curl",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "curl 8.10.1 (x86_64-pc-linux-gnu) libcurl/8.10.1 OpenSSL/3.0.14 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libpsl/0.21.2\nRelease-Date: 2024-09-18\nProtocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns mqtt pop3 pop3s rtsp smb smbs smtp smtps telnet tftp\nFeatures: alt-svc AsynchDNS brotli HSTS HTTPS-proxy IPv6 Largefile libz NTLM PSL SSL threadsafe TLS-SRP UnixSockets zstd"
+      },
+      "docker": {
+        "available": false,
+        "command": [
+          "docker",
+          "--version"
+        ],
+        "executable": null
+      },
+      "git": {
+        "available": true,
+        "command": [
+          "git",
+          "--version"
+        ],
+        "executable": "/usr/bin/git",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "git version 2.39.2"
+      },
+      "openssl": {
+        "available": true,
+        "command": [
+          "openssl",
+          "version"
+        ],
+        "executable": "/usr/bin/openssl",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "OpenSSL 3.0.14 4 Jun 2024 (Library: OpenSSL 3.0.14 4 Jun 2024)"
+      }
+    }
+  },
+  "generated_at": "2026-03-15T02:12:19.092411+00:00",
+  "matrix_name": "tigrcorn-current-release-matrix",
+  "matrix_sha256": "bda273e47512f41d837d0e7d2540bbbb9cdb21758c6e45e03926550d918b3cb7"
+}

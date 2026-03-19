@@ -1,0 +1,20 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http2-trailer-fields-h2-client",
+  "carrier": "http2",
+  "commit_hash": "release-0.3.6-offline-provisional-all-surfaces-gap-bundle",
+  "feature": "trailers",
+  "generated_at": "2026-03-16T22:47:44.633758+00:00",
+  "passed": true,
+  "peer": "python-h2",
+  "provisional_non_certifying_substitution": true,
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 9110 \u00a76.5"
+  ],
+  "scenario_id": "http2-trailer-fields-h2-client",
+  "source_fixture": "tests/test_trailers_rfc9110.py",
+  "source_local_conformance_vector": "http-trailer-fields",
+  "strict_profile_only": true,
+  "substitution_note": "Derived from local conformance vector metadata because the repository does not yet preserve the corresponding third-party artifacts for the stricter all-surfaces-independent profile.",
+  "vector_description": "HTTP trailer framing, trailer delivery, and extension propagation across buffered request paths."
+}

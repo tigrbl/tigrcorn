@@ -1,0 +1,54 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle",
+  "commit_hash": "release-0.3.6-offline-provisional-flow-control-gap-bundle",
+  "failed": 0,
+  "flow_control_review_only": true,
+  "generated_at": "2026-03-17T00:03:44.096116+00:00",
+  "matrix_name": "tigrcorn-provisional-flow-control-gap-bundle",
+  "passed": 5,
+  "release_gate_eligible": false,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post",
+      "flow_control_review_only": true,
+      "id": "http3-flow-control-public-client-post",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-retry",
+      "flow_control_review_only": true,
+      "id": "http3-flow-control-public-client-post-retry",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-retry"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-zero-rtt",
+      "flow_control_review_only": true,
+      "id": "http3-flow-control-public-client-post-zero-rtt",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-zero-rtt"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration",
+      "flow_control_review_only": true,
+      "id": "http3-flow-control-public-client-post-migration",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-migration"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-goaway-qpack",
+      "flow_control_review_only": true,
+      "id": "http3-flow-control-public-client-post-goaway-qpack",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-goaway-qpack"
+    }
+  ],
+  "skipped": 0,
+  "total": 5
+}

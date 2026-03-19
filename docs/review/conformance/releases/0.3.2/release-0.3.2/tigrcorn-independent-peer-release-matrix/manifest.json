@@ -1,0 +1,116 @@
+{
+  "commit_hash": "release-0.3.2",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "feature": [
+      "post-echo",
+      "quic-tls-handshake",
+      "text-echo"
+    ],
+    "goaway": [
+      false
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false
+    ],
+    "peer": [
+      "curl",
+      "openssl",
+      "websockets"
+    ],
+    "protocol": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket"
+    ],
+    "qpack_blocking": [
+      false
+    ],
+    "resumption": [
+      false
+    ],
+    "retry": [
+      false
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false
+    ]
+  },
+  "environment": {
+    "generated_at": "2026-03-14T04:57:48.778266+00:00",
+    "platform": {
+      "machine": "x86_64",
+      "platform": "Linux-4.4.0-x86_64-with-glibc2.41",
+      "release": "4.4.0",
+      "system": "Linux"
+    },
+    "python": {
+      "executable": "/opt/pyvenv/bin/python",
+      "implementation": "CPython",
+      "version": "3.13.5"
+    },
+    "tigrcorn": {
+      "commit_hash": "release-0.3.2",
+      "source_tree_sha256": "861c9ea61636585d38408b9e5ed24469051c03d47102881e621d1f45ef8c0a5a",
+      "version": "0.3.2"
+    },
+    "tools": {
+      "curl": {
+        "available": true,
+        "command": [
+          "curl",
+          "--version"
+        ],
+        "executable": "/usr/local/bin/curl",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "curl 8.10.1 (x86_64-pc-linux-gnu) libcurl/8.10.1 OpenSSL/3.5.4 zlib/1.3.1 brotli/1.1.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.2 nghttp2/1.64.0 librtmp/2.3 OpenLDAP/2.6.10\nRelease-Date: 2024-09-18\nProtocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt pop3 pop3s rtmp rtsp smb smbs smtp smtps telnet tftp\nFeatures: alt-svc AsynchDNS brotli HSTS HTTP2 HTTPS-proxy IDN IPv6 Largefile libz NTLM PSL SSL threadsafe TLS-SRP UnixSockets zstd"
+      },
+      "docker": {
+        "available": false,
+        "command": [
+          "docker",
+          "--version"
+        ],
+        "executable": null
+      },
+      "git": {
+        "available": true,
+        "command": [
+          "git",
+          "--version"
+        ],
+        "executable": "/usr/bin/git",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "git version 2.47.3"
+      },
+      "openssl": {
+        "available": true,
+        "command": [
+          "openssl",
+          "version"
+        ],
+        "executable": "/usr/bin/openssl",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "OpenSSL 3.5.4 30 Sep 2025 (Library: OpenSSL 3.5.4 30 Sep 2025)"
+      }
+    }
+  },
+  "generated_at": "2026-03-14T04:57:48.940918+00:00",
+  "matrix_name": "tigrcorn-independent-peer-release-matrix",
+  "matrix_sha256": "8e433e3ab1ed7a19e0ead801dc27ece2b5d0c2376a00ee1c23fe5608eea91093"
+}

@@ -1,0 +1,11 @@
+{
+  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus/cases/http11-curl-origin-form-post",
+  "carrier": "http1.1",
+  "corpus_entry_kind": "seed_third_party_http11",
+  "corpus_id": "http11-curl-origin-form-post",
+  "generated_at": "2026-03-17T00:03:45.504147+00:00",
+  "note": "Third-party preserved HTTP/1.1 artifact that seeds the intermediary/proxy corpus with real on-the-wire request/response evidence.",
+  "peer": "curl",
+  "source_kind": "independent_artifact",
+  "source_ref": "http1-server-curl-client"
+}

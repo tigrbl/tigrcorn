@@ -1,0 +1,37 @@
+{
+  "authoritative_boundary": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+  "flow_control_release_gate_eligible": false,
+  "flow_control_review_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle",
+  "flow_control_status_doc": "docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md",
+  "generated_at": "2026-03-17T00:01:12.736866+00:00",
+  "intermediary_proxy_corpus": "docs/review/conformance/intermediary_proxy_corpus",
+  "intermediary_proxy_corpus_status": "seed_corpus_bundled",
+  "production_scheduler": {
+    "integrated_in": [
+      "src/tigrcorn/server/runner.py"
+    ],
+    "module": "src/tigrcorn/scheduler/runtime.py",
+    "status": "implemented"
+  },
+  "remaining_primary_blockers": [
+    "http3-server-aioquic-client-post",
+    "http3-server-aioquic-client-post-mtls",
+    "http3-server-aioquic-client-post-retry",
+    "http3-server-aioquic-client-post-resumption",
+    "http3-server-aioquic-client-post-zero-rtt",
+    "http3-server-aioquic-client-post-migration",
+    "http3-server-aioquic-client-post-goaway-qpack",
+    "websocket-http3-server-aioquic-client",
+    "websocket-http3-server-aioquic-client-mtls"
+  ],
+  "validation": {
+    "pytest": {
+      "command": "PYTHONPATH=src:. pytest -q tests/test_documentation_reconciliation.py tests/test_release_gates.py tests/test_certification_policy_alignment.py tests/test_external_current_release_matrix.py tests/test_external_independent_peer_release_matrix.py tests/test_external_interop_runner_matrix.py tests/test_provisional_http3_gap_bundle.py tests/test_provisional_all_surfaces_gap_bundle.py tests/test_scheduler_runtime.py tests/test_provisional_flow_control_gap_bundle.py tests/test_intermediary_proxy_corpus.py",
+      "result": "32 passed, 2 skipped"
+    },
+    "release_gates": {
+      "failure_count": 50,
+      "passed": false
+    }
+  }
+}

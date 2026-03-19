@@ -1,0 +1,11 @@
+{
+  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus/cases/http3-connect-relay-local-vector",
+  "carrier": "http3",
+  "corpus_entry_kind": "local_proxy_vector",
+  "corpus_id": "http3-connect-relay-local-vector",
+  "generated_at": "2026-03-17T00:03:45.509932+00:00",
+  "note": "Local CONNECT relay vector preserved for the HTTP/3 carrier pending broader third-party intermediary/proxy artifacts.",
+  "peer": "tigrcorn-fixture",
+  "source_kind": "local_vector",
+  "source_ref": "http-connect-relay"
+}

@@ -1,0 +1,112 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": 200,
+      "path": "transcript.peer.response.status"
+    },
+    {
+      "equals": "echo:hello-http2",
+      "path": "transcript.peer.response.body"
+    },
+    {
+      "equals": "h2c",
+      "path": "negotiation.peer.protocol"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.packet_trace.exists"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.peer_transcript.exists"
+    }
+  ],
+  "capture": {},
+  "dimensions": {
+    "cipher_group": null,
+    "feature": "post-echo",
+    "goaway": false,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "python-h2",
+    "protocol": "http2",
+    "qpack_blocking": false,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "http2-server-h2-client",
+  "metadata": {
+    "peer_implementation": "python-h2",
+    "rfc": [
+      "RFC 9113"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {
+      "INTEROP_REQUEST_BODY": "hello-http2"
+    },
+    "image": null,
+    "metadata": {},
+    "name": "python-h2-http2-client",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http2",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "metadata": {},
+    "name": "tigrcorn-http2",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

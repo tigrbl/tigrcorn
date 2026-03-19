@@ -1,0 +1,39 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix",
+  "commit_hash": "release-0.3.2",
+  "failed": 0,
+  "matrix_name": "tigrcorn-independent-peer-release-matrix",
+  "passed": 4,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/http1-server-curl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http1-server-curl-client",
+      "passed": true
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/http2-server-curl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http2-server-curl-client",
+      "passed": true
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/websocket-server-websockets-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-server-websockets-client",
+      "passed": true
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/http3-server-openssl-quic-handshake",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-openssl-quic-handshake",
+      "passed": true
+    }
+  ],
+  "skipped": 0,
+  "total": 4
+}

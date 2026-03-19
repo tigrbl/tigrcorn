@@ -1,0 +1,7 @@
+{
+  "description": "HTTP trailer framing, trailer delivery, and extension propagation across buffered request paths.",
+  "fixture": "tests/test_trailers_rfc9110.py",
+  "name": "http-trailer-fields",
+  "protocol": "http-trailers",
+  "rfc": "9110-trailers"
+}

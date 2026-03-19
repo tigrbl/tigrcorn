@@ -1,0 +1,14 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-goaway-qpack",
+  "bundle_kind": "provisional_same_stack_substitution",
+  "feature": "post-echo-goaway-qpack",
+  "generated_at": "2026-03-16T20:56:51.441032+00:00",
+  "mapped_independent_scenario": "http3-server-aioquic-client-post-goaway-qpack",
+  "note": "This directory is an offline provisional substitution generated from same-stack replay artifacts. It is useful for bundle-shape review and documentation, but it is not independent-certification evidence and must not be used to satisfy release gates.",
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 9114",
+    "RFC 9204"
+  ],
+  "source_same_stack_scenario": "http3-server-public-client-post-goaway-qpack"
+}

@@ -1,0 +1,27 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-zero-rtt",
+  "bundle_kind": "provisional_same_stack_flow_control_review",
+  "feature": "http3-flow-control-zero-rtt",
+  "gap_note": "0-RTT / credit-reuse path preserved as same-stack replay pending broader third-party certification.",
+  "generated_at": "2026-03-17T00:03:44.074635+00:00",
+  "local_vectors": [
+    "quic-packet-codec",
+    "quic-recovery",
+    "http3-server-surface"
+  ],
+  "mapped_flow_control_scenario": "http3-flow-control-public-client-post-zero-rtt",
+  "note": "This directory is an offline provisional flow-control review bundle generated from same-stack replay artifacts. It is useful for bundle-shape review and repository transparency, but it is not independent-certification evidence and must not be used to satisfy release gates.",
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 9114",
+    "RFC 9000",
+    "RFC 9001",
+    "RFC 9002"
+  ],
+  "source_same_stack_scenario": "http3-server-public-client-post-zero-rtt",
+  "vector_fixtures": {
+    "http3-server-surface": "tests/test_http3_rfc9114.py",
+    "quic-packet-codec": "tests/test_quic_packets_rfc9000.py",
+    "quic-recovery": "tests/test_quic_recovery_rfc9002.py"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "request": {
+    "path": "/ws",
+    "text": "hello-websocket",
+    "url": "ws://127.0.0.1:52259/ws"
+  },
+  "response": {
+    "text": "hello-websocket"
+  }
+}

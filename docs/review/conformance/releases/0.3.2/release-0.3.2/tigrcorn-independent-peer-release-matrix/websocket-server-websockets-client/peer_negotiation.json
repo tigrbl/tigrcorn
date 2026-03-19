@@ -1,0 +1,6 @@
+{
+  "close_code": 1000,
+  "extensions": [],
+  "implementation": "websockets",
+  "subprotocol": null
+}

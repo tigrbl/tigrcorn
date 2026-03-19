@@ -1,0 +1,77 @@
+{
+  "mappings": [
+    {
+      "feature": "http3-flow-control",
+      "local_vectors": [
+        "http3-server-surface",
+        "qpack-dynamic-state"
+      ],
+      "provisional_id": "http3-flow-control-public-client-post",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9204"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post"
+    },
+    {
+      "feature": "http3-flow-control-retry",
+      "local_vectors": [
+        "quic-packet-codec",
+        "quic-recovery",
+        "http3-server-surface"
+      ],
+      "provisional_id": "http3-flow-control-public-client-post-retry",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-retry"
+    },
+    {
+      "feature": "http3-flow-control-zero-rtt",
+      "local_vectors": [
+        "quic-packet-codec",
+        "quic-recovery",
+        "http3-server-surface"
+      ],
+      "provisional_id": "http3-flow-control-public-client-post-zero-rtt",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-zero-rtt"
+    },
+    {
+      "feature": "http3-flow-control-migration",
+      "local_vectors": [
+        "quic-packet-codec",
+        "quic-recovery",
+        "http3-server-surface"
+      ],
+      "provisional_id": "http3-flow-control-public-client-post-migration",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-migration"
+    },
+    {
+      "feature": "http3-flow-control-goaway-qpack",
+      "local_vectors": [
+        "http3-server-surface",
+        "qpack-dynamic-state"
+      ],
+      "provisional_id": "http3-flow-control-public-client-post-goaway-qpack",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9204"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-goaway-qpack"
+    }
+  ]
+}

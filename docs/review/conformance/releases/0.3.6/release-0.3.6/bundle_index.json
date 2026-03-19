@@ -1,0 +1,21 @@
+{
+  "bundles": {
+    "independent_certification": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+    "mixed": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix",
+    "provisional_all_surfaces_gap_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle",
+    "provisional_flow_control_gap_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle",
+    "provisional_http3_gap_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle",
+    "same_stack_replay": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix"
+  },
+  "generated_at": "2026-03-17T06:00:59.273305+00:00",
+  "notes": [
+    "The 0.3.6 release root is the canonical consolidated evidence root for the current package version.",
+    "The independent certification matrix includes preserved passing artifacts for all declared third-party HTTP/3 / RFC 9220 scenarios once this bundle has been regenerated and promoted.",
+    "Historical 0.3.2, 0.3.6-rfc-hardening, and 0.3.6-current bundles remain in-tree for provenance.",
+    "The provisional HTTP/3 gap bundle is a same-stack substitution aid generated offline; it is explicitly non-certifying and does not change release-gate status.",
+    "The provisional all-surfaces gap bundle is generated from local conformance vectors for the stricter all-surfaces-independent profile; it is explicitly non-certifying and does not change canonical release-gate status.",
+    "The provisional flow-control gap bundle is generated from same-stack HTTP/3 replay artifacts and local vector links; it is explicitly non-certifying and does not change canonical release-gate status."
+  ],
+  "release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6",
+  "version": "0.3.6"
+}

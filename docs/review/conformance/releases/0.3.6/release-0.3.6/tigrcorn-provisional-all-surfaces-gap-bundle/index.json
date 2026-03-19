@@ -1,0 +1,105 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle",
+  "commit_hash": "release-0.3.6-offline-provisional-all-surfaces-gap-bundle",
+  "failed": 0,
+  "generated_at": "2026-03-16T22:47:44.638498+00:00",
+  "matrix_name": "tigrcorn-provisional-all-surfaces-gap-bundle",
+  "passed": 13,
+  "release_gate_eligible": false,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/websocket-http11-server-websockets-client-permessage-deflate",
+      "id": "websocket-http11-server-websockets-client-permessage-deflate",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "websocket-permessage-deflate"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/websocket-http2-server-h2-client-permessage-deflate",
+      "id": "websocket-http2-server-h2-client-permessage-deflate",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "websocket-permessage-deflate"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/websocket-http3-server-aioquic-client-permessage-deflate",
+      "id": "websocket-http3-server-aioquic-client-permessage-deflate",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "websocket-permessage-deflate"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http11-connect-relay-curl-client",
+      "id": "http11-connect-relay-curl-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http2-connect-relay-h2-client",
+      "id": "http2-connect-relay-h2-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http3-connect-relay-aioquic-client",
+      "id": "http3-connect-relay-aioquic-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http11-trailer-fields-curl-client",
+      "id": "http11-trailer-fields-curl-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-trailer-fields"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http2-trailer-fields-h2-client",
+      "id": "http2-trailer-fields-h2-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-trailer-fields"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http3-trailer-fields-aioquic-client",
+      "id": "http3-trailer-fields-aioquic-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-trailer-fields"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http11-content-coding-curl-client",
+      "id": "http11-content-coding-curl-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-content-coding"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http2-content-coding-curl-client",
+      "id": "http2-content-coding-curl-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-content-coding"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http3-content-coding-aioquic-client",
+      "id": "http3-content-coding-aioquic-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "http-content-coding"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/tls-server-ocsp-validation-openssl-client",
+      "id": "tls-server-ocsp-validation-openssl-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_local_conformance_vector": "ocsp-revocation-validation"
+    }
+  ],
+  "skipped": 0,
+  "strict_profile_only": true,
+  "total": 13
+}

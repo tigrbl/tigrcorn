@@ -1,0 +1,5 @@
+{
+  "implementation": "python-h2",
+  "protocol": "h2c",
+  "settings_enable_connect_protocol": true
+}

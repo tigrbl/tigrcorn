@@ -1,0 +1,137 @@
+{
+  "vectors": [
+    {
+      "name": "http11-server-surface",
+      "protocol": "http1",
+      "rfc": "9112",
+      "description": "HTTP/1.1 request parsing, framing, chunked transfer coding, and server response behavior.",
+      "fixture": "tests/test_http1_rfc9112.py"
+    },
+    {
+      "name": "hpack-dynamic-state",
+      "protocol": "http2-hpack",
+      "rfc": "7541",
+      "description": "HPACK header block encoding, decoding, dynamic table state, and compression behavior.",
+      "fixture": "tests/test_http2_hpack.py"
+    },
+    {
+      "name": "http2-server-surface",
+      "protocol": "http2",
+      "rfc": "9113",
+      "description": "HTTP/2 framing, settings, flow control, stream lifecycle, server push, and error handling.",
+      "fixture": "tests/test_http2_rfc9113.py"
+    },
+    {
+      "name": "websocket-core",
+      "protocol": "websocket",
+      "rfc": "6455",
+      "description": "RFC 6455 opening handshake, framing, masking, close handling, and server behavior.",
+      "fixture": "tests/test_websocket_rfc6455.py"
+    },
+    {
+      "name": "websocket-permessage-deflate",
+      "protocol": "websocket-compression",
+      "rfc": "7692",
+      "description": "permessage-deflate negotiation, RSV1 semantics, fragmented compression, and compressed payload handling.",
+      "fixture": "tests/test_websocket_rfc7692.py"
+    },
+    {
+      "name": "http2-websocket-extended-connect",
+      "protocol": "http2-websocket",
+      "rfc": "8441",
+      "description": "Extended CONNECT bootstrap and framed WebSocket data over an HTTP/2 stream.",
+      "fixture": "tests/test_http2_websocket_rfc8441.py"
+    },
+    {
+      "name": "tls13-package-subsystem",
+      "protocol": "tls13",
+      "rfc": "8446",
+      "description": "TLS 1.3 handshake messages, extensions, key schedule, certificate authentication, and subsystem behavior.",
+      "fixture": "tests/test_tls13_engine_upgrade.py"
+    },
+    {
+      "name": "tls-alpn-negotiation",
+      "protocol": "tls13-alpn",
+      "rfc": "7301",
+      "description": "ALPN negotiation, mutual protocol selection, and no-overlap failure behavior for secure transports.",
+      "fixture": "tests/test_tls_alpn_rfc7301.py"
+    },
+    {
+      "name": "x509-path-validation",
+      "protocol": "x509-validation",
+      "rfc": "5280",
+      "description": "Certificate path building, SAN checks, name constraints, key usage, and basic constraints validation.",
+      "fixture": "tests/test_x509_webpki_validation.py"
+    },
+    {
+      "name": "ocsp-revocation-validation",
+      "protocol": "x509-revocation",
+      "rfc": "6960",
+      "description": "OCSP acquisition, freshness handling, cache reuse, and revoked certificate rejection behavior.",
+      "fixture": "tests/test_x509_webpki_validation.py"
+    },
+    {
+      "name": "quic-packet-codec",
+      "protocol": "quic-transport",
+      "rfc": "9000",
+      "description": "Long-header, short-header, Retry, Version Negotiation, transport frames, and stateless reset vectors.",
+      "fixture": "tests/test_quic_packets_rfc9000.py"
+    },
+    {
+      "name": "quic-tls-initial-vectors",
+      "protocol": "quic-tls",
+      "rfc": "9001",
+      "description": "Initial secret derivation, packet protection, key update, certificate verification, and handshake vectors.",
+      "fixture": "tests/test_quic_tls_rfc9001.py"
+    },
+    {
+      "name": "quic-recovery",
+      "protocol": "quic-recovery",
+      "rfc": "9002",
+      "description": "RTT tracking, ACK processing, PTO, congestion, and packet-threshold/time-threshold loss behavior.",
+      "fixture": "tests/test_quic_recovery_rfc9002.py"
+    },
+    {
+      "name": "http-connect-relay",
+      "protocol": "http-connect",
+      "rfc": "9110-connect",
+      "description": "CONNECT authority validation, tunnel lifecycle, bidirectional relay, and carrier-specific forwarding behavior.",
+      "fixture": "tests/test_connect_rfc9110.py"
+    },
+    {
+      "name": "http-trailer-fields",
+      "protocol": "http-trailers",
+      "rfc": "9110-trailers",
+      "description": "HTTP trailer framing, trailer delivery, and extension propagation across buffered request paths.",
+      "fixture": "tests/test_trailers_rfc9110.py"
+    },
+    {
+      "name": "http-content-coding",
+      "protocol": "http-content-coding",
+      "rfc": "9110-content-coding",
+      "description": "Accept-Encoding negotiation, identity fallback, buffered response coding, and invalid encoding handling.",
+      "fixture": "tests/test_http_content_coding_rfc9110.py"
+    },
+    {
+      "name": "http3-server-surface",
+      "protocol": "http3",
+      "rfc": "9114",
+      "description": "HTTP/3 control streams, request streams, settings handling, and server-side response behavior.",
+      "fixture": "tests/test_http3_rfc9114.py"
+    },
+    {
+      "name": "qpack-dynamic-state",
+      "protocol": "http3-qpack",
+      "rfc": "9204",
+      "description": "QPACK encoder stream, decoder stream, dynamic table synchronization, and field section decoding.",
+      "fixture": "tests/test_qpack_completion.py"
+    },
+    {
+      "name": "http3-websocket-extended-connect",
+      "protocol": "http3-websocket",
+      "rfc": "9220",
+      "description": "Extended CONNECT bootstrap and framed WebSocket data over an HTTP/3 request stream.",
+      "fixture": "tests/test_http3_websocket_rfc9220.py"
+    }
+  ]
+}

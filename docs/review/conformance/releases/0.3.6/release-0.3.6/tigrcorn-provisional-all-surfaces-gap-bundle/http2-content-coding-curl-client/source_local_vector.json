@@ -1,0 +1,7 @@
+{
+  "description": "Accept-Encoding negotiation, identity fallback, buffered response coding, and invalid encoding handling.",
+  "fixture": "tests/test_http_content_coding_rfc9110.py",
+  "name": "http-content-coding",
+  "protocol": "http-content-coding",
+  "rfc": "9110-content-coding"
+}

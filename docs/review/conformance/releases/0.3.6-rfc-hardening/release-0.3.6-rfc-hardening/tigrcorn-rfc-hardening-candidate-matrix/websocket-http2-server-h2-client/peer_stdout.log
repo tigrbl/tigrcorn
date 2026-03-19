@@ -1,0 +1,1 @@
+{"request": {"authority": "example", "path": "/ws", "text": "hello-h2-ws-external"}, "response": {"close_code": 1000, "headers": [[":status", "200"]], "text": "hello-h2-ws-external"}}

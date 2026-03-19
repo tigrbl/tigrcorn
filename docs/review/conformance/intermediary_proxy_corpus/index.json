@@ -1,0 +1,41 @@
+{
+  "cases": [
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus/cases/http11-curl-origin-form-post",
+      "carrier": "http1.1",
+      "id": "http11-curl-origin-form-post",
+      "peer": "curl",
+      "source_kind": "independent_artifact",
+      "source_ref": "http1-server-curl-client"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus/cases/http11-connect-relay-local-vector",
+      "carrier": "http1.1",
+      "id": "http11-connect-relay-local-vector",
+      "peer": "tigrcorn-fixture",
+      "source_kind": "local_vector",
+      "source_ref": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus/cases/http2-connect-relay-local-vector",
+      "carrier": "http2",
+      "id": "http2-connect-relay-local-vector",
+      "peer": "tigrcorn-fixture",
+      "source_kind": "local_vector",
+      "source_ref": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus/cases/http3-connect-relay-local-vector",
+      "carrier": "http3",
+      "id": "http3-connect-relay-local-vector",
+      "peer": "tigrcorn-fixture",
+      "source_kind": "local_vector",
+      "source_ref": "http-connect-relay"
+    }
+  ],
+  "corpus_root": "docs/review/conformance/intermediary_proxy_corpus",
+  "generated_at": "2026-03-17T00:03:45.510288+00:00",
+  "independent_matrix_sha256": "d5c55438f6f0c5b776c5051b8083c9e8350d2242e928c4c2b2d4327f79774abd",
+  "scope_note": "This corpus improves repository transparency for intermediary/proxy-style behavior, but it is not itself an RFC certification bundle.",
+  "seed_kind": "intermediary_proxy_corpus"
+}

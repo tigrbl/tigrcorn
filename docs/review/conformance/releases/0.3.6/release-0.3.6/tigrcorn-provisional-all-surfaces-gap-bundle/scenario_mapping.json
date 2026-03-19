@@ -1,0 +1,143 @@
+{
+  "mappings": [
+    {
+      "carrier": "http1.1",
+      "feature": "permessage-deflate",
+      "peer": "websockets",
+      "provisional_id": "websocket-http11-server-websockets-client-permessage-deflate",
+      "rfcs": [
+        "RFC 7692",
+        "RFC 6455"
+      ],
+      "source_local_vector": "websocket-permessage-deflate"
+    },
+    {
+      "carrier": "http2",
+      "feature": "permessage-deflate",
+      "peer": "python-h2/wsproto",
+      "provisional_id": "websocket-http2-server-h2-client-permessage-deflate",
+      "rfcs": [
+        "RFC 7692",
+        "RFC 8441"
+      ],
+      "source_local_vector": "websocket-permessage-deflate"
+    },
+    {
+      "carrier": "http3",
+      "feature": "permessage-deflate",
+      "peer": "aioquic/wsproto",
+      "provisional_id": "websocket-http3-server-aioquic-client-permessage-deflate",
+      "rfcs": [
+        "RFC 7692",
+        "RFC 9220"
+      ],
+      "source_local_vector": "websocket-permessage-deflate"
+    },
+    {
+      "carrier": "http1.1",
+      "feature": "connect-relay",
+      "peer": "curl",
+      "provisional_id": "http11-connect-relay-curl-client",
+      "rfcs": [
+        "RFC 9110 \u00a79.3.6"
+      ],
+      "source_local_vector": "http-connect-relay"
+    },
+    {
+      "carrier": "http2",
+      "feature": "connect-relay",
+      "peer": "python-h2",
+      "provisional_id": "http2-connect-relay-h2-client",
+      "rfcs": [
+        "RFC 9110 \u00a79.3.6"
+      ],
+      "source_local_vector": "http-connect-relay"
+    },
+    {
+      "carrier": "http3",
+      "feature": "connect-relay",
+      "peer": "aioquic",
+      "provisional_id": "http3-connect-relay-aioquic-client",
+      "rfcs": [
+        "RFC 9110 \u00a79.3.6",
+        "RFC 9114"
+      ],
+      "source_local_vector": "http-connect-relay"
+    },
+    {
+      "carrier": "http1.1",
+      "feature": "trailers",
+      "peer": "curl",
+      "provisional_id": "http11-trailer-fields-curl-client",
+      "rfcs": [
+        "RFC 9110 \u00a76.5"
+      ],
+      "source_local_vector": "http-trailer-fields"
+    },
+    {
+      "carrier": "http2",
+      "feature": "trailers",
+      "peer": "python-h2",
+      "provisional_id": "http2-trailer-fields-h2-client",
+      "rfcs": [
+        "RFC 9110 \u00a76.5"
+      ],
+      "source_local_vector": "http-trailer-fields"
+    },
+    {
+      "carrier": "http3",
+      "feature": "trailers",
+      "peer": "aioquic",
+      "provisional_id": "http3-trailer-fields-aioquic-client",
+      "rfcs": [
+        "RFC 9110 \u00a76.5",
+        "RFC 9114"
+      ],
+      "source_local_vector": "http-trailer-fields"
+    },
+    {
+      "carrier": "http1.1",
+      "feature": "content-coding",
+      "peer": "curl",
+      "provisional_id": "http11-content-coding-curl-client",
+      "rfcs": [
+        "RFC 9110 \u00a78"
+      ],
+      "source_local_vector": "http-content-coding"
+    },
+    {
+      "carrier": "http2",
+      "feature": "content-coding",
+      "peer": "curl",
+      "provisional_id": "http2-content-coding-curl-client",
+      "rfcs": [
+        "RFC 9110 \u00a78",
+        "RFC 9113"
+      ],
+      "source_local_vector": "http-content-coding"
+    },
+    {
+      "carrier": "http3",
+      "feature": "content-coding",
+      "peer": "aioquic",
+      "provisional_id": "http3-content-coding-aioquic-client",
+      "rfcs": [
+        "RFC 9110 \u00a78",
+        "RFC 9114"
+      ],
+      "source_local_vector": "http-content-coding"
+    },
+    {
+      "carrier": "tls",
+      "feature": "ocsp-revocation",
+      "peer": "openssl/curl",
+      "provisional_id": "tls-server-ocsp-validation-openssl-client",
+      "rfcs": [
+        "RFC 6960",
+        "RFC 5280",
+        "RFC 8446"
+      ],
+      "source_local_vector": "ocsp-revocation-validation"
+    }
+  ]
+}

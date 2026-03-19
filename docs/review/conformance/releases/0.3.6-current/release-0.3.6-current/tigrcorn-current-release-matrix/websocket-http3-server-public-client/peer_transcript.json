@@ -1,0 +1,39 @@
+{
+  "quic": {
+    "client_goaway_sent": false,
+    "migration": {
+      "from": [
+        "127.0.0.1",
+        36800
+      ],
+      "used": false
+    },
+    "retry_observed": false,
+    "session_ticket_received": true
+  },
+  "request": {
+    "authority": "localhost",
+    "path": "/ws",
+    "text": "hello-h3-websocket"
+  },
+  "response": {
+    "close_code": 1000,
+    "close_reason": "",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "sec-websocket-protocol",
+        "chat"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "text": "hello-h3-websocket"
+  }
+}

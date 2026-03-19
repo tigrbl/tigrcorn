@@ -1,0 +1,46 @@
+{
+  "bundle_kind": "provisional_local_conformance_substitution",
+  "commit_hash": "release-0.3.6-offline-provisional-all-surfaces-gap-bundle",
+  "dimensions": {
+    "carrier": [
+      "http1.1",
+      "http2",
+      "http3",
+      "tls"
+    ],
+    "feature": [
+      "connect-relay",
+      "content-coding",
+      "ocsp-revocation",
+      "permessage-deflate",
+      "trailers"
+    ],
+    "peer": [
+      "aioquic",
+      "aioquic/wsproto",
+      "curl",
+      "openssl/curl",
+      "python-h2",
+      "python-h2/wsproto",
+      "websockets"
+    ],
+    "release_gate_eligible": [
+      false
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This bundle was generated offline from local conformance vectors to preserve the stricter all-surfaces-independent scenario layout. It is explicitly non-certifying and exists only as a planning aid until real third-party artifacts can be preserved."
+    },
+    "tigrcorn": {
+      "bundle_scope": "offline-provisional-all-surfaces-gap-bundle",
+      "commit_hash": "release-0.3.6-offline-provisional-all-surfaces-gap-bundle",
+      "version": "0.3.6"
+    }
+  },
+  "generated_at": "2026-03-16T22:47:44.638259+00:00",
+  "matrix_name": "tigrcorn-provisional-all-surfaces-gap-bundle",
+  "release_gate_eligible": false,
+  "source_corpus": "docs/review/conformance/corpus.json",
+  "strict_boundary_sha256": null
+}

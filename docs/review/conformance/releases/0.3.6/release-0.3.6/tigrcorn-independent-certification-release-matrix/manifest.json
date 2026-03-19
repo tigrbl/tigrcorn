@@ -1,0 +1,92 @@
+{
+  "bundle_kind": "independent_certification",
+  "commit_hash": "release-0.3.6",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "evidence_tier": [
+      "independent_certification"
+    ],
+    "feature": [
+      "https-post-echo",
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "quic-tls-handshake",
+      "text-echo",
+      "websocket-extended-connect",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "goaway": [
+      false,
+      true
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false,
+      true
+    ],
+    "peer": [
+      "aioquic",
+      "curl",
+      "openssl",
+      "python-h2",
+      "websockets"
+    ],
+    "protocol": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket"
+    ],
+    "qpack_blocking": [
+      false,
+      true
+    ],
+    "resumption": [
+      false,
+      true
+    ],
+    "retry": [
+      false,
+      true
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false,
+      true
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This canonical 0.3.6 release root now includes freshly regenerated third-party HTTP/3 / RFC 9220 artifacts in addition to the previously curated preserved evidence."
+    },
+    "tigrcorn": {
+      "bundle_scope": "curated-preserved-artifacts",
+      "commit_hash": "release-0.3.6",
+      "version": "0.3.6"
+    }
+  },
+  "generated_at": "2026-03-17T06:00:59.272225+00:00",
+  "matrix_name": "tigrcorn-independent-certification-release-matrix",
+  "matrix_sha256": "ba1639dc7dbf190ff671c6fc2f8a20de96eb55f19316aa12f73a4598b252b7d8",
+  "source_bundles": [
+    "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix",
+    "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix",
+    "docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/tigrcorn-rfc-hardening-candidate-matrix",
+    "/mnt/data/tigrcorn_work/tigrcorn_0.3.6_certification_update/.artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+  ]
+}

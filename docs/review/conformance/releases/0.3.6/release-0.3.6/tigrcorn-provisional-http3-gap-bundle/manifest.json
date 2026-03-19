@@ -1,0 +1,46 @@
+{
+  "bundle_kind": "provisional_same_stack_substitution",
+  "commit_hash": "release-0.3.6-offline-provisional-gap-bundle",
+  "dimensions": {
+    "feature": [
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "peer": [
+      "tigrcorn-public-client"
+    ],
+    "protocol": [
+      "http3"
+    ],
+    "release_gate_eligible": [
+      false
+    ],
+    "role": [
+      "server"
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This bundle was generated offline from same-stack replay artifacts to preserve the missing independent-scenario directory layout. It is explicitly non-certifying and exists only as a remediation aid until aioquic-backed preserved artifacts can be regenerated."
+    },
+    "tigrcorn": {
+      "bundle_scope": "offline-provisional-gap-bundle",
+      "commit_hash": "release-0.3.6-offline-provisional-gap-bundle",
+      "version": "0.3.6"
+    }
+  },
+  "generated_at": "2026-03-16T20:56:51.531607+00:00",
+  "matrix_name": "tigrcorn-provisional-http3-gap-bundle",
+  "matrix_sha256": "f768608ff0073ea243ed58ec80c4d7867585fe145615cff1a0b018dbb0a11b5a",
+  "release_gate_eligible": false,
+  "source_bundles": [
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix"
+  ]
+}

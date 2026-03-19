@@ -1,0 +1,7 @@
+{
+  "description": "OCSP acquisition, freshness handling, cache reuse, and revoked certificate rejection behavior.",
+  "fixture": "tests/test_x509_webpki_validation.py",
+  "name": "ocsp-revocation-validation",
+  "protocol": "x509-revocation",
+  "rfc": "6960"
+}

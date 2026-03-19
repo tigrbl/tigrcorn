@@ -1,0 +1,94 @@
+{
+  "mappings": [
+    {
+      "feature": "post-echo",
+      "provisional_id": "http3-server-aioquic-client-post",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9204"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post"
+    },
+    {
+      "feature": "post-echo-mtls",
+      "provisional_id": "http3-server-aioquic-client-post-mtls",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9001",
+        "RFC 5280"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-mtls"
+    },
+    {
+      "feature": "post-echo-retry",
+      "provisional_id": "http3-server-aioquic-client-post-retry",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-retry"
+    },
+    {
+      "feature": "post-echo-resumption",
+      "provisional_id": "http3-server-aioquic-client-post-resumption",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-resumption"
+    },
+    {
+      "feature": "post-echo-zero-rtt",
+      "provisional_id": "http3-server-aioquic-client-post-zero-rtt",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-zero-rtt"
+    },
+    {
+      "feature": "post-echo-migration",
+      "provisional_id": "http3-server-aioquic-client-post-migration",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9002"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-migration"
+    },
+    {
+      "feature": "post-echo-goaway-qpack",
+      "provisional_id": "http3-server-aioquic-client-post-goaway-qpack",
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9204"
+      ],
+      "source_same_stack_id": "http3-server-public-client-post-goaway-qpack"
+    },
+    {
+      "feature": "websocket-rfc9220-echo",
+      "provisional_id": "websocket-http3-server-aioquic-client",
+      "rfcs": [
+        "RFC 9220",
+        "RFC 9114"
+      ],
+      "source_same_stack_id": "websocket-http3-server-public-client"
+    },
+    {
+      "feature": "websocket-rfc9220-echo-mtls",
+      "provisional_id": "websocket-http3-server-aioquic-client-mtls",
+      "rfcs": [
+        "RFC 9220",
+        "RFC 9114",
+        "RFC 9001",
+        "RFC 5280"
+      ],
+      "source_same_stack_id": "websocket-http3-server-public-client-mtls"
+    }
+  ]
+}

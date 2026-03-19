@@ -1,0 +1,25 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/tigrcorn-rfc-hardening-candidate-matrix",
+  "commit_hash": "release-0.3.6-rfc-hardening",
+  "failed": 0,
+  "matrix_name": "tigrcorn-rfc-hardening-candidate-matrix",
+  "passed": 2,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/tigrcorn-rfc-hardening-candidate-matrix/http2-tls-server-curl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http2-tls-server-curl-client",
+      "passed": true
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/tigrcorn-rfc-hardening-candidate-matrix/websocket-http2-server-h2-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-http2-server-h2-client",
+      "passed": true
+    }
+  ],
+  "skipped": 0,
+  "total": 2
+}

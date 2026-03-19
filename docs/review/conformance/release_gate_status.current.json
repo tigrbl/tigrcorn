@@ -1,0 +1,1096 @@
+{
+  "artifact_status": {
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http1-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http1-server-curl-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-server-curl-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-server-curl-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-server-h2-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-server-h2-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client/result.json"
+    },
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls",
+      "exists": true,
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls/result.json"
+    }
+  },
+  "checked_files": [
+    "docs/review/conformance/certification_boundary.json",
+    "docs/review/conformance/corpus.json",
+    "docs/review/conformance/external_matrix.release.json",
+    "docs/review/conformance/external_matrix.same_stack_replay.json",
+    "README.md",
+    "docs/protocols/http3.md",
+    "docs/protocols/quic.md",
+    "docs/protocols/websocket.md",
+    "docs/review/conformance/README.md",
+    "docs/review/rfc_compliance_review.md",
+    "RFC_HARDENING_REPORT.md",
+    "CURRENT_REPOSITORY_STATE.md",
+    "RFC_CERTIFICATION_STATUS.md",
+    "src/tigrcorn/security/tls.py",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/index.json",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/manifest.json",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/index.json",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/manifest.json",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/index.json",
+    "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix/manifest.json"
+  ],
+  "failures": [],
+  "passed": true,
+  "rfc_status": {
+    "RFC 5280": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http2-tls-server-curl-client",
+          "http2-tls-server-h2-client"
+        ],
+        "local_conformance": [
+          "x509-path-validation"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http2-tls-server-curl-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-tls-server-h2-client"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 5280",
+            "vector": "x509-path-validation"
+          }
+        ]
+      }
+    },
+    "RFC 6455": {
+      "declared_evidence": {
+        "independent_certification": [
+          "websocket-server-websockets-client"
+        ],
+        "local_conformance": [
+          "websocket-core"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "websocket-server-websockets-client"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 6455",
+            "vector": "websocket-core"
+          }
+        ]
+      }
+    },
+    "RFC 6960": {
+      "declared_evidence": {
+        "local_conformance": [
+          "ocsp-revocation-validation"
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "local_conformance",
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "rfc": "RFC 6960",
+            "vector": "ocsp-revocation-validation"
+          }
+        ]
+      }
+    },
+    "RFC 7301": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http2-tls-server-curl-client",
+          "http2-tls-server-h2-client",
+          "http3-server-openssl-quic-handshake"
+        ],
+        "local_conformance": [
+          "tls-alpn-negotiation"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http2-tls-server-curl-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-tls-server-h2-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http3-server-openssl-quic-handshake"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 7301",
+            "vector": "tls-alpn-negotiation"
+          }
+        ]
+      }
+    },
+    "RFC 7541": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http2-server-h2-client",
+          "http2-tls-server-h2-client"
+        ],
+        "local_conformance": [
+          "hpack-dynamic-state"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-server-h2-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-tls-server-h2-client"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 7541",
+            "vector": "hpack-dynamic-state"
+          }
+        ]
+      }
+    },
+    "RFC 7692": {
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-permessage-deflate"
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "local_conformance",
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "rfc": "RFC 7692",
+            "vector": "websocket-permessage-deflate"
+          }
+        ]
+      }
+    },
+    "RFC 8441": {
+      "declared_evidence": {
+        "independent_certification": [
+          "websocket-http2-server-h2-client"
+        ],
+        "local_conformance": [
+          "http2-websocket-extended-connect"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "websocket-http2-server-h2-client"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 8441",
+            "vector": "http2-websocket-extended-connect"
+          }
+        ]
+      }
+    },
+    "RFC 8446": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http2-tls-server-curl-client",
+          "http2-tls-server-h2-client",
+          "http3-server-openssl-quic-handshake"
+        ],
+        "local_conformance": [
+          "tls13-package-subsystem"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http2-tls-server-curl-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-tls-server-h2-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http3-server-openssl-quic-handshake"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 8446",
+            "vector": "tls13-package-subsystem"
+          }
+        ]
+      }
+    },
+    "RFC 9000": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http3-server-aioquic-client-post-retry",
+          "http3-server-aioquic-client-post-resumption",
+          "http3-server-aioquic-client-post-zero-rtt",
+          "http3-server-aioquic-client-post-migration"
+        ],
+        "local_conformance": [
+          "quic-packet-codec"
+        ],
+        "same_stack_replay": [
+          "http3-server-public-client-post-retry",
+          "http3-server-public-client-post-resumption",
+          "http3-server-public-client-post-zero-rtt",
+          "http3-server-public-client-post-migration"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-retry"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-zero-rtt"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-migration"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9000",
+            "vector": "quic-packet-codec"
+          }
+        ],
+        "same_stack_replay": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-retry"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-zero-rtt"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-migration"
+          }
+        ]
+      }
+    },
+    "RFC 9001": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http3-server-aioquic-client-post-mtls",
+          "http3-server-aioquic-client-post-resumption",
+          "http3-server-aioquic-client-post-zero-rtt"
+        ],
+        "local_conformance": [
+          "quic-tls-initial-vectors"
+        ],
+        "same_stack_replay": [
+          "http3-server-public-client-post-mtls",
+          "http3-server-public-client-post-resumption",
+          "http3-server-public-client-post-zero-rtt"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-mtls"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-zero-rtt"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9001",
+            "vector": "quic-tls-initial-vectors"
+          }
+        ],
+        "same_stack_replay": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-mtls"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-zero-rtt"
+          }
+        ]
+      }
+    },
+    "RFC 9002": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http3-server-aioquic-client-post-retry",
+          "http3-server-aioquic-client-post-resumption",
+          "http3-server-aioquic-client-post-zero-rtt",
+          "http3-server-aioquic-client-post-migration"
+        ],
+        "local_conformance": [
+          "quic-recovery"
+        ],
+        "same_stack_replay": [
+          "http3-server-public-client-post-retry",
+          "http3-server-public-client-post-resumption",
+          "http3-server-public-client-post-zero-rtt",
+          "http3-server-public-client-post-migration"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-retry"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-zero-rtt"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-migration"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9002",
+            "vector": "quic-recovery"
+          }
+        ],
+        "same_stack_replay": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-retry"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-zero-rtt"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-migration"
+          }
+        ]
+      }
+    },
+    "RFC 9110 \u00a76.5": {
+      "declared_evidence": {
+        "local_conformance": [
+          "http-trailer-fields"
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "local_conformance",
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "rfc": "RFC 9110 \u00a76.5",
+            "vector": "http-trailer-fields"
+          }
+        ]
+      }
+    },
+    "RFC 9110 \u00a78": {
+      "declared_evidence": {
+        "local_conformance": [
+          "http-content-coding"
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "local_conformance",
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "rfc": "RFC 9110 \u00a78",
+            "vector": "http-content-coding"
+          }
+        ]
+      }
+    },
+    "RFC 9110 \u00a79.3.6": {
+      "declared_evidence": {
+        "local_conformance": [
+          "http-connect-relay"
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "local_conformance",
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "rfc": "RFC 9110 \u00a79.3.6",
+            "vector": "http-connect-relay"
+          }
+        ]
+      }
+    },
+    "RFC 9112": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http1-server-curl-client"
+        ],
+        "local_conformance": [
+          "http11-server-surface"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http1-server-curl-client"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9112",
+            "vector": "http11-server-surface"
+          }
+        ]
+      }
+    },
+    "RFC 9113": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http2-server-curl-client",
+          "http2-server-h2-client",
+          "http2-tls-server-curl-client",
+          "http2-tls-server-h2-client"
+        ],
+        "local_conformance": [
+          "http2-server-surface"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http2-server-curl-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-server-h2-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_binary",
+            "scenario_id": "http2-tls-server-curl-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http2-tls-server-h2-client"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9113",
+            "vector": "http2-server-surface"
+          }
+        ]
+      }
+    },
+    "RFC 9114": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http3-server-aioquic-client-post",
+          "http3-server-aioquic-client-post-mtls",
+          "http3-server-aioquic-client-post-retry",
+          "http3-server-aioquic-client-post-resumption",
+          "http3-server-aioquic-client-post-zero-rtt",
+          "http3-server-aioquic-client-post-migration",
+          "http3-server-aioquic-client-post-goaway-qpack"
+        ],
+        "local_conformance": [
+          "http3-server-surface"
+        ],
+        "same_stack_replay": [
+          "http3-server-public-client-post",
+          "http3-server-public-client-post-mtls",
+          "http3-server-public-client-post-retry",
+          "http3-server-public-client-post-resumption",
+          "http3-server-public-client-post-zero-rtt",
+          "http3-server-public-client-post-migration",
+          "http3-server-public-client-post-goaway-qpack"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-mtls"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-retry"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-zero-rtt"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-migration"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-goaway-qpack"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9114",
+            "vector": "http3-server-surface"
+          }
+        ],
+        "same_stack_replay": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-mtls"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-retry"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-resumption"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-zero-rtt"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-migration"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-goaway-qpack"
+          }
+        ]
+      }
+    },
+    "RFC 9204": {
+      "declared_evidence": {
+        "independent_certification": [
+          "http3-server-aioquic-client-post",
+          "http3-server-aioquic-client-post-goaway-qpack"
+        ],
+        "local_conformance": [
+          "qpack-dynamic-state"
+        ],
+        "same_stack_replay": [
+          "http3-server-public-client-post-goaway-qpack"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "http3-server-aioquic-client-post-goaway-qpack"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9204",
+            "vector": "qpack-dynamic-state"
+          }
+        ],
+        "same_stack_replay": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "http3-server-public-client-post-goaway-qpack"
+          }
+        ]
+      }
+    },
+    "RFC 9220": {
+      "declared_evidence": {
+        "independent_certification": [
+          "websocket-http3-server-aioquic-client",
+          "websocket-http3-server-aioquic-client-mtls"
+        ],
+        "local_conformance": [
+          "http3-websocket-extended-connect"
+        ],
+        "same_stack_replay": [
+          "websocket-http3-server-public-client",
+          "websocket-http3-server-public-client-mtls"
+        ]
+      },
+      "highest_observed_evidence_tier": "independent_certification",
+      "highest_required_evidence_tier": "independent_certification",
+      "resolved_evidence": {
+        "independent_certification": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "websocket-http3-server-aioquic-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "third_party_library",
+            "scenario_id": "websocket-http3-server-aioquic-client-mtls"
+          }
+        ],
+        "local_conformance": [
+          {
+            "rfc": "RFC 9220",
+            "vector": "http3-websocket-extended-connect"
+          }
+        ],
+        "same_stack_replay": [
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "websocket-http3-server-public-client"
+          },
+          {
+            "artifact_status": "passed",
+            "enabled": true,
+            "peer_kind": "same_stack_fixture",
+            "scenario_id": "websocket-http3-server-public-client-mtls"
+          }
+        ]
+      }
+    }
+  }
+}

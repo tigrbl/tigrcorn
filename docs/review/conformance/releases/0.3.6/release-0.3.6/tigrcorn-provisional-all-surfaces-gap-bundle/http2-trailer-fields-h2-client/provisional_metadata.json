@@ -1,0 +1,18 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/http2-trailer-fields-h2-client",
+  "bundle_kind": "provisional_local_conformance_substitution",
+  "carrier": "http2",
+  "feature": "trailers",
+  "gap_note": "Independent trailer-field evidence is still missing for the HTTP/2 carrier.",
+  "generated_at": "2026-03-16T22:47:44.633953+00:00",
+  "mapped_strict_profile_scenario": "http2-trailer-fields-h2-client",
+  "note": "This directory is an offline provisional substitution generated from the local conformance corpus. It is useful for stricter-profile review and bundle-shape planning, but it is not independent-certification evidence and must not be used to satisfy release gates.",
+  "peer": "python-h2",
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 9110 \u00a76.5"
+  ],
+  "source_fixture": "tests/test_trailers_rfc9110.py",
+  "source_local_conformance_vector": "http-trailer-fields",
+  "strict_profile_only": true
+}

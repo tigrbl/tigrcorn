@@ -1,0 +1,15 @@
+{
+  "client_auth_present": false,
+  "client_goaway_sent": false,
+  "early_data_accepted": true,
+  "early_data_requested": true,
+  "implementation": "tigrcorn-public-client",
+  "migration_used": false,
+  "protocol": "h3",
+  "qpack_decoder_stream_seen": false,
+  "qpack_encoder_stream_seen": false,
+  "resumption_used": true,
+  "retry_observed": false,
+  "server_name": "localhost",
+  "tls_version": "TLSv1.3"
+}

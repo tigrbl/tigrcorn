@@ -1,0 +1,23 @@
+{
+  "http3-server-surface": {
+    "description": "HTTP/3 control streams, request streams, settings handling, and server-side response behavior.",
+    "fixture": "tests/test_http3_rfc9114.py",
+    "name": "http3-server-surface",
+    "protocol": "http3",
+    "rfc": "9114"
+  },
+  "quic-packet-codec": {
+    "description": "Long-header, short-header, Retry, Version Negotiation, transport frames, and stateless reset vectors.",
+    "fixture": "tests/test_quic_packets_rfc9000.py",
+    "name": "quic-packet-codec",
+    "protocol": "quic-transport",
+    "rfc": "9000"
+  },
+  "quic-recovery": {
+    "description": "RTT tracking, ACK processing, PTO, congestion, and packet-threshold/time-threshold loss behavior.",
+    "fixture": "tests/test_quic_recovery_rfc9002.py",
+    "name": "quic-recovery",
+    "protocol": "quic-recovery",
+    "rfc": "9002"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "quic": {
+    "client_goaway_sent": false,
+    "migration": {
+      "connection_id_rotated": false,
+      "from": [
+        "127.0.0.1",
+        47062
+      ],
+      "ping_requested": false,
+      "strategy": null,
+      "used": false
+    },
+    "new_token_received": false,
+    "qpack": {
+      "decoder_stream_seen": false,
+      "enabled": false,
+      "encoder_stream_seen": false,
+      "encoder_stream_seen_before_main_request": false,
+      "warmup_rounds": []
+    },
+    "resumption_attempted": true,
+    "resumption_hint_available": true,
+    "resumption_seeded": true,
+    "retry_observed": false,
+    "session_ticket_received": true,
+    "zero_rtt_attempted": true
+  },
+  "request": {
+    "authority": "localhost",
+    "body": "hello-http3-zero-rtt",
+    "method": "POST",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-http3-zero-rtt",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200
+  }
+}

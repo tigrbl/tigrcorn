@@ -1,0 +1,14 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/websocket-http3-server-aioquic-client",
+  "bundle_kind": "provisional_same_stack_substitution",
+  "feature": "websocket-rfc9220-echo",
+  "generated_at": "2026-03-16T20:56:51.511162+00:00",
+  "mapped_independent_scenario": "websocket-http3-server-aioquic-client",
+  "note": "This directory is an offline provisional substitution generated from same-stack replay artifacts. It is useful for bundle-shape review and documentation, but it is not independent-certification evidence and must not be used to satisfy release gates.",
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 9220",
+    "RFC 9114"
+  ],
+  "source_same_stack_scenario": "websocket-http3-server-public-client"
+}

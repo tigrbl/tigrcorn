@@ -1,0 +1,42 @@
+import asyncio
+import os
+import tempfile
+import unittest
+
+from tigrcorn.listeners.inproc import InProcListener
+from tigrcorn.listeners.pipe import PipeListener
+
+
+class PipeAndInProcTests(unittest.IsolatedAsyncioTestCase):
+    async def test_inproc_listener_dispatch(self):
+        seen = []
+
+        async def handler(data):
+            seen.append(data)
+
+        listener = InProcListener()
+        await listener.start(handler)
+        await listener.dispatch(b'payload')
+        await listener.close()
+        self.assertEqual(seen, [b'payload'])
+
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'named pipes unavailable')
+    async def test_pipe_listener_start_close(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, 'sock.pipe')
+            listener = PipeListener(path)
+            events = []
+
+            async def handler(connection, data):
+                events.append((connection.path, data))
+
+            await listener.start(handler)
+            self.assertTrue(os.path.exists(path))
+            fd = os.open(path, os.O_WRONLY | os.O_NONBLOCK)
+            try:
+                os.write(fd, b'payload')
+                await asyncio.sleep(0.05)
+            finally:
+                os.close(fd)
+            await listener.close()
+            self.assertEqual(events, [(path, b'payload')])

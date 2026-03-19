@@ -1,0 +1,212 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration",
+  "artifacts": {
+    "packet_trace": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration/packet_trace.jsonl",
+      "sha256": "ad2c25c48fc88c1ebd0c60bb5c1745b71cb2b43405536647cfcef54603447362",
+      "size": 26120
+    },
+    "peer_negotiation": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration/peer_negotiation.json",
+      "sha256": "5883e8df3999f3aa3d07778bd88fb82792b08f5ffad753a7775f96a2d72676c8",
+      "size": 445
+    },
+    "peer_transcript": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration/peer_transcript.json",
+      "sha256": "baf7a6fc436d835ddf7b1435cdedd0748916abd1dcd3dcc07ba920809dfbcd3b",
+      "size": 782
+    },
+    "qlog": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration/qlog.json",
+      "sha256": "6fe3e02d6ead947b6c7bf00a4ef80ce84e60fe35bac3e17c575ea09da238e61c",
+      "size": 21945
+    },
+    "sut_negotiation": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration/sut_negotiation.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_transcript": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/http3-flow-control-public-client-post-migration/sut_transcript.json",
+      "sha256": null,
+      "size": 0
+    }
+  },
+  "assertions_failed": [],
+  "commit_hash": "release-0.3.6-offline-provisional-flow-control-gap-bundle",
+  "consolidated_from": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration",
+  "error": null,
+  "flow_control_review_only": true,
+  "linked_local_vectors": [
+    "quic-packet-codec",
+    "quic-recovery",
+    "http3-server-surface"
+  ],
+  "negotiation": {
+    "peer": {
+      "client_auth_present": false,
+      "client_control_stream_id": 2,
+      "client_goaway_sent": false,
+      "early_data_accepted": false,
+      "early_data_requested": false,
+      "implementation": "tigrcorn-public-client",
+      "migration_used": true,
+      "protocol": "h3",
+      "qpack_decoder_stream_seen": false,
+      "qpack_encoder_stream_seen": false,
+      "resumption_used": false,
+      "retry_observed": false,
+      "server_name": "localhost",
+      "tls_version": "TLSv1.3"
+    },
+    "sut": null
+  },
+  "passed": true,
+  "peer": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "tigrcorn-public-http3-client-migration",
+    "role": "client",
+    "stderr_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/peer_stderr.log",
+    "stderr_text": "",
+    "stdout_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/peer_stdout.log",
+    "stdout_text": "{\"negotiation\": {\"client_auth_present\": false, \"client_control_stream_id\": 2, \"client_goaway_sent\": false, \"early_data_accepted\": false, \"early_data_requested\": false, \"implementation\": \"tigrcorn-public-client\", \"migration_used\": true, \"protocol\": \"h3\", \"qpack_decoder_stream_seen\": false, \"qpack_encoder_stream_seen\": false, \"resumption_used\": false, \"retry_observed\": false, \"server_name\": \"localhost\", \"tls_version\": \"TLSv1.3\"}, \"transcript\": {\"quic\": {\"client_goaway_sent\": false, \"migration\": {\"from\": [\"127.0.0.1\", 57455], \"to\": [\"127.0.0.1\", 50814], \"used\": true}, \"resumption_attempted\": false, \"resumption_seeded\": true, \"retry_observed\": false, \"session_ticket_received\": true, \"zero_rtt_attempted\": false}, \"request\": {\"authority\": \"localhost\", \"body\": \"hello-http3-migration\", \"method\": \"POST\", \"path\": \"/interop\"}, \"response\": {\"body\": \"echo:hello-http3-migration\", \"headers\": [[\":status\", \"200\"], [\"content-type\", \"text/plain\"], [\"server\", \"tigrcorn\"]], \"status\": 200}}}\n",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_http3_client",
+        "--servername",
+        "localhost",
+        "--cacert",
+        "tests/fixtures_certs/interop-localhost-cert.pem"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_http3_client",
+        "--version"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "tigrcorn-public-http3-client 0.3.6"
+    }
+  },
+  "provisional_non_certifying_substitution": true,
+  "release_gate_eligible": false,
+  "scenario_id": "http3-flow-control-public-client-post-migration",
+  "source_same_stack_scenario": "http3-server-public-client-post-migration",
+  "substitution_note": "Copied from same-stack replay evidence because the offline environment did not include broader independent QUIC / HTTP/3 flow-control artifacts. This bundle documents preserved review material only.",
+  "sut": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "tigrcorn-http3-migration",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/sut_stderr.log",
+    "stderr_text": "2026-03-15 02:12:37,051 INFO tigrcorn listening on udp://127.0.0.1:39294\n",
+    "stdout_path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/sut_stdout.log",
+    "stdout_text": "",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "examples.echo_http.app:app",
+        "--transport",
+        "udp",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "39294",
+        "--protocol",
+        "http3",
+        "--http",
+        "3",
+        "--ssl-certfile",
+        "tests/fixtures_certs/interop-localhost-cert.pem",
+        "--ssl-keyfile",
+        "tests/fixtures_certs/interop-localhost-key.pem",
+        "--no-access-log",
+        "--lifespan",
+        "off",
+        "--disable-websocket"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "--help"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "usage: tigrcorn [-h] [--transport {tcp,udp,unix,pipe}] [--host HOST]\n                [--port PORT] [--uds UDS] [--lifespan {auto,on,off}]\n                [--log-level LOG_LEVEL] [--no-access-log] [--factory]\n                [--ssl-certfile SSL_CERTFILE] [--ssl-keyfile SSL_KEYFILE]\n                [--ssl-ca-certs SSL_CA_CERTS] [--ssl-require-client-cert]\n                [--http {1.1,2,3}]\n                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]\n                [--disable-websocket] [--disable-h2c]\n                [--max-body-size MAX_BODY_SIZE] [--quic-secret QUIC_SECRET]\n                [--quic-require-retry] [--pipe-mode {rawframed,stream}]\n                app\n\nASGI3-compatible transport server\n\npositional arguments:\n  app                   Application import string in module:attr form\n\noptions:\n  -h, --help            show this help message and exit\n  --transport {tcp,udp,unix,pipe}\n  --host HOST           Bind host for TCP/UDP listeners\n  --port PORT           Bind port for TCP/UDP listeners\n  --uds UDS             Bind Unix domain socket or pipe path instead of\n                        TCP/UDP\n  --lifespan {auto,on,off}\n  --log-level LOG_LEVEL\n  --no-access-log\n  --factory             Treat APP as an application factory\n  --ssl-certfile SSL_CERTFILE\n                        Certificate for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-keyfile SSL_KEYFILE\n                        Private key for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-ca-certs SSL_CA_CERTS\n                        Trusted CA bundle for TLS or QUIC-TLS client\n                        certificate verification\n  --ssl-require-client-cert\n                        Require peer client certificates for TLS or QUIC-TLS\n                        listeners\n  --http {1.1,2,3}      Enable an HTTP version\n  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}\n                        Enable a listener protocol\n  --disable-websocket\n  --disable-h2c\n  --max-body-size MAX_BODY_SIZE\n  --quic-secret QUIC_SECRET\n                        Shared secret for local QUIC experiments when not\n                        using QUIC-TLS certificates\n  --quic-require-retry  Require a QUIC Retry before completing the initial\n                        handshake\n  --pipe-mode {rawframed,stream}"
+    }
+  },
+  "transcript": {
+    "peer": {
+      "quic": {
+        "client_goaway_sent": false,
+        "migration": {
+          "from": [
+            "127.0.0.1",
+            57455
+          ],
+          "to": [
+            "127.0.0.1",
+            50814
+          ],
+          "used": true
+        },
+        "resumption_attempted": false,
+        "resumption_seeded": true,
+        "retry_observed": false,
+        "session_ticket_received": true,
+        "zero_rtt_attempted": false
+      },
+      "request": {
+        "authority": "localhost",
+        "body": "hello-http3-migration",
+        "method": "POST",
+        "path": "/interop"
+      },
+      "response": {
+        "body": "echo:hello-http3-migration",
+        "headers": [
+          [
+            ":status",
+            "200"
+          ],
+          [
+            "content-type",
+            "text/plain"
+          ],
+          [
+            "server",
+            "tigrcorn"
+          ]
+        ],
+        "status": 200
+      }
+    },
+    "sut": null
+  },
+  "vector_fixtures": {
+    "http3-server-surface": "tests/test_http3_rfc9114.py",
+    "quic-packet-codec": "tests/test_quic_packets_rfc9000.py",
+    "quic-recovery": "tests/test_quic_recovery_rfc9002.py"
+  }
+}

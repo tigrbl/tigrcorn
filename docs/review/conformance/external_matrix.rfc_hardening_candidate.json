@@ -1,0 +1,214 @@
+{
+  "name": "tigrcorn-rfc-hardening-candidate-matrix",
+  "metadata": {
+    "description": "RFC hardening candidate matrix adding HTTPS+ALPN HTTP/2 and WebSocket over HTTP/2 evidence",
+    "independent_peers": [
+      "curl",
+      "python-h2"
+    ],
+    "evidence_tier": "independent_certification"
+  },
+  "scenarios": [
+    {
+      "id": "http2-tls-server-curl-client",
+      "protocol": "http2",
+      "role": "server",
+      "feature": "https-post-echo",
+      "peer": "curl",
+      "metadata": {
+        "rfc": [
+          "RFC 9113",
+          "RFC 8446"
+        ],
+        "peer_implementation": "curl+nghttp2",
+        "peer_independence": "third-party"
+      },
+      "sut": {
+        "name": "tigrcorn-http2-tls",
+        "adapter": "subprocess",
+        "role": "server",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--http",
+          "2",
+          "--protocol",
+          "http2",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--disable-websocket",
+          "--no-access-log",
+          "--lifespan",
+          "off"
+        ],
+        "ready_pattern": "listening on",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ],
+        "provenance_kind": "package_owned",
+        "implementation_source": "tigrcorn",
+        "implementation_identity": "tigrcorn-http2-tls",
+        "implementation_version": "0.3.6"
+      },
+      "peer_process": {
+        "name": "curl-http2-tls-client",
+        "adapter": "subprocess",
+        "role": "client",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_pkg.external_curl_client",
+          "--http2",
+          "--https",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http2-tls"
+        },
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_pkg.external_curl_client",
+          "--version"
+        ],
+        "provenance_kind": "third_party_binary",
+        "implementation_source": "curl project",
+        "implementation_identity": "curl"
+      },
+      "assertions": [
+        {
+          "path": "peer.exit_code",
+          "equals": 0
+        },
+        {
+          "path": "transcript.peer.response.status",
+          "equals": 200
+        },
+        {
+          "path": "transcript.peer.response.body",
+          "equals": "echo:hello-http2-tls"
+        },
+        {
+          "path": "negotiation.peer.protocol",
+          "equals": "h2"
+        },
+        {
+          "path": "negotiation.peer.scheme",
+          "equals": "https"
+        },
+        {
+          "path": "artifacts.packet_trace.exists",
+          "equals": true
+        }
+      ],
+      "evidence_tier": "independent_certification"
+    },
+    {
+      "id": "websocket-http2-server-h2-client",
+      "protocol": "http2",
+      "role": "server",
+      "feature": "websocket-extended-connect",
+      "peer": "python-h2",
+      "metadata": {
+        "rfc": [
+          "RFC 8441",
+          "RFC 6455"
+        ],
+        "peer_implementation": "python-h2",
+        "peer_independence": "third-party"
+      },
+      "sut": {
+        "name": "tigrcorn-http2-websocket",
+        "adapter": "subprocess",
+        "role": "server",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tigrcorn",
+          "examples.websocket_echo.app:app",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--http",
+          "2",
+          "--protocol",
+          "http2",
+          "--no-access-log",
+          "--lifespan",
+          "off"
+        ],
+        "ready_pattern": "listening on",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ],
+        "provenance_kind": "package_owned",
+        "implementation_source": "tigrcorn",
+        "implementation_identity": "tigrcorn-http2-websocket",
+        "implementation_version": "0.3.6"
+      },
+      "peer_process": {
+        "name": "python-h2-websocket-client",
+        "adapter": "subprocess",
+        "role": "client",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_pkg.external_h2_websocket_client"
+        ],
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-h2-ws-external"
+        },
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_pkg.external_h2_websocket_client",
+          "--version"
+        ],
+        "provenance_kind": "third_party_library",
+        "implementation_source": "python-hyper/h2",
+        "implementation_identity": "python-h2"
+      },
+      "assertions": [
+        {
+          "path": "peer.exit_code",
+          "equals": 0
+        },
+        {
+          "path": "transcript.peer.response.text",
+          "equals": "hello-h2-ws-external"
+        },
+        {
+          "path": "transcript.peer.response.close_code",
+          "equals": 1000
+        },
+        {
+          "path": "negotiation.peer.protocol",
+          "equals": "h2c"
+        },
+        {
+          "path": "artifacts.packet_trace.exists",
+          "equals": true
+        }
+      ],
+      "evidence_tier": "independent_certification"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "alpn": "h3",
+  "cipher": "TLS_AES_128_GCM_SHA256",
+  "implementation": "openssl",
+  "peer_signature_type": "ed25519",
+  "peer_temp_key": "X25519, 253 bits",
+  "protocol": "QUICv1",
+  "tls_version": "TLSv1.3",
+  "verification": "OK",
+  "verify_return_code": 0
+}

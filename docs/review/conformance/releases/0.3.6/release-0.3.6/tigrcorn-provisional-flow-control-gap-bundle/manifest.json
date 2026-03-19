@@ -1,0 +1,41 @@
+{
+  "bundle_kind": "provisional_same_stack_flow_control_review",
+  "commit_hash": "release-0.3.6-offline-provisional-flow-control-gap-bundle",
+  "dimensions": {
+    "feature": [
+      "http3-flow-control",
+      "http3-flow-control-goaway-qpack",
+      "http3-flow-control-migration",
+      "http3-flow-control-retry",
+      "http3-flow-control-zero-rtt"
+    ],
+    "peer": [
+      "tigrcorn-public-client"
+    ],
+    "protocol": [
+      "http3"
+    ],
+    "release_gate_eligible": [
+      false
+    ],
+    "role": [
+      "server"
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This bundle was generated offline from same-stack replay artifacts to preserve QUIC / HTTP/3 flow-control review material. It is explicitly non-certifying and exists only until broader independent artifacts can be preserved."
+    },
+    "tigrcorn": {
+      "bundle_scope": "offline-provisional-flow-control-gap-bundle",
+      "commit_hash": "release-0.3.6-offline-provisional-flow-control-gap-bundle",
+      "version": "0.3.6"
+    }
+  },
+  "generated_at": "2026-03-17T00:03:44.095827+00:00",
+  "matrix_name": "tigrcorn-provisional-flow-control-gap-bundle",
+  "release_gate_eligible": false,
+  "same_stack_root_sha256": "21c1d9a46f41031c95261ef0e9f24f6248a670fb9199a1193e9eaf9685340675",
+  "source_corpus": "docs/review/conformance/corpus.json",
+  "source_same_stack_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix"
+}

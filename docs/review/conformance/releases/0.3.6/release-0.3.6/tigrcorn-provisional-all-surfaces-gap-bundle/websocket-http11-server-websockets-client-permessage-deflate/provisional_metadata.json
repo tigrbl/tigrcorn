@@ -1,0 +1,19 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle/websocket-http11-server-websockets-client-permessage-deflate",
+  "bundle_kind": "provisional_local_conformance_substitution",
+  "carrier": "http1.1",
+  "feature": "permessage-deflate",
+  "gap_note": "Third-party permessage-deflate coverage is still missing for the HTTP/1.1 WebSocket carrier.",
+  "generated_at": "2026-03-16T22:47:44.627827+00:00",
+  "mapped_strict_profile_scenario": "websocket-http11-server-websockets-client-permessage-deflate",
+  "note": "This directory is an offline provisional substitution generated from the local conformance corpus. It is useful for stricter-profile review and bundle-shape planning, but it is not independent-certification evidence and must not be used to satisfy release gates.",
+  "peer": "websockets",
+  "release_gate_eligible": false,
+  "rfcs": [
+    "RFC 7692",
+    "RFC 6455"
+  ],
+  "source_fixture": "tests/test_websocket_rfc7692.py",
+  "source_local_conformance_vector": "websocket-permessage-deflate",
+  "strict_profile_only": true
+}

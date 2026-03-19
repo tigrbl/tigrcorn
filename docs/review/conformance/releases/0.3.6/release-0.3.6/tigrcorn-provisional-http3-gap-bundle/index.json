@@ -1,0 +1,76 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle",
+  "commit_hash": "release-0.3.6-offline-provisional-gap-bundle",
+  "failed": 0,
+  "generated_at": "2026-03-16T20:56:51.532533+00:00",
+  "matrix_name": "tigrcorn-provisional-http3-gap-bundle",
+  "passed": 9,
+  "release_gate_eligible": false,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post",
+      "id": "http3-server-aioquic-client-post",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-mtls",
+      "id": "http3-server-aioquic-client-post-mtls",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-mtls"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-retry",
+      "id": "http3-server-aioquic-client-post-retry",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-retry"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-resumption",
+      "id": "http3-server-aioquic-client-post-resumption",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-resumption"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-zero-rtt",
+      "id": "http3-server-aioquic-client-post-zero-rtt",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-zero-rtt"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-migration",
+      "id": "http3-server-aioquic-client-post-migration",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-migration"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/http3-server-aioquic-client-post-goaway-qpack",
+      "id": "http3-server-aioquic-client-post-goaway-qpack",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "http3-server-public-client-post-goaway-qpack"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/websocket-http3-server-aioquic-client",
+      "id": "websocket-http3-server-aioquic-client",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "websocket-http3-server-public-client"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle/websocket-http3-server-aioquic-client-mtls",
+      "id": "websocket-http3-server-aioquic-client-mtls",
+      "passed": true,
+      "release_gate_eligible": false,
+      "source_same_stack_scenario": "websocket-http3-server-public-client-mtls"
+    }
+  ],
+  "skipped": 0,
+  "total": 9
+}
