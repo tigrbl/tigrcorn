@@ -15,6 +15,9 @@ jobs:
       UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: Install uv
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
