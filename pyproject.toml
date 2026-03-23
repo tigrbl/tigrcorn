@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-  {name = "OpenAI", email = "noreply@example.com"}
+  {name = "Jacob Stewart", email = "jacob@swarmauri.com"}
 ]
 keywords = ["asgi", "server", "http", "websocket", "http2", "http3", "quic", "uvicorn", "hypercorn"]
 classifiers = [
