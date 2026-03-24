@@ -1,11 +1,11 @@
 {
   "claim": "package-wide RFC coverage across all advertised surfaces, with the required evidence tier declared per RFC in this boundary",
   "canonical_doc": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
-  "canonical_release_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6",
+  "canonical_release_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8",
   "artifact_bundles": {
-    "independent_certification": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
-    "same_stack_replay": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix",
-    "mixed": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix"
+    "independent_certification": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+    "same_stack_replay": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
+    "mixed": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix"
   },
   "evidence_tiers": [
     {

@@ -1,0 +1,235 @@
+{
+  "checkpoint": "rfc_applicability_and_competitor_status",
+  "reviewed_at": "2026-03-20",
+  "summary": {
+    "current_core_applicable_rfcs": [
+      "RFC 9112",
+      "RFC 9113",
+      "RFC 9114",
+      "RFC 9110 \u00a79.3.6",
+      "RFC 9110 \u00a76.5",
+      "RFC 9110 \u00a78"
+    ],
+    "recommended_next_rfcs": [
+      "RFC 7232",
+      "RFC 9530"
+    ],
+    "conditional_rfcs_if_boundary_expands": [
+      "RFC 9111",
+      "RFC 9421"
+    ],
+    "non_core_product_layer_rfcs": [
+      "RFC 7515",
+      "RFC 7516",
+      "RFC 7519",
+      "RFC 8152",
+      "RFC 9052"
+    ],
+    "competitor_review_scope": [
+      "uvicorn",
+      "hypercorn",
+      "daphne",
+      "granian"
+    ]
+  },
+  "rfc_applicability": {
+    "rfc9112": {
+      "status": "core_current_boundary",
+      "current_support": "targeted_and_supported",
+      "recommended_action": "retain_release_gated"
+    },
+    "rfc9113": {
+      "status": "core_current_boundary",
+      "current_support": "targeted_and_supported",
+      "recommended_action": "retain_release_gated"
+    },
+    "rfc9114": {
+      "status": "core_current_boundary",
+      "current_support": "targeted_and_supported",
+      "recommended_action": "retain_release_gated"
+    },
+    "rfc9110": {
+      "status": "core_current_boundary_partial",
+      "current_support": "targeted_and_supported_in_part",
+      "covered_sections": [
+        "\u00a79.3.6",
+        "\u00a76.5",
+        "\u00a78"
+      ],
+      "recommended_action": "finish_strict_evidence_before_scope_expansion"
+    },
+    "rfc7232": {
+      "status": "adjacent_next_recommended",
+      "current_support": "not_supported",
+      "recommended_action": "implement_representation_validators_and_conditional_requests"
+    },
+    "rfc9530": {
+      "status": "adjacent_next_recommended",
+      "current_support": "not_supported",
+      "recommended_action": "implement_buffered_response_digest_path_after_validator_layer_exists"
+    },
+    "rfc9111": {
+      "status": "conditional_boundary_expansion",
+      "current_support": "not_supported",
+      "recommended_action": "defer_unless_cache_or_static_asset_boundary_is_adopted"
+    },
+    "rfc9421": {
+      "status": "conditional_boundary_expansion",
+      "current_support": "not_supported",
+      "recommended_action": "defer_unless_gateway_or_edge_signing_boundary_is_adopted"
+    },
+    "rfc7515": {
+      "status": "non_core_product_layer",
+      "current_support": "not_supported",
+      "recommended_action": "keep_outside_transport_boundary"
+    },
+    "rfc7516": {
+      "status": "non_core_product_layer",
+      "current_support": "not_supported",
+      "recommended_action": "keep_outside_transport_boundary"
+    },
+    "rfc7519": {
+      "status": "non_core_product_layer",
+      "current_support": "not_supported",
+      "recommended_action": "keep_outside_transport_boundary"
+    },
+    "rfc8152": {
+      "status": "non_core_product_layer",
+      "current_support": "not_supported",
+      "recommended_action": "keep_outside_transport_boundary"
+    },
+    "rfc9052": {
+      "status": "non_core_product_layer",
+      "current_support": "not_supported",
+      "recommended_action": "keep_outside_transport_boundary"
+    }
+  },
+  "recommended_roadmap": [
+    {
+      "order": 1,
+      "target": "finish_existing_boundary_strict_blockers",
+      "rfcs": [
+        "RFC 7692",
+        "RFC 9110 \u00a79.3.6",
+        "RFC 9110 \u00a76.5",
+        "RFC 9110 \u00a78",
+        "RFC 6960"
+      ],
+      "reason": "These are already inside the declared package boundary and should be fully evidence-backed before new breadth is added."
+    },
+    {
+      "order": 2,
+      "target": "add_conditional_validators",
+      "rfcs": [
+        "RFC 7232"
+      ],
+      "features": [
+        "ETag generation",
+        "If-None-Match evaluation",
+        "304 decision engine"
+      ],
+      "reason": "This is the highest-value next HTTP semantic family for an origin-style ASGI server."
+    },
+    {
+      "order": 3,
+      "target": "add_digest_fields",
+      "rfcs": [
+        "RFC 9530"
+      ],
+      "features": [
+        "Content-Digest",
+        "Repr-Digest"
+      ],
+      "reason": "Digest fields become a natural follow-on once representation metadata exists."
+    },
+    {
+      "order": 4,
+      "target": "cache_semantics_if_product_expands",
+      "rfcs": [
+        "RFC 9111"
+      ],
+      "reason": "Caching is a larger boundary decision and should remain optional unless tigrcorn becomes a cache/static-asset or intermediary product."
+    },
+    {
+      "order": 5,
+      "target": "message_signatures_if_gateway_role_emerges",
+      "rfcs": [
+        "RFC 9421"
+      ],
+      "reason": "HTTP Message Signatures are best treated as gateway/edge work rather than baseline transport-server scope."
+    },
+    {
+      "order": 6,
+      "target": "keep_jose_cose_outside_transport_boundary",
+      "rfcs": [
+        "RFC 7515",
+        "RFC 7516",
+        "RFC 7519",
+        "RFC 8152",
+        "RFC 9052"
+      ],
+      "reason": "These RFCs belong to auth/message-object product layers, not the core transport boundary."
+    }
+  ],
+  "competitor_matrix": {
+    "evidence_policy": "Statuses describe what the reviewed current official docs or READMEs explicitly present as first-class supported surfaces on 2026-03-20. no_official_support_claim_found does not prove impossibility; it means the reviewed official sources did not present the feature as a first-class product surface.",
+    "products": {
+      "tigrcorn": {
+        "http1": "yes",
+        "http2": "yes",
+        "http3_quic": "yes",
+        "websockets": "yes",
+        "websocket_permessage_deflate_policy": "yes",
+        "tls": "yes",
+        "mtls": "yes",
+        "connect_policy_surface": "yes",
+        "trailer_policy_surface": "yes",
+        "content_coding_policy_surface": "yes",
+        "rfc7232": "no",
+        "rfc9530": "no",
+        "rfc9421": "no"
+      },
+      "uvicorn": {
+        "http1": "documented_yes",
+        "http2": "no_official_support_claim_found",
+        "http3_quic": "no_official_support_claim_found",
+        "websockets": "documented_yes",
+        "websocket_permessage_deflate_policy": "documented_yes",
+        "tls": "documented_yes",
+        "mtls": "documented_yes_via_ssl_context_options"
+      },
+      "hypercorn": {
+        "http1": "documented_yes",
+        "http2": "documented_yes",
+        "http3_quic": "documented_optional_yes",
+        "websockets": "documented_yes",
+        "websocket_permessage_deflate_policy": "not_first_class_documented",
+        "tls": "documented_yes",
+        "mtls": "documented_yes_via_ca_certs_and_verify_mode",
+        "quic_bind": "documented_yes",
+        "websocket_ping_interval": "documented_yes",
+        "alpn_policy_control": "documented_yes"
+      },
+      "daphne": {
+        "http1": "documented_yes",
+        "http2": "documented_yes_with_tls_and_twisted_extras",
+        "http3_quic": "no_official_support_claim_found",
+        "websockets": "documented_yes",
+        "websocket_permessage_deflate_policy": "not_first_class_documented",
+        "tls": "documented_yes_via_twisted_endpoint_syntax",
+        "mtls": "not_first_class_documented"
+      },
+      "granian": {
+        "http1": "documented_yes",
+        "http2": "documented_yes",
+        "http3_quic": "future_only_not_current",
+        "websockets": "documented_yes",
+        "websocket_enable_disable": "documented_yes",
+        "tls": "documented_yes",
+        "mtls": "documented_yes",
+        "backlog": "documented_yes",
+        "concurrency_backpressure": "documented_yes"
+      }
+    }
+  }
+}

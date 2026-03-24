@@ -1,0 +1,8 @@
+{
+  "scenario_id": "http2-connect-policy-deny",
+  "passed": true,
+  "preserved_via": "local_unit_test",
+  "source_tests": [
+    "tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream"
+  ]
+}

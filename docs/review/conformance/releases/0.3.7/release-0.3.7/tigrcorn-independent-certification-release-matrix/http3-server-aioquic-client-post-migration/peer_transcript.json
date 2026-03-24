@@ -1,0 +1,57 @@
+{
+  "quic": {
+    "client_goaway_sent": false,
+    "migration": {
+      "connection_id_rotated": true,
+      "from": [
+        "127.0.0.1",
+        34608
+      ],
+      "ping_requested": true,
+      "strategy": "udp-rebind-and-cid-rotation",
+      "to": [
+        "127.0.0.1",
+        57578
+      ],
+      "used": true
+    },
+    "new_token_received": false,
+    "qpack": {
+      "decoder_stream_seen": true,
+      "enabled": false,
+      "encoder_stream_seen": true,
+      "encoder_stream_seen_before_main_request": false,
+      "warmup_rounds": []
+    },
+    "resumption_attempted": false,
+    "resumption_hint_available": false,
+    "resumption_seeded": true,
+    "retry_observed": false,
+    "session_ticket_received": true,
+    "zero_rtt_attempted": false
+  },
+  "request": {
+    "authority": "localhost",
+    "body": "hello-http3-migration",
+    "method": "POST",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-http3-migration",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200
+  }
+}

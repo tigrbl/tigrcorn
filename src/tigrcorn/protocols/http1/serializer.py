@@ -115,5 +115,8 @@ def serialize_http11_response_chunk(chunk: bytes) -> bytes:
 
 
 
-def finalize_chunked_body() -> bytes:
-    return b"0\r\n\r\n"
+def finalize_chunked_body(trailers: list[tuple[bytes, bytes]] | None = None) -> bytes:
+    if not trailers:
+        return b"0\r\n\r\n"
+    lines = [b"0"] + [bytes(name) + b": " + bytes(value) for name, value in trailers]
+    return b"\r\n".join(lines) + b"\r\n\r\n"

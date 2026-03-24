@@ -1,0 +1,143 @@
+{
+  "bundle_kind": "independent_certification",
+  "commit_hash": "release-0.3.8",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "evidence_tier": [
+      "independent_certification"
+    ],
+    "feature": [
+      "connect-relay",
+      "content-coding",
+      "https-post-echo",
+      "ocsp-revocation-validation",
+      "permessage-deflate",
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "quic-tls-handshake",
+      "text-echo",
+      "trailers",
+      "websocket-extended-connect",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "goaway": [
+      false,
+      true
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false,
+      true
+    ],
+    "peer": [
+      "aioquic",
+      "curl",
+      "openssl",
+      "python-h2",
+      "websockets"
+    ],
+    "protocol": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket"
+    ],
+    "qpack_blocking": [
+      false,
+      true
+    ],
+    "resumption": [
+      false,
+      true
+    ],
+    "retry": [
+      false,
+      true
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false,
+      true
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This canonical 0.3.8 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Phase 9 closure artifacts while keeping the underlying packet traces and peer transcripts intact."
+    },
+    "tigrcorn": {
+      "bundle_scope": "curated-preserved-artifacts",
+      "commit_hash": "release-0.3.8",
+      "version": "0.3.8"
+    }
+  },
+  "generated_at": "2026-03-24T07:33:47.023455+00:00",
+  "matrix_name": "tigrcorn-independent-certification-release-matrix",
+  "matrix_sha256": "ba1639dc7dbf190ff671c6fc2f8a20de96eb55f19316aa12f73a4598b252b7d8",
+  "source_bundles": [
+    "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix",
+    "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix",
+    "docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/tigrcorn-rfc-hardening-candidate-matrix",
+    ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+  ],
+  "artifact_schema_version": 1,
+  "required_bundle_files": [
+    "manifest.json",
+    "summary.json",
+    "index.json"
+  ],
+  "required_scenario_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "wrapper_families": {
+    "aioquic": [
+      "aioquic.http3_client",
+      "aioquic.http3_websocket_client"
+    ],
+    "curl": [
+      "curl.http1_client",
+      "curl.http2_client"
+    ],
+    "h2": [
+      "h2.http2_client",
+      "h2.http2_websocket_client"
+    ],
+    "openssl": [
+      "openssl.quic_client",
+      "openssl.tls_client"
+    ],
+    "websockets": [
+      "websockets.http11_client"
+    ]
+  },
+  "notes": [
+    "Phase 9C overlays fresh RFC 7692 independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "Phase 9D1 overlays fresh CONNECT relay independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "Phase 9D2 overlays fresh trailer-field independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "Phase 9D3 overlays fresh content-coding independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "Phase 9E overlays a fresh OpenSSL OCSP/mTLS independent-artifact run into the 0.3.8 working release root.",
+    "Phase 9C overlays a passing RFC 7692 HTTP/3 aioquic permessage-deflate artifact into the 0.3.8 working release root while preserving the existing HTTP/1.1 and HTTP/2 passing artifacts."
+  ],
+  "canonical_release_promoted": true
+}

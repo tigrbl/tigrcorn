@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "tools/run_perf_matrix.py"
+  ],
+  "deployment_profile": "http1_baseline",
+  "driver": "logging_on",
+  "profile_id": "logging_on"
+}

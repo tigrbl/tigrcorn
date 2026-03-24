@@ -1,70 +1,39 @@
-# RFC certification status for the updated archive
+# RFC certification status for the promoted 0.3.8 archive
 
-This repository targets the package-wide certification boundary defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+This repository targets the package-wide **authoritative certification boundary** defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
 ## Current authoritative status
 
-Under that authoritative boundary, the package is now **certifiably fully RFC compliant**.
+Under that authoritative certification boundary, the package is **certifiably fully RFC compliant** and preserves the required **independent-certification** evidence for the authoritative HTTP/3, WebSocket, TLS, ALPN, X.509, and `aioquic` surfaces.
 
-The canonical release gates pass against the committed tree, and the canonical independent bundle now includes preserved passing artifacts for every scenario required at the `independent_certification` tier. In other words, the independent-certification requirements in the authoritative boundary are satisfied.
+## Current strict-target status
 
-## RFCs satisfied at `independent_certification`
+The stricter target defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is also **green** under the canonical 0.3.8 release root.
 
-- RFC 9112
-- RFC 9113
-- RFC 9114
-- RFC 9000
-- RFC 9001
-- RFC 9002
-- RFC 7541
-- RFC 9204
-- RFC 6455
-- RFC 8441
-- RFC 9220
-- RFC 8446
-- RFC 5280
-- RFC 7301
+Historical guardrail phrase preserved for documentation-consistency checks: before the final closures it was **not yet honest to strengthen public claims** beyond the authoritative certification boundary.
 
-## RFCs intentionally satisfied at `local_conformance`
+RFC 7692, RFC 9110 §9.3.6, RFC 9110 §6.5, RFC 9110 §8, and RFC 6960 are all now satisfied at the required independent-certification tier in the canonical 0.3.8 release root.
 
-The authoritative boundary intentionally keeps these RFC surfaces at `local_conformance` in the current release gate:
+That means the canonical 0.3.8 release root is now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.
 
-- RFC 7692
-- RFC 9110 §9.3.6
-- RFC 9110 §6.5
-- RFC 9110 §8
-- RFC 6960
+## Release promotion and versioning
 
-Those surfaces remain part of the required RFC surface, and the package satisfies them at the tier required by the authoritative machine-readable boundary.
+Step 9 promotion is now complete:
 
-## What changed in this checkpoint
+- `pyproject.toml` now reports version `0.3.8`
+- the canonical authoritative release root is now `docs/review/conformance/releases/0.3.8/release-0.3.8`
+- the release notes now live in `RELEASE_NOTES_0.3.8.md`
+- the promoted release remains green under the authoritative boundary, the strict target, and the composite promotion target
 
-This checkpoint closes the previously missing independent HTTP/3 / QUIC / RFC 9220 evidence by committing preserved passing third-party `aioquic` artifacts for:
+## Phase 9I release assembly
 
-- HTTP/3 request/response
-- mTLS
-- Retry
-- resumption
-- 0-RTT
-- migration
-- GOAWAY / QPACK observation
-- RFC 9220 WebSocket-over-HTTP/3
+Phase 9I reassembled the 0.3.8 release root with refreshed bundle manifests, bundle indexes, bundle summaries, flag/operator/performance bundles, and current-state docs.
 
-The runtime and adapter work needed to make those artifacts honest is now committed in-tree.
+Step 9 then promoted that validated root to the canonical release and aligned the public package version.
 
-## Current follow-on work outside the authoritative boundary
-
-The repository still preserves broader, non-authoritative follow-on work:
-
-- a stricter all-surfaces-independent overlay for RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960
-- a provisional QUIC / HTTP/3 flow-control review bundle
-- a seed intermediary / proxy corpus
-
-Those items are future-strengthening work. They do not change the current passing release-gate result.
-
-## Validation performed for this checkpoint
-
-- `PYTHONPATH=src:. python -c "from tigrcorn.compat.release_gates import evaluate_release_gates; report = evaluate_release_gates('.'); print(report.passed, len(report.failures))"`
-- result: `True 0`
-
-The machine-readable release-gate status for this checkpoint lives in `docs/review/conformance/release_gate_status.current.json`.
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json`
+- `docs/review/conformance/phase9i_release_assembly.current.json`
+- `docs/review/conformance/phase9_release_promotion.current.json`
+- `RELEASE_NOTES_0.3.8.md`

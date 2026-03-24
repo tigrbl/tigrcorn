@@ -19,7 +19,10 @@ from .extensions import (
     PskIdentity,
     TlsExtension,
     TransportParameters,
+    cipher_suite_name,
     cipher_suite_parameters,
+    format_cipher_suite_allowlist,
+    parse_cipher_suite_allowlist,
 )
 from .handshake import HandshakeFlight, QuicSessionTicket, QuicTlsHandshakeDriver, QuicTrafficSecrets, TlsAlertError, generate_self_signed_certificate
 from .key_schedule import Tls13KeySchedule, TrafficSecrets
@@ -47,7 +50,10 @@ __all__ = [
     'PskIdentity',
     'TlsExtension',
     'TransportParameters',
+    'cipher_suite_name',
     'cipher_suite_parameters',
+    'format_cipher_suite_allowlist',
+    'parse_cipher_suite_allowlist',
     'HandshakeTranscript',
     'Tls13KeySchedule',
     'TrafficSecrets',

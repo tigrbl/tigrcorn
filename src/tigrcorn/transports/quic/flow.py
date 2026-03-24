@@ -5,6 +5,18 @@ from dataclasses import dataclass, field
 from tigrcorn.errors import ProtocolError
 from tigrcorn.transports.quic.streams import stream_is_local_initiated, stream_is_unidirectional
 
+FLOW_CONTROL_CERTIFICATION_SCOPES: tuple[str, ...] = (
+    'credit-exhaustion',
+    'replenishment',
+    'stream-level-backpressure',
+    'connection-level-backpressure',
+)
+
+
+def supported_flow_control_certification_scopes() -> tuple[str, ...]:
+    return FLOW_CONTROL_CERTIFICATION_SCOPES
+
+
 
 @dataclass(slots=True)
 class QuicFlowControl:

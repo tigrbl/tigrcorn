@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "proxy_applied": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": false
+}

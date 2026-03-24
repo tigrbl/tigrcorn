@@ -1,0 +1,94 @@
+{
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "normalized_nonempty": true,
+      "preserves_h2_or_h3": true
+    },
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": true
+  },
+  "deployment_profile": "http2_tls",
+  "description": "ALPN normalization / negotiation policy cost.",
+  "driver": "alpn_negotiation_cost",
+  "failure_reasons": [],
+  "family": "TLS / PKI",
+  "matrix_name": "tigrcorn-phase6-performance-matrix",
+  "metrics": {
+    "connections": 30,
+    "cpu_seconds": 0.0,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "p50_ms": 0.001793999899746268,
+    "p95_ms": 0.003080449960179976,
+    "p99_ms": 0.003925379946849717,
+    "profile_metadata": {
+      "normalized": [
+        "h2",
+        "http/1.1"
+      ]
+    },
+    "protocol_stall_counts": {},
+    "rss_kib": 39048.0,
+    "sample_count": 30,
+    "scheduler_rejections": 0,
+    "streams": 0,
+    "throughput_ops_per_sec": 244415.1141172177,
+    "total_attempts": 30,
+    "total_duration_seconds": 0.0001227420002578583,
+    "total_units": 30
+  },
+  "passed": true,
+  "profile_id": "alpn_negotiation_cost",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline/alpn_negotiation_cost/result.json",
+    "baseline_root": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 0.0041586198722143326,
+        "maximum_allowed": 0.25415861987221433,
+        "observed": 0.003925379946849717,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 272861.22374693933,
+        "minimum_allowed": 136430.61187346966,
+        "observed": 244415.1141172177,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [
+    "RFC 7301"
+  ],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_p99_ms": {
+        "observed": 0.003925379946849717,
+        "passed": true,
+        "threshold": 1000.0
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 244415.1141172177,
+        "passed": true,
+        "threshold": 1.0
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_p99_ms": 1000.0,
+      "min_throughput_ops_per_sec": 1.0
+    }
+  }
+}

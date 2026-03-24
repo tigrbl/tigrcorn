@@ -13,25 +13,38 @@ from tigrcorn.compat.interop_runner import ExternalInteropRunner, load_external_
 
 ROOT = Path(__file__).resolve().parents[1]
 MATRIX_PATH = ROOT / 'docs/review/conformance/external_matrix.release.json'
-RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix'
+RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix'
 EXPECTED_ENABLED_SCENARIO_IDS = {
     'http1-server-curl-client',
+    'http11-connect-relay-curl-client',
+    'http11-content-coding-curl-client',
+    'http11-trailer-fields-curl-client',
+    'http2-connect-relay-h2-client',
+    'http2-content-coding-curl-client',
     'http2-server-curl-client',
     'http2-server-h2-client',
     'http2-tls-server-curl-client',
     'http2-tls-server-h2-client',
+    'http2-trailer-fields-h2-client',
+    'http3-connect-relay-aioquic-client',
+    'http3-content-coding-aioquic-client',
     'http3-server-aioquic-client-post',
-    'http3-server-aioquic-client-post-mtls',
-    'http3-server-aioquic-client-post-retry',
-    'http3-server-aioquic-client-post-resumption',
-    'http3-server-aioquic-client-post-zero-rtt',
-    'http3-server-aioquic-client-post-migration',
     'http3-server-aioquic-client-post-goaway-qpack',
-    'websocket-server-websockets-client',
-    'websocket-http2-server-h2-client',
+    'http3-server-aioquic-client-post-migration',
+    'http3-server-aioquic-client-post-mtls',
+    'http3-server-aioquic-client-post-resumption',
+    'http3-server-aioquic-client-post-retry',
+    'http3-server-aioquic-client-post-zero-rtt',
     'http3-server-openssl-quic-handshake',
+    'http3-trailer-fields-aioquic-client',
+    'tls-server-ocsp-validation-openssl-client',
+    'websocket-http11-server-websockets-client-permessage-deflate',
+    'websocket-http2-server-h2-client',
+    'websocket-http2-server-h2-client-permessage-deflate',
     'websocket-http3-server-aioquic-client',
     'websocket-http3-server-aioquic-client-mtls',
+    'websocket-http3-server-aioquic-client-permessage-deflate',
+    'websocket-server-websockets-client',
 }
 EXPECTED_PENDING_SCENARIO_IDS: set[str] = set()
 
@@ -71,11 +84,11 @@ class ExternalIndependentPeerReleaseMatrixTests(unittest.TestCase):
         self.assertTrue(RELEASE_ROOT.exists())
         index_payload = json.loads((RELEASE_ROOT / 'index.json').read_text(encoding='utf-8'))
         manifest_payload = json.loads((RELEASE_ROOT / 'manifest.json').read_text(encoding='utf-8'))
-        self.assertEqual(index_payload['total'], 17)
-        self.assertEqual(index_payload['passed'], 17)
+        self.assertEqual(index_payload['total'], 30)
+        self.assertEqual(index_payload['passed'], 30)
         self.assertEqual(index_payload['failed'], 0)
-        self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.6')
-        self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.6')
+        self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.8')
+        self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.8')
         self.assertEqual(manifest_payload['bundle_kind'], 'independent_certification')
         self.assertIn('0.3.2', ''.join(manifest_payload['source_bundles']))
         self.assertIn('0.3.6-rfc-hardening', ''.join(manifest_payload['source_bundles']))

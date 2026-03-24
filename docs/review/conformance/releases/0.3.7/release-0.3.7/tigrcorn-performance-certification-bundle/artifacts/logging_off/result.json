@@ -1,0 +1,86 @@
+{
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "logging_disabled_no_error": true
+    },
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": false
+  },
+  "deployment_profile": "http1_baseline",
+  "description": "Logging disabled overhead baseline.",
+  "driver": "logging_off",
+  "failure_reasons": [],
+  "family": "Operator overhead",
+  "matrix_name": "tigrcorn-phase6-performance-matrix",
+  "metrics": {
+    "connections": 0,
+    "cpu_seconds": 0.0,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "p50_ms": 0.0004779999471793417,
+    "p95_ms": 0.0008998001703730544,
+    "p99_ms": 0.0017055097896445655,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "rss_kib": 39048.0,
+    "sample_count": 40,
+    "scheduler_rejections": 0,
+    "streams": 0,
+    "throughput_ops_per_sec": 504973.99418367504,
+    "total_attempts": 40,
+    "total_duration_seconds": 7.921199994598283e-05,
+    "total_units": 40
+  },
+  "passed": true,
+  "profile_id": "logging_off",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline/logging_off/result.json",
+    "baseline_root": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 0.002637030152072839,
+        "maximum_allowed": 0.25263703015207284,
+        "observed": 0.0017055097896445655,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 315390.25537559454,
+        "minimum_allowed": 157695.12768779727,
+        "observed": 504973.99418367504,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_p99_ms": {
+        "observed": 0.0017055097896445655,
+        "passed": true,
+        "threshold": 1000.0
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 504973.99418367504,
+        "passed": true,
+        "threshold": 1.0
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_p99_ms": 1000.0,
+      "min_throughput_ops_per_sec": 1.0
+    }
+  }
+}

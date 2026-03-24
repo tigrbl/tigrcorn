@@ -1,0 +1,86 @@
+{
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "proxy_applied": true
+    },
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": false
+  },
+  "deployment_profile": "http1_proxy",
+  "description": "Proxy header normalization enabled.",
+  "driver": "proxy_headers_on",
+  "failure_reasons": [],
+  "family": "Operator overhead",
+  "matrix_name": "tigrcorn-phase6-performance-matrix",
+  "metrics": {
+    "connections": 25,
+    "cpu_seconds": 0.0,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "p50_ms": 0.016257999959634617,
+    "p95_ms": 0.021723999816458665,
+    "p99_ms": 0.027333800207998124,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "rss_kib": 39048.0,
+    "sample_count": 25,
+    "scheduler_rejections": 0,
+    "streams": 0,
+    "throughput_ops_per_sec": 51799.19317073167,
+    "total_attempts": 25,
+    "total_duration_seconds": 0.000482633000046917,
+    "total_units": 25
+  },
+  "passed": true,
+  "profile_id": "proxy_headers_on",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline/proxy_headers_on/result.json",
+    "baseline_root": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 0.030807640141574662,
+        "maximum_allowed": 0.28080764014157467,
+        "observed": 0.027333800207998124,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 47781.23075656813,
+        "minimum_allowed": 23890.615378284067,
+        "observed": 51799.19317073167,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_p99_ms": {
+        "observed": 0.027333800207998124,
+        "passed": true,
+        "threshold": 1000.0
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 51799.19317073167,
+        "passed": true,
+        "threshold": 1.0
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_p99_ms": 1000.0,
+      "min_throughput_ops_per_sec": 1.0
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "trailers",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http2",
+  "request": {
+    "accept_encoding": null,
+    "authority": "127.0.0.1",
+    "body": "",
+    "method": "GET",
+    "path": "/interop",
+    "scheme": "http"
+  },
+  "response": {
+    "body": "ok",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain; charset=utf-8"
+      ],
+      [
+        "trailer",
+        "x-trailer-one, x-trailer-two"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "stream_ended": true,
+    "trailers": [
+      [
+        "x-trailer-one",
+        "yes"
+      ],
+      [
+        "x-trailer-two",
+        "done"
+      ]
+    ]
+  },
+  "role": "server",
+  "scenario_id": "http2-trailer-fields-h2-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http2",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http2-trailer-fields",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/sut_stderr.log",
+    "stdout_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/sut_stdout.log"
+  }
+}

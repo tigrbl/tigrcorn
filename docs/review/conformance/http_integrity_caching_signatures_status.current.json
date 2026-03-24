@@ -1,0 +1,194 @@
+{
+  "changes_required_for_requested_stack": [
+    "add a representation metadata subsystem that can compute ETag or equivalent validators and evaluate If-None-Match / If-Modified-Since before response emission",
+    "add explicit RFC 7232 and RFC 9111 policy and test coverage for validation and caching",
+    "add RFC 9530 digest field generation and verification for content and representation digests",
+    "add a dedicated HTTP Message Signatures component for RFC 9421, including covered-component selection and signature verification",
+    "if JOSE or COSE is desired, add a dedicated auth / crypto boundary rather than folding those features into the current transport-only certification boundary",
+    "extend machine-readable certification manifests, release gates, contracts, and evidence bundles if any of these RFCs are to become claimed targets"
+  ],
+  "checkpoint": "http_integrity_caching_signatures_audit",
+  "closest_existing_modules": [
+    "src/tigrcorn/protocols/content_coding.py",
+    "src/tigrcorn/protocols/http1/serializer.py",
+    "src/tigrcorn/protocols/http2/hpack.py",
+    "src/tigrcorn/protocols/http3/qpack.py"
+  ],
+  "feature_status": {
+    "accept_encoding": {
+      "closest_modules": [
+        "src/tigrcorn/protocols/content_coding.py"
+      ],
+      "current_support": "supported",
+      "notes": "Accept-Encoding parsing and qvalue selection are implemented for the buffered response coding path.",
+      "targeted": true
+    },
+    "content_digest": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No Content-Digest field implementation was found.",
+      "targeted": false
+    },
+    "content_encoding": {
+      "closest_modules": [
+        "src/tigrcorn/protocols/content_coding.py"
+      ],
+      "current_support": "supported",
+      "notes": "gzip, deflate, and optional br are emitted when the response qualifies for coding.",
+      "targeted": true
+    },
+    "cose_signing": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No COSE signing surface was found.",
+      "targeted": false
+    },
+    "etag": {
+      "closest_modules": [
+        "src/tigrcorn/protocols/http2/hpack.py",
+        "src/tigrcorn/protocols/http3/qpack.py"
+      ],
+      "current_support": "header-name-only",
+      "notes": "The name appears in HPACK/QPACK static tables, but no ETag generation or validator comparison engine was found.",
+      "targeted": false
+    },
+    "http_signatures": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No HTTP Message Signatures implementation was found.",
+      "targeted": false
+    },
+    "if_none_match": {
+      "closest_modules": [
+        "src/tigrcorn/protocols/http2/hpack.py",
+        "src/tigrcorn/protocols/http3/qpack.py"
+      ],
+      "current_support": "header-name-only",
+      "notes": "The name appears in HPACK/QPACK static tables, but no If-None-Match evaluation path was found.",
+      "targeted": false
+    },
+    "jose_signing": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No JOSE/JWS signing surface was found.",
+      "targeted": false
+    },
+    "repr_digest": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No Repr-Digest field implementation was found.",
+      "targeted": false
+    },
+    "response_304": {
+      "closest_modules": [
+        "src/tigrcorn/protocols/http1/serializer.py"
+      ],
+      "current_support": "generic_status_only",
+      "notes": "HTTP/1.1 serialization knows status 304 and suppresses the body, but no RFC 7232 conditional-request decision engine was found.",
+      "targeted": false
+    },
+    "vary": {
+      "closest_modules": [
+        "src/tigrcorn/protocols/content_coding.py"
+      ],
+      "current_support": "supported_for_content_coding",
+      "notes": "Vary: accept-encoding is emitted on the content-coding path.",
+      "targeted": true
+    }
+  },
+  "missing_modules_or_capability_classes": [
+    "conditional request validator / revalidation engine",
+    "HTTP cache key and cache-control / revalidation subsystem",
+    "Content-Digest / Repr-Digest field generator and verifier",
+    "HTTP Message Signatures component and policy surface",
+    "JOSE token / signing / encryption surface",
+    "COSE envelope / signing surface"
+  ],
+  "rfc_status": {
+    "rfc7232": {
+      "current_support": "not_supported",
+      "notes": "No conditional-request validator engine was found for ETag, If-None-Match, or 304 revalidation semantics.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "HTTP Conditional Requests"
+    },
+    "rfc7515": {
+      "current_support": "not_supported",
+      "notes": "No JOSE signing surface is declared or implemented by the transport server boundary.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "JWS"
+    },
+    "rfc7516": {
+      "current_support": "not_supported",
+      "notes": "No JOSE encryption surface is declared or implemented by the transport server boundary.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "JWE"
+    },
+    "rfc7519": {
+      "current_support": "not_supported",
+      "notes": "No JWT token model or validation surface is declared or implemented by the transport server boundary.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "JWT"
+    },
+    "rfc8152": {
+      "current_support": "not_supported",
+      "notes": "No COSE signing or envelope surface was found in this checkpoint.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "COSE"
+    },
+    "rfc9052": {
+      "current_support": "not_supported",
+      "notes": "No COSE bis update surface was found in this checkpoint.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "COSE bis"
+    },
+    "rfc9110": {
+      "current_support": "partially_supported",
+      "notes": "The current certification boundary does not claim full RFC 9110 coverage.",
+      "target_scope": [
+        "section 9.3.6 CONNECT",
+        "section 6.5 trailer fields",
+        "section 8 content coding"
+      ],
+      "targeted_by_authoritative_boundary": true,
+      "targeted_by_strict_target_boundary": true,
+      "title": "HTTP Semantics"
+    },
+    "rfc9111": {
+      "current_support": "not_supported",
+      "notes": "No HTTP cache or cache revalidation subsystem was found in this checkpoint.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "HTTP Caching"
+    },
+    "rfc9421": {
+      "current_support": "not_supported",
+      "notes": "No HTTP Signature-Input, Signature, or signing policy subsystem was found in this checkpoint.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "HTTP Message Signatures"
+    },
+    "rfc9530": {
+      "current_support": "not_supported",
+      "notes": "No Content-Digest or Repr-Digest field implementation was found in this checkpoint.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "Content-Digest / Repr-Digest"
+    }
+  },
+  "summary": {
+    "authoritative_boundary_certifiably_fully_rfc_compliant": true,
+    "notes": [
+      "tigrcorn is certifiably fully RFC compliant only under its declared authoritative certification boundary",
+      "the requested stack extends beyond that declared boundary",
+      "RFC 9110 is only partially targeted here, limited to CONNECT semantics, trailer fields, and content coding"
+    ],
+    "requested_http_integrity_caching_signatures_stack_fully_supported": false,
+    "requested_http_integrity_caching_signatures_stack_fully_targeted": false
+  }
+}

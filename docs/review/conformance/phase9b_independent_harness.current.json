@@ -1,0 +1,64 @@
+{
+  "artifact_schema": {
+    "bundle_required_files": [
+      "manifest.json",
+      "summary.json",
+      "index.json"
+    ],
+    "scenario_required_files": [
+      "summary.json",
+      "index.json",
+      "result.json",
+      "scenario.json",
+      "command.json",
+      "env.json",
+      "versions.json",
+      "wire_capture.json"
+    ],
+    "schema_version": 1,
+    "validator_in_release_gates": true
+  },
+  "checkpoint": "phase9b_independent_harness_foundation",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "proof_bundle_validator_passed": true,
+    "promotion_target_passed": false,
+    "strict_target_boundary_passed": false,
+    "strict_target_missing_independent_scenarios": 13
+  },
+  "generated_on": "2026-03-20",
+  "phase": "9B",
+  "proof_bundle": {
+    "bundle_kind": "independent_harness_foundation",
+    "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle",
+    "proof_scenarios": [
+      "http1-server-curl-client"
+    ],
+    "release_gate_eligible": false,
+    "validated": true
+  },
+  "status": "harness_foundation_complete_not_yet_strict_complete",
+  "wrapper_registry": {
+    "families": {
+      "aioquic": [
+        "aioquic.http3_client",
+        "aioquic.http3_websocket_client"
+      ],
+      "curl": [
+        "curl.http1_client",
+        "curl.http2_client"
+      ],
+      "h2": [
+        "h2.http2_client",
+        "h2.http2_websocket_client"
+      ],
+      "openssl": [
+        "openssl.quic_client"
+      ],
+      "websockets": [
+        "websockets.http11_client"
+      ]
+    },
+    "module": "tools.interop_wrappers"
+  }
+}

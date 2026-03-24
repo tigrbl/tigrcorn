@@ -91,6 +91,18 @@ _TIMER_PTO = 'pto'
 _ACK_DELAY_DEFAULT = 0.025
 _MIN_INITIAL_DATAGRAM_SIZE = 1200
 
+QUIC_FLOW_CONTROL_EVIDENCE_MAP: dict[str, tuple[str, ...]] = {
+    'credit-exhaustion': ('FRAME_DATA_BLOCKED', 'MAX_DATA'),
+    'replenishment': ('MAX_DATA', 'MAX_STREAM_DATA'),
+    'stream-level-backpressure': ('STREAM_DATA_BLOCKED', 'MAX_STREAM_DATA'),
+    'connection-level-backpressure': ('DATA_BLOCKED', 'MAX_DATA'),
+}
+
+
+def flow_control_evidence_map() -> dict[str, tuple[str, ...]]:
+    return dict(QUIC_FLOW_CONTROL_EVIDENCE_MAP)
+
+
 
 @dataclass(slots=True)
 class QuicEvent:

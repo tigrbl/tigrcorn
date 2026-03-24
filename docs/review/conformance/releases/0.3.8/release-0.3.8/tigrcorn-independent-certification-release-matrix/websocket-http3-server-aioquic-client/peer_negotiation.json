@@ -1,0 +1,19 @@
+{
+  "client_auth_present": false,
+  "client_control_stream_id": 2,
+  "client_goaway_sent": false,
+  "connect_protocol_enabled": true,
+  "implementation": "aioquic",
+  "migration_used": false,
+  "protocol": "h3",
+  "qpack_decoder_stream_seen": true,
+  "qpack_encoder_stream_seen": true,
+  "received_settings": {
+    "1": 0,
+    "6": 1200,
+    "8": 1
+  },
+  "retry_observed": false,
+  "server_name": "localhost",
+  "tls_version": "TLSv1.3"
+}

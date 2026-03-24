@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "tools/run_perf_matrix.py"
+  ],
+  "deployment_profile": "tls_ocsp_strict",
+  "driver": "ocsp_strict_mode",
+  "profile_id": "ocsp_strict_mode"
+}

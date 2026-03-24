@@ -1,0 +1,54 @@
+{
+  "sut": {
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--http",
+      "2",
+      "--protocol",
+      "http2",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ],
+    "name": "tigrcorn-http2-tls",
+    "adapter": "subprocess"
+  },
+  "peer": {
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--https",
+      "--cacert",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--servername",
+      "localhost"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--version"
+    ],
+    "name": "python-h2-http2-tls-client",
+    "adapter": "subprocess"
+  }
+}

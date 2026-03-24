@@ -12,7 +12,7 @@ from tigrcorn.compat.interop_runner import ExternalInteropRunner, load_external_
 
 ROOT = Path(__file__).resolve().parents[1]
 MATRIX_PATH = ROOT / 'docs/review/conformance/external_matrix.current_release.json'
-RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix'
+RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix'
 EXPECTED_SCENARIO_IDS = {
     'http1-server-curl-client',
     'http2-server-h2-client',
@@ -38,7 +38,7 @@ class ExternalCurrentReleaseMatrixTests(unittest.TestCase):
         self.assertEqual({scenario.id for scenario in matrix.scenarios}, EXPECTED_SCENARIO_IDS)
         self.assertEqual({scenario.peer for scenario in matrix.scenarios}, {'curl', 'python-h2', 'tigrcorn-public-client', 'websockets'})
         self.assertEqual(matrix.metadata['evidence_tier'], 'mixed')
-        self.assertEqual(matrix.metadata['canonical_release_root'], 'docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix')
+        self.assertEqual(matrix.metadata['canonical_release_root'], 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix')
         self.assertEqual({scenario.evidence_tier for scenario in matrix.scenarios}, {'independent_certification', 'same_stack_replay'})
         self.assertTrue(all(s.peer_process.provenance_kind == 'same_stack_fixture' for s in matrix.scenarios if s.peer == 'tigrcorn-public-client'))
 
@@ -59,8 +59,8 @@ class ExternalCurrentReleaseMatrixTests(unittest.TestCase):
         self.assertEqual(index_payload['total'], 14)
         self.assertEqual(index_payload['passed'], 14)
         self.assertEqual(index_payload['failed'], 0)
-        self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.6')
-        self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.6')
+        self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.8')
+        self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.8')
         self.assertEqual(manifest_payload['bundle_kind'], 'mixed')
 
         scenarios = {item['id']: item for item in index_payload['scenarios']}

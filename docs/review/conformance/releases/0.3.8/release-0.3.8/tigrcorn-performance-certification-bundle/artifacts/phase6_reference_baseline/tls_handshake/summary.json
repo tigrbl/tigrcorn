@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http2_tls",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.11899449998509226,
+    "p50_ms": 0.11899449998509226,
+    "p95_ms": 0.13650960004270016,
+    "p99_9_ms": 0.142468391996772,
+    "p99_ms": 0.14137392000520776,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 8090.287609799085,
+    "time_to_first_byte_ms": 0.11899449998509226
+  },
+  "passed": true,
+  "profile_id": "tls_handshake"
+}

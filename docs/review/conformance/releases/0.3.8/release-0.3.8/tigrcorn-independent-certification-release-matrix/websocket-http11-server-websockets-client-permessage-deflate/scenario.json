@@ -1,0 +1,137 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": "hello-websocket-compressed",
+      "path": "transcript.peer.response.text"
+    },
+    {
+      "equals": "websockets",
+      "path": "negotiation.peer.implementation"
+    },
+    {
+      "equals": "permessage-deflate",
+      "path": "negotiation.peer.compression_requested"
+    },
+    {
+      "contains": "PerMessageDeflate",
+      "path": "negotiation.peer.negotiated_extensions"
+    },
+    {
+      "contains": "permessage-deflate",
+      "path": "transcript.peer.response.extension_header"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.packet_trace.exists"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.peer_transcript.exists"
+    }
+  ],
+  "capture": {},
+  "dimensions": {
+    "cipher_group": null,
+    "evidence_tier": "independent_certification",
+    "feature": "permessage-deflate",
+    "goaway": false,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "websockets",
+    "protocol": "websocket",
+    "qpack_blocking": false,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "websocket-http11-server-websockets-client-permessage-deflate",
+  "metadata": {
+    "peer_implementation": "python-websockets",
+    "peer_independence": "third-party",
+    "phase9b_wrapper_id": "websockets.http11_client",
+    "rfc": [
+      "RFC 7692",
+      "RFC 6455"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_websocket_client"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {
+      "INTEROP_REQUEST_BODY": "hello-websocket-compressed",
+      "INTEROP_WEBSOCKET_COMPRESSION": "permessage-deflate"
+    },
+    "image": null,
+    "implementation_identity": "websockets",
+    "implementation_source": "python-websockets",
+    "implementation_version": null,
+    "metadata": {
+      "wrapper_family": "websockets",
+      "wrapper_id": "websockets.http11_client"
+    },
+    "name": "websockets-client",
+    "provenance_kind": "third_party_library",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_websocket_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.websocket_echo.app:app",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http1",
+      "--websocket-compression",
+      "permessage-deflate",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "implementation_identity": "tigrcorn-websocket",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "metadata": {},
+    "name": "tigrcorn-websocket-permessage-deflate",
+    "provenance_kind": "package_owned",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

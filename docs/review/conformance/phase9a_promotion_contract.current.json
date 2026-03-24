@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "phase": "9A",
+  "checkpoint": "phase9a_promotion_contract_freeze",
+  "status": "contract_frozen_not_yet_strict_complete",
+  "generated_on": "2026-03-20",
+  "contract_frozen": true,
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "flag_surface_passed": false,
+    "operator_surface_passed": true,
+    "performance_passed": false,
+    "documentation_passed": true,
+    "final_promotion_gate_passed": false,
+    "strict_target_missing_independent_scenarios": [
+      "websocket-http11-server-websockets-client-permessage-deflate",
+      "websocket-http2-server-h2-client-permessage-deflate",
+      "websocket-http3-server-aioquic-client-permessage-deflate",
+      "http11-connect-relay-curl-client",
+      "http2-connect-relay-h2-client",
+      "http3-connect-relay-aioquic-client",
+      "http11-trailer-fields-curl-client",
+      "http2-trailer-fields-h2-client",
+      "http3-trailer-fields-aioquic-client",
+      "http11-content-coding-curl-client",
+      "http2-content-coding-curl-client",
+      "http3-content-coding-aioquic-client",
+      "tls-server-ocsp-validation-openssl-client"
+    ],
+    "flag_runtime_blockers": [
+      "--ssl-ciphers",
+      "--log-config",
+      "--statsd-host",
+      "--otel-endpoint",
+      "--limit-concurrency",
+      "--websocket-ping-interval",
+      "--websocket-ping-timeout"
+    ],
+    "performance_blockers": {
+      "missing_metric_keys": [
+        "handshake_latency_ms",
+        "p99_9_ms",
+        "protocol_stalls",
+        "time_to_first_byte_ms"
+      ],
+      "missing_threshold_keys": [
+        "max_handshake_latency_ms",
+        "max_p50_ms",
+        "max_p95_ms",
+        "max_p99_9_ms",
+        "max_protocol_stalls",
+        "max_rss_kib",
+        "max_scheduler_rejections",
+        "max_time_to_first_byte_ms"
+      ],
+      "missing_relative_budget_keys": [
+        "max_cpu_increase_fraction",
+        "max_p99_9_increase_fraction",
+        "max_rss_increase_fraction"
+      ]
+    }
+  },
+  "release_root_policy": {
+    "authoritative_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6",
+    "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
+    "allow_mutation_of_candidate_release_root": false,
+    "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "next_promotable_release_root_frozen": true
+  },
+  "owner_roles": {
+    "promotion_program_owner": "Owns the promotion contract, release-root policy, current-state truthfulness, and cross-stream coordination for the strict-promotion program.",
+    "interop_harness_owner": "Owns the reusable third-party scenario harness, artifact capture model, and matrix-entry preservation rules for independent certification.",
+    "websocket_interop_owner": "Owns RFC 7692 interop closure across HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers.",
+    "semantic_http_owner": "Owns RFC 9110 bounded semantic closure for CONNECT, trailer fields, and content coding.",
+    "tls_revocation_owner": "Owns revocation and OCSP behavior, TLS policy wiring, and preserved independent evidence for RFC 6960.",
+    "tls_runtime_owner": "Owns TLS flag/runtime closure including cipher-policy semantics and package-owned handshake wiring.",
+    "observability_owner": "Owns logging, StatsD, OTEL, startup/shutdown behavior, and operator-facing observability exporters.",
+    "scheduler_runtime_owner": "Owns global concurrency admission, overload behavior, scheduler policy/runtime wiring, and correctness-under-load coverage.",
+    "websocket_runtime_owner": "Owns WebSocket keepalive policy, outbound ping scheduling, timeout-driven close behavior, and carrier parity.",
+    "performance_owner": "Owns the strict performance program, matrix lanes, SLO thresholds, artifact preservation, and platform declarations.",
+    "promotion_gate_owner": "Owns the composite evaluator, artifact validation, negative fixtures, and documentation/gate alignment.",
+    "release_assembly_owner": "Owns final 0.3.8 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness."
+  },
+  "tracked_backlog_files": [
+    "docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md",
+    "docs/review/conformance/phase9a_execution_backlog.current.json"
+  ],
+  "operator_surface_no_regression": {
+    "must_remain_green": true,
+    "bundle_index": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-operator-surface-certification-bundle/index.json",
+    "required_implemented_keys": [
+      "workers_process_supervision",
+      "reload",
+      "proxy_header_normalization",
+      "root_path_scope_injection",
+      "structured_logging",
+      "metrics_endpoint",
+      "resource_timeout_controls_wired"
+    ]
+  },
+  "performance_contract": {
+    "slos_path": "docs/review/performance/performance_slos.json",
+    "required_metric_keys": [
+      "throughput_ops_per_sec",
+      "p50_ms",
+      "p95_ms",
+      "p99_ms",
+      "p99_9_ms",
+      "time_to_first_byte_ms",
+      "handshake_latency_ms",
+      "error_rate",
+      "scheduler_rejections",
+      "protocol_stalls",
+      "cpu_seconds",
+      "rss_kib"
+    ],
+    "required_threshold_keys": [
+      "min_throughput_ops_per_sec",
+      "max_p50_ms",
+      "max_p95_ms",
+      "max_p99_ms",
+      "max_p99_9_ms",
+      "max_time_to_first_byte_ms",
+      "max_handshake_latency_ms",
+      "max_error_rate",
+      "max_scheduler_rejections",
+      "max_protocol_stalls",
+      "max_rss_kib"
+    ],
+    "required_relative_regression_budget_keys": [
+      "max_throughput_drop_fraction",
+      "max_p99_increase_fraction",
+      "max_p99_9_increase_fraction",
+      "max_cpu_increase_fraction",
+      "max_rss_increase_fraction"
+    ],
+    "required_artifact_files": [
+      "summary.json",
+      "index.json",
+      "result.json",
+      "env.json",
+      "percentile_histogram.json",
+      "raw_samples.csv",
+      "command.json",
+      "correctness.json"
+    ],
+    "required_matrix_lanes": [
+      "component_regression",
+      "end_to_end_release"
+    ],
+    "promotion_requirements": {
+      "validate_artifacts_with_relative_regression": true,
+      "require_correctness_under_load_for_rfc_targets": true,
+      "require_end_to_end_live_listener_profiles": true,
+      "require_certification_platforms": true,
+      "require_documented_slos_per_profile": true
+    }
+  },
+  "out_of_scope_until_strict_target_green": [
+    "RFC 7232",
+    "RFC 9530",
+    "RFC 9111",
+    "RFC 9421",
+    "JOSE",
+    "COSE"
+  ],
+  "definition_of_done": [
+    "all 13 strict-target missing scenarios are tracked with owner role, touch-file list, artifact contract, and exit tests",
+    "all 7 remaining public flag gaps are tracked with owner role, touch-file list, artifact contract, and exit tests",
+    "the exact performance key, artifact, and lane sets are frozen from performance_slos.json",
+    "the operator surface is explicitly locked green and treated as a no-regression surface",
+    "the 0.3.8 release root exists as the reserved next promotable root and the 0.3.7 candidate root remains immutable"
+  ]
+}

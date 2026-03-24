@@ -1,0 +1,15 @@
+{
+  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http11-connect-relay-local-vector",
+  "carrier": "http1.1",
+  "corpus_entry_kind": "supplemental_local_vector",
+  "corpus_id": "http11-connect-relay-local-vector",
+  "generated_at": "2026-03-19T12:12:15.999821+00:00",
+  "minimum_certified": false,
+  "note": "Supplemental local vector retained in the minimum certified corpus until broader third-party intermediary/proxy captures are preserved for this semantic area.",
+  "peer": "tigrcorn-fixture",
+  "scope": [
+    "http-connect-relay"
+  ],
+  "source_kind": "local_vector",
+  "source_ref": "http-connect-relay"
+}

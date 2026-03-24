@@ -1,0 +1,70 @@
+{
+  "phase": "9F2",
+  "checkpoint": "phase9f2_logging_exporter_closure",
+  "implemented_flags": [
+    "--log-config",
+    "--statsd-host",
+    "--otel-endpoint"
+  ],
+  "status": "implemented_not_yet_strict_complete",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "promotion_target_passed": false,
+    "flag_surface_passed": false,
+    "operator_surface_passed": true,
+    "performance_passed": false,
+    "documentation_passed": true,
+    "remaining_flag_runtime_blockers": [
+      "--limit-concurrency",
+      "--websocket-ping-interval",
+      "--websocket-ping-timeout"
+    ],
+    "remaining_non_passing_independent_scenarios": [
+      "websocket-http3-server-aioquic-client-permessage-deflate",
+      "http3-connect-relay-aioquic-client",
+      "http3-trailer-fields-aioquic-client",
+      "http3-content-coding-aioquic-client"
+    ]
+  },
+  "observability_contract": {
+    "log_config": {
+      "accepted_file_types": [
+        "json",
+        "toml",
+        "py"
+      ],
+      "accepted_keys": [
+        "level",
+        "structured",
+        "access_log",
+        "access_log_file",
+        "access_log_format",
+        "error_log_file",
+        "stream"
+      ],
+      "precedence": [
+        "log_config_file",
+        "explicit_cli_log_level",
+        "explicit_cli_structured_log",
+        "explicit_cli_access_log_file",
+        "explicit_cli_access_log_format",
+        "explicit_cli_error_log_file"
+      ]
+    },
+    "statsd_host": {
+      "syntax": "host:port",
+      "transport": "udp",
+      "payload": "real statsd datagrams from live metrics snapshots"
+    },
+    "otel_endpoint": {
+      "syntax": "http:// or https:// URL",
+      "transport": "http post",
+      "content_type": "application/json",
+      "payload_family": [
+        "resourceMetrics",
+        "resourceSpans"
+      ]
+    }
+  }
+}

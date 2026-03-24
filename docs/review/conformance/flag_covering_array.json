@@ -1,0 +1,2805 @@
+{
+  "schema_version": 1,
+  "target_name": "phase8_flag_covering_array",
+  "status": "planned",
+  "public_flag_string_count": 84,
+  "strategy": {
+    "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
+    "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
+    "three_way_hazard_clusters": [
+      "transport_protocol_tls",
+      "protocol_timeout_concurrency",
+      "websocket_compression_carrier_transport",
+      "semantic_extensions_by_http_version",
+      "workers_reload_inherited_fd"
+    ]
+  },
+  "hazard_clusters": [
+    {
+      "cluster_id": "transport_protocol_tls",
+      "strength": 3,
+      "dimensions": [
+        "--transport",
+        "--protocol",
+        "--ssl-certfile"
+      ],
+      "rationale": "Mixed carrier and protocol advertisement must preserve listener resolution and TLS policy closure."
+    },
+    {
+      "cluster_id": "protocol_timeout_concurrency",
+      "strength": 3,
+      "dimensions": [
+        "--protocol",
+        "--read-timeout",
+        "--limit-concurrency"
+      ],
+      "rationale": "Protocol choice interacts with admission control and timeout semantics under overload."
+    },
+    {
+      "cluster_id": "websocket_compression_carrier_transport",
+      "strength": 3,
+      "dimensions": [
+        "--websocket-compression",
+        "--http",
+        "--transport"
+      ],
+      "rationale": "RFC 7692 negotiation must stay aligned across HTTP/1.1, HTTP/2, and HTTP/3 carriers."
+    },
+    {
+      "cluster_id": "semantic_extensions_by_http_version",
+      "strength": 3,
+      "dimensions": [
+        "--http",
+        "--connect-policy",
+        "--trailer-policy"
+      ],
+      "rationale": "CONNECT, trailers, and content coding must close independently across HTTP versions."
+    },
+    {
+      "cluster_id": "workers_reload_inherited_fd",
+      "strength": 3,
+      "dimensions": [
+        "--workers",
+        "--reload",
+        "--fd"
+      ],
+      "rationale": "Development and process controls must not create invalid inherited-listener combinations."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "flag-001-access_log",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--access-log",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-002-access_log_file",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--access-log-file",
+          "value": "/tmp/access.log"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-003-access_log_format",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--access-log-format",
+          "value": "%r %s"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-004-app_dir",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--app-dir",
+          "value": "."
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-005-backlog",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--backlog",
+          "value": 2048
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-006-bind",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--bind",
+          "value": "127.0.0.1:8443"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-007-config",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--config",
+          "value": "tigrcorn.toml"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-008-connect_allow",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--connect-allow",
+          "value": "127.0.0.1:443"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-009-connect_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--connect-policy",
+          "value": "relay"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-010-connect_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--connect-policy",
+          "value": "deny"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-011-connect_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--connect-policy",
+          "value": "allowlist"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-012-content_coding_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--content-coding-policy",
+          "value": "allowlist"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-013-content_coding_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--content-coding-policy",
+          "value": "identity-only"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-014-content_coding_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--content-coding-policy",
+          "value": "strict"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-015-content_codings",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--content-codings",
+          "value": "gzip,br"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-016-disable_h2c",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--disable-h2c",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-017-disable_websocket",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--disable-websocket",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-018-endpoint",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--endpoint",
+          "value": "fd://7"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-019-env_prefix",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--env-prefix",
+          "value": "TIGRCORN"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-020-error_log_file",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--error-log-file",
+          "value": "/tmp/error.log"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-021-factory",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--factory",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-022-fd",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--fd",
+          "value": 3
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-023-forwarded_allow_ips",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--forwarded-allow-ips",
+          "value": "127.0.0.1"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-024-host",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--host",
+          "value": "127.0.0.1"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-025-http",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http",
+          "value": "1.1"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-026-http",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http",
+          "value": "2"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-027-http",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http",
+          "value": "3"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-028-idle_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--idle-timeout",
+          "value": 30.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-029-insecure_bind",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--insecure-bind",
+          "value": "127.0.0.1:8080"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-030-lifespan",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--lifespan",
+          "value": "auto"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-031-lifespan",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--lifespan",
+          "value": "on"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-032-lifespan",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--lifespan",
+          "value": "off"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-033-limit_concurrency",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--limit-concurrency",
+          "value": 512
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-034-limit_max_requests",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--limit-max-requests",
+          "value": 10000
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy",
+        "fd_inherited_worker"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-035-log_config",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--log-config",
+          "value": "logging.json"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-036-log_level",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--log-level",
+          "value": "info"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-037-max_body_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-body-size",
+          "value": 1048576
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-038-max_connections",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-connections",
+          "value": 4096
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-039-max_header_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-header-size",
+          "value": 65536
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-040-max_requests_jitter",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-requests-jitter",
+          "value": 500
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy",
+        "fd_inherited_worker"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-041-max_streams",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-streams",
+          "value": 128
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-042-max_tasks",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-tasks",
+          "value": 4096
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-043-metrics",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--metrics",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-044-metrics_bind",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--metrics-bind",
+          "value": "127.0.0.1:9090"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-045-no_access_log",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-access-log",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-046-no_server_header",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-server-header",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-047-otel_endpoint",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--otel-endpoint",
+          "value": "http://127.0.0.1:4318/v1/traces"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-048-pid",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--pid",
+          "value": "/tmp/tigrcorn.pid"
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy",
+        "fd_inherited_worker"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-049-pipe_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--pipe-mode",
+          "value": "rawframed"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-050-pipe_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--pipe-mode",
+          "value": "stream"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-051-port",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--port",
+          "value": 8443
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-052-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "http1"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-053-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "http2"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-054-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "http3"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-055-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "quic"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-056-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "websocket"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-057-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "rawframed"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-058-protocol",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "custom"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-059-proxy_headers",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--proxy-headers",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-060-quic_bind",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-bind",
+          "value": "127.0.0.1:8443"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-061-quic_early_data_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-early-data-policy",
+          "value": "allow"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-062-quic_early_data_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-early-data-policy",
+          "value": "deny"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-063-quic_early_data_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-early-data-policy",
+          "value": "require"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-064-quic_idle_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-idle-timeout",
+          "value": 1.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-065-quic_max_datagram_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-max-datagram-size",
+          "value": 1350
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-066-quic_require_retry",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--quic-require-retry",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-067-read_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--read-timeout",
+          "value": 30.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-068-reload",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--reload",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-069-reload_dir",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--reload-dir",
+          "value": "src"
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-070-reload_exclude",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--reload-exclude",
+          "value": "*.pyc"
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-071-reload_include",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--reload-include",
+          "value": "*.py"
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-072-reuse_address",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--reuse-address",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-073-reuse_port",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--reuse-port",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-074-root_path",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--root-path",
+          "value": "/edge"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-075-server_header",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--server-header",
+          "value": "implicit:tigrcorn"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-076-server_header",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--server-header",
+          "value": "edge-proxy"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-077-ssl_alpn",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-alpn",
+          "value": "h2"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-078-ssl_ca_certs",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ca-certs",
+          "value": "tests/fixtures_certs/interop-localhost-cert.pem"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-079-ssl_certfile",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-certfile",
+          "value": "tests/fixtures_certs/interop-localhost-cert.pem"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-080-ssl_ciphers",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ciphers",
+          "value": "TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-081-ssl_crl_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-crl-mode",
+          "value": "off"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-082-ssl_crl_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-crl-mode",
+          "value": "soft-fail"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-083-ssl_crl_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-crl-mode",
+          "value": "require"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-084-ssl_keyfile",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-keyfile",
+          "value": "tests/fixtures_certs/interop-localhost-key.pem"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-085-ssl_ocsp_cache_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ocsp-cache-size",
+          "value": 512
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-086-ssl_ocsp_max_age",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ocsp-max-age",
+          "value": 3600.0
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-087-ssl_ocsp_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ocsp-mode",
+          "value": "off"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-088-ssl_ocsp_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ocsp-mode",
+          "value": "soft-fail"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-089-ssl_ocsp_mode",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ocsp-mode",
+          "value": "require"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-090-ssl_ocsp_soft_fail",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-ocsp-soft-fail",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-091-ssl_require_client_cert",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-require-client-cert",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-092-ssl_revocation_fetch",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-revocation-fetch",
+          "value": "off"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-093-ssl_revocation_fetch",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-revocation-fetch",
+          "value": "on"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-094-statsd_host",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--statsd-host",
+          "value": "127.0.0.1:8125"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-095-structured_log",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--structured-log",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-096-timeout_graceful_shutdown",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--timeout-graceful-shutdown",
+          "value": 10.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-097-timeout_keep_alive",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--timeout-keep-alive",
+          "value": 15.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-098-trailer_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--trailer-policy",
+          "value": "pass"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-099-trailer_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--trailer-policy",
+          "value": "drop"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-100-trailer_policy",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--trailer-policy",
+          "value": "strict"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-101-transport",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "tcp"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-102-transport",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "udp"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-103-transport",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "unix"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-104-transport",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "pipe"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-105-transport",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "inproc"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-106-uds",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--uds",
+          "value": "/tmp/tigrcorn.sock"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-107-websocket_compression",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--websocket-compression",
+          "value": "off"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-108-websocket_compression",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--websocket-compression",
+          "value": "permessage-deflate"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-109-websocket_max_message_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--websocket-max-message-size",
+          "value": 2097152
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-110-websocket_ping_interval",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--websocket-ping-interval",
+          "value": 20.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-111-websocket_ping_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--websocket-ping-timeout",
+          "value": 10.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-112-worker_class",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--worker-class",
+          "value": "process"
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy",
+        "fd_inherited_worker"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-113-workers",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--workers",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "worker_prefork_proxy",
+        "fd_inherited_worker"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-114-write_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--write-timeout",
+          "value": 30.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-transport-protocol-tls-http2",
+      "strength": 3,
+      "cluster_id": "transport_protocol_tls",
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "tcp"
+        },
+        {
+          "flag": "--protocol",
+          "value": "http2"
+        },
+        {
+          "flag": "--ssl-certfile",
+          "value": "tests/fixtures_certs/interop-localhost-cert.pem"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-transport-protocol-tls-http3",
+      "strength": 3,
+      "cluster_id": "transport_protocol_tls",
+      "dimensions": [
+        {
+          "flag": "--transport",
+          "value": "udp"
+        },
+        {
+          "flag": "--protocol",
+          "value": "http3"
+        },
+        {
+          "flag": "--ssl-certfile",
+          "value": "tests/fixtures_certs/interop-localhost-cert.pem"
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-protocol-timeout-concurrency-http1",
+      "strength": 3,
+      "cluster_id": "protocol_timeout_concurrency",
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "http1"
+        },
+        {
+          "flag": "--read-timeout",
+          "value": 30.0
+        },
+        {
+          "flag": "--limit-concurrency",
+          "value": 512
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-protocol-timeout-concurrency-http3",
+      "strength": 3,
+      "cluster_id": "protocol_timeout_concurrency",
+      "dimensions": [
+        {
+          "flag": "--protocol",
+          "value": "http3"
+        },
+        {
+          "flag": "--read-timeout",
+          "value": 30.0
+        },
+        {
+          "flag": "--limit-concurrency",
+          "value": 512
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-websocket-compression-h11",
+      "strength": 3,
+      "cluster_id": "websocket_compression_carrier_transport",
+      "dimensions": [
+        {
+          "flag": "--websocket-compression",
+          "value": "permessage-deflate"
+        },
+        {
+          "flag": "--http",
+          "value": "1.1"
+        },
+        {
+          "flag": "--transport",
+          "value": "tcp"
+        }
+      ],
+      "deployment_profiles": [
+        "websocket_http11_permessage_deflate"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-websocket-compression-h2",
+      "strength": 3,
+      "cluster_id": "websocket_compression_carrier_transport",
+      "dimensions": [
+        {
+          "flag": "--websocket-compression",
+          "value": "permessage-deflate"
+        },
+        {
+          "flag": "--http",
+          "value": "2"
+        },
+        {
+          "flag": "--transport",
+          "value": "tcp"
+        }
+      ],
+      "deployment_profiles": [
+        "websocket_http2_permessage_deflate"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-websocket-compression-h3",
+      "strength": 3,
+      "cluster_id": "websocket_compression_carrier_transport",
+      "dimensions": [
+        {
+          "flag": "--websocket-compression",
+          "value": "permessage-deflate"
+        },
+        {
+          "flag": "--http",
+          "value": "3"
+        },
+        {
+          "flag": "--transport",
+          "value": "udp"
+        }
+      ],
+      "deployment_profiles": [
+        "websocket_http3_permessage_deflate"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-semantic-http1",
+      "strength": 3,
+      "cluster_id": "semantic_extensions_by_http_version",
+      "dimensions": [
+        {
+          "flag": "--http",
+          "value": "1.1"
+        },
+        {
+          "flag": "--connect-policy",
+          "value": "relay"
+        },
+        {
+          "flag": "--trailer-policy",
+          "value": "strict"
+        }
+      ],
+      "deployment_profiles": [
+        "connect_http11",
+        "trailers_http11"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-semantic-http2",
+      "strength": 3,
+      "cluster_id": "semantic_extensions_by_http_version",
+      "dimensions": [
+        {
+          "flag": "--http",
+          "value": "2"
+        },
+        {
+          "flag": "--connect-policy",
+          "value": "relay"
+        },
+        {
+          "flag": "--trailer-policy",
+          "value": "strict"
+        }
+      ],
+      "deployment_profiles": [
+        "connect_http2",
+        "trailers_http2"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-semantic-http3",
+      "strength": 3,
+      "cluster_id": "semantic_extensions_by_http_version",
+      "dimensions": [
+        {
+          "flag": "--http",
+          "value": "3"
+        },
+        {
+          "flag": "--connect-policy",
+          "value": "relay"
+        },
+        {
+          "flag": "--trailer-policy",
+          "value": "strict"
+        }
+      ],
+      "deployment_profiles": [
+        "connect_http3",
+        "trailers_http3"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "hazard-workers-reload-fd",
+      "strength": 3,
+      "cluster_id": "workers_reload_inherited_fd",
+      "dimensions": [
+        {
+          "flag": "--workers",
+          "value": 4
+        },
+        {
+          "flag": "--reload",
+          "value": true
+        },
+        {
+          "flag": "--fd",
+          "value": 3
+        }
+      ],
+      "deployment_profiles": [
+        "fd_inherited_worker"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    }
+  ],
+  "phase9a_contract_freeze": {
+    "status": "frozen",
+    "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md",
+    "blocking_flags": [
+      "--ssl-ciphers",
+      "--log-config",
+      "--statsd-host",
+      "--otel-endpoint",
+      "--limit-concurrency",
+      "--websocket-ping-interval",
+      "--websocket-ping-timeout"
+    ],
+    "affected_hazard_clusters": [
+      {
+        "cluster_id": "transport_protocol_tls",
+        "blocking_flags": [
+          "--ssl-ciphers"
+        ]
+      },
+      {
+        "cluster_id": "protocol_timeout_concurrency",
+        "blocking_flags": [
+          "--limit-concurrency",
+          "--websocket-ping-interval",
+          "--websocket-ping-timeout"
+        ]
+      },
+      {
+        "cluster_id": "websocket_compression_carrier_transport",
+        "blocking_flags": [
+          "--websocket-ping-interval",
+          "--websocket-ping-timeout"
+        ]
+      },
+      {
+        "cluster_id": "workers_reload_inherited_fd",
+        "blocking_flags": [
+          "--log-config",
+          "--statsd-host",
+          "--otel-endpoint"
+        ]
+      }
+    ],
+    "definition_of_done": "All blocking flags must preserve one-way coverage and the affected hazard-cluster coverage before Phase 9F can exit green."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "quic": {
+    "client_goaway_sent": false,
+    "handshake_complete": true,
+    "migration": {
+      "connection_id_rotated": false,
+      "from": [
+        "127.0.0.1",
+        56376
+      ],
+      "ping_requested": false,
+      "strategy": null,
+      "used": false
+    },
+    "new_token_received": false,
+    "qpack": {
+      "decoder_stream_seen": true,
+      "enabled": false,
+      "encoder_stream_seen": true,
+      "encoder_stream_seen_before_main_request": false,
+      "warmup_rounds": []
+    },
+    "resumption_attempted": false,
+    "resumption_hint_available": false,
+    "resumption_seeded": true,
+    "retry_observed": false,
+    "session_ticket_received": true,
+    "zero_rtt_attempted": false
+  },
+  "request": {
+    "accept_encoding": null,
+    "authority": "localhost",
+    "body": "",
+    "method": "GET",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "ok",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain; charset=utf-8"
+      ],
+      [
+        "trailer",
+        "x-trailer-one, x-trailer-two"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "trailers": [
+      [
+        "x-trailer-one",
+        "yes"
+      ],
+      [
+        "x-trailer-two",
+        "done"
+      ]
+    ]
+  }
+}

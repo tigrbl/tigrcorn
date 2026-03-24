@@ -1,0 +1,129 @@
+{
+  "artifact_dir": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client",
+  "artifact_files": {
+    "command.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/command.json",
+      "sha256": "275cc7b42f85124cfc68d73c6fd2be710117d64ba499e736759c4056bc9d549e",
+      "size": 1334
+    },
+    "env.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/env.json",
+      "sha256": "cd81f2c318c8b5526679f0dbf448830cb93ad305ad786e1d81270dae9d076c75",
+      "size": 4428
+    },
+    "index.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/index.json",
+      "sha256": "80f66e6d6b7f6bf23599f44c90e9496f4e9865bebe8d6eece709e9cd704ae754",
+      "size": 842
+    },
+    "packet_trace.jsonl": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/packet_trace.jsonl",
+      "sha256": "9a016839959fcfe55f045dc01cf6ede759ad354500cd65e7c859a0875c7691db",
+      "size": 15598
+    },
+    "peer_negotiation.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_negotiation.json",
+      "sha256": "36664f527e2d497ac8a1e1a3d1889f28b308b6351b05b45ad02130b01c3d1354",
+      "size": 1086
+    },
+    "peer_stderr.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "peer_stdout.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_stdout.log",
+      "sha256": "5f7228510a22c26a161ee5bcc25b93d8436a891093a64481eff9bbb9fafd04d5",
+      "size": 1627
+    },
+    "peer_transcript.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_transcript.json",
+      "sha256": "e1d6010b262b2983d29e6b214b38bf1f47473836b7bbcd176f001cd2fcf0d7ef",
+      "size": 937
+    },
+    "qlog.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/qlog.json",
+      "sha256": "05a19df88b220f28fb90e71f6674afca5162a27531f091fd33bd4bf49ada22f7",
+      "size": 14565
+    },
+    "result.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/result.json",
+      "sha256": "3f7d116b367c03cda6174c17f13f17416e7eedd73c516f99cc9e6f3f5e18e906",
+      "size": 29459
+    },
+    "scenario.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/scenario.json",
+      "sha256": "55550db53e5305d39c0daa8c97380544474884089713f27ec1228ab0afb1736d",
+      "size": 3535
+    },
+    "summary.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/summary.json",
+      "sha256": "ca0cf01a66838210009812218955cfce41066ef1a96489e8b6f38bc7fc8b89e4",
+      "size": 483
+    },
+    "sut_negotiation.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_negotiation.json",
+      "sha256": "da5e102fc86893e01d99f2b8edc8e3ffd935a5a0a8f7bd4b53ff5329a281331c",
+      "size": 895
+    },
+    "sut_stderr.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_stderr.log",
+      "sha256": "6076b326d25ae60f96ecf51921d26d5c57e1d0d16221c7e2edbcf46a08c923c0",
+      "size": 73
+    },
+    "sut_stdout.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "sut_transcript.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_transcript.json",
+      "sha256": "8b9e5b3d2903d29f2b161c54c04cb51932207a5a794107fd4d8797df4f7415fd",
+      "size": 1389
+    },
+    "versions.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/versions.json",
+      "sha256": "fa7bd0de8e9ae929defb5c2126d436145bc424062a334064bf95f5978d8218fa",
+      "size": 18923
+    },
+    "wire_capture.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/wire_capture.json",
+      "sha256": "0fe5e41c0fb446e6dee059f90757b2c00e7a92be461257be3eaf4f41670015b6",
+      "size": 3433
+    }
+  },
+  "error": null,
+  "passed": true,
+  "required_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "result_path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/result.json",
+  "scenario_id": "websocket-http3-server-aioquic-client",
+  "schema_version": 1,
+  "summary_path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/summary.json"
+}

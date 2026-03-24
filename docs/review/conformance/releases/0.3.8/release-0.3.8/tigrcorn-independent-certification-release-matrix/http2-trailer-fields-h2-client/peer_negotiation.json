@@ -1,0 +1,9 @@
+{
+  "alpn": null,
+  "content_coding_mode": false,
+  "implementation": "python-h2",
+  "protocol": "h2c",
+  "response_trailers_mode": true,
+  "scheme": "http",
+  "server_name": "127.0.0.1"
+}

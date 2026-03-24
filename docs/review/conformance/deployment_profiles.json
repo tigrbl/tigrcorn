@@ -1,0 +1,227 @@
+{
+  "profiles": [
+    {
+      "profile_id": "http1_baseline",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "description": "Single-listener HTTP/1.1 baseline profile."
+    },
+    {
+      "profile_id": "http1_proxy",
+      "claim_class": "hybrid",
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "description": "HTTP/1.1 behind a reverse proxy with trusted forwarded headers."
+    },
+    {
+      "profile_id": "http2_cleartext",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9113"
+      ],
+      "description": "HTTP/2 cleartext / h2c profile."
+    },
+    {
+      "profile_id": "http2_tls",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9113",
+        "RFC 8446",
+        "RFC 7301"
+      ],
+      "description": "HTTP/2 over TLS with ALPN."
+    },
+    {
+      "profile_id": "http3_quic",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 9002",
+        "RFC 9114"
+      ],
+      "description": "HTTP/3 over QUIC."
+    },
+    {
+      "profile_id": "http3_quic_mtls",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 9114",
+        "RFC 8446",
+        "RFC 5280"
+      ],
+      "description": "HTTP/3 over QUIC with client-certificate verification."
+    },
+    {
+      "profile_id": "websocket_http11",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 6455"
+      ],
+      "description": "WebSocket over HTTP/1.1."
+    },
+    {
+      "profile_id": "websocket_http11_permessage_deflate",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 6455",
+        "RFC 7692"
+      ],
+      "description": "WebSocket over HTTP/1.1 with permessage-deflate."
+    },
+    {
+      "profile_id": "websocket_http2",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 8441"
+      ],
+      "description": "WebSocket over HTTP/2 extended CONNECT."
+    },
+    {
+      "profile_id": "websocket_http2_permessage_deflate",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 8441",
+        "RFC 7692"
+      ],
+      "description": "WebSocket over HTTP/2 with permessage-deflate."
+    },
+    {
+      "profile_id": "websocket_http3",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9220"
+      ],
+      "description": "WebSocket over HTTP/3 extended CONNECT."
+    },
+    {
+      "profile_id": "websocket_http3_permessage_deflate",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9220",
+        "RFC 7692"
+      ],
+      "description": "WebSocket over HTTP/3 with permessage-deflate."
+    },
+    {
+      "profile_id": "connect_http11",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a79.3.6",
+        "RFC 9112"
+      ],
+      "description": "CONNECT relay over HTTP/1.1."
+    },
+    {
+      "profile_id": "connect_http2",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a79.3.6",
+        "RFC 9113"
+      ],
+      "description": "CONNECT relay over HTTP/2."
+    },
+    {
+      "profile_id": "connect_http3",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a79.3.6",
+        "RFC 9114"
+      ],
+      "description": "CONNECT relay over HTTP/3."
+    },
+    {
+      "profile_id": "trailers_http11",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a76.5",
+        "RFC 9112"
+      ],
+      "description": "Trailers over HTTP/1.1."
+    },
+    {
+      "profile_id": "trailers_http2",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a76.5",
+        "RFC 9113"
+      ],
+      "description": "Trailers over HTTP/2."
+    },
+    {
+      "profile_id": "trailers_http3",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a76.5",
+        "RFC 9114"
+      ],
+      "description": "Trailers over HTTP/3."
+    },
+    {
+      "profile_id": "content_coding_http11",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a78",
+        "RFC 9112"
+      ],
+      "description": "Content coding over HTTP/1.1."
+    },
+    {
+      "profile_id": "content_coding_http2",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a78",
+        "RFC 9113"
+      ],
+      "description": "Content coding over HTTP/2."
+    },
+    {
+      "profile_id": "content_coding_http3",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9110 \u00a78",
+        "RFC 9114"
+      ],
+      "description": "Content coding over HTTP/3."
+    },
+    {
+      "profile_id": "tls_ocsp_strict",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 8446",
+        "RFC 5280",
+        "RFC 6960"
+      ],
+      "description": "TLS listener with strict OCSP policy."
+    },
+    {
+      "profile_id": "worker_prefork_proxy",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "description": "Worker-prefork deployment behind a proxy."
+    },
+    {
+      "profile_id": "unix_socket_proxy",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "description": "Unix-socket deployment behind a reverse proxy."
+    },
+    {
+      "profile_id": "fd_inherited_worker",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "description": "FD-inherited listener with worker supervision."
+    },
+    {
+      "profile_id": "custom_pipe_rawframed",
+      "claim_class": "non_rfc_custom",
+      "rfc_targets": [],
+      "description": "Pipe/rawframed custom transport outside the strict RFC-certified surface."
+    }
+  ]
+}

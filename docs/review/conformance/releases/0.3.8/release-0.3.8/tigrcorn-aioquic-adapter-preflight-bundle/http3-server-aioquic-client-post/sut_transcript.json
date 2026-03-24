@@ -1,0 +1,45 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "post-echo",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http3",
+  "request": {
+    "accept_encoding": null,
+    "authority": "localhost",
+    "body": "hello-http3",
+    "method": "POST",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-http3",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "trailers": []
+  },
+  "role": "server",
+  "scenario_id": "http3-server-aioquic-client-post",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http3",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http3",
+    "role": "server",
+    "stderr_path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/sut_stderr.log",
+    "stdout_path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/sut_stdout.log"
+  }
+}

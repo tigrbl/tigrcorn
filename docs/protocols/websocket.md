@@ -21,7 +21,7 @@ This build implements WebSocket handling across the HTTP/1.1, HTTP/2, and HTTP/3
 The canonical package-wide target for WebSocket is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
 - **local conformance** — `tests/test_websocket_rfc6455.py`, `tests/test_websocket_rfc7692.py`, `tests/test_http2_websocket_rfc8441.py`, and `tests/test_http3_websocket_rfc9220.py`
-- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical `0.3.6` same-stack bundle under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/`
+- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical `0.3.8` same-stack bundle under `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/`
 - **independent certification** — the canonical independent matrix at `docs/review/conformance/external_matrix.release.json`
 
 ## Current certification status

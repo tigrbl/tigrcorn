@@ -1,0 +1,78 @@
+{
+  "phase": "9D3",
+  "checkpoint": "phase9d3_content_coding_independent_closure",
+  "status": "content_coding_independent_complete_all_carriers_green",
+  "generated_on": "2026-03-24",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "strict_failure_count": 0,
+    "remaining_missing_independent_scenarios": [],
+    "non_passing_independent_scenarios": []
+  },
+  "content_coding": {
+    "strict_target_required_evidence_tier": "independent_certification",
+    "artifact_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+    "scenario_status": {
+      "http11-content-coding-curl-client": {
+        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client",
+        "assertions_failed": [],
+        "error": null,
+        "id": "http11-content-coding-curl-client",
+        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client/index.json",
+        "passed": true,
+        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client/summary.json",
+        "source_bundle": ".artifacts/phase9d3_content_coding_runs/tmpp_3s3g55/phase9d3-content-coding-checkpoint/tigrcorn-independent-certification-release-matrix"
+      },
+      "http2-content-coding-curl-client": {
+        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client",
+        "assertions_failed": [],
+        "error": null,
+        "id": "http2-content-coding-curl-client",
+        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/index.json",
+        "passed": true,
+        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/summary.json",
+        "source_bundle": ".artifacts/phase9d3_content_coding_runs/tmpp_3s3g55/phase9d3-content-coding-checkpoint/tigrcorn-independent-certification-release-matrix"
+      },
+      "http3-content-coding-aioquic-client": {
+        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client",
+        "assertions_failed": [],
+        "error": null,
+        "id": "http3-content-coding-aioquic-client",
+        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/index.json",
+        "passed": true,
+        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/summary.json",
+        "source_bundle": ".artifacts/phase9d3_content_coding_runs/tmpp_3s3g55/phase9d3-content-coding-checkpoint/tigrcorn-independent-certification-release-matrix"
+      }
+    },
+    "local_behavior_bundle": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts",
+      "vector_ids": [
+        "http11-content-coding-gzip-pass",
+        "http11-content-coding-identity-forbidden-406",
+        "http11-content-coding-strict-unsupported-406",
+        "http2-content-coding-gzip-pass",
+        "http2-content-coding-identity-forbidden-406",
+        "http2-content-coding-strict-unsupported-406",
+        "http3-content-coding-gzip-pass",
+        "http3-content-coding-identity-forbidden-406",
+        "http3-content-coding-strict-unsupported-406"
+      ]
+    },
+    "local_positive_tests": [
+      "tests/test_http_content_coding_rfc9110.py",
+      "tests/test_content_coding_policy_local.py"
+    ],
+    "fixtures": [
+      "tests/fixtures_pkg/interop_content_coding_app.py",
+      "tests/fixtures_pkg/external_curl_client.py",
+      "tests/fixtures_pkg/external_h2_http_client.py",
+      "tests/fixtures_third_party/aioquic_http3_client.py"
+    ],
+    "note": "HTTP/1.1, HTTP/2, and HTTP/3 preserved positive third-party content-coding artifacts are now all passing under the 0.3.8 working release root. Local identity-only and strict negative behavior plus gzip parity continue to be preserved via tests and the local behavior artifact bundle."
+  }
+}

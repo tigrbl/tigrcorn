@@ -5,14 +5,16 @@ from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any
 
-from tigrcorn.asgi.receive import HTTPRequestReceive
+from tigrcorn.asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
 from tigrcorn.asgi.scopes.custom import build_custom_scope
 from tigrcorn.asgi.scopes.http import build_http_scope
 from tigrcorn.asgi.send import HTTPResponseCollector
 from tigrcorn.config.model import ListenerConfig, ServerConfig
 from tigrcorn.errors import ProtocolError
 from tigrcorn.observability.logging import AccessLogger
-from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, parse_connect_authority
+from tigrcorn.observability.metrics import Metrics
+from tigrcorn.security.tls import build_server_ssl_context
+from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
 from tigrcorn.protocols.custom.adapters import adapt_scope
 from tigrcorn.protocols.http1.parser import ParsedRequest
 from tigrcorn.protocols.content_coding import apply_http_content_coding
@@ -62,6 +64,7 @@ class HTTP3Session:
     timer_handle: asyncio.TimerHandle | None = None
     connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
     websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
+    stream_work_leases: dict[int, object] = field(default_factory=dict)
 
 
 class _HTTP3ConnectTunnel:
@@ -75,6 +78,7 @@ class _HTTP3ConnectTunnel:
         endpoint: UDPEndpoint,
         upstream_reader: asyncio.StreamReader,
         upstream_writer: asyncio.StreamWriter,
+        work_lease: object | None = None,
     ) -> None:
         self.handler = handler
         self.session = session
@@ -83,6 +87,7 @@ class _HTTP3ConnectTunnel:
         self.endpoint = endpoint
         self.upstream_reader = upstream_reader
         self.upstream_writer = upstream_writer
+        self.work_lease = work_lease
         self.relay_task: asyncio.Task[None] | None = None
         self.client_input_closed = False
         self.server_output_closed = False
@@ -130,13 +135,18 @@ class _HTTP3ConnectTunnel:
             with suppress(asyncio.CancelledError):
                 await self.relay_task
         self.session.connect_tunnels.pop(self.stream_id, None)
+        lease = self.session.stream_work_leases.pop(self.stream_id, None)
+        if lease is not None:
+            lease.release()
+        elif self.work_lease is not None:
+            self.work_lease.release()
         await close_tcp_writer(self.upstream_writer)
 
     async def _relay_upstream_to_client(self) -> None:
         reset_stream = False
         try:
             while True:
-                chunk = await self.upstream_reader.read(65536)
+                chunk = await asyncio.wait_for(self.upstream_reader.read(65536), timeout=self.handler.config.http.idle_timeout)
                 if not chunk:
                     break
                 await self.handler._send_http3_tunnel_data(
@@ -172,11 +182,13 @@ class _HTTP3ConnectTunnel:
 
 
 class HTTP3DatagramHandler:
-    def __init__(self, *, app: ASGIApp, config: ServerConfig, listener: ListenerConfig, access_logger: AccessLogger) -> None:
+    def __init__(self, *, app: ASGIApp, config: ServerConfig, listener: ListenerConfig, access_logger: AccessLogger, scheduler: ProductionScheduler | None = None, metrics: Metrics | None = None) -> None:
         self.app = app
         self.config = config
         self.listener = listener
         self.access_logger = access_logger
+        self.scheduler = scheduler
+        self.metrics = metrics
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._lock = asyncio.Lock()
@@ -184,23 +196,22 @@ class HTTP3DatagramHandler:
     def _configure_session_handshake(self, session: HTTP3Session) -> None:
         if not self.listener.ssl_enabled or session.quic.handshake_driver is not None:
             return
-        assert self.listener.ssl_certfile is not None
-        assert self.listener.ssl_keyfile is not None
-        certificate_pem = open(self.listener.ssl_certfile, 'rb').read()
-        private_key_pem = open(self.listener.ssl_keyfile, 'rb').read()
-        trusted_certificates = (open(self.listener.ssl_ca_certs, 'rb').read(),) if self.listener.ssl_ca_certs else ()
-        transport_parameters = TransportParameters(max_udp_payload_size=self.listener.max_datagram_size)
+        context = build_server_ssl_context(self.listener)
+        assert context is not None
+        transport_parameters = TransportParameters(max_udp_payload_size=self.listener.max_datagram_size, max_streams_bidi=self.config.scheduler.max_streams or 128, max_streams_uni=self.config.scheduler.max_streams or 128, idle_timeout=int(self.config.quic.idle_timeout * 1000))
         session.quic.configure_handshake(
             QuicTlsHandshakeDriver(
                 is_client=False,
-                alpn=('h3',),
+                alpn=tuple(self.listener.alpn_protocols or ('h3',)),
                 server_name=self.listener.host or 'localhost',
-                certificate_pem=certificate_pem,
-                private_key_pem=private_key_pem,
-                trusted_certificates=trusted_certificates,
-                require_client_certificate=self.listener.ssl_require_client_cert,
+                certificate_pem=context.certificate_pem,
+                private_key_pem=context.private_key_pem,
+                trusted_certificates=context.trusted_certificates,
+                require_client_certificate=context.require_client_certificate,
+                validation_policy=context.validation_policy,
+                cipher_suites=context.cipher_suites,
                 transport_parameters=transport_parameters,
-                enable_early_data=True,
+                enable_early_data=self.config.quic.early_data_policy != 'deny',
             )
         )
 
@@ -643,6 +654,7 @@ class HTTP3DatagramHandler:
         )
         if end_stream:
             session.websocket_sessions.pop(stream_id, None)
+            self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
         self._queue_session_outbound_locked(session, outbound, endpoint)
 
@@ -674,6 +686,7 @@ class HTTP3DatagramHandler:
         outbound = self._build_http3_data_datagrams_locked(session, stream_id, data, end_stream=end_stream)
         if end_stream:
             session.websocket_sessions.pop(stream_id, None)
+            self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
         self._queue_session_outbound_locked(session, outbound, endpoint)
 
@@ -724,6 +737,7 @@ class HTTP3DatagramHandler:
             return
         if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
             return
+        self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
         outbound = self._flush_qpack_streams(session)
         outbound.append(session.quic.reset_stream(stream_id, H3_CONNECT_ERROR))
@@ -754,6 +768,7 @@ class HTTP3DatagramHandler:
         if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
             return
         session.websocket_sessions.pop(stream_id, None)
+        self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
         outbound = self._flush_qpack_streams(session)
         outbound.append(session.quic.reset_stream(stream_id, H3_REQUEST_CANCELLED))
@@ -764,6 +779,28 @@ class HTTP3DatagramHandler:
             with suppress(Exception):
                 await websocket.abort()
         session.websocket_sessions.clear()
+
+
+    def _release_stream_work_lease(self, session: HTTP3Session, stream_id: int) -> None:
+        lease = session.stream_work_leases.pop(stream_id, None)
+        if lease is not None:
+            lease.release()
+
+    def _on_websocket_stream_closed(self, session: HTTP3Session, stream_id: int) -> None:
+        session.websocket_sessions.pop(stream_id, None)
+        self._release_stream_work_lease(session, stream_id)
+        session.h3.abandon_stream(stream_id)
+
+    def _admit_stream_work(self, session: HTTP3Session, stream_id: int) -> bool:
+        if self.scheduler is None:
+            return True
+        lease = self.scheduler.acquire_work()
+        if lease is None:
+            if self.metrics is not None:
+                self.metrics.scheduler_task_rejected()
+            return False
+        session.stream_work_leases[stream_id] = lease
+        return True
 
     def _request_target_from_header_map(self, header_map: dict[bytes, bytes]) -> str:
         method = header_map.get(b':method', b'GET')
@@ -817,12 +854,43 @@ class HTTP3DatagramHandler:
                 b'bad connect target',
                 end_stream=True,
             )
+        if self.config.http.connect_policy == 'deny':
+            self.access_logger.log_http(session.addr, 'CONNECT', authority or '', 403, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                403,
+                [(b'content-type', b'text/plain')],
+                b'connect denied',
+                end_stream=True,
+            )
+        if self.config.http.connect_policy == 'allowlist' and not is_connect_allowed(host, port, self.config.http.connect_allow):
+            self.access_logger.log_http(session.addr, 'CONNECT', authority or '', 403, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                403,
+                [(b'content-type', b'text/plain')],
+                b'connect denied',
+                end_stream=True,
+            )
+        if not self._admit_stream_work(session, stream_id):
+            self.access_logger.log_http(session.addr, 'CONNECT', authority or '', 503, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                503,
+                [(b'content-type', b'text/plain')],
+                b'scheduler overloaded',
+                end_stream=True,
+            )
         try:
             upstream_reader, upstream_writer = await asyncio.wait_for(
                 asyncio.open_connection(host, port),
                 timeout=getattr(self.config, 'read_timeout', 5.0),
             )
         except Exception:
+            self._release_stream_work_lease(session, stream_id)
             self.access_logger.log_http(session.addr, 'CONNECT', authority, 502, 'HTTP/3')
             return self._build_http3_response_datagrams_locked(
                 session,
@@ -840,6 +908,7 @@ class HTTP3DatagramHandler:
             endpoint=endpoint,
             upstream_reader=upstream_reader,
             upstream_writer=upstream_writer,
+            work_lease=session.stream_work_leases.get(stream_id),
         )
         session.connect_tunnels[stream_id] = tunnel
         tunnel.start()
@@ -861,6 +930,16 @@ class HTTP3DatagramHandler:
             b':scheme',
             self.listener.scheme.encode('ascii', 'ignore') if self.listener.scheme else b'https',
         ).decode('ascii', 'replace')
+        if not self._admit_stream_work(session, stream_id):
+            self.access_logger.log_http(session.addr, 'CONNECT', request.path, 503, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                503,
+                [(b'content-type', b'text/plain')],
+                b'scheduler overloaded',
+                end_stream=True,
+            )
         try:
             websocket = H3WebSocketSession(
                 app=self.app,
@@ -884,8 +963,11 @@ class HTTP3DatagramHandler:
                     end_stream=end_stream,
                     endpoint=endpoint,
                 ),
+                metrics=self.metrics,
+                on_close=lambda session=session, stream_id=stream_id: self._on_websocket_stream_closed(session, stream_id),
             )
         except ProtocolError:
+            self._release_stream_work_lease(session, stream_id)
             self.access_logger.log_http(session.addr, 'CONNECT', request.path, 400, 'HTTP/3')
             return self._build_http3_response_datagrams_locked(
                 session,
@@ -996,44 +1078,73 @@ class HTTP3DatagramHandler:
             header_block = session.h3.encode_headers(stream_id, header_lines)
             payload = encode_frame(FRAME_HEADERS, header_block) + encode_frame(FRAME_DATA, b'bad request')
             return [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, payload, fin=True)]
+        if not self._admit_stream_work(session, stream_id):
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                503,
+                [(b'content-type', b'text/plain')],
+                b'scheduler overloaded',
+                end_stream=True,
+            )
         request = self._build_request(request_state, header_map)
         client = session.addr
         local = endpoint.local_addr
         server = (local[0], local[1]) if isinstance(local, tuple) and len(local) >= 2 else ('', None)
         extensions = {}
-        request_trailers = list(getattr(request_state, 'trailers', ()))
+        raw_request_trailers = list(getattr(request_state, 'trailers', ()))
+        try:
+            request_trailers = apply_request_trailer_policy(raw_request_trailers, self.config.http.trailer_policy)
+        except ProtocolError:
+            self._release_stream_work_lease(session, stream_id)
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                400,
+                [(b'content-type', b'text/plain')],
+                b'bad request trailers',
+                end_stream=True,
+            )
         if request.method.upper() == 'CONNECT':
             extensions['tigrcorn.http.connect'] = {'authority': request.target}
-        if request_trailers:
+        if request_trailers and self.config.http.trailer_policy != 'drop':
             extensions['tigrcorn.http.request_trailers'] = {}
-        scope = build_http_scope(request, client=client, server=server, scheme=scheme, extensions=extensions)
-        receive = HTTPRequestReceive(request.body, trailers=request_trailers)
+        scope = build_http_scope(request, client=client, server=server, scheme=scheme, extensions=extensions, root_path=self.config.proxy.root_path, proxy=self.config.proxy)
+        receive = HTTPRequestReceive(request.body, trailers=request_trailers, trailer_policy=self.config.http.trailer_policy)
         send = HTTPResponseCollector()
         status = 500
         try:
-            await self.app(scope, receive, send)
-            status, headers, body = send.response_tuple()
-        except Exception:
-            status, headers, body = 500, [(b'content-type', b'text/plain')], b'internal server error'
-        status, headers, body, _selection = apply_http_content_coding(
-            request_headers=request.headers,
-            response_headers=headers,
-            body=body,
-            status=status,
-        )
-        headers = list(strip_connection_specific_headers(headers))
-        if self.config.server_header_value:
-            headers.append((b'server', self.config.server_header_value))
-        frame_payload = bytearray()
-        header_lines = [(b':status', str(status).encode('ascii')), *headers]
-        header_block = session.h3.encode_headers(stream_id, header_lines)
-        qpack_outbound = self._flush_qpack_streams(session)
-        frame_payload.extend(encode_frame(FRAME_HEADERS, header_block))
-        if body:
-            frame_payload.extend(encode_frame(FRAME_DATA, body))
-        self.access_logger.log_http(client, request.method, request.path, status, 'HTTP/3')
-        self.sessions[session.addr] = session
-        return [*qpack_outbound, session.quic.send_stream_data(stream_id, bytes(frame_payload), fin=True)]
+            try:
+                await self.app(scope, receive, send)
+                status, headers, body, trailers = send.response_tuple()
+            except Exception:
+                status, headers, body, trailers = 500, [(b'content-type', b'text/plain')], b'internal server error', []
+            status, headers, body, _selection = apply_http_content_coding(
+                request_headers=request.headers,
+                response_headers=headers,
+                body=body,
+                status=status,
+                policy=self.config.http.content_coding_policy,
+                supported=tuple(self.config.http.content_codings),
+            )
+            headers = list(strip_connection_specific_headers(headers))
+            if self.config.server_header_value:
+                headers.append((b'server', self.config.server_header_value))
+            frame_payload = bytearray()
+            header_lines = [(b':status', str(status).encode('ascii')), *headers]
+            header_block = session.h3.encode_headers(stream_id, header_lines)
+            qpack_outbound = self._flush_qpack_streams(session)
+            frame_payload.extend(encode_frame(FRAME_HEADERS, header_block))
+            if body:
+                frame_payload.extend(encode_frame(FRAME_DATA, body))
+            if trailers:
+                trailer_block = session.h3.encode_headers(stream_id, list(trailers))
+                frame_payload.extend(encode_frame(FRAME_HEADERS, trailer_block))
+            self.access_logger.log_http(client, request.method, request.path, status, 'HTTP/3')
+            self.sessions[session.addr] = session
+            return [*qpack_outbound, session.quic.send_stream_data(stream_id, bytes(frame_payload), fin=True)]
+        finally:
+            self._release_stream_work_lease(session, stream_id)
 
     async def _invoke_custom_quic_app(self, session: HTTP3Session, event: Any, endpoint: UDPEndpoint) -> list[bytes]:
         client = session.addr

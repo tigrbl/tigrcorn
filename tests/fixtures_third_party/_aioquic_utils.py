@@ -19,6 +19,37 @@ def write_json(path_env: str, payload: dict[str, Any]) -> None:
     Path(path).write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def path_status(path: Any) -> dict[str, Any]:
+    if path in (None, ""):
+        return {
+            "path": None,
+            "exists": False,
+            "is_file": False,
+        }
+    resolved = Path(str(path))
+    return {
+        "path": str(resolved),
+        "exists": resolved.exists(),
+        "is_file": resolved.is_file(),
+    }
+
+
+def certificate_input_status(*, cacert: Any, client_cert: Any = None, client_key: Any = None) -> dict[str, Any]:
+    ca = path_status(cacert)
+    cert = path_status(client_cert)
+    key = path_status(client_key)
+    client_material_requested = bool(client_cert or client_key)
+    client_material_ready = (not client_material_requested) or (cert["exists"] and key["exists"])
+    return {
+        "ca_cert": ca,
+        "client_cert": cert,
+        "client_key": key,
+        "client_material_requested": client_material_requested,
+        "client_material_ready": client_material_ready,
+        "ready": ca["exists"] and client_material_ready,
+    }
+
+
 def env_flag(name: str) -> bool:
     value = os.environ.get(name, "")
     return value.strip().lower() in {"1", "true", "yes", "on"}

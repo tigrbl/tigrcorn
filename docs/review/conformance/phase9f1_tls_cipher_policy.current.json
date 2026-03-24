@@ -1,0 +1,46 @@
+{
+  "phase": "9F1",
+  "checkpoint": "phase9f1_tls_cipher_policy_closure",
+  "implemented_flag": "--ssl-ciphers",
+  "status": "implemented_not_yet_strict_complete",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "promotion_target_passed": false,
+    "flag_surface_passed": false,
+    "operator_surface_passed": true,
+    "performance_passed": false,
+    "documentation_passed": true,
+    "remaining_flag_runtime_blockers": [
+      "--log-config",
+      "--statsd-host",
+      "--otel-endpoint",
+      "--limit-concurrency",
+      "--websocket-ping-interval",
+      "--websocket-ping-timeout"
+    ],
+    "remaining_non_passing_independent_scenarios": [
+      "websocket-http3-server-aioquic-client-permessage-deflate",
+      "http3-connect-relay-aioquic-client",
+      "http3-trailer-fields-aioquic-client",
+      "http3-content-coding-aioquic-client"
+    ]
+  },
+  "tls_cipher_policy_contract": {
+    "accepted_syntax": "colon-separated or comma-separated TLS 1.3 suite names",
+    "supported_values": [
+      "TLS_AES_128_GCM_SHA256",
+      "TLS_AES_256_GCM_SHA384"
+    ],
+    "tls_version_applicability": "TLS 1.3 only",
+    "runtime_fields": [
+      "config.tls.resolved_cipher_suites",
+      "listener.ssl_ciphers",
+      "listener.resolved_cipher_suites"
+    ],
+    "carriers": [
+      "tcp_tls",
+      "quic_tls"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "loss_detected": true,
+    "pto_positive": true,
+    "snapshot_valid": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

@@ -194,6 +194,25 @@ def parse_permessage_deflate_offers(headers: list[tuple[bytes, bytes]]) -> list[
     return offers
 
 
+
+
+def default_permessage_deflate_agreement(offers: list[PerMessageDeflateOffer]) -> PerMessageDeflateAgreement | None:
+    """Choose a default server agreement for a valid permessage-deflate offer set.
+
+    The server accepts the first valid offer and mirrors explicit window constraints so
+    the generated response header corresponds to the client offer across websocket
+    carriers, including HTTP/2 and HTTP/3 third-party clients that require explicit
+    parameter echoing.
+    """
+    if not offers:
+        return None
+    offer = offers[0]
+    return PerMessageDeflateAgreement(
+        server_no_context_takeover=offer.server_no_context_takeover,
+        client_no_context_takeover=False,
+        server_max_window_bits=offer.server_max_window_bits,
+        client_max_window_bits=offer.client_max_window_bits if offer.client_max_window_bits_requested else None,
+    )
 def negotiate_permessage_deflate(
     *,
     request_headers: list[tuple[bytes, bytes]],

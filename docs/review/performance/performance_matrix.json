@@ -1,0 +1,1483 @@
+{
+  "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",
+  "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
+  "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+  "metadata": {
+    "note": "explicit lane separation, richer threshold coverage, and relative regression budgets after public runtime closure",
+    "phase": "phase9g",
+    "purpose": "strict promotion-grade performance certification surface",
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ],
+    "lane_definitions": {
+      "component_regression": "low-noise same-stack regression profiles",
+      "end_to_end_release": "release-lane profiles representing externally visible protocol/runtime surfaces"
+    }
+  },
+  "profiles": [
+    {
+      "correctness_required": true,
+      "deployment_profile": "http1_baseline",
+      "description": "HTTP/1.1 baseline parser/profile path.",
+      "driver": "http11_baseline",
+      "driver_config": {},
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 40,
+      "profile_id": "http11_baseline",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 5,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http1_baseline",
+      "description": "HTTP/1.1 keep-alive reuse path.",
+      "driver": "http11_keepalive",
+      "driver_config": {},
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 40,
+      "profile_id": "http11_keepalive",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 5,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http1_baseline",
+      "description": "HTTP/1.1 chunked upload/download path.",
+      "driver": "http11_chunked_upload_download",
+      "driver_config": {},
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 20,
+      "profile_id": "http11_chunked_upload_download",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9112",
+        "RFC 9110 \u00a76.5"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http2_cleartext",
+      "description": "HTTP/2 multiplexing at 10 streams.",
+      "driver": "http2_multiplex",
+      "driver_config": {
+        "stream_count": 10
+      },
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 15,
+      "profile_id": "http2_multiplex_10",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9113",
+        "RFC 7541"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 3.0818600000000003,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 2.5187630000000003,
+        "max_p95_ms": 2.8617335,
+        "max_p99_9_ms": 4.1624805,
+        "max_time_to_first_byte_ms": 2.8617335,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 10,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http2_cleartext",
+      "description": "HTTP/2 multiplexing at 100 streams.",
+      "driver": "http2_multiplex",
+      "driver_config": {
+        "stream_count": 100
+      },
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 10,
+      "profile_id": "http2_multiplex_100",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9113",
+        "RFC 7541"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 25.009457,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 23.6046695,
+        "max_p95_ms": 24.558919999999997,
+        "max_p99_9_ms": 33.399276,
+        "max_time_to_first_byte_ms": 24.558919999999997,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 100,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http2_cleartext",
+      "description": "HTTP/2 multiplexing at 1000 streams.",
+      "driver": "http2_multiplex",
+      "driver_config": {
+        "stream_count": 1000
+      },
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 6,
+      "profile_id": "http2_multiplex_1000",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9113",
+        "RFC 7541"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 284.9738015,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 283.278542,
+        "max_p95_ms": 284.77486999999996,
+        "max_p99_9_ms": 380.0184015,
+        "max_time_to_first_byte_ms": 284.77486999999996,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1000,
+      "warmups": 1,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http2_tls",
+      "description": "HTTP/2 over TLS / ALPN path.",
+      "driver": "http2_tls",
+      "driver_config": {},
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 12,
+      "profile_id": "http2_tls",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9113",
+        "RFC 8446",
+        "RFC 7301"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 3.2875115000000004,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 2.2788995,
+        "max_p95_ms": 2.878895,
+        "max_p99_9_ms": 4.436682,
+        "max_time_to_first_byte_ms": 2.878895,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http3_quic",
+      "description": "HTTP/3 clean-network path.",
+      "driver": "http3_clean_network",
+      "driver_config": {},
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 15,
+      "profile_id": "http3_clean_network",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9204"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0515865,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.469498,
+        "max_p95_ms": 1.884959,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.884959,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http3_quic",
+      "description": "HTTP/3 loss / jitter / recovery path.",
+      "driver": "http3_loss_jitter",
+      "driver_config": {},
+      "family": "HTTP",
+      "hot_path": true,
+      "iterations": 12,
+      "profile_id": "http3_loss_jitter",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9002",
+        "RFC 9204"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0191875,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 64,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http11",
+      "description": "WebSocket over HTTP/1.1 baseline.",
+      "driver": "ws_http11",
+      "driver_config": {},
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 35,
+      "profile_id": "ws_http11",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 6455"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52486.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 5,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http11_permessage_deflate",
+      "description": "WebSocket over HTTP/1.1 with permessage-deflate.",
+      "driver": "ws_http11_permessage_deflate",
+      "driver_config": {},
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 25,
+      "profile_id": "ws_http11_permessage_deflate",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 6455",
+        "RFC 7692"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http2",
+      "description": "WebSocket over HTTP/2 baseline.",
+      "driver": "ws_http2",
+      "driver_config": {},
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 20,
+      "profile_id": "ws_http2",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 8441"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0231295,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.2317765,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http2_permessage_deflate",
+      "description": "WebSocket over HTTP/2 with permessage-deflate.",
+      "driver": "ws_http2_permessage_deflate",
+      "driver_config": {},
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 18,
+      "profile_id": "ws_http2_permessage_deflate",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 8441",
+        "RFC 7692"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.161446,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.4855345,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http3",
+      "description": "WebSocket over HTTP/3 baseline.",
+      "driver": "ws_http3",
+      "driver_config": {},
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 18,
+      "profile_id": "ws_http3",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9220",
+        "RFC 9114",
+        "RFC 9204"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.318073,
+        "max_p95_ms": 1.518983,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.518983,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http3_permessage_deflate",
+      "description": "WebSocket over HTTP/3 with permessage-deflate.",
+      "driver": "ws_http3_permessage_deflate",
+      "driver_config": {},
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 15,
+      "profile_id": "ws_http3_permessage_deflate",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9220",
+        "RFC 7692",
+        "RFC 9204"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.4035730000000002,
+        "max_p95_ms": 1.5730760000000001,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.5730760000000001,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "websocket_http11",
+      "description": "WebSocket fanout / broadcast profile.",
+      "driver": "ws_fanout_broadcast",
+      "driver_config": {
+        "fanout": 32
+      },
+      "family": "WebSocket",
+      "hot_path": true,
+      "iterations": 15,
+      "profile_id": "ws_fanout_broadcast",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 6455"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 32,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http2_tls",
+      "description": "TLS handshake / context setup.",
+      "driver": "tls_handshake",
+      "driver_config": {},
+      "family": "TLS / PKI",
+      "hot_path": true,
+      "iterations": 10,
+      "profile_id": "tls_handshake",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 8446"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 3.5031079999999997,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.346486,
+        "max_p95_ms": 3.4959665,
+        "max_p99_9_ms": 4.7241435,
+        "max_time_to_first_byte_ms": 3.4959665,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http3_quic_mtls",
+      "description": "mTLS handshake / context setup.",
+      "driver": "mtls_handshake",
+      "driver_config": {},
+      "family": "TLS / PKI",
+      "hot_path": true,
+      "iterations": 10,
+      "profile_id": "mtls_handshake",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 8446",
+        "RFC 5280"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.274311,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.5328355,
+        "max_p95_ms": 2.0481814999999997,
+        "max_p99_9_ms": 3.0857474999999996,
+        "max_time_to_first_byte_ms": 2.0481814999999997,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "tls_ocsp_strict",
+      "description": "OCSP strict-mode validation policy cost.",
+      "driver": "ocsp_strict_mode",
+      "driver_config": {},
+      "family": "TLS / PKI",
+      "hot_path": true,
+      "iterations": 8,
+      "profile_id": "ocsp_strict_mode",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 6960",
+        "RFC 5280"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.5851795,
+        "max_p95_ms": 1.831307,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.831307,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 1,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "http2_tls",
+      "description": "ALPN normalization / negotiation policy cost.",
+      "driver": "alpn_negotiation_cost",
+      "driver_config": {
+        "values": [
+          "h2",
+          "http/1.1"
+        ]
+      },
+      "family": "TLS / PKI",
+      "hot_path": true,
+      "iterations": 30,
+      "profile_id": "alpn_negotiation_cost",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 7301"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "connect_http11",
+      "description": "CONNECT relay policy and allowlist throughput.",
+      "driver": "connect_relay_throughput",
+      "driver_config": {},
+      "family": "Semantic extras",
+      "hot_path": true,
+      "iterations": 30,
+      "profile_id": "connect_relay_throughput",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9110 \u00a79.3.6"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "trailers_http11",
+      "description": "Trailer parsing under load.",
+      "driver": "trailers_under_load",
+      "driver_config": {},
+      "family": "Semantic extras",
+      "hot_path": true,
+      "iterations": 20,
+      "profile_id": "trailers_under_load",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9110 \u00a76.5"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": true,
+      "deployment_profile": "content_coding_http11",
+      "description": "Content coding negotiation under load.",
+      "driver": "content_coding_under_load",
+      "driver_config": {
+        "codings": [
+          "gzip",
+          "deflate"
+        ],
+        "policy": "allowlist"
+      },
+      "family": "Semantic extras",
+      "hot_path": true,
+      "iterations": 20,
+      "profile_id": "content_coding_under_load",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [
+        "RFC 9110 \u00a78"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "end_to_end_release",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": true
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_baseline",
+      "description": "Logging disabled overhead baseline.",
+      "driver": "logging_off",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 40,
+      "profile_id": "logging_off",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 5,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_baseline",
+      "description": "Structured access logging overhead.",
+      "driver": "logging_on",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 20,
+      "profile_id": "logging_on",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.7904265,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.935518,
+        "max_p95_ms": 2.7164375,
+        "max_p99_9_ms": 3.773901,
+        "max_time_to_first_byte_ms": 2.7164375,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_baseline",
+      "description": "Metrics disabled overhead baseline.",
+      "driver": "metrics_off",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 40,
+      "profile_id": "metrics_off",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 5,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_baseline",
+      "description": "Metrics rendering overhead.",
+      "driver": "metrics_on",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 20,
+      "profile_id": "metrics_on",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_proxy",
+      "description": "Proxy header normalization disabled.",
+      "driver": "proxy_headers_off",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 25,
+      "profile_id": "proxy_headers_off",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_proxy",
+      "description": "Proxy header normalization enabled.",
+      "driver": "proxy_headers_on",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 25,
+      "profile_id": "proxy_headers_on",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 3,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "worker_prefork_proxy",
+      "description": "Worker scale-out planning / replacement overhead.",
+      "driver": "worker_scaleout",
+      "driver_config": {
+        "workers": 4
+      },
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 12,
+      "profile_id": "worker_scaleout",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 4,
+      "warmups": 2,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "worker_prefork_proxy",
+      "description": "Graceful drain / stop-all overhead.",
+      "driver": "graceful_drain",
+      "driver_config": {
+        "workers": 4
+      },
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 12,
+      "profile_id": "graceful_drain",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 2.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 1.0,
+        "max_p95_ms": 1.5,
+        "max_p99_9_ms": 3.0,
+        "max_time_to_first_byte_ms": 1.0,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 4,
+      "warmups": 2,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    },
+    {
+      "correctness_required": false,
+      "deployment_profile": "http1_baseline",
+      "description": "Polling reloader snapshot / restart detection overhead.",
+      "driver": "reload_overhead",
+      "driver_config": {},
+      "family": "Operator overhead",
+      "hot_path": false,
+      "iterations": 12,
+      "profile_id": "reload_overhead",
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 0.5,
+        "absolute_p99_slack_ms": 0.25,
+        "absolute_p99_9_slack_ms": 0.5,
+        "absolute_cpu_slack_seconds": 0.02,
+        "absolute_rss_slack_kib": 2048.0
+      },
+      "rfc_targets": [],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_p99_ms": 4.875356,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_p50_ms": 3.6399245,
+        "max_p95_ms": 4.8619864999999995,
+        "max_p99_9_ms": 6.5538075000000005,
+        "max_time_to_first_byte_ms": 4.8619864999999995,
+        "max_handshake_latency_ms": 5.0,
+        "max_scheduler_rejections": 4,
+        "max_protocol_stalls": 4,
+        "max_rss_kib": 52906.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 2,
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "live_listener_required": false
+    }
+  ]
+}

@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "phase": 9,
+  "checkpoint": "phase9_implementation_plan_checkpoint",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "flag_surface_passed": false,
+    "operator_surface_passed": true,
+    "performance_passed": false,
+    "documentation_passed": true,
+    "final_promotion_gate_passed": false,
+    "strict_target_missing_independent_scenarios": [
+      "http11-connect-relay-curl-client",
+      "http2-connect-relay-h2-client",
+      "http3-connect-relay-aioquic-client",
+      "http11-trailer-fields-curl-client",
+      "http2-trailer-fields-h2-client",
+      "http3-trailer-fields-aioquic-client",
+      "http11-content-coding-curl-client",
+      "http2-content-coding-curl-client",
+      "http3-content-coding-aioquic-client",
+      "tls-server-ocsp-validation-openssl-client"
+    ],
+    "flag_runtime_blockers": [
+      "--ssl-ciphers",
+      "--log-config",
+      "--statsd-host",
+      "--otel-endpoint",
+      "--limit-concurrency",
+      "--websocket-ping-interval",
+      "--websocket-ping-timeout"
+    ],
+    "performance_blockers": {
+      "missing_metric_keys": [
+        "handshake_latency_ms",
+        "p99_9_ms",
+        "protocol_stalls",
+        "time_to_first_byte_ms"
+      ],
+      "missing_threshold_keys": [
+        "max_handshake_latency_ms",
+        "max_p50_ms",
+        "max_p95_ms",
+        "max_p99_9_ms",
+        "max_protocol_stalls",
+        "max_rss_kib",
+        "max_scheduler_rejections",
+        "max_time_to_first_byte_ms"
+      ],
+      "missing_relative_budget_keys": [
+        "max_cpu_increase_fraction",
+        "max_p99_9_increase_fraction",
+        "max_rss_increase_fraction"
+      ]
+    },
+    "strict_target_non_passing_independent_scenarios": [
+      "websocket-http3-server-aioquic-client-permessage-deflate"
+    ]
+  },
+  "completed_surfaces": {
+    "strict_target_rfcs_already_complete": [
+      "RFC 9112",
+      "RFC 9113",
+      "RFC 9114",
+      "RFC 9000",
+      "RFC 9001",
+      "RFC 9002",
+      "RFC 7541",
+      "RFC 9204",
+      "RFC 6455",
+      "RFC 8441",
+      "RFC 9220",
+      "RFC 8446",
+      "RFC 5280",
+      "RFC 7301"
+    ],
+    "strict_target_rfcs_still_blocked": [
+      "RFC 7692",
+      "RFC 9110 \u00a79.3.6",
+      "RFC 9110 \u00a76.5",
+      "RFC 9110 \u00a78",
+      "RFC 6960"
+    ],
+    "operator_surface_complete_keys": [
+      "workers_process_supervision",
+      "reload",
+      "proxy_header_normalization",
+      "root_path_scope_injection",
+      "structured_logging",
+      "metrics_endpoint",
+      "resource_timeout_controls_wired"
+    ]
+  },
+  "phases": [
+    {
+      "phase_id": "9A",
+      "title": "freeze the promotion contract",
+      "objective": "remove ambiguity in semantics, release-root policy, and acceptance criteria",
+      "blockers_closed": [
+        "contract ambiguity"
+      ],
+      "dependencies": [],
+      "key_files": [
+        "docs/review/conformance/STRICT_PROFILE_TARGET.md",
+        "docs/review/conformance/FLAG_CERTIFICATION_TARGET.md",
+        "docs/review/performance/PERFORMANCE_SLOS.md",
+        "docs/review/conformance/promotion_gate.target.json",
+        "docs/review/conformance/flag_contracts.json",
+        "docs/review/conformance/flag_covering_array.json",
+        "CURRENT_REPOSITORY_STATE.md"
+      ],
+      "exit_criteria": [
+        "every blocker has an owner and a tracked deliverable",
+        "0.3.8 release root is frozen as the next promotion target"
+      ]
+    },
+    {
+      "phase_id": "9B",
+      "title": "shared independent-certification harness foundation",
+      "objective": "standardize third-party scenario execution and artifact capture",
+      "blockers_closed": [
+        "artifact repeatability"
+      ],
+      "dependencies": [
+        "9A"
+      ],
+      "key_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "tools/",
+        "src/tigrcorn/compat/release_gates.py"
+      ],
+      "exit_criteria": [
+        "at least one already-green independent scenario reruns into the new release layout",
+        "artifact validation rejects incomplete bundles"
+      ]
+    },
+    {
+      "phase_id": "9C",
+      "title": "RFC 7692 independent-certification closure",
+      "objective": "promote permessage-deflate from local/runtime support to independent evidence",
+      "blockers_closed": [
+        "websocket-http11-server-websockets-client-permessage-deflate",
+        "websocket-http2-server-h2-client-permessage-deflate",
+        "websocket-http3-server-aioquic-client-permessage-deflate"
+      ],
+      "dependencies": [
+        "9B"
+      ],
+      "key_files": [
+        "src/tigrcorn/protocols/websocket/extensions.py",
+        "src/tigrcorn/protocols/websocket/handler.py",
+        "src/tigrcorn/protocols/http2/websocket.py",
+        "src/tigrcorn/protocols/http3/websocket.py",
+        "docs/review/conformance/external_matrix.release.json"
+      ],
+      "exit_criteria": [
+        "all three RFC 7692 scenarios have preserved passing third-party artifacts",
+        "RFC 7692 resolves at independent_certification"
+      ]
+    },
+    {
+      "phase_id": "9D",
+      "title": "RFC 9110 bounded semantic closure at independent tier",
+      "objective": "promote CONNECT, trailers, and content coding to independent evidence",
+      "blockers_closed": [
+        "http11-connect-relay-curl-client",
+        "http2-connect-relay-h2-client",
+        "http3-connect-relay-aioquic-client",
+        "http11-trailer-fields-curl-client",
+        "http2-trailer-fields-h2-client",
+        "http3-trailer-fields-aioquic-client",
+        "http11-content-coding-curl-client",
+        "http2-content-coding-curl-client",
+        "http3-content-coding-aioquic-client"
+      ],
+      "dependencies": [
+        "9B"
+      ],
+      "key_files": [
+        "src/tigrcorn/protocols/connect.py",
+        "src/tigrcorn/protocols/content_coding.py",
+        "src/tigrcorn/asgi/receive.py",
+        "src/tigrcorn/asgi/send.py",
+        "src/tigrcorn/server/runner.py",
+        "src/tigrcorn/protocols/http2/handler.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "docs/review/conformance/external_matrix.release.json"
+      ],
+      "exit_criteria": [
+        "all nine RFC 9110 bounded-semantic scenarios have preserved passing third-party artifacts",
+        "RFC 9110 bounded sections resolve at independent_certification"
+      ]
+    },
+    {
+      "phase_id": "9E",
+      "title": "RFC 6960 independent-certification closure",
+      "objective": "promote OCSP behavior from local to preserved third-party evidence",
+      "blockers_closed": [
+        "tls-server-ocsp-validation-openssl-client"
+      ],
+      "dependencies": [
+        "9B"
+      ],
+      "key_files": [
+        "src/tigrcorn/security/tls.py",
+        "src/tigrcorn/security/policies.py",
+        "src/tigrcorn/security/x509/path.py",
+        "docs/review/conformance/external_matrix.release.json"
+      ],
+      "exit_criteria": [
+        "the openssl OCSP scenario has preserved passing artifacts",
+        "RFC 6960 resolves at independent_certification"
+      ]
+    },
+    {
+      "phase_id": "9F",
+      "title": "public flag contract/runtime closure",
+      "objective": "turn the seven remaining flags into fully wired, tested surfaces",
+      "blockers_closed": [
+        "--ssl-ciphers",
+        "--log-config",
+        "--statsd-host",
+        "--otel-endpoint",
+        "--limit-concurrency",
+        "--websocket-ping-interval",
+        "--websocket-ping-timeout"
+      ],
+      "dependencies": [
+        "9A"
+      ],
+      "key_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/normalize.py",
+        "src/tigrcorn/config/validate.py",
+        "src/tigrcorn/security/tls.py",
+        "src/tigrcorn/security/tls13/extensions.py",
+        "src/tigrcorn/security/tls13/handshake.py",
+        "src/tigrcorn/observability/logging.py",
+        "src/tigrcorn/observability/metrics.py",
+        "src/tigrcorn/observability/tracing.py",
+        "src/tigrcorn/flow/keepalive.py",
+        "src/tigrcorn/scheduler/policy.py",
+        "src/tigrcorn/scheduler/runtime.py",
+        "src/tigrcorn/server/runner.py",
+        "src/tigrcorn/protocols/websocket/handler.py",
+        "src/tigrcorn/protocols/http2/websocket.py",
+        "src/tigrcorn/protocols/http3/websocket.py"
+      ],
+      "exit_criteria": [
+        "all 84 public flag strings are promotion-ready",
+        "flag surface passes in evaluate_promotion_target"
+      ]
+    },
+    {
+      "phase_id": "9G",
+      "title": "strict performance target closure",
+      "objective": "upgrade the Phase 6 harness to the stricter promotion-grade performance program",
+      "blockers_closed": [
+        "performance metric gaps",
+        "performance threshold gaps",
+        "performance lane gaps"
+      ],
+      "dependencies": [
+        "9F"
+      ],
+      "key_files": [
+        "src/tigrcorn/compat/perf_runner.py",
+        "tools/run_perf_matrix.py",
+        "benchmarks/",
+        "docs/review/performance/PERFORMANCE_SLOS.md",
+        "docs/review/performance/performance_slos.json",
+        "docs/review/performance/performance_matrix.json",
+        "docs/review/performance/artifacts/"
+      ],
+      "exit_criteria": [
+        "performance target passes in evaluate_promotion_target",
+        "required lanes and artifact files are present and validated"
+      ]
+    },
+    {
+      "phase_id": "9H",
+      "title": "promotion-evaluator hardening",
+      "objective": "make the composite evaluator enforce the entire target without under-checking",
+      "blockers_closed": [
+        "evaluator under-enforcement"
+      ],
+      "dependencies": [
+        "9G"
+      ],
+      "key_files": [
+        "src/tigrcorn/compat/release_gates.py",
+        "tests/test_release_gates.py",
+        "tests/test_phase6_performance_harness.py",
+        "tests/test_phase8_promotion_targets.py",
+        "docs/review/conformance/promotion_gate.target.json"
+      ],
+      "exit_criteria": [
+        "negative fixtures fail for every missing metric, file, and lane",
+        "the evaluator only passes when the strict target is complete"
+      ]
+    },
+    {
+      "phase_id": "9I",
+      "title": "release assembly and certifiable checkpoint",
+      "objective": "assemble the new release root and cut the first fully promotion-green checkpoint",
+      "blockers_closed": [
+        "final promotion gate"
+      ],
+      "dependencies": [
+        "9C",
+        "9D",
+        "9E",
+        "9F",
+        "9G",
+        "9H"
+      ],
+      "key_files": [
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "CURRENT_REPOSITORY_STATE.md",
+        "README.md",
+        "docs/review/conformance/README.md",
+        "docs/review/conformance/phase8_strict_promotion_target_status.current.json"
+      ],
+      "exit_criteria": [
+        "authoritative boundary, strict boundary, flag surface, operator surface, performance target, and documentation all pass",
+        "the package can honestly claim strict-target complete certification"
+      ]
+    },
+    {
+      "phase_id": "10",
+      "title": "optional post-promotion boundary expansion",
+      "objective": "expand into adjacent HTTP validator and digest work after the strict target is complete",
+      "blockers_closed": [],
+      "dependencies": [
+        "9I"
+      ],
+      "key_files": [
+        "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md",
+        "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md"
+      ],
+      "exit_criteria": [
+        "RFC 7232 is implemented as a first-class subsystem if selected",
+        "RFC 9530 is implemented after representation metadata exists if selected"
+      ]
+    }
+  ],
+  "parallelization": {
+    "stream_a_strict_rfc_evidence": [
+      "9B",
+      "9C",
+      "9D",
+      "9E"
+    ],
+    "stream_b_runtime_flag_closure": [
+      "9A",
+      "9F"
+    ],
+    "stream_c_performance_and_gates": [
+      "9A",
+      "9G",
+      "9H"
+    ],
+    "critical_path": [
+      "9A",
+      "9B",
+      "9C",
+      "9D",
+      "9E",
+      "9F",
+      "9G",
+      "9H",
+      "9I"
+    ]
+  },
+  "promotion_definition_of_done": [
+    "all 13 missing strict-target scenarios preserved as passing third-party artifacts under a new release root",
+    "RFC 7692, RFC 9110 \u00a79.3.6, RFC 9110 \u00a76.5, RFC 9110 \u00a78, and RFC 6960 resolve at independent_certification",
+    "all 7 remaining public flag gaps are fully wired and tested",
+    "operator surface stays green",
+    "performance target emits all required metrics, thresholds, budgets, lanes, and artifact files",
+    "promotion evaluator enforces the full target contract",
+    "documentation remains truthful before and after promotion"
+  ],
+  "post_promotion_backlog": {
+    "adjacent_next_rfcs": [
+      "RFC 7232",
+      "RFC 9530"
+    ],
+    "conditional_expansion_rfcs": [
+      "RFC 9111",
+      "RFC 9421"
+    ],
+    "keep_outside_transport_boundary_unless_product_expands": [
+      "RFC 7515",
+      "RFC 7516",
+      "RFC 7519",
+      "RFC 8152",
+      "RFC 9052"
+    ]
+  },
+  "phase_execution_status": {
+    "9A": {
+      "status": "completed",
+      "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md",
+      "status_json": "docs/review/conformance/phase9a_promotion_contract.current.json",
+      "backlog_doc": "docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md",
+      "backlog_json": "docs/review/conformance/phase9a_execution_backlog.current.json"
+    },
+    "9B": {
+      "status": "completed",
+      "status_doc": "docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md",
+      "status_json": "docs/review/conformance/phase9b_independent_harness.current.json"
+    },
+    "9C": {
+      "status": "partially_completed",
+      "status_doc": "docs/review/conformance/PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md",
+      "status_json": "docs/review/conformance/phase9c_rfc7692_independent_closure.current.json"
+    },
+    "9D": {
+      "status": "not_started"
+    },
+    "9E": {
+      "status": "not_started"
+    },
+    "9F": {
+      "status": "not_started"
+    },
+    "9G": {
+      "status": "not_started"
+    },
+    "9H": {
+      "status": "not_started"
+    },
+    "9I": {
+      "status": "not_started"
+    },
+    "10": {
+      "status": "not_started"
+    }
+  }
+}

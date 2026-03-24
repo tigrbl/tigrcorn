@@ -1,0 +1,175 @@
+{
+  "checkpoint": "phase8_rfc_applicability_competitor_support_update",
+  "reviewed_on": "2026-03-20",
+  "summary": {
+    "core_applicable_rfcs_from_user_table": [
+      "rfc9112",
+      "rfc9113",
+      "rfc9114",
+      "rfc9110_bounded"
+    ],
+    "adjacent_optional_expansion_rfcs": [
+      "rfc7232",
+      "rfc9530"
+    ],
+    "separate_boundary_optional_rfcs": [
+      "rfc7515",
+      "rfc7516",
+      "rfc7519",
+      "rfc8152",
+      "rfc9052"
+    ],
+    "first_priority_is_strict_current_target_closure": true,
+    "notes": [
+      "tigrcorn is strongest today as a transport/server RFC implementation rather than a JOSE/COSE or caching platform",
+      "the package should finish its current strict target before expanding the certification boundary",
+      "RFC 7232, RFC 9111, RFC 9530, and RFC 9421 are the most sensible next HTTP-semantic expansions if the boundary grows"
+    ],
+    "conditional_boundary_expansion_rfcs": [
+      "rfc9111",
+      "rfc9421"
+    ]
+  },
+  "applicability": {
+    "rfc9112": {
+      "applicability": "core_transport",
+      "current_state": "targeted_and_independently_certified",
+      "recommended_posture": "keep_core"
+    },
+    "rfc9113": {
+      "applicability": "core_transport",
+      "current_state": "targeted_and_independently_certified",
+      "recommended_posture": "keep_core"
+    },
+    "rfc9114": {
+      "applicability": "core_transport",
+      "current_state": "targeted_and_independently_certified",
+      "recommended_posture": "keep_core"
+    },
+    "rfc9110": {
+      "applicability": "core_but_bounded",
+      "current_state": "targeted_only_for_connect_trailers_and_content_coding",
+      "recommended_posture": "keep_bounded_until_boundary_expands"
+    },
+    "rfc7232": {
+      "applicability": "adjacent_expansion",
+      "current_state": "not_targeted",
+      "recommended_posture": "add_if_origin_validator_semantics_are_desired"
+    },
+    "rfc9111": {
+      "applicability": "conditional_expansion",
+      "current_state": "not_targeted",
+      "recommended_posture": "add_only_if_cache_revalidation_semantics_are_deliberately_adopted"
+    },
+    "rfc9530": {
+      "applicability": "adjacent_expansion",
+      "current_state": "not_targeted",
+      "recommended_posture": "add_if_digest_fields_become_product_requirements"
+    },
+    "rfc9421": {
+      "applicability": "conditional_expansion",
+      "current_state": "not_targeted",
+      "recommended_posture": "add_only_if_signed_http_message_handling_becomes_a_product_goal"
+    },
+    "rfc7515": {
+      "applicability": "separate_auth_crypto_boundary",
+      "current_state": "not_targeted",
+      "recommended_posture": "keep_optional"
+    },
+    "rfc7516": {
+      "applicability": "separate_auth_crypto_boundary",
+      "current_state": "not_targeted",
+      "recommended_posture": "keep_optional"
+    },
+    "rfc7519": {
+      "applicability": "separate_auth_crypto_boundary",
+      "current_state": "not_targeted",
+      "recommended_posture": "keep_optional"
+    },
+    "rfc8152": {
+      "applicability": "separate_binary_envelope_boundary",
+      "current_state": "not_targeted",
+      "recommended_posture": "keep_optional"
+    },
+    "rfc9052": {
+      "applicability": "separate_binary_envelope_boundary",
+      "current_state": "not_targeted",
+      "recommended_posture": "keep_optional"
+    }
+  },
+  "recommended_next_work": {
+    "strict_current_target_closure": [
+      "promote rfc7692 from local conformance to independent certification",
+      "promote rfc9110_connect from local conformance to independent certification",
+      "promote rfc9110_trailers from local conformance to independent certification",
+      "promote rfc9110_content_coding from local conformance to independent certification",
+      "promote rfc6960 from local conformance to independent certification",
+      "finish stronger quic_http3_flow_control evidence",
+      "finish missing public operator surface and performance gates"
+    ],
+    "boundary_expansion_after_strict_closure": [
+      "implement rfc7232 conditional request subsystem",
+      "implement rfc9530 content_digest and repr_digest",
+      "implement rfc9111 origin-side cache and revalidation correctness if cache-aware behavior becomes a deliberate product goal",
+      "implement rfc9421 http message signatures if signed edge or gateway behavior becomes a deliberate product goal",
+      "implement rfc8941 structured fields as a supporting dependency"
+    ],
+    "keep_optional_unless_boundary_changes": [
+      "rfc7515",
+      "rfc7516",
+      "rfc7519",
+      "rfc8152",
+      "rfc9052"
+    ]
+  },
+  "public_competitor_support": {
+    "tigrcorn": {
+      "http1": "yes",
+      "http2": "yes",
+      "http3": "yes",
+      "bounded_rfc9110_target": "yes",
+      "rfc7232_rfc9111_rfc9530_rfc9421_first_class_server_feature": "no",
+      "notes": "transport-centric RFC program with deeper H3/QUIC posture than the reviewed competitors"
+    },
+    "uvicorn": {
+      "http1": "yes",
+      "http2": "no_public_current_claim",
+      "http3": "no_public_current_claim",
+      "websocket": "yes",
+      "reload": "yes",
+      "workers": "yes",
+      "permessage_deflate": "yes",
+      "notes": "strong CLI/operator surface, but current official docs only market HTTP/1.1 and WebSockets"
+    },
+    "hypercorn": {
+      "http1": "yes",
+      "http2": "yes",
+      "http3": "optional_draft_via_aioquic",
+      "websocket": "yes_over_http1_and_http2",
+      "config_files": "yes",
+      "workers": "yes",
+      "statsd": "yes",
+      "notes": "broad server surface and tuning/config features; public docs are less explicit than tigrcorn on H3 certification depth"
+    },
+    "daphne": {
+      "http1": "yes",
+      "http2": "yes",
+      "http3": "no_public_current_claim",
+      "websocket": "yes",
+      "fd_and_endpoint_strings": "yes",
+      "notes": "solid HTTP/2/WebSocket server positioning with Twisted endpoint flexibility, but much narrower documented tuning surface"
+    },
+    "granian": {
+      "http1": "yes",
+      "http2": "yes",
+      "http3": "future_direction_not_current_support",
+      "websocket": "yes",
+      "mtls": "yes",
+      "runtime_tuning": "yes",
+      "notes": "very strong runtime and throughput-oriented surface; current public docs say HTTP/3 is eventual rather than current"
+    }
+  },
+  "notes": {
+    "authoritative_answer_alignment": "This machine-readable snapshot aligns with RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md: RFC 7232 and RFC 9530 are the best adjacent next targets, while RFC 9111 and RFC 9421 are conditional boundary-expansion work."
+  }
+}

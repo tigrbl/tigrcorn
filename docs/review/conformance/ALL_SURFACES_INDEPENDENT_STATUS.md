@@ -59,3 +59,26 @@ The archive now also ships a separate provisional flow-control review bundle and
 6. Preserve independent OCSP policy artifacts for the package-owned TLS stack.
 
 The machine-readable snapshot for this stricter planning profile lives in `docs/review/conformance/all_surfaces_independent_state.json`. The secondary repository-level partial snapshot lives in `docs/review/conformance/secondary_partials_state.json`.
+
+
+## Phase 3 code/public-surface closure
+
+The public strict-surface controls are no longer the main blocker. This checkpoint lands:
+
+- `--websocket-compression`
+- `--connect-policy` / `--connect-allow`
+- `--trailer-policy`
+- `--content-coding-policy` / `--content-codings`
+- `--ssl-ocsp-mode`, `--ssl-ocsp-cache-size`, `--ssl-ocsp-max-age`, `--ssl-crl-mode`, `--ssl-revocation-fetch`
+- `--ssl-alpn`
+
+Those controls are now wired into the runtime across the applicable HTTP/1.1, HTTP/2, HTTP/3, WebSocket, and TLS / QUIC-TLS paths.
+
+The remaining honest blocker for this stricter profile is preserved independent evidence, not the absence of the public policy surface.
+
+
+## Phase 5 note
+
+Phase 5 promotes the broader interop / flow-control evidence roots, but it does **not** by itself close the strict all-surfaces-independent overlay.
+The strict overlay still lacks preserved third-party independent artifacts for the 13 scenario ids enumerated in `all_surfaces_independent_state.json`.
+The new minimum certified flow-control bundle and the new minimum certified intermediary/proxy-adjacent corpus should therefore be read as **repository-strengthening evidence roots**, not as proof that the strict overlay is fully green.

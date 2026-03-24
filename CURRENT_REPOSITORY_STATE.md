@@ -1,79 +1,98 @@
 # Current repository state
 
-The canonical package-wide certification target is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+The current authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-A current gate snapshot is also published in `docs/review/conformance/RELEASE_GATE_STATUS.md` and `docs/review/conformance/release_gate_status.current.json`.
+The repository continues to operate under the **dual-boundary model**:
 
-A focused status document for the now-completed third-party HTTP/3 and RFC 9220 closure work lives in `docs/review/conformance/INDEPENDENT_HTTP3_CERTIFICATION_STATE.md`.
+Historical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the canonical 0.3.8 release root is now green.
 
-The policy decision that resolved the earlier local-tier documentation mismatch is recorded in `docs/review/conformance/CERTIFICATION_POLICY_ALIGNMENT.md`.
+- `evaluate_release_gates('.')` is **green** under the authoritative boundary
+- the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **green** under the canonical 0.3.8 release root
+- `evaluate_promotion_target()` is now **green**
 
-Historical offline-planning artifacts remain documented in `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`.
+Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. Under the canonical 0.3.8 release root, the package is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.
 
-## Completed in this update
+What is now true:
 
-- The package-owned TCP/TLS listener path remains package-owned and does not delegate the release-critical listener path to `ssl.create_default_context`.
-- The canonical release evidence remains consolidated under `docs/review/conformance/releases/0.3.6/release-0.3.6/`.
-- `docs/review/conformance/external_matrix.release.json` now has preserved passing third-party artifacts for all declared `aioquic` HTTP/3 and RFC 9220 scenarios, and those scenarios are enabled in the canonical independent matrix.
-- The canonical independent bundle now includes preserved passing artifacts for 17 enabled independent-certification scenarios.
-- The package now preserves passing third-party `aioquic` evidence for:
-  - HTTP/3 request/response
-  - mTLS
-  - Retry
-  - resumption
-  - 0-RTT
-  - migration
-  - GOAWAY / QPACK observation
-  - RFC 9220 WebSocket-over-HTTP/3
-- The runtime fixes required to make those preserved artifacts honest are now committed in-tree, including:
-  - correct QUIC Initial receive-key derivation across Retry / server-client directions
-  - correct HTTP/3 server control-stream / SETTINGS emission during handshake completion
-  - RFC-correct QUIC STREAM frame parsing for LEN / OFF flag combinations
-  - compact QUIC session-ticket payload encoding for third-party resumption interop
-  - ClientHello PSK binder hashing against the original-length handshake bytes
-- The third-party RFC 9220 adapter now decodes server-to-client frames in client mode and drives the CONNECT stream in the same one-message / wait-for-echo pattern as the package-owned H3 WebSocket client.
-- The provisional bundles remain preserved in-tree, but they are now historical / planning aids rather than the primary explanation for the package state.
+- the 0.3.8 release root is now the canonical authoritative release root
+- the public package version is now `0.3.8`
+- the release notes now live in `RELEASE_NOTES_0.3.8.md`
+- the authoritative boundary remains green
+- the strict target is green under the canonical 0.3.8 release root
+- the flag surface is green
+- RFC 9220 WebSocket-over-HTTP/3 remains green in both the authoritative boundary and the canonical 0.3.8 release root
+- the operator surface is green
+- the performance section is green
+- the documentation section is green
+- the composite promotion target is green
+- all previously failing HTTP/3 strict-target scenarios remain preserved as passing artifacts in the canonical root
+- the version bump and release-note promotion work from Step 9 is complete
 
-## Authoritative certification result
+There are no remaining strict-target RFC, feature, or administrative promotion blockers in the canonical 0.3.8 release root.
 
-Under the authoritative certification boundary in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, this repository is now **certifiably fully RFC compliant**.
+Primary documentation for the current promoted state now lives in:
 
-The release-gate result is green:
+- `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
+- `docs/review/conformance/phase9_release_promotion.current.json`
+- `RELEASE_NOTES_0.3.8.md`
+- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `docs/review/conformance/phase9i_release_assembly.current.json`
+- `docs/review/conformance/release_gate_status.current.json`
+- `docs/review/conformance/package_compliance_review_phase9i.current.json`
+- `docs/review/conformance/PHASE9I_STRICT_VALIDATION.md`
+- `docs/review/conformance/phase9i_strict_validation.current.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json`
+- `DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
 
-- `evaluate_release_gates('.')` → `passed=True`
-- `failure_count=0`
+The authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-The six RFCs that were previously blocked at the independent tier are now satisfied at `independent_certification`:
+For the stricter target, see `docs/review/conformance/STRICT_PROFILE_TARGET.md`.
 
-- RFC 9114
-- RFC 9000
-- RFC 9001
-- RFC 9002
-- RFC 9204
-- RFC 9220
+## Phase 9 release-promotion checkpoint
 
-The boundary intentionally keeps the following RFC surfaces at `local_conformance` in the current authoritative policy:
+This checkpoint completes the Step 9 administrative promotion work:
 
-- RFC 7692
-- RFC 9110 §9.3.6 (CONNECT)
-- RFC 9110 §6.5 (trailers)
-- RFC 9110 §8 (content coding)
-- RFC 6960
+- `pyproject.toml` now reports version `0.3.8`
+- the canonical authoritative release root is now `docs/review/conformance/releases/0.3.8/release-0.3.8/`
+- release notes now live in `RELEASE_NOTES_0.3.8.md`
+- the current-state docs and machine-readable snapshots now truthfully report the strict-target green state under the canonical promoted release
 
-Those surfaces remain part of the required RFC surface and are satisfied at the tier required by the authoritative boundary.
+## Certification environment freeze
 
-## Remaining non-blocking follow-on work
+This checkpoint also preserves the strict-promotion certification environment contract in:
 
-The repository still preserves stricter and broader follow-on work that is **not** part of the authoritative current release-gate blocker set:
+- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`
+- `docs/review/conformance/certification_environment_freeze.current.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle/`
 
-- the non-authoritative all-surfaces-independent overlay still lacks additional third-party artifacts for RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960
-- the provisional QUIC / HTTP/3 flow-control review bundle remains a review aid rather than a promoted independent-certification bundle
-- the intermediary / proxy corpus is still a seed corpus rather than a broad third-party interoperability certification program
+What that freeze now means:
 
-Those items matter for future strengthening, but they do not invalidate the current passing release-gate result.
+- the release workflow must run under Python 3.11 or 3.12
+- the release workflow must install `.[certification,dev]` before any Phase 9 checkpoint script is executed
+- `tools/run_phase9_release_workflow.py` freezes and validates the certification environment before it invokes Phase 9 checkpoint scripts
+- a non-ready local environment is recorded honestly instead of being treated as an acceptable release-workflow substitute
 
-## Validation snapshot for this checkpoint
+## Phase 9 implementation-plan checkpoint
 
-The repository was revalidated with the release-gate evaluator after promoting the missing `aioquic` artifacts.
+The broader strict-promotion execution plan remains documented in:
 
-A machine-readable copy of the current gate state is stored in `docs/review/conformance/release_gate_status.current.json`.
+- `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`
+- `docs/review/conformance/phase9_implementation_plan.current.json`
+
+## Phase 9I strict validation checkpoint
+
+The exact Step 8 strict validation set has now been executed and preserved in:
+
+- `docs/review/conformance/PHASE9I_STRICT_VALIDATION.md`
+- `docs/review/conformance/phase9i_strict_validation.current.json`
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/`
+
+What this validation records:
+
+- `python -m compileall -q src benchmarks tools` passed
+- `evaluate_release_gates('.')` passed
+- `evaluate_release_gates(... strict target ...)` passed
+- `evaluate_promotion_target('.')` passed
+- the targeted pytest suite passed with `27` tests

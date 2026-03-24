@@ -1,0 +1,47 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-flag-surface-certification-bundle",
+  "bundle_kind": "flag_surface_certification_bundle",
+  "families": [
+    {
+      "family": "App / process / development",
+      "flag_count": 6
+    },
+    {
+      "family": "Listener / binding",
+      "flag_count": 1
+    },
+    {
+      "family": "Logging / observability",
+      "flag_count": 1
+    },
+    {
+      "family": "Protocol / transport",
+      "flag_count": 1
+    },
+    {
+      "family": "Resource / timeouts / concurrency",
+      "flag_count": 1
+    },
+    {
+      "family": "TLS / security",
+      "flag_count": 2
+    }
+  ],
+  "family_count": 6,
+  "flag_count": 12,
+  "generated_at": "2026-03-19T23:26:09.599780+00:00",
+  "missing_config_path": [],
+  "missing_unit_tests": [],
+  "note": "This bundle certifies the public flag-surface metadata plane. It is not a substitute for strict RFC evidence tiers.",
+  "release_gate_eligible": true,
+  "rfc_or_hybrid_flags_missing_interop_scenarios": [
+    "binds",
+    "limits"
+  ],
+  "rfc_scoped_or_hybrid_flags": [
+    "binds",
+    "limits",
+    "protocols",
+    "tls"
+  ]
+}

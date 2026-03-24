@@ -1,0 +1,64 @@
+{
+  "phase": "9I",
+  "checkpoint": "phase9i_strict_validation",
+  "status": "full_strict_validation_passed",
+  "current_state": {
+    "compileall_passed": true,
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "targeted_pytest_passed": true,
+    "targeted_pytest_pass_count": 27,
+    "targeted_pytest_test_files": [
+      "tests/test_websocket_rfc7692.py",
+      "tests/test_phase9c_rfc7692_independent_closure.py",
+      "tests/test_phase9d1_connect_relay_independent_closure.py",
+      "tests/test_phase9d2_trailer_fields_independent_closure.py",
+      "tests/test_phase9d3_content_coding_independent_closure.py",
+      "tests/test_phase9i_release_assembly_checkpoint.py",
+      "tests/test_release_gates.py"
+    ],
+    "strict_validation_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle",
+    "evaluated_working_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "current_package_version": "0.3.8",
+    "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "administrative_promotion_remaining": false,
+    "release_notes": "RELEASE_NOTES_0.3.8.md"
+  },
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q src benchmarks tools",
+      "result": "passed",
+      "artifact_stdout": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/compileall.stdout.txt",
+      "artifact_stderr": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/compileall.stderr.txt"
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true,
+      "artifact": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/gate_results.json"
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true,
+      "artifact": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/gate_results.json"
+    },
+    "evaluate_promotion_target": {
+      "passed": true,
+      "artifact": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/gate_results.json"
+    },
+    "targeted_pytest_suite": {
+      "passed": true,
+      "test_count": 27,
+      "test_files": [
+        "tests/test_websocket_rfc7692.py",
+        "tests/test_phase9c_rfc7692_independent_closure.py",
+        "tests/test_phase9d1_connect_relay_independent_closure.py",
+        "tests/test_phase9d2_trailer_fields_independent_closure.py",
+        "tests/test_phase9d3_content_coding_independent_closure.py",
+        "tests/test_phase9i_release_assembly_checkpoint.py",
+        "tests/test_release_gates.py"
+      ],
+      "artifact_stdout": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/targeted_pytest.stdout.txt",
+      "artifact_stderr": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/targeted_pytest.stderr.txt"
+    }
+  },
+  "generated_at": "2026-03-24T07:33:47.255322+00:00"
+}

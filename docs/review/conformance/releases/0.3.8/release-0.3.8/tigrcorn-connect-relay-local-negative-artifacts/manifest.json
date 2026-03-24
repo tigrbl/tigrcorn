@@ -1,0 +1,10 @@
+{
+  "bundle_kind": "local_negative_artifacts",
+  "phase": "9D1",
+  "rfc": [
+    "RFC 9110 \u00a79.3.6"
+  ],
+  "generated_at": "2026-03-21T23:14:14.130804+00:00",
+  "commit_hash": "phase9d1-connect-relay-checkpoint",
+  "description": "Local CONNECT policy-negative vectors preserved during Phase 9D1 independent CONNECT relay closure work."
+}

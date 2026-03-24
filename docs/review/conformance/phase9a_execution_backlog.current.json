@@ -1,0 +1,999 @@
+{
+  "schema_version": 1,
+  "phase": "9A",
+  "checkpoint": "phase9a_promotion_contract_freeze",
+  "status": "execution_backlog_frozen",
+  "release_root_policy": {
+    "authoritative_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6",
+    "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
+    "allow_mutation_of_candidate_release_root": false,
+    "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "next_promotable_release_root_frozen": true
+  },
+  "owner_roles": {
+    "promotion_program_owner": "Owns the promotion contract, release-root policy, current-state truthfulness, and cross-stream coordination for the strict-promotion program.",
+    "interop_harness_owner": "Owns the reusable third-party scenario harness, artifact capture model, and matrix-entry preservation rules for independent certification.",
+    "websocket_interop_owner": "Owns RFC 7692 interop closure across HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers.",
+    "semantic_http_owner": "Owns RFC 9110 bounded semantic closure for CONNECT, trailer fields, and content coding.",
+    "tls_revocation_owner": "Owns revocation and OCSP behavior, TLS policy wiring, and preserved independent evidence for RFC 6960.",
+    "tls_runtime_owner": "Owns TLS flag/runtime closure including cipher-policy semantics and package-owned handshake wiring.",
+    "observability_owner": "Owns logging, StatsD, OTEL, startup/shutdown behavior, and operator-facing observability exporters.",
+    "scheduler_runtime_owner": "Owns global concurrency admission, overload behavior, scheduler policy/runtime wiring, and correctness-under-load coverage.",
+    "websocket_runtime_owner": "Owns WebSocket keepalive policy, outbound ping scheduling, timeout-driven close behavior, and carrier parity.",
+    "performance_owner": "Owns the strict performance program, matrix lanes, SLO thresholds, artifact preservation, and platform declarations.",
+    "promotion_gate_owner": "Owns the composite evaluator, artifact validation, negative fixtures, and documentation/gate alignment.",
+    "release_assembly_owner": "Owns final 0.3.8 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness."
+  },
+  "strict_target_scenario_rows": [
+    {
+      "backlog_id": "rfc7692-http11-permessage-deflate",
+      "scenario_id": "websocket-http11-server-websockets-client-permessage-deflate",
+      "rfc": "RFC 7692",
+      "target_phase": "9C",
+      "owner_role": "websocket_interop_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "websockets",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/websocket/extensions.py",
+        "src/tigrcorn/protocols/websocket/handler.py",
+        "tests/fixtures_pkg/external_websocket_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "extension negotiation preserved by a true third-party websockets client",
+          "compressed echo correctness is preserved when permessage-deflate is enabled",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for websocket-http11-server-websockets-client-permessage-deflate under the 0.3.8 release root",
+        "RFC 7692 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "negative local vectors still reject malformed or unsupported extension offers"
+      ]
+    },
+    {
+      "backlog_id": "rfc7692-http2-permessage-deflate",
+      "scenario_id": "websocket-http2-server-h2-client-permessage-deflate",
+      "rfc": "RFC 7692",
+      "target_phase": "9C",
+      "owner_role": "websocket_interop_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "h2",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/websocket/extensions.py",
+        "src/tigrcorn/protocols/http2/websocket.py",
+        "tests/fixtures_pkg/external_h2_websocket_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "extended CONNECT / RFC 8441 carrier is preserved while permessage-deflate is negotiated",
+          "compressed echo correctness is preserved with a true third-party h2 peer",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for websocket-http2-server-h2-client-permessage-deflate under the 0.3.8 release root",
+        "RFC 7692 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "carrier-specific local vectors still prove clean fallback when compression is disabled"
+      ]
+    },
+    {
+      "backlog_id": "rfc7692-http3-permessage-deflate",
+      "scenario_id": "websocket-http3-server-aioquic-client-permessage-deflate",
+      "rfc": "RFC 7692",
+      "target_phase": "9C",
+      "owner_role": "websocket_interop_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "aioquic",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/websocket/extensions.py",
+        "src/tigrcorn/protocols/http3/websocket.py",
+        "tests/fixtures_third_party/aioquic_http3_websocket_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json",
+          "qlog.json"
+        ],
+        "required_peer_assertions": [
+          "WebSocket over HTTP/3 remains interoperable while permessage-deflate is negotiated",
+          "compressed echo correctness is preserved with a true third-party aioquic peer",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for websocket-http3-server-aioquic-client-permessage-deflate under the 0.3.8 release root",
+        "RFC 7692 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "HTTP/3 local vectors still cover malformed extension offers and clean refusal paths"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-connect-http11",
+      "scenario_id": "http11-connect-relay-curl-client",
+      "rfc": "RFC 9110 \u00a79.3.6",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_binary",
+      "peer_stack": "curl",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/connect.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_pkg/external_curl_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "allowed relay/tunnel behavior is preserved through a true third-party curl peer",
+          "tunnel establishment, bidirectional relay, and clean stream shutdown are captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http11-connect-relay-curl-client under the 0.3.8 release root",
+        "RFC 9110 \u00a79.3.6 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "deny and allowlist rejection remain covered by local negative vectors"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-connect-http2",
+      "scenario_id": "http2-connect-relay-h2-client",
+      "rfc": "RFC 9110 \u00a79.3.6",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "h2",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/connect.py",
+        "src/tigrcorn/protocols/http2/handler.py",
+        "tests/fixtures_pkg/external_h2_http_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "extended CONNECT relay behavior is preserved with a true third-party h2 peer",
+          "stream closure and relay correctness are captured in preserved artifacts",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http2-connect-relay-h2-client under the 0.3.8 release root",
+        "RFC 9110 \u00a79.3.6 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "allowlist and deny-mode local vectors still prove bounded policy behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-connect-http3",
+      "scenario_id": "http3-connect-relay-aioquic-client",
+      "rfc": "RFC 9110 \u00a79.3.6",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "aioquic",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/connect.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "tests/fixtures_third_party/aioquic_http3_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json",
+          "qlog.json"
+        ],
+        "required_peer_assertions": [
+          "CONNECT relay behavior is preserved with a true third-party aioquic peer",
+          "stream establishment, relay correctness, and HTTP/3 shutdown semantics are captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http3-connect-relay-aioquic-client under the 0.3.8 release root",
+        "RFC 9110 \u00a79.3.6 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "HTTP/3 local vectors still cover deny and allowlist rejection paths"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-trailers-http11",
+      "scenario_id": "http11-trailer-fields-curl-client",
+      "rfc": "RFC 9110 \u00a76.5",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_binary",
+      "peer_stack": "curl",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/asgi/receive.py",
+        "src/tigrcorn/protocols/http1/serializer.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_pkg/external_curl_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "trailer fields are preserved at end-of-message with a true third-party curl peer",
+          "request/response exposure and framing correctness are captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http11-trailer-fields-curl-client under the 0.3.8 release root",
+        "RFC 9110 \u00a76.5 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "drop/pass/strict local vectors still prove policy behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-trailers-http2",
+      "scenario_id": "http2-trailer-fields-h2-client",
+      "rfc": "RFC 9110 \u00a76.5",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "h2",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/asgi/receive.py",
+        "src/tigrcorn/protocols/http2/handler.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_pkg/external_h2_http_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "trailer fields are preserved across HTTP/2 frames with a true third-party h2 peer",
+          "ASGI exposure and end-of-stream semantics are captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http2-trailer-fields-h2-client under the 0.3.8 release root",
+        "RFC 9110 \u00a76.5 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "HTTP/2 local vectors still cover pass/drop/strict behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-trailers-http3",
+      "scenario_id": "http3-trailer-fields-aioquic-client",
+      "rfc": "RFC 9110 \u00a76.5",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "aioquic",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/asgi/receive.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_third_party/aioquic_http3_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json",
+          "qlog.json"
+        ],
+        "required_peer_assertions": [
+          "trailer fields are preserved across HTTP/3 with a true third-party aioquic peer",
+          "ASGI exposure and end-of-message semantics are captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http3-trailer-fields-aioquic-client under the 0.3.8 release root",
+        "RFC 9110 \u00a76.5 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "HTTP/3 local vectors still cover pass/drop/strict behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-content-coding-http11",
+      "scenario_id": "http11-content-coding-curl-client",
+      "rfc": "RFC 9110 \u00a78",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_binary",
+      "peer_stack": "curl",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/content_coding.py",
+        "src/tigrcorn/asgi/send.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_pkg/external_curl_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "Accept-Encoding negotiation and Content-Encoding selection are preserved with a true third-party curl peer",
+          "Vary: accept-encoding behavior on the RFC-scoped path is captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http11-content-coding-curl-client under the 0.3.8 release root",
+        "RFC 9110 \u00a78 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "identity-only and strict local vectors still prove negative behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-content-coding-http2",
+      "scenario_id": "http2-content-coding-curl-client",
+      "rfc": "RFC 9110 \u00a78",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_binary",
+      "peer_stack": "curl",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/content_coding.py",
+        "src/tigrcorn/protocols/http2/handler.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_pkg/external_curl_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "Accept-Encoding negotiation and Content-Encoding selection are preserved on HTTP/2 with a true third-party curl peer",
+          "Vary: accept-encoding behavior on the RFC-scoped path is captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http2-content-coding-curl-client under the 0.3.8 release root",
+        "RFC 9110 \u00a78 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "HTTP/2 local vectors still cover identity-only and strict negative behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc9110-content-coding-http3",
+      "scenario_id": "http3-content-coding-aioquic-client",
+      "rfc": "RFC 9110 \u00a78",
+      "target_phase": "9D",
+      "owner_role": "semantic_http_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_library",
+      "peer_stack": "aioquic",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/protocols/content_coding.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "src/tigrcorn/server/runner.py",
+        "tests/fixtures_third_party/aioquic_http3_client.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json",
+          "qlog.json"
+        ],
+        "required_peer_assertions": [
+          "Accept-Encoding negotiation and Content-Encoding selection are preserved on HTTP/3 with a true third-party aioquic peer",
+          "Vary: accept-encoding behavior on the RFC-scoped path is captured",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for http3-content-coding-aioquic-client under the 0.3.8 release root",
+        "RFC 9110 \u00a78 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "HTTP/3 local vectors still cover identity-only and strict negative behavior"
+      ]
+    },
+    {
+      "backlog_id": "rfc6960-openssl-ocsp",
+      "scenario_id": "tls-server-ocsp-validation-openssl-client",
+      "rfc": "RFC 6960",
+      "target_phase": "9E",
+      "owner_role": "tls_revocation_owner",
+      "dependencies": [
+        "9B"
+      ],
+      "current_gap": "missing_independent_preserved_artifact",
+      "peer_provenance_kind": "third_party_binary",
+      "peer_stack": "openssl",
+      "touch_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "src/tigrcorn/security/tls.py",
+        "src/tigrcorn/security/policies.py",
+        "src/tigrcorn/security/x509/path.py",
+        "tests/test_x509_webpki_validation.py"
+      ],
+      "artifact_contract": {
+        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "required_scenario_files": [
+          "scenario.json",
+          "result.json",
+          "peer_transcript.json",
+          "peer_stdout.log",
+          "peer_stderr.log",
+          "sut_stdout.log",
+          "sut_stderr.log",
+          "packet_trace.jsonl",
+          "peer_negotiation.json"
+        ],
+        "required_peer_assertions": [
+          "OCSP policy is enforced through a true third-party openssl client",
+          "freshness, revocation, and responder-availability behavior are preserved in the artifact set",
+          "the scenario remains release_gate_eligible under independent_certification"
+        ]
+      },
+      "exit_tests": [
+        "preserved passing third-party artifact exists for tls-server-ocsp-validation-openssl-client under the 0.3.8 release root",
+        "RFC 6960 resolves at independent_certification in evaluate_release_gates for the strict boundary",
+        "local negative vectors still cover stale, revoked, soft-fail, and require-mode behavior"
+      ]
+    }
+  ],
+  "public_flag_closure_rows": [
+    {
+      "backlog_id": "flag-ssl-ciphers",
+      "flag": "--ssl-ciphers",
+      "target_phase": "9F",
+      "owner_role": "tls_runtime_owner",
+      "current_runtime_state": "parse_only",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/security/tls.py",
+        "src/tigrcorn/security/tls13/extensions.py",
+        "src/tigrcorn/security/tls13/handshake.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new TLS cipher-policy negotiation tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "http2_tls",
+          "http3_tls"
+        ],
+        "required_state_transition": "parse_only -> implemented",
+        "required_claim": "Configured cipher policy changes the negotiated package-owned TLS/QUIC suite set and invalid values fail fast."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --ssl-ciphers as implemented and promotion_ready true",
+        "configured allowlists measurably change negotiated suites on TCP/TLS and QUIC/TLS paths",
+        "invalid expressions fail validation before listener start"
+      ]
+    },
+    {
+      "backlog_id": "flag-log-config",
+      "flag": "--log-config",
+      "target_phase": "9F",
+      "owner_role": "observability_owner",
+      "current_runtime_state": "parse_only",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/observability/logging.py",
+        "src/tigrcorn/server/runner.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new logging precedence tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "logging_off",
+          "logging_on"
+        ],
+        "required_state_transition": "parse_only -> implemented",
+        "required_claim": "log_config is consumed at runtime with frozen precedence against level, structured logging, and file-sink flags."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --log-config as implemented and promotion_ready true",
+        "configure_logging consumes log_config and preserves declared precedence",
+        "startup with invalid log config fails fast and honestly"
+      ]
+    },
+    {
+      "backlog_id": "flag-statsd-host",
+      "flag": "--statsd-host",
+      "target_phase": "9F",
+      "owner_role": "observability_owner",
+      "current_runtime_state": "parse_only",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/normalize.py",
+        "src/tigrcorn/observability/metrics.py",
+        "src/tigrcorn/server/runner.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new StatsD exporter tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "metrics_off",
+          "metrics_on"
+        ],
+        "required_state_transition": "parse_only -> implemented",
+        "required_claim": "statsd_host produces real exporter traffic and preserves startup/shutdown/failure semantics."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --statsd-host as implemented and promotion_ready true",
+        "metrics exporter emits to a real StatsD sink when configured",
+        "exporter failure modes remain bounded and observable"
+      ]
+    },
+    {
+      "backlog_id": "flag-otel-endpoint",
+      "flag": "--otel-endpoint",
+      "target_phase": "9F",
+      "owner_role": "observability_owner",
+      "current_runtime_state": "parse_only",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/normalize.py",
+        "src/tigrcorn/observability/tracing.py",
+        "src/tigrcorn/observability/metrics.py",
+        "src/tigrcorn/server/runner.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new OTEL exporter contract tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "observability_overhead"
+        ],
+        "required_state_transition": "parse_only -> implemented",
+        "required_claim": "otel_endpoint exports the declared traces/metrics payloads to a real OTEL collector contract."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --otel-endpoint as implemented and promotion_ready true",
+        "configured OTEL exporter produces observable telemetry at the declared endpoint",
+        "exporter startup/shutdown/failure behavior is covered by tests and documentation"
+      ]
+    },
+    {
+      "backlog_id": "flag-limit-concurrency",
+      "flag": "--limit-concurrency",
+      "target_phase": "9F",
+      "owner_role": "scheduler_runtime_owner",
+      "current_runtime_state": "parse_only",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/validate.py",
+        "src/tigrcorn/scheduler/policy.py",
+        "src/tigrcorn/scheduler/runtime.py",
+        "src/tigrcorn/server/runner.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new overload and admission-control tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "scheduler_quota",
+          "overload_limits"
+        ],
+        "required_state_transition": "parse_only -> implemented",
+        "required_claim": "limit_concurrency is a real in-flight admission cap with documented overload semantics across carriers."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --limit-concurrency as implemented and promotion_ready true",
+        "live admission caps reject or defer work consistently at the configured limit",
+        "correctness-under-load artifacts preserve overload behavior without RFC regressions"
+      ]
+    },
+    {
+      "backlog_id": "flag-websocket-ping-interval",
+      "flag": "--websocket-ping-interval",
+      "target_phase": "9F",
+      "owner_role": "websocket_runtime_owner",
+      "current_runtime_state": "partially_wired",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/validate.py",
+        "src/tigrcorn/flow/keepalive.py",
+        "src/tigrcorn/server/runner.py",
+        "src/tigrcorn/protocols/websocket/handler.py",
+        "src/tigrcorn/protocols/http2/websocket.py",
+        "src/tigrcorn/protocols/http3/websocket.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new websocket keepalive behavior tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "websocket_echo",
+          "websocket_keepalive_overhead"
+        ],
+        "required_state_transition": "partially_wired -> implemented",
+        "required_claim": "ping_interval drives outbound keepalive scheduling across HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --websocket-ping-interval as implemented and promotion_ready true",
+        "outbound PING frames are scheduled at the configured interval on all supported carriers",
+        "keepalive metrics and close reasons remain observable and documented"
+      ]
+    },
+    {
+      "backlog_id": "flag-websocket-ping-timeout",
+      "flag": "--websocket-ping-timeout",
+      "target_phase": "9F",
+      "owner_role": "websocket_runtime_owner",
+      "current_runtime_state": "partially_wired",
+      "touch_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/validate.py",
+        "src/tigrcorn/flow/keepalive.py",
+        "src/tigrcorn/server/runner.py",
+        "src/tigrcorn/protocols/websocket/handler.py",
+        "src/tigrcorn/protocols/http2/websocket.py",
+        "src/tigrcorn/protocols/http3/websocket.py"
+      ],
+      "artifact_contract": {
+        "required_unit_tests": [
+          "tests/test_phase2_cli_config_surface.py",
+          "new websocket timeout/close tests"
+        ],
+        "required_interop_or_perf_profiles": [
+          "websocket_echo",
+          "websocket_keepalive_overhead"
+        ],
+        "required_state_transition": "partially_wired -> implemented",
+        "required_claim": "ping_timeout drives deterministic timeout-based close behavior across HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers."
+      },
+      "exit_tests": [
+        "flag_contracts.json marks --websocket-ping-timeout as implemented and promotion_ready true",
+        "timed-out WebSocket sessions close deterministically on all supported carriers",
+        "correctness-under-load profiles preserve keepalive closure without RFC regressions"
+      ]
+    }
+  ],
+  "performance_closure_contract": {
+    "target_phase": "9G",
+    "owner_role": "performance_owner",
+    "touch_files": [
+      "src/tigrcorn/compat/perf_runner.py",
+      "tools/run_perf_matrix.py",
+      "benchmarks/",
+      "docs/review/performance/PERFORMANCE_SLOS.md",
+      "docs/review/performance/performance_slos.json",
+      "docs/review/performance/performance_matrix.json",
+      "docs/review/performance/artifacts/"
+    ],
+    "artifact_contract": {
+      "required_metric_keys": [
+        "throughput_ops_per_sec",
+        "p50_ms",
+        "p95_ms",
+        "p99_ms",
+        "p99_9_ms",
+        "time_to_first_byte_ms",
+        "handshake_latency_ms",
+        "error_rate",
+        "scheduler_rejections",
+        "protocol_stalls",
+        "cpu_seconds",
+        "rss_kib"
+      ],
+      "required_threshold_keys": [
+        "min_throughput_ops_per_sec",
+        "max_p50_ms",
+        "max_p95_ms",
+        "max_p99_ms",
+        "max_p99_9_ms",
+        "max_time_to_first_byte_ms",
+        "max_handshake_latency_ms",
+        "max_error_rate",
+        "max_scheduler_rejections",
+        "max_protocol_stalls",
+        "max_rss_kib"
+      ],
+      "required_relative_regression_budget_keys": [
+        "max_throughput_drop_fraction",
+        "max_p99_increase_fraction",
+        "max_p99_9_increase_fraction",
+        "max_cpu_increase_fraction",
+        "max_rss_increase_fraction"
+      ],
+      "required_artifact_files": [
+        "summary.json",
+        "index.json",
+        "result.json",
+        "env.json",
+        "percentile_histogram.json",
+        "raw_samples.csv",
+        "command.json",
+        "correctness.json"
+      ],
+      "required_matrix_lanes": [
+        "component_regression",
+        "end_to_end_release"
+      ],
+      "promotion_requirements": {
+        "validate_artifacts_with_relative_regression": true,
+        "require_correctness_under_load_for_rfc_targets": true,
+        "require_end_to_end_live_listener_profiles": true,
+        "require_certification_platforms": true,
+        "require_documented_slos_per_profile": true
+      }
+    },
+    "exit_tests": [
+      "evaluate_promotion_target(ROOT).performance.passed is true",
+      "every required lane in performance_slos.json is present in performance_matrix.json",
+      "each release-lane profile preserves correctness.json and the required artifact files"
+    ]
+  },
+  "gate_hardening_contract": {
+    "target_phase": "9H",
+    "owner_role": "promotion_gate_owner",
+    "touch_files": [
+      "src/tigrcorn/compat/release_gates.py",
+      "tests/test_release_gates.py",
+      "tests/test_phase6_performance_harness.py",
+      "tests/test_phase8_promotion_targets.py",
+      "docs/review/conformance/promotion_gate.target.json"
+    ],
+    "artifact_contract": {
+      "must_enforce": [
+        "required_metric_keys",
+        "required_threshold_keys",
+        "required_relative_regression_budget_keys",
+        "required_artifact_files",
+        "required_matrix_lanes",
+        "require_correctness_under_load_for_rfc_targets",
+        "require_end_to_end_live_listener_profiles",
+        "require_certification_platforms",
+        "require_documented_slos_per_profile"
+      ],
+      "required_negative_fixture_classes": [
+        "missing_metric_key",
+        "missing_threshold_key",
+        "missing_relative_budget_key",
+        "missing_artifact_file",
+        "missing_lane",
+        "missing_platform_declaration"
+      ]
+    },
+    "exit_tests": [
+      "evaluate_promotion_target(ROOT) fails for every intentionally incomplete fixture",
+      "evaluate_promotion_target(ROOT) only passes when the full strict target contract is genuinely met"
+    ]
+  },
+  "no_regression_guards": {
+    "operator_surface": {
+      "must_remain_green": true,
+      "bundle_index": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-operator-surface-certification-bundle/index.json",
+      "required_implemented_keys": [
+        "workers_process_supervision",
+        "reload",
+        "proxy_header_normalization",
+        "root_path_scope_injection",
+        "structured_logging",
+        "metrics_endpoint",
+        "resource_timeout_controls_wired"
+      ]
+    },
+    "authoritative_boundary": {
+      "must_remain_green": true,
+      "boundary_path": "docs/review/conformance/certification_boundary.json"
+    },
+    "documentation_truthfulness": {
+      "must_remain_green": true,
+      "required_status_statement": "The package remains certifiably fully RFC compliant under the authoritative boundary, but it is not yet honest to claim strict-target completion."
+    }
+  },
+  "out_of_scope_until_strict_target_green": [
+    "RFC 7232",
+    "RFC 9530",
+    "RFC 9111",
+    "RFC 9421",
+    "JOSE",
+    "COSE"
+  ]
+}

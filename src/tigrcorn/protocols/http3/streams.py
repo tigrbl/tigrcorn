@@ -53,6 +53,12 @@ from tigrcorn.protocols.http3.state import (
 )
 from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
 
+HTTP3_STREAM_PRESSURE_CERTIFICATION_SCOPES: tuple[str, ...] = ('stream-level-backpressure', 'connection-level-backpressure', 'goaway-pressure')
+
+
+def supported_http3_stream_pressure_certification_scopes() -> tuple[str, ...]:
+    return HTTP3_STREAM_PRESSURE_CERTIFICATION_SCOPES
+
 STREAM_TYPE_PUSH = 0x01
 STREAM_TYPE_QPACK_ENCODER = 0x02
 STREAM_TYPE_QPACK_DECODER = 0x03

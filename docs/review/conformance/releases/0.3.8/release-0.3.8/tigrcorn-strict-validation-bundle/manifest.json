@@ -1,0 +1,51 @@
+{
+  "bundle": "tigrcorn-strict-validation-bundle",
+  "generated_at": "2026-03-24T06:14:11.212009+00:00",
+  "artifacts": [
+    {
+      "path": "artifacts/compileall.command.json",
+      "size": 106,
+      "sha256": "f2ef28398088316e9ced5e5ae7cb15f4d6f98347bcd8d08066dd5e284556d873"
+    },
+    {
+      "path": "artifacts/compileall.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/compileall.stdout.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/gate_results.command.json",
+      "size": 112,
+      "sha256": "1e218d633e4ae380e99124cd1610699163eb0e35348ef7bb907ee4cef9d7a64d"
+    },
+    {
+      "path": "artifacts/gate_results.json",
+      "size": 295,
+      "sha256": "c15d5f92a347ac3be770a222b042db07ad78c9dc773c8953c30de769f7b95d35"
+    },
+    {
+      "path": "artifacts/targeted_pytest.command.json",
+      "size": 436,
+      "sha256": "9796b58756c4f103364ad28b9164e6dcb716d380aff67572ff00d147ba7528ec"
+    },
+    {
+      "path": "artifacts/targeted_pytest.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/targeted_pytest.stdout.txt",
+      "size": 99,
+      "sha256": "0899f5c78c37ea472cadda531e2a1c0777946db8cd7faf3c890813a243e4e1a0"
+    },
+    {
+      "path": "summary.json",
+      "size": 753,
+      "sha256": "3516213d5eb166a066470efea8a6fbcb4396a0090d09fa17f8d251c60a224da2"
+    }
+  ]
+}

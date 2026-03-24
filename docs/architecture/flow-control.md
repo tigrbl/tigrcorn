@@ -21,3 +21,6 @@ Broad independent QUIC / HTTP/3 flow-control certification is still incomplete, 
 `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/`.
 That bundle is explicitly non-certifying; it maps same-stack HTTP/3 replay artifacts and local flow-control vectors into a stable review root so the remaining gap is concrete and inspectable.
 See `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md` for the current state.
+
+
+The current repository also preserves a minimum independent evidence root for flow-control under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/`.

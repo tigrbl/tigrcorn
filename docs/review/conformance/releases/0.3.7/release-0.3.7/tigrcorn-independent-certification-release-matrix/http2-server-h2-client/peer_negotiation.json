@@ -1,0 +1,8 @@
+{
+  "alpn": null,
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/http2-server-h2-client",
+  "implementation": "python-h2",
+  "protocol": "h2c",
+  "scheme": "http",
+  "server_name": "127.0.0.1"
+}

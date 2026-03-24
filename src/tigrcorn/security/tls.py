@@ -16,6 +16,7 @@ from tigrcorn.errors import ProtocolError
 from tigrcorn.security.tls13.handshake import QuicTlsHandshakeDriver, TlsAlertError
 from tigrcorn.security.tls13.key_schedule import Tls13KeySchedule
 from tigrcorn.security.tls13.messages import decode_handshake_message
+from tigrcorn.security.policies import build_validation_policy_for_listener
 from tigrcorn.security.x509.path import (
     CertificatePurpose,
     CertificateValidationPolicy,
@@ -55,6 +56,7 @@ class ServerTLSContext:
     alpn_protocols: tuple[str, ...]
     require_client_certificate: bool
     validation_policy: CertificateValidationPolicy
+    cipher_suites: tuple[int, ...] = (0x1302, 0x1301)
     server_name: str = 'localhost'
 
 
@@ -127,6 +129,7 @@ class PackageOwnedTLSConnection:
             require_client_certificate=context.require_client_certificate,
             transport_mode='stream',
             validation_policy=context.validation_policy,
+            cipher_suites=context.cipher_suites,
         )
         self._read_lock = asyncio.Lock()
         self._write_lock = threading.Lock()
@@ -473,12 +476,7 @@ def build_server_ssl_context(listener: ListenerConfig) -> ServerTLSContext | Non
     certificate_pem = Path(listener.ssl_certfile).read_bytes()
     private_key_pem = Path(listener.ssl_keyfile).read_bytes()
     trusted = (Path(listener.ssl_ca_certs).read_bytes(),) if listener.ssl_ca_certs else ()
-    revocation_mode = RevocationMode.SOFT_FAIL if listener.ssl_require_client_cert else RevocationMode.OFF
-    validation_policy = CertificateValidationPolicy(
-        purpose=CertificatePurpose.CLIENT_AUTH,
-        revocation_mode=revocation_mode,
-        revocation_fetch_policy=RevocationFetchPolicy(),
-    )
+    validation_policy = build_validation_policy_for_listener(listener)
     server_name = _listener_server_name(listener)
     return ServerTLSContext(
         certificate_pem=certificate_pem,
@@ -487,6 +485,7 @@ def build_server_ssl_context(listener: ListenerConfig) -> ServerTLSContext | Non
         alpn_protocols=tuple(listener.alpn_protocols),
         require_client_certificate=listener.ssl_require_client_cert,
         validation_policy=validation_policy,
+        cipher_suites=tuple(int(item) for item in (getattr(listener, 'resolved_cipher_suites', ()) or (0x1302, 0x1301))),
         server_name=server_name,
     )
 

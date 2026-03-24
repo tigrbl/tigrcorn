@@ -4,12 +4,13 @@ import asyncio
 from contextlib import suppress
 from urllib.parse import urlsplit
 
-from tigrcorn.asgi.receive import HTTPRequestReceive
+from tigrcorn.asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
 from tigrcorn.asgi.scopes.http import build_http_scope
 from tigrcorn.asgi.send import HTTPResponseCollector
 from tigrcorn.config.model import ServerConfig
 from tigrcorn.constants import H2_PREFACE
 from tigrcorn.errors import ProtocolError
+from tigrcorn.observability.metrics import Metrics
 from tigrcorn.observability.logging import AccessLogger
 from tigrcorn.protocols.content_coding import apply_http_content_coding
 from tigrcorn.protocols.http1.parser import ParsedRequest
@@ -46,6 +47,7 @@ from tigrcorn.protocols.http2.codec import (
     serialize_settings_ack,
     SETTING_ENABLE_CONNECT_PROTOCOL,
     SETTING_ENABLE_PUSH,
+    SETTING_MAX_CONCURRENT_STREAMS,
     serialize_window_update,
     strip_padding,
 )
@@ -53,7 +55,7 @@ from tigrcorn.protocols.http2.flow import FlowWaiter
 from tigrcorn.protocols.http2.hpack import HPACKDecoder, HPACKEncoder
 from tigrcorn.protocols.http2.state import H2ConnectionState, H2StreamLifecycle, H2StreamState
 from tigrcorn.protocols.http2.streams import H2StreamRegistry
-from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, parse_connect_authority
+from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
 from tigrcorn.protocols.http2.websocket import H2WebSocketSession
 from tigrcorn.types import ASGIApp
 from tigrcorn.utils.headers import strip_connection_specific_headers
@@ -68,12 +70,14 @@ class _HTTP2ConnectTunnel:
         authority: str,
         upstream_reader: asyncio.StreamReader,
         upstream_writer: asyncio.StreamWriter,
+        work_lease: WorkLease | None = None,
     ) -> None:
         self.handler = handler
         self.stream_id = stream_id
         self.authority = authority
         self.upstream_reader = upstream_reader
         self.upstream_writer = upstream_writer
+        self.work_lease = work_lease
         self.relay_task: asyncio.Task[None] | None = None
         self.client_input_closed = False
         self.server_output_closed = False
@@ -118,6 +122,8 @@ class _HTTP2ConnectTunnel:
         state = self.handler.streams.find(self.stream_id)
         if state is not None and state.connect_tunnel is self:
             state.connect_tunnel = None
+        if self.work_lease is not None:
+            self.work_lease.release()
         await close_tcp_writer(self.upstream_writer)
         self.handler._finalize_stream_if_complete(self.stream_id)
 
@@ -125,7 +131,7 @@ class _HTTP2ConnectTunnel:
         reset_stream = False
         try:
             while True:
-                chunk = await self.upstream_reader.read(65536)
+                chunk = await asyncio.wait_for(self.upstream_reader.read(65536), timeout=self.handler.config.http.idle_timeout)
                 if not chunk:
                     break
                 await self.handler._send_stream_data(self.stream_id, chunk, end_stream=False)
@@ -157,6 +163,8 @@ class HTTP2ConnectionHandler:
         app: ASGIApp,
         config: ServerConfig,
         access_logger: AccessLogger,
+        scheduler: ProductionScheduler | None,
+        metrics: Metrics | None,
         reader: asyncio.StreamReader,
         writer: asyncio.StreamWriter,
         client: tuple[str, int] | None,
@@ -168,6 +176,8 @@ class HTTP2ConnectionHandler:
         self.app = app
         self.config = config
         self.access_logger = access_logger
+        self.scheduler = scheduler
+        self.metrics = metrics
         self.reader = reader
         self.writer = writer
         self.client = client
@@ -176,8 +186,11 @@ class HTTP2ConnectionHandler:
         self.prebuffer = prebuffer
         self.scope_extensions = dict(scope_extensions or {})
         self.state = H2ConnectionState()
+        if self.config.scheduler.max_streams is not None:
+            self.state.local_settings[SETTING_MAX_CONCURRENT_STREAMS] = self.config.scheduler.max_streams
         self.streams = H2StreamRegistry()
         self.stream_tasks: dict[int, asyncio.Task[None]] = {}
+        self.stream_work_leases: dict[int, WorkLease] = {}
         self.frame_buffer = FrameBuffer()
         self.frame_writer = FrameWriter(self.state.max_frame_size)
         self.writer_lock = asyncio.Lock()
@@ -202,7 +215,7 @@ class HTTP2ConnectionHandler:
                 for frame in frames:
                     await self._handle_frame(frame)
                 continue
-            data = await self.reader.read(65535)
+            data = await asyncio.wait_for(self.reader.read(65535), timeout=self.config.http.read_timeout)
             if not data:
                 break
             self.frame_buffer.feed(data)
@@ -472,17 +485,26 @@ class HTTP2ConnectionHandler:
         state = self.streams.find(stream_id)
         if state is None or state.dispatched or not state.headers_complete:
             return
-        if self._is_extended_connect_websocket(state.headers):
-            state.dispatched = True
-            await self._start_websocket_stream(stream_id)
+        is_ws = self._is_extended_connect_websocket(state.headers)
+        is_connect = self._is_generic_connect_tunnel(state.headers)
+        if not is_ws and not is_connect and not state.end_stream_received:
             return
-        if self._is_generic_connect_tunnel(state.headers):
-            state.dispatched = True
-            await self._start_connect_tunnel(stream_id)
-            return
-        if not state.end_stream_received:
+        if not self._admit_stream_work(stream_id):
+            request = self._build_request(state)
+            await self._send_response(stream_id, 503, [(b"content-type", b"text/plain")], b"scheduler overloaded")
+            self.access_logger.log_http(self.client, request.method, request.path, 503, "HTTP/2")
+            self._release_stream_work_lease(stream_id)
+            self._cancel_stream(stream_id)
+            self.streams.close(stream_id)
+            self._maybe_finish_after_goaway()
             return
         state.dispatched = True
+        if is_ws:
+            await self._start_websocket_stream(stream_id)
+            return
+        if is_connect:
+            await self._start_connect_tunnel(stream_id)
+            return
         self.state.last_stream_id = max(self.state.last_stream_id, stream_id)
         task = asyncio.create_task(self._run_stream(stream_id), name=f"tigrcorn-h2-stream-{stream_id}")
         self.stream_tasks[stream_id] = task
@@ -574,6 +596,29 @@ class HTTP2ConnectionHandler:
     def _is_generic_connect_tunnel(self, headers: list[tuple[bytes, bytes]]) -> bool:
         pseudo = self._pseudo_headers(headers)
         return pseudo.get(b":method") == b"CONNECT" and pseudo.get(b":protocol") is None
+    def _release_stream_work_lease(self, stream_id: int) -> None:
+        lease = self.stream_work_leases.pop(stream_id, None)
+        if lease is not None:
+            lease.release()
+
+    def _on_websocket_stream_closed(self, stream_id: int) -> None:
+        state = self.streams.find(stream_id)
+        if state is not None:
+            state.websocket_session = None
+        self._release_stream_work_lease(stream_id)
+        self._finalize_stream_if_complete(stream_id)
+
+    def _admit_stream_work(self, stream_id: int) -> bool:
+        if self.scheduler is None:
+            return True
+        lease = self.scheduler.acquire_work()
+        if lease is None:
+            if self.metrics is not None:
+                self.metrics.scheduler_task_rejected()
+            return False
+        self.stream_work_leases[stream_id] = lease
+        return True
+
 
     def _next_local_push_stream_id(self) -> int:
         max_local_streams = self.state.remote_settings.get(0x3)
@@ -649,18 +694,22 @@ class HTTP2ConnectionHandler:
             websocket_upgrade=False,
         ), pseudo_headers + extra_headers
 
-    async def _run_http_app(self, stream_id: int, request: ParsedRequest, *, allow_push: bool) -> tuple[int, list[tuple[bytes, bytes]], bytes]:
+    async def _run_http_app(self, stream_id: int, request: ParsedRequest, *, allow_push: bool) -> tuple[int, list[tuple[bytes, bytes]], bytes, list[tuple[bytes, bytes]]]:
         extensions = dict(self.scope_extensions)
         state = self.streams.find(stream_id)
-        request_trailers = list(state.trailers) if state is not None else []
+        raw_request_trailers = list(state.trailers) if state is not None else []
+        try:
+            request_trailers = apply_request_trailer_policy(raw_request_trailers, self.config.http.trailer_policy)
+        except ProtocolError:
+            return 400, [(b"content-type", b"text/plain")], b"bad request trailers", []
         if request.method.upper() == "CONNECT":
             extensions["tigrcorn.http.connect"] = {"authority": request.target}
-        if request_trailers:
+        if request_trailers and self.config.http.trailer_policy != 'drop':
             extensions["tigrcorn.http.request_trailers"] = {}
         if allow_push and self.state.client_allows_push:
             extensions["http.response.push"] = {}
-        scope = build_http_scope(request, client=self.client, server=self.server, scheme=self.scheme, extensions=extensions)
-        receive = HTTPRequestReceive(request.body, trailers=request_trailers)
+        scope = build_http_scope(request, client=self.client, server=self.server, scheme=self.scheme, extensions=extensions, root_path=self.config.proxy.root_path, proxy=self.config.proxy)
+        receive = HTTPRequestReceive(request.body, trailers=request_trailers, trailer_policy=self.config.http.trailer_policy)
         collector = HTTPResponseCollector()
 
         async def send(message: dict) -> None:
@@ -674,16 +723,18 @@ class HTTP2ConnectionHandler:
         status = 500
         try:
             await self.app(scope, receive, send)
-            status, headers, body = collector.response_tuple()
+            status, headers, body, trailers = collector.response_tuple()
         except Exception:
-            status, headers, body = 500, [(b"content-type", b"text/plain")], b"internal server error"
+            status, headers, body, trailers = 500, [(b"content-type", b"text/plain")], b"internal server error", []
         status, headers, body, _selection = apply_http_content_coding(
             request_headers=request.headers,
             response_headers=headers,
             body=body,
             status=status,
+            policy=self.config.http.content_coding_policy,
+            supported=tuple(self.config.http.content_codings),
         )
-        return status, headers, body
+        return status, headers, body, trailers
 
     async def _send_push_promise(self, parent_stream_id: int, message: dict) -> None:
         if not self.state.client_allows_push:
@@ -698,12 +749,12 @@ class HTTP2ConnectionHandler:
             receive_window=self.state.local_initial_window_size,
         )
         self.state.last_stream_id = max(self.state.last_stream_id, promised_stream_id)
-        status, headers, body = await self._run_http_app(promised_stream_id, request, allow_push=False)
+        status, headers, body, trailers = await self._run_http_app(promised_stream_id, request, allow_push=False)
         headers = strip_connection_specific_headers(headers)
         if self.config.server_header_value:
             headers = list(headers)
             headers.append((b"server", self.config.server_header_value))
-        await self._send_response(promised_stream_id, status, headers, body)
+        await self._send_response(promised_stream_id, status, headers, body, trailers)
         if self.streams.find(promised_stream_id) is not None:
             self._cancel_stream(promised_stream_id)
             self.streams.close(promised_stream_id)
@@ -713,6 +764,7 @@ class HTTP2ConnectionHandler:
         if state is None or state.websocket_session is not None or state.connect_tunnel is not None:
             return
         if state.local_closed and state.end_stream_received:
+            self._release_stream_work_lease(stream_id)
             self._cancel_stream(stream_id)
             self.streams.close(stream_id)
             self._maybe_finish_after_goaway()
@@ -782,6 +834,21 @@ class HTTP2ConnectionHandler:
         except Exception:
             await self._send_response(stream_id, 400, [(b"content-type", b"text/plain")], b"bad connect target")
             self.access_logger.log_http(self.client, "CONNECT", request.target, 400, "HTTP/2")
+            self._release_stream_work_lease(stream_id)
+            self._cancel_stream(stream_id)
+            self.streams.close(stream_id)
+            self._maybe_finish_after_goaway()
+            return
+        if self.config.http.connect_policy == 'deny':
+            await self._send_response(stream_id, 403, [(b"content-type", b"text/plain")], b"connect denied")
+            self.access_logger.log_http(self.client, "CONNECT", request.target, 403, "HTTP/2")
+            self._cancel_stream(stream_id)
+            self.streams.close(stream_id)
+            self._maybe_finish_after_goaway()
+            return
+        if self.config.http.connect_policy == 'allowlist' and not is_connect_allowed(host, port, self.config.http.connect_allow):
+            await self._send_response(stream_id, 403, [(b"content-type", b"text/plain")], b"connect denied")
+            self.access_logger.log_http(self.client, "CONNECT", request.target, 403, "HTTP/2")
             self._cancel_stream(stream_id)
             self.streams.close(stream_id)
             self._maybe_finish_after_goaway()
@@ -794,6 +861,7 @@ class HTTP2ConnectionHandler:
         except Exception:
             await self._send_response(stream_id, 502, [(b"content-type", b"text/plain")], b"bad gateway")
             self.access_logger.log_http(self.client, "CONNECT", request.target, 502, "HTTP/2")
+            self._release_stream_work_lease(stream_id)
             self._cancel_stream(stream_id)
             self.streams.close(stream_id)
             self._maybe_finish_after_goaway()
@@ -804,6 +872,7 @@ class HTTP2ConnectionHandler:
             authority=request.target,
             upstream_reader=upstream_reader,
             upstream_writer=upstream_writer,
+            work_lease=self.stream_work_leases.get(stream_id),
         )
         state.connect_tunnel = tunnel
         self.state.last_stream_id = max(self.state.last_stream_id, stream_id)
@@ -840,6 +909,8 @@ class HTTP2ConnectionHandler:
             scheme=self.scheme,
             send_headers=lambda status, headers, end_stream: self._send_stream_headers(stream_id, status, headers, end_stream),
             send_data=lambda data, end_stream: self._send_stream_data(stream_id, data, end_stream=end_stream),
+            metrics=self.metrics,
+            on_close=lambda stream_id=stream_id: self._on_websocket_stream_closed(stream_id),
         )
         state.websocket_session = session
         self.state.last_stream_id = max(self.state.last_stream_id, stream_id)
@@ -920,29 +991,41 @@ class HTTP2ConnectionHandler:
     async def _run_stream(self, stream_id: int) -> None:
         state = self.streams.find(stream_id)
         if state is None:
+            self._release_stream_work_lease(stream_id)
             return
         request = self._build_request(state)
-        status, headers, body = await self._run_http_app(stream_id, request, allow_push=True)
-        headers = strip_connection_specific_headers(headers)
-        if self.config.server_header_value:
-            headers = list(headers)
-            headers.append((b"server", self.config.server_header_value))
-        await self._send_response(stream_id, status, headers, body)
-        self.access_logger.log_http(self.client, request.method, request.path, status, "HTTP/2")
-        if self.streams.find(stream_id) is not None:
-            self._cancel_stream(stream_id)
-            self.streams.close(stream_id)
-        self._maybe_finish_after_goaway()
+        try:
+            status, headers, body, trailers = await self._run_http_app(stream_id, request, allow_push=True)
+            headers = strip_connection_specific_headers(headers)
+            if self.config.server_header_value:
+                headers = list(headers)
+                headers.append((b"server", self.config.server_header_value))
+            await self._send_response(stream_id, status, headers, body, trailers)
+            self.access_logger.log_http(self.client, request.method, request.path, status, "HTTP/2")
+            if self.streams.find(stream_id) is not None:
+                self._cancel_stream(stream_id)
+                self.streams.close(stream_id)
+            self._maybe_finish_after_goaway()
+        finally:
+            self._release_stream_work_lease(stream_id)
 
-    async def _send_response(self, stream_id: int, status: int, headers: list[tuple[bytes, bytes]], body: bytes) -> None:
+    async def _send_response(self, stream_id: int, status: int, headers: list[tuple[bytes, bytes]], body: bytes, trailers: list[tuple[bytes, bytes]] | None = None) -> None:
         state = self.streams.find(stream_id)
         if state is None or state.closed:
             raise ProtocolError("attempted to send response on a closed HTTP/2 stream")
         if state.reserved_local and not state.opened:
             state.open_local_reserved(end_stream=not body)
         header_block = self.hpack_encoder.encode_header_block([(b":status", str(status).encode("ascii")), *headers])
-        await self._write_raw(self.frame_writer.headers(stream_id, header_block, end_stream=not body))
-        if not body:
+        trailers = list(trailers or [])
+        end_after_headers = not body and not trailers
+        await self._write_raw(self.frame_writer.headers(stream_id, header_block, end_stream=end_after_headers))
+        if not body and not trailers:
+            state.send_end_stream()
+            self._finalize_stream_if_complete(stream_id)
+            return
+        if not body and trailers:
+            trailer_block = self.hpack_encoder.encode_header_block(trailers)
+            await self._write_raw(self.frame_writer.headers(stream_id, trailer_block, end_stream=True))
             state.send_end_stream()
             self._finalize_stream_if_complete(stream_id)
             return
@@ -960,8 +1043,14 @@ class HTTP2ConnectionHandler:
             self.state.connection_send_window.consume(len(chunk))
             state.send_window.consume(len(chunk))
             final_chunk = offset == len(body)
-            await self._write_raw(self.frame_writer.data(stream_id, chunk, end_stream=final_chunk))
-            if final_chunk:
+            end_stream = final_chunk and not trailers
+            await self._write_raw(self.frame_writer.data(stream_id, chunk, end_stream=end_stream))
+            if final_chunk and trailers:
+                trailer_block = self.hpack_encoder.encode_header_block(trailers)
+                await self._write_raw(self.frame_writer.headers(stream_id, trailer_block, end_stream=True))
+                state.send_end_stream()
+                self._finalize_stream_if_complete(stream_id)
+            elif final_chunk:
                 state.send_end_stream()
                 self._finalize_stream_if_complete(stream_id)
 
@@ -992,6 +1081,7 @@ class HTTP2ConnectionHandler:
             waiter.notify()
 
     def _cancel_stream(self, stream_id: int) -> None:
+        self._release_stream_work_lease(stream_id)
         task = self.stream_tasks.pop(stream_id, None)
         if task is not None:
             task.cancel()

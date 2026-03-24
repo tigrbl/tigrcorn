@@ -1,0 +1,17 @@
+{
+  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http11-curl-origin-form-post-certified",
+  "carrier": "http1.1",
+  "corpus_entry_kind": "minimum_certified_independent_intermediary_case",
+  "corpus_id": "http11-curl-origin-form-post-certified",
+  "generated_at": "2026-03-19T12:12:15.979042+00:00",
+  "minimum_certified": true,
+  "note": "Minimum certified HTTP/1.1 request-forwarding and origin-form evidence preserved from the third-party curl artifact.",
+  "peer": "curl",
+  "scope": [
+    "origin-form",
+    "request-forwarding",
+    "header-forwarding"
+  ],
+  "source_kind": "independent_artifact",
+  "source_ref": "http1-server-curl-client"
+}

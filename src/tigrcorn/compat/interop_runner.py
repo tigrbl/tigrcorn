@@ -13,7 +13,7 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Iterable, Mapping, Sequence
 
 from tigrcorn.transports.quic.packets import (
     QuicLongHeaderPacket,
@@ -35,6 +35,22 @@ VALID_PROVENANCE_KINDS = {
     'package_owned',
 }
 VALID_EVIDENCE_TIERS = {'local_conformance', 'same_stack_replay', 'independent_certification', 'mixed'}
+INTEROP_ARTIFACT_SCHEMA_VERSION = 1
+INTEROP_BUNDLE_REQUIRED_FILES = (
+    'manifest.json',
+    'summary.json',
+    'index.json',
+)
+INTEROP_SCENARIO_REQUIRED_FILES = (
+    'summary.json',
+    'index.json',
+    'result.json',
+    'scenario.json',
+    'command.json',
+    'env.json',
+    'versions.json',
+    'wire_capture.json',
+)
 
 
 @dataclass(slots=True)
@@ -676,15 +692,22 @@ class ExternalInteropRunner:
             scenarios = [scenario for scenario in scenarios if scenario.id in selected]
         run_root = self.artifact_root / self.commit_hash / self.matrix.name
         run_root.mkdir(parents=True, exist_ok=True)
+        bundle_kind = str(self.matrix.metadata.get('bundle_kind', self.matrix.metadata.get('evidence_tier', 'mixed')) or 'mixed')
+        wrapper_families = dict(self.matrix.metadata.get('phase9b_wrapper_families', {}))
         _write_json(
             run_root / 'manifest.json',
             {
                 'matrix_name': self.matrix.name,
+                'bundle_kind': bundle_kind,
+                'artifact_schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+                'required_bundle_files': list(INTEROP_BUNDLE_REQUIRED_FILES),
+                'required_scenario_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
                 'commit_hash': self.commit_hash,
                 'generated_at': datetime.now(timezone.utc).isoformat(),
                 'dimensions': summarize_matrix_dimensions(self.matrix),
                 'environment': self.environment_manifest,
                 'matrix_sha256': _sha256_bytes(json.dumps(_matrix_to_json(self.matrix), sort_keys=True).encode('utf-8')),
+                'wrapper_families': wrapper_families,
             },
         )
         results: list[InteropScenarioResult] = []
@@ -710,9 +733,39 @@ class ExternalInteropRunner:
             skipped=skipped,
             scenarios=results,
         )
+        root_index_payload = {
+            'schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+            'bundle_kind': bundle_kind,
+            'required_bundle_files': list(INTEROP_BUNDLE_REQUIRED_FILES),
+            'required_scenario_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
+            'matrix_name': summary.matrix_name,
+            'commit_hash': summary.commit_hash,
+            'artifact_root': summary.artifact_root,
+            'total': summary.total,
+            'passed': summary.passed,
+            'failed': summary.failed,
+            'skipped': summary.skipped,
+            'wrapper_families': wrapper_families,
+            'scenarios': [
+                {
+                    'id': item.scenario_id,
+                    'passed': item.passed,
+                    'artifact_dir': item.artifact_dir,
+                    'assertions_failed': item.assertions_failed,
+                    'error': item.error,
+                    'summary_path': str(Path(item.artifact_dir) / 'summary.json'),
+                    'index_path': str(Path(item.artifact_dir) / 'index.json'),
+                    'result_path': str(Path(item.artifact_dir) / 'result.json'),
+                }
+                for item in summary.scenarios
+            ],
+        }
+        _write_json(run_root / 'index.json', root_index_payload)
         _write_json(
-            run_root / 'index.json',
+            run_root / 'summary.json',
             {
+                'schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+                'bundle_kind': bundle_kind,
                 'matrix_name': summary.matrix_name,
                 'commit_hash': summary.commit_hash,
                 'artifact_root': summary.artifact_root,
@@ -720,16 +773,10 @@ class ExternalInteropRunner:
                 'passed': summary.passed,
                 'failed': summary.failed,
                 'skipped': summary.skipped,
-                'scenarios': [
-                    {
-                        'id': item.scenario_id,
-                        'passed': item.passed,
-                        'artifact_dir': item.artifact_dir,
-                        'assertions_failed': item.assertions_failed,
-                        'error': item.error,
-                    }
-                    for item in summary.scenarios
-                ],
+                'scenario_ids': [item.scenario_id for item in summary.scenarios],
+                'required_bundle_files': list(INTEROP_BUNDLE_REQUIRED_FILES),
+                'required_scenario_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
+                'wrapper_families': wrapper_families,
             },
         )
         return summary
@@ -911,6 +958,24 @@ class ExternalInteropRunner:
         peer_transcript = _load_json_if_present(peer_transcript_path)
         sut_negotiation = _load_json_if_present(sut_negotiation_path)
         peer_negotiation = _load_json_if_present(peer_negotiation_path)
+        if sut_transcript is None and sut_spec.role == 'server':
+            sut_transcript = _synthesize_sut_transcript(
+                scenario=scenario,
+                sut_spec=sut_spec,
+                sut_result=sut_result,
+                peer_transcript=peer_transcript,
+            )
+            _write_json(sut_transcript_path, sut_transcript)
+        if sut_negotiation is None and sut_spec.role == 'server':
+            sut_negotiation = _synthesize_sut_negotiation(
+                scenario=scenario,
+                sut_spec=sut_spec,
+                sut_result=sut_result,
+                peer_negotiation=peer_negotiation,
+                peer_transcript=peer_transcript,
+                source_root=self.source_root,
+            )
+            _write_json(sut_negotiation_path, sut_negotiation)
         if transport == 'udp' and scenario.protocol in {'quic', 'quic-tls', 'http3'}:
             generate_observer_qlog(
                 packet_trace_path=packet_trace_path,
@@ -978,6 +1043,152 @@ class ExternalInteropRunner:
                 'metadata': scenario.metadata,
                 'sut': _spec_to_json(scenario.sut),
                 'peer_process': _spec_to_json(scenario.peer_process),
+            },
+        )
+        _write_json(
+            scenario_root / 'command.json',
+            {
+                'scenario_id': scenario.id,
+                'sut': {
+                    'adapter': sut_spec.adapter,
+                    'command': sut_spec.command,
+                    'version_command': sut_spec.version_command,
+                    'cwd': str(sut_cwd),
+                },
+                'peer': {
+                    'adapter': peer_spec.adapter,
+                    'command': peer_spec.command,
+                    'version_command': peer_spec.version_command,
+                    'cwd': str(peer_cwd),
+                },
+            },
+        )
+        _write_json(
+            scenario_root / 'env.json',
+            {
+                'scenario_id': scenario.id,
+                'shared_context': context,
+                'sut': {
+                    'cwd': str(sut_cwd),
+                    'env': _snapshot_interop_env(sut_env, sut_spec),
+                },
+                'peer': {
+                    'cwd': str(peer_cwd),
+                    'env': _snapshot_interop_env(peer_env, peer_spec),
+                },
+            },
+        )
+        _write_json(
+            scenario_root / 'versions.json',
+            {
+                'scenario_id': scenario.id,
+                'sut': sut_version,
+                'peer': peer_version,
+                'sut_provenance': sut_result.provenance,
+                'peer_provenance': peer_result.provenance,
+            },
+        )
+        _write_json(
+            scenario_root / 'wire_capture.json',
+            {
+                'scenario_id': scenario.id,
+                'transport': transport,
+                'capture': scenario.capture,
+                'packet_trace': artifacts['packet_trace'],
+                'qlog': artifacts['qlog'],
+                'logs': {
+                    'sut_stdout': _artifact_metadata(sut_stdout_path),
+                    'sut_stderr': _artifact_metadata(sut_stderr_path),
+                    'peer_stdout': _artifact_metadata(peer_stdout_path),
+                    'peer_stderr': _artifact_metadata(peer_stderr_path),
+                },
+                'transcripts': {
+                    'sut_transcript': artifacts['sut_transcript'],
+                    'peer_transcript': artifacts['peer_transcript'],
+                },
+                'negotiation': {
+                    'sut_negotiation': artifacts['sut_negotiation'],
+                    'peer_negotiation': artifacts['peer_negotiation'],
+                },
+            },
+        )
+        _write_json(
+            scenario_root / 'summary.json',
+            {
+                'schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+                'scenario_id': scenario.id,
+                'protocol': scenario.protocol,
+                'feature': scenario.feature,
+                'peer': scenario.peer,
+                'role': scenario.role,
+                'evidence_tier': scenario.evidence_tier,
+                'passed': result.passed,
+                'error': result.error,
+                'assertions_failed': result.assertions_failed,
+                'required_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
+            },
+        )
+        _write_json(
+            scenario_root / 'index.json',
+            {
+                'schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+                'scenario_id': scenario.id,
+                'artifact_dir': str(scenario_root),
+                'passed': result.passed,
+                'error': result.error,
+                'required_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
+                'artifact_files': {},
+                'result_path': str(scenario_root / 'result.json'),
+                'summary_path': str(scenario_root / 'summary.json'),
+            },
+        )
+        artifact_inventory = {
+            name: _artifact_metadata(scenario_root / name)
+            for name in INTEROP_SCENARIO_REQUIRED_FILES
+        }
+        artifact_inventory.update(
+            {
+                'packet_trace.jsonl': _artifact_metadata(packet_trace_path),
+                'qlog.json': _artifact_metadata(qlog_path),
+                'sut_stdout.log': _artifact_metadata(sut_stdout_path),
+                'sut_stderr.log': _artifact_metadata(sut_stderr_path),
+                'peer_stdout.log': _artifact_metadata(peer_stdout_path),
+                'peer_stderr.log': _artifact_metadata(peer_stderr_path),
+                'sut_transcript.json': _artifact_metadata(sut_transcript_path),
+                'peer_transcript.json': _artifact_metadata(peer_transcript_path),
+                'sut_negotiation.json': _artifact_metadata(sut_negotiation_path),
+                'peer_negotiation.json': _artifact_metadata(peer_negotiation_path),
+            }
+        )
+        _write_json(
+            scenario_root / 'summary.json',
+            {
+                'schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+                'scenario_id': scenario.id,
+                'protocol': scenario.protocol,
+                'feature': scenario.feature,
+                'peer': scenario.peer,
+                'role': scenario.role,
+                'evidence_tier': scenario.evidence_tier,
+                'passed': result.passed,
+                'error': result.error,
+                'assertions_failed': result.assertions_failed,
+                'required_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
+                'artifact_files': artifact_inventory,
+            },
+        )
+        _write_json(
+            scenario_root / 'index.json',
+            {
+                'schema_version': INTEROP_ARTIFACT_SCHEMA_VERSION,
+                'scenario_id': scenario.id,
+                'artifact_dir': str(scenario_root),
+                'passed': result.passed,
+                'error': result.error,
+                'required_files': list(INTEROP_SCENARIO_REQUIRED_FILES),
+                'artifact_files': artifact_inventory,
+                'result_path': str(scenario_root / 'result.json'),
+                'summary_path': str(scenario_root / 'summary.json'),
             },
         )
         return result
@@ -1323,18 +1534,29 @@ def _instantiate_adapter(name: str) -> BasePeerAdapter:
 
 
 
+def _resolve_process_command(command: Sequence[str]) -> list[str]:
+    resolved = list(command)
+    if not resolved:
+        return resolved
+    executable = resolved[0]
+    if executable == '/opt/pyvenv/bin/python':
+        resolved[0] = os.environ.get('TIGRCORN_INTEROP_PYTHON', os.sys.executable)
+    return resolved
+
+
+
 def _materialize_process_spec(spec: InteropProcessSpec, context: Mapping[str, str]) -> InteropProcessSpec:
     return InteropProcessSpec(
         name=_apply_template(spec.name, context),
         adapter=spec.adapter,
         role=spec.role,
-        command=[_apply_template(item, context) for item in spec.command],
+        command=_resolve_process_command([_apply_template(item, context) for item in spec.command]),
         env={key: _apply_template(value, context) for key, value in spec.env.items()},
         cwd=_apply_template(spec.cwd, context) if spec.cwd is not None else None,
         ready_pattern=_apply_template(spec.ready_pattern, context) if spec.ready_pattern is not None else None,
         ready_timeout=spec.ready_timeout,
         run_timeout=spec.run_timeout,
-        version_command=[_apply_template(item, context) for item in spec.version_command] if spec.version_command is not None else None,
+        version_command=_resolve_process_command([_apply_template(item, context) for item in spec.version_command]) if spec.version_command is not None else None,
         image=_apply_template(spec.image, context) if spec.image is not None else None,
         enabled=spec.enabled,
         metadata=dict(spec.metadata),
@@ -1388,6 +1610,15 @@ def _build_process_env(source_root: Path, spec: InteropProcessSpec, transcript_p
         env['INTEROP_CIPHER_GROUP'] = context['cipher_group']
     return env
 
+
+
+def _snapshot_interop_env(env: Mapping[str, str], spec: InteropProcessSpec) -> dict[str, str]:
+    explicit_keys = set(spec.env)
+    return {
+        key: str(value)
+        for key, value in sorted(env.items())
+        if key.startswith('INTEROP_') or key in explicit_keys
+    }
 
 
 def _wait_for_server_ready(*, spec: InteropProcessSpec, process: subprocess.Popen[Any], env: Mapping[str, str], stdout_path: Path, stderr_path: Path) -> str | None:
@@ -1519,6 +1750,110 @@ def _load_json_if_present(path: Path) -> Any:
     if not text:
         return None
     return json.loads(text)
+
+
+
+def _extract_cli_option(command: Sequence[str], flag: str) -> str | None:
+    for index, item in enumerate(command):
+        if item == flag and index + 1 < len(command):
+            return command[index + 1]
+    return None
+
+
+
+def _resolve_cli_path(value: str | None, source_root: Path) -> str | None:
+    if value in (None, ''):
+        return None
+    root = source_root.resolve()
+    path = Path(value)
+    if not path.is_absolute():
+        path = (root / path).resolve()
+    if path.exists() and (path == root or root in path.parents):
+        return str(path.relative_to(root))
+    return str(path)
+
+
+
+def _synthesize_sut_transcript(
+    *,
+    scenario: InteropScenario,
+    sut_spec: InteropProcessSpec,
+    sut_result: InteropProcessResult,
+    peer_transcript: Any,
+) -> dict[str, Any]:
+    peer_request = peer_transcript.get('request') if isinstance(peer_transcript, dict) else None
+    peer_response = peer_transcript.get('response') if isinstance(peer_transcript, dict) else None
+    return {
+        'observation_model': 'interop_runner_synthesized_from_peer_observation',
+        'scenario_id': scenario.id,
+        'protocol': scenario.protocol,
+        'feature': scenario.feature,
+        'role': 'server',
+        'request': peer_request,
+        'response': peer_response,
+        'server_process': {
+            'name': sut_spec.name,
+            'adapter': sut_spec.adapter,
+            'role': sut_spec.role,
+            'implementation_source': sut_result.provenance.get('implementation_source'),
+            'implementation_identity': sut_result.provenance.get('implementation_identity'),
+            'implementation_version': sut_result.provenance.get('implementation_version'),
+            'exit_code': sut_result.exit_code,
+            'stdout_path': sut_result.stdout_path,
+            'stderr_path': sut_result.stderr_path,
+        },
+        'derived_from_peer_transcript': isinstance(peer_transcript, dict),
+    }
+
+
+
+def _synthesize_sut_negotiation(
+    *,
+    scenario: InteropScenario,
+    sut_spec: InteropProcessSpec,
+    sut_result: InteropProcessResult,
+    peer_negotiation: Any,
+    peer_transcript: Any,
+    source_root: Path,
+) -> dict[str, Any]:
+    peer_map = peer_negotiation if isinstance(peer_negotiation, dict) else {}
+    peer_response = peer_transcript.get('response') if isinstance(peer_transcript, dict) else {}
+    response_extension_header = peer_map.get('response_extension_header')
+    if response_extension_header in (None, '') and isinstance(peer_response, dict):
+        response_extension_header = peer_response.get('extension_header')
+    negotiated_extensions = list(peer_map.get('negotiated_extensions') or [])
+    if not negotiated_extensions and isinstance(response_extension_header, str) and response_extension_header.lower().startswith('permessage-deflate'):
+        negotiated_extensions = ['PerMessageDeflate']
+    ssl_certfile = _resolve_cli_path(_extract_cli_option(sut_spec.command, '--ssl-certfile'), source_root)
+    ssl_keyfile = _resolve_cli_path(_extract_cli_option(sut_spec.command, '--ssl-keyfile'), source_root)
+    return {
+        'observation_model': 'interop_runner_synthesized_from_peer_observation',
+        'scenario_id': scenario.id,
+        'protocol': peer_map.get('protocol') or scenario.protocol,
+        'feature': scenario.feature,
+        'role': 'server',
+        'implementation': sut_result.provenance.get('implementation_source') or sut_spec.implementation_source or sut_spec.name,
+        'implementation_source': sut_result.provenance.get('implementation_source'),
+        'implementation_identity': sut_result.provenance.get('implementation_identity'),
+        'implementation_version': sut_result.provenance.get('implementation_version'),
+        'handshake_complete': peer_map.get('handshake_complete'),
+        'compression_requested': peer_map.get('compression_requested'),
+        'response_extension_header': response_extension_header,
+        'negotiated_extensions': negotiated_extensions,
+        'connect_protocol_enabled': peer_map.get('connect_protocol_enabled'),
+        'settings_enable_connect_protocol': peer_map.get('settings_enable_connect_protocol'),
+        'certificate_inputs': {
+            'server_certfile': {
+                'path': ssl_certfile,
+                'exists': bool(ssl_certfile),
+            },
+            'server_keyfile': {
+                'path': ssl_keyfile,
+                'exists': bool(ssl_keyfile),
+            },
+        },
+        'derived_from_peer_negotiation': isinstance(peer_negotiation, dict),
+    }
 
 
 

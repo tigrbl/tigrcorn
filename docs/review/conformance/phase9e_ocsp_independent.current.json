@@ -1,0 +1,50 @@
+{
+  "phase": "9E",
+  "checkpoint": "phase9e_ocsp_independent_closure",
+  "status": "ocsp_independent_green_remaining_http3_blockers",
+  "generated_on": "2026-03-22",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "promotion_target_passed": false,
+    "strict_failure_count": 2,
+    "remaining_missing_independent_scenarios": [],
+    "non_passing_independent_scenarios": [
+      "http3-content-coding-aioquic-client"
+    ]
+  },
+  "ocsp_validation": {
+    "strict_target_required_evidence_tier": "independent_certification",
+    "artifact_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+    "scenario_status": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "tls-server-ocsp-validation-openssl-client",
+      "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/index.json",
+      "passed": true,
+      "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/result.json",
+      "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/summary.json",
+      "source_bundle": ".artifacts/phase9e_ocsp_runs/tmp06my23xj/run/tree-26fd7157663bd389/phase9e-ocsp-proof"
+    },
+    "local_validation_bundle": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-ocsp-local-validation-artifacts",
+      "vector_ids": [
+        "ocsp-good-response-cache-reuse-client-auth",
+        "ocsp-stale-response-require-fails",
+        "ocsp-revoked-client-certificate-fails",
+        "ocsp-unreachable-soft-fail-vs-require"
+      ]
+    },
+    "local_positive_tests": [
+      "tests/test_x509_webpki_validation.py",
+      "tests/test_phase9e_ocsp_local_validation.py"
+    ],
+    "fixtures": [
+      "tests/fixtures_pkg/interop_ocsp_fixtures.py",
+      "tests/fixtures_pkg/ocsp_listener_launcher.py",
+      "tests/fixtures_pkg/external_openssl_tls_client.py"
+    ],
+    "note": "The OpenSSL OCSP validation scenario now passes under the 0.3.8 working release root with a live listener configured for require-mode OCSP validation and mTLS. The local validation bundle preserves stale-response, revoked-client, responder-unavailable soft-fail vs require, and cache-reuse semantics."
+  }
+}

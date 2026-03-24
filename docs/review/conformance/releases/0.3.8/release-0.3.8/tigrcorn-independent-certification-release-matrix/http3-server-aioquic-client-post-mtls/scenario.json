@@ -1,0 +1,147 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": 200,
+      "path": "transcript.peer.response.status"
+    },
+    {
+      "equals": "echo:hello-http3-mtls",
+      "path": "transcript.peer.response.body"
+    },
+    {
+      "equals": "h3",
+      "path": "negotiation.peer.protocol"
+    },
+    {
+      "equals": true,
+      "path": "negotiation.peer.client_auth_present"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.packet_trace.exists"
+    }
+  ],
+  "capture": {},
+  "dimensions": {
+    "cipher_group": null,
+    "evidence_tier": "independent_certification",
+    "feature": "post-echo-mtls",
+    "goaway": false,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "aioquic",
+    "protocol": "http3",
+    "qpack_blocking": false,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "http3-server-aioquic-client-post-mtls",
+  "metadata": {
+    "blocking_reason": "preserved mTLS HTTP/3 artifacts have not yet been regenerated with a third-party client",
+    "certification_status": "planned",
+    "peer_implementation": "aioquic",
+    "peer_independence": "third-party",
+    "planned_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+    "rfc": [
+      "RFC 8446",
+      "RFC 9000",
+      "RFC 9001",
+      "RFC 9114",
+      "RFC 9204",
+      "RFC 5280"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "/opt/pyvenv/bin/python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--servername",
+      "localhost",
+      "--cacert",
+      "tests/fixtures_certs/interop-localhost-cert.pem"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {
+      "INTEROP_CLIENT_CERT": "tests/fixtures_certs/interop-client-cert.pem",
+      "INTEROP_CLIENT_KEY": "tests/fixtures_certs/interop-client-key.pem",
+      "INTEROP_REQUEST_BODY": "hello-http3-mtls"
+    },
+    "image": null,
+    "implementation_identity": "aioquic-http3-client",
+    "implementation_source": "aioquic",
+    "implementation_version": "optional-runtime",
+    "metadata": {},
+    "name": "aioquic-http3-client-mtls",
+    "provenance_kind": "third_party_library",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "/opt/pyvenv/bin/python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--transport",
+      "udp",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http3",
+      "--http",
+      "3",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--no-access-log",
+      "--lifespan",
+      "off",
+      "--disable-websocket",
+      "--ssl-ca-certs",
+      "tests/fixtures_certs/interop-client-cert.pem",
+      "--ssl-require-client-cert"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "implementation_identity": "tigrcorn-http3-mtls",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "metadata": {},
+    "name": "tigrcorn-http3-mtls",
+    "provenance_kind": "package_owned",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

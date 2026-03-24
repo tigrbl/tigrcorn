@@ -5,7 +5,11 @@ from typing import Literal
 
 from tigrcorn.constants import (
     DEFAULT_BACKLOG,
+    DEFAULT_ENV_PREFIX,
     DEFAULT_HOST,
+    DEFAULT_HTTP_CONTENT_CODINGS,
+    DEFAULT_IDLE_TIMEOUT,
+    DEFAULT_KEEPALIVE_TIMEOUT,
     DEFAULT_LIFESPAN,
     DEFAULT_LOG_LEVEL,
     DEFAULT_MAX_BODY_SIZE,
@@ -18,25 +22,154 @@ from tigrcorn.constants import (
     DEFAULT_SERVER_HEADER,
     DEFAULT_SHUTDOWN_TIMEOUT,
     DEFAULT_WEBSOCKET_MAX_MESSAGE_SIZE,
+    DEFAULT_WORKER_CLASS,
+    DEFAULT_WORKERS,
     DEFAULT_WRITE_TIMEOUT,
 )
 
 ListenerKind = Literal["tcp", "udp", "unix", "pipe", "inproc"]
 ProtocolName = Literal["http1", "http2", "http3", "quic", "websocket", "rawframed", "custom"]
+ClaimClass = Literal["rfc_scoped", "hybrid", "pure_operator", "non_rfc_custom"]
+
+
+@dataclass(slots=True)
+class AppConfig:
+    target: str | None = None
+    factory: bool = False
+    app_dir: str | None = None
+    config_file: str | None = None
+    env_prefix: str = DEFAULT_ENV_PREFIX
+    lifespan: Literal["auto", "on", "off"] = DEFAULT_LIFESPAN
+    reload: bool = False
+    reload_dirs: list[str] = field(default_factory=list)
+    reload_include: list[str] = field(default_factory=list)
+    reload_exclude: list[str] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class ProcessConfig:
+    workers: int = DEFAULT_WORKERS
+    worker_class: str = DEFAULT_WORKER_CLASS
+    pid_file: str | None = None
+    limit_max_requests: int | None = None
+    max_requests_jitter: int = 0
+
+
+@dataclass(slots=True)
+class TLSConfig:
+    certfile: str | None = None
+    keyfile: str | None = None
+    ca_certs: str | None = None
+    require_client_cert: bool = False
+    ciphers: str | None = None
+    resolved_cipher_suites: tuple[int, ...] = ()
+    alpn_protocols: list[str] = field(default_factory=lambda: ["h2", "http/1.1"])
+    ocsp_mode: Literal["off", "soft-fail", "require"] = "off"
+    ocsp_soft_fail: bool = False
+    ocsp_cache_size: int = 128
+    ocsp_max_age: float | None = 43_200.0
+    crl_mode: Literal["off", "soft-fail", "require"] = "off"
+    revocation_fetch: bool = True
+
+
+@dataclass(slots=True)
+class ProxyConfig:
+    proxy_headers: bool = False
+    forwarded_allow_ips: list[str] = field(default_factory=list)
+    root_path: str = ""
+    server_header: bytes | str = DEFAULT_SERVER_HEADER
+    include_server_header: bool = True
+
+
+@dataclass(slots=True)
+class HTTPConfig:
+    http_versions: list[str] = field(default_factory=lambda: ["1.1", "2"])
+    enable_h2c: bool = True
+    keep_alive_timeout: float = DEFAULT_KEEPALIVE_TIMEOUT
+    read_timeout: float = DEFAULT_READ_TIMEOUT
+    write_timeout: float = DEFAULT_WRITE_TIMEOUT
+    shutdown_timeout: float = DEFAULT_SHUTDOWN_TIMEOUT
+    idle_timeout: float = DEFAULT_IDLE_TIMEOUT
+    max_body_size: int = DEFAULT_MAX_BODY_SIZE
+    max_header_size: int = DEFAULT_MAX_HEADER_SIZE
+    connect_policy: Literal["relay", "deny", "allowlist"] = "relay"
+    connect_allow: list[str] = field(default_factory=list)
+    trailer_policy: Literal["pass", "drop", "strict"] = "pass"
+    content_coding_policy: Literal["allowlist", "identity-only", "strict"] = "allowlist"
+    content_codings: list[str] = field(default_factory=lambda: list(DEFAULT_HTTP_CONTENT_CODINGS))
+
+
+@dataclass(slots=True)
+class WebSocketConfig:
+    enabled: bool = True
+    max_message_size: int = DEFAULT_WEBSOCKET_MAX_MESSAGE_SIZE
+    ping_interval: float | None = None
+    ping_timeout: float | None = None
+    compression: Literal["off", "permessage-deflate"] = "off"
+
+
+@dataclass(slots=True)
+class QUICConfig:
+    quic_secret: bytes = DEFAULT_QUIC_SECRET
+    require_retry: bool = False
+    max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
+    idle_timeout: float = DEFAULT_IDLE_TIMEOUT
+    early_data_policy: Literal["allow", "deny", "require"] = "allow"
+
+
+@dataclass(slots=True)
+class LoggingConfig:
+    level: str = DEFAULT_LOG_LEVEL
+    access_log: bool = True
+    access_log_file: str | None = None
+    access_log_format: str | None = None
+    error_log_file: str | None = None
+    log_config: str | None = None
+    structured: bool = False
+    explicit_fields: list[str] = field(default_factory=list)
+
+
+@dataclass(slots=True)
+class MetricsConfig:
+    enabled: bool = False
+    bind: str | None = None
+    statsd_host: str | None = None
+    otel_endpoint: str | None = None
+
+
+@dataclass(slots=True)
+class SchedulerConfig:
+    limit_concurrency: int | None = None
+    max_connections: int | None = None
+    max_tasks: int | None = None
+    max_streams: int | None = None
 
 
 @dataclass(slots=True)
 class ListenerConfig:
     kind: ListenerKind = "tcp"
+    bind: str | None = None
     host: str = DEFAULT_HOST
     port: int = DEFAULT_PORT
     path: str | None = None
+    fd: int | None = None
+    endpoint: str | None = None
+    insecure_bind: str | None = None
+    quic_bind: str | None = None
     backlog: int = DEFAULT_BACKLOG
     ssl_certfile: str | None = None
     ssl_keyfile: str | None = None
     ssl_ca_certs: str | None = None
     ssl_require_client_cert: bool = False
-    alpn_protocols: list[str] = field(default_factory=lambda: ["h2", "http/1.1"])
+    ssl_ciphers: str | None = None
+    resolved_cipher_suites: tuple[int, ...] = ()
+    alpn_protocols: list[str] = field(default_factory=list)
+    ocsp_mode: Literal["off", "soft-fail", "require"] = "off"
+    ocsp_soft_fail: bool = False
+    ocsp_cache_size: int = 128
+    ocsp_max_age: float | None = 43_200.0
+    crl_mode: Literal["off", "soft-fail", "require"] = "off"
+    revocation_fetch: bool = True
     http_versions: list[str] = field(default_factory=lambda: ["1.1", "2"])
     websocket: bool = True
     reuse_port: bool = False
@@ -55,6 +188,10 @@ class ListenerConfig:
 
     @property
     def label(self) -> str:
+        if self.fd is not None:
+            return f"fd://{self.fd}"
+        if self.endpoint:
+            return self.endpoint
         if self.kind == "unix":
             return self.path or "<unix:unset>"
         if self.kind == "pipe":
@@ -92,21 +229,112 @@ class ListenerConfig:
 
 @dataclass(slots=True)
 class ServerConfig:
-    app: str | None = None
+    app: AppConfig = field(default_factory=AppConfig)
+    process: ProcessConfig = field(default_factory=ProcessConfig)
     listeners: list[ListenerConfig] = field(default_factory=lambda: [ListenerConfig()])
-    lifespan: Literal["auto", "on", "off"] = DEFAULT_LIFESPAN
-    log_level: str = DEFAULT_LOG_LEVEL
-    access_log: bool = True
+    tls: TLSConfig = field(default_factory=TLSConfig)
+    proxy: ProxyConfig = field(default_factory=ProxyConfig)
+    http: HTTPConfig = field(default_factory=HTTPConfig)
+    websocket: WebSocketConfig = field(default_factory=WebSocketConfig)
+    quic: QUICConfig = field(default_factory=QUICConfig)
+    logging: LoggingConfig = field(default_factory=LoggingConfig)
+    metrics: MetricsConfig = field(default_factory=MetricsConfig)
+    scheduler: SchedulerConfig = field(default_factory=SchedulerConfig)
     debug: bool = False
-    read_timeout: float = DEFAULT_READ_TIMEOUT
-    write_timeout: float = DEFAULT_WRITE_TIMEOUT
-    shutdown_timeout: float = DEFAULT_SHUTDOWN_TIMEOUT
-    max_body_size: int = DEFAULT_MAX_BODY_SIZE
-    max_header_size: int = DEFAULT_MAX_HEADER_SIZE
-    websocket_max_message_size: int = DEFAULT_WEBSOCKET_MAX_MESSAGE_SIZE
-    server_header: bytes = DEFAULT_SERVER_HEADER
-    enable_h2c: bool = True
+
+    @property
+    def lifespan(self) -> Literal["auto", "on", "off"]:
+        return self.app.lifespan
+
+    @lifespan.setter
+    def lifespan(self, value: Literal["auto", "on", "off"]) -> None:
+        self.app.lifespan = value
+
+    @property
+    def log_level(self) -> str:
+        return self.logging.level
+
+    @log_level.setter
+    def log_level(self, value: str) -> None:
+        self.logging.level = value
+
+    @property
+    def access_log(self) -> bool:
+        return self.logging.access_log
+
+    @access_log.setter
+    def access_log(self, value: bool) -> None:
+        self.logging.access_log = value
+
+    @property
+    def read_timeout(self) -> float:
+        return self.http.read_timeout
+
+    @read_timeout.setter
+    def read_timeout(self, value: float) -> None:
+        self.http.read_timeout = value
+
+    @property
+    def write_timeout(self) -> float:
+        return self.http.write_timeout
+
+    @write_timeout.setter
+    def write_timeout(self, value: float) -> None:
+        self.http.write_timeout = value
+
+    @property
+    def shutdown_timeout(self) -> float:
+        return self.http.shutdown_timeout
+
+    @shutdown_timeout.setter
+    def shutdown_timeout(self, value: float) -> None:
+        self.http.shutdown_timeout = value
+
+    @property
+    def max_body_size(self) -> int:
+        return self.http.max_body_size
+
+    @max_body_size.setter
+    def max_body_size(self, value: int) -> None:
+        self.http.max_body_size = value
+
+    @property
+    def max_header_size(self) -> int:
+        return self.http.max_header_size
+
+    @max_header_size.setter
+    def max_header_size(self, value: int) -> None:
+        self.http.max_header_size = value
+
+    @property
+    def websocket_max_message_size(self) -> int:
+        return self.websocket.max_message_size
+
+    @websocket_max_message_size.setter
+    def websocket_max_message_size(self, value: int) -> None:
+        self.websocket.max_message_size = value
+
+    @property
+    def server_header(self) -> bytes | str:
+        return self.proxy.server_header
+
+    @server_header.setter
+    def server_header(self, value: bytes | str) -> None:
+        self.proxy.server_header = value
 
     @property
     def server_header_value(self) -> bytes | None:
-        return self.server_header or None
+        if not self.proxy.include_server_header:
+            return None
+        value = self.proxy.server_header
+        if isinstance(value, str):
+            return value.encode("latin1") if value else None
+        return value or None
+
+    @property
+    def enable_h2c(self) -> bool:
+        return self.http.enable_h2c
+
+    @enable_h2c.setter
+    def enable_h2c(self, value: bool) -> None:
+        self.http.enable_h2c = value

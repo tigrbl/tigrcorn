@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "logging_disabled_no_error": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": false
+}

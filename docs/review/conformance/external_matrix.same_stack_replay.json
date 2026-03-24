@@ -1,13 +1,13 @@
 {
   "name": "tigrcorn-same-stack-replay-matrix",
   "metadata": {
-    "description": "Replayable same-stack fixture matrix for HTTP/3, QUIC-TLS feature axes, and RFC 9220 coverage. These scenarios are useful regression evidence but are not independent certification artifacts.",
+    "description": "Replayable same-stack fixture matrix for HTTP/3, QUIC-TLS feature axes, and RFC 9220 coverage. These scenarios are useful regression evidence and are preserved under the canonical 0.3.8 release root, but they are not independent certification artifacts.",
     "evidence_tier": "same_stack_replay",
     "peer_families": [
       "tigrcorn-public-client"
     ],
     "source_matrix": "external_matrix.current_release.json",
-    "canonical_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix"
+    "canonical_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix"
   },
   "scenarios": [
     {

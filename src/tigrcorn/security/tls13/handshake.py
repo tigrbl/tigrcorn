@@ -350,8 +350,8 @@ def _preferred_supported_group(*, supported_groups: Sequence[int], key_shares: d
     return None
 
 
-def _select_cipher_suite(offered: Sequence[int]) -> int | None:
-    for cipher_suite in SUPPORTED_CIPHER_SUITES:
+def _select_cipher_suite(offered: Sequence[int], supported: Sequence[int]) -> int | None:
+    for cipher_suite in supported:
         if cipher_suite in offered:
             return cipher_suite
     return None
@@ -497,6 +497,7 @@ class QuicTlsHandshakeDriver:
         enable_early_data: bool = False,
         transport_mode: str = 'quic',
         validation_policy: CertificateValidationPolicy | None = None,
+        cipher_suites: Sequence[int] | None = None,
     ) -> None:
         self.is_client = is_client
         if isinstance(alpn, str):
@@ -513,6 +514,13 @@ class QuicTlsHandshakeDriver:
         self.server_name = server_name
         self.transport_parameters = transport_parameters or (TransportParameters() if transport_mode == 'quic' else None)
         self.validation_policy = validation_policy
+        configured_cipher_suites = tuple(int(item) for item in (cipher_suites or SUPPORTED_CIPHER_SUITES))
+        if not configured_cipher_suites:
+            raise ValueError('at least one TLS 1.3 cipher suite must be configured')
+        unsupported_cipher_suites = [item for item in configured_cipher_suites if item not in SUPPORTED_CIPHER_SUITES]
+        if unsupported_cipher_suites:
+            raise ValueError(f'unsupported TLS 1.3 cipher suites: {unsupported_cipher_suites!r}')
+        self.supported_cipher_suites = configured_cipher_suites
         if not is_client and (certificate_pem is None or private_key_pem is None):
             certificate_pem, private_key_pem = generate_self_signed_certificate(server_name)
         if isinstance(session_ticket, bytes):
@@ -550,7 +558,7 @@ class QuicTlsHandshakeDriver:
         self.complete = False
         self.state = 'client_idle' if is_client else 'server_idle'
 
-        initial_cipher_suite = self.session_ticket.cipher_suite if self.session_ticket is not None else SUPPORTED_CIPHER_SUITES[0]
+        initial_cipher_suite = self.session_ticket.cipher_suite if self.session_ticket is not None and self.session_ticket.cipher_suite in self.supported_cipher_suites else self.supported_cipher_suites[0]
         self._selected_cipher_suite = int(initial_cipher_suite)
         self._cipher_parameters = cipher_suite_parameters(self._selected_cipher_suite)
         self._key_schedule = Tls13KeySchedule(hash_name=self._cipher_parameters.hash_name)
@@ -677,7 +685,7 @@ class QuicTlsHandshakeDriver:
         hello = ClientHello(
             random=os.urandom(32),
             legacy_session_id=b'' if self.transport_mode == 'quic' else os.urandom(32),
-            cipher_suites=SUPPORTED_CIPHER_SUITES,
+            cipher_suites=self.supported_cipher_suites,
             extensions=tuple(base_extensions),
         )
 
@@ -781,7 +789,7 @@ class QuicTlsHandshakeDriver:
         versions = tuple(int(version) for version in offered.get(ExtensionType.SUPPORTED_VERSIONS, ()))
         if 0x0304 not in versions:
             _raise_tls(AlertDescription.PROTOCOL_VERSION, 'client did not offer TLS 1.3')
-        selected_cipher_suite = _select_cipher_suite(message.cipher_suites)
+        selected_cipher_suite = _select_cipher_suite(message.cipher_suites, self.supported_cipher_suites)
         if selected_cipher_suite is None:
             _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'client did not offer a mutually supported TLS 1.3 cipher suite')
         self._configure_cipher_suite(selected_cipher_suite)

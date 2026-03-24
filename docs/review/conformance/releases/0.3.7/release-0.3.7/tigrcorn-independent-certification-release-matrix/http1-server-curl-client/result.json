@@ -1,0 +1,233 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client",
+  "artifacts": {
+    "packet_trace": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/packet_trace.jsonl",
+      "sha256": "56977b32c93525c2bc4aa1dabda6d1c691b2c8b88de3277f299ba7094ec626cd",
+      "size": 1011
+    },
+    "peer_negotiation": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_negotiation.json",
+      "sha256": "63299acedc91451c6a75e8dd327d0bcec0f58b784aadcec6f0fc0d27fa74c368",
+      "size": 233
+    },
+    "peer_transcript": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_transcript.json",
+      "sha256": "dd67c9331259a613d50fee1ab0bcc180bfe3a94ecf7bc0bc5ba0725d59a8b1dc",
+      "size": 2394
+    },
+    "qlog": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/qlog.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_negotiation": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_negotiation.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_transcript": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_transcript.json",
+      "sha256": null,
+      "size": 0
+    }
+  },
+  "assertions_failed": [],
+  "commit_hash": "release-0.3.6-current",
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/http1-server-curl-client",
+  "error": null,
+  "negotiation": {
+    "peer": {
+      "curl_version": "libcurl/8.10.1 OpenSSL/3.0.14 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libpsl/0.21.2",
+      "http_version": "1.1",
+      "implementation": "curl",
+      "protocol": "http/1.1",
+      "scheme": "http",
+      "server_name": "127.0.0.1"
+    },
+    "sut": null
+  },
+  "passed": true,
+  "peer": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "curl-http1-client",
+    "role": "client",
+    "stderr_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_stderr.log",
+    "stderr_text": "",
+    "stdout_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_stdout.log",
+    "stdout_text": "{\"curl\": {\"certs\": \"\", \"conn_id\": 0, \"content_type\": \"text/plain\", \"curl_version\": \"libcurl/8.10.1 OpenSSL/3.0.14 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libpsl/0.21.2\", \"errormsg\": null, \"exitcode\": 0, \"filename_effective\": \"/tmp/tmp32nqkmmk/body.bin\", \"ftp_entry_path\": null, \"http_code\": 200, \"http_connect\": 0, \"http_version\": \"1.1\", \"local_ip\": \"127.0.0.1\", \"local_port\": 41720, \"method\": \"POST\", \"num_certs\": 0, \"num_connects\": 1, \"num_headers\": 4, \"num_redirects\": 0, \"num_retries\": 0, \"proxy_ssl_verify_result\": 0, \"proxy_used\": 0, \"redirect_url\": null, \"referer\": null, \"remote_ip\": \"127.0.0.1\", \"remote_port\": 55265, \"response_code\": 200, \"scheme\": \"http\", \"size_download\": 16, \"size_header\": 107, \"size_request\": 167, \"size_upload\": 11, \"speed_download\": 2897, \"speed_upload\": 1992, \"ssl_verify_result\": 0, \"time_appconnect\": 0.0, \"time_connect\": 0.000239, \"time_namelookup\": 2.3e-05, \"time_posttransfer\": 0.000381, \"time_pretransfer\": 0.000383, \"time_redirect\": 0.0, \"time_starttransfer\": 0.005425, \"time_total\": 0.005522, \"url\": \"http://127.0.0.1:55265/interop\", \"url.fragment\": null, \"url.host\": \"127.0.0.1\", \"url.options\": null, \"url.password\": null, \"url.path\": \"/interop\", \"url.port\": \"55265\", \"url.query\": null, \"url.scheme\": \"http\", \"url.user\": null, \"url.zoneid\": null, \"url_effective\": \"http://127.0.0.1:55265/interop\", \"urle.fragment\": null, \"urle.host\": \"127.0.0.1\", \"urle.options\": null, \"urle.password\": null, \"urle.path\": \"/interop\", \"urle.port\": \"55265\", \"urle.query\": null, \"urle.scheme\": \"http\", \"urle.user\": null, \"urle.zoneid\": null, \"urlnum\": 0, \"xfer_id\": 0}, \"request\": {\"body\": \"hello-http1\", \"method\": \"POST\", \"path\": \"/interop\", \"server_name\": \"127.0.0.1\", \"url\": \"http://127.0.0.1:55265/interop\"}, \"response\": {\"body\": \"echo:hello-http1\", \"headers\": [[\"content-type\", \"text/plain\"], [\"content-length\", \"16\"], [\"server\", \"tigrcorn\"], [\"connection\", \"keep-alive\"]], \"status\": 200, \"status_line\": \"HTTP/1.1 200 OK\"}}\n",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_curl_client",
+        "--http1"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_curl_client",
+        "--version"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "curl 8.10.1 (x86_64-pc-linux-gnu) libcurl/8.10.1 OpenSSL/3.0.14 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libpsl/0.21.2"
+    }
+  },
+  "scenario_id": "http1-server-curl-client",
+  "sut": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "tigrcorn-http1",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_stderr.log",
+    "stderr_text": "2026-03-15 02:12:19,754 INFO tigrcorn listening on 127.0.0.1:47533\n",
+    "stdout_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_stdout.log",
+    "stdout_text": "",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "examples.echo_http.app:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "47533",
+        "--protocol",
+        "http1",
+        "--disable-websocket",
+        "--no-access-log",
+        "--lifespan",
+        "off"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "--help"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "usage: tigrcorn [-h] [--transport {tcp,udp,unix,pipe}] [--host HOST]\n                [--port PORT] [--uds UDS] [--lifespan {auto,on,off}]\n                [--log-level LOG_LEVEL] [--no-access-log] [--factory]\n                [--ssl-certfile SSL_CERTFILE] [--ssl-keyfile SSL_KEYFILE]\n                [--ssl-ca-certs SSL_CA_CERTS] [--ssl-require-client-cert]\n                [--http {1.1,2,3}]\n                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]\n                [--disable-websocket] [--disable-h2c]\n                [--max-body-size MAX_BODY_SIZE] [--quic-secret QUIC_SECRET]\n                [--quic-require-retry] [--pipe-mode {rawframed,stream}]\n                app\n\nASGI3-compatible transport server\n\npositional arguments:\n  app                   Application import string in module:attr form\n\noptions:\n  -h, --help            show this help message and exit\n  --transport {tcp,udp,unix,pipe}\n  --host HOST           Bind host for TCP/UDP listeners\n  --port PORT           Bind port for TCP/UDP listeners\n  --uds UDS             Bind Unix domain socket or pipe path instead of\n                        TCP/UDP\n  --lifespan {auto,on,off}\n  --log-level LOG_LEVEL\n  --no-access-log\n  --factory             Treat APP as an application factory\n  --ssl-certfile SSL_CERTFILE\n                        Certificate for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-keyfile SSL_KEYFILE\n                        Private key for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-ca-certs SSL_CA_CERTS\n                        Trusted CA bundle for TLS or QUIC-TLS client\n                        certificate verification\n  --ssl-require-client-cert\n                        Require peer client certificates for TLS or QUIC-TLS\n                        listeners\n  --http {1.1,2,3}      Enable an HTTP version\n  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}\n                        Enable a listener protocol\n  --disable-websocket\n  --disable-h2c\n  --max-body-size MAX_BODY_SIZE\n  --quic-secret QUIC_SECRET\n                        Shared secret for local QUIC experiments when not\n                        using QUIC-TLS certificates\n  --quic-require-retry  Require a QUIC Retry before completing the initial\n                        handshake\n  --pipe-mode {rawframed,stream}"
+    }
+  },
+  "transcript": {
+    "peer": {
+      "curl": {
+        "certs": "",
+        "conn_id": 0,
+        "content_type": "text/plain",
+        "curl_version": "libcurl/8.10.1 OpenSSL/3.0.14 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libpsl/0.21.2",
+        "errormsg": null,
+        "exitcode": 0,
+        "filename_effective": "/tmp/tmp32nqkmmk/body.bin",
+        "ftp_entry_path": null,
+        "http_code": 200,
+        "http_connect": 0,
+        "http_version": "1.1",
+        "local_ip": "127.0.0.1",
+        "local_port": 41720,
+        "method": "POST",
+        "num_certs": 0,
+        "num_connects": 1,
+        "num_headers": 4,
+        "num_redirects": 0,
+        "num_retries": 0,
+        "proxy_ssl_verify_result": 0,
+        "proxy_used": 0,
+        "redirect_url": null,
+        "referer": null,
+        "remote_ip": "127.0.0.1",
+        "remote_port": 55265,
+        "response_code": 200,
+        "scheme": "http",
+        "size_download": 16,
+        "size_header": 107,
+        "size_request": 167,
+        "size_upload": 11,
+        "speed_download": 2897,
+        "speed_upload": 1992,
+        "ssl_verify_result": 0,
+        "time_appconnect": 0.0,
+        "time_connect": 0.000239,
+        "time_namelookup": 2.3e-05,
+        "time_posttransfer": 0.000381,
+        "time_pretransfer": 0.000383,
+        "time_redirect": 0.0,
+        "time_starttransfer": 0.005425,
+        "time_total": 0.005522,
+        "url": "http://127.0.0.1:55265/interop",
+        "url.fragment": null,
+        "url.host": "127.0.0.1",
+        "url.options": null,
+        "url.password": null,
+        "url.path": "/interop",
+        "url.port": "55265",
+        "url.query": null,
+        "url.scheme": "http",
+        "url.user": null,
+        "url.zoneid": null,
+        "url_effective": "http://127.0.0.1:55265/interop",
+        "urle.fragment": null,
+        "urle.host": "127.0.0.1",
+        "urle.options": null,
+        "urle.password": null,
+        "urle.path": "/interop",
+        "urle.port": "55265",
+        "urle.query": null,
+        "urle.scheme": "http",
+        "urle.user": null,
+        "urle.zoneid": null,
+        "urlnum": 0,
+        "xfer_id": 0
+      },
+      "request": {
+        "body": "hello-http1",
+        "method": "POST",
+        "path": "/interop",
+        "server_name": "127.0.0.1",
+        "url": "http://127.0.0.1:55265/interop"
+      },
+      "response": {
+        "body": "echo:hello-http1",
+        "headers": [
+          [
+            "content-type",
+            "text/plain"
+          ],
+          [
+            "content-length",
+            "16"
+          ],
+          [
+            "server",
+            "tigrcorn"
+          ],
+          [
+            "connection",
+            "keep-alive"
+          ]
+        ],
+        "status": 200,
+        "status_line": "HTTP/1.1 200 OK"
+      }
+    },
+    "sut": null
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "phase": "9G",
+  "checkpoint": "phase9g_strict_performance_closure",
+  "status": "performance_section_green_not_yet_strict_complete",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "promotion_target_passed": false,
+    "flag_surface_passed": true,
+    "operator_surface_passed": true,
+    "performance_passed": true,
+    "documentation_passed": true,
+    "remaining_non_passing_independent_scenarios": [
+      "http3-content-coding-aioquic-client"
+    ],
+    "remaining_plan_phases": [
+      "9H",
+      "9I"
+    ],
+    "remaining_missing_independent_scenarios": []
+  },
+  "performance_contract": {
+    "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+    "profile_count": 32,
+    "lane_counts": {
+      "end_to_end_release": 23,
+      "component_regression": 9
+    },
+    "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
+    "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",
+    "required_metric_keys": [
+      "throughput_ops_per_sec",
+      "p50_ms",
+      "p95_ms",
+      "p99_ms",
+      "p99_9_ms",
+      "time_to_first_byte_ms",
+      "handshake_latency_ms",
+      "error_rate",
+      "scheduler_rejections",
+      "protocol_stalls",
+      "cpu_seconds",
+      "rss_kib"
+    ],
+    "required_threshold_keys": [
+      "min_throughput_ops_per_sec",
+      "max_p50_ms",
+      "max_p95_ms",
+      "max_p99_ms",
+      "max_p99_9_ms",
+      "max_time_to_first_byte_ms",
+      "max_handshake_latency_ms",
+      "max_error_rate",
+      "max_scheduler_rejections",
+      "max_protocol_stalls",
+      "max_rss_kib"
+    ],
+    "required_relative_regression_budget_keys": [
+      "max_throughput_drop_fraction",
+      "max_p99_increase_fraction",
+      "max_p99_9_increase_fraction",
+      "max_cpu_increase_fraction",
+      "max_rss_increase_fraction"
+    ],
+    "required_matrix_lanes": [
+      "component_regression",
+      "end_to_end_release"
+    ],
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ]
+  }
+}

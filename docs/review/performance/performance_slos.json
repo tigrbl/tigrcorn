@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "target_name": "phase8_strict_promotion_performance_slos",
+  "status": "phase9h_hardened_evaluator_performance_section_green",
+  "current_phase6_limitations": [
+    "The historical phase6 roots remain in use as preserved artifact paths, but the preserved artifacts now include the stricter phase9g metric, threshold, budget, lane, and platform keys.",
+    "The hardened promotion evaluator now enforces the full declared strict-performance contract rather than only the earlier checked subset.",
+    "The overall promotion target remains blocked only by the preserved-but-non-passing HTTP/3 aioquic evidence rows and final release assembly work."
+  ],
+  "required_metric_keys": [
+    "throughput_ops_per_sec",
+    "p50_ms",
+    "p95_ms",
+    "p99_ms",
+    "p99_9_ms",
+    "time_to_first_byte_ms",
+    "handshake_latency_ms",
+    "error_rate",
+    "scheduler_rejections",
+    "protocol_stalls",
+    "cpu_seconds",
+    "rss_kib"
+  ],
+  "required_threshold_keys": [
+    "min_throughput_ops_per_sec",
+    "max_p50_ms",
+    "max_p95_ms",
+    "max_p99_ms",
+    "max_p99_9_ms",
+    "max_time_to_first_byte_ms",
+    "max_handshake_latency_ms",
+    "max_error_rate",
+    "max_scheduler_rejections",
+    "max_protocol_stalls",
+    "max_rss_kib"
+  ],
+  "required_relative_regression_budget_keys": [
+    "max_throughput_drop_fraction",
+    "max_p99_increase_fraction",
+    "max_p99_9_increase_fraction",
+    "max_cpu_increase_fraction",
+    "max_rss_increase_fraction"
+  ],
+  "required_artifact_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "env.json",
+    "percentile_histogram.json",
+    "raw_samples.csv",
+    "command.json",
+    "correctness.json"
+  ],
+  "required_matrix_lanes": [
+    "component_regression",
+    "end_to_end_release"
+  ],
+  "promotion_requirements": {
+    "validate_artifacts_with_relative_regression": true,
+    "require_correctness_under_load_for_rfc_targets": true,
+    "require_end_to_end_live_listener_profiles": true,
+    "require_certification_platforms": true,
+    "require_documented_slos_per_profile": true
+  },
+  "phase9a_contract_freeze": {
+    "status": "frozen",
+    "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md",
+    "status_json": "docs/review/conformance/phase9a_promotion_contract.current.json",
+    "backlog_json": "docs/review/conformance/phase9a_execution_backlog.current.json"
+  },
+  "phase9g_state": {
+    "performance_section_passed": true,
+    "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
+    "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",
+    "lane_counts": {
+      "end_to_end_release": 23,
+      "component_regression": 9
+    },
+    "profile_count": 32,
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ]
+  }
+}

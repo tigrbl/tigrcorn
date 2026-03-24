@@ -1,0 +1,22 @@
+{
+  "corpus_kind": "minimum_certified_intermediary_proxy_corpus",
+  "corpus_root": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified",
+  "generated_at": "2026-03-19T12:12:16.002961+00:00",
+  "minimum_certified_case_ids": [
+    "http11-curl-origin-form-post-certified",
+    "http2-h2-origin-form-post-certified",
+    "http3-aioquic-origin-form-post-certified"
+  ],
+  "scope_note": "Minimum certified intermediary/proxy corpus for carrier-preserving forwarding semantics. This is not yet a full multi-hop intermediary certification program.",
+  "supplemental_case_ids": [
+    "http11-connect-relay-local-vector",
+    "http2-connect-relay-local-vector",
+    "http3-connect-relay-local-vector",
+    "http11-trailer-fields-local-vector",
+    "http2-trailer-fields-local-vector",
+    "http3-trailer-fields-local-vector",
+    "http11-content-coding-local-vector",
+    "http2-content-coding-local-vector",
+    "http3-content-coding-local-vector"
+  ]
+}

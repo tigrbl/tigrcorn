@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import asyncio
 from contextlib import suppress
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from time import monotonic
 
 from tigrcorn.asgi.events.websocket import (
     websocket_connect,
@@ -15,6 +16,7 @@ from tigrcorn.asgi.scopes.websocket import build_websocket_scope
 from tigrcorn.config.model import ServerConfig
 from tigrcorn.errors import ProtocolError
 from tigrcorn.observability.logging import AccessLogger
+from tigrcorn.observability.metrics import Metrics
 from tigrcorn.protocols.http1.serializer import serialize_http11_response_head, serialize_http11_response_whole
 from tigrcorn.protocols.websocket.codec import binary_frame, close_frame, pong_frame, text_frame
 from tigrcorn.protocols.websocket.frames import serialize_frame
@@ -28,8 +30,9 @@ from tigrcorn.protocols.websocket.frames import (
     decode_close_payload,
     read_frame,
 )
-from tigrcorn.protocols.websocket.extensions import PerMessageDeflateRuntime, negotiate_permessage_deflate, parse_permessage_deflate_offers
+from tigrcorn.protocols.websocket.extensions import PerMessageDeflateRuntime, default_permessage_deflate_agreement, negotiate_permessage_deflate, parse_permessage_deflate_offers
 from tigrcorn.protocols.websocket.handshake import build_handshake_response, validate_client_handshake
+from tigrcorn.flow.keepalive import KeepAlivePolicy, KeepAliveRuntime
 from tigrcorn.types import ASGIApp
 from tigrcorn.utils.headers import get_header
 
@@ -47,7 +50,23 @@ class _WSAppSend:
     server_header: bytes | None
     state: dict
     accepted: asyncio.Event
-    allowed_subprotocols: list[str]
+    allowed_subprotocols: list[str] = field(default_factory=list)
+    config: ServerConfig | None = None
+    write_lock: asyncio.Lock | None = None
+    keepalive: KeepAliveRuntime | None = None
+
+    async def _write(self, data: bytes) -> None:
+        if self.write_lock is None:
+            self.writer.write(data)
+            self._record_activity()
+            return
+        async with self.write_lock:
+            self.writer.write(data)
+            await self.writer.drain()
+
+    def _record_activity(self) -> None:
+        if self.keepalive is not None:
+            self.keepalive.record_activity()
 
     async def __call__(self, message: dict) -> None:
         typ = message['type']
@@ -58,6 +77,13 @@ class _WSAppSend:
             if subprotocol is not None and subprotocol not in self.allowed_subprotocols:
                 raise RuntimeError('websocket.accept selected a subprotocol not offered by the client')
             headers = [(bytes(k).lower(), bytes(v)) for k, v in message.get('headers', [])]
+            compression_mode = self.config.websocket.compression if self.config is not None else 'off'
+            if compression_mode != 'permessage-deflate':
+                headers = [(k, v) for k, v in headers if k != b'sec-websocket-extensions']
+            elif self.state.get('permessage_deflate_offers') and get_header(headers, b'sec-websocket-extensions') is None:
+                default_agreement = default_permessage_deflate_agreement(self.state.get('permessage_deflate_offers') or [])
+                if default_agreement is not None:
+                    headers = headers + [(b'sec-websocket-extensions', default_agreement.as_header_value())]
             negotiated_extensions: list[tuple[bytes, bytes]] = []
             agreement = negotiate_permessage_deflate(
                 request_headers=self.state.get('request_headers', []),
@@ -74,8 +100,8 @@ class _WSAppSend:
                 headers=[(k, v) for k, v in headers if k != b'sec-websocket-extensions'] + negotiated_extensions,
                 server_header=self.server_header,
             )
-            self.writer.write(payload)
-            await self.writer.drain()
+            await self._write(payload)
+            self._record_activity()
             self.state['accepted'] = True
             self.accepted.set()
             return
@@ -91,23 +117,23 @@ class _WSAppSend:
             if text is not None:
                 runtime = self.state.get('permessage_deflate_runtime')
                 if runtime is not None:
-                    self.writer.write(serialize_frame(OP_TEXT, runtime.compress_message(text.encode('utf-8')), rsv1=True))
+                    await self._write(serialize_frame(OP_TEXT, runtime.compress_message(text.encode('utf-8')), rsv1=True))
                 else:
-                    self.writer.write(text_frame(text))
+                    await self._write(text_frame(text))
             else:
                 raw = data or b''
                 runtime = self.state.get('permessage_deflate_runtime')
                 if runtime is not None:
-                    self.writer.write(binary_frame(runtime.compress_message(raw), rsv1=True))
+                    await self._write(binary_frame(runtime.compress_message(raw), rsv1=True))
                 else:
-                    self.writer.write(binary_frame(raw))
-            await self.writer.drain()
+                    await self._write(binary_frame(raw))
+            self._record_activity()
             return
         if typ == 'websocket.close':
             code = int(message.get('code', 1000))
             reason = message.get('reason', '')
             if not self.state['accepted']:
-                self.writer.write(
+                await self._write(
                     serialize_http11_response_whole(
                         status=403,
                         headers=[],
@@ -116,13 +142,11 @@ class _WSAppSend:
                         server_header=self.server_header,
                     )
                 )
-                await self.writer.drain()
                 self.state['http_denied'] = True
                 self.state['closed'] = True
                 return
             if not self.state['closed']:
-                self.writer.write(close_frame(code, reason))
-                await self.writer.drain()
+                await self._write(close_frame(code, reason))
             self.state['closed'] = True
             return
         if typ == 'websocket.http.response.start':
@@ -146,11 +170,9 @@ class _WSAppSend:
                         server_header=self.server_header,
                         chunked=True,
                     )
-                    self.writer.write(head)
-                    if body:
-                        self.writer.write(f'{len(body):X}'.encode('ascii') + b'\r\n' + body + b'\r\n')
+                    await self._write(head + (f'{len(body):X}'.encode('ascii') + b'\r\n' + body + b'\r\n' if body else b''))
                 else:
-                    self.writer.write(
+                    await self._write(
                         serialize_http11_response_whole(
                             status=self.state['http_denial_status'],
                             headers=self.state['http_denial_headers'],
@@ -163,11 +185,11 @@ class _WSAppSend:
                 self.state['http_denial_started'] = True
             else:
                 if body:
-                    self.writer.write(f'{len(body):X}'.encode('ascii') + b'\r\n' + body + b'\r\n')
+                    await self._write(f'{len(body):X}'.encode('ascii') + b'\r\n' + body + b'\r\n')
                 if not more:
-                    self.writer.write(b'0\r\n\r\n')
+                    await self._write(b'0\r\n\r\n')
                     self.state['closed'] = True
-            await self.writer.drain()
+            self._record_activity()
             return
         raise RuntimeError(f'unexpected websocket send message: {typ!r}')
 
@@ -186,6 +208,7 @@ class WebSocketConnectionHandler:
         server,
         scheme: str,
         scope_extensions: dict | None = None,
+        metrics: Metrics | None = None,
     ) -> None:
         self.app = app
         self.config = config
@@ -197,8 +220,17 @@ class WebSocketConnectionHandler:
         self.server = server
         self.scheme = scheme
         self.scope_extensions = dict(scope_extensions or {})
+        self.metrics = metrics
         self.receive = QueueReceive()
         self.accepted = asyncio.Event()
+        self.write_lock = asyncio.Lock()
+        self.keepalive_policy = KeepAlivePolicy(
+            idle_timeout=self.config.http.idle_timeout,
+            ping_interval=self.config.websocket.ping_interval,
+            ping_timeout=self.config.websocket.ping_timeout,
+        )
+        self.keepalive = KeepAliveRuntime(self.keepalive_policy) if self.keepalive_policy.enabled else None
+        self.keepalive_task: asyncio.Task[None] | None = None
         self.state = {
             'accepted': False,
             'closed': False,
@@ -222,7 +254,12 @@ class WebSocketConnectionHandler:
                 server=self.server,
                 scheme=self.scheme,
                 extensions=self.scope_extensions,
+                root_path=self.config.proxy.root_path,
+                proxy=self.config.proxy,
             )['subprotocols'],
+            config=config,
+            write_lock=self.write_lock,
+            keepalive=self.keepalive,
         )
 
     async def handle(self) -> None:
@@ -232,21 +269,24 @@ class WebSocketConnectionHandler:
             server=self.server,
             scheme=self.scheme,
             extensions=self.scope_extensions,
+            root_path=self.config.proxy.root_path,
+            proxy=self.config.proxy,
         )
         self.send.allowed_subprotocols = scope['subprotocols']
         await self.receive.put(websocket_connect())
         reader_task = asyncio.create_task(self._frame_reader(), name='tigrcorn-ws-reader')
+        if self.keepalive is not None:
+            self.keepalive_task = asyncio.create_task(self._keepalive_loop(), name='tigrcorn-ws-keepalive')
         try:
             await self.app(scope, self.receive, self.send)
         except Exception:
             if self.state['accepted'] and not self.state['closed']:
                 with suppress(Exception):
-                    self.writer.write(close_frame(1011, 'internal error'))
-                    await self.writer.drain()
+                    await self._write(close_frame(1011, 'internal error'))
             raise
         finally:
             if not self.state['accepted'] and not self.state['http_denied']:
-                self.writer.write(
+                await self._write(
                     serialize_http11_response_whole(
                         status=403,
                         headers=[],
@@ -255,10 +295,9 @@ class WebSocketConnectionHandler:
                         server_header=self.config.server_header_value,
                     )
                 )
-                await self.writer.drain()
                 self.state['closed'] = True
             elif self.state['http_denied'] and not self.state['http_denial_started']:
-                self.writer.write(
+                await self._write(
                     serialize_http11_response_whole(
                         status=self.state['http_denial_status'],
                         headers=self.state['http_denial_headers'],
@@ -267,16 +306,45 @@ class WebSocketConnectionHandler:
                         server_header=self.config.server_header_value,
                     )
                 )
-                await self.writer.drain()
                 self.state['closed'] = True
             elif self.state['accepted'] and not self.state['closed']:
-                self.writer.write(close_frame(1000, ''))
-                await self.writer.drain()
+                await self._write(close_frame(1000, ''))
                 self.state['closed'] = True
+            if self.keepalive_task is not None:
+                self.keepalive_task.cancel()
+                with suppress(Exception):
+                    await self.keepalive_task
             reader_task.cancel()
             with suppress(Exception):
                 await reader_task
             self.access_logger.log_ws(self.client, self.request.path, 'accepted' if self.state['accepted'] else 'denied')
+
+    async def _write(self, data: bytes) -> None:
+        async with self.write_lock:
+            self.writer.write(data)
+            await self.writer.drain()
+
+    def _record_activity(self) -> None:
+        if self.keepalive is not None:
+            self.keepalive.record_activity()
+
+    async def _keepalive_loop(self) -> None:
+        await self.accepted.wait()
+        while not self.state['closed']:
+            await asyncio.sleep(0.05)
+            if self.keepalive is None or self.state['closed']:
+                return
+            if self.keepalive.ping_timed_out():
+                if self.metrics is not None:
+                    self.metrics.websocket_ping_timeout()
+                await self._fail_connection(1011, 'ping timeout')
+                return
+            payload = self.keepalive.next_ping_payload()
+            if payload is None:
+                continue
+            if self.metrics is not None:
+                self.metrics.websocket_ping_sent()
+            await self._write(serialize_frame(OP_PING, payload))
 
     def _ensure_message_size(self, size: int) -> None:
         if size > self.config.websocket_max_message_size:
@@ -284,8 +352,7 @@ class WebSocketConnectionHandler:
 
     async def _fail_connection(self, code: int, reason: str) -> None:
         if not self.state['closed']:
-            self.writer.write(close_frame(code, reason))
-            await self.writer.drain()
+            await self._write(close_frame(code, reason))
         await self.receive.put(websocket_disconnect(code, reason))
         self.state['closed'] = True
 
@@ -302,17 +369,18 @@ class WebSocketConnectionHandler:
                     max_payload_size=self.config.websocket_max_message_size,
                     allow_rsv1=self.state.get('permessage_deflate_runtime') is not None,
                 )
+                self._record_activity()
                 if frame.opcode == OP_PING:
-                    self.writer.write(pong_frame(frame.payload))
-                    await self.writer.drain()
+                    await self._write(pong_frame(frame.payload))
                     continue
                 if frame.opcode == OP_PONG:
+                    if self.keepalive is not None:
+                        self.keepalive.acknowledge_pong(frame.payload)
                     continue
                 if frame.opcode == OP_CLOSE:
                     code, reason = decode_close_payload(frame.payload)
                     if not self.state['closed']:
-                        self.writer.write(close_frame(code, reason))
-                        await self.writer.drain()
+                        await self._write(close_frame(code, reason))
                     self.state['closed'] = True
                     await self.receive.put(websocket_disconnect(code, reason))
                     return

@@ -1,0 +1,21 @@
+{
+  "phase": 4,
+  "checkpoint": "operator_surface",
+  "authoritative_boundary_passed": true,
+  "strict_overlay_passed": false,
+  "implemented": {
+    "workers_process_supervision": true,
+    "reload": true,
+    "proxy_header_normalization": true,
+    "root_path_scope_injection": true,
+    "structured_logging": true,
+    "metrics_endpoint": true,
+    "resource_timeout_controls_wired": true
+  },
+  "validation": {
+    "focused_operator_suite_passed": 28,
+    "release_gate_suite_passed": 9,
+    "server_runtime_suite_passed": 9,
+    "total_targeted_passed": 46
+  }
+}

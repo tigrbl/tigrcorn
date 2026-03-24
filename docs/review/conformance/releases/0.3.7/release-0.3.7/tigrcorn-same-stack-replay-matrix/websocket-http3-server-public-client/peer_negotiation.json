@@ -1,0 +1,13 @@
+{
+  "client_auth_present": false,
+  "client_goaway_sent": false,
+  "connect_protocol_enabled": true,
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/websocket-http3-server-public-client",
+  "implementation": "tigrcorn-public-client",
+  "migration_used": false,
+  "protocol": "h3",
+  "resumption_used": false,
+  "retry_observed": false,
+  "server_name": "localhost",
+  "tls_version": "TLSv1.3"
+}

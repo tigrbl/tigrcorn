@@ -20,6 +20,7 @@ class HTTPResponseCollector:
     status: int | None = None
     headers: list[tuple[bytes, bytes]] = field(default_factory=list)
     body_parts: list[bytes] = field(default_factory=list)
+    trailers: list[tuple[bytes, bytes]] = field(default_factory=list)
     complete: bool = False
     informational_responses: list[tuple[int, list[tuple[bytes, bytes]]]] = field(default_factory=list)
 
@@ -46,6 +47,13 @@ class HTTPResponseCollector:
             self.complete = not bool(message.get("more_body", False))
             return
 
+        if message_type == "http.response.trailers":
+            if self.status is None:
+                raise ASGIProtocolError("http.response.trailers sent before final http.response.start")
+            self.trailers.extend(list(message.get("trailers", [])))
+            self.complete = not bool(message.get("more_trailers", False))
+            return
+
         raise ASGIProtocolError(f"unexpected HTTP send event: {message_type!r}")
 
     def finalize(self) -> None:
@@ -54,10 +62,10 @@ class HTTPResponseCollector:
         if not self.complete:
             raise ASGIProtocolError("application returned before completing the response body")
 
-    def response_tuple(self) -> tuple[int, list[tuple[bytes, bytes]], bytes]:
+    def response_tuple(self) -> tuple[int, list[tuple[bytes, bytes]], bytes, list[tuple[bytes, bytes]]]:
         self.finalize()
         assert self.status is not None
-        return self.status, self.headers, b"".join(self.body_parts)
+        return self.status, self.headers, b"".join(self.body_parts), list(self.trailers)
 
 
 class HTTPResponseWriter:
@@ -69,12 +77,16 @@ class HTTPResponseWriter:
         server_header: bytes | None,
         method: str,
         request_headers: list[tuple[bytes, bytes]] | tuple[tuple[bytes, bytes], ...] = (),
+        content_coding_policy: str = 'allowlist',
+        content_codings: tuple[str, ...] = ('br', 'gzip', 'deflate'),
     ) -> None:
         self.writer = writer
         self.keep_alive = keep_alive
         self.server_header = server_header
         self.method = method.upper()
         self.request_headers = list(request_headers)
+        self.content_coding_policy = content_coding_policy
+        self.content_codings = tuple(content_codings)
         self.status: int | None = None
         self.headers: list[tuple[bytes, bytes]] = []
         self.started = False
@@ -84,11 +96,15 @@ class HTTPResponseWriter:
         self.informational_sent = False
         self._buffered_body_parts: list[bytes] = []
         self._buffering_for_content_coding = False
+        self._response_trailers: list[tuple[bytes, bytes]] = []
 
     async def __call__(self, message: dict) -> None:
         typ = message["type"]
         if typ == "http.response.start":
             await self._handle_response_start(message)
+            return
+        if typ == "http.response.trailers":
+            await self._handle_response_trailers(message)
             return
         if typ != "http.response.body":
             raise ASGIProtocolError(f"unexpected HTTP send event: {typ!r}")
@@ -132,6 +148,8 @@ class HTTPResponseWriter:
             response_headers=self.headers,
             body=b''.join(self._buffered_body_parts),
             status=self.status,
+            policy=self.content_coding_policy,
+            supported=self.content_codings,
         )
         self.status = status
         self.headers = headers
@@ -234,6 +252,30 @@ class HTTPResponseWriter:
                 self.writer.write(finalize_chunked_body())
             self.finished = True
         await self.writer.drain()
+
+
+    async def _handle_response_trailers(self, message: dict) -> None:
+        if self.status is None:
+            raise ASGIProtocolError("http.response.trailers sent before final http.response.start")
+        trailers = [(bytes(name).lower(), bytes(value)) for name, value in message.get("trailers", [])]
+        if not self.started:
+            raw_head = serialize_http11_response_head(
+                status=self.status,
+                headers=self.headers,
+                keep_alive=self.keep_alive,
+                server_header=self.server_header,
+                chunked=True,
+            )
+            self.writer.write(raw_head)
+            self.started = True
+            self.chunked = True
+        if self.finished:
+            raise ASGIProtocolError("response trailers sent after response completion")
+        self._response_trailers.extend(trailers)
+        if self.chunked:
+            self.writer.write(finalize_chunked_body(trailers))
+            await self.writer.drain()
+        self.finished = not bool(message.get("more_trailers", False))
 
     async def ensure_complete(self) -> None:
         if self.status is None:

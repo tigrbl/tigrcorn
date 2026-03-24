@@ -1,0 +1,20 @@
+{
+  "phase": "9D3",
+  "checkpoint": "content_coding_local_behavior_artifacts",
+  "status": "content_coding_local_negative_and_parity_vectors_preserved",
+  "generated_on": "2026-03-22",
+  "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts",
+  "vector_ids": [
+    "http11-content-coding-gzip-pass",
+    "http11-content-coding-identity-forbidden-406",
+    "http11-content-coding-strict-unsupported-406",
+    "http2-content-coding-gzip-pass",
+    "http2-content-coding-identity-forbidden-406",
+    "http2-content-coding-strict-unsupported-406",
+    "http3-content-coding-gzip-pass",
+    "http3-content-coding-identity-forbidden-406",
+    "http3-content-coding-strict-unsupported-406"
+  ],
+  "passed_count": 9,
+  "failed_count": 0
+}

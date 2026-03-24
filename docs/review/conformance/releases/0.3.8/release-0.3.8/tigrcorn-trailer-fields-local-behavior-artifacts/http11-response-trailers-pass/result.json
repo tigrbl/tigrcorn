@@ -1,0 +1,8 @@
+{
+  "scenario_id": "http11-response-trailers-pass",
+  "passed": true,
+  "preserved_via": "local_unit_test",
+  "source_tests": [
+    "tests/test_response_trailers_rfc9110.py::ResponseTrailerFieldsRFC9110Tests::test_http11_response_trailers_are_emitted"
+  ]
+}

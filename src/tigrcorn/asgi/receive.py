@@ -10,12 +10,37 @@ from tigrcorn.protocols.http1.parser import _validate_header_name, _validate_hea
 from tigrcorn.types import Message, StreamReaderLike
 
 
+
+FORBIDDEN_REQUEST_TRAILER_NAMES = {
+    b'content-length',
+    b'transfer-encoding',
+    b'host',
+    b'trailer',
+    b'content-encoding',
+    b'content-type',
+}
+
+
+def apply_request_trailer_policy(
+    trailers: list[tuple[bytes, bytes]] | tuple[tuple[bytes, bytes], ...],
+    policy: str,
+) -> list[tuple[bytes, bytes]]:
+    normalized = [(bytes(name).lower(), bytes(value)) for name, value in trailers]
+    if policy == 'drop':
+        return []
+    if policy == 'strict':
+        forbidden = [name for name, _value in normalized if name in FORBIDDEN_REQUEST_TRAILER_NAMES]
+        if forbidden:
+            raise ProtocolError(f'forbidden request trailer fields: {forbidden!r}')
+    return normalized
+
+
 class HTTPRequestReceive:
     """Buffered HTTP request body exposed as ASGI receive events."""
 
-    def __init__(self, body: bytes, *, trailers: list[tuple[bytes, bytes]] | None = None) -> None:
+    def __init__(self, body: bytes, *, trailers: list[tuple[bytes, bytes]] | None = None, trailer_policy: str = 'pass') -> None:
         self._body = body
-        self._trailers = list(trailers or ())
+        self._trailers = apply_request_trailer_policy(list(trailers or ()), trailer_policy)
         self._sent_body = False
         self._sent_trailers = False
 
@@ -42,6 +67,7 @@ class HTTPStreamingRequestReceive:
         expect_continue: bool = False,
         on_expect_continue: Callable[[], Awaitable[None]] | None = None,
         max_chunk_size: int = 65_536,
+        trailer_policy: str = 'pass',
     ) -> None:
         if content_length is not None and content_length < 0:
             raise ValueError('content_length must be non-negative')
@@ -58,6 +84,7 @@ class HTTPStreamingRequestReceive:
         self._total_read = 0
         self.body_complete = not chunked and (content_length is None or content_length == 0)
         self._trailers_sent = False
+        self.trailer_policy = trailer_policy
         self.trailers: list[tuple[bytes, bytes]] = []
 
     async def __call__(self) -> Message:
@@ -115,7 +142,7 @@ class HTTPStreamingRequestReceive:
         while True:
             trailer = await self._read_line()
             if trailer == b'\r\n':
-                self.trailers = trailers
+                self.trailers = apply_request_trailer_policy(trailers, self.trailer_policy)
                 return
             if trailer[:1] in {b' ', b'\t'}:
                 raise ProtocolError('obsolete line folding is not supported')

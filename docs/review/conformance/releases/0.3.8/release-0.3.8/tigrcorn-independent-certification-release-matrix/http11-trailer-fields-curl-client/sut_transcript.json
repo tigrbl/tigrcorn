@@ -1,0 +1,64 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "trailers",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http1",
+  "request": {
+    "accept_encoding": null,
+    "body": "",
+    "method": "GET",
+    "path": "/interop",
+    "server_name": "127.0.0.1",
+    "url": "http://127.0.0.1:32913/interop"
+  },
+  "response": {
+    "body": "ok",
+    "headers": [
+      [
+        "content-type",
+        "text/plain; charset=utf-8"
+      ],
+      [
+        "trailer",
+        "x-trailer-one, x-trailer-two"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ],
+      [
+        "connection",
+        "keep-alive"
+      ],
+      [
+        "transfer-encoding",
+        "chunked"
+      ]
+    ],
+    "status": 200,
+    "status_line": "HTTP/1.1 200 OK",
+    "trailers": [
+      [
+        "x-trailer-one",
+        "yes"
+      ],
+      [
+        "x-trailer-two",
+        "done"
+      ]
+    ]
+  },
+  "role": "server",
+  "scenario_id": "http11-trailer-fields-curl-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http1",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http1-trailer-fields",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/sut_stderr.log",
+    "stdout_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/sut_stdout.log"
+  }
+}

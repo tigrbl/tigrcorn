@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "trailers_http11",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "p50_ms": 0.008987499995782855,
+    "p95_ms": 0.010335750107515196,
+    "p99_9_ms": 0.01083383492050416,
+    "p99_ms": 0.010742349954853125,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 93320.57952349713,
+    "time_to_first_byte_ms": 0.008987499995782855
+  },
+  "passed": true,
+  "profile_id": "trailers_under_load"
+}

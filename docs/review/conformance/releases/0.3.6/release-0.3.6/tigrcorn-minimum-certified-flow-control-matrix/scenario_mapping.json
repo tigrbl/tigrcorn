@@ -1,0 +1,84 @@
+{
+  "mappings": [
+    {
+      "feature": "credit-exhaustion",
+      "id": "http3-flow-control-aioquic-client-credit-exhaustion",
+      "local_vectors": [
+        "http3-server-surface"
+      ],
+      "rfcs": [
+        "RFC 9000",
+        "RFC 9114"
+      ],
+      "scope_note": "Minimum independent credit-exhaustion evidence promoted from preserved third-party aioquic HTTP/3 artifacts.",
+      "source": "http3-server-aioquic-client-post"
+    },
+    {
+      "feature": "replenishment",
+      "id": "http3-flow-control-aioquic-client-replenishment",
+      "local_vectors": [
+        "http3-server-surface"
+      ],
+      "rfcs": [
+        "RFC 9000",
+        "RFC 9114"
+      ],
+      "scope_note": "Minimum independent replenishment evidence promoted from preserved third-party aioquic HTTP/3 artifacts.",
+      "source": "http3-server-aioquic-client-post"
+    },
+    {
+      "feature": "stream-level-backpressure",
+      "id": "http3-flow-control-aioquic-client-stream-backpressure",
+      "local_vectors": [
+        "http3-server-surface"
+      ],
+      "rfcs": [
+        "RFC 9000",
+        "RFC 9114"
+      ],
+      "scope_note": "Minimum independent stream-level backpressure evidence promoted from preserved third-party aioquic HTTP/3 artifacts.",
+      "source": "http3-server-aioquic-client-post"
+    },
+    {
+      "feature": "connection-level-backpressure",
+      "id": "http3-flow-control-aioquic-client-connection-backpressure",
+      "local_vectors": [
+        "http3-server-surface"
+      ],
+      "rfcs": [
+        "RFC 9000",
+        "RFC 9114"
+      ],
+      "scope_note": "Minimum independent connection-level backpressure evidence promoted from preserved third-party aioquic HTTP/3 artifacts.",
+      "source": "http3-server-aioquic-client-post"
+    },
+    {
+      "feature": "qpack-blocked-stream",
+      "id": "http3-flow-control-aioquic-client-qpack-blocked-stream",
+      "local_vectors": [
+        "http3-server-surface",
+        "qpack-dynamic-state"
+      ],
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9204"
+      ],
+      "scope_note": "Minimum independent QPACK blocked-stream evidence promoted from preserved third-party aioquic GOAWAY/QPACK artifacts.",
+      "source": "http3-server-aioquic-client-post-goaway-qpack"
+    },
+    {
+      "feature": "goaway-pressure",
+      "id": "http3-flow-control-aioquic-client-goaway-pressure",
+      "local_vectors": [
+        "http3-server-surface",
+        "qpack-dynamic-state"
+      ],
+      "rfcs": [
+        "RFC 9114",
+        "RFC 9204"
+      ],
+      "scope_note": "Minimum independent GOAWAY/pressure evidence promoted from preserved third-party aioquic GOAWAY/QPACK artifacts.",
+      "source": "http3-server-aioquic-client-post-goaway-qpack"
+    }
+  ]
+}

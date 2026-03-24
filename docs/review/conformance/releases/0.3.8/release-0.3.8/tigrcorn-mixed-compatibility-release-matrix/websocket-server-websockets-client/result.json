@@ -1,0 +1,139 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client",
+  "artifacts": {
+    "packet_trace": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/packet_trace.jsonl",
+      "sha256": "9bdce9804ddb86506e8e000aca3aa14bddf4f8b8b9e458ef2a37ff047d5aeed2",
+      "size": 2215
+    },
+    "peer_negotiation": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/peer_negotiation.json",
+      "sha256": "1990367c9184a75a516c037c9a815ccb6a8bb2c242ae603bd762b8f68392980b",
+      "size": 102
+    },
+    "peer_transcript": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/peer_transcript.json",
+      "sha256": "dba0d316e5efd698b6f477b76305bce333fbe41882ffeaa73889799ef7fe4be1",
+      "size": 161
+    },
+    "qlog": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/qlog.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_negotiation": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/sut_negotiation.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_transcript": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/sut_transcript.json",
+      "sha256": null,
+      "size": 0
+    }
+  },
+  "assertions_failed": [],
+  "commit_hash": "release-0.3.6-current",
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/websocket-server-websockets-client",
+  "error": null,
+  "negotiation": {
+    "peer": {
+      "close_code": 1000,
+      "extensions": [],
+      "implementation": "websockets",
+      "subprotocol": null
+    },
+    "sut": null
+  },
+  "passed": true,
+  "peer": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "websockets-client",
+    "role": "client",
+    "stderr_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/peer_stderr.log",
+    "stderr_text": "",
+    "stdout_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/peer_stdout.log",
+    "stdout_text": "{\"request\": {\"path\": \"/ws\", \"text\": \"hello-websocket\", \"url\": \"ws://127.0.0.1:52259/ws\"}, \"response\": {\"text\": \"hello-websocket\"}}\n",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_websocket_client"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_websocket_client",
+        "--version"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "websockets 10.3"
+    }
+  },
+  "scenario_id": "websocket-server-websockets-client",
+  "sut": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "tigrcorn-websocket",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/sut_stderr.log",
+    "stderr_text": "2026-03-15 02:12:23,040 INFO tigrcorn listening on 127.0.0.1:55649\n",
+    "stdout_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/sut_stdout.log",
+    "stdout_text": "",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "examples.websocket_echo.app:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "55649",
+        "--protocol",
+        "http1",
+        "--no-access-log",
+        "--lifespan",
+        "off"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "--help"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "usage: tigrcorn [-h] [--transport {tcp,udp,unix,pipe}] [--host HOST]\n                [--port PORT] [--uds UDS] [--lifespan {auto,on,off}]\n                [--log-level LOG_LEVEL] [--no-access-log] [--factory]\n                [--ssl-certfile SSL_CERTFILE] [--ssl-keyfile SSL_KEYFILE]\n                [--ssl-ca-certs SSL_CA_CERTS] [--ssl-require-client-cert]\n                [--http {1.1,2,3}]\n                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]\n                [--disable-websocket] [--disable-h2c]\n                [--max-body-size MAX_BODY_SIZE] [--quic-secret QUIC_SECRET]\n                [--quic-require-retry] [--pipe-mode {rawframed,stream}]\n                app\n\nASGI3-compatible transport server\n\npositional arguments:\n  app                   Application import string in module:attr form\n\noptions:\n  -h, --help            show this help message and exit\n  --transport {tcp,udp,unix,pipe}\n  --host HOST           Bind host for TCP/UDP listeners\n  --port PORT           Bind port for TCP/UDP listeners\n  --uds UDS             Bind Unix domain socket or pipe path instead of\n                        TCP/UDP\n  --lifespan {auto,on,off}\n  --log-level LOG_LEVEL\n  --no-access-log\n  --factory             Treat APP as an application factory\n  --ssl-certfile SSL_CERTFILE\n                        Certificate for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-keyfile SSL_KEYFILE\n                        Private key for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-ca-certs SSL_CA_CERTS\n                        Trusted CA bundle for TLS or QUIC-TLS client\n                        certificate verification\n  --ssl-require-client-cert\n                        Require peer client certificates for TLS or QUIC-TLS\n                        listeners\n  --http {1.1,2,3}      Enable an HTTP version\n  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}\n                        Enable a listener protocol\n  --disable-websocket\n  --disable-h2c\n  --max-body-size MAX_BODY_SIZE\n  --quic-secret QUIC_SECRET\n                        Shared secret for local QUIC experiments when not\n                        using QUIC-TLS certificates\n  --quic-require-retry  Require a QUIC Retry before completing the initial\n                        handshake\n  --pipe-mode {rawframed,stream}"
+    }
+  },
+  "transcript": {
+    "peer": {
+      "request": {
+        "path": "/ws",
+        "text": "hello-websocket",
+        "url": "ws://127.0.0.1:52259/ws"
+      },
+      "response": {
+        "text": "hello-websocket"
+      }
+    },
+    "sut": null
+  }
+}

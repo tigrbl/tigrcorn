@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "all_workers_started": true,
+    "replace_kept_worker": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": false
+}

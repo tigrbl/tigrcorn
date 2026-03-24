@@ -1,0 +1,12 @@
+{
+  "scenario_id": "unsolicited-client-max-window-bits-rejected",
+  "passed": true,
+  "description": "The server must not claim client_max_window_bits in the response when the client did not offer it.",
+  "result": {
+    "rejected": true,
+    "error": "websocket extension negotiation does not correspond to a client offer",
+    "source_tests": [
+      "tests/test_websocket_rfc7692.py"
+    ]
+  }
+}

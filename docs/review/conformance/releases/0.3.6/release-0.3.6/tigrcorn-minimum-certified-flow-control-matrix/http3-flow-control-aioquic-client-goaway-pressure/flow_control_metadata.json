@@ -1,0 +1,30 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure",
+  "bundle_kind": "minimum_independent_flow_control_certification",
+  "flow_control_certified_scope": "goaway-pressure",
+  "generated_at": "2026-03-19T12:12:15.882914+00:00",
+  "local_vectors": {
+    "http3-server-surface": {
+      "description": "HTTP/3 control streams, request streams, settings handling, and server-side response behavior.",
+      "fixture": "tests/test_http3_rfc9114.py",
+      "name": "http3-server-surface",
+      "protocol": "http3",
+      "rfc": "9114"
+    },
+    "qpack-dynamic-state": {
+      "description": "QPACK encoder stream, decoder stream, dynamic table synchronization, and field section decoding.",
+      "fixture": "tests/test_qpack_completion.py",
+      "name": "qpack-dynamic-state",
+      "protocol": "http3-qpack",
+      "rfc": "9204"
+    }
+  },
+  "peer": "aioquic",
+  "release_gate_eligible": true,
+  "rfcs": [
+    "RFC 9114",
+    "RFC 9204"
+  ],
+  "scope_note": "Minimum independent GOAWAY/pressure evidence promoted from preserved third-party aioquic GOAWAY/QPACK artifacts.",
+  "source_independent_scenario": "http3-server-aioquic-client-post-goaway-qpack"
+}

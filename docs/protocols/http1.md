@@ -21,3 +21,6 @@ Still incomplete relative to a stricter intermediary/proxy evidence program:
 - CONNECT relay tunneling is also implemented on the HTTP/2 and HTTP/3 carriers, but the bundled corpus still relies on local vector metadata for those carriers until additional third-party artifacts are preserved
 
 The authoritative certification boundary for package-wide RFC claims is `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+
+
+A minimum certified intermediary/proxy-adjacent corpus now lives under `docs/review/conformance/intermediary_proxy_corpus_minimum_certified/`; the older seed corpus remains preserved for provenance.

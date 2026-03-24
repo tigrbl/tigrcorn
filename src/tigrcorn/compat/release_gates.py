@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Iterable, Mapping
 
 from .interop_runner import InteropScenario, load_external_matrix
 
@@ -11,6 +11,8 @@ DEFAULT_BOUNDARY_PATH = Path('docs/review/conformance/certification_boundary.jso
 DEFAULT_CORPUS_PATH = Path('docs/review/conformance/corpus.json')
 DEFAULT_INDEPENDENT_MATRIX_PATH = Path('docs/review/conformance/external_matrix.release.json')
 DEFAULT_SAME_STACK_MATRIX_PATH = Path('docs/review/conformance/external_matrix.same_stack_replay.json')
+DEFAULT_STRICT_TARGET_BOUNDARY_PATH = Path('docs/review/conformance/certification_boundary.strict_target.json')
+DEFAULT_PROMOTION_TARGET_PATH = Path('docs/review/conformance/promotion_gate.target.json')
 DEFAULT_TLS_WRAPPER_PATH = Path('src/tigrcorn/security/tls.py')
 VALID_EVIDENCE_TIERS = ('local_conformance', 'same_stack_replay', 'independent_certification')
 EVIDENCE_TIER_ORDER = {name: index for index, name in enumerate(VALID_EVIDENCE_TIERS, start=1)}
@@ -23,6 +25,27 @@ class ReleaseGateReport:
     checked_files: list[str] = field(default_factory=list)
     rfc_status: dict[str, dict[str, Any]] = field(default_factory=dict)
     artifact_status: dict[str, dict[str, Any]] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class IndependentBundleReport:
+    passed: bool
+    failures: list[str] = field(default_factory=list)
+    checked_files: list[str] = field(default_factory=list)
+    scenario_status: dict[str, dict[str, Any]] = field(default_factory=dict)
+
+
+INDEPENDENT_BUNDLE_REQUIRED_ROOT_FILES = ('manifest.json', 'summary.json', 'index.json')
+INDEPENDENT_BUNDLE_REQUIRED_SCENARIO_FILES = (
+    'summary.json',
+    'index.json',
+    'result.json',
+    'scenario.json',
+    'command.json',
+    'env.json',
+    'versions.json',
+    'wire_capture.json',
+)
 
 
 class ReleaseGateError(RuntimeError):
@@ -399,6 +422,134 @@ def _load_preserved_artifacts(bundle_root: Path, *, artifact_status: dict[str, d
     return scenarios
 
 
+def validate_independent_certification_bundle(
+    bundle_root: str | Path,
+    *,
+    required_scenarios: Iterable[str] | None = None,
+    required_root_files: Iterable[str] = INDEPENDENT_BUNDLE_REQUIRED_ROOT_FILES,
+    required_scenario_files: Iterable[str] = INDEPENDENT_BUNDLE_REQUIRED_SCENARIO_FILES,
+) -> IndependentBundleReport:
+    bundle_root = Path(bundle_root)
+    failures: list[str] = []
+    checked_files: list[str] = []
+    scenario_status: dict[str, dict[str, Any]] = {}
+
+    if not bundle_root.exists():
+        failures.append(f'missing independent-certification bundle root: {bundle_root}')
+        return IndependentBundleReport(False, failures, checked_files, scenario_status)
+
+    for filename in required_root_files:
+        checked_files.append(str(bundle_root / filename))
+        if not (bundle_root / filename).exists():
+            failures.append(f'missing bundle file: {bundle_root / filename}')
+
+    if failures:
+        return IndependentBundleReport(False, failures, checked_files, scenario_status)
+
+    manifest = json.loads((bundle_root / 'manifest.json').read_text(encoding='utf-8'))
+    summary = json.loads((bundle_root / 'summary.json').read_text(encoding='utf-8'))
+    index = json.loads((bundle_root / 'index.json').read_text(encoding='utf-8'))
+
+    if str(index.get('matrix_name', '')) != str(summary.get('matrix_name', '')):
+        failures.append('bundle summary and index disagree on matrix_name')
+    if str(index.get('commit_hash', '')) != str(summary.get('commit_hash', '')):
+        failures.append('bundle summary and index disagree on commit_hash')
+    if str(index.get('commit_hash', '')) != str(manifest.get('commit_hash', '')):
+        failures.append('bundle manifest and index disagree on commit_hash')
+
+    index_ids = {str(entry.get('id')) for entry in index.get('scenarios', []) if entry.get('id') is not None}
+    summary_ids = {str(item) for item in summary.get('scenario_ids', []) if item is not None}
+    if summary_ids and index_ids != summary_ids:
+        failures.append('bundle summary scenario_ids do not match bundle index scenarios')
+
+    if required_scenarios is not None:
+        for scenario_id in required_scenarios:
+            if scenario_id not in index_ids:
+                failures.append(f'required proof scenario missing from bundle index: {scenario_id}')
+
+    for entry in index.get('scenarios', []):
+        scenario_id = str(entry.get('id', '')).strip()
+        if not scenario_id:
+            failures.append('bundle index contains a scenario entry without an id')
+            continue
+        scenario_dir = bundle_root / scenario_id
+        checked_files.append(str(scenario_dir))
+        if not scenario_dir.exists():
+            failures.append(f'missing scenario directory: {scenario_dir}')
+            continue
+        status: dict[str, Any] = {
+            'artifact_dir': str(scenario_dir),
+            'required_files_present': True,
+            'passed': bool(entry.get('passed', False)),
+        }
+        scenario_status[scenario_id] = status
+
+        for filename in required_scenario_files:
+            file_path = scenario_dir / filename
+            checked_files.append(str(file_path))
+            if not file_path.exists():
+                failures.append(f'{scenario_id} missing required artifact file: {file_path}')
+                status['required_files_present'] = False
+
+        if not status['required_files_present']:
+            continue
+
+        result_payload = json.loads((scenario_dir / 'result.json').read_text(encoding='utf-8'))
+        summary_payload = json.loads((scenario_dir / 'summary.json').read_text(encoding='utf-8'))
+        scenario_index_payload = json.loads((scenario_dir / 'index.json').read_text(encoding='utf-8'))
+        command_payload = json.loads((scenario_dir / 'command.json').read_text(encoding='utf-8'))
+        env_payload = json.loads((scenario_dir / 'env.json').read_text(encoding='utf-8'))
+        versions_payload = json.loads((scenario_dir / 'versions.json').read_text(encoding='utf-8'))
+        wire_payload = json.loads((scenario_dir / 'wire_capture.json').read_text(encoding='utf-8'))
+
+        status['passed'] = bool(result_payload.get('passed', False))
+        if bool(entry.get('passed', False)) != bool(result_payload.get('passed', False)):
+            failures.append(f'{scenario_id} bundle index passed flag disagrees with result.json')
+        if bool(summary_payload.get('passed', False)) != bool(result_payload.get('passed', False)):
+            failures.append(f'{scenario_id} summary.json passed flag disagrees with result.json')
+        if bool(scenario_index_payload.get('passed', False)) != bool(result_payload.get('passed', False)):
+            failures.append(f'{scenario_id} index.json passed flag disagrees with result.json')
+
+        artifact_files = scenario_index_payload.get('artifact_files')
+        if not isinstance(artifact_files, Mapping) or not artifact_files:
+            failures.append(f'{scenario_id} index.json is missing a populated artifact_files inventory')
+        else:
+            for filename in required_scenario_files:
+                metadata = artifact_files.get(filename)
+                if not isinstance(metadata, Mapping) or not bool(metadata.get('exists', False)):
+                    failures.append(f'{scenario_id} index.json does not record {filename} as an existing artifact')
+
+        if 'sut' not in command_payload or 'peer' not in command_payload:
+            failures.append(f'{scenario_id} command.json must contain sut and peer command records')
+        if 'sut' not in env_payload or 'peer' not in env_payload:
+            failures.append(f'{scenario_id} env.json must contain sut and peer environment records')
+        if 'sut' not in versions_payload or 'peer' not in versions_payload:
+            failures.append(f'{scenario_id} versions.json must contain sut and peer version records')
+        if 'packet_trace' not in wire_payload or 'logs' not in wire_payload:
+            failures.append(f'{scenario_id} wire_capture.json must contain packet_trace and logs sections')
+
+    passed = not failures
+    return IndependentBundleReport(passed, failures, checked_files, scenario_status)
+
+
+def assert_independent_certification_bundle_ready(
+    bundle_root: str | Path,
+    *,
+    required_scenarios: Iterable[str] | None = None,
+    required_root_files: Iterable[str] = INDEPENDENT_BUNDLE_REQUIRED_ROOT_FILES,
+    required_scenario_files: Iterable[str] = INDEPENDENT_BUNDLE_REQUIRED_SCENARIO_FILES,
+) -> None:
+    report = validate_independent_certification_bundle(
+        bundle_root,
+        required_scenarios=required_scenarios,
+        required_root_files=required_root_files,
+        required_scenario_files=required_scenario_files,
+    )
+    if report.passed:
+        return
+    raise ReleaseGateError('independent-certification bundle validation failed: ' + '; '.join(report.failures))
+
+
 def _has_third_party_http3_request_response(scenarios: list[InteropScenario]) -> bool:
     for scenario in scenarios:
         if scenario.protocol != 'http3':
@@ -458,15 +609,582 @@ def _normalize_rfc_from_corpus(value: Any) -> str | None:
     return text
 
 
+@dataclass(slots=True)
+class PromotionSectionReport:
+    name: str
+    passed: bool
+    failures: list[str] = field(default_factory=list)
+    checked_files: list[str] = field(default_factory=list)
+    details: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
+class PromotionTargetReport:
+    passed: bool
+    failures: list[str] = field(default_factory=list)
+    checked_files: list[str] = field(default_factory=list)
+    authoritative_boundary: PromotionSectionReport | None = None
+    strict_target_boundary: PromotionSectionReport | None = None
+    flag_surface: PromotionSectionReport | None = None
+    operator_surface: PromotionSectionReport | None = None
+    performance: PromotionSectionReport | None = None
+    documentation: PromotionSectionReport | None = None
+
+
+class PromotionTargetError(RuntimeError):
+    pass
+
+
+def load_promotion_target(path: str | Path) -> dict[str, Any]:
+    return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def evaluate_promotion_target(
+    source_root: str | Path,
+    *,
+    target_path: str | Path | None = None,
+) -> PromotionTargetReport:
+    source_root = Path(source_root)
+    target_file = source_root / (Path(target_path) if target_path is not None else DEFAULT_PROMOTION_TARGET_PATH)
+    checked_files: list[str] = [str(target_file)]
+    if not target_file.exists():
+        failure = f'missing promotion target file: {target_file}'
+        return PromotionTargetReport(False, [failure], checked_files)
+
+    target = load_promotion_target(target_file)
+
+    authoritative_config = dict(target.get('authoritative_boundary', {}))
+    authoritative_report = evaluate_release_gates(
+        source_root,
+        boundary_path=authoritative_config.get('boundary_path'),
+        corpus_path=authoritative_config.get('corpus_path'),
+        independent_matrix_path=authoritative_config.get('independent_matrix_path'),
+        same_stack_matrix_path=authoritative_config.get('same_stack_matrix_path'),
+    )
+    authoritative_section = PromotionSectionReport(
+        name='authoritative_boundary',
+        passed=authoritative_report.passed,
+        failures=list(authoritative_report.failures),
+        checked_files=list(authoritative_report.checked_files),
+        details={
+            'boundary_path': authoritative_config.get('boundary_path', str(DEFAULT_BOUNDARY_PATH)),
+            'required_rfcs': sorted(authoritative_report.rfc_status),
+        },
+    )
+
+    strict_config = dict(target.get('strict_target_boundary', {}))
+    strict_report = evaluate_release_gates(
+        source_root,
+        boundary_path=strict_config.get('boundary_path', str(DEFAULT_STRICT_TARGET_BOUNDARY_PATH)),
+        corpus_path=strict_config.get('corpus_path'),
+        independent_matrix_path=strict_config.get('independent_matrix_path'),
+        same_stack_matrix_path=strict_config.get('same_stack_matrix_path'),
+    )
+    strict_section = PromotionSectionReport(
+        name='strict_target_boundary',
+        passed=strict_report.passed,
+        failures=list(strict_report.failures),
+        checked_files=list(strict_report.checked_files),
+        details={
+            'boundary_path': strict_config.get('boundary_path', str(DEFAULT_STRICT_TARGET_BOUNDARY_PATH)),
+            'required_rfcs': sorted(strict_report.rfc_status),
+        },
+    )
+
+    flag_section = _evaluate_flag_contract_target(source_root, dict(target.get('flag_surface', {})))
+    operator_section = _evaluate_operator_surface_target(source_root, dict(target.get('operator_surface', {})))
+    performance_section = _evaluate_performance_target(source_root, dict(target.get('performance', {})))
+    documentation_section = _evaluate_documentation_claim_consistency(source_root, dict(target.get('documentation', {})))
+
+    sections = [
+        authoritative_section,
+        strict_section,
+        flag_section,
+        operator_section,
+        performance_section,
+        documentation_section,
+    ]
+
+    failures: list[str] = []
+    for section in sections:
+        checked_files.extend(section.checked_files)
+        failures.extend(f'[{section.name}] {failure}' for failure in section.failures)
+
+    checked_files = list(dict.fromkeys(checked_files))
+    return PromotionTargetReport(
+        passed=all(section.passed for section in sections),
+        failures=failures,
+        checked_files=checked_files,
+        authoritative_boundary=authoritative_section,
+        strict_target_boundary=strict_section,
+        flag_surface=flag_section,
+        operator_surface=operator_section,
+        performance=performance_section,
+        documentation=documentation_section,
+    )
+
+
+def assert_promotion_target_ready(
+    source_root: str | Path,
+    *,
+    target_path: str | Path | None = None,
+) -> None:
+    report = evaluate_promotion_target(source_root, target_path=target_path)
+    if not report.passed:
+        details = '\n'.join(f'- {item}' for item in report.failures)
+        raise PromotionTargetError(f'promotion target failed:\n{details}')
+
+
+def _evaluate_flag_contract_target(source_root: Path, config: Mapping[str, Any]) -> PromotionSectionReport:
+    contracts_file = source_root / Path(str(config.get('contracts_path', 'docs/review/conformance/flag_contracts.json')))
+    covering_file = source_root / Path(str(config.get('covering_array_path', 'docs/review/conformance/flag_covering_array.json')))
+    checked_files = [str(contracts_file), str(covering_file), str(source_root / 'src/tigrcorn/cli.py')]
+    failures: list[str] = []
+    details: dict[str, Any] = {}
+
+    if not contracts_file.exists():
+        failures.append(f'missing flag contracts file: {contracts_file}')
+        return PromotionSectionReport('flag_surface', False, failures, checked_files, details)
+    if not covering_file.exists():
+        failures.append(f'missing flag covering-array file: {covering_file}')
+        return PromotionSectionReport('flag_surface', False, failures, checked_files, details)
+
+    contracts_payload = json.loads(contracts_file.read_text(encoding='utf-8'))
+    covering_payload = json.loads(covering_file.read_text(encoding='utf-8'))
+    public_flags = _load_public_parser_flags()
+    required_fields = [str(item) for item in config.get('required_contract_fields', [])]
+
+    contracts = list(contracts_payload.get('contracts', []))
+    if contracts_payload.get('contract_mode') != 'one_row_per_concrete_public_flag':
+        failures.append('flag contracts must declare contract_mode=one_row_per_concrete_public_flag')
+
+    seen: dict[str, int] = {}
+    non_ready: list[str] = []
+    runtime_gaps: list[str] = []
+    for row in contracts:
+        for field_name in required_fields:
+            if field_name not in row:
+                failures.append(f'flag contract is missing required field {field_name!r}: {row!r}')
+        flag_strings = row.get('flag_strings', [])
+        if not isinstance(flag_strings, list) or len(flag_strings) != 1 or not isinstance(flag_strings[0], str):
+            failures.append(f'flag contract must contain exactly one concrete flag string: {row!r}')
+            continue
+        flag = flag_strings[0]
+        seen[flag] = seen.get(flag, 0) + 1
+        status = dict(row.get('status', {})) if isinstance(row.get('status'), Mapping) else {}
+        if not bool(status.get('contract_defined', False)):
+            failures.append(f'{flag} contract is not marked contract_defined=true')
+        if not bool(status.get('promotion_ready', False)):
+            non_ready.append(flag)
+        runtime_state = str(status.get('current_runtime_state', 'unknown'))
+        if runtime_state in {'parse_only', 'partially_wired', 'runtime_gap'}:
+            runtime_gaps.append(flag)
+
+    public_flag_set = set(public_flags)
+    documented_flag_set = set(seen)
+    missing_contracts = sorted(public_flag_set - documented_flag_set)
+    extra_contracts = sorted(documented_flag_set - public_flag_set)
+    duplicate_contracts = sorted(flag for flag, count in seen.items() if count > 1)
+    if missing_contracts:
+        failures.append(f'flag contracts are missing concrete public flags: {missing_contracts}')
+    if extra_contracts:
+        failures.append(f'flag contracts declare non-public flags: {extra_contracts}')
+    if duplicate_contracts:
+        failures.append(f'flag contracts declare duplicate rows: {duplicate_contracts}')
+    expected_public_count = int(contracts_payload.get('public_flag_string_count', len(public_flag_set)))
+    if expected_public_count != len(public_flag_set):
+        failures.append(
+            f'flag contracts public_flag_string_count={expected_public_count} does not match parser public flag count={len(public_flag_set)}'
+        )
+    if len(contracts) != len(public_flag_set):
+        failures.append(
+            f'flag contracts contain {len(contracts)} rows but the parser exposes {len(public_flag_set)} concrete public flags'
+        )
+
+    cases = list(covering_payload.get('cases', []))
+    covered_flags: set[str] = set()
+    for case in cases:
+        for dimension in case.get('dimensions', []):
+            if not isinstance(dimension, Mapping):
+                continue
+            flag = dimension.get('flag')
+            if isinstance(flag, str):
+                covered_flags.add(flag)
+    missing_coverage = sorted(public_flag_set - covered_flags)
+    if missing_coverage:
+        failures.append(f'flag covering array does not exercise every public flag: {missing_coverage}')
+
+    declared_hazard_clusters = {
+        str(cluster.get('cluster_id'))
+        for cluster in covering_payload.get('hazard_clusters', [])
+        if isinstance(cluster, Mapping) and cluster.get('cluster_id')
+    }
+    for cluster_id in [str(item) for item in config.get('required_hazard_clusters', [])]:
+        if cluster_id not in declared_hazard_clusters:
+            failures.append(f'flag covering array is missing required hazard cluster {cluster_id!r}')
+
+    if non_ready:
+        failures.append(
+            'flag surface still has non-promotion-ready contracts: ' + ', '.join(sorted(non_ready))
+        )
+
+    details.update(
+        {
+            'public_flag_count': len(public_flag_set),
+            'contract_row_count': len(contracts),
+            'promotion_ready_count': len(contracts) - len(non_ready),
+            'runtime_gap_flags': sorted(runtime_gaps),
+            'missing_contracts': missing_contracts,
+            'missing_coverage': missing_coverage,
+            'hazard_cluster_count': len(declared_hazard_clusters),
+        }
+    )
+    return PromotionSectionReport('flag_surface', not failures, failures, checked_files, details)
+
+
+
+def _evaluate_operator_surface_target(source_root: Path, config: Mapping[str, Any]) -> PromotionSectionReport:
+    index_file = source_root / Path(str(config.get('bundle_index', 'docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-operator-surface-certification-bundle/index.json')))
+    checked_files = [str(index_file)]
+    failures: list[str] = []
+    details: dict[str, Any] = {}
+    if not index_file.exists():
+        failures.append(f'missing operator-surface bundle index: {index_file}')
+        return PromotionSectionReport('operator_surface', False, failures, checked_files, details)
+    payload = json.loads(index_file.read_text(encoding='utf-8'))
+    implemented = dict(payload.get('implemented', {}))
+    required_keys = [str(item) for item in config.get('required_implemented_keys', [])]
+    if not bool(payload.get('release_gate_eligible', False)):
+        failures.append('operator-surface certification bundle is not release_gate_eligible')
+    missing_keys = [key for key in required_keys if key not in implemented]
+    false_keys = [key for key in required_keys if implemented.get(key) is not True]
+    if missing_keys:
+        failures.append(f'operator-surface bundle is missing required implementation keys: {missing_keys}')
+    if false_keys:
+        failures.append(f'operator-surface bundle contains non-green required implementation keys: {false_keys}')
+    details.update(
+        {
+            'implemented_count': int(payload.get('implemented_count', len([item for item in implemented.values() if item]))),
+            'required_implemented_keys': required_keys,
+            'implemented_keys': sorted(implemented),
+        }
+    )
+    return PromotionSectionReport('operator_surface', not failures, failures, checked_files, details)
+
+
+
+def _evaluate_performance_target(source_root: Path, config: Mapping[str, Any]) -> PromotionSectionReport:
+    from .perf_runner import load_performance_matrix, validate_performance_artifacts
+
+    matrix_path = Path(str(config.get('matrix_path', 'docs/review/performance/performance_matrix.json')))
+    slos_path = Path(str(config.get('slos_path', 'docs/review/performance/performance_slos.json')))
+    current_artifact_root = Path(str(config.get('current_artifact_root', 'docs/review/performance/artifacts/phase6_current_release')))
+    baseline_artifact_root = Path(str(config.get('baseline_artifact_root', 'docs/review/performance/artifacts/phase6_reference_baseline')))
+    checked_files = [str(source_root / matrix_path), str(source_root / slos_path), str(source_root / current_artifact_root)]
+    failures: list[str] = []
+    details: dict[str, Any] = {}
+
+    if not (source_root / matrix_path).exists():
+        failures.append(f'missing performance matrix file: {source_root / matrix_path}')
+        return PromotionSectionReport('performance', False, failures, checked_files, details)
+    if not (source_root / slos_path).exists():
+        failures.append(f'missing performance SLO target file: {source_root / slos_path}')
+        return PromotionSectionReport('performance', False, failures, checked_files, details)
+
+    matrix = load_performance_matrix(source_root / matrix_path)
+    slos_payload = json.loads((source_root / slos_path).read_text(encoding='utf-8'))
+    artifact_failures = validate_performance_artifacts(
+        source_root,
+        matrix_path=matrix_path,
+        artifact_root=current_artifact_root,
+        baseline_root=baseline_artifact_root,
+        require_relative_regression=bool(config.get('require_relative_regression', False)),
+    )
+    failures.extend(artifact_failures)
+
+    required_metric_keys = {str(item) for item in slos_payload.get('required_metric_keys', [])}
+    required_threshold_keys = {str(item) for item in slos_payload.get('required_threshold_keys', [])}
+    required_relative_budget_keys = {str(item) for item in slos_payload.get('required_relative_regression_budget_keys', [])}
+    required_artifact_files = {str(item) for item in slos_payload.get('required_artifact_files', [])}
+    required_matrix_lanes = {str(item) for item in slos_payload.get('required_matrix_lanes', [])}
+    promotion_requirements = dict(slos_payload.get('promotion_requirements', {}))
+
+    require_full_declared_strict_contract = bool(config.get('require_full_declared_strict_contract', False))
+    require_artifact_files = require_full_declared_strict_contract or bool(config.get('require_required_artifact_files', False))
+    require_matrix_lanes = require_full_declared_strict_contract or bool(config.get('require_required_matrix_lanes', False))
+    require_certification_platforms = (
+        require_full_declared_strict_contract
+        or bool(config.get('require_certification_platform_declarations', False))
+        or bool(promotion_requirements.get('require_certification_platforms', False))
+    )
+    require_documented_slos_per_profile = (
+        require_full_declared_strict_contract
+        or bool(config.get('require_documented_slos_per_profile', False))
+        or bool(promotion_requirements.get('require_documented_slos_per_profile', False))
+    )
+    require_correctness_for_rfc_targets = (
+        require_full_declared_strict_contract
+        or bool(config.get('require_correctness_for_rfc_profiles', False))
+        or bool(promotion_requirements.get('require_correctness_under_load_for_rfc_targets', False))
+    )
+    require_live_listener_metadata = (
+        require_full_declared_strict_contract
+        or bool(config.get('require_live_listener_metadata_for_end_to_end_profiles', False))
+        or bool(promotion_requirements.get('require_end_to_end_live_listener_profiles', False))
+    )
+
+    observed_metric_keys = _load_performance_metric_keys(source_root / current_artifact_root, [profile.profile_id for profile in matrix.profiles])
+    declared_threshold_keys = {key for profile in matrix.profiles for key in profile.thresholds}
+    declared_relative_keys = {key for profile in matrix.profiles for key in profile.relative_regression_budget}
+
+    missing_metric_keys = sorted(required_metric_keys - observed_metric_keys)
+    missing_threshold_keys = sorted(required_threshold_keys - declared_threshold_keys)
+    missing_relative_keys = sorted(required_relative_budget_keys - declared_relative_keys)
+    if missing_metric_keys:
+        failures.append(f'performance artifacts are missing required SLO metric keys: {missing_metric_keys}')
+    if missing_threshold_keys:
+        failures.append(f'performance matrix is missing required absolute threshold keys: {missing_threshold_keys}')
+    if missing_relative_keys:
+        failures.append(f'performance matrix is missing required relative regression budget keys: {missing_relative_keys}')
+
+    artifact_root_path = source_root / current_artifact_root
+    root_summary_path = artifact_root_path / 'summary.json'
+    root_index_path = artifact_root_path / 'index.json'
+    root_summary = _load_json_payload(root_summary_path) if root_summary_path.exists() else {}
+    root_index = _load_json_payload(root_index_path) if root_index_path.exists() else {}
+
+    if require_artifact_files:
+        required_root_files, required_profile_files = _split_required_performance_artifact_files(required_artifact_files)
+        missing_root_files = sorted(filename for filename in required_root_files if not (artifact_root_path / filename).exists())
+        if missing_root_files:
+            failures.append(f'performance artifact root is missing required files: {missing_root_files}')
+        for profile in matrix.profiles:
+            profile_dir = artifact_root_path / profile.profile_id
+            missing_profile_files = sorted(filename for filename in required_profile_files if not (profile_dir / filename).exists())
+            if missing_profile_files:
+                failures.append(f'{profile.profile_id} performance artifact directory is missing required files: {missing_profile_files}')
+
+    if require_matrix_lanes:
+        declared_lanes = {profile.lane for profile in matrix.profiles}
+        missing_lanes = sorted(required_matrix_lanes - declared_lanes)
+        if missing_lanes:
+            failures.append(f'performance matrix is missing required lanes: {missing_lanes}')
+        lane_counts = root_summary.get('lane_counts', {}) if isinstance(root_summary, Mapping) else {}
+        lane_count_keys = {str(key) for key in lane_counts} if isinstance(lane_counts, Mapping) else set()
+        missing_lane_counts = sorted(required_matrix_lanes - lane_count_keys)
+        if missing_lane_counts:
+            failures.append(f'performance artifact summary is missing required lane counts: {missing_lane_counts}')
+        for lane in sorted(required_matrix_lanes & lane_count_keys):
+            try:
+                if int(lane_counts[lane]) <= 0:
+                    failures.append(f'performance artifact summary declares non-positive count for required lane {lane!r}')
+            except Exception:
+                failures.append(f'performance artifact summary carries a non-integer lane count for required lane {lane!r}')
+
+    matrix_platforms = [str(item) for item in matrix.metadata.get('certification_platforms', [])]
+    if require_certification_platforms and not matrix_platforms:
+        failures.append('performance matrix metadata is missing certification_platforms declarations')
+    root_certification_platform = ''
+    if isinstance(root_summary, Mapping):
+        if root_summary.get('certification_platform') is not None:
+            root_certification_platform = str(root_summary.get('certification_platform', ''))
+        elif root_summary.get('certification_platforms'):
+            platforms = root_summary.get('certification_platforms')
+            if isinstance(platforms, list) and platforms:
+                root_certification_platform = str(platforms[0])
+    if require_certification_platforms and not root_certification_platform:
+        failures.append('performance artifact summary is missing certification platform declarations')
+
+    if require_matrix_lanes and isinstance(root_index, Mapping):
+        summary_profiles = root_index.get('profiles', []) or root_index.get('scenarios', []) or []
+        details['artifact_profile_entry_count'] = len(summary_profiles) if isinstance(summary_profiles, list) else 0
+
+    profile_failures: dict[str, list[str]] = {}
+    for profile in matrix.profiles:
+        profile_dir = artifact_root_path / profile.profile_id
+        result_payload = _load_json_payload(profile_dir / 'result.json') if (profile_dir / 'result.json').exists() else {}
+        summary_payload = _load_json_payload(profile_dir / 'summary.json') if (profile_dir / 'summary.json').exists() else {}
+        command_payload = _load_json_payload(profile_dir / 'command.json') if (profile_dir / 'command.json').exists() else {}
+        env_payload = _load_json_payload(profile_dir / 'env.json') if (profile_dir / 'env.json').exists() else {}
+        correctness_payload = _load_json_payload(profile_dir / 'correctness.json') if (profile_dir / 'correctness.json').exists() else {}
+
+        current_profile_failures: list[str] = []
+
+        if require_documented_slos_per_profile:
+            if not str(profile.description).strip():
+                current_profile_failures.append('missing non-empty profile description for documented SLO coverage')
+            missing_profile_threshold_keys = sorted(required_threshold_keys - set(profile.thresholds))
+            if missing_profile_threshold_keys:
+                current_profile_failures.append(f'missing required threshold keys: {missing_profile_threshold_keys}')
+            missing_profile_relative_keys = sorted(required_relative_budget_keys - set(profile.relative_regression_budget))
+            if missing_profile_relative_keys:
+                current_profile_failures.append(f'missing required relative regression budget keys: {missing_profile_relative_keys}')
+
+        if require_certification_platforms:
+            if not profile.certification_platforms:
+                current_profile_failures.append('missing profile certification_platforms declarations in matrix')
+            if not result_payload.get('certification_platforms'):
+                current_profile_failures.append('missing result.json certification_platforms declarations')
+            if not summary_payload.get('certification_platforms'):
+                current_profile_failures.append('missing summary.json certification_platforms declarations')
+            if not command_payload.get('certification_platforms'):
+                current_profile_failures.append('missing command.json certification_platforms declarations')
+            if not env_payload.get('certification_platform'):
+                current_profile_failures.append('missing env.json certification_platform declaration')
+            if not env_payload.get('matrix_declared_platforms'):
+                current_profile_failures.append('missing env.json matrix_declared_platforms declaration')
+
+        if require_correctness_for_rfc_targets and profile.rfc_targets:
+            if not profile.correctness_required:
+                current_profile_failures.append('RFC-scoped profile is not marked correctness_required=true in the matrix')
+            checks = correctness_payload.get('checks', {}) if isinstance(correctness_payload, Mapping) else {}
+            if not bool(correctness_payload.get('required', False)):
+                current_profile_failures.append('correctness.json is not marked required=true for an RFC-scoped profile')
+            if not bool(correctness_payload.get('passed', False)):
+                current_profile_failures.append('correctness.json does not record passed=true for an RFC-scoped profile')
+            if not isinstance(checks, Mapping) or not checks:
+                current_profile_failures.append('correctness.json is missing correctness checks for an RFC-scoped profile')
+
+        if require_live_listener_metadata and profile.lane == 'end_to_end_release':
+            if not profile.live_listener_required:
+                current_profile_failures.append('end_to_end_release profile is not marked live_listener_required=true in the matrix')
+            for filename, payload in [
+                ('result.json', result_payload),
+                ('summary.json', summary_payload),
+                ('command.json', command_payload),
+                ('correctness.json', correctness_payload),
+            ]:
+                if payload and payload.get('live_listener_required') is not True:
+                    current_profile_failures.append(f'{filename} does not preserve live_listener_required=true for an end_to_end_release profile')
+                if payload and str(payload.get('lane', '')) != 'end_to_end_release':
+                    current_profile_failures.append(f'{filename} does not preserve lane="end_to_end_release" for an end_to_end_release profile')
+
+        if current_profile_failures:
+            profile_failures[profile.profile_id] = list(current_profile_failures)
+            failures.extend(f'{profile.profile_id} {message}' for message in current_profile_failures)
+
+    details.update(
+        {
+            'profile_count': len(matrix.profiles),
+            'required_metric_keys': sorted(required_metric_keys),
+            'observed_metric_keys': sorted(observed_metric_keys),
+            'missing_metric_keys': missing_metric_keys,
+            'missing_threshold_keys': missing_threshold_keys,
+            'missing_relative_budget_keys': missing_relative_keys,
+            'required_artifact_files': sorted(required_artifact_files),
+            'required_matrix_lanes': sorted(required_matrix_lanes),
+            'certification_platforms': matrix_platforms,
+            'profile_failures': profile_failures,
+            'require_full_declared_strict_contract': require_full_declared_strict_contract,
+            'require_certification_platforms': require_certification_platforms,
+            'require_documented_slos_per_profile': require_documented_slos_per_profile,
+            'require_correctness_for_rfc_targets': require_correctness_for_rfc_targets,
+            'require_live_listener_metadata': require_live_listener_metadata,
+        }
+    )
+    return PromotionSectionReport('performance', not failures, failures, checked_files, details)
+
+
+
+def _evaluate_documentation_claim_consistency(source_root: Path, config: Mapping[str, Any]) -> PromotionSectionReport:
+    checks = list(config.get('required_phrase_checks', []))
+    failures: list[str] = []
+    checked_files: list[str] = []
+    details: dict[str, Any] = {'documents_checked': len(checks)}
+
+    for check in checks:
+        if not isinstance(check, Mapping):
+            failures.append(f'malformed documentation phrase check: {check!r}')
+            continue
+        doc_file = source_root / Path(str(check.get('path', '')))
+        checked_files.append(str(doc_file))
+        if not doc_file.exists():
+            failures.append(f'missing documentation file for claim-consistency check: {doc_file}')
+            continue
+        text = doc_file.read_text(encoding='utf-8')
+        for needle in [str(item) for item in check.get('must_contain', [])]:
+            if needle not in text:
+                failures.append(f'{doc_file} is missing required phrase: {needle!r}')
+        for needle in [str(item) for item in check.get('must_not_contain', [])]:
+            if needle in text:
+                failures.append(f'{doc_file} contains forbidden phrase: {needle!r}')
+
+    return PromotionSectionReport('documentation', not failures, failures, checked_files, details)
+
+
+
+
+
+
+def _split_required_performance_artifact_files(required_files: Iterable[str]) -> tuple[set[str], set[str]]:
+    required = {str(item) for item in required_files}
+    root_files = {'summary.json', 'index.json'} & required
+    profile_files = required - {'index.json'}
+    return root_files, profile_files
+
+
+
+def _load_json_payload(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding='utf-8'))
+
+def _load_public_parser_flags() -> dict[str, dict[str, Any]]:
+    import argparse
+
+    from tigrcorn.cli import build_parser
+
+    parser = build_parser()
+    public_flags: dict[str, dict[str, Any]] = {}
+    for group in parser._action_groups:
+        title = getattr(group, 'title', None)
+        for action in getattr(group, '_group_actions', []):
+            if isinstance(action, argparse._HelpAction):
+                continue
+            if action.help == argparse.SUPPRESS:
+                continue
+            for flag in action.option_strings:
+                if not flag.startswith('--'):
+                    continue
+                public_flags[flag] = {
+                    'dest': action.dest,
+                    'group': title,
+                    'choices': list(action.choices) if action.choices is not None else [],
+                    'nargs': action.nargs,
+                    'default': action.default,
+                }
+    return public_flags
+
+
+
+def _load_performance_metric_keys(artifact_root: Path, profile_ids: list[str]) -> set[str]:
+    metric_keys: set[str] = set()
+    for profile_id in profile_ids:
+        result_file = artifact_root / profile_id / 'result.json'
+        if not result_file.exists():
+            continue
+        payload = json.loads(result_file.read_text(encoding='utf-8'))
+        metrics = payload.get('metrics', {})
+        if isinstance(metrics, Mapping):
+            metric_keys.update(str(key) for key in metrics)
+    return metric_keys
+
+
 __all__ = [
     'DEFAULT_BOUNDARY_PATH',
     'DEFAULT_CORPUS_PATH',
     'DEFAULT_INDEPENDENT_MATRIX_PATH',
     'DEFAULT_SAME_STACK_MATRIX_PATH',
+    'DEFAULT_STRICT_TARGET_BOUNDARY_PATH',
+    'DEFAULT_PROMOTION_TARGET_PATH',
+    'PromotionSectionReport',
+    'PromotionTargetError',
+    'PromotionTargetReport',
     'ReleaseGateError',
     'ReleaseGateReport',
+    'assert_promotion_target_ready',
     'assert_release_ready',
+    'evaluate_promotion_target',
     'evaluate_release_gates',
     'load_certification_boundary',
     'load_conformance_corpus',
+    'load_promotion_target',
 ]

@@ -24,8 +24,8 @@ The canonical certification boundary for this carrier is `docs/review/conformanc
 HTTP/3 evidence is split explicitly:
 
 - **local conformance** — `tests/test_http3_rfc9114.py`, `tests/test_qpack_completion.py`, `tests/test_http3_websocket_rfc9220.py`, `tests/test_connect_rfc9110.py`, `tests/test_trailers_rfc9110.py`, and `tests/test_http_content_coding_rfc9110.py`
-- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/`
-- **independent certification** — `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/`
+- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/`
+- **independent certification** — `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/`
 
 ## Current certification status
 

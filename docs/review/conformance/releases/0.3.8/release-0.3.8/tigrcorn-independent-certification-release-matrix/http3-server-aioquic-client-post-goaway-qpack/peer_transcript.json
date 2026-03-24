@@ -1,0 +1,61 @@
+{
+  "quic": {
+    "client_goaway_sent": true,
+    "migration": {
+      "connection_id_rotated": false,
+      "from": [
+        "127.0.0.1",
+        47129
+      ],
+      "ping_requested": false,
+      "strategy": null,
+      "used": false
+    },
+    "new_token_received": false,
+    "qpack": {
+      "decoder_stream_seen": true,
+      "enabled": true,
+      "encoder_stream_seen": true,
+      "encoder_stream_seen_before_main_request": true,
+      "warmup_rounds": [
+        {
+          "qpack_decoder_stream_seen": true,
+          "qpack_encoder_stream_seen": true,
+          "response_body": "echo:hello-http3-goaway-qpack-qpack-warmup-1",
+          "status": 200,
+          "stream_id": 0
+        }
+      ]
+    },
+    "resumption_attempted": false,
+    "resumption_hint_available": false,
+    "resumption_seeded": true,
+    "retry_observed": false,
+    "session_ticket_received": true,
+    "zero_rtt_attempted": false
+  },
+  "request": {
+    "authority": "localhost",
+    "body": "hello-http3-goaway-qpack",
+    "method": "POST",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-http3-goaway-qpack",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix",
+  "bundle_kind": "minimum_independent_flow_control_certification",
+  "commit_hash": "phase5-minimum-certified-flow-control",
+  "generated_at": "2026-03-19T12:12:15.883283+00:00",
+  "matrix_name": "tigrcorn-minimum-certified-flow-control-matrix",
+  "release_gate_eligible": true,
+  "scenarios": [
+    "http3-flow-control-aioquic-client-credit-exhaustion",
+    "http3-flow-control-aioquic-client-replenishment",
+    "http3-flow-control-aioquic-client-stream-backpressure",
+    "http3-flow-control-aioquic-client-connection-backpressure",
+    "http3-flow-control-aioquic-client-qpack-blocked-stream",
+    "http3-flow-control-aioquic-client-goaway-pressure"
+  ],
+  "scope_note": "Minimum independent flow-control certification bundle promoted from preserved third-party aioquic HTTP/3 artifacts. This closes the provisional-only status for the repository flow-control evidence root while broader ecosystem coverage remains follow-on work.",
+  "source_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+  "source_bundle_sha256": "a19f1f066940efe914108327d9eebb405bf2242fbe3e059bed5b8ef2d2cd5645"
+}

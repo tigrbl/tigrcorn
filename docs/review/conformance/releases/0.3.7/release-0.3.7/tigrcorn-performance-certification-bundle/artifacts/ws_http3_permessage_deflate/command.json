@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "tools/run_perf_matrix.py"
+  ],
+  "deployment_profile": "websocket_http3_permessage_deflate",
+  "driver": "ws_http3_permessage_deflate",
+  "profile_id": "ws_http3_permessage_deflate"
+}

@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "alpn_contains_h2": true,
+    "hpack_roundtrip": true,
+    "tls_context_built": true
+  },
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "tools/run_perf_matrix.py"
+  ],
+  "deployment_profile": "worker_prefork_proxy",
+  "driver": "worker_scaleout",
+  "profile_id": "worker_scaleout"
+}

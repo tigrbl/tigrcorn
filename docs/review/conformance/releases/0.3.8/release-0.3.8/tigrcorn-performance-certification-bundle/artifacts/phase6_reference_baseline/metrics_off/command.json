@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "tools/create_phase9g_performance_checkpoint.py"
+  ],
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http1_baseline",
+  "driver": "metrics_off",
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "profile_id": "metrics_off"
+}

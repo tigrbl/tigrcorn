@@ -1,0 +1,8 @@
+{
+  "scenario_id": "http11-connect-allowlist-rejection",
+  "passed": true,
+  "preserved_via": "local_unit_test",
+  "source_tests": [
+    "tests/test_phase3_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_connect_policy_deny_and_allowlist"
+  ]
+}

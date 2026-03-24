@@ -1,0 +1,10 @@
+{
+  "bundle_kind": "local_behavior_artifacts",
+  "phase": "9D3",
+  "rfc": [
+    "RFC 9110 \u00a78"
+  ],
+  "generated_at": "2026-03-24T04:30:07.805451+00:00",
+  "commit_hash": "phase9d3-content-coding-checkpoint",
+  "description": "Local content-coding behavior vectors preserved during Phase 9D3 independent content-coding closure work."
+}

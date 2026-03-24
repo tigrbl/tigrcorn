@@ -1,0 +1,148 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix",
+  "commit_hash": "release-0.3.7-candidate",
+  "failed": 0,
+  "generated_at": "2026-03-17T06:00:59.271228+00:00",
+  "matrix_name": "tigrcorn-independent-certification-release-matrix",
+  "passed": 17,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http1-server-curl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http1-server-curl-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http2-server-curl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http2-server-curl-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http2-server-h2-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http2-server-h2-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http2-tls-server-curl-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/tigrcorn-rfc-hardening-candidate-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http2-tls-server-h2-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post-goaway-qpack",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post-migration",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post-mtls",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post-resumption",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post-retry",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-aioquic-client-post-zero-rtt",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-openssl-quic-handshake",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-http2-server-h2-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-http3-server-aioquic-client",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-http3-server-aioquic-client-mtls",
+      "passed": true,
+      "source_bundle": ".artifacts/independent-http3-regeneration/release-0.3.6/tigrcorn-independent-certification-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-server-websockets-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    }
+  ],
+  "skipped": 0,
+  "total": 17
+}

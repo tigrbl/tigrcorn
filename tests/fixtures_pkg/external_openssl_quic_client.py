@@ -14,8 +14,7 @@ def _write_json(path_env: str, payload: dict[str, Any]) -> None:
     path = os.environ.get(path_env)
     if not path:
         return
-    Path(path).write_text(json.dumps(payload, indent=2, sort_keys=True) + '
-', encoding='utf-8')
+    Path(path).write_text(json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8')
 
 
 def _extract(pattern: str, text: str) -> str | None:

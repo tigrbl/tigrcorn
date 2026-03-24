@@ -1,0 +1,87 @@
+{
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "all_workers_stopped": true,
+      "stop_counts_recorded": true
+    },
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": false
+  },
+  "deployment_profile": "worker_prefork_proxy",
+  "description": "Graceful drain / stop-all overhead.",
+  "driver": "graceful_drain",
+  "failure_reasons": [],
+  "family": "Operator overhead",
+  "matrix_name": "tigrcorn-phase6-performance-matrix",
+  "metrics": {
+    "connections": 48,
+    "cpu_seconds": 0.0,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "p50_ms": 0.006640999799856218,
+    "p95_ms": 0.011666149839584247,
+    "p99_ms": 0.014142029867798559,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "rss_kib": 39048.0,
+    "sample_count": 12,
+    "scheduler_rejections": 0,
+    "streams": 0,
+    "throughput_ops_per_sec": 421451.90116448933,
+    "total_attempts": 12,
+    "total_duration_seconds": 0.00011389200017219991,
+    "total_units": 48
+  },
+  "passed": true,
+  "profile_id": "graceful_drain",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline/graceful_drain/result.json",
+    "baseline_root": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 0.01825462968099601,
+        "maximum_allowed": 0.268254629680996,
+        "observed": 0.014142029867798559,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 409825.5692019683,
+        "minimum_allowed": 204912.78460098416,
+        "observed": 421451.90116448933,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_p99_ms": {
+        "observed": 0.014142029867798559,
+        "passed": true,
+        "threshold": 1000.0
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 421451.90116448933,
+        "passed": true,
+        "threshold": 1.0
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_p99_ms": 1000.0,
+      "min_throughput_ops_per_sec": 1.0
+    }
+  }
+}

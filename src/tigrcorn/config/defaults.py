@@ -1,5 +1,5 @@
-from .model import ListenerConfig, ServerConfig
+from .model import ServerConfig
 
 
 def default_config() -> ServerConfig:
-    return ServerConfig(listeners=[ListenerConfig()])
+    return ServerConfig()

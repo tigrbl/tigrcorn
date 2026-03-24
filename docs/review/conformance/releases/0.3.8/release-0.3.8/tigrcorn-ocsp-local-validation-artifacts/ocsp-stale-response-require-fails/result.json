@@ -1,0 +1,10 @@
+{
+  "id": "ocsp-stale-response-require-fails",
+  "passed": true,
+  "result": {
+    "error": "revocation status could not be established for the certificate chain"
+  },
+  "source_tests": [
+    "tests/test_phase9e_ocsp_local_validation.py::test_stale_ocsp_response_fails_in_require_mode"
+  ]
+}

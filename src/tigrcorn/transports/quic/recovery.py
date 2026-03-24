@@ -393,3 +393,10 @@ class QuicLossRecovery:
             persistent_congestion=self.persistent_congestion,
             earliest_loss_time=earliest_loss_time,
         )
+
+
+RECOVERY_PRESSURE_CERTIFICATION_SCOPES: tuple[str, ...] = ('loss-recovery-under-pressure', 'pto-backpressure-interaction')
+
+
+def supported_recovery_pressure_certification_scopes() -> tuple[str, ...]:
+    return RECOVERY_PRESSURE_CERTIFICATION_SCOPES

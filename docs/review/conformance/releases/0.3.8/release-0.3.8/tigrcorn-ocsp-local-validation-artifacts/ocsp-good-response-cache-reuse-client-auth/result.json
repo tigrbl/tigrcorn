@@ -1,0 +1,11 @@
+{
+  "id": "ocsp-good-response-cache-reuse-client-auth",
+  "passed": true,
+  "result": {
+    "request_count": 1,
+    "expected_request_count": 1
+  },
+  "source_tests": [
+    "tests/test_phase9e_ocsp_local_validation.py::test_good_ocsp_response_is_cached_for_client_auth"
+  ]
+}

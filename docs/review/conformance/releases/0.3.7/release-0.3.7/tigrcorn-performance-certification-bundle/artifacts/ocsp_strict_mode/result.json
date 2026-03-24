@@ -1,0 +1,90 @@
+{
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "context_built": true,
+      "ocsp_mode_require": true
+    },
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": true
+  },
+  "deployment_profile": "tls_ocsp_strict",
+  "description": "OCSP strict-mode validation policy cost.",
+  "driver": "ocsp_strict_mode",
+  "failure_reasons": [],
+  "family": "TLS / PKI",
+  "matrix_name": "tigrcorn-phase6-performance-matrix",
+  "metrics": {
+    "connections": 8,
+    "cpu_seconds": 0.009999999999999898,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "p50_ms": 0.16557549997742171,
+    "p95_ms": 0.19292300005417928,
+    "p99_ms": 0.19389180012240104,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "rss_kib": 39048.0,
+    "sample_count": 8,
+    "scheduler_rejections": 0,
+    "streams": 0,
+    "throughput_ops_per_sec": 5722.305116440596,
+    "total_attempts": 8,
+    "total_duration_seconds": 0.0013980379999338766,
+    "total_units": 8
+  },
+  "passed": true,
+  "profile_id": "ocsp_strict_mode",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline/ocsp_strict_mode/result.json",
+    "baseline_root": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 0.1793513499023902,
+        "maximum_allowed": 0.4293513499023902,
+        "observed": 0.19389180012240104,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 6025.770714475161,
+        "minimum_allowed": 3012.8853572375806,
+        "observed": 5722.305116440596,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [
+    "RFC 6960",
+    "RFC 5280"
+  ],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_p99_ms": {
+        "observed": 0.19389180012240104,
+        "passed": true,
+        "threshold": 1000.0
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 5722.305116440596,
+        "passed": true,
+        "threshold": 1.0
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_p99_ms": 1000.0,
+      "min_throughput_ops_per_sec": 1.0
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "phase": "9D2",
+  "checkpoint": "phase9d2_trailer_fields_independent_closure",
+  "status": "trailer_fields_independent_closure_complete_all_carriers_green",
+  "generated_on": "2026-03-24",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "strict_failure_count": 0,
+    "remaining_missing_independent_scenarios": [],
+    "non_passing_independent_scenarios": [],
+    "trailer_fields_complete_all_carriers": true
+  },
+  "trailer_fields": {
+    "strict_target_required_evidence_tier": "independent_certification",
+    "artifact_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+    "scenario_status": {
+      "http11-trailer-fields-curl-client": {
+        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client",
+        "assertions_failed": [],
+        "error": null,
+        "id": "http11-trailer-fields-curl-client",
+        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/index.json",
+        "passed": true,
+        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/summary.json",
+        "source_bundle": ".artifacts/tmpevgz7nyf/phase9d2-trailer-fields-checkpoint/tigrcorn-independent-certification-release-matrix"
+      },
+      "http2-trailer-fields-h2-client": {
+        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client",
+        "assertions_failed": [],
+        "error": null,
+        "id": "http2-trailer-fields-h2-client",
+        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/index.json",
+        "passed": true,
+        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/summary.json",
+        "source_bundle": ".artifacts/tmpevgz7nyf/phase9d2-trailer-fields-checkpoint/tigrcorn-independent-certification-release-matrix"
+      },
+      "http3-trailer-fields-aioquic-client": {
+        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client",
+        "assertions_failed": [],
+        "error": null,
+        "id": "http3-trailer-fields-aioquic-client",
+        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/index.json",
+        "passed": true,
+        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/summary.json",
+        "source_bundle": ".artifacts/tmpevgz7nyf/phase9d2-trailer-fields-checkpoint/tigrcorn-independent-certification-release-matrix"
+      }
+    },
+    "local_behavior_bundle": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-trailer-fields-local-behavior-artifacts",
+      "vector_ids": [
+        "http11-request-trailers-pass",
+        "http11-request-trailers-drop",
+        "http11-request-trailers-strict-invalid",
+        "http11-response-trailers-pass",
+        "http2-request-trailers-pass",
+        "http2-request-trailers-strict-invalid",
+        "http2-response-trailers-pass",
+        "http3-request-trailers-pass",
+        "http3-request-trailers-strict-invalid",
+        "http3-response-trailers-pass"
+      ]
+    },
+    "local_positive_tests": [
+      "tests/test_trailers_rfc9110.py",
+      "tests/test_phase3_strict_rfc_surface.py",
+      "tests/test_trailer_policy_strict_local.py",
+      "tests/test_response_trailers_rfc9110.py"
+    ],
+    "fixtures": [
+      "tests/fixtures_pkg/interop_trailer_app.py",
+      "tests/fixtures_pkg/external_curl_client.py",
+      "tests/fixtures_pkg/external_h2_http_client.py",
+      "tests/fixtures_third_party/aioquic_http3_client.py"
+    ],
+    "note": "HTTP/1.1 and HTTP/2 preserved positive third-party trailer artifacts are now passing under the 0.3.8 working release root. The HTTP/3 preserved artifact remains failing because the true third-party aioquic runtime is unavailable in this environment. Local request-trailer pass/drop/strict behavior and response-trailer framing semantics are preserved via tests and the local behavior artifact bundle.",
+    "local_behavior_artifacts": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-trailer-fields-local-behavior-artifacts",
+      "vector_ids": [
+        "http11-request-trailers-pass",
+        "http11-request-trailers-drop",
+        "http11-request-trailers-strict-invalid",
+        "http11-response-trailers-pass",
+        "http2-request-trailers-pass",
+        "http2-request-trailers-strict-invalid",
+        "http2-response-trailers-pass",
+        "http3-request-trailers-pass",
+        "http3-request-trailers-strict-invalid",
+        "http3-response-trailers-pass"
+      ]
+    }
+  },
+  "strict_boundary_failures": [
+    "RFC 9110 \u00a78 independent_certification scenario http3-content-coding-aioquic-client has preserved artifacts but they are not marked passing",
+    "RFC 9110 \u00a78 requires independent_certification evidence, but the resolved evidence only reaches local_conformance"
+  ],
+  "honest_current_result": [
+    "RFC 9110 \u00a76.5 trailer-field independent-certification evidence is now preserved as passing third-party artifacts across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root.",
+    "The strict boundary and the composite promotion target remain red only because the HTTP/3 content-coding scenario is still preserved as a non-passing artifact."
+  ]
+}

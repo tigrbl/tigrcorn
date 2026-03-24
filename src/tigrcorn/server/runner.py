@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import asyncio
+import random
 from contextlib import suppress
-
+from typing import Any
 
 from tigrcorn.asgi.receive import HTTPRequestReceive, HTTPStreamingRequestReceive
 from tigrcorn.asgi.scopes.http import build_http_scope
 from tigrcorn.asgi.send import HTTPResponseWriter
 from tigrcorn.compat.asgi3 import assert_asgi3_app
+from tigrcorn.errors import ProtocolError
 from tigrcorn.config.model import ListenerConfig, ServerConfig
 from tigrcorn.constants import H2_PREFACE
 from tigrcorn.listeners.inproc import InProcListener
@@ -15,7 +17,10 @@ from tigrcorn.listeners.pipe import PipeListener
 from tigrcorn.listeners.tcp import TCPListener
 from tigrcorn.listeners.udp import UDPListener
 from tigrcorn.listeners.unix import UnixListener
-from tigrcorn.observability.logging import AccessLogger, configure_logging
+from tigrcorn.observability.logging import AccessLogger, configure_logging, resolve_logging_config
+from tigrcorn.observability.metrics import StatsdExporter
+from tigrcorn.observability.tracing import OtelExporter, span
+from tigrcorn.protocols.connect import is_connect_allowed, parse_connect_authority
 from tigrcorn.protocols.http1.parser import ParsedRequestHead, read_http11_request_head
 from tigrcorn.protocols.http1.serializer import serialize_http11_response_whole
 from tigrcorn.protocols.http2.handler import HTTP2ConnectionHandler
@@ -29,6 +34,7 @@ from tigrcorn.server.state import ServerState
 from tigrcorn.transports.tcp.reader import PrebufferedReader
 from tigrcorn.types import ASGIApp, StreamReaderLike
 from tigrcorn.utils.net import peer_parts
+from tigrcorn.utils.proxy import resolve_proxy_view
 
 
 class TigrCornServer:
@@ -36,24 +42,55 @@ class TigrCornServer:
         assert_asgi3_app(app)
         self.app = app
         self.config = config
-        self.logger = configure_logging(config.log_level)
-        self.access_logger = AccessLogger(self.logger, enabled=config.access_log)
+        self._resolved_logging = resolve_logging_config(config.log_level, config=config.logging)
+        self.logger = configure_logging(config.log_level, config=config.logging)
+        self.access_logger = AccessLogger(
+            self.logger,
+            enabled=self._resolved_logging.access_log,
+            fmt=self._resolved_logging.access_log_format,
+        )
         self.state = ServerState()
         self.lifespan = LifespanManager(app, mode=config.lifespan)
         self._listeners: list[TCPListener | UDPListener | UnixListener | PipeListener | InProcListener] = []
         self._should_exit = asyncio.Event()
         self._started = False
-        self.scheduler = ProductionScheduler(SchedulerPolicy())
+        self._metrics_server: asyncio.AbstractServer | None = None
+        self._request_budget_task: asyncio.Task[None] | None = None
+        self._statsd_exporter = StatsdExporter(config.metrics.statsd_host, logger=self.logger) if config.metrics.statsd_host else None
+        self._otel_exporter = OtelExporter(config.metrics.otel_endpoint, logger=self.logger) if config.metrics.otel_endpoint else None
+        policy = SchedulerPolicy()
+        if config.scheduler.max_connections is not None:
+            policy.max_connections = config.scheduler.max_connections
+        if config.scheduler.max_tasks is not None:
+            policy.max_tasks = config.scheduler.max_tasks
+        if config.scheduler.max_streams is not None:
+            policy.max_streams_per_session = config.scheduler.max_streams
+        if config.scheduler.limit_concurrency is not None:
+            policy.limit_concurrency = config.scheduler.limit_concurrency
+        self.scheduler = ProductionScheduler(policy)
+        self._request_budget = None
+        if config.process.limit_max_requests is not None:
+            jitter = max(0, config.process.max_requests_jitter)
+            self._request_budget = config.process.limit_max_requests + (random.randint(0, jitter) if jitter else 0)
 
     async def start(self) -> None:
         if self._started:
             return
-        await self.lifespan.startup()
-        for listener_cfg in self.config.listeners:
-            listener = await self._make_listener(listener_cfg)
-            await listener.start(self._make_client_handler(listener_cfg))
-            self._listeners.append(listener)
-            self.logger.info('listening on %s', listener_cfg.label)
+        with span('server.start', attrs={'listener_count': len(self.config.listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
+            await self.lifespan.startup()
+            for listener_cfg in self.config.listeners:
+                listener = await self._make_listener(listener_cfg)
+                await listener.start(self._make_client_handler(listener_cfg))
+                self._listeners.append(listener)
+                self.logger.info('listening on %s', listener_cfg.label)
+            if self.config.metrics.enabled and self.config.metrics.bind:
+                self._metrics_server = await self._start_metrics_endpoint(self.config.metrics.bind)
+            if self._statsd_exporter is not None:
+                await self._statsd_exporter.start(self.state.metrics)
+            if self._otel_exporter is not None:
+                await self._otel_exporter.start(self.state.metrics)
+            if self._request_budget is not None:
+                self._request_budget_task = asyncio.create_task(self._monitor_request_budget(), name='tigrcorn-request-budget')
         self._started = True
 
     async def serve_forever(self) -> None:
@@ -70,24 +107,49 @@ class TigrCornServer:
         if self.state.shutting_down:
             return
         self.state.shutting_down = True
-        for listener in self._listeners:
+        with span('server.shutdown', attrs={'active_listeners': len(self._listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
+            if self._request_budget_task is not None:
+                self._request_budget_task.cancel()
+                with suppress(Exception):
+                    await self._request_budget_task
+            if self._metrics_server is not None:
+                self._metrics_server.close()
+                with suppress(Exception):
+                    await self._metrics_server.wait_closed()
+                self._metrics_server = None
+            for listener in self._listeners:
+                with suppress(Exception):
+                    await listener.close()
+            self._listeners.clear()
             with suppress(Exception):
-                await listener.close()
-        self._listeners.clear()
-        with suppress(Exception):
-            await self.scheduler.close()
-        with suppress(Exception):
-            await self.lifespan.shutdown()
+                await asyncio.wait_for(self.scheduler.close(), timeout=self.config.http.shutdown_timeout)
+            with suppress(Exception):
+                await self.lifespan.shutdown()
+        if self._statsd_exporter is not None:
+            with suppress(Exception):
+                await self._statsd_exporter.stop(self.state.metrics)
+        if self._otel_exporter is not None:
+            with suppress(Exception):
+                await self._otel_exporter.stop(self.state.metrics)
 
     async def _make_listener(self, cfg: ListenerConfig):
         if cfg.kind == 'tcp':
             ssl_ctx = build_server_ssl_context(cfg)
-            return TCPListener(cfg.host, cfg.port, cfg.backlog, ssl=ssl_ctx, reuse_port=cfg.reuse_port)
+            return TCPListener(
+                cfg.host,
+                cfg.port,
+                cfg.backlog,
+                ssl=ssl_ctx,
+                reuse_port=cfg.reuse_port,
+                reuse_address=cfg.reuse_address,
+                nodelay=cfg.nodelay,
+                fd=cfg.fd,
+            )
         if cfg.kind == 'udp':
-            return UDPListener(cfg.host, cfg.port, reuse_port=cfg.reuse_port)
+            return UDPListener(cfg.host, cfg.port, reuse_port=cfg.reuse_port, fd=cfg.fd)
         if cfg.kind == 'unix':
             ssl_ctx = build_server_ssl_context(cfg)
-            return UnixListener(cfg.path or '', cfg.backlog, ssl=ssl_ctx)
+            return UnixListener(cfg.path or '', cfg.backlog, ssl=ssl_ctx, fd=cfg.fd)
         if cfg.kind == 'pipe':
             return PipeListener(cfg.path or '')
         return InProcListener()
@@ -99,6 +161,8 @@ class TigrCornServer:
                 config=self.config,
                 listener=listener_cfg,
                 access_logger=self.access_logger,
+                scheduler=self.scheduler,
+                metrics=self.state.metrics,
             )
 
             async def udp_handler(packet, endpoint) -> None:
@@ -106,7 +170,7 @@ class TigrCornServer:
                 responses_before = sum(len(session.responded_streams) for session in h3_handler.sessions.values())
                 await h3_handler.handle_packet(packet, endpoint)
                 if len(h3_handler.sessions) > sessions_before:
-                    self.state.metrics.connections_opened += 1
+                    self.state.metrics.connection_opened()
                 responses_after = sum(len(session.responded_streams) for session in h3_handler.sessions.values())
                 if responses_after > responses_before:
                     self.state.metrics.requests_served += responses_after - responses_before
@@ -124,6 +188,7 @@ class TigrCornServer:
             async def pipe_handler(connection, data) -> None:
                 handled = await raw_handler.feed_bytes(connection, data, path=listener_cfg.path)
                 self.state.metrics.requests_served += handled
+                self.state.metrics.bytes_received += len(data)
 
             return pipe_handler
 
@@ -144,7 +209,7 @@ class TigrCornServer:
             with suppress(Exception):
                 await writer.wait_closed()
             return
-        self.state.metrics.connections_opened += 1
+        self.state.metrics.connection_opened()
         peername = writer.get_extra_info('peername')
         sockname = writer.get_extra_info('sockname')
         ssl_obj = writer.get_extra_info('ssl_object')
@@ -163,6 +228,8 @@ class TigrCornServer:
                     app=self.app,
                     config=self.config,
                     access_logger=self.access_logger,
+                    scheduler=self.scheduler,
+                    metrics=self.state.metrics,
                     reader=reader,
                     writer=writer,
                     client=client,
@@ -181,6 +248,8 @@ class TigrCornServer:
                         app=self.app,
                         config=self.config,
                         access_logger=self.access_logger,
+                        scheduler=self.scheduler,
+                        metrics=self.state.metrics,
                         reader=reader,
                         writer=writer,
                         client=client,
@@ -205,13 +274,13 @@ class TigrCornServer:
             )
         finally:
             lease.release()
-            self.state.metrics.connections_closed += 1
+            self.state.metrics.connection_closed()
             writer.close()
             with suppress(Exception):
                 await writer.wait_closed()
 
     async def _read_preface_probe(self, reader: asyncio.StreamReader) -> bytes:
-        data = await reader.read(len(H2_PREFACE))
+        data = await asyncio.wait_for(reader.read(len(H2_PREFACE)), timeout=self.config.http.read_timeout)
         if not data:
             return b''
         if H2_PREFACE.startswith(data) and data != H2_PREFACE:
@@ -232,7 +301,9 @@ class TigrCornServer:
         scope_extensions: dict | None = None,
     ) -> None:
         keep_handling = True
+        handled_requests = 0
         while keep_handling and not self.state.shutting_down:
+            request_timeout = self.config.http.keep_alive_timeout if handled_requests else self.config.http.read_timeout
             try:
                 request = await asyncio.wait_for(
                     read_http11_request_head(
@@ -240,25 +311,45 @@ class TigrCornServer:
                         max_body_size=self.config.max_body_size,
                         max_header_size=self.config.max_header_size,
                     ),
-                    timeout=self.config.read_timeout,
+                    timeout=request_timeout,
                 )
             except asyncio.TimeoutError:
                 break
             except Exception as exc:
+                self.state.metrics.protocol_errors += 1
                 self.logger.warning('protocol error from %s: %s', client, exc)
                 await self._write_error(writer, 400, b'bad request', keep_alive=False)
                 break
             if request is None:
                 break
 
+            proxy_view = resolve_proxy_view(
+                request.headers,
+                client=client,
+                server=server,
+                scheme=scheme,
+                root_path=self.config.proxy.root_path,
+                enabled=self.config.proxy.proxy_headers,
+                forwarded_allow_ips=self.config.proxy.forwarded_allow_ips,
+            )
+            request_client = proxy_view.client
+            request_server = proxy_view.server
+            request_scheme = proxy_view.scheme
+            request_ws_scheme = 'wss' if request_scheme == 'https' else 'ws'
+
             if request.method.upper() == 'CONNECT':
-                await self._handle_http11_connect_tunnel(reader, writer, request, client=client)
+                await self._handle_http11_connect_tunnel(reader, writer, request, client=request_client)
                 keep_handling = False
                 break
 
             if request.websocket_upgrade:
                 if not listener_cfg.websocket:
                     await self._write_error(writer, 426, b'websocket not enabled', keep_alive=False)
+                    break
+                work_lease = self.scheduler.acquire_work()
+                if work_lease is None:
+                    self.state.metrics.scheduler_task_rejected()
+                    await self._write_error(writer, 503, b'scheduler overloaded', keep_alive=False)
                     break
                 handler = WebSocketConnectionHandler(
                     app=self.app,
@@ -267,31 +358,46 @@ class TigrCornServer:
                     request=request,
                     reader=reader,
                     writer=writer,
-                    client=client,
-                    server=server,
-                    scheme=ws_scheme,
+                    client=request_client,
+                    server=request_server,
+                    scheme=request_ws_scheme,
                     scope_extensions=scope_extensions,
+                    metrics=self.state.metrics,
                 )
                 try:
+                    self.state.metrics.websocket_opened()
                     await handler.handle()
-                    self.state.metrics.websocket_connections += 1
                 finally:
+                    work_lease.release()
+                    self.state.metrics.websocket_closed()
                     keep_handling = False
                 break
 
-            keep_handling = await self._serve_http11_request(
+            work_lease = self.scheduler.acquire_work()
+            if work_lease is None:
+                self.state.metrics.scheduler_task_rejected()
+                await self._write_error(writer, 503, b'scheduler overloaded', keep_alive=False)
+                break
+            try:
+                keep_handling = await self._serve_http11_request(
                 reader,
                 writer,
                 request,
-                client=client,
-                server=server,
-                scheme=scheme,
+                client=request_client,
+                server=request_server,
+                scheme=request_scheme,
                 scope_extensions=scope_extensions,
             )
+            finally:
+                work_lease.release()
+            handled_requests += 1
+
+    async def _drain_writer(self, writer: asyncio.StreamWriter) -> None:
+        await asyncio.wait_for(writer.drain(), timeout=self.config.http.write_timeout)
 
     async def _write_continue(self, writer: asyncio.StreamWriter) -> None:
         writer.write(b'HTTP/1.1 100 Continue\r\n\r\n')
-        await writer.drain()
+        await self._drain_writer(writer)
 
     def _build_http11_receive(
         self,
@@ -308,11 +414,12 @@ class TigrCornServer:
             max_body_size=self.config.max_body_size,
             expect_continue=request.expect_continue,
             on_expect_continue=lambda: self._write_continue(writer),
+            trailer_policy=self.config.http.trailer_policy,
         )
 
     def _http11_scope_extensions(self, request: ParsedRequestHead, *, scope_extensions: dict | None = None) -> dict:
         extensions: dict = dict(scope_extensions or {})
-        if request.body_kind == 'chunked':
+        if request.body_kind == 'chunked' and self.config.http.trailer_policy != 'drop':
             extensions['tigrcorn.http.request_trailers'] = {}
         if request.method.upper() == 'CONNECT':
             extensions['tigrcorn.http.connect'] = {'authority': request.target}
@@ -320,29 +427,17 @@ class TigrCornServer:
 
     @staticmethod
     def _parse_connect_authority(authority: str) -> tuple[str, int]:
-        if authority.startswith('['):
-            end = authority.find(']')
-            if end == -1 or end + 2 > len(authority) or authority[end + 1] != ':':
-                raise ValueError('invalid CONNECT authority-form target')
-            host = authority[1:end]
-            port_text = authority[end + 2:]
-        else:
-            if authority.count(':') != 1:
-                raise ValueError('invalid CONNECT authority-form target')
-            host, port_text = authority.rsplit(':', 1)
-        port = int(port_text)
-        if not host or port <= 0 or port > 65535:
-            raise ValueError('invalid CONNECT authority-form target')
-        return host, port
+        return parse_connect_authority(authority)
 
     async def _relay_stream(self, reader: StreamReaderLike, writer: asyncio.StreamWriter) -> None:
         try:
             while True:
-                chunk = await reader.read(65536)
+                chunk = await asyncio.wait_for(reader.read(65536), timeout=self.config.http.idle_timeout)
                 if not chunk:
                     break
                 writer.write(chunk)
-                await writer.drain()
+                await self._drain_writer(writer)
+                self.state.metrics.bytes_sent += len(chunk)
         finally:
             writer.close()
             with suppress(Exception):
@@ -361,27 +456,49 @@ class TigrCornServer:
         except Exception:
             await self._write_error(writer, 400, b'bad connect target', keep_alive=False)
             return
+        if self.config.http.connect_policy == 'deny':
+            await self._write_error(writer, 403, b'connect denied', keep_alive=False)
+            return
+        if self.config.http.connect_policy == 'allowlist' and not is_connect_allowed(host, port, self.config.http.connect_allow):
+            await self._write_error(writer, 403, b'connect denied', keep_alive=False)
+            return
         if request.body_kind != 'none':
             await self._write_error(writer, 400, b'connect request body not supported', keep_alive=False)
             return
+        work_lease = self.scheduler.acquire_work()
+        if work_lease is None:
+            self.state.metrics.scheduler_task_rejected()
+            await self._write_error(writer, 503, b'scheduler overloaded', keep_alive=False)
+            return
         try:
-            upstream_reader, upstream_writer = await asyncio.wait_for(asyncio.open_connection(host, port), timeout=getattr(self.config, 'read_timeout', 5.0))
+            upstream_reader, upstream_writer = await asyncio.wait_for(asyncio.open_connection(host, port), timeout=self.config.http.read_timeout)
         except Exception:
+            work_lease.release()
             await self._write_error(writer, 502, b'bad gateway', keep_alive=False)
             return
         writer.write(b'HTTP/1.1 200 Connection Established\r\n\r\n')
-        await writer.drain()
+        await self._drain_writer(writer)
         self.access_logger.log_http(client, 'CONNECT', request.target, 200, f'HTTP/{request.http_version}')
-        relay_up = self.scheduler.spawn(self._relay_stream(reader, upstream_writer), owner=f'connect:{request.target}:up')
-        relay_down = self.scheduler.spawn(self._relay_stream(upstream_reader, writer), owner=f'connect:{request.target}:down')
-        done, pending = await asyncio.wait({relay_up, relay_down}, return_when=asyncio.FIRST_COMPLETED)
-        for task in pending:
-            task.cancel()
-            with suppress(Exception):
-                await task
-        for task in done:
-            with suppress(Exception):
-                await task
+        try:
+            self.state.metrics.scheduler_task_spawned()
+            relay_up = self.scheduler.spawn(self._relay_stream(reader, upstream_writer), owner=f'connect:{request.target}:up')
+            self.state.metrics.scheduler_task_spawned()
+            relay_down = self.scheduler.spawn(self._relay_stream(upstream_reader, writer), owner=f'connect:{request.target}:down')
+        except RuntimeError:
+            self.state.metrics.scheduler_task_rejected()
+            await self._write_error(writer, 503, b'scheduler overloaded', keep_alive=False)
+            return
+        try:
+            done, pending = await asyncio.wait({relay_up, relay_down}, return_when=asyncio.FIRST_COMPLETED)
+            for task in pending:
+                task.cancel()
+                with suppress(Exception):
+                    await task
+            for task in done:
+                with suppress(Exception):
+                    await task
+        finally:
+            work_lease.release()
 
     async def _serve_http11_request(
         self,
@@ -400,6 +517,8 @@ class TigrCornServer:
             server=server,
             scheme=scheme,
             extensions=self._http11_scope_extensions(request, scope_extensions=scope_extensions),
+            root_path=self.config.proxy.root_path,
+            proxy=self.config.proxy,
         )
         receive = self._build_http11_receive(reader, writer, request)
         send = HTTPResponseWriter(
@@ -408,14 +527,22 @@ class TigrCornServer:
             server_header=self.config.server_header_value,
             method=request.method,
             request_headers=request.headers,
+            content_coding_policy=self.config.http.content_coding_policy,
+            content_codings=tuple(self.config.http.content_codings),
         )
         status = 500
         try:
             await self.app(scope, receive, send)
-            await send.ensure_complete()
+            await asyncio.wait_for(send.ensure_complete(), timeout=self.config.http.write_timeout)
             status = send.status or 500
             self.state.metrics.requests_served += 1
+        except ProtocolError:
+            self.state.metrics.requests_failed += 1
+            if not send.started:
+                await self._write_error(writer, 400, b'bad request trailers', keep_alive=False)
+            return False
         except Exception:
+            self.state.metrics.requests_failed += 1
             self.logger.exception('application error')
             if not send.started:
                 await self._write_error(writer, 500, b'internal server error', keep_alive=False)
@@ -441,4 +568,45 @@ class TigrCornServer:
                 server_header=self.config.server_header_value,
             )
         )
-        await writer.drain()
+        await self._drain_writer(writer)
+
+    async def _start_metrics_endpoint(self, bind: str) -> asyncio.AbstractServer:
+        host, port = self._parse_bind_target(bind)
+        server = await asyncio.start_server(self._handle_metrics_request, host=host, port=port)
+        self.logger.info('metrics endpoint listening on %s', bind)
+        return server
+
+    async def _handle_metrics_request(self, reader: asyncio.StreamReader, writer: asyncio.StreamWriter) -> None:
+        with suppress(Exception):
+            await asyncio.wait_for(reader.readuntil(b'\r\n\r\n'), timeout=1.0)
+        payload = self.state.metrics.render_prometheus().encode('utf-8')
+        response = (
+            b'HTTP/1.1 200 OK\r\n'
+            b'content-type: text/plain; version=0.0.4\r\n'
+            + f'content-length: {len(payload)}\r\n'.encode('ascii')
+            + b'connection: close\r\n\r\n'
+            + payload
+        )
+        writer.write(response)
+        with suppress(Exception):
+            await writer.drain()
+        writer.close()
+        with suppress(Exception):
+            await writer.wait_closed()
+
+    @staticmethod
+    def _parse_bind_target(bind: str) -> tuple[str, int]:
+        if bind.startswith('[') and ']:' in bind:
+            host, port = bind.rsplit(':', 1)
+            return host[1:-1], int(port)
+        host, port = bind.rsplit(':', 1)
+        return host, int(port)
+
+    async def _monitor_request_budget(self) -> None:
+        assert self._request_budget is not None
+        while not self._should_exit.is_set() and not self.state.shutting_down:
+            if self.state.metrics.requests_served >= self._request_budget:
+                self.logger.info('request budget reached, shutting down worker')
+                self.request_shutdown()
+                return
+            await asyncio.sleep(0.1)

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "scenario_id": "http2-trailer-fields-h2-client",
+  "protocol": "http2",
+  "feature": "trailers",
+  "peer": "python-h2",
+  "role": "server",
+  "evidence_tier": "independent_certification",
+  "passed": true,
+  "error": null,
+  "assertions_failed": [],
+  "required_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "artifact_files": {
+    "summary.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/summary.json",
+      "exists": true,
+      "size": 6226,
+      "sha256": "fe5b1cbd5d3d92f51604fe92bc33b2b4aa1f80086f6e4ed1680d8353ce6e7f72"
+    },
+    "index.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/index.json",
+      "exists": true,
+      "size": 6549,
+      "sha256": "021728e5bfa7b44d9b6e8c4383cabd2a5ac07d42b55a4344c1a6a30cd8855405"
+    },
+    "result.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/result.json",
+      "exists": true,
+      "size": 26400,
+      "sha256": "150e9b107369668b0b19754ef059bb46462d75ae094389818c06d3b54f824e35"
+    },
+    "scenario.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/scenario.json",
+      "exists": true,
+      "size": 3322,
+      "sha256": "e3af18d40534636e2742de4f6850299ed26e80e31409e7ed9a0bffca8c718a7d"
+    },
+    "command.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/command.json",
+      "exists": true,
+      "size": 883,
+      "sha256": "82a17652e3cfa894bfb0c46f257983622e4ce114b7b46fb68abc6753c19d1800"
+    },
+    "env.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/env.json",
+      "exists": true,
+      "size": 30,
+      "sha256": "f05068603f91e9856e7078e131a7c6772855763b0347fcdc0293badb957e5b33"
+    },
+    "versions.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/versions.json",
+      "exists": true,
+      "size": 9721,
+      "sha256": "1d852dfef321da0273ae2b6acc3558f739319e3a75548a62e10c734cca63e174"
+    },
+    "wire_capture.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/wire_capture.json",
+      "exists": true,
+      "size": 3154,
+      "sha256": "5674d250fad66fd3f99cd8b904b179d02cbc5fe475cb3fd46e4efa47c60f0143"
+    },
+    "packet_trace.jsonl": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/packet_trace.jsonl",
+      "exists": true,
+      "size": 2124,
+      "sha256": "eda260dd9e0cb2c75f5158d5b9ba1555b83d2182a1f1e9b2090c144bfde3a4c5"
+    },
+    "qlog.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/qlog.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "sut_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/sut_stderr.log",
+      "exists": true,
+      "size": 67,
+      "sha256": "2baec647f2cb2264495fa100f6148ff80f3e1487649474ed62f86aac7011666b"
+    },
+    "peer_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/peer_stdout.log",
+      "exists": true,
+      "size": 413,
+      "sha256": "a8052ec978f6aef97f68cfb3f765f21c53155d29bd5de7b2551d59fe4bbf6c3f"
+    },
+    "peer_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/sut_transcript.json",
+      "exists": true,
+      "size": 1510,
+      "sha256": "81a66b240ca654f0eb659c03eddca4c31ee71710a2c5001ac0f95f1389236911"
+    },
+    "peer_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/peer_transcript.json",
+      "exists": true,
+      "size": 663,
+      "sha256": "68b77ba13276a06ba28b57c8b4a8aa70b13eb0d9570ed41432d4b009e2514e4c"
+    },
+    "sut_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/sut_negotiation.json",
+      "exists": true,
+      "size": 779,
+      "sha256": "4db298b46b86ec35fc93bd23866677e9ce587bfb62ad240824a9668288ef5f06"
+    },
+    "peer_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/peer_negotiation.json",
+      "exists": true,
+      "size": 189,
+      "sha256": "b68a0d76c46999a5cbec6aa7be61517d6ff0a19edec6eb6a6158c2c4fd544f8e"
+    }
+  }
+}

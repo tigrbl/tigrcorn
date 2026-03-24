@@ -1,0 +1,134 @@
+{
+  "bundles": {
+    "independent_harness_foundation": {
+      "artifact_schema_version": 1,
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle",
+      "proof_scenarios": [
+        "http1-server-curl-client"
+      ],
+      "release_gate_eligible": false,
+      "scenario_count": 1,
+      "validated": true
+    },
+    "independent_certification": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+      "scenario_count": 30,
+      "release_gate_eligible": true,
+      "rfc7692_scenarios": [
+        "websocket-http11-server-websockets-client-permessage-deflate",
+        "websocket-http2-server-h2-client-permessage-deflate",
+        "websocket-http3-server-aioquic-client-permessage-deflate"
+      ],
+      "connect_relay_scenarios": [
+        "http11-connect-relay-curl-client",
+        "http2-connect-relay-h2-client",
+        "http3-connect-relay-aioquic-client"
+      ],
+      "trailer_field_scenarios": [
+        "http11-trailer-fields-curl-client",
+        "http2-trailer-fields-h2-client",
+        "http3-trailer-fields-aioquic-client"
+      ],
+      "content_coding_scenarios": [
+        "http11-content-coding-curl-client",
+        "http2-content-coding-curl-client",
+        "http3-content-coding-aioquic-client"
+      ]
+    },
+    "same_stack_replay": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
+      "release_gate_eligible": true
+    },
+    "mixed": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix",
+      "release_gate_eligible": true
+    },
+    "local_rfc7692_negative_artifacts": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-rfc7692-local-negative-artifacts",
+      "release_gate_eligible": false,
+      "vector_count": 3
+    },
+    "local_connect_relay_negative_artifacts": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-connect-relay-local-negative-artifacts",
+      "release_gate_eligible": false,
+      "vector_count": 6
+    },
+    "local_trailer_fields_behavior_artifacts": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-trailer-fields-local-behavior-artifacts",
+      "release_gate_eligible": false,
+      "vector_count": 10
+    },
+    "local_content_coding_behavior_artifacts": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts",
+      "release_gate_eligible": false,
+      "vector_count": 9
+    },
+    "local_ocsp_validation_artifacts": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-ocsp-local-validation-artifacts",
+      "release_gate_eligible": false,
+      "vector_count": 4
+    },
+    "flag_surface": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-flag-surface-certification-bundle",
+      "release_gate_eligible": true,
+      "flag_count": 84,
+      "promotion_ready_count": 84
+    },
+    "operator_surface": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle",
+      "release_gate_eligible": true,
+      "implemented_count": 7
+    },
+    "performance": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle",
+      "release_gate_eligible": true,
+      "profile_count": 32,
+      "lane_counts": {
+        "end_to_end_release": 23,
+        "component_regression": 9
+      }
+    },
+    "certification_environment": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
+      "release_gate_eligible": false,
+      "required_imports_ready": true,
+      "python_version_ready": false
+    },
+    "aioquic_adapter_preflight": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle",
+      "release_gate_eligible": false,
+      "scenario_count": 2,
+      "all_adapters_passed": true,
+      "all_protocols_h3": true
+    },
+    "strict_validation": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle",
+      "release_gate_eligible": false,
+      "artifact_count": 9,
+      "targeted_pytest_pass_count": 27,
+      "validated": true
+    }
+  },
+  "generated_at": "2026-03-24T07:33:47.023455+00:00",
+  "notes": [
+    "Phase 9B independent harness foundation remains preserved in this canonical release root.",
+    "Phase 9C preserves passing RFC 7692 independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3.",
+    "Phase 9D1 preserves passing CONNECT relay independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3.",
+    "Phase 9D2 preserves passing RFC 9110 trailer-field independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3.",
+    "Phase 9D3 preserves passing RFC 9110 \u00a78 content-coding independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3.",
+    "Phase 9E preserves a passing OpenSSL OCSP validation artifact.",
+    "The strict validation bundle is preserved and remains green.",
+    "The 0.3.8 release root is now the canonical authoritative release root and the public package version is 0.3.8."
+  ],
+  "promotion_ready": true,
+  "release": "0.3.8",
+  "schema_version": 1,
+  "source_checkpoint": "phase9i_release_assembly",
+  "status": "phase9i_release_assembly_certifiably_promotable",
+  "strict_target_complete": true,
+  "canonical_release_promoted": true,
+  "public_version": "0.3.8",
+  "release_notes": "RELEASE_NOTES_0.3.8.md",
+  "version_bump_performed": true,
+  "release_notes_promoted": true
+}

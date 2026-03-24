@@ -1,0 +1,48 @@
+{
+  "sut": {
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http2",
+      "--http",
+      "2",
+      "--connect-policy",
+      "relay",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ],
+    "name": "tigrcorn-http2-connect-relay",
+    "adapter": "subprocess"
+  },
+  "peer": {
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--connect-relay"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--version"
+    ],
+    "name": "python-h2-connect-relay-client",
+    "adapter": "subprocess"
+  }
+}

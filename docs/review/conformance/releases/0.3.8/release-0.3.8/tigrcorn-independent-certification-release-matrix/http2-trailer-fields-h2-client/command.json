@@ -1,0 +1,46 @@
+{
+  "sut": {
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "tests.fixtures_pkg.interop_trailer_app:app",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http2",
+      "--http",
+      "2",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ],
+    "name": "tigrcorn-http2-trailer-fields",
+    "adapter": "subprocess"
+  },
+  "peer": {
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--response-trailers"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_h2_http_client",
+      "--version"
+    ],
+    "name": "python-h2-trailer-fields-client",
+    "adapter": "subprocess"
+  }
+}

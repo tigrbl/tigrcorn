@@ -1,0 +1,132 @@
+{
+  "artifact_files": {
+    "command.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/command.json",
+      "sha256": "b51e45cbf9e069e5d5345a1814c5e58cc295a224e5fe3908688476eba4aad4a0",
+      "size": 1317
+    },
+    "env.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/env.json",
+      "sha256": "c32b076b4d404201d4d09a2ae0fd765254fb036b2345ce23d5b140911a263152",
+      "size": 4297
+    },
+    "index.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/index.json",
+      "sha256": "77b14cf731c060d056780c7676fd97b18b5f7081735b6d696f3c012c633042ad",
+      "size": 822
+    },
+    "packet_trace.jsonl": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/packet_trace.jsonl",
+      "sha256": "3510c3b0292689c887714b8eb4178832dba6f2a25d4ae1bb19d37a05032d2866",
+      "size": 13408
+    },
+    "peer_negotiation.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/peer_negotiation.json",
+      "sha256": "1dd4c504b499586bcfd61fa81f5bc3550233ad159defb3623eb865f634c733c9",
+      "size": 1066
+    },
+    "peer_stderr.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/peer_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "peer_stdout.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/peer_stdout.log",
+      "sha256": "4be17e1ebad02331350bccbbe9416ed462cf944623392fe5a11640e62057ca74",
+      "size": 1794
+    },
+    "peer_transcript.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/peer_transcript.json",
+      "sha256": "a803f60f99bf479d86cb0a45bf01fe4a58170abf23dbd4b669955df5237667f5",
+      "size": 1150
+    },
+    "qlog.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/qlog.json",
+      "sha256": "9d19f534732459b99d1489c8bde725790ef6fd11a83c39d5941039bc68b1cd20",
+      "size": 12761
+    },
+    "result.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/result.json",
+      "sha256": "ce5fa0ccc7ef969207fcac0b93e23594dd73a1e7643f4fd10df9e9456852ff9b",
+      "size": 29581
+    },
+    "scenario.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/scenario.json",
+      "sha256": "22ea94fb27a8a77f38d687922df86204e3a25895d1163fd85353d1e40811af11",
+      "size": 3463
+    },
+    "summary.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/summary.json",
+      "sha256": "5fe6c3c6963f682d1aa1c9a3d41b1311700270eabe678eb1a9d1cfeabd1467e9",
+      "size": 465
+    },
+    "sut_negotiation.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/sut_negotiation.json",
+      "sha256": "a5d00c1396eee1ad7d0fe312c2c6ee2225f6874eb8cfbee7cd22c5ef1f5612c5",
+      "size": 868
+    },
+    "sut_stderr.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/sut_stderr.log",
+      "sha256": "3b63a40a7dc4a8fdbd54383899809a4f4d8c14877ef8cd97436b81e86801b3b4",
+      "size": 73
+    },
+    "sut_stdout.log": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/sut_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "sut_transcript.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/sut_transcript.json",
+      "sha256": "128f3d1df8b137d4b998065362860f9ed4f0c72c14d57397b6795452efcfb1a2",
+      "size": 1275
+    },
+    "versions.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/versions.json",
+      "sha256": "62654304a18147fde40ec047d8f49d75061360cabf478522218e04e09cb30d64",
+      "size": 18886
+    },
+    "wire_capture.json": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/wire_capture.json",
+      "sha256": "1e90ba3adf844639c4336a16165f7ec65e8a81d272643ada9cea9ab5a21314f3",
+      "size": 3379
+    }
+  },
+  "assertions_failed": [],
+  "error": null,
+  "evidence_tier": "independent_certification",
+  "feature": "post-echo",
+  "passed": true,
+  "peer": "aioquic",
+  "protocol": "http3",
+  "required_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "role": "server",
+  "scenario_id": "http3-server-aioquic-client-post",
+  "schema_version": 1
+}

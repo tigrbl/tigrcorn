@@ -1,0 +1,4 @@
+{
+  "command": ["python", "-m", "compileall", "-q", "src", "benchmarks", "tools"],
+  "result": "passed"
+}

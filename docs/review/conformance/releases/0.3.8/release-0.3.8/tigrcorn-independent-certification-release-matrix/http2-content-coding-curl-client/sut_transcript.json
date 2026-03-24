@@ -1,0 +1,64 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "content-coding",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http2",
+  "request": {
+    "accept_encoding": "gzip",
+    "authority": "127.0.0.1",
+    "body": "",
+    "method": "GET",
+    "path": "/interop",
+    "scheme": "http"
+  },
+  "response": {
+    "body": "",
+    "content_encoding": "gzip",
+    "decoded_body": "compress-me",
+    "decoded_length": 11,
+    "encoded_length": 31,
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain; charset=utf-8"
+      ],
+      [
+        "content-encoding",
+        "gzip"
+      ],
+      [
+        "vary",
+        "accept-encoding"
+      ],
+      [
+        "content-length",
+        "31"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "stream_ended": true,
+    "trailers": [],
+    "vary": "accept-encoding"
+  },
+  "role": "server",
+  "scenario_id": "http2-content-coding-curl-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http2",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http2-content-coding",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/sut_stderr.log",
+    "stdout_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/sut_stdout.log"
+  }
+}

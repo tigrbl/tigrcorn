@@ -1,0 +1,279 @@
+{
+  "families": {
+    "aioquic": [
+      "aioquic.http3_client",
+      "aioquic.http3_websocket_client"
+    ],
+    "curl": [
+      "curl.http1_client",
+      "curl.http2_client"
+    ],
+    "h2": [
+      "h2.http2_client",
+      "h2.http2_websocket_client"
+    ],
+    "openssl": [
+      "openssl.quic_client",
+      "openssl.tls_client"
+    ],
+    "websockets": [
+      "websockets.http11_client"
+    ]
+  },
+  "module": "tools.interop_wrappers",
+  "schema_version": 1,
+  "wrappers": {
+    "aioquic.http3_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "aioquic-http3-client",
+      "family": "aioquic",
+      "implementation_identity": "aioquic-http3-client",
+      "implementation_source": "aioquic",
+      "module": "tests.fixtures_third_party.aioquic_http3_client",
+      "notes": "Standard wrapper for HTTP/3 request/response and semantic interop scenarios using aioquic.",
+      "provenance_kind": "third_party_library",
+      "role": "client",
+      "runtime_dependencies": [
+        "aioquic"
+      ],
+      "supported_features": [
+        "post-echo",
+        "content-coding",
+        "trailers",
+        "connect-relay"
+      ],
+      "supported_protocols": [
+        "http3"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "aioquic.http3_client"
+    },
+    "aioquic.http3_websocket_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "aioquic-http3-websocket-client",
+      "family": "aioquic",
+      "implementation_identity": "aioquic-http3-websocket-client",
+      "implementation_source": "aioquic",
+      "module": "tests.fixtures_third_party.aioquic_http3_websocket_client",
+      "notes": "Standard wrapper for RFC 9220 and RFC 7692 WebSocket-over-HTTP/3 scenarios using aioquic.",
+      "provenance_kind": "third_party_library",
+      "role": "client",
+      "runtime_dependencies": [
+        "aioquic",
+        "wsproto"
+      ],
+      "supported_features": [
+        "websocket-rfc9220-echo",
+        "permessage-deflate"
+      ],
+      "supported_protocols": [
+        "http3",
+        "websocket"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "aioquic.http3_websocket_client"
+    },
+    "curl.http1_client": {
+      "adapter": "subprocess",
+      "default_args": [
+        "--http1"
+      ],
+      "default_name": "curl-http1-client",
+      "family": "curl",
+      "implementation_identity": "curl",
+      "implementation_source": "curl project",
+      "module": "tests.fixtures_pkg.external_curl_client",
+      "notes": "Standard wrapper for HTTP/1.1 third-party curl interop scenarios.",
+      "provenance_kind": "third_party_binary",
+      "role": "client",
+      "runtime_dependencies": [
+        "curl"
+      ],
+      "supported_features": [
+        "post-echo",
+        "content-coding",
+        "trailers",
+        "connect-relay"
+      ],
+      "supported_protocols": [
+        "http1"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "curl.http1_client"
+    },
+    "curl.http2_client": {
+      "adapter": "subprocess",
+      "default_args": [
+        "--http2"
+      ],
+      "default_name": "curl-http2-client",
+      "family": "curl",
+      "implementation_identity": "curl",
+      "implementation_source": "curl project",
+      "module": "tests.fixtures_pkg.external_curl_client",
+      "notes": "Standard wrapper for HTTP/2 third-party curl interop scenarios.",
+      "provenance_kind": "third_party_binary",
+      "role": "client",
+      "runtime_dependencies": [
+        "curl"
+      ],
+      "supported_features": [
+        "post-echo",
+        "content-coding",
+        "trailers"
+      ],
+      "supported_protocols": [
+        "http2"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "curl.http2_client"
+    },
+    "h2.http2_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "h2-http-client",
+      "family": "h2",
+      "implementation_identity": "h2-http-client",
+      "implementation_source": "python-h2",
+      "module": "tests.fixtures_pkg.external_h2_http_client",
+      "notes": "Standard wrapper for HTTP/2 request/response scenarios using python-h2.",
+      "provenance_kind": "third_party_library",
+      "role": "client",
+      "runtime_dependencies": [
+        "h2"
+      ],
+      "supported_features": [
+        "post-echo",
+        "connect-relay",
+        "trailers"
+      ],
+      "supported_protocols": [
+        "http2"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "h2.http2_client"
+    },
+    "h2.http2_websocket_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "h2-websocket-client",
+      "family": "h2",
+      "implementation_identity": "h2-websocket-client",
+      "implementation_source": "python-h2/wsproto",
+      "module": "tests.fixtures_pkg.external_h2_websocket_client",
+      "notes": "Standard wrapper for RFC 8441 and RFC 7692 WebSocket-over-HTTP/2 scenarios.",
+      "provenance_kind": "third_party_library",
+      "role": "client",
+      "runtime_dependencies": [
+        "h2",
+        "wsproto"
+      ],
+      "supported_features": [
+        "websocket-extended-connect",
+        "permessage-deflate"
+      ],
+      "supported_protocols": [
+        "http2",
+        "websocket"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "h2.http2_websocket_client"
+    },
+    "openssl.quic_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "openssl-quic-client",
+      "family": "openssl",
+      "implementation_identity": "openssl-quic-client",
+      "implementation_source": "openssl",
+      "module": "tests.fixtures_pkg.external_openssl_quic_client",
+      "notes": "Standard wrapper for OpenSSL QUIC/TLS validation and OCSP-oriented scenarios.",
+      "provenance_kind": "third_party_binary",
+      "role": "client",
+      "runtime_dependencies": [
+        "openssl"
+      ],
+      "supported_features": [
+        "quic-tls-handshake",
+        "ocsp-revocation"
+      ],
+      "supported_protocols": [
+        "quic",
+        "quic-tls",
+        "http3"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "openssl.quic_client"
+    },
+    "openssl.tls_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "openssl-tls-client",
+      "family": "openssl",
+      "implementation_identity": "openssl-tls-client",
+      "implementation_source": "openssl",
+      "module": "tests.fixtures_pkg.external_openssl_tls_client",
+      "notes": "Standard wrapper for OpenSSL TLS/mTLS validation and OCSP-oriented scenarios.",
+      "provenance_kind": "third_party_binary",
+      "role": "client",
+      "runtime_dependencies": [
+        "openssl"
+      ],
+      "supported_features": [
+        "ocsp-revocation",
+        "mtls-http1"
+      ],
+      "supported_protocols": [
+        "tls",
+        "http1"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "openssl.tls_client"
+    },
+    "websockets.http11_client": {
+      "adapter": "subprocess",
+      "default_args": [],
+      "default_name": "websockets-client",
+      "family": "websockets",
+      "implementation_identity": "websockets-client",
+      "implementation_source": "websockets",
+      "module": "tests.fixtures_pkg.external_websocket_client",
+      "notes": "Standard wrapper for HTTP/1.1 WebSocket scenarios using the third-party websockets client.",
+      "provenance_kind": "third_party_library",
+      "role": "client",
+      "runtime_dependencies": [
+        "websockets"
+      ],
+      "supported_features": [
+        "text-echo",
+        "permessage-deflate"
+      ],
+      "supported_protocols": [
+        "websocket",
+        "http1"
+      ],
+      "version_args": [
+        "--version"
+      ],
+      "wrapper_id": "websockets.http11_client"
+    }
+  }
+}

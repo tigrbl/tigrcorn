@@ -1,0 +1,15 @@
+{
+  "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "generated_at": "2026-03-24T07:33:47.023455+00:00",
+  "source_checkpoint": "phase9i_release_assembly",
+  "promotion_ready": true,
+  "strict_target_complete": true,
+  "bundle_count": 15,
+  "independent_certification_total": 30,
+  "independent_certification_passed": 30,
+  "independent_certification_failed": 0,
+  "version": "0.3.8",
+  "canonical_release_promoted": true,
+  "public_version": "0.3.8",
+  "release_notes": "RELEASE_NOTES_0.3.8.md"
+}

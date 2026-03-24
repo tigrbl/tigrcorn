@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "deflate_roundtrip": true,
+    "extended_connect_block": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

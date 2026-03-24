@@ -1,0 +1,17 @@
+{
+  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified",
+  "carrier": "http2",
+  "corpus_entry_kind": "minimum_certified_independent_intermediary_case",
+  "corpus_id": "http2-h2-origin-form-post-certified",
+  "generated_at": "2026-03-19T12:12:15.991195+00:00",
+  "minimum_certified": true,
+  "note": "Minimum certified HTTP/2 forwarding semantics preserved from the third-party h2 client artifact.",
+  "peer": "h2",
+  "scope": [
+    "request-forwarding",
+    "header-forwarding",
+    "persistent-carrier-baseline"
+  ],
+  "source_kind": "independent_artifact",
+  "source_ref": "http2-server-h2-client"
+}

@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "tools/run_perf_matrix.py"
+  ],
+  "deployment_profile": "websocket_http2",
+  "driver": "ws_http2",
+  "profile_id": "ws_http2"
+}

@@ -11,6 +11,7 @@ from typing import Any
 
 from ._aioquic_utils import (
     SETTING_ENABLE_CONNECT_PROTOCOL,
+    certificate_input_status,
     connect_quic,
     detect_local_control_stream_id,
     detect_peer_qpack_streams,
@@ -29,17 +30,18 @@ from ._aioquic_utils import (
 )
 
 
-def _load_dependencies() -> tuple[Any, Any, Any, Any]:
+def _load_dependencies() -> tuple[Any, Any, Any, Any, Any]:
     try:
         from aioquic.h3.connection import H3Connection  # type: ignore
         from aioquic.quic.configuration import QuicConfiguration  # type: ignore
         from aioquic.quic.connection import QuicConnection  # type: ignore
+        import wsproto.extensions as ws_extensions  # type: ignore
         import wsproto.frame_protocol as ws_frames  # type: ignore
     except ModuleNotFoundError as exc:  # pragma: no cover - depends on external runtime
         raise RuntimeError(
             "aioquic and wsproto are required to run the true third-party RFC 9220 certification adapters."
         ) from exc
-    return H3Connection, QuicConfiguration, QuicConnection, ws_frames
+    return H3Connection, QuicConfiguration, QuicConnection, ws_extensions, ws_frames
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -47,6 +49,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--version", action="store_true")
     parser.add_argument("--path", default=os.environ.get("INTEROP_REQUEST_PATH", "/ws"))
     parser.add_argument("--text", default=os.environ.get("INTEROP_REQUEST_BODY", "hello-h3-websocket"))
+    parser.add_argument("--compression", default=os.environ.get("INTEROP_WEBSOCKET_COMPRESSION", "off"))
     parser.add_argument("--servername", default=os.environ.get("INTEROP_SERVER_NAME", "localhost"))
     parser.add_argument("--cacert", default=os.environ.get("INTEROP_CACERT", "tests/fixtures_certs/interop-localhost-cert.pem"))
     parser.add_argument("--client-cert", default=os.environ.get("INTEROP_CLIENT_CERT"))
@@ -55,7 +58,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _build_configuration(ns: argparse.Namespace) -> Any:
-    _H3Connection, QuicConfiguration, _QuicConnection, _ws_frames = _load_dependencies()
+    _H3Connection, QuicConfiguration, _QuicConnection, _ws_extensions, _ws_frames = _load_dependencies()
     configuration = QuicConfiguration(is_client=True, alpn_protocols=["h3"])
     configuration.verify_mode = ssl.CERT_REQUIRED
     configuration.load_verify_locations(str(ns.cacert))
@@ -209,11 +212,11 @@ def _pump_until(
     raise RuntimeError(error_message)
 
 
-def _decode_websocket_response(ws_frames: Any, payload: bytes) -> tuple[str, int | None, str]:
+def _decode_websocket_response(ws_frames: Any, payload: bytes, *, protocol: Any | None = None) -> tuple[str, int | None, str]:
     # This adapter runs on the client side and is decoding server-to-client
     # frames carried inside the RFC 9220 CONNECT stream. Server frames are
     # unmasked, so the wsproto parser must be instantiated in client mode.
-    receiver = ws_frames.FrameProtocol(client=True, extensions=[])
+    receiver = protocol if protocol is not None else ws_frames.FrameProtocol(client=True, extensions=[])
     receiver.receive_bytes(payload)
     text_value = ""
     close_code: int | None = None
@@ -242,6 +245,31 @@ def _local_bind_host_for_target(host: str) -> str:
     return "::1" if ":" in host else "127.0.0.1"
 
 
+def _build_extension_offer_header(*, compression: str, ws_extensions: Any) -> tuple[bytes | None, list[Any]]:
+    if compression != "permessage-deflate":
+        return None, []
+    extension = ws_extensions.PerMessageDeflate()
+    offer = extension.offer()
+    value = "permessage-deflate"
+    if isinstance(offer, str) and offer:
+        value += "; " + offer
+    return value.encode("ascii"), [extension]
+
+
+
+def _build_frame_protocol(*, compression: str, response_extension_header: str, offered_extensions: list[Any], ws_frames: Any, ws_extensions: Any) -> tuple[Any, list[str]]:
+    if compression != "permessage-deflate" or not response_extension_header.lower().startswith("permessage-deflate"):
+        return ws_frames.FrameProtocol(client=True, extensions=[]), []
+    finalized: list[Any] = []
+    for extension in offered_extensions:
+        if isinstance(extension, ws_extensions.PerMessageDeflate):
+            extension.finalize(response_extension_header)
+            finalized.append(extension)
+    if not finalized:
+        return ws_frames.FrameProtocol(client=True, extensions=[]), []
+    return ws_frames.FrameProtocol(client=True, extensions=finalized), [type(item).__name__ for item in finalized]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     ns = parser.parse_args(argv or sys.argv[1:])
@@ -259,7 +287,7 @@ def main(argv: list[str] | None = None) -> int:
     target = (host, port)
 
     try:
-        H3Connection, _QuicConfiguration, QuicConnection, ws_frames = _load_dependencies()
+        H3Connection, _QuicConfiguration, QuicConnection, ws_extensions, ws_frames = _load_dependencies()
         configuration = _build_configuration(ns)
 
         captured_ticket: dict[str, object] = {}
@@ -286,12 +314,8 @@ def main(argv: list[str] | None = None) -> int:
         if not bool(state.get("connect_protocol_enabled")):
             raise RuntimeError("server did not advertise SETTINGS_ENABLE_CONNECT_PROTOCOL")
 
-        sender = ws_frames.FrameProtocol(client=True, extensions=[])
-        # Match the package-owned RFC 9220 client: send a single text frame and
-        # keep the CONNECT stream open while waiting for the server's echoed
-        # frame and close handshake. Sending an immediate CLOSE frame here races
-        # the application echo path and is not part of the scenario assertions.
-        websocket_payload = bytes(sender.send_data(str(ns.text), fin=True))
+        compression = str(ns.compression)
+        extension_header, offered_extensions = _build_extension_offer_header(compression=compression, ws_extensions=ws_extensions)
         headers = [
             (b":method", b"CONNECT"),
             (b":protocol", b"websocket"),
@@ -301,7 +325,36 @@ def main(argv: list[str] | None = None) -> int:
             (b"sec-websocket-version", b"13"),
             (b"sec-websocket-protocol", b"chat"),
         ]
+        if extension_header is not None:
+            headers.append((b"sec-websocket-extensions", extension_header))
         http.send_headers(stream_id, headers, end_stream=False)
+        flush_pending_datagrams(sock, quic, target)
+
+        _pump_until(
+            sock=sock,
+            quic=quic,
+            http=http,
+            target=target,
+            state=state,
+            deadline=deadline,
+            predicate=lambda: bool(_stream_state(state, stream_id).get("headers_received")),
+            error_message="RFC 9220 response headers were not received before the deadline",
+        )
+        response_header_pairs = list(_stream_state(state, stream_id).get("response_headers", []))
+        response_extension_header = header_map(response_header_pairs).get("sec-websocket-extensions", "")
+        sender, negotiated_extensions = _build_frame_protocol(
+            compression=compression,
+            response_extension_header=str(response_extension_header),
+            offered_extensions=offered_extensions,
+            ws_frames=ws_frames,
+            ws_extensions=ws_extensions,
+        )
+
+        # Match the package-owned RFC 9220 client: send a single text frame and
+        # keep the CONNECT stream open while waiting for the server's echoed
+        # frame and close handshake. Sending an immediate CLOSE frame here races
+        # the application echo path and is not part of the scenario assertions.
+        websocket_payload = bytes(sender.send_data(str(ns.text), fin=True))
         http.send_data(stream_id, websocket_payload, end_stream=False)
         flush_pending_datagrams(sock, quic, target)
 
@@ -356,21 +409,37 @@ def main(argv: list[str] | None = None) -> int:
         response = _stream_state(state, stream_id)
         response_headers = list(response.get("response_headers", []))
         response_status = int(header_map(response_headers).get(":status", "0"))
-        text_value, close_code, close_reason = _decode_websocket_response(ws_frames, bytes(response.get("response_body", b"")))
+        text_value, close_code, close_reason = _decode_websocket_response(
+            ws_frames,
+            bytes(response.get("response_body", b"")),
+            protocol=sender,
+        )
+        response_extension_header = header_map(response_headers).get("sec-websocket-extensions", "")
 
         negotiation = {
             "implementation": "aioquic",
             "protocol": state.get("alpn_protocol") or "h3",
+            "alpn_requested": ["h3"],
             "tls_version": "TLSv1.3",
             "server_name": str(ns.servername),
             "client_auth_present": bool(ns.client_cert and ns.client_key),
+            "handshake_complete": bool(state.get("handshake_complete")),
             "retry_observed": bool(state.get("retry_observed")),
             "connect_protocol_enabled": bool(state.get("connect_protocol_enabled")),
+            "compression_requested": compression,
+            "response_extension_header": str(response_extension_header),
+            "negotiated_extensions": negotiated_extensions,
             "qpack_encoder_stream_seen": bool(state.get("qpack_encoder_stream_seen")),
             "qpack_decoder_stream_seen": bool(state.get("qpack_decoder_stream_seen")),
             "migration_used": bool(migration.get("used")),
             "client_goaway_sent": goaway_sent,
+            "certificate_inputs": certificate_input_status(
+                cacert=ns.cacert,
+                client_cert=ns.client_cert,
+                client_key=ns.client_key,
+            ),
         }
+        negotiation["certificate_inputs_ready"] = negotiation["certificate_inputs"]["ready"]
         if isinstance(state.get("client_control_stream_id"), int):
             negotiation["client_control_stream_id"] = int(state["client_control_stream_id"])
         if state.get("received_settings"):
@@ -381,6 +450,8 @@ def main(argv: list[str] | None = None) -> int:
                 "path": str(ns.path),
                 "text": str(ns.text),
                 "authority": str(ns.servername),
+                "compression": compression,
+                "extension_offer": extension_header.decode("ascii") if extension_header is not None else "",
             },
             "response": {
                 "status": response_status,
@@ -388,8 +459,10 @@ def main(argv: list[str] | None = None) -> int:
                 "text": text_value,
                 "close_code": close_code,
                 "close_reason": close_reason,
+                "extension_header": str(response_extension_header),
             },
             "quic": {
+                "handshake_complete": bool(state.get("handshake_complete")),
                 "retry_observed": bool(state.get("retry_observed")),
                 "migration": migration,
                 "session_ticket_received": "value" in captured_ticket,

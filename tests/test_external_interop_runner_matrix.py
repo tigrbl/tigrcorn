@@ -9,6 +9,8 @@ from pathlib import Path
 
 from tigrcorn.compat.interop_runner import (
     ExternalInteropRunner,
+    InteropProcessSpec,
+    _materialize_process_spec,
     build_environment_manifest,
     load_external_matrix,
     summarize_matrix_dimensions,
@@ -138,6 +140,27 @@ class ExternalInteropRunnerTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(RuntimeError, 'requires a third-party peer'):
             load_external_matrix(matrix_path)
+
+
+    def test_materialize_process_spec_rewrites_hardcoded_pyvenv_python_to_active_interop_python(self):
+        spec = InteropProcessSpec(
+            name='aioquic-wrapper',
+            adapter='subprocess',
+            role='client',
+            command=['/opt/pyvenv/bin/python', '-m', 'tests.fixtures_third_party.aioquic_http3_client'],
+            version_command=['/opt/pyvenv/bin/python', '-m', 'tests.fixtures_third_party.aioquic_http3_client', '--version'],
+        )
+        prior = os.environ.get('TIGRCORN_INTEROP_PYTHON')
+        os.environ['TIGRCORN_INTEROP_PYTHON'] = '/custom/interop/python'
+        try:
+            resolved = _materialize_process_spec(spec, {})
+            self.assertEqual(resolved.command[0], '/custom/interop/python')
+            self.assertEqual(resolved.version_command[0], '/custom/interop/python')
+        finally:
+            if prior is None:
+                os.environ.pop('TIGRCORN_INTEROP_PYTHON', None)
+            else:
+                os.environ['TIGRCORN_INTEROP_PYTHON'] = prior
 
     def test_runner_generates_http_evidence_bundle(self):
         matrix_path = self._write_matrix(

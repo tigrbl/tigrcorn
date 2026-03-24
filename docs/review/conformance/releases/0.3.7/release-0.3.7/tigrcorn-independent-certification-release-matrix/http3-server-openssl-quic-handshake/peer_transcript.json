@@ -1,0 +1,22 @@
+{
+  "command": [
+    "openssl",
+    "s_client",
+    "-connect",
+    "127.0.0.1:47117",
+    "-quic",
+    "-alpn",
+    "h3",
+    "-servername",
+    "localhost",
+    "-CAfile",
+    "tests/fixtures_certs/interop-localhost-cert.pem",
+    "-verify_return_error"
+  ],
+  "connected": true,
+  "consolidated_from": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/http3-server-openssl-quic-handshake",
+  "issuer": "CN=localhost",
+  "return_code": 0,
+  "stderr": "Connecting to 127.0.0.1\ndepth=0 CN=localhost\nverify return:1\nDONE\n",
+  "subject": "CN=localhost"
+}

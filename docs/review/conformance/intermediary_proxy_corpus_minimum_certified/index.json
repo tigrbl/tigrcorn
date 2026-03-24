@@ -1,0 +1,161 @@
+{
+  "cases": [
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http11-curl-origin-form-post-certified",
+      "carrier": "http1.1",
+      "id": "http11-curl-origin-form-post-certified",
+      "minimum_certified": true,
+      "peer": "curl",
+      "scope": [
+        "origin-form",
+        "request-forwarding",
+        "header-forwarding"
+      ],
+      "source_kind": "independent_artifact",
+      "source_ref": "http1-server-curl-client"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified",
+      "carrier": "http2",
+      "id": "http2-h2-origin-form-post-certified",
+      "minimum_certified": true,
+      "peer": "h2",
+      "scope": [
+        "request-forwarding",
+        "header-forwarding",
+        "persistent-carrier-baseline"
+      ],
+      "source_kind": "independent_artifact",
+      "source_ref": "http2-server-h2-client"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http3-aioquic-origin-form-post-certified",
+      "carrier": "http3",
+      "id": "http3-aioquic-origin-form-post-certified",
+      "minimum_certified": true,
+      "peer": "aioquic",
+      "scope": [
+        "request-forwarding",
+        "header-forwarding",
+        "persistent-carrier-baseline"
+      ],
+      "source_kind": "independent_artifact",
+      "source_ref": "http3-server-aioquic-client-post"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http11-connect-relay-local-vector",
+      "carrier": "http1.1",
+      "id": "http11-connect-relay-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-connect-relay"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-connect-relay-local-vector",
+      "carrier": "http2",
+      "id": "http2-connect-relay-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-connect-relay"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http3-connect-relay-local-vector",
+      "carrier": "http3",
+      "id": "http3-connect-relay-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-connect-relay"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-connect-relay"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http11-trailer-fields-local-vector",
+      "carrier": "http1.1",
+      "id": "http11-trailer-fields-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-trailer-fields"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-trailer-fields"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-trailer-fields-local-vector",
+      "carrier": "http2",
+      "id": "http2-trailer-fields-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-trailer-fields"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-trailer-fields"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http3-trailer-fields-local-vector",
+      "carrier": "http3",
+      "id": "http3-trailer-fields-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-trailer-fields"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-trailer-fields"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http11-content-coding-local-vector",
+      "carrier": "http1.1",
+      "id": "http11-content-coding-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-content-coding"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-content-coding"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-content-coding-local-vector",
+      "carrier": "http2",
+      "id": "http2-content-coding-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-content-coding"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-content-coding"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http3-content-coding-local-vector",
+      "carrier": "http3",
+      "id": "http3-content-coding-local-vector",
+      "minimum_certified": false,
+      "peer": "tigrcorn-fixture",
+      "scope": [
+        "http-content-coding"
+      ],
+      "source_kind": "local_vector",
+      "source_ref": "http-content-coding"
+    }
+  ],
+  "corpus_kind": "minimum_certified_intermediary_proxy_corpus",
+  "corpus_root": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified",
+  "generated_at": "2026-03-19T12:12:16.002443+00:00",
+  "minimum_certified_case_count": 3,
+  "scope_note": "This corpus promotes one preserved third-party forwarding artifact per applicable carrier into a minimum certified intermediary/proxy-adjacent corpus while retaining local vector supplements for CONNECT, trailers, and content-coding semantics pending broader third-party proxy captures.",
+  "source_independent_bundle_sha256": "a19f1f066940efe914108327d9eebb405bf2242fbe3e059bed5b8ef2d2cd5645",
+  "supplemental_case_count": 9
+}

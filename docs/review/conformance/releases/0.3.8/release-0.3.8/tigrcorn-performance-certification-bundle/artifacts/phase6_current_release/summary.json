@@ -1,0 +1,209 @@
+{
+  "artifact_root": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release",
+  "baseline_root": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline",
+  "certification_platform": "linux-x86_64-cpython3.11",
+  "commit_hash": "unknown",
+  "failed": 0,
+  "generated_at_epoch": 1774197571.6475494,
+  "lane_counts": {
+    "component_regression": 9,
+    "end_to_end_release": 23
+  },
+  "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+  "passed": 32,
+  "profiles": [
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http11_baseline",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http11_baseline"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http11_keepalive",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http11_keepalive"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http11_chunked_upload_download",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http11_chunked_upload_download"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http2_multiplex_10",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http2_multiplex_10"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http2_multiplex_100",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http2_multiplex_100"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http2_multiplex_1000",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http2_multiplex_1000"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http2_tls",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http2_tls"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http3_clean_network",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http3_clean_network"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/http3_loss_jitter",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "http3_loss_jitter"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_http11",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_http11"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_http11_permessage_deflate",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_http11_permessage_deflate"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_http2",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_http2"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_http2_permessage_deflate",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_http2_permessage_deflate"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_http3",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_http3"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_http3_permessage_deflate",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_http3_permessage_deflate"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ws_fanout_broadcast",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ws_fanout_broadcast"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/tls_handshake",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "tls_handshake"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/mtls_handshake",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "mtls_handshake"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/ocsp_strict_mode",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "ocsp_strict_mode"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/alpn_negotiation_cost",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "alpn_negotiation_cost"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/connect_relay_throughput",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "connect_relay_throughput"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/trailers_under_load",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "trailers_under_load"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/content_coding_under_load",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "content_coding_under_load"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/logging_off",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "logging_off"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/logging_on",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "logging_on"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/metrics_off",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "metrics_off"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/metrics_on",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "metrics_on"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/proxy_headers_off",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "proxy_headers_off"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/proxy_headers_on",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "proxy_headers_on"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/worker_scaleout",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "worker_scaleout"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/graceful_drain",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "graceful_drain"
+    },
+    {
+      "artifact_dir": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/reload_overhead",
+      "failure_reasons": [],
+      "passed": true,
+      "profile_id": "reload_overhead"
+    }
+  ],
+  "total": 32
+}

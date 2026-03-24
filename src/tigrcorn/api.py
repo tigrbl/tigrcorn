@@ -25,6 +25,7 @@ async def serve(
     ssl_keyfile: str | None = None,
     ssl_ca_certs: str | None = None,
     ssl_require_client_cert: bool = False,
+    ssl_ciphers: str | None = None,
     http_versions: list[str] | None = None,
     websocket: bool = True,
     enable_h2c: bool = True,
@@ -48,6 +49,7 @@ async def serve(
             ssl_keyfile=ssl_keyfile,
             ssl_ca_certs=ssl_ca_certs,
             ssl_require_client_cert=ssl_require_client_cert,
+            ssl_ciphers=ssl_ciphers,
             http_versions=http_versions,
             websocket=websocket,
             enable_h2c=enable_h2c,
@@ -63,7 +65,7 @@ async def serve(
 
 
 async def serve_import_string(
-    app_target: str,
+    app_target: str | None = None,
     *,
     host: str = "127.0.0.1",
     port: int = 8000,
@@ -76,6 +78,7 @@ async def serve_import_string(
     ssl_keyfile: str | None = None,
     ssl_ca_certs: str | None = None,
     ssl_require_client_cert: bool = False,
+    ssl_ciphers: str | None = None,
     http_versions: list[str] | None = None,
     websocket: bool = True,
     enable_h2c: bool = True,
@@ -85,8 +88,18 @@ async def serve_import_string(
     quic_require_retry: bool = False,
     pipe_mode: str = "rawframed",
     factory: bool = False,
+    config: ServerConfig | None = None,
 ) -> None:
-    app = load_app(app_target, factory=factory)
+    if config is not None:
+        app_target = app_target or config.app.target
+        factory = config.app.factory if factory is False else factory
+    if app_target is None:
+        raise ValueError("app_target is required when config.app.target is not set")
+    app_dir = config.app.app_dir if config is not None else None
+    if app_dir is None:
+        app = load_app(app_target, factory=factory)
+    else:
+        app = load_app(app_target, factory=factory, app_dir=app_dir)
     await serve(
         cast(ASGIApp, app),
         host=host,
@@ -100,6 +113,7 @@ async def serve_import_string(
         ssl_keyfile=ssl_keyfile,
         ssl_ca_certs=ssl_ca_certs,
         ssl_require_client_cert=ssl_require_client_cert,
+        ssl_ciphers=ssl_ciphers,
         http_versions=http_versions,
         websocket=websocket,
         enable_h2c=enable_h2c,
@@ -108,6 +122,7 @@ async def serve_import_string(
         quic_secret=quic_secret,
         quic_require_retry=quic_require_retry,
         pipe_mode=pipe_mode,
+        config=config,
     )
 
 
@@ -125,6 +140,7 @@ def run(
     ssl_keyfile: str | None = None,
     ssl_ca_certs: str | None = None,
     ssl_require_client_cert: bool = False,
+    ssl_ciphers: str | None = None,
     http_versions: list[str] | None = None,
     websocket: bool = True,
     enable_h2c: bool = True,
@@ -134,6 +150,7 @@ def run(
     quic_require_retry: bool = False,
     pipe_mode: str = "rawframed",
     factory: bool = False,
+    config: ServerConfig | None = None,
 ) -> None:
     if isinstance(app, str):
         asyncio.run(
@@ -150,6 +167,7 @@ def run(
                 ssl_keyfile=ssl_keyfile,
                 ssl_ca_certs=ssl_ca_certs,
                 ssl_require_client_cert=ssl_require_client_cert,
+                ssl_ciphers=ssl_ciphers,
                 http_versions=http_versions,
                 websocket=websocket,
                 enable_h2c=enable_h2c,
@@ -159,6 +177,7 @@ def run(
                 quic_require_retry=quic_require_retry,
                 pipe_mode=pipe_mode,
                 factory=factory,
+                config=config,
             )
         )
     else:
@@ -176,6 +195,7 @@ def run(
                 ssl_keyfile=ssl_keyfile,
                 ssl_ca_certs=ssl_ca_certs,
                 ssl_require_client_cert=ssl_require_client_cert,
+                ssl_ciphers=ssl_ciphers,
                 http_versions=http_versions,
                 websocket=websocket,
                 enable_h2c=enable_h2c,
@@ -184,5 +204,6 @@ def run(
                 quic_secret=quic_secret,
                 quic_require_retry=quic_require_retry,
                 pipe_mode=pipe_mode,
+                config=config,
             )
         )

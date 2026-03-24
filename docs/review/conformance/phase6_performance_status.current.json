@@ -1,0 +1,33 @@
+{
+  "phase": 6,
+  "checkpoint": "performance_closure_upgraded_by_phase9g",
+  "authoritative_boundary_passed": true,
+  "strict_overlay_passed": false,
+  "performance_boundary_landed": {
+    "perf_runner": true,
+    "run_perf_matrix_tool": true,
+    "benchmark_drivers": true,
+    "performance_matrix": true,
+    "baseline_artifacts": true,
+    "current_release_artifacts": true,
+    "relative_regression_evaluation": true,
+    "correctness_under_load_checks": true,
+    "phase9g_metric_contract": true
+  },
+  "profiles": {
+    "required_total": 32,
+    "baseline_passed": 32,
+    "current_release_passed": 32,
+    "current_release_failed": 0,
+    "lane_counts": {
+      "component_regression": 9,
+      "end_to_end_release": 23
+    }
+  },
+  "validation": {
+    "performance_section_passed": true,
+    "promotion_target_passed": false
+  },
+  "generated_at": "2026-03-22T16:39:59+00:00",
+  "note": "The historical phase6 performance roots now carry the upgraded phase9g strict-performance contract."
+}

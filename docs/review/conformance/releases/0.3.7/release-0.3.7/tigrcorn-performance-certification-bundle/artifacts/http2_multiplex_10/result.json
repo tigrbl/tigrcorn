@@ -1,0 +1,89 @@
+{
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "hpack_roundtrip": true
+    },
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": true
+  },
+  "deployment_profile": "http2_cleartext",
+  "description": "HTTP/2 multiplexing at 10 streams.",
+  "driver": "http2_multiplex",
+  "failure_reasons": [],
+  "family": "HTTP",
+  "matrix_name": "tigrcorn-phase6-performance-matrix",
+  "metrics": {
+    "connections": 0,
+    "cpu_seconds": 0.010000000000000009,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "p50_ms": 0.2693070000532316,
+    "p95_ms": 0.3074147998631815,
+    "p99_ms": 0.3318733599371626,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "rss_kib": 38712.0,
+    "sample_count": 15,
+    "scheduler_rejections": 0,
+    "streams": 150,
+    "throughput_ops_per_sec": 35886.51535693504,
+    "total_attempts": 15,
+    "total_duration_seconds": 0.004179842999747052,
+    "total_units": 150
+  },
+  "passed": true,
+  "profile_id": "http2_multiplex_10",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline/http2_multiplex_10/result.json",
+    "baseline_root": "/mnt/data/phase6_work/tigrcorn_0.3.6_certification_update/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 0.28562023990161833,
+        "maximum_allowed": 0.5712404798032367,
+        "observed": 0.3318733599371626,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 37521.09623595882,
+        "minimum_allowed": 18760.54811797941,
+        "observed": 35886.51535693504,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [
+    "RFC 9113",
+    "RFC 7541"
+  ],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_p99_ms": {
+        "observed": 0.3318733599371626,
+        "passed": true,
+        "threshold": 1000.0
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 35886.51535693504,
+        "passed": true,
+        "threshold": 1.0
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_p99_ms": 1000.0,
+      "min_throughput_ops_per_sec": 1.0
+    }
+  }
+}

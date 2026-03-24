@@ -23,8 +23,8 @@ The canonical package-wide target for this transport is defined in `docs/review/
 QUIC evidence is now split explicitly:
 
 - **local conformance** — RFC 9000, RFC 9001, RFC 9002, RFC 7301, and local TLS / X.509 fixtures in `corpus.json`
-- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/`
-- **independent certification** — `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/`
+- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/`
+- **independent certification** — `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/`
 
 ## Current certification status
 

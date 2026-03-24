@@ -1,0 +1,47 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "websocket-rfc9220-echo",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http3",
+  "request": {
+    "authority": "localhost",
+    "compression": "off",
+    "extension_offer": "",
+    "path": "/ws",
+    "text": "hello-h3-websocket"
+  },
+  "response": {
+    "close_code": 1000,
+    "close_reason": "",
+    "extension_header": "",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "sec-websocket-protocol",
+        "chat"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "text": "hello-h3-websocket"
+  },
+  "role": "server",
+  "scenario_id": "websocket-http3-server-aioquic-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http3-websocket",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http3-websocket",
+    "role": "server",
+    "stderr_path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_stderr.log",
+    "stdout_path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_stdout.log"
+  }
+}

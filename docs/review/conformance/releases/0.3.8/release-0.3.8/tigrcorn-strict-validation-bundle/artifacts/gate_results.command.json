@@ -1,0 +1,3 @@
+{
+  "command": "PYTHONPATH=src python - <<'PY' ... evaluate_release_gates / evaluate_promotion_target ... PY"
+}

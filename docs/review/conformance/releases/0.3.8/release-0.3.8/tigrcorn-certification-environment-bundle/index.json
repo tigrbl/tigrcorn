@@ -1,0 +1,26 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
+  "bundle_kind": "certification_environment_bundle",
+  "generated_at": "2026-03-24T04:45:40.470144+00:00",
+  "status": "certification_environment_frozen_but_not_ready",
+  "required_extras": [
+    "certification",
+    "dev"
+  ],
+  "required_imports": [
+    "aioquic",
+    "h2",
+    "websockets",
+    "wsproto"
+  ],
+  "required_imports_ready": true,
+  "missing_imports": [],
+  "python_minor_version": "3.13",
+  "python_version_ready": false,
+  "environment_ready_for_release_workflow": false,
+  "install_command": "python -m pip install -e \".[certification,dev]\"",
+  "verify_command": "python - <<'PY'\nimport aioquic, h2, websockets, wsproto\nprint('certification deps OK')\nPY",
+  "environment_snapshot": "environment.json",
+  "workflow_path": ".github/workflows/phase9-certification-release.yml",
+  "wrapper_path": "tools/run_phase9_release_workflow.py"
+}

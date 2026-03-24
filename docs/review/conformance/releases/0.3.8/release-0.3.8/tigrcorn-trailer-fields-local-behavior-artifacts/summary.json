@@ -1,0 +1,19 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-trailer-fields-local-behavior-artifacts",
+  "bundle_kind": "local_behavior_artifacts",
+  "total": 10,
+  "passed": 10,
+  "failed": 0,
+  "scenario_ids": [
+    "http11-request-trailers-pass",
+    "http11-request-trailers-drop",
+    "http11-request-trailers-strict-invalid",
+    "http11-response-trailers-pass",
+    "http2-request-trailers-pass",
+    "http2-request-trailers-strict-invalid",
+    "http2-response-trailers-pass",
+    "http3-request-trailers-pass",
+    "http3-request-trailers-strict-invalid",
+    "http3-response-trailers-pass"
+  ]
+}

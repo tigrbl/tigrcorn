@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "fanout_delivery": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

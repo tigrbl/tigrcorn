@@ -1,0 +1,60 @@
+{
+  "phase": "9F3",
+  "checkpoint": "phase9f3_concurrency_keepalive_closure",
+  "implemented_flags": [
+    "--limit-concurrency",
+    "--websocket-ping-interval",
+    "--websocket-ping-timeout"
+  ],
+  "status": "flag_surface_green_not_yet_strict_complete",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": false,
+    "promotion_target_passed": false,
+    "flag_surface_passed": true,
+    "operator_surface_passed": true,
+    "performance_passed": false,
+    "documentation_passed": true,
+    "remaining_flag_runtime_blockers": [],
+    "remaining_non_passing_independent_scenarios": [
+      "websocket-http3-server-aioquic-client-permessage-deflate",
+      "http3-connect-relay-aioquic-client",
+      "http3-trailer-fields-aioquic-client",
+      "http3-content-coding-aioquic-client"
+    ]
+  },
+  "runtime_contract": {
+    "limit_concurrency": {
+      "scope": "global in-flight admission cap",
+      "applies_to": [
+        "http1_requests",
+        "http1_connect_tunnels",
+        "http1_websocket_sessions",
+        "http2_streams",
+        "http2_connect_tunnels",
+        "http2_websocket_streams",
+        "http3_requests",
+        "http3_connect_tunnels",
+        "http3_websocket_streams"
+      ],
+      "overload_behavior": "return 503 scheduler overloaded on newly admitted work when the cap is reached",
+      "metrics": [
+        "scheduler_rejections",
+        "scheduler_tasks_rejected"
+      ]
+    },
+    "websocket_keepalive": {
+      "carriers": [
+        "http1_websocket",
+        "http2_websocket",
+        "http3_websocket"
+      ],
+      "ping_interval_behavior": "schedule outbound WebSocket PING frames when the configured interval elapses without activity",
+      "ping_timeout_behavior": "close with code 1011 and reason ping timeout when a pending ping is not acknowledged before timeout",
+      "metrics": [
+        "websocket_pings_sent",
+        "websocket_ping_timeouts"
+      ]
+    }
+  }
+}

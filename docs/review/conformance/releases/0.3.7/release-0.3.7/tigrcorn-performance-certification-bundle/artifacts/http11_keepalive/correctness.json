@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "keep_alive": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

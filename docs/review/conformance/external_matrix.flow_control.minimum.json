@@ -1,0 +1,723 @@
+{
+  "metadata": {
+    "bundle_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix",
+    "generated_at": "2026-03-19T12:12:15.884566+00:00",
+    "matrix_kind": "minimum-certified-flow-control",
+    "scope_note": "Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted in Phase 5."
+  },
+  "name": "tigrcorn-minimum-certified-flow-control",
+  "scenarios": [
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http3",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "h3",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.qlog.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "credit-exhaustion",
+      "id": "http3-flow-control-aioquic-client-credit-exhaustion",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "flow_control_certified_scope": "credit-exhaustion",
+        "matrix_kind": "minimum-certified-flow-control",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http3"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http3",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "h3",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.qlog.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "replenishment",
+      "id": "http3-flow-control-aioquic-client-replenishment",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "flow_control_certified_scope": "replenishment",
+        "matrix_kind": "minimum-certified-flow-control",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http3"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http3",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "h3",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.qlog.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "stream-level-backpressure",
+      "id": "http3-flow-control-aioquic-client-stream-backpressure",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "flow_control_certified_scope": "stream-level-backpressure",
+        "matrix_kind": "minimum-certified-flow-control",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http3"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http3",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "h3",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.qlog.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "connection-level-backpressure",
+      "id": "http3-flow-control-aioquic-client-connection-backpressure",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "flow_control_certified_scope": "connection-level-backpressure",
+        "matrix_kind": "minimum-certified-flow-control",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http3"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": "echo:hello-http3-goaway-qpack",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": true,
+          "path": "negotiation.peer.client_goaway_sent"
+        },
+        {
+          "equals": true,
+          "path": "negotiation.peer.qpack_encoder_stream_seen"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "qpack-blocked-stream",
+      "goaway": true,
+      "id": "http3-flow-control-aioquic-client-qpack-blocked-stream",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "flow_control_certified_scope": "qpack-blocked-stream",
+        "matrix_kind": "minimum-certified-flow-control",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post-goaway-qpack"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_ENABLE_GOAWAY": "1",
+          "INTEROP_ENABLE_QPACK_BLOCKING": "1",
+          "INTEROP_REQUEST_BODY": "hello-http3-goaway-qpack"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client-goaway-qpack",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "qpack_blocking": true,
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3-goaway-qpack",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3-goaway-qpack",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": "echo:hello-http3-goaway-qpack",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": true,
+          "path": "negotiation.peer.client_goaway_sent"
+        },
+        {
+          "equals": true,
+          "path": "negotiation.peer.qpack_encoder_stream_seen"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "goaway-pressure",
+      "goaway": true,
+      "id": "http3-flow-control-aioquic-client-goaway-pressure",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "flow_control_certified_scope": "goaway-pressure",
+        "matrix_kind": "minimum-certified-flow-control",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post-goaway-qpack"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_ENABLE_GOAWAY": "1",
+          "INTEROP_ENABLE_QPACK_BLOCKING": "1",
+          "INTEROP_REQUEST_BODY": "hello-http3-goaway-qpack"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client-goaway-qpack",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "qpack_blocking": true,
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3-goaway-qpack",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3-goaway-qpack",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    }
+  ]
+}

@@ -11,6 +11,7 @@ from typing import Any
 
 from ._aioquic_utils import (
     SETTING_ENABLE_CONNECT_PROTOCOL,
+    certificate_input_status,
     connect_quic,
     detect_local_control_stream_id,
     detect_peer_qpack_streams,
@@ -28,6 +29,14 @@ from ._aioquic_utils import (
     session_ticket_allows_early_data,
     write_json,
 )
+from tests.fixtures_pkg._connect_relay_fixture import (
+    DeterministicRelayTarget,
+    build_tunneled_http_request,
+    observed_request_to_json,
+    parse_tunneled_http_response,
+    parsed_response_to_json,
+)
+from tests.fixtures_pkg._content_coding_fixture import decode_response_body
 
 
 def _load_aioquic() -> tuple[Any, Any, Any]:
@@ -51,6 +60,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--cacert", default=os.environ.get("INTEROP_CACERT", "tests/fixtures_certs/interop-localhost-cert.pem"))
     parser.add_argument("--client-cert", default=os.environ.get("INTEROP_CLIENT_CERT"))
     parser.add_argument("--client-key", default=os.environ.get("INTEROP_CLIENT_KEY"))
+    parser.add_argument("--connect-relay", action="store_true")
+    parser.add_argument("--response-trailers", action="store_true")
+    parser.add_argument("--content-coding", action="store_true")
+    parser.add_argument("--accept-encoding", default=os.environ.get("INTEROP_ACCEPT_ENCODING", "gzip"))
     return parser
 
 
@@ -94,6 +107,7 @@ def _stream_state(state: dict[str, Any], stream_id: int) -> dict[str, Any]:
     if stream_id not in streams:
         streams[stream_id] = {
             "response_headers": [],
+            "response_trailers": [],
             "response_body": bytearray(),
             "response_complete": False,
             "headers_received": False,
@@ -157,8 +171,12 @@ def _drain_events(*, quic: Any, http: Any, state: dict[str, Any]) -> None:
             if isinstance(stream_id, int):
                 stream = _stream_state(state, stream_id)
                 if http_event_name == "HeadersReceived":
-                    stream["response_headers"] = header_pairs_to_text(list(getattr(http_event, "headers", [])))
-                    stream["headers_received"] = True
+                    decoded_headers = header_pairs_to_text(list(getattr(http_event, "headers", [])))
+                    if stream.get("headers_received"):
+                        stream["response_trailers"] = decoded_headers
+                    else:
+                        stream["response_headers"] = decoded_headers
+                        stream["headers_received"] = True
                     if bool(getattr(http_event, "stream_ended", False)):
                         stream["response_complete"] = True
                 elif http_event_name == "DataReceived":
@@ -299,6 +317,22 @@ def _exercise_qpack(
     return details
 
 
+
+
+def _send_request(http: Any, stream_id: int, ns: argparse.Namespace, body_text: str, qpack_hints: bool) -> None:
+    if getattr(ns, "response_trailers", False) or getattr(ns, "content_coding", False):
+        headers = [
+            (b":method", b"GET"),
+            (b":scheme", b"https"),
+            (b":authority", str(ns.servername).encode("utf-8")),
+            (b":path", str(ns.path).encode("utf-8")),
+        ]
+        if getattr(ns, "content_coding", False):
+            headers.append((b"accept-encoding", str(ns.accept_encoding).encode("utf-8")))
+        http.send_headers(stream_id, headers, end_stream=True)
+        return
+    _send_post_request(http=http, stream_id=stream_id, ns=ns, body_text=body_text, qpack_hints=qpack_hints)
+
 def _local_bind_host_for_target(host: str) -> str:
     return "::1" if ":" in host else "127.0.0.1"
 
@@ -357,7 +391,7 @@ def _perform_single_exchange(
 
     main_stream_id = quic.get_next_available_stream_id()
     request_sent_before_handshake = not bool(state.get("handshake_complete"))
-    _send_post_request(http=http, stream_id=main_stream_id, ns=ns, body_text=str(ns.body), qpack_hints=qpack_enabled)
+    _send_request(http=http, stream_id=main_stream_id, ns=ns, body_text=str(ns.body), qpack_hints=qpack_enabled)
     flush_pending_datagrams(sock, quic, target)
 
     migration = {
@@ -411,19 +445,27 @@ def _perform_single_exchange(
 
     main_stream = _stream_state(state, main_stream_id)
     response_headers = list(main_stream.get("response_headers", []))
+    response_trailers = list(main_stream.get("response_trailers", []))
     response_body = bytes(main_stream.get("response_body", b""))
     response_status = int(header_map(response_headers).get(":status", "0"))
 
     early_data_requested = bool(zero_rtt and session_ticket is not None and request_sent_before_handshake)
     if zero_rtt and session_ticket is not None and not session_ticket_allows_early_data(session_ticket):
         early_data_requested = False
+    certificate_inputs = certificate_input_status(
+        cacert=ns.cacert,
+        client_cert=ns.client_cert,
+        client_key=ns.client_key,
+    )
 
     negotiation = {
         "implementation": "aioquic",
         "protocol": state.get("alpn_protocol") or "h3",
+        "alpn_requested": ["h3"],
         "tls_version": "TLSv1.3",
         "server_name": str(ns.servername),
         "client_auth_present": bool(ns.client_cert and ns.client_key),
+        "handshake_complete": bool(state.get("handshake_complete")),
         "retry_observed": bool(state.get("retry_observed")),
         "resumption_used": bool(state.get("session_resumed")),
         "early_data_requested": early_data_requested,
@@ -432,25 +474,35 @@ def _perform_single_exchange(
         "qpack_decoder_stream_seen": bool(state.get("qpack_decoder_stream_seen")),
         "migration_used": bool(migration.get("used")),
         "client_goaway_sent": goaway_sent,
+        "response_trailers_mode": bool(ns.response_trailers),
+        "certificate_inputs": certificate_inputs,
+        "certificate_inputs_ready": certificate_inputs["ready"],
     }
     if isinstance(state.get("client_control_stream_id"), int):
         negotiation["client_control_stream_id"] = int(state["client_control_stream_id"])
     if state.get("received_settings"):
         negotiation["received_settings"] = dict(state["received_settings"])
 
+    response_payload = {
+        "status": response_status,
+        "headers": [[name, value] for name, value in response_headers],
+        "trailers": [[name, value] for name, value in response_trailers],
+        "body": response_body.decode("utf-8", errors="replace") if not ns.content_coding else "",
+    }
+    if ns.content_coding:
+        response_payload.update(decode_response_body(response_headers, response_body))
+
     transcript = {
         "request": {
-            "method": "POST",
+            "method": "GET" if (ns.response_trailers or ns.content_coding) else "POST",
             "path": str(ns.path),
-            "body": str(ns.body),
+            "body": "" if (ns.response_trailers or ns.content_coding) else str(ns.body),
             "authority": str(ns.servername),
+            "accept_encoding": str(ns.accept_encoding) if ns.content_coding else None,
         },
-        "response": {
-            "status": response_status,
-            "headers": [[name, value] for name, value in response_headers],
-            "body": response_body.decode("utf-8", errors="replace"),
-        },
+        "response": response_payload,
         "quic": {
+            "handshake_complete": bool(state.get("handshake_complete")),
             "retry_observed": bool(state.get("retry_observed")),
             "migration": migration,
             "session_ticket_received": "value" in captured_ticket,
@@ -473,6 +525,128 @@ def _perform_single_exchange(
     return transcript, negotiation, captured_ticket.get("value"), captured_token.get("value")
 
 
+
+
+def _perform_connect_relay_exchange(*, target: tuple[str, int], ns: argparse.Namespace) -> tuple[dict[str, Any], dict[str, Any]]:
+    H3Connection, _QuicConfiguration, QuicConnection = _load_aioquic()
+    configuration = _build_configuration(ns, session_ticket=None, new_token=None)
+    quic = QuicConnection(configuration=configuration)
+    http = H3Connection(quic)
+    sock = make_udp_socket(_local_bind_host_for_target(target[0]))
+    state = _initial_state()
+    deadline = time.monotonic() + 20.0
+
+    connect_quic(quic, target)
+    flush_pending_datagrams(sock, quic, target)
+    _pump_until(
+        sock=sock,
+        quic=quic,
+        http=http,
+        target=target,
+        state=state,
+        deadline=deadline,
+        predicate=lambda: bool(state.get("handshake_complete")),
+        error_message="QUIC handshake did not complete before the CONNECT relay request was sent",
+    )
+
+    with DeterministicRelayTarget() as relay_target:
+        stream_id = quic.get_next_available_stream_id()
+        http.send_headers(
+            stream_id,
+            [
+                (b":method", b"CONNECT"),
+                (b":authority", relay_target.authority.encode("ascii")),
+            ],
+            end_stream=False,
+        )
+        flush_pending_datagrams(sock, quic, target)
+        _pump_until(
+            sock=sock,
+            quic=quic,
+            http=http,
+            target=target,
+            state=state,
+            deadline=deadline,
+            predicate=lambda: bool(_stream_state(state, stream_id).get("headers_received")),
+            error_message="HTTP/3 CONNECT response headers were not received before the deadline",
+        )
+        stream = _stream_state(state, stream_id)
+        connect_headers = list(stream.get("response_headers", []))
+        connect_status = int(header_map(connect_headers).get(":status", "0"))
+        parsed = None
+        observed = None
+        raw_response = b""
+        if connect_status == 200:
+            tunnel_request = build_tunneled_http_request(
+                path=str(ns.path),
+                body=str(ns.body).encode("utf-8"),
+                host_header=relay_target.authority,
+            )
+            http.send_data(stream_id, tunnel_request, end_stream=True)
+            flush_pending_datagrams(sock, quic, target)
+            _pump_until(
+                sock=sock,
+                quic=quic,
+                http=http,
+                target=target,
+                state=state,
+                deadline=deadline,
+                predicate=lambda: bool(_stream_state(state, stream_id).get("response_complete")),
+                error_message="HTTP/3 CONNECT relay response body was not received before the deadline",
+            )
+            stream = _stream_state(state, stream_id)
+            raw_response = bytes(stream.get("response_body", b""))
+            parsed = parse_tunneled_http_response(raw_response)
+            observed = relay_target.wait_for_request(timeout=5.0)
+
+    negotiation = {
+        "implementation": "aioquic",
+        "protocol": state.get("alpn_protocol") or "h3",
+        "alpn_requested": ["h3"],
+        "tls_version": "TLSv1.3",
+        "server_name": str(ns.servername),
+        "client_auth_present": bool(ns.client_cert and ns.client_key),
+        "handshake_complete": bool(state.get("handshake_complete")),
+        "retry_observed": bool(state.get("retry_observed")),
+        "connect_tunnel_established": connect_status == 200,
+        "certificate_inputs": certificate_input_status(
+            cacert=ns.cacert,
+            client_cert=ns.client_cert,
+            client_key=ns.client_key,
+        ),
+    }
+    negotiation["certificate_inputs_ready"] = negotiation["certificate_inputs"]["ready"]
+    if state.get("received_settings"):
+        negotiation["received_settings"] = dict(state["received_settings"])
+
+    transcript = {
+        "request": {
+            "mode": "connect-relay",
+            "method": "CONNECT",
+            "authority": relay_target.authority,
+            "path": str(ns.path),
+            "body": str(ns.body),
+        },
+        "response": parsed_response_to_json(parsed) if parsed is not None else {
+            "status": 0,
+            "status_line": "",
+            "headers": [],
+            "body": "",
+        },
+        "tunnel": {
+            "connect_status": connect_status,
+            "connect_headers": [[name, value] for name, value in connect_headers],
+            "observed_target": observed_request_to_json(observed),
+            "raw_response_size": len(raw_response),
+        },
+        "quic": {
+            "retry_observed": bool(state.get("retry_observed")),
+            "handshake_complete": bool(state.get("handshake_complete")),
+            "termination_error": state.get("termination_error"),
+        },
+    }
+    sock.close()
+    return transcript, negotiation
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     ns = parser.parse_args(argv or sys.argv[1:])
@@ -490,6 +664,14 @@ def main(argv: list[str] | None = None) -> int:
     target = (host, port)
 
     try:
+        if ns.connect_relay:
+            transcript, negotiation = _perform_connect_relay_exchange(target=target, ns=ns)
+            write_json("INTEROP_TRANSCRIPT_PATH", transcript)
+            write_json("INTEROP_NEGOTIATION_PATH", negotiation)
+            print(json.dumps({"transcript": transcript, "negotiation": negotiation}, sort_keys=True))
+            body_ok = transcript["response"]["body"] == f"echo:{ns.body}"
+            return 0 if transcript["tunnel"]["connect_status"] == 200 and transcript["response"]["status"] == 200 and body_ok else 1
+
         transcript, negotiation, ticket, new_token = _perform_single_exchange(
             target=target,
             ns=ns,
@@ -527,6 +709,14 @@ def main(argv: list[str] | None = None) -> int:
         write_json("INTEROP_TRANSCRIPT_PATH", transcript)
         write_json("INTEROP_NEGOTIATION_PATH", negotiation)
         print(json.dumps({"transcript": transcript, "negotiation": negotiation}, sort_keys=True))
+        if ns.response_trailers:
+            trailers = {tuple(item) for item in transcript["response"].get("trailers", [])}
+            ok = transcript["response"]["status"] == 200 and transcript["response"]["body"] == "ok" and ("x-trailer-one", "yes") in trailers and ("x-trailer-two", "done") in trailers
+            return 0 if ok else 1
+        if ns.content_coding:
+            vary = str(transcript["response"].get("vary") or "").lower()
+            ok = transcript["response"]["status"] == 200 and transcript["response"].get("content_encoding") == "gzip" and "accept-encoding" in vary and transcript["response"].get("decoded_body") == "compress-me"
+            return 0 if ok else 1
         return 0 if transcript["response"]["status"] == 200 else 1
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)

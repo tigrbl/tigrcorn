@@ -1,0 +1,7 @@
+{
+  "description": "CONNECT authority validation, tunnel lifecycle, bidirectional relay, and carrier-specific forwarding behavior.",
+  "fixture": "tests/test_connect_rfc9110.py",
+  "name": "http-connect-relay",
+  "protocol": "http-connect",
+  "rfc": "9110-connect"
+}

@@ -1,0 +1,15 @@
+{
+  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http3-content-coding-local-vector",
+  "carrier": "http3",
+  "corpus_entry_kind": "supplemental_local_vector",
+  "corpus_id": "http3-content-coding-local-vector",
+  "generated_at": "2026-03-19T12:12:16.002313+00:00",
+  "minimum_certified": false,
+  "note": "Supplemental local vector retained in the minimum certified corpus until broader third-party intermediary/proxy captures are preserved for this semantic area.",
+  "peer": "tigrcorn-fixture",
+  "scope": [
+    "http-content-coding"
+  ],
+  "source_kind": "local_vector",
+  "source_ref": "http-content-coding"
+}

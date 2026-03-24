@@ -1,0 +1,57 @@
+{
+  "canonical_boundary": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+  "current_authoritative_boundary_green": true,
+  "generated_at": "2026-03-19T12:10:27.661880+00:00",
+  "minimum_certified_flow_control_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix",
+  "minimum_certified_intermediary_cases": [
+    "http11-curl-origin-form-post-certified",
+    "http2-h2-origin-form-post-certified",
+    "http3-aioquic-origin-form-post-certified"
+  ],
+  "minimum_certified_intermediary_proxy_corpus": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified",
+  "minimum_flow_control_scenarios": [
+    "http3-flow-control-aioquic-client-credit-exhaustion",
+    "http3-flow-control-aioquic-client-replenishment",
+    "http3-flow-control-aioquic-client-stream-backpressure",
+    "http3-flow-control-aioquic-client-connection-backpressure",
+    "http3-flow-control-aioquic-client-qpack-blocked-stream",
+    "http3-flow-control-aioquic-client-goaway-pressure"
+  ],
+  "note": "Phase 5 promotes broader evidence roots, but the stricter all-surfaces-independent overlay is still not fully closed.",
+  "strict_overlay_still_missing": [
+    "websocket-http11-server-websockets-client-permessage-deflate",
+    "websocket-http2-server-h2-client-permessage-deflate",
+    "websocket-http3-server-aioquic-client-permessage-deflate",
+    "http11-connect-relay-curl-client",
+    "http2-connect-relay-h2-client",
+    "http3-connect-relay-aioquic-client",
+    "http11-trailer-fields-curl-client",
+    "http2-trailer-fields-h2-client",
+    "http3-trailer-fields-aioquic-client",
+    "http11-content-coding-curl-client",
+    "http2-content-coding-curl-client",
+    "http3-content-coding-aioquic-client",
+    "tls-server-ocsp-validation-openssl-client"
+  ],
+  "supplemental_intermediary_cases": [
+    "http11-connect-relay-local-vector",
+    "http2-connect-relay-local-vector",
+    "http3-connect-relay-local-vector",
+    "http11-trailer-fields-local-vector",
+    "http2-trailer-fields-local-vector",
+    "http3-trailer-fields-local-vector",
+    "http11-content-coding-local-vector",
+    "http2-content-coding-local-vector",
+    "http3-content-coding-local-vector"
+  ],
+  "validation": {
+    "pytest": {
+      "command": "PYTHONPATH=src:. pytest -q tests/test_phase5_flow_control_bundle.py tests/test_phase5_intermediary_proxy_corpus.py tests/test_release_gates.py",
+      "result": "8 passed"
+    },
+    "release_gates": {
+      "failure_count": 0,
+      "passed": true
+    }
+  }
+}

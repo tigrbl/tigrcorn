@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "all_workers_stopped": true,
+    "stop_counts_recorded": true
+  },
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": false
+}

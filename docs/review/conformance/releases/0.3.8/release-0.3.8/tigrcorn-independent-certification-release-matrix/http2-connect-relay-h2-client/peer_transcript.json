@@ -1,0 +1,62 @@
+{
+  "request": {
+    "authority": "127.0.0.1:35471",
+    "body": "hello-connect-http2",
+    "method": "CONNECT",
+    "mode": "connect-relay",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-connect-http2",
+    "headers": [
+      [
+        "Content-Type",
+        "text/plain"
+      ],
+      [
+        "Content-Length",
+        "24"
+      ],
+      [
+        "Connection",
+        "close"
+      ],
+      [
+        "X-Tunnel-Echo",
+        "deterministic"
+      ]
+    ],
+    "status": 200,
+    "status_line": "HTTP/1.1 200 OK"
+  },
+  "tunnel": {
+    "connect_headers": [
+      [
+        ":status",
+        "200"
+      ]
+    ],
+    "connect_status": 200,
+    "observed_target": {
+      "body": "hello-connect-http2",
+      "headers": [
+        [
+          "Host",
+          "127.0.0.1:35471"
+        ],
+        [
+          "Content-Length",
+          "19"
+        ],
+        [
+          "Connection",
+          "close"
+        ]
+      ],
+      "method": "POST",
+      "path": "/interop",
+      "raw_request": "POST /interop HTTP/1.1\r\nHost: 127.0.0.1:35471\r\nContent-Length: 19\r\nConnection: close\r\n\r\nhello-connect-http2"
+    },
+    "raw_response_size": 138
+  }
+}

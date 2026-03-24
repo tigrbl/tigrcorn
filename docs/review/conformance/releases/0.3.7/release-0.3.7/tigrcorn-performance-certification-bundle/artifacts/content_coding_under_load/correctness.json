@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "body_nonempty": true,
+    "selection_valid": true,
+    "status_ok": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

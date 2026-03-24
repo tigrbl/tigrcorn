@@ -1,0 +1,170 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake",
+  "artifacts": {
+    "packet_trace": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/packet_trace.jsonl",
+      "sha256": "dececf45ea166788510fdc5cdecb617e5ddb445d63a3db9b57e7cb5e2683aa6c",
+      "size": 11374
+    },
+    "peer_negotiation": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_negotiation.json",
+      "sha256": "bfd4651b791c36387dce2e1f7d9e10f3a5464e13bb3c7af8969a7e23b4601ec7",
+      "size": 266
+    },
+    "peer_transcript": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_transcript.json",
+      "sha256": "662c746081509ea402708778f7d1fa42783315d4e40fd64f25b453e49010e31a",
+      "size": 446
+    },
+    "qlog": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/qlog.json",
+      "sha256": "15c09f9d2827f16937da555be0afa81f31c0561e2f61888718fdc2e4137fb99b",
+      "size": 6223
+    },
+    "sut_negotiation": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_negotiation.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_transcript": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_transcript.json",
+      "sha256": null,
+      "size": 0
+    }
+  },
+  "assertions_failed": [],
+  "commit_hash": "release-0.3.2",
+  "consolidated_from": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/http3-server-openssl-quic-handshake",
+  "error": null,
+  "negotiation": {
+    "peer": {
+      "alpn": "h3",
+      "cipher": "TLS_AES_128_GCM_SHA256",
+      "implementation": "openssl",
+      "peer_signature_type": "ed25519",
+      "peer_temp_key": "X25519, 253 bits",
+      "protocol": "QUICv1",
+      "tls_version": "TLSv1.3",
+      "verification": "OK",
+      "verify_return_code": 0
+    },
+    "sut": null
+  },
+  "passed": true,
+  "peer": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "openssl-quic-client",
+    "role": "client",
+    "stderr_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_stderr.log",
+    "stderr_text": "",
+    "stdout_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_stdout.log",
+    "stdout_text": "{\"negotiation\": {\"alpn\": \"h3\", \"cipher\": \"TLS_AES_128_GCM_SHA256\", \"implementation\": \"openssl\", \"peer_signature_type\": \"ed25519\", \"peer_temp_key\": \"X25519, 253 bits\", \"protocol\": \"QUICv1\", \"tls_version\": \"TLSv1.3\", \"verification\": \"OK\", \"verify_return_code\": 0}, \"transcript\": {\"command\": [\"openssl\", \"s_client\", \"-connect\", \"127.0.0.1:47117\", \"-quic\", \"-alpn\", \"h3\", \"-servername\", \"localhost\", \"-CAfile\", \"tests/fixtures_certs/interop-localhost-cert.pem\", \"-verify_return_error\"], \"connected\": true, \"issuer\": \"CN=localhost\", \"return_code\": 0, \"stderr\": \"Connecting to 127.0.0.1\\ndepth=0 CN=localhost\\nverify return:1\\nDONE\\n\", \"subject\": \"CN=localhost\"}}\n",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_openssl_quic_client",
+        "--cafile",
+        "tests/fixtures_certs/interop-localhost-cert.pem",
+        "--servername",
+        "localhost",
+        "--alpn",
+        "h3"
+      ],
+      "executable": "/opt/pyvenv/bin/python",
+      "executable_sha256": "e59d0124ff06c248546876e01fcfb1ea3cda63534949f94a9372bfcfe3bfc3f5",
+      "version_command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_openssl_quic_client",
+        "--version"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "OpenSSL 3.5.4 30 Sep 2025 (Library: OpenSSL 3.5.4 30 Sep 2025)"
+    }
+  },
+  "scenario_id": "http3-server-openssl-quic-handshake",
+  "sut": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "tigrcorn-http3",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_stderr.log",
+    "stderr_text": "2026-03-14 04:58:18,214 INFO tigrcorn listening on udp://127.0.0.1:38169\n",
+    "stdout_path": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_stdout.log",
+    "stdout_text": "",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "examples.echo_http.app:app",
+        "--transport",
+        "udp",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "38169",
+        "--http",
+        "3",
+        "--protocol",
+        "http3",
+        "--disable-websocket",
+        "--ssl-certfile",
+        "tests/fixtures_certs/interop-localhost-cert.pem",
+        "--ssl-keyfile",
+        "tests/fixtures_certs/interop-localhost-key.pem",
+        "--no-access-log",
+        "--lifespan",
+        "off"
+      ],
+      "executable": "/opt/pyvenv/bin/python",
+      "executable_sha256": "e59d0124ff06c248546876e01fcfb1ea3cda63534949f94a9372bfcfe3bfc3f5",
+      "version_command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "--help"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "usage: tigrcorn [-h] [--transport {tcp,udp,unix,pipe}] [--host HOST]\n                [--port PORT] [--uds UDS] [--lifespan {auto,on,off}]\n                [--log-level LOG_LEVEL] [--no-access-log] [--factory]\n                [--ssl-certfile SSL_CERTFILE] [--ssl-keyfile SSL_KEYFILE]\n                [--http {1.1,2,3}]\n                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]\n                [--disable-websocket] [--disable-h2c]\n                [--max-body-size MAX_BODY_SIZE] [--quic-secret QUIC_SECRET]\n                [--pipe-mode {rawframed,stream}]\n                app\n\nASGI3-compatible transport server\n\npositional arguments:\n  app                   Application import string in module:attr form\n\noptions:\n  -h, --help            show this help message and exit\n  --transport {tcp,udp,unix,pipe}\n  --host HOST           Bind host for TCP/UDP listeners\n  --port PORT           Bind port for TCP/UDP listeners\n  --uds UDS             Bind Unix domain socket or pipe path instead of\n                        TCP/UDP\n  --lifespan {auto,on,off}\n  --log-level LOG_LEVEL\n  --no-access-log\n  --factory             Treat APP as an application factory\n  --ssl-certfile SSL_CERTFILE\n                        Certificate for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-keyfile SSL_KEYFILE\n                        Private key for TLS on TCP/Unix or QUIC-TLS on UDP\n  --http {1.1,2,3}      Enable an HTTP version\n  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}\n                        Enable a listener protocol\n  --disable-websocket\n  --disable-h2c\n  --max-body-size MAX_BODY_SIZE\n  --quic-secret QUIC_SECRET\n                        Shared secret for local QUIC experiments when not\n                        using QUIC-TLS certificates\n  --pipe-mode {rawframed,stream}"
+    }
+  },
+  "transcript": {
+    "peer": {
+      "command": [
+        "openssl",
+        "s_client",
+        "-connect",
+        "127.0.0.1:47117",
+        "-quic",
+        "-alpn",
+        "h3",
+        "-servername",
+        "localhost",
+        "-CAfile",
+        "tests/fixtures_certs/interop-localhost-cert.pem",
+        "-verify_return_error"
+      ],
+      "connected": true,
+      "issuer": "CN=localhost",
+      "return_code": 0,
+      "stderr": "Connecting to 127.0.0.1\ndepth=0 CN=localhost\nverify return:1\nDONE\n",
+      "subject": "CN=localhost"
+    },
+    "sut": null
+  }
+}

@@ -1,0 +1,340 @@
+{
+  "metadata": {
+    "bundle_root": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified",
+    "generated_at": "2026-03-19T12:12:16.003241+00:00",
+    "matrix_kind": "minimum-certified-intermediary-proxy",
+    "scope_note": "Reference matrix for the minimum certified intermediary/proxy-adjacent corpus promoted in Phase 5."
+  },
+  "name": "tigrcorn-minimum-certified-intermediary-proxy",
+  "scenarios": [
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http1",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "http/1.1",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.peer_transcript.exists"
+        }
+      ],
+      "evidence_tier": "independent_certification",
+      "feature": "intermediary-proxy-minimum-certified",
+      "id": "http11-curl-origin-form-post-certified",
+      "metadata": {
+        "intermediary_proxy_scope": [
+          "origin-form",
+          "request-forwarding",
+          "header-forwarding"
+        ],
+        "matrix_kind": "minimum-certified-intermediary-proxy",
+        "peer_implementation": "curl",
+        "peer_independence": "third-party",
+        "rfc": [
+          "RFC 9112"
+        ],
+        "source_independent_scenario": "http1-server-curl-client"
+      },
+      "peer": "curl",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tests.fixtures_pkg.external_curl_client",
+          "--http1"
+        ],
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http1"
+        },
+        "implementation_identity": "curl",
+        "implementation_source": "curl project",
+        "name": "curl-http1-client",
+        "provenance_kind": "third_party_binary",
+        "role": "client",
+        "version_command": [
+          "python",
+          "-m",
+          "tests.fixtures_pkg.external_curl_client",
+          "--version"
+        ]
+      },
+      "protocol": "http1",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http1",
+          "--disable-websocket",
+          "--no-access-log",
+          "--lifespan",
+          "off"
+        ],
+        "implementation_identity": "tigrcorn-http1",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http1",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http2",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "h2c",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.peer_transcript.exists"
+        }
+      ],
+      "evidence_tier": "independent_certification",
+      "feature": "intermediary-proxy-minimum-certified",
+      "id": "http2-h2-origin-form-post-certified",
+      "metadata": {
+        "intermediary_proxy_scope": [
+          "request-forwarding",
+          "header-forwarding",
+          "persistent-carrier-baseline"
+        ],
+        "matrix_kind": "minimum-certified-intermediary-proxy",
+        "peer_implementation": "python-h2",
+        "peer_independence": "third-party",
+        "rfc": [
+          "RFC 9113",
+          "RFC 7541"
+        ],
+        "source_independent_scenario": "http2-server-h2-client"
+      },
+      "peer": "python-h2",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tests.fixtures_pkg.external_h2_http_client"
+        ],
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http2"
+        },
+        "implementation_identity": "python-h2",
+        "implementation_source": "python-hyper/h2",
+        "name": "python-h2-http2-client",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "python",
+          "-m",
+          "tests.fixtures_pkg.external_h2_http_client",
+          "--version"
+        ]
+      },
+      "protocol": "http2",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http2",
+          "--disable-websocket",
+          "--no-access-log",
+          "--lifespan",
+          "off"
+        ],
+        "implementation_identity": "tigrcorn-http2",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http2",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    },
+    {
+      "assertions": [
+        {
+          "equals": 0,
+          "path": "peer.exit_code"
+        },
+        {
+          "equals": 200,
+          "path": "transcript.peer.response.status"
+        },
+        {
+          "equals": "echo:hello-http3",
+          "path": "transcript.peer.response.body"
+        },
+        {
+          "equals": "h3",
+          "path": "negotiation.peer.protocol"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.packet_trace.exists"
+        },
+        {
+          "equals": true,
+          "path": "artifacts.qlog.exists"
+        }
+      ],
+      "enabled": true,
+      "evidence_tier": "independent_certification",
+      "feature": "intermediary-proxy-minimum-certified",
+      "id": "http3-aioquic-origin-form-post-certified",
+      "metadata": {
+        "certification_status": "ready_for_preserved_artifact_promotion",
+        "intermediary_proxy_scope": [
+          "request-forwarding",
+          "header-forwarding",
+          "persistent-carrier-baseline"
+        ],
+        "matrix_kind": "minimum-certified-intermediary-proxy",
+        "peer_implementation": "aioquic",
+        "peer_independence": "third-party",
+        "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
+        "rfc": [
+          "RFC 8446",
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9114",
+          "RFC 9204"
+        ],
+        "source_independent_scenario": "http3-server-aioquic-client-post"
+      },
+      "peer": "aioquic",
+      "peer_process": {
+        "adapter": "subprocess",
+        "command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--servername",
+          "localhost",
+          "--cacert",
+          "tests/fixtures_certs/interop-localhost-cert.pem"
+        ],
+        "enabled": true,
+        "env": {
+          "INTEROP_REQUEST_BODY": "hello-http3"
+        },
+        "implementation_identity": "aioquic-http3-client",
+        "implementation_source": "aioquic",
+        "implementation_version": "optional-runtime",
+        "name": "aioquic-http3-client",
+        "provenance_kind": "third_party_library",
+        "role": "client",
+        "version_command": [
+          "/opt/pyvenv/bin/python",
+          "-m",
+          "tests.fixtures_third_party.aioquic_http3_client",
+          "--version"
+        ]
+      },
+      "protocol": "http3",
+      "role": "server",
+      "sut": {
+        "adapter": "subprocess",
+        "command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "examples.echo_http.app:app",
+          "--transport",
+          "udp",
+          "--host",
+          "{bind_host}",
+          "--port",
+          "{bind_port}",
+          "--protocol",
+          "http3",
+          "--http",
+          "3",
+          "--ssl-certfile",
+          "tests/fixtures_certs/interop-localhost-cert.pem",
+          "--ssl-keyfile",
+          "tests/fixtures_certs/interop-localhost-key.pem",
+          "--no-access-log",
+          "--lifespan",
+          "off",
+          "--disable-websocket"
+        ],
+        "implementation_identity": "tigrcorn-http3",
+        "implementation_source": "tigrcorn",
+        "implementation_version": "0.3.6",
+        "name": "tigrcorn-http3",
+        "provenance_kind": "package_owned",
+        "ready_pattern": "listening on",
+        "role": "server",
+        "version_command": [
+          "python",
+          "-m",
+          "tigrcorn",
+          "--help"
+        ]
+      }
+    }
+  ]
+}

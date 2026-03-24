@@ -1,0 +1,11 @@
+{
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/websocket-server-websockets-client",
+  "request": {
+    "path": "/ws",
+    "text": "hello-websocket",
+    "url": "ws://127.0.0.1:52259/ws"
+  },
+  "response": {
+    "text": "hello-websocket"
+  }
+}

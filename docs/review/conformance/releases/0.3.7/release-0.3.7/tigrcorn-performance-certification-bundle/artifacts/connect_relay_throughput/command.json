@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "tools/run_perf_matrix.py"
+  ],
+  "deployment_profile": "connect_http11",
+  "driver": "connect_relay_throughput",
+  "profile_id": "connect_relay_throughput"
+}

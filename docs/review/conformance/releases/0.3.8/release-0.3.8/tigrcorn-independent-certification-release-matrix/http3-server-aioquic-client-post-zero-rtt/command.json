@@ -1,0 +1,55 @@
+{
+  "sut": {
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--transport",
+      "udp",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http3",
+      "--http",
+      "3",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--no-access-log",
+      "--lifespan",
+      "off",
+      "--disable-websocket"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ],
+    "name": "tigrcorn-http3-zero-rtt",
+    "adapter": "subprocess"
+  },
+  "peer": {
+    "command": [
+      "/opt/pyvenv/bin/python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--servername",
+      "localhost",
+      "--cacert",
+      "tests/fixtures_certs/interop-localhost-cert.pem"
+    ],
+    "version_command": [
+      "/opt/pyvenv/bin/python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--version"
+    ],
+    "name": "aioquic-http3-client-zero-rtt",
+    "adapter": "subprocess"
+  }
+}

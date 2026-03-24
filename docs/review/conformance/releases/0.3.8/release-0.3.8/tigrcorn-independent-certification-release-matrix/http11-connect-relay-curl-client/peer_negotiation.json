@@ -1,0 +1,9 @@
+{
+  "connect_tunnel_established": true,
+  "curl_version": "libcurl/8.10.1 OpenSSL/3.0.14 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libpsl/0.21.2",
+  "http_version": "1.1",
+  "implementation": "curl",
+  "protocol": "http/1.1",
+  "scheme": "http",
+  "server_name": "127.0.0.1"
+}

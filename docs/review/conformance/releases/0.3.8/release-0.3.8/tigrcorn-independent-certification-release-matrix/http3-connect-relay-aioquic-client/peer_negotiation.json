@@ -1,0 +1,38 @@
+{
+  "alpn_requested": [
+    "h3"
+  ],
+  "certificate_inputs": {
+    "ca_cert": {
+      "exists": true,
+      "is_file": true,
+      "path": "tests/fixtures_certs/interop-localhost-cert.pem"
+    },
+    "client_cert": {
+      "exists": false,
+      "is_file": false,
+      "path": null
+    },
+    "client_key": {
+      "exists": false,
+      "is_file": false,
+      "path": null
+    },
+    "client_material_ready": true,
+    "client_material_requested": false,
+    "ready": true
+  },
+  "certificate_inputs_ready": true,
+  "client_auth_present": false,
+  "connect_tunnel_established": true,
+  "handshake_complete": true,
+  "implementation": "aioquic",
+  "protocol": "h3",
+  "received_settings": {
+    "1": 0,
+    "6": 1200
+  },
+  "retry_observed": false,
+  "server_name": "localhost",
+  "tls_version": "TLSv1.3"
+}

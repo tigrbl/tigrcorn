@@ -1,0 +1,8 @@
+{
+  "bundle_kind": "operator_surface_certification_bundle",
+  "generated_at": "2026-03-24T05:49:37.212886+00:00",
+  "release_gate_eligible": true,
+  "source_doc": "docs/review/conformance/PHASE4_OPERATOR_SURFACE_STATUS.md",
+  "source_status": "docs/review/conformance/phase4_operator_surface_status.current.json",
+  "note": "This assembled bundle freezes the operator-surface implementation/testing plane for the 0.3.8 working release root."
+}

@@ -3,7 +3,9 @@ import unittest
 from tigrcorn.protocols.websocket.extensions import (
     PerMessageDeflateAgreement,
     PerMessageDeflateRuntime,
+    default_permessage_deflate_agreement,
     negotiate_permessage_deflate,
+    parse_permessage_deflate_offers,
 )
 
 
@@ -55,3 +57,24 @@ class WebSocketRFC7692Tests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(receiver.decompress_message(first), payload)
         self.assertEqual(receiver.decompress_message(second), payload)
+
+    def test_default_agreement_mirrors_explicit_window_bits(self):
+        offers = parse_permessage_deflate_offers([
+            (b'sec-websocket-extensions', b'permessage-deflate; client_max_window_bits=15; server_max_window_bits=15'),
+        ])
+        agreement = default_permessage_deflate_agreement(offers)
+        self.assertEqual(
+            agreement,
+            PerMessageDeflateAgreement(server_max_window_bits=15, client_max_window_bits=15),
+        )
+
+    def test_negotiate_permessage_deflate_with_explicit_window_bits(self):
+        agreement = negotiate_permessage_deflate(
+            request_headers=[(b'sec-websocket-extensions', b'permessage-deflate; client_max_window_bits=15; server_max_window_bits=15')],
+            response_headers=[(b'sec-websocket-extensions', b'permessage-deflate; client_max_window_bits=15; server_max_window_bits=15')],
+        )
+        self.assertEqual(
+            agreement,
+            PerMessageDeflateAgreement(server_max_window_bits=15, client_max_window_bits=15),
+        )
+

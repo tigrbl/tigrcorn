@@ -1,0 +1,54 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts",
+  "bundle_kind": "local_behavior_artifacts",
+  "total": 9,
+  "passed": 9,
+  "failed": 0,
+  "scenarios": [
+    {
+      "id": "http11-content-coding-gzip-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http11-content-coding-gzip-pass"
+    },
+    {
+      "id": "http11-content-coding-identity-forbidden-406",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http11-content-coding-identity-forbidden-406"
+    },
+    {
+      "id": "http11-content-coding-strict-unsupported-406",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http11-content-coding-strict-unsupported-406"
+    },
+    {
+      "id": "http2-content-coding-gzip-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http2-content-coding-gzip-pass"
+    },
+    {
+      "id": "http2-content-coding-identity-forbidden-406",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http2-content-coding-identity-forbidden-406"
+    },
+    {
+      "id": "http2-content-coding-strict-unsupported-406",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http2-content-coding-strict-unsupported-406"
+    },
+    {
+      "id": "http3-content-coding-gzip-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http3-content-coding-gzip-pass"
+    },
+    {
+      "id": "http3-content-coding-identity-forbidden-406",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http3-content-coding-identity-forbidden-406"
+    },
+    {
+      "id": "http3-content-coding-strict-unsupported-406",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/http3-content-coding-strict-unsupported-406"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http3_quic",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.12252900000930822,
+    "p50_ms": 0.12252900000930822,
+    "p95_ms": 0.1449301999855379,
+    "p99_9_ms": 0.15033176394990733,
+    "p99_ms": 0.14933963995645172,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 7931.115616924562,
+    "time_to_first_byte_ms": 0.12252900000930822
+  },
+  "passed": true,
+  "profile_id": "http3_clean_network"
+}

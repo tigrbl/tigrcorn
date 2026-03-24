@@ -1,0 +1,134 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": true,
+      "path": "transcript.peer.connected"
+    },
+    {
+      "equals": "CN=localhost",
+      "path": "transcript.peer.subject"
+    },
+    {
+      "equals": "QUICv1",
+      "path": "negotiation.peer.protocol"
+    },
+    {
+      "equals": "h3",
+      "path": "negotiation.peer.alpn"
+    },
+    {
+      "equals": "OK",
+      "path": "negotiation.peer.verification"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.packet_trace.exists"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.qlog.exists"
+    }
+  ],
+  "capture": {},
+  "consolidated_from": "docs/review/conformance/releases/0.3.2/release-0.3.2/tigrcorn-independent-peer-release-matrix/http3-server-openssl-quic-handshake",
+  "dimensions": {
+    "cipher_group": null,
+    "feature": "quic-tls-handshake",
+    "goaway": false,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "openssl",
+    "protocol": "http3",
+    "qpack_blocking": false,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "http3-server-openssl-quic-handshake",
+  "metadata": {
+    "peer_implementation": "openssl-quic",
+    "rfc": [
+      "RFC 9000",
+      "RFC 9001"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_openssl_quic_client",
+      "--cafile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--servername",
+      "localhost",
+      "--alpn",
+      "h3"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "metadata": {},
+    "name": "openssl-quic-client",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_openssl_quic_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--transport",
+      "udp",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--http",
+      "3",
+      "--protocol",
+      "http3",
+      "--disable-websocket",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "metadata": {},
+    "name": "tigrcorn-http3",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

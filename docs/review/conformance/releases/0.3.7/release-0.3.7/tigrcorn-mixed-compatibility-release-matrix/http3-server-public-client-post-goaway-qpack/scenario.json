@@ -1,0 +1,125 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": "echo:hello-http3-goaway-qpack",
+      "path": "transcript.peer.response.body"
+    },
+    {
+      "equals": true,
+      "path": "negotiation.peer.client_goaway_sent"
+    },
+    {
+      "equals": true,
+      "path": "negotiation.peer.qpack_encoder_stream_seen"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.packet_trace.exists"
+    }
+  ],
+  "capture": {},
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/http3-server-public-client-post-goaway-qpack",
+  "dimensions": {
+    "cipher_group": null,
+    "feature": "post-echo-goaway-qpack",
+    "goaway": true,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "tigrcorn-public-client",
+    "protocol": "http3",
+    "qpack_blocking": true,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "http3-server-public-client-post-goaway-qpack",
+  "metadata": {
+    "peer_implementation": "tigrcorn-public-client",
+    "rfc": [
+      "RFC 8446",
+      "RFC 9000",
+      "RFC 9001",
+      "RFC 9114",
+      "RFC 9204"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_http3_client",
+      "--servername",
+      "localhost",
+      "--cacert",
+      "tests/fixtures_certs/interop-localhost-cert.pem"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {
+      "INTEROP_REQUEST_BODY": "hello-http3-goaway-qpack"
+    },
+    "image": null,
+    "metadata": {},
+    "name": "tigrcorn-public-http3-client-goaway-qpack",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_http3_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--transport",
+      "udp",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http3",
+      "--http",
+      "3",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--no-access-log",
+      "--lifespan",
+      "off",
+      "--disable-websocket"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "metadata": {},
+    "name": "tigrcorn-http3-goaway-qpack",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

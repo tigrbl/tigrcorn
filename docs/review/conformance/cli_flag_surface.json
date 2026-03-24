@@ -1,0 +1,463 @@
+{
+  "flags": [
+    {
+      "flag_id": "factory",
+      "flags": [
+        "--factory"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.factory",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": false,
+      "validation_rules": [
+        "boolean"
+      ],
+      "unit_tests": [
+        "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "app_dir",
+      "flags": [
+        "--app-dir"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.app_dir",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": null,
+      "validation_rules": [
+        "path string"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "reload",
+      "flags": [
+        "--reload",
+        "--reload-dir",
+        "--reload-include",
+        "--reload-exclude"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.reload*",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": false,
+      "validation_rules": [
+        "boolean + repeatable globs/paths"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "worker_prefork_proxy"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "workers",
+      "flags": [
+        "--workers",
+        "--worker-class",
+        "--pid",
+        "--limit-max-requests",
+        "--max-requests-jitter"
+      ],
+      "family": "App / process / development",
+      "config_path": "process.*",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": null,
+      "validation_rules": [
+        "workers positive integer",
+        "worker_class in supported set"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "worker_prefork_proxy",
+        "fd_inherited_worker"
+      ],
+      "performance_profiles": [
+        "worker_scale"
+      ]
+    },
+    {
+      "flag_id": "config_source",
+      "flags": [
+        "--config",
+        "--env-prefix"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.config_file / app.env_prefix",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": null,
+      "validation_rules": [
+        "config file path",
+        "env prefix string"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "lifespan",
+      "flags": [
+        "--lifespan"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.lifespan",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": "auto",
+      "validation_rules": [
+        "one of auto,on,off"
+      ],
+      "unit_tests": [
+        "tests/test_config_matrix.py::ConfigMatrixTests::test_tcp_defaults"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "binds",
+      "flags": [
+        "--bind",
+        "--host",
+        "--port",
+        "--uds",
+        "--fd",
+        "--endpoint",
+        "--insecure-bind",
+        "--quic-bind",
+        "--transport",
+        "--reuse-port",
+        "--reuse-address",
+        "--backlog"
+      ],
+      "family": "Listener / binding",
+      "config_path": "listeners[]",
+      "claim_class": "hybrid",
+      "rfc_targets": [
+        "RFC 9112",
+        "RFC 9113",
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9001"
+      ],
+      "default_value": "defaults file",
+      "validation_rules": [
+        "listener kinds validated",
+        "ports in range",
+        "paths/FDs typed"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "fd_inherited_worker",
+        "unix_socket_proxy",
+        "custom_pipe_rawframed"
+      ],
+      "performance_profiles": [
+        "http1_baseline",
+        "http3_clean"
+      ],
+      "non_rfc_custom_values": [
+        "--transport pipe",
+        "--transport inproc"
+      ]
+    },
+    {
+      "flag_id": "tls",
+      "flags": [
+        "--ssl-certfile",
+        "--ssl-keyfile",
+        "--ssl-ca-certs",
+        "--ssl-require-client-cert",
+        "--ssl-ciphers",
+        "--ssl-alpn",
+        "--ssl-ocsp-mode",
+        "--ssl-ocsp-soft-fail",
+        "--ssl-ocsp-cache-size",
+        "--ssl-ocsp-max-age",
+        "--ssl-crl-mode",
+        "--ssl-revocation-fetch"
+      ],
+      "family": "TLS / security",
+      "config_path": "tls.*",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 8446",
+        "RFC 5280",
+        "RFC 6960",
+        "RFC 7301"
+      ],
+      "default_value": "defaults file",
+      "validation_rules": [
+        "cert/key pairing",
+        "CA required for client cert mode",
+        "OCSP mode enum",
+        "ocsp max age positive",
+        "CRL mode enum",
+        "revocation fetch toggle"
+      ],
+      "unit_tests": [
+        "tests/test_public_api_cli_mtls_surface.py::PublicRunAndCLIClientCertificateSurfaceTests::test_cli_main_forwards_client_certificate_options",
+        "tests/test_config_matrix.py::ConfigMatrixTests::test_udp_client_auth_is_accepted_with_a_trust_store"
+      ],
+      "interop_scenarios": [
+        "http3-server-aioquic-client-mtls",
+        "tls-server-ocsp-validation-openssl-client"
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic",
+        "http3_quic_mtls",
+        "tls_ocsp_strict"
+      ],
+      "performance_profiles": [
+        "tls_handshake"
+      ]
+    },
+    {
+      "flag_id": "proxy_security",
+      "flags": [
+        "--proxy-headers",
+        "--forwarded-allow-ips",
+        "--root-path",
+        "--server-header",
+        "--no-server-header"
+      ],
+      "family": "TLS / security",
+      "config_path": "proxy.*",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": "defaults file",
+      "validation_rules": [
+        "root_path empty or leading /"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_proxy",
+        "unix_socket_proxy"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "logging",
+      "flags": [
+        "--log-level",
+        "--access-log",
+        "--no-access-log",
+        "--access-log-file",
+        "--access-log-format",
+        "--error-log-file",
+        "--log-config",
+        "--structured-log",
+        "--metrics",
+        "--metrics-bind",
+        "--statsd-host",
+        "--otel-endpoint"
+      ],
+      "family": "Logging / observability",
+      "config_path": "logging.* / metrics.*",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": "defaults file",
+      "validation_rules": [
+        "path/string/bool parsing"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
+      "flag_id": "limits",
+      "flags": [
+        "--timeout-keep-alive",
+        "--read-timeout",
+        "--write-timeout",
+        "--timeout-graceful-shutdown",
+        "--limit-concurrency",
+        "--max-connections",
+        "--max-tasks",
+        "--max-streams",
+        "--max-body-size",
+        "--max-header-size",
+        "--websocket-max-message-size",
+        "--websocket-ping-interval",
+        "--websocket-ping-timeout",
+        "--idle-timeout"
+      ],
+      "family": "Resource / timeouts / concurrency",
+      "config_path": "http.* / websocket.* / scheduler.*",
+      "claim_class": "hybrid",
+      "rfc_targets": [
+        "RFC 9110",
+        "RFC 9112",
+        "RFC 9113",
+        "RFC 9114",
+        "RFC 6455",
+        "RFC 8441",
+        "RFC 9220"
+      ],
+      "default_value": "defaults file",
+      "validation_rules": [
+        "positive numeric values"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11"
+      ],
+      "performance_profiles": [
+        "http1_baseline",
+        "http2_multiplexing",
+        "http3_clean",
+        "websocket_echo"
+      ]
+    },
+    {
+      "flag_id": "protocols",
+      "flags": [
+        "--http",
+        "--protocol",
+        "--disable-websocket",
+        "--disable-h2c",
+        "--websocket-compression",
+        "--connect-policy",
+        "--trailer-policy",
+        "--content-coding-policy",
+        "--content-codings",
+        "--quic-require-retry",
+        "--quic-max-datagram-size",
+        "--quic-idle-timeout",
+        "--quic-early-data-policy",
+        "--pipe-mode",
+        "--connect-allow"
+      ],
+      "family": "Protocol / transport",
+      "config_path": "http.* / websocket.* / quic.* / listeners[].protocols",
+      "claim_class": "rfc_scoped",
+      "rfc_targets": [
+        "RFC 9112",
+        "RFC 9113",
+        "RFC 9114",
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 9002",
+        "RFC 6455",
+        "RFC 7692",
+        "RFC 8441",
+        "RFC 9220",
+        "RFC 9110 \u00a79.3.6",
+        "RFC 9110 \u00a76.5",
+        "RFC 9110 \u00a78"
+      ],
+      "default_value": "defaults file",
+      "validation_rules": [
+        "enum values",
+        "positive numeric values"
+      ],
+      "unit_tests": [
+        "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+      ],
+      "interop_scenarios": [
+        "websocket-http11-server-websockets-client-permessage-deflate",
+        "http11-connect-relay-curl-client",
+        "http11-trailer-fields-curl-client",
+        "http11-content-coding-curl-client",
+        "http3-server-aioquic-client-post-retry",
+        "http3-server-aioquic-client-post-zero-rtt",
+        "websocket-http2-server-h2-client-permessage-deflate",
+        "websocket-http3-server-aioquic-client-permessage-deflate",
+        "http2-connect-relay-h2-client",
+        "http3-connect-relay-aioquic-client",
+        "http2-trailer-fields-h2-client",
+        "http3-trailer-fields-aioquic-client",
+        "http2-content-coding-curl-client",
+        "http3-content-coding-aioquic-client"
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_cleartext",
+        "http2_tls",
+        "http3_quic",
+        "websocket_http11_permessage_deflate",
+        "connect_http11",
+        "trailers_http11",
+        "content_coding_http11",
+        "custom_pipe_rawframed",
+        "websocket_http2_permessage_deflate",
+        "websocket_http3_permessage_deflate",
+        "connect_http2",
+        "connect_http3",
+        "trailers_http2",
+        "trailers_http3",
+        "content_coding_http2",
+        "content_coding_http3"
+      ],
+      "performance_profiles": [
+        "http1_baseline",
+        "http2_multiplexing",
+        "http3_clean",
+        "websocket_compressed",
+        "websocket_compression",
+        "connect_tunnel",
+        "trailers_under_load",
+        "content_coding_under_load"
+      ],
+      "non_rfc_custom_values": [
+        "--pipe-mode",
+        "--protocol rawframed",
+        "--protocol custom"
+      ]
+    }
+  ]
+}

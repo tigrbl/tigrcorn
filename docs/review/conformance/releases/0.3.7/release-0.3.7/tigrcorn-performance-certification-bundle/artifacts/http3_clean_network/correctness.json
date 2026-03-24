@@ -1,0 +1,9 @@
+{
+  "checks": {
+    "qpack_roundtrip": true,
+    "quic_decode": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

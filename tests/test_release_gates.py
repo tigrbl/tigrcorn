@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tigrcorn.compat.release_gates import evaluate_release_gates
+from tigrcorn.compat.release_gates import evaluate_promotion_target, evaluate_release_gates
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -222,6 +222,12 @@ class ReleaseGateTests(unittest.TestCase):
             report = evaluate_release_gates(root)
             self.assertTrue(report.passed, msg=report.failures)
 
+
+    def test_actual_repository_promotion_evaluator_keeps_performance_and_docs_green(self):
+        report = evaluate_promotion_target(ROOT)
+        self.assertTrue(report.performance.passed, msg='\n'.join(report.performance.failures))
+        self.assertTrue(report.documentation.passed, msg='\n'.join(report.documentation.failures))
+        self.assertTrue(report.passed)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "loss_detected": true,
+    "pto_positive": true,
+    "snapshot_valid": true
+  },
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

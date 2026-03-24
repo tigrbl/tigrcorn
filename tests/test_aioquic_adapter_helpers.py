@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from tests.fixtures_third_party._aioquic_utils import (
+    certificate_input_status,
     detect_local_control_stream_id,
     detect_peer_qpack_streams,
     detect_retry_observed,
@@ -8,6 +9,7 @@ from tests.fixtures_third_party._aioquic_utils import (
     env_flag,
     header_map,
     header_pairs_to_text,
+    path_status,
     quic_varint_encode,
     received_settings,
     session_ticket_allows_early_data,
@@ -60,6 +62,24 @@ def test_header_helpers_normalize_byte_pairs() -> None:
     headers = [(b":status", b"200"), (b"server", b"tigrcorn")]
     assert header_pairs_to_text(headers) == [(":status", "200"), ("server", "tigrcorn")]
     assert header_map(headers) == {":status": "200", "server": "tigrcorn"}
+
+
+def test_path_status_and_certificate_input_status_report_local_files(tmp_path) -> None:
+    cacert = tmp_path / "ca.pem"
+    client_cert = tmp_path / "client.pem"
+    client_key = tmp_path / "client.key"
+    cacert.write_text("ca", encoding="utf-8")
+    client_cert.write_text("cert", encoding="utf-8")
+    client_key.write_text("key", encoding="utf-8")
+
+    assert path_status(cacert)["exists"] is True
+    assert path_status(None) == {"path": None, "exists": False, "is_file": False}
+
+    status = certificate_input_status(cacert=cacert, client_cert=client_cert, client_key=client_key)
+    assert status["ready"] is True
+    assert status["client_material_requested"] is True
+    assert status["client_material_ready"] is True
+    assert status["ca_cert"]["path"] == str(cacert)
 
 
 def test_http3_snapshot_helpers_detect_control_and_qpack_streams() -> None:

@@ -1,0 +1,9 @@
+{
+  "bundle_kind": "flag_surface_certification_bundle",
+  "deployment_profiles": "docs/review/conformance/deployment_profiles.json",
+  "generated_at": "2026-03-19T23:26:09.599780+00:00",
+  "note": "Flag metadata is complete enough to freeze the candidate release root, but strict RFC promotion still depends on preserved third-party evidence.",
+  "release_gate_eligible": true,
+  "source": "docs/review/conformance/cli_flag_surface.json",
+  "source_doc": "docs/review/conformance/CLI_FLAG_SURFACE.md"
+}

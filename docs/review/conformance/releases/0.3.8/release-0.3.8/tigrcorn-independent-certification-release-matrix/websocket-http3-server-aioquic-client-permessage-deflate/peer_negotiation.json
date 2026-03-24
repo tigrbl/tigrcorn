@@ -1,0 +1,49 @@
+{
+  "alpn_requested": [
+    "h3"
+  ],
+  "certificate_inputs": {
+    "ca_cert": {
+      "exists": true,
+      "is_file": true,
+      "path": "tests/fixtures_certs/interop-localhost-cert.pem"
+    },
+    "client_cert": {
+      "exists": false,
+      "is_file": false,
+      "path": null
+    },
+    "client_key": {
+      "exists": false,
+      "is_file": false,
+      "path": null
+    },
+    "client_material_ready": true,
+    "client_material_requested": false,
+    "ready": true
+  },
+  "certificate_inputs_ready": true,
+  "client_auth_present": false,
+  "client_control_stream_id": 2,
+  "client_goaway_sent": false,
+  "compression_requested": "permessage-deflate",
+  "connect_protocol_enabled": true,
+  "handshake_complete": true,
+  "implementation": "aioquic",
+  "migration_used": false,
+  "negotiated_extensions": [
+    "PerMessageDeflate"
+  ],
+  "protocol": "h3",
+  "qpack_decoder_stream_seen": true,
+  "qpack_encoder_stream_seen": true,
+  "received_settings": {
+    "1": 0,
+    "6": 1200,
+    "8": 1
+  },
+  "response_extension_header": "permessage-deflate; server_max_window_bits=15; client_max_window_bits=15",
+  "retry_observed": false,
+  "server_name": "localhost",
+  "tls_version": "TLSv1.3"
+}

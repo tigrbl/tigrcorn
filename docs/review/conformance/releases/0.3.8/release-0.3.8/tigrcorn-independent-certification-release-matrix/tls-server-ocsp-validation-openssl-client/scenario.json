@@ -1,0 +1,132 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": true,
+      "path": "transcript.peer.handshake_established"
+    },
+    {
+      "equals": 200,
+      "path": "transcript.peer.response.status"
+    },
+    {
+      "equals": "echo:",
+      "path": "transcript.peer.response.body"
+    },
+    {
+      "equals": "OK",
+      "path": "negotiation.peer.verification"
+    },
+    {
+      "equals": true,
+      "path": "negotiation.peer.client_auth_present"
+    }
+  ],
+  "capture": {},
+  "dimensions": {
+    "cipher_group": null,
+    "evidence_tier": "independent_certification",
+    "feature": "ocsp-revocation-validation",
+    "goaway": false,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "openssl",
+    "protocol": "tls",
+    "qpack_blocking": false,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "tls-server-ocsp-validation-openssl-client",
+  "metadata": {
+    "peer_implementation": "openssl",
+    "peer_independence": "third-party",
+    "phase9b_wrapper_id": "openssl.tls_client",
+    "rfc": [
+      "RFC 6960",
+      "RFC 5280",
+      "RFC 8446"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_openssl_tls_client"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {
+      "INTEROP_ALPN": "http/1.1",
+      "INTEROP_CAFILE": "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/ca_bundle.pem",
+      "INTEROP_CLIENT_CERT": "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/client_good_chain.pem",
+      "INTEROP_CLIENT_KEY": "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/client_good_key.pem",
+      "INTEROP_REQUEST_PATH": "/",
+      "INTEROP_SERVER_NAME": "localhost"
+    },
+    "image": null,
+    "implementation_identity": "openssl-tls-client",
+    "implementation_source": "openssl",
+    "implementation_version": null,
+    "metadata": {
+      "wrapper_family": "openssl",
+      "wrapper_id": "openssl.tls_client"
+    },
+    "name": "openssl-tls-ocsp-client",
+    "provenance_kind": "third_party_binary",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_openssl_tls_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.ocsp_listener_launcher",
+      "{bind_host}",
+      "{bind_port}"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {
+      "INTEROP_OCSP_APP": "examples.echo_http.app:app",
+      "INTEROP_OCSP_CA_CERTS": "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/ca_bundle.pem",
+      "INTEROP_OCSP_CERTFILE": "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/server_chain.pem",
+      "INTEROP_OCSP_KEYFILE": "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/server_key.pem",
+      "INTEROP_OCSP_MAX_AGE": "300",
+      "INTEROP_OCSP_MODE": "require",
+      "INTEROP_OCSP_REVOCATION_FETCH": "on"
+    },
+    "image": null,
+    "implementation_identity": "tigrcorn-tls-ocsp-server",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "metadata": {},
+    "name": "tigrcorn-tls-ocsp-server",
+    "provenance_kind": "package_owned",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

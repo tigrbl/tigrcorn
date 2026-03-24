@@ -1,31 +1,25 @@
-# Secondary repository-level partials status
+
+# Secondary partials status
 
 The authoritative package-wide certification target remains `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-This document tracks repository-level partials that are no longer the main release-gate blockers but still matter for repository completeness and future-strengthening work.
+This status file tracks repository-strengthening items that remain outside the current canonical blocker set.
 
-## Completed in this update
+## Current secondary-status summary
 
-- the archive ships a package-owned production scheduler in `src/tigrcorn/scheduler/runtime.py`
-- `src/tigrcorn/server/runner.py` uses that scheduler for connection admission and CONNECT relay task management
-- the archive preserves a formal intermediary / proxy seed corpus under `docs/review/conformance/intermediary_proxy_corpus/`
-- the archive preserves a provisional QUIC / HTTP/3 flow-control review bundle under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/`
-- the primary third-party HTTP/3 / RFC 9220 certification blockers are now closed in the authoritative release gate
+- the package continues to ship the production scheduler integrated in `src/tigrcorn/scheduler/runtime.py`
+- QUIC / HTTP/3 flow-control now has a minimum independent evidence root under `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/`
+- the older provisional flow-control gap bundle remains preserved as a historical non-certifying review bundle
+- the repository now preserves a minimum certified intermediary / proxy-adjacent corpus under `docs/review/conformance/intermediary_proxy_corpus_minimum_certified/`
+- the older seed intermediary / proxy corpus remains preserved under `docs/review/conformance/intermediary_proxy_corpus/`
 
-## Current honest status
+## Honest scope note
 
-These additions improve repository completeness and remain useful after the primary certification closure.
+These additions materially improve repository completeness, but they do not by themselves close the stricter all-surfaces-independent overlay.
+That stricter overlay still depends on preserved third-party artifacts for RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960.
 
-They are **not** part of the current authoritative release-gate blocker set.
+## What improved in this checkpoint
 
-### Scheduler
-
-The scheduler gap recorded in `docs/architecture/scheduler-model.md` is closed as a repository-level partial: a package-owned production scheduler is present in-tree.
-
-### QUIC / HTTP/3 flow control
-
-Broad independent certification beyond the authoritative boundary is still incomplete, but the gap is represented by a formal non-certifying review bundle and status document.
-
-### Intermediary / proxy corpus
-
-A seed corpus is bundled, but broader multi-carrier third-party intermediary / proxy evidence is still incomplete.
+- flow-control no longer depends only on a provisional same-stack review root
+- the intermediary / proxy evidence posture is no longer only a seed corpus
+- the repository now has explicit minimum certified roots for both domains while keeping the historical provisional / seed roots for provenance

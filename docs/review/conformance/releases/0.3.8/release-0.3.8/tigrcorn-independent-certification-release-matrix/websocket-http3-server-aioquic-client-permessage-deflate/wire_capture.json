@@ -1,0 +1,64 @@
+{
+  "packet_trace": {
+    "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/packet_trace.jsonl",
+    "exists": true,
+    "size": 18837,
+    "sha256": "146ed6b8ba833a4b54669bc76b9d03b3bf3c06235866290082f5fbc444c5f792"
+  },
+  "logs": {
+    "sut_stdout": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stderr.log",
+      "exists": true,
+      "size": 73,
+      "sha256": "fb7ddb5c19aecb7e9be9193e4904006b5c05dbcc1163fd713244057118b53da4"
+    },
+    "peer_stdout": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/peer_stdout.log",
+      "exists": true,
+      "size": 2020,
+      "sha256": "4d69bd0fdd64c05c067aefca3b21cfde12ce5ced5245858c2a7e125f35cc8396"
+    },
+    "peer_stderr": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_transcript.json",
+      "exists": true,
+      "size": 1906,
+      "sha256": "3bc9a6e0f6a3803925f996a2cd376dae5066d7637f86548b9935b023a1123c5e"
+    },
+    "peer_transcript": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/peer_transcript.json",
+      "exists": true,
+      "size": 1254,
+      "sha256": "d0221b15ece4e1508a9307dcd0f0007cb996cf70a8298f8cf90d1d5868f16555"
+    },
+    "sut_negotiation": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_negotiation.json",
+      "exists": true,
+      "size": 1024,
+      "sha256": "bbaff0d957e2c36dcc99357298585b475506fe60cba4ca6aa518ab3e98787026"
+    },
+    "peer_negotiation": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/peer_negotiation.json",
+      "exists": true,
+      "size": 1200,
+      "sha256": "2c7b2586473bfcc37add24c493d15ce34ade1bf92958c373c84c87325647da8e"
+    },
+    "qlog": {
+      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/qlog.json",
+      "exists": true,
+      "size": 18309,
+      "sha256": "707e84e5fe1d226c88af4ed1bd1705270fcaa52289a7977b4985808b9a54892e"
+    }
+  }
+}

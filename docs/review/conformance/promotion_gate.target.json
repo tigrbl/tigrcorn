@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "target_name": "phase8_strict_promotion_program",
+  "status": "phase9_release_promoted_canonical",
+  "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
+  "strict_target_boundary": {
+    "boundary_path": "docs/review/conformance/certification_boundary.strict_target.json"
+  },
+  "authoritative_boundary": {
+    "boundary_path": "docs/review/conformance/certification_boundary.json"
+  },
+  "candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
+  "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "flag_surface": {
+    "contracts_path": "docs/review/conformance/flag_contracts.json",
+    "covering_array_path": "docs/review/conformance/flag_covering_array.json",
+    "required_contract_fields": [
+      "contract_id",
+      "flag_id",
+      "flag_strings",
+      "family",
+      "claim_class",
+      "scope",
+      "config_path",
+      "default",
+      "value_space",
+      "disable_form",
+      "rfc_targets",
+      "runtime_modules",
+      "validation_rules",
+      "deployment_profiles",
+      "unit_tests",
+      "interop_scenarios",
+      "performance_profiles",
+      "claim_text",
+      "status"
+    ],
+    "required_hazard_clusters": [
+      "transport_protocol_tls",
+      "protocol_timeout_concurrency",
+      "websocket_compression_carrier_transport",
+      "semantic_extensions_by_http_version",
+      "workers_reload_inherited_fd"
+    ]
+  },
+  "operator_surface": {
+    "bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle/index.json",
+    "required_implemented_keys": [
+      "workers_process_supervision",
+      "reload",
+      "proxy_header_normalization",
+      "root_path_scope_injection",
+      "structured_logging",
+      "metrics_endpoint",
+      "resource_timeout_controls_wired"
+    ]
+  },
+  "performance": {
+    "matrix_path": "docs/review/performance/performance_matrix.json",
+    "slos_path": "docs/review/performance/performance_slos.json",
+    "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
+    "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",
+    "require_relative_regression": true,
+    "require_full_declared_strict_contract": true,
+    "require_required_artifact_files": true,
+    "require_required_matrix_lanes": true,
+    "require_certification_platform_declarations": true,
+    "require_documented_slos_per_profile": true,
+    "require_correctness_for_rfc_profiles": true,
+    "require_live_listener_metadata_for_end_to_end_profiles": true
+  },
+  "documentation": {
+    "required_phrase_checks": [
+      {
+        "path": "docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md",
+        "must_contain": [
+          "current authoritative boundary remains green",
+          "0.3.7 root is a candidate only",
+          "new release root",
+          "three-stream closure program",
+          "strict RFC evidence closure",
+          "family-flag contract/runtime closure",
+          "throughput/latency closure with RFC-correctness-under-load",
+          "No public doc is allowed to strengthen package claims until the strict target is actually green.",
+          "docs/review/conformance/STRICT_PROFILE_TARGET.md"
+        ]
+      },
+      {
+        "path": "docs/review/conformance/STRICT_PROFILE_TARGET.md",
+        "must_contain": [
+          "docs/review/conformance/STRICT_PROFILE_TARGET.md",
+          "authoritative boundary remains green",
+          "frozen 0.3.7 candidate root",
+          "next promotable root must be a new release root",
+          "13 missing independent scenarios"
+        ]
+      },
+      {
+        "path": "docs/review/conformance/FLAG_CERTIFICATION_TARGET.md",
+        "must_contain": [
+          "84 public flag strings",
+          "flag_contracts.json",
+          "flag_covering_array.json",
+          "runtime gaps"
+        ]
+      },
+      {
+        "path": "docs/review/performance/PERFORMANCE_SLOS.md",
+        "must_contain": [
+          "Performance closure is not an RFC claim",
+          "phase6 matrix is structurally useful but not yet sufficient",
+          "p99.9",
+          "time to first byte",
+          "handshake latency"
+        ]
+      },
+      {
+        "path": "CURRENT_REPOSITORY_STATE.md",
+        "must_contain": [
+          "dual-boundary model",
+          "evaluate_promotion_target",
+          "authoritative boundary remains green",
+          "strict target is not yet green",
+          "docs/review/conformance/STRICT_PROFILE_TARGET.md"
+        ]
+      },
+      {
+        "path": "RFC_CERTIFICATION_STATUS.md",
+        "must_contain": [
+          "authoritative certification boundary",
+          "strict target",
+          "not yet honest to strengthen public claims"
+        ]
+      },
+      {
+        "path": "docs/review/conformance/README.md",
+        "must_contain": [
+          "STRICT_PROFILE_TARGET.md",
+          "promotion_gate.target.json"
+        ]
+      },
+      {
+        "path": "docs/review/conformance/PHASE9H_PROMOTION_EVALUATOR_HARDENING.md",
+        "must_contain": [
+          "Phase 9H",
+          "promotion evaluator",
+          "strict target honestly",
+          "not yet certifiably fully featured",
+          "not yet strict-target certifiably fully RFC compliant"
+        ]
+      }
+    ]
+  },
+  "phase9a_contract_freeze": {
+    "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md",
+    "status_json": "docs/review/conformance/phase9a_promotion_contract.current.json",
+    "backlog_doc": "docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md",
+    "backlog_json": "docs/review/conformance/phase9a_execution_backlog.current.json",
+    "candidate_root_policy": {
+      "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
+      "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+      "allow_mutation_of_candidate_release_root": false
+    },
+    "operator_surface_no_regression": {
+      "must_remain_green": true,
+      "bundle_index": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-operator-surface-certification-bundle/index.json",
+      "required_implemented_keys": [
+        "workers_process_supervision",
+        "reload",
+        "proxy_header_normalization",
+        "root_path_scope_injection",
+        "structured_logging",
+        "metrics_endpoint",
+        "resource_timeout_controls_wired"
+      ]
+    },
+    "out_of_scope_until_strict_target_green": [
+      "RFC 7232",
+      "RFC 9530",
+      "RFC 9111",
+      "RFC 9421",
+      "JOSE",
+      "COSE"
+    ]
+  },
+  "release_assembly": {
+    "working_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "assembled_bundles": [
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix",
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-flag-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle"
+    ],
+    "promotion_ready": true,
+    "version_bump_performed": true,
+    "canonical_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "current_package_version": "0.3.8"
+  }
+}

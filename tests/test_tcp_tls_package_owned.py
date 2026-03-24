@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import ssl
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -21,6 +22,7 @@ from tigrcorn.protocols.http2.codec import (
 )
 from tigrcorn.protocols.http2.hpack import decode_header_block, encode_header_block
 from tigrcorn.server.runner import TigrCornServer
+from tigrcorn.security.tls13.handshake import generate_self_signed_certificate
 
 ROOT = Path(__file__).resolve().parent
 CERTS = ROOT / 'fixtures_certs'
@@ -48,12 +50,12 @@ async def _start_tls_server(app, *, http_versions: list[str] | None = None, ssl_
     return server, port
 
 
-def _client_context(*, alpn: list[str], with_client_cert: bool = False) -> ssl.SSLContext:
+def _client_context(*, alpn: list[str], with_client_cert: bool = False, client_cert: str | None = None, client_key: str | None = None) -> ssl.SSLContext:
     context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH, cafile=str(SERVER_CERT))
     context.minimum_version = ssl.TLSVersion.TLSv1_3
     context.set_alpn_protocols(alpn)
     if with_client_cert:
-        context.load_cert_chain(str(CLIENT_CERT), str(CLIENT_KEY))
+        context.load_cert_chain(str(client_cert or CLIENT_CERT), str(client_key or CLIENT_KEY))
     return context
 
 
@@ -98,32 +100,44 @@ class PackageOwnedTCPTLSTests(unittest.IsolatedAsyncioTestCase):
             await send({'type': 'http.response.start', 'status': 204, 'headers': []})
             await send({'type': 'http.response.body', 'body': b'', 'more_body': False})
 
-        server, port = await _start_tls_server(
-            app,
-            http_versions=['1.1'],
-            ssl_ca_certs=str(CLIENT_CERT),
-            require_client_cert=True,
-        )
-        try:
-            reader, writer = await asyncio.open_connection(
-                '127.0.0.1',
-                port,
-                ssl=_client_context(alpn=['http/1.1'], with_client_cert=True),
-                server_hostname='localhost',
+        with tempfile.TemporaryDirectory() as tmpdir:
+            client_cert_pem, client_key_pem = generate_self_signed_certificate('interop-client', purpose='client')
+            client_cert_path = Path(tmpdir) / 'client-cert.pem'
+            client_key_path = Path(tmpdir) / 'client-key.pem'
+            client_cert_path.write_bytes(client_cert_pem)
+            client_key_path.write_bytes(client_key_pem)
+
+            server, port = await _start_tls_server(
+                app,
+                http_versions=['1.1'],
+                ssl_ca_certs=str(client_cert_path),
+                require_client_cert=True,
             )
-            writer.write(b'POST /mtls HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\n\r\n')
-            await writer.drain()
-            data = await reader.read(65535)
-            self.assertIn(b'204 No Content', data)
-            tls_ext = seen['scope']['extensions']['tls']
-            self.assertEqual(tls_ext['selected_alpn_protocol'], 'http/1.1')
-            self.assertIn('peer_cert', tls_ext)
-            self.assertIn('interop-client', tls_ext['peer_cert']['subject'])
-            writer.close()
-            with contextlib.suppress(Exception):
-                await writer.wait_closed()
-        finally:
-            await server.close()
+            try:
+                reader, writer = await asyncio.open_connection(
+                    '127.0.0.1',
+                    port,
+                    ssl=_client_context(
+                        alpn=['http/1.1'],
+                        with_client_cert=True,
+                        client_cert=str(client_cert_path),
+                        client_key=str(client_key_path),
+                    ),
+                    server_hostname='localhost',
+                )
+                writer.write(b'POST /mtls HTTP/1.1\r\nHost: localhost\r\nContent-Length: 0\r\n\r\n')
+                await writer.drain()
+                data = await reader.read(65535)
+                self.assertIn(b'204 No Content', data)
+                tls_ext = seen['scope']['extensions']['tls']
+                self.assertEqual(tls_ext['selected_alpn_protocol'], 'http/1.1')
+                self.assertIn('peer_cert', tls_ext)
+                self.assertIn('interop-client', tls_ext['peer_cert']['subject'])
+                writer.close()
+                with contextlib.suppress(Exception):
+                    await writer.wait_closed()
+            finally:
+                await server.close()
 
     async def test_http2_over_package_owned_tls_negotiates_h2(self):
         seen = {}

@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "alpn_contains_h2": true,
+    "hpack_roundtrip": true,
+    "tls_context_built": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

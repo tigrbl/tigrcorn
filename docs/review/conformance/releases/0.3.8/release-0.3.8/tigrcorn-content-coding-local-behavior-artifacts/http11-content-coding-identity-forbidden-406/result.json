@@ -1,0 +1,8 @@
+{
+  "scenario_id": "http11-content-coding-identity-forbidden-406",
+  "passed": true,
+  "preserved_via": "local_unit_test",
+  "source_tests": [
+    "tests/test_content_coding_policy_local.py::ContentCodingPolicyLocalTests::test_http11_identity_only_forbidden_returns_406"
+  ]
+}

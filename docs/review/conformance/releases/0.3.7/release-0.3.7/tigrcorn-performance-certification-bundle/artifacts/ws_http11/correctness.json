@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "frame_roundtrip": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

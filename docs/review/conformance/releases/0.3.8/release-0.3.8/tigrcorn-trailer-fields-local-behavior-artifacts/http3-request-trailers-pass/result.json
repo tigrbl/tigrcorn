@@ -1,0 +1,8 @@
+{
+  "scenario_id": "http3-request-trailers-pass",
+  "passed": true,
+  "preserved_via": "local_unit_test",
+  "source_tests": [
+    "tests/test_trailers_rfc9110.py::TrailerFieldsRFC9110Tests::test_http3_request_trailers_are_exposed"
+  ]
+}

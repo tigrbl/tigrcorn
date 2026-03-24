@@ -1,0 +1,8 @@
+{
+  "checks": {
+    "access_log_file_exists": true
+  },
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": false
+}

@@ -1,0 +1,16 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle",
+  "bundle_kind": "performance_certification_bundle",
+  "generated_at": "2026-03-24T05:49:38.878468+00:00",
+  "profile_count": 32,
+  "lane_counts": {
+    "end_to_end_release": 23,
+    "component_regression": 9
+  },
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "current_release_total": 32,
+  "current_release_passed": 32,
+  "current_release_failed": 0
+}

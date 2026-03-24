@@ -1,0 +1,11 @@
+{
+  "id": "ocsp-unreachable-soft-fail-vs-require",
+  "passed": true,
+  "result": {
+    "soft_fail_passed": true,
+    "require_error": "revocation status could not be established for the certificate chain: OCSP http://127.0.0.1:9/unreachable: revocation endpoint fetch failed: [Errno 111] Connection refused"
+  },
+  "source_tests": [
+    "tests/test_phase9e_ocsp_local_validation.py::test_unreachable_responder_soft_fail_and_require_modes_diverge"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "bundle_kind": "performance_certification_bundle",
+  "generated_at": "2026-03-19T23:26:10.357158+00:00",
+  "release_gate_eligible": true,
+  "source_boundary": "docs/review/performance/PERFORMANCE_BOUNDARY.md",
+  "source_matrix": "docs/review/performance/performance_matrix.json"
+}

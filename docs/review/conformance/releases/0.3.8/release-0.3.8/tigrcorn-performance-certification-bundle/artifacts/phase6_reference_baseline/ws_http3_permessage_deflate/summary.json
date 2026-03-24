@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "websocket_http3_permessage_deflate",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.10824200012393703,
+    "p50_ms": 0.10824200012393703,
+    "p95_ms": 0.12155359988810233,
+    "p99_9_ms": 0.12311905202250273,
+    "p99_ms": 0.12283151999781694,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 8841.477611750528,
+    "time_to_first_byte_ms": 0.10824200012393703
+  },
+  "passed": true,
+  "profile_id": "ws_http3_permessage_deflate"
+}

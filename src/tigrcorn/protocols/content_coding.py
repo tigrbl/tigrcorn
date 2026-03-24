@@ -15,6 +15,16 @@ from tigrcorn.utils.headers import append_if_missing, get_header
 _SUPPORTED_ENCODINGS = ('br', 'gzip', 'deflate')
 
 
+def _available_supported_encodings(supported: tuple[str, ...]) -> tuple[str, ...]:
+    available: list[str] = []
+    for coding in supported:
+        if coding == 'br' and brotli is None:
+            continue
+        if coding not in available:
+            available.append(coding)
+    return tuple(available)
+
+
 @dataclass(frozen=True, slots=True)
 class ContentCodingSelection:
     coding: str | None
@@ -45,6 +55,7 @@ def select_content_coding(
     *,
     supported: tuple[str, ...] = _SUPPORTED_ENCODINGS,
 ) -> ContentCodingSelection:
+    supported = _available_supported_encodings(supported)
     header_value = get_header(request_headers, b'accept-encoding')
     if header_value is None:
         return ContentCodingSelection(coding=None, identity_acceptable=True)
@@ -116,9 +127,20 @@ def apply_http_content_coding(
     response_headers: list[tuple[bytes, bytes]],
     body: bytes,
     status: int,
+    policy: str = 'allowlist',
+    supported: tuple[str, ...] = _SUPPORTED_ENCODINGS,
 ) -> tuple[int, list[tuple[bytes, bytes]], bytes, ContentCodingSelection]:
     normalized_headers = [(bytes(name).lower(), bytes(value)) for name, value in response_headers]
-    selection = select_content_coding(request_headers)
+    supported = _available_supported_encodings(tuple(str(item).lower() for item in supported))
+    header_value = get_header(request_headers, b'accept-encoding')
+    if policy == 'identity-only':
+        identity_forbidden = False
+        if header_value is not None:
+            lowered = header_value.decode('ascii', 'ignore').lower()
+            identity_forbidden = 'identity;q=0' in lowered and '*;q=0' in lowered
+        selection = ContentCodingSelection(coding=None, identity_acceptable=not identity_forbidden, explicit_identity_forbidden=identity_forbidden)
+    else:
+        selection = select_content_coding(request_headers, supported=supported)
 
     if not response_allows_body(status):
         return status, normalized_headers, body, selection
@@ -132,6 +154,11 @@ def apply_http_content_coding(
         append_if_missing(headers, b'vary', b'accept-encoding')
         return 406, headers, b'not acceptable', selection
 
+    if policy == 'strict' and header_value is not None and selection.coding is None:
+        headers = _replace_content_length([(b'content-type', b'text/plain; charset=utf-8')], len(b'not acceptable'))
+        append_if_missing(headers, b'vary', b'accept-encoding')
+        return 406, headers, b'not acceptable', selection
+
     if selection.coding is None:
         return status, normalized_headers, body, selection
 
@@ -141,6 +168,7 @@ def apply_http_content_coding(
     append_if_missing(headers, b'vary', b'accept-encoding')
     headers = _replace_content_length(headers, len(encoded))
     return status, headers, encoded, selection
+
 
 
 __all__ = [

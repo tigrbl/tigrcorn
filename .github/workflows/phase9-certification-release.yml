@@ -1,0 +1,79 @@
+name: phase9-certification-release
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/phase9-certification-release.yml'
+      - 'pyproject.toml'
+      - 'src/**'
+      - 'tools/**'
+      - 'docs/review/conformance/**'
+      - 'docs/review/performance/**'
+      - 'tests/**'
+      - 'README.md'
+      - 'CURRENT_REPOSITORY_STATE.md'
+
+jobs:
+  certification-environment-and-phase9-checkpoints:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: python -m pip install -U pip
+
+      - name: Install certification dependencies
+        run: python -m pip install -e ".[certification,dev]"
+
+      - name: Freeze certification environment
+        run: |
+          PYTHONPATH=src python tools/freeze_certification_environment.py \
+            --require-imports \
+            --bundle-root .artifacts/certification-environment/${{ matrix.python-version }} \
+            --skip-status-docs
+
+      - name: Preflight aioquic adapters
+        run: |
+          PYTHONPATH=src python tools/preflight_aioquic_adapters.py \
+            --require-pass \
+            --bundle-root .artifacts/aioquic-adapter-preflight/${{ matrix.python-version }} \
+            --skip-status-docs
+
+      - name: Run release checkpoint wrapper
+        run: |
+          PYTHONPATH=src python tools/run_phase9_release_workflow.py \
+            --skip-status-docs \
+            --scripts tools/create_phase9i_release_assembly_checkpoint.py
+
+      - name: Validate release-gate surface
+        run: |
+          python -m compileall -q src benchmarks tools
+          PYTHONPATH=src pytest -q \
+            tests/test_phase9i_release_assembly_checkpoint.py \
+            tests/test_release_gates.py \
+            tests/test_certification_environment_freeze.py \
+            tests/test_aioquic_adapter_preflight.py
+
+      - name: Upload certification-environment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: certification-environment-${{ matrix.python-version }}
+          path: .artifacts/certification-environment/${{ matrix.python-version }}
+
+      - name: Upload aioquic adapter preflight artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aioquic-adapter-preflight-${{ matrix.python-version }}
+          path: .artifacts/aioquic-adapter-preflight/${{ matrix.python-version }}

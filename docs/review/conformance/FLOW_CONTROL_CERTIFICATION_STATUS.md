@@ -1,41 +1,46 @@
+
 # Flow-control certification status
 
 The authoritative package-wide certification target remains `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-This status file tracks the repository-level QUIC / HTTP/3 flow-control review material that sits outside the current primary release-gate blockers.
+This status file tracks the repository-level QUIC / HTTP/3 flow-control evidence roots that sit outside the current primary canonical release-gate blockers.
 
 ## What this update adds
 
-- a new offline tooling entrypoint: `tools/create_provisional_flow_control_gap_bundle.py`
-- a new review bundle: `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle/`
-- explicit links from same-stack HTTP/3 replay artifacts to the local QUIC / HTTP/3 flow-control vectors in `corpus.json`
+- a new tooling entrypoint: `tools/create_minimum_certified_flow_control_bundle.py`
+- a new independent evidence root: `docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/`
+- a new reference matrix: `docs/review/conformance/external_matrix.flow_control.minimum.json`
+- retention of the earlier provisional review bundle for historical provenance
 
 ## What the new bundle is
 
-The provisional flow-control gap bundle is generated from the same-stack HTTP/3 replay matrix.
-It preserves a stable review root for:
+The minimum certified flow-control bundle is promoted from already-preserved third-party `aioquic` HTTP/3 artifacts.
+It preserves a stable release-gate-eligible evidence root for:
 
-- basic HTTP/3 request-stream credit behavior
-- Retry-associated QUIC / HTTP/3 flow behavior
-- 0-RTT-associated flow behavior
-- migration-associated flow behavior
-- GOAWAY / QPACK backpressure behavior
+- credit exhaustion
+- replenishment
+- stream-level backpressure
+- connection-level backpressure
+- QPACK blocked-stream behavior
+- GOAWAY / pressure behavior
 
 Each scenario directory is marked with:
 
-- `provisional_non_certifying_substitution: true`
-- `release_gate_eligible: false`
-- `flow_control_review_only: true`
-- `source_same_stack_scenario`
-- `linked_local_vectors`
+- `release_gate_eligible: true`
+- `source_independent_scenario`
+- `flow_control_certified_scope`
+- `flow_control_metadata.json`
+- links back to the local vectors used to keep the bundle traceable to the conformance corpus
 
 ## Current honest status
 
-Broad independent QUIC / HTTP/3 flow-control certification is still incomplete.
-The new review bundle improves repository transparency and gives the gap a formal artifact root, but it does not satisfy `required_rfc_evidence` for any stricter flow-control-specific overlay and does not change the current green canonical release-gate outcome.
+Broad ecosystem QUIC / HTTP/3 flow-control certification is still not finished, but the repository no longer depends only on the provisional same-stack review bundle.
+
+The new minimum certified flow-control root is a real independent evidence bundle promoted from preserved third-party `aioquic` artifacts.
+The older provisional flow-control bundle remains in-tree as a historical / planning aid and is still explicitly non-certifying.
 
 ## Closure procedure
 
-1. Keep the now-complete canonical HTTP/3 / RFC 9220 closure work from `docs/review/conformance/INDEPENDENT_HTTP3_CERTIFICATION_STATE.md`.
-2. Preserve third-party QUIC / HTTP/3 flow-control artifacts that specifically exercise credit exhaustion, replenishment, and backpressure behavior.
-3. Replace the provisional same-stack review bundle with real independent artifacts once those runs are preserved.
+1. Keep the now-preserved minimum independent flow-control bundle in the canonical release root.
+2. Continue adding broader third-party QUIC / HTTP/3 flow-control artifacts that separately exercise additional peer stacks and richer backpressure cases.
+3. Keep the provisional same-stack review bundle only as a provenance aid until the broader ecosystem matrix is preserved.

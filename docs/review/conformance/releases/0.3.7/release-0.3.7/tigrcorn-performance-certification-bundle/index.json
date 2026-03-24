@@ -1,0 +1,76 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.7/release-0.3.7/tigrcorn-performance-certification-bundle",
+  "bundle_kind": "performance_certification_bundle",
+  "generated_at": "2026-03-19T23:26:10.357158+00:00",
+  "note": "This bundle freezes the preserved current-release performance artifacts and threshold metadata.",
+  "phase6_status": {
+    "authoritative_boundary_passed": true,
+    "checkpoint": "performance_closure",
+    "generated_at": "2026-03-19T13:51:18.970774+00:00",
+    "note": "Performance closure is a release-certified product claim, separate from the canonical RFC compliance boundary.",
+    "performance_boundary_landed": {
+      "baseline_artifacts": true,
+      "benchmark_drivers": true,
+      "correctness_under_load_checks": true,
+      "current_release_artifacts": true,
+      "perf_runner": true,
+      "performance_matrix": true,
+      "relative_regression_evaluation": true,
+      "run_perf_matrix_tool": true
+    },
+    "phase": 6,
+    "profiles": {
+      "baseline_passed": 32,
+      "current_release_failed": 0,
+      "current_release_passed": 32,
+      "required_total": 32
+    },
+    "strict_overlay_passed": false,
+    "validation": {
+      "compileall": {
+        "command": "python -m compileall -q src benchmarks tools",
+        "result": "passed"
+      },
+      "pytest": {
+        "command": "PYTHONPATH=src:. pytest -q tests/test_phase6_performance_harness.py tests/test_release_gates.py tests/test_phase5_flow_control_bundle.py tests/test_phase5_intermediary_proxy_corpus.py",
+        "result": "14 passed"
+      }
+    }
+  },
+  "profile_count": 32,
+  "profiles": [
+    "http11_baseline",
+    "http11_keepalive",
+    "http11_chunked_upload_download",
+    "http2_multiplex_10",
+    "http2_multiplex_100",
+    "http2_multiplex_1000",
+    "http2_tls",
+    "http3_clean_network",
+    "http3_loss_jitter",
+    "ws_http11",
+    "ws_http11_permessage_deflate",
+    "ws_http2",
+    "ws_http2_permessage_deflate",
+    "ws_http3",
+    "ws_http3_permessage_deflate",
+    "ws_fanout_broadcast",
+    "tls_handshake",
+    "mtls_handshake",
+    "ocsp_strict_mode",
+    "alpn_negotiation_cost",
+    "connect_relay_throughput",
+    "trailers_under_load",
+    "content_coding_under_load",
+    "logging_off",
+    "logging_on",
+    "metrics_off",
+    "metrics_on",
+    "proxy_headers_off",
+    "proxy_headers_on",
+    "worker_scaleout",
+    "graceful_drain",
+    "reload_overhead"
+  ],
+  "release_gate_eligible": true
+}
