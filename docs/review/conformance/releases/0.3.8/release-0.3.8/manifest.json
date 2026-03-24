@@ -91,8 +91,8 @@
     "certification_environment": {
       "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
       "release_gate_eligible": false,
-      "required_imports_ready": true,
-      "python_version_ready": false
+      "required_imports_ready": false,
+      "python_version_ready": true
     },
     "aioquic_adapter_preflight": {
       "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle",
@@ -109,7 +109,7 @@
       "validated": true
     }
   },
-  "generated_at": "2026-03-24T07:33:47.023455+00:00",
+  "generated_at": "2026-03-24T10:43:51.603016+00:00",
   "notes": [
     "Phase 9B independent harness foundation remains preserved in this canonical release root.",
     "Phase 9C preserves passing RFC 7692 independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3.",

@@ -1,7 +1,7 @@
 {
   "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-flag-surface-certification-bundle",
   "bundle_kind": "flag_surface_certification_bundle",
-  "generated_at": "2026-03-24T05:49:37.211266+00:00",
+  "generated_at": "2026-03-24T10:43:49.717324+00:00",
   "public_flag_count": 84,
   "promotion_ready_count": 84,
   "hazard_cluster_count": 5,

@@ -80,19 +80,3 @@ The broader strict-promotion execution plan remains documented in:
 
 - `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`
 - `docs/review/conformance/phase9_implementation_plan.current.json`
-
-## Phase 9I strict validation checkpoint
-
-The exact Step 8 strict validation set has now been executed and preserved in:
-
-- `docs/review/conformance/PHASE9I_STRICT_VALIDATION.md`
-- `docs/review/conformance/phase9i_strict_validation.current.json`
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/`
-
-What this validation records:
-
-- `python -m compileall -q src benchmarks tools` passed
-- `evaluate_release_gates('.')` passed
-- `evaluate_release_gates(... strict target ...)` passed
-- `evaluate_promotion_target('.')` passed
-- the targeted pytest suite passed with `27` tests

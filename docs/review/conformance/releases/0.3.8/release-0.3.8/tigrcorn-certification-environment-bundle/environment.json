@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "captured_at": "2026-03-24T04:45:40.470144+00:00",
+  "captured_at": "2026-03-24T10:43:49.369067+00:00",
   "repository_root": ".",
   "git_commit": null,
   "python": {
-    "executable": "/mnt/data/step6venv/bin/python",
-    "version": "3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0]",
-    "minor_version": "3.13",
+    "executable": "/usr/local/bin/python",
+    "version": "3.11.8 (main, Mar 12 2024, 11:41:52) [GCC 12.2.0]",
+    "minor_version": "3.11",
     "supported_release_workflow_versions": [
       "3.11",
       "3.12"
     ],
-    "version_ready": false,
+    "version_ready": true,
     "implementation": "CPython",
-    "platform": "Linux-4.4.0-x86_64-with-glibc2.41",
+    "platform": "Linux-4.4.0-x86_64-with-glibc2.36",
     "machine": "x86_64"
   },
   "installation_contract": {
@@ -49,9 +49,9 @@
   "dependencies": {
     "aioquic": {
       "module": "aioquic",
-      "importable": true,
-      "installed": true,
-      "version": "1.3.0",
+      "importable": false,
+      "installed": false,
+      "version": null,
       "declared_in_extras": [
         "certification",
         "dev"
@@ -61,7 +61,7 @@
       "module": "h2",
       "importable": true,
       "installed": true,
-      "version": "4.3.0",
+      "version": "4.2.0",
       "declared_in_extras": [
         "certification",
         "dev"
@@ -71,7 +71,7 @@
       "module": "websockets",
       "importable": true,
       "installed": true,
-      "version": "16.0",
+      "version": "10.3",
       "declared_in_extras": [
         "certification",
         "dev"
@@ -81,7 +81,7 @@
       "module": "wsproto",
       "importable": true,
       "installed": true,
-      "version": "1.3.2",
+      "version": "1.2.0",
       "declared_in_extras": [
         "certification",
         "dev"
@@ -90,12 +90,15 @@
   },
   "environment": {
     "selected_variables": {
-      "PYTHONPATH": "src",
-      "VIRTUAL_ENV": "/mnt/data/step6venv"
+      "PYTHONPATH": "src"
     },
     "command": [
-      "/mnt/data/step6venv/bin/python",
-      "tools/create_phase9i_release_assembly_checkpoint.py"
+      "/usr/local/bin/python",
+      "tools/freeze_certification_environment.py",
+      "--release-root",
+      "docs/review/conformance/releases/0.3.8/release-0.3.8",
+      "--bundle-name",
+      "tigrcorn-certification-environment-bundle"
     ]
   },
   "release_workflow": {
@@ -109,9 +112,11 @@
       "websockets",
       "wsproto"
     ],
-    "required_imports_ready": true,
-    "missing_imports": [],
-    "python_version_ready": false,
+    "required_imports_ready": false,
+    "missing_imports": [
+      "aioquic"
+    ],
+    "python_version_ready": true,
     "environment_ready_for_release_workflow": false
   }
 }

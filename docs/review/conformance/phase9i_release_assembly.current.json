@@ -21,11 +21,9 @@
     "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
     "remaining_non_passing_independent_scenarios": [],
     "remaining_strict_target_rfc_gaps": [],
-    "remaining_plan_phases": [],
-    "strict_validation_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle",
-    "strict_validation_passed": true,
     "release_notes": "RELEASE_NOTES_0.3.8.md",
-    "release_promoted": true
+    "release_promoted": true,
+    "remaining_plan_phases": []
   },
   "validation": {
     "compileall": {
@@ -46,21 +44,6 @@
       "passed": true,
       "failure_count": 0,
       "failures": []
-    },
-    "targeted_pytest_suite": {
-      "passed": true,
-      "test_count": 27,
-      "test_files": [
-        "tests/test_websocket_rfc7692.py",
-        "tests/test_phase9c_rfc7692_independent_closure.py",
-        "tests/test_phase9d1_connect_relay_independent_closure.py",
-        "tests/test_phase9d2_trailer_fields_independent_closure.py",
-        "tests/test_phase9d3_content_coding_independent_closure.py",
-        "tests/test_phase9i_release_assembly_checkpoint.py",
-        "tests/test_release_gates.py"
-      ],
-      "artifact_stdout": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/targeted_pytest.stdout.txt",
-      "artifact_stderr": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle/artifacts/targeted_pytest.stderr.txt"
     }
   },
   "release_assembly": {
@@ -72,17 +55,16 @@
       "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
       "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix",
       "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle"
+      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle"
     ],
     "release_root_manifest": "docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json",
     "release_root_bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json",
     "release_root_bundle_summary": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json",
     "version_bump_performed": true,
     "release_notes_promoted": true,
-    "reason_not_promoted": "",
     "canonical_release_promoted": true,
-    "release_notes": "RELEASE_NOTES_0.3.8.md"
+    "release_notes": "RELEASE_NOTES_0.3.8.md",
+    "reason_not_promoted": ""
   },
-  "generated_at": "2026-03-24T07:33:47.255322+00:00"
+  "generated_at": "2026-03-24T10:43:51.704508+00:00"
 }

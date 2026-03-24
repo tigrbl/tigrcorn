@@ -15,11 +15,11 @@ print('certification deps OK')
 PY
 ```
 
-Observed Python minor version: `3.13`
+Observed Python minor version: `3.11`
 
-Observed required-import readiness: `True`
+Observed required-import readiness: `False`
 
-Observed missing imports: `none`
+Observed missing imports: `aioquic`
 
 Release workflow path: `.github/workflows/phase9-certification-release.yml`
 

@@ -1,7 +1,7 @@
 {
   "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle",
   "bundle_kind": "performance_certification_bundle",
-  "generated_at": "2026-03-24T05:49:38.878468+00:00",
+  "generated_at": "2026-03-24T10:43:50.234183+00:00",
   "note": "This bundle freezes the preserved strict-performance artifacts and threshold metadata for the 0.3.8 working release root.",
   "release_gate_eligible": true,
   "phase9g_status": {

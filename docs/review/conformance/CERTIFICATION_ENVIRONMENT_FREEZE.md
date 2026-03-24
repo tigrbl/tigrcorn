@@ -17,10 +17,10 @@ PY
 
 ## Current recorded state
 
-- python minor version: `3.13`
-- python version ready for the release workflow: `False`
-- required imports ready: `True`
-- missing imports: `none`
+- python minor version: `3.11`
+- python version ready for the release workflow: `True`
+- required imports ready: `False`
+- missing imports: `aioquic`
 - environment ready for the release workflow: `False`
 - release workflow path: `.github/workflows/phase9-certification-release.yml`
 - wrapper path: `tools/run_phase9_release_workflow.py`

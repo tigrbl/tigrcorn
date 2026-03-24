@@ -147,11 +147,6 @@
     ],
     "transcript_metadata_emitted": true
   },
-  "remaining_strict_target_blockers": [
-    "websocket-http3-server-aioquic-client-permessage-deflate",
-    "http3-connect-relay-aioquic-client",
-    "http3-trailer-fields-aioquic-client",
-    "http3-content-coding-aioquic-client"
-  ],
+  "remaining_strict_target_blockers": [],
   "status": "aioquic_adapter_preflight_passed"
 }

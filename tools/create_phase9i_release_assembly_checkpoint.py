@@ -15,8 +15,14 @@ SRC = ROOT / 'src'
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from tigrcorn.compat.aioquic_preflight import run_aioquic_adapter_preflight
-from tigrcorn.compat.certification_env import write_certification_environment_bundle
+from tigrcorn.compat.aioquic_preflight import (
+    run_aioquic_adapter_preflight,
+    write_status_documents as write_aioquic_preflight_status_documents,
+)
+from tigrcorn.compat.certification_env import (
+    write_certification_environment_bundle,
+    write_status_documents as write_certification_environment_status_documents,
+)
 from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target
 
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
@@ -36,6 +42,106 @@ RELEASE_GATE_STATUS_JSON = CONFORMANCE / 'release_gate_status.current.json'
 RELEASE_GATE_STATUS_MD = CONFORMANCE / 'RELEASE_GATE_STATUS.md'
 PACKAGE_REVIEW_JSON = CONFORMANCE / 'package_compliance_review_phase9i.current.json'
 PACKAGE_REVIEW_MD = CONFORMANCE / 'PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md'
+
+
+
+LEGACY_CANONICAL_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.6/release-0.3.6'
+
+
+def load_optional_json(path: Path) -> Any | None:
+    if not path.exists():
+        return None
+    return load_json(path)
+
+
+def current_release_promotion_state() -> dict[str, Any]:
+    manifest = load_optional_json(RELEASE_ROOT / 'manifest.json') or {}
+    promotion_payload = load_optional_json(CONFORMANCE / 'phase9_release_promotion.current.json') or {}
+    promotion_state = promotion_payload.get('current_state', {}) if isinstance(promotion_payload, dict) else {}
+    package_version = load_pyproject_version()
+    release_notes = str(
+        manifest.get('release_notes')
+        or promotion_state.get('release_notes')
+        or f'RELEASE_NOTES_{package_version}.md'
+    )
+    version_bump_performed = bool(
+        manifest.get('version_bump_performed')
+        or promotion_state.get('version_bump_performed')
+    )
+    canonical_release_promoted = bool(
+        manifest.get('canonical_release_promoted')
+        or version_bump_performed
+        or promotion_state.get('canonical_authoritative_release_root') == relative_path(RELEASE_ROOT)
+    )
+    release_notes_promoted = bool(
+        manifest.get('release_notes_promoted')
+        or promotion_state.get('release_notes_promoted')
+        or (canonical_release_promoted and (ROOT / release_notes).exists())
+    )
+    canonical_authoritative_release_root = (
+        relative_path(RELEASE_ROOT) if canonical_release_promoted else LEGACY_CANONICAL_RELEASE_ROOT
+    )
+    return {
+        'package_version': package_version,
+        'canonical_release_promoted': canonical_release_promoted,
+        'canonical_authoritative_release_root': canonical_authoritative_release_root,
+        'version_bump_performed': version_bump_performed,
+        'release_notes_promoted': release_notes_promoted,
+        'release_notes': release_notes,
+    }
+
+
+def sync_certification_environment_status_from_bundle() -> None:
+    environment_path = CERT_ENV_BUNDLE / 'environment.json'
+    if not environment_path.exists():
+        return
+    snapshot = load_json(environment_path)
+    write_certification_environment_status_documents(
+        ROOT,
+        snapshot,
+        release_root=relative_path(RELEASE_ROOT),
+        bundle_root=relative_path(CERT_ENV_BUNDLE),
+        workflow_path='.github/workflows/phase9-certification-release.yml',
+        wrapper_path='tools/run_phase9_release_workflow.py',
+    )
+
+
+def sync_aioquic_preflight_status_from_bundle() -> None:
+    preflight_path = AIOQUIC_PREFLIGHT_BUNDLE / 'preflight.json'
+    index_path = AIOQUIC_PREFLIGHT_BUNDLE / 'index.json'
+    if not preflight_path.exists() or not index_path.exists():
+        return
+    preflight_payload = load_json(preflight_path)
+    index = load_json(index_path)
+    snapshot = {
+        'checkpoint': 'aioquic_adapter_preflight',
+        'status': 'aioquic_adapter_preflight_passed' if index.get('all_adapters_passed') else 'aioquic_adapter_preflight_failed',
+        'current_state': {
+            'release_root': relative_path(RELEASE_ROOT),
+            'bundle_root': index['artifact_root'],
+            'matrix_path': index['matrix_path'],
+            'scenario_ids': list(index.get('scenario_ids', [])),
+            'scenario_records': list(preflight_payload.get('scenario_records', [])),
+            'environment': dict(preflight_payload.get('environment', {})),
+            'all_adapters_passed': index['all_adapters_passed'],
+            'no_peer_exit_code_2': index['no_peer_exit_code_2'],
+            'negotiation_metadata_emitted': index['negotiation_metadata_emitted'],
+            'transcript_metadata_emitted': index['transcript_metadata_emitted'],
+            'all_protocols_h3': index['all_protocols_h3'],
+            'all_handshakes_complete': index['all_handshakes_complete'],
+            'certificate_inputs_ready': index['certificate_inputs_ready'],
+            'packet_traces_emitted': index['packet_traces_emitted'],
+            'qlogs_emitted': index['qlogs_emitted'],
+            'gate_status_after_preflight': dict(preflight_payload.get('gate_status_after_preflight', index.get('gate_status_after_preflight', {}))),
+        },
+        'remaining_strict_target_blockers': [],
+    }
+    write_aioquic_preflight_status_documents(
+        ROOT,
+        snapshot,
+        release_root=relative_path(RELEASE_ROOT),
+        bundle_root=relative_path(AIOQUIC_PREFLIGHT_BUNDLE),
+    )
 
 
 def _now() -> str:
@@ -410,6 +516,9 @@ def update_release_root_manifest() -> None:
 
 
 def update_docs_and_status() -> None:
+    sync_certification_environment_status_from_bundle()
+    sync_aioquic_preflight_status_from_bundle()
+    promoted_state = current_release_promotion_state()
     auth = evaluate_release_gates(ROOT)
     strict = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
     promotion = evaluate_promotion_target(ROOT)
@@ -420,7 +529,7 @@ def update_docs_and_status() -> None:
     phase9i_status = {
         'phase': '9I',
         'checkpoint': 'phase9i_release_assembly_and_certifiable_checkpoint',
-        'status': 'release_root_assembled_and_certifiably_promotable' if promotion.passed else 'release_root_assembled_but_not_certifiably_promotable',
+        'status': ('canonical_release_promoted_and_version_aligned' if promoted_state['canonical_release_promoted'] else ('release_root_assembled_and_certifiably_promotable' if promotion.passed else 'release_root_assembled_but_not_certifiably_promotable')),
         'current_state': {
             'authoritative_boundary_passed': auth.passed,
             'strict_target_boundary_passed': strict.passed,
@@ -432,14 +541,16 @@ def update_docs_and_status() -> None:
             'certification_environment_bundle': relative_path(CERT_ENV_BUNDLE),
             'aioquic_adapter_preflight_bundle': relative_path(AIOQUIC_PREFLIGHT_BUNDLE),
             'aioquic_adapter_preflight_passed': load_json(AIOQUIC_PREFLIGHT_BUNDLE / 'index.json')['all_adapters_passed'],
-            'current_package_version': load_pyproject_version(),
+            'current_package_version': promoted_state['package_version'],
             'assembled_release_root': relative_path(RELEASE_ROOT),
             'release_root_manifest': relative_path(RELEASE_ROOT / 'manifest.json'),
             'release_root_bundle_index': relative_path(RELEASE_ROOT_BUNDLE_INDEX),
             'release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
-            'canonical_authoritative_release_root': 'docs/review/conformance/releases/0.3.6/release-0.3.6',
+            'canonical_authoritative_release_root': promoted_state['canonical_authoritative_release_root'],
             'remaining_non_passing_independent_scenarios': scenario_gaps,
             'remaining_strict_target_rfc_gaps': strict_gaps,
+            'release_notes': promoted_state['release_notes'],
+            'release_promoted': promoted_state['canonical_release_promoted'],
             'remaining_plan_phases': [],
         },
         'validation': {
@@ -477,9 +588,11 @@ def update_docs_and_status() -> None:
             'release_root_manifest': relative_path(RELEASE_ROOT / 'manifest.json'),
             'release_root_bundle_index': relative_path(RELEASE_ROOT_BUNDLE_INDEX),
             'release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
-            'version_bump_performed': False,
-            'release_notes_promoted': False,
-            'reason_not_promoted': ('explicit release-promotion/version-bump work remains deferred outside this checkpoint' if promotion.passed else 'strict boundary and composite promotion gate remain red until the remaining strict-target evidence rows turn green'),
+            'version_bump_performed': promoted_state['version_bump_performed'],
+            'release_notes_promoted': promoted_state['release_notes_promoted'],
+            'canonical_release_promoted': promoted_state['canonical_release_promoted'],
+            'release_notes': promoted_state['release_notes'],
+            'reason_not_promoted': ('' if promoted_state['canonical_release_promoted'] else ('explicit release-promotion/version-bump work remains deferred outside this checkpoint' if promotion.passed else 'strict boundary and composite promotion gate remain red until the remaining strict-target evidence rows turn green')),
         },
     }
     dump_json(PHASE9I_STATUS_JSON, normalize_workspace_paths(phase9i_status))
@@ -1031,6 +1144,10 @@ def main() -> None:
     update_release_root_manifest()
     build_release_root_indexes()
     update_docs_and_status()
+    if current_release_promotion_state()['canonical_release_promoted']:
+        subprocess.run([sys.executable, str(ROOT / 'tools' / 'create_phase9_release_promotion_checkpoint.py')], check=True, cwd=ROOT)
+        sync_certification_environment_status_from_bundle()
+        sync_aioquic_preflight_status_from_bundle()
 
 
 if __name__ == '__main__':
