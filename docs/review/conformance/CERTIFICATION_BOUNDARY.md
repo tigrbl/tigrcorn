@@ -81,7 +81,7 @@ Historical preserved roots remain in-tree for provenance:
 - `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`
 - `docs/review/conformance/releases/0.3.7/release-0.3.7/`
 
-The older Phase 7 archival documentation refers to the `0.3.7` root as a **candidate next release root**. That phrasing remains historically accurate for that checkpoint and is preserved for compatibility with the Phase 7 release-candidate audit trail.
+The 0.3.9 canonical root is green under both the authoritative boundary and the stricter all-surfaces-independent target.
 
 ## Release-gate requirements
 
@@ -96,7 +96,7 @@ A release is not honestly certifiable until all of the following are true:
 
 ## Current release note
 
-The current release-gate result under this authoritative boundary is green. The canonical `0.3.9` release root is also green under the preserved stricter target and under the composite promotion target, but those stricter profiles do **not** redefine the canonical package boundary.
+The current release-gate result under this authoritative boundary is green, and the canonical 0.3.9 release root also remains green under the stricter target. The canonical `0.3.9` release root is also green under the preserved stricter target and under the composite promotion target, but those stricter profiles do **not** redefine the canonical package boundary.
 
 The package-owned TCP/TLS condition is satisfied in this working tree.
 

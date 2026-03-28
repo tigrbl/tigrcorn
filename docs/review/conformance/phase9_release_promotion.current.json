@@ -1,13 +1,8 @@
 {
-  "document_role": "canonical_current_state_source",
-  "current_truth_source": true,
-  "truth_scope": "canonical_current_state_chain",
-  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
-  "documentation_truth_reviewed_at": "2026-03-26",
   "phase": 9,
   "checkpoint": "phase9_release_promotion_and_version_update",
   "status": "canonical_release_promoted_and_version_aligned",
-  "generated_at": "2026-03-28T03:59:49.931630+00:00",
+  "generated_at": "2026-03-28T06:47:38.042501+00:00",
   "current_state": {
     "authoritative_boundary_passed": true,
     "strict_target_boundary_passed": true,
@@ -17,8 +12,7 @@
     "release_notes": "RELEASE_NOTES_0.3.9.md",
     "version_bump_performed": true,
     "release_notes_promoted": true,
-    "remaining_administrative_work": [],
-    "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8"
+    "remaining_administrative_work": []
   },
   "validation": {
     "evaluate_release_gates_authoritative": {
@@ -34,8 +28,8 @@
   "files_updated": [
     "pyproject.toml",
     "README.md",
-    "CURRENT_REPOSITORY_STATE.md",
-    "RFC_CERTIFICATION_STATUS.md",
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md",
     "RELEASE_NOTES_0.3.9.md",
     "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
     "docs/review/conformance/certification_boundary.json",

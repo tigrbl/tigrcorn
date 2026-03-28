@@ -60,4 +60,4 @@ This checkpoint is documented through:
 
 - `docs/review/conformance/PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
 - `docs/review/conformance/phase9g_strict_performance.current.json`
-- `DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`

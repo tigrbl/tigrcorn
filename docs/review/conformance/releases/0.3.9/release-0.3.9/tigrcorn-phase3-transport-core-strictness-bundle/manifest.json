@@ -3,7 +3,7 @@
   "checkpoint": "phase3_transport_core_strictness",
   "generated_snapshot_dir": "docs/review/conformance/phase3_transport_core",
   "status_json": "docs/review/conformance/phase3_transport_core_strictness_checkpoint.current.json",
-  "current_state_report": "CURRENT_REPOSITORY_STATE_PHASE3_TRANSPORT_CORE_STRICTNESS_CHECKPOINT.md",
+  "current_state_report": "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE3_TRANSPORT_CORE_STRICTNESS_CHECKPOINT.md",
   "scenario_classes": [
     {
       "class": "http11_framing_and_origin_form_runtime",

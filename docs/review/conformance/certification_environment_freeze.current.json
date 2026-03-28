@@ -1,10 +1,4 @@
 {
-  "document_role": "current_subsystem_truth_source",
-  "current_truth_source": true,
-  "truth_scope": "subsystem_current_state",
-  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
-  "documentation_truth_reviewed_at": "2026-03-26",
-  "subsystem_truth_source": true,
   "checkpoint": "certification_environment_freeze",
   "phase": "step1_execution_environment_freeze",
   "status": "environment_contract_frozen_but_not_ready",

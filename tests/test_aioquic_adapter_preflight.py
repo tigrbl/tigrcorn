@@ -16,7 +16,7 @@ def _load_json(path: Path) -> dict:
 def test_aioquic_preflight_docs_bundle_and_notes_exist() -> None:
     assert (CONFORMANCE / 'AIOQUIC_ADAPTER_PREFLIGHT.md').exists()
     assert (CONFORMANCE / 'aioquic_adapter_preflight.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md').exists()
     assert BUNDLE_ROOT.exists()
     assert (ROOT / 'tools' / 'preflight_aioquic_adapters.py').exists()
 

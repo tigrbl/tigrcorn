@@ -17,7 +17,7 @@ def test_canonical_current_state_chain_exists_and_is_explicit() -> None:
     assert payload['document_role'] == 'canonical_current_state_source'
     assert payload['current_truth_source'] is True
     assert payload['exit_criteria']['one_canonical_current_state_chain'] is True
-    assert 'CURRENT_REPOSITORY_STATE.md' in payload['canonical_human_current_state_chain']
+    assert 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md' in payload['canonical_human_current_state_chain']
     assert 'docs/review/conformance/package_compliance_review_phase9i.current.json' in payload['canonical_machine_current_state_chain']
     assert payload['example_path_policy']['canonical_current_phase4_example_tree'] == 'examples/advanced_delivery/'
     assert payload['example_path_policy']['retained_archival_feature_specific_tree'] == 'examples/advanced_protocol_delivery/'
@@ -66,7 +66,7 @@ def test_example_path_docs_are_normalized() -> None:
 
 def test_package_review_and_current_state_record_normalization() -> None:
     review = _load('docs/review/conformance/package_compliance_review_phase9i.current.json')
-    current = (ROOT / 'CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
+    current = (ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
     assert review['summary']['documentation_truth_normalized'] is True
     assert review['summary']['canonical_current_state_chain_defined'] is True
     assert review['summary']['historical_current_aliases_labeled'] is True

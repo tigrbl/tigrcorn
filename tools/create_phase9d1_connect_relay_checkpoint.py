@@ -29,7 +29,7 @@ LOCAL_NEGATIVE_ROOT = RELEASE_ROOT / 'tigrcorn-connect-relay-local-negative-arti
 MATRIX_PATH = CONFORMANCE / 'external_matrix.release.json'
 STATUS_JSON = CONFORMANCE / 'phase9d1_connect_relay_independent.current.json'
 STATUS_MD = CONFORMANCE / 'PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md'
-DELIVERY_NOTES = ROOT / 'DELIVERY_NOTES_PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md'
+DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md'
 TMP_ROOT = ROOT / '.artifacts' / 'phase9d1_connect_relay_runs'
 SCENARIOS = [
     'http11-connect-relay-curl-client',

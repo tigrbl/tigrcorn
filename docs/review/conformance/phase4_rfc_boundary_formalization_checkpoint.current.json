@@ -59,8 +59,8 @@
     "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
     "docs/review/conformance/package_compliance_review_phase9i.current.json",
     "docs/review/conformance/phase9i_release_assembly.current.json",
-    "CURRENT_REPOSITORY_STATE.md",
-    "CURRENT_REPOSITORY_STATE_PHASE4_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md"
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE4_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md"
   ],
   "notes": [
     "RFC 8297 is certified for direct-server 103 Early Hints behavior across HTTP/1.1, HTTP/2, and HTTP/3.",

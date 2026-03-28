@@ -55,8 +55,8 @@
     "HTTP/3 large-response delivery continues to respect QUIC anti-amplification and requires normal client ACK/timer progress"
   ],
   "files_updated": [
-    "CURRENT_REPOSITORY_STATE.md",
-    "CURRENT_REPOSITORY_STATE_RESPONSE_PIPELINE_STREAMING_CHECKPOINT.md",
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_RESPONSE_PIPELINE_STREAMING_CHECKPOINT.md",
     "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
     "docs/review/conformance/package_compliance_review_phase9i.current.json",
     "docs/review/conformance/phase4_advanced_protocol_delivery/static_delivery_status.json",

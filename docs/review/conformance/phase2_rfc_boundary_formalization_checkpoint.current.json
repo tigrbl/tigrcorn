@@ -54,10 +54,10 @@
     "docs/review/conformance/release_gate_status.current.json",
     "docs/review/conformance/phase9i_release_assembly.current.json",
     "docs/review/conformance/package_compliance_review_phase9i.current.json",
-    "CURRENT_REPOSITORY_STATE.md",
-    "CURRENT_REPOSITORY_STATE_PHASE2_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md",
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE2_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md",
     "README.md",
-    "RFC_CERTIFICATION_STATUS.md",
+    "docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md",
     "tests/test_rfc7232_conditional_requests.py",
     "tests/test_rfc7233_range_requests.py",
     "tests/test_phase2_rfc_boundary_formalization_checkpoint.py"

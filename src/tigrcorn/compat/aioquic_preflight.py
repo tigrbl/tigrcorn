@@ -19,7 +19,7 @@ DEFAULT_PRELIGHT_SCENARIOS: tuple[str, ...] = (
 DEFAULT_BUNDLE_NAME = 'tigrcorn-aioquic-adapter-preflight-bundle'
 DEFAULT_STATUS_DOC = 'docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md'
 DEFAULT_STATUS_JSON = 'docs/review/conformance/aioquic_adapter_preflight.current.json'
-DEFAULT_DELIVERY_NOTES = 'DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md'
+DEFAULT_DELIVERY_NOTES = 'docs/review/conformance/delivery/DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md'
 DEFAULT_MATRIX_PATH = 'docs/review/conformance/external_matrix.release.json'
 DEFAULT_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.9/release-0.3.9'
 

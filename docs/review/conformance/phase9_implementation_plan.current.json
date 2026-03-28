@@ -114,7 +114,7 @@
         "docs/review/conformance/promotion_gate.target.json",
         "docs/review/conformance/flag_contracts.json",
         "docs/review/conformance/flag_covering_array.json",
-        "CURRENT_REPOSITORY_STATE.md"
+        "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md"
       ],
       "exit_criteria": [
         "every blocker has an owner and a tracked deliverable",
@@ -326,7 +326,7 @@
       ],
       "key_files": [
         "docs/review/conformance/releases/0.3.9/release-0.3.9/",
-        "CURRENT_REPOSITORY_STATE.md",
+        "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
         "README.md",
         "docs/review/conformance/README.md",
         "docs/review/conformance/phase8_strict_promotion_target_status.current.json"

@@ -28,11 +28,11 @@ async def app(scope, receive, send):
 | Promotion target | green |
 | Current package claim | **certifiably fully RFC compliant under the authoritative certification boundary** |
 | Current package claim under promoted root | **certifiably fully featured** |
-| Canonical current-state entrypoint | `CURRENT_REPOSITORY_STATE.md` |
+| Canonical current-state entrypoint | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
 | Mutable governance entrypoint | `docs/gov/README.md` |
 | Agentic workflow entrypoint | `AGENTS.md` |
 
-Use `CURRENT_REPOSITORY_STATE.md` for the point-in-time repository summary, and use `docs/review/conformance/current_state_chain.current.json` for the machine-readable current-state chain.
+Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` for the point-in-time repository summary, and use `docs/review/conformance/current_state_chain.current.json` for the machine-readable current-state chain.
 
 ## Install
 
@@ -99,23 +99,36 @@ Use `docs/review/conformance/BOUNDARY_NON_GOALS.md` as the authoritative out-of-
 
 ## Evidence tiers and promoted release roots
 
-Evidence tiers shipped in-repo:
+This archive separates three evidence tiers and binds them to a single current canonical release root:
 
-1. `docs/review/conformance/corpus.json`
-2. `docs/review/conformance/external_matrix.same_stack_replay.json`
-3. `docs/review/conformance/external_matrix.release.json`
+1. **Local conformance** — `docs/review/conformance/corpus.json`
+2. **Same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`
+3. **Independent certification** — `docs/review/conformance/external_matrix.release.json`
 
-Compatibility note: `docs/review/conformance/external_matrix.current_release.json` remains a mixed release-view matrix because it combines third-party HTTP/1.1 / HTTP/2 peers with same-stack HTTP/3 and RFC 9220 replay fixtures.
+The current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
 
-Canonical promoted root:
+Historical preserved roots remain in-tree for provenance:
 
-- `docs/review/conformance/releases/0.3.9/release-0.3.9/`
+- `docs/review/conformance/releases/0.3.2/release-0.3.2/`
+- `docs/review/conformance/releases/0.3.6/release-0.3.6/`
+- `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`
+- `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`
+- `docs/review/conformance/releases/0.3.7/release-0.3.7/`
 
-Historical preserved root:
+The canonical 0.3.9 root contains the full promoted bundle set plus the preserved auxiliary bundles:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/`
+- `tigrcorn-independent-certification-release-matrix/`
+- `tigrcorn-same-stack-replay-matrix/`
+- `tigrcorn-mixed-compatibility-release-matrix/`
+- `tigrcorn-flag-surface-certification-bundle/`
+- `tigrcorn-operator-surface-certification-bundle/`
+- `tigrcorn-performance-certification-bundle/`
+- `tigrcorn-certification-environment-bundle/`
+- `tigrcorn-aioquic-adapter-preflight-bundle/`
+- `tigrcorn-strict-validation-bundle/`
+- the preserved local negative / behavior / validation bundles produced during Phases 9C–9E
 
-Both versioned roots are immutable. Corrections create a new versioned root; they do not rewrite a frozen historical root.
+The compatibility file `docs/review/conformance/external_matrix.current_release.json` remains a **mixed** matrix because it combines third-party HTTP/1.1 / HTTP/2 peers with same-stack HTTP/3 and RFC 9220 replay fixtures.
 
 ## Support and certification legend
 
@@ -277,7 +290,7 @@ Companion source: `docs/comp/oob.md`
 | Path | Purpose |
 |---|---|
 | `AGENTS.md` | agent-facing operating guide: where to start, how to validate, how to certify, how to promote, how mutability works |
-| `CURRENT_REPOSITORY_STATE.md` | canonical human-readable point-in-time repository summary |
+| `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` | canonical human-readable point-in-time repository summary |
 | `docs/README.md` | mutable documentation entrypoint |
 | `docs/adr/README.md` | architecture-decision index |
 | `docs/gov/README.md` | governance index; layout, naming, mutability, commit/PR/release rules |
@@ -322,7 +335,7 @@ Rules for **new or renamed mutable paths**:
 - folder name length `<= 16`
 - full relative path length `<= 120`
 
-Historical root notes and preserved release/conformance trees are grandfathered legacy exceptions. They remain in-tree for provenance and test stability; they are not a license to create new path/name sprawl.
+The prior root current-state / delivery-note / RFC-report Markdown sprawl has been migrated into `docs/review/conformance/state/`, `docs/review/conformance/delivery/`, and `docs/review/conformance/reports/`. Preserved release/conformance trees remain in-tree for provenance and test stability; they are not a license to create new path/name sprawl.
 
 ## Public lifecycle and embedded use
 
@@ -380,7 +393,7 @@ For detailed release workflow rules, see `docs/gov/release.md`. For agentic exec
 
 ## Current-state and historical planning notes
 
-Use `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current truth.
+Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current truth.
 
 Use the following preserved records for historical planning/provenance, not as competing current-state sources:
 
@@ -390,3 +403,23 @@ Use the following preserved records for historical planning/provenance, not as c
 - `docs/review/conformance/phase9a_promotion_contract.current.json`
 
 The repo line is `0.3.9`. External publication remains an operator action outside the repository; consult the package index before claiming a new publish has occurred.
+
+
+## Phase 9I release assembly and certifiable checkpoint
+
+The executed Phase 9I release-assembly checkpoint is now documented through:
+
+- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `docs/review/conformance/phase9i_release_assembly.current.json`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+
+
+## Certification environment freeze
+
+The strict-promotion release workflow now freezes the certification environment before it invokes any Phase 9 checkpoint script. Current documentation and preserved artifacts live in:
+
+- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`
+- `docs/review/conformance/certification_environment_freeze.current.json`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`

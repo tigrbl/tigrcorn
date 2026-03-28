@@ -31,7 +31,7 @@ STATUS_JSON = CONFORMANCE / 'phase9d2_trailer_fields_independent.current.json'
 STATUS_MD = CONFORMANCE / 'PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md'
 LOCAL_MD = CONFORMANCE / 'TRAILER_FIELDS_LOCAL_BEHAVIOR_ARTIFACTS.md'
 LOCAL_JSON = CONFORMANCE / 'trailer_fields_local_behavior_artifacts.current.json'
-DELIVERY_NOTES = ROOT / 'DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md'
+DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md'
 TMP_ROOT = ROOT / '.artifacts' / 'phase9d2_trailer_fields_runs'
 SCENARIOS = [
     'http11-trailer-fields-curl-client',

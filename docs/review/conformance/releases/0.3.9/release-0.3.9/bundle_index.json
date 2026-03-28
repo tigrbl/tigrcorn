@@ -1,7 +1,7 @@
 {
   "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
   "version": "0.3.9",
-  "generated_at": "2026-03-28T04:09:19.336750+00:00",
+  "generated_at": "2026-03-28T06:47:37.839025+00:00",
   "source_checkpoint": "phase9i_release_assembly",
   "status": "phase9i_release_assembly_certifiably_promotable",
   "promotion_ready": true,
@@ -141,7 +141,8 @@
       "artifact_count": 14,
       "targeted_pytest_pass_count": 27,
       "full_matrix_pytest_pass_count": 99,
-      "validated": true
+      "validated": true,
+      "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8"
     }
   },
   "independent_certification_total": 30,
@@ -155,16 +156,9 @@
     "Phase 9D3 preserves passing RFC 9110 \u00a78 content-coding independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3.",
     "Phase 9E preserves a passing OpenSSL OCSP validation artifact.",
     "The strict validation bundle is preserved and remains green.",
-    "The 0.3.9 release root is now the canonical authoritative release root and the public package version is 0.3.9.",
-    "Phase 9I assembles the working 0.3.9 release root with final flag, operator, and performance bundles alongside the independent, same-stack, mixed, and local auxiliary bundles.",
-    "The working release root also preserves a direct aioquic adapter preflight bundle proving the HTTP/3 request and RFC 9220 WebSocket adapters execute cleanly in the observed environment.",
-    "This assembled release root is now strict-target complete and promotion-ready under the working 0.3.9 release root.",
-    "The package version and public authoritative boundary remain unchanged in this checkpoint because explicit promotion/version-bump work is deferred.",
-    "Phase 8 certification refresh re-ran compileall, the targeted strict-validation pytest suite, the broader certification-refresh pytest matrix, and all live gate evaluators against the canonical 0.3.9 release root.",
-    "The originally released 0.3.8 conformance tree was restored unchanged from the released archive.",
-    "The updated package line is promoted separately under the canonical 0.3.9 release root.",
-    "The preserved certification-refresh matrix for the canonical 0.3.9 root executed 99 passing tests."
+    "The 0.3.9 release root is now the canonical authoritative release root and the public package version is 0.3.9."
   ],
+  "canonical_release_promoted": true,
   "public_version": "0.3.9",
   "release_notes": "RELEASE_NOTES_0.3.9.md"
 }

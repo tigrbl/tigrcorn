@@ -21,7 +21,7 @@ def test_phase9e_docs_and_status_exist() -> None:
     assert (CONFORMANCE / 'phase9e_ocsp_independent.current.json').exists()
     assert (CONFORMANCE / 'OCSP_LOCAL_VALIDATION_ARTIFACTS.md').exists()
     assert (CONFORMANCE / 'ocsp_local_validation_artifacts.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_PHASE9E_OCSP_INDEPENDENT_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9E_OCSP_INDEPENDENT_CLOSURE.md').exists()
 
     payload = _load_json(CONFORMANCE / 'phase9e_ocsp_independent.current.json')
     assert payload['phase'] == '9E'

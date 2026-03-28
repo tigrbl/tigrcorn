@@ -18,7 +18,7 @@ def test_phase9a_contract_freeze_docs_and_release_root_exist() -> None:
     backlog_doc = CONFORMANCE / 'PHASE9A_EXECUTION_BACKLOG.md'
     status_json = CONFORMANCE / 'phase9a_promotion_contract.current.json'
     backlog_json = CONFORMANCE / 'phase9a_execution_backlog.current.json'
-    delivery = ROOT / 'DELIVERY_NOTES_PHASE9A_PROMOTION_CONTRACT_FREEZE.md'
+    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9A_PROMOTION_CONTRACT_FREEZE.md'
     release_root = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
     manifest = release_root / 'manifest.json'
     readme = release_root / 'README.md'
@@ -143,7 +143,7 @@ def test_phase9a_updates_contract_files_and_readmes() -> None:
     strict_text = (CONFORMANCE / 'STRICT_PROFILE_TARGET.md').read_text(encoding='utf-8')
     flag_text = (CONFORMANCE / 'FLAG_CERTIFICATION_TARGET.md').read_text(encoding='utf-8')
     perf_text = (PERFORMANCE / 'PERFORMANCE_SLOS.md').read_text(encoding='utf-8')
-    current_state = (ROOT / 'CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
+    current_state = (ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
     root_readme = (ROOT / 'README.md').read_text(encoding='utf-8')
     conf_readme = (CONFORMANCE / 'README.md').read_text(encoding='utf-8')
     plan_json = _load_json('docs/review/conformance/phase9_implementation_plan.current.json')

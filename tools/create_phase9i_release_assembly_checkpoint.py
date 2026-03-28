@@ -35,7 +35,7 @@ CERT_ENV_BUNDLE = RELEASE_ROOT / 'tigrcorn-certification-environment-bundle'
 AIOQUIC_PREFLIGHT_BUNDLE = RELEASE_ROOT / 'tigrcorn-aioquic-adapter-preflight-bundle'
 PHASE9I_STATUS_JSON = CONFORMANCE / 'phase9i_release_assembly.current.json'
 PHASE9I_STATUS_MD = CONFORMANCE / 'PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md'
-DELIVERY_NOTES = ROOT / 'DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md'
+DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md'
 RELEASE_ROOT_BUNDLE_INDEX = RELEASE_ROOT / 'bundle_index.json'
 RELEASE_ROOT_BUNDLE_SUMMARY = RELEASE_ROOT / 'bundle_summary.json'
 RELEASE_GATE_STATUS_JSON = CONFORMANCE / 'release_gate_status.current.json'
@@ -647,6 +647,17 @@ def update_docs_and_status() -> None:
             current_state_lines.append('- unresolved strict-target failures remain')
         current_state_lines.append('')
     current_state_lines.extend([
+        '## Canonical current-state chain',
+        '',
+        'The Canonical current-state chain for the promoted release is defined by:',
+        '',
+        '- `docs/review/conformance/CURRENT_STATE_CHAIN.md`',
+        '- `docs/review/conformance/current_state_chain.current.json`',
+        '- `docs/review/conformance/package_compliance_review_phase9i.current.json`',
+        '- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`',
+        '',
+        'Historical aliases are preserved only as labeled checkpoint history under `docs/review/conformance/state/checkpoints/`; the current promoted-state pointer is this file and the canonical chain documents above.',
+        '',
         'Primary documentation for this checkpoint now lives in:',
         '',
         '- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`',
@@ -656,7 +667,7 @@ def update_docs_and_status() -> None:
         '- `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`',
         '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`',
         '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`',
-        '- `DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`',
+        '- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`',
         '',
         'The authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.',
         '',
@@ -685,7 +696,7 @@ def update_docs_and_status() -> None:
         '- `docs/review/conformance/phase9_implementation_plan.current.json`',
         '',
     ])
-    (ROOT / 'CURRENT_REPOSITORY_STATE.md').write_text('\n'.join(current_state_lines), encoding='utf-8')
+    (ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').write_text('\n'.join(current_state_lines), encoding='utf-8')
 
     update_readme_like(ROOT / 'README.md')
     update_readme_like(CONFORMANCE / 'README.md', conformance_relative=True)
@@ -745,14 +756,14 @@ def update_readme_like(path: Path, *, conformance_relative: bool = False) -> Non
         addition = (
             '\n\n## Phase 9I release assembly and certifiable checkpoint\n\n'
             'The executed Phase 9I release-assembly checkpoint is now documented through:\n\n'
-            + ('- `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `phase9i_release_assembly.current.json`\n- `../releases/0.3.9/release-0.3.9/`\n- `../../DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n' if conformance_relative else '- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/`\n- `DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n')
+            + ('- `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `phase9i_release_assembly.current.json`\n- `../releases/0.3.9/release-0.3.9/`\n- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n' if conformance_relative else '- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/`\n- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n')
         )
         text += addition
     if '## Certification environment freeze' not in text:
         addition = (
             '\n\n## Certification environment freeze\n\n'
             'The strict-promotion release workflow now freezes the certification environment before it invokes any Phase 9 checkpoint script. Current documentation and preserved artifacts live in:\n\n'
-            + ('- `CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `certification_environment_freeze.current.json`\n- `../releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`\n- `../../DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n' if conformance_relative else '- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `docs/review/conformance/certification_environment_freeze.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`\n- `DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n')
+            + ('- `CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `certification_environment_freeze.current.json`\n- `../releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`\n- `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n' if conformance_relative else '- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `docs/review/conformance/certification_environment_freeze.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`\n- `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n')
         )
         text += addition
     path.write_text(text, encoding='utf-8')
@@ -761,7 +772,7 @@ def update_readme_like(path: Path, *, conformance_relative: bool = False) -> Non
 def update_rfc_certification_status() -> None:
     strict = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
     promotion = evaluate_promotion_target(ROOT)
-    path = ROOT / 'RFC_CERTIFICATION_STATUS.md'
+    path = ROOT / 'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md'
     lines = [
         '# RFC certification status for the updated archive',
         '',
@@ -1050,7 +1061,7 @@ def write_package_compliance_review(auth: Any, *, strict: Any, promotion: Any) -
             'working_release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
         },
         'files_updated_by_review': [
-            'CURRENT_REPOSITORY_STATE.md',
+            'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
             'docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md',
             'docs/review/conformance/phase9i_release_assembly.current.json',
             'docs/review/conformance/RELEASE_GATE_STATUS.md',
@@ -1062,7 +1073,7 @@ def write_package_compliance_review(auth: Any, *, strict: Any, promotion: Any) -
             'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json',
             'README.md',
             'docs/review/conformance/README.md',
-            'RFC_CERTIFICATION_STATUS.md',
+            'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
             'docs/review/conformance/STRICT_PROFILE_TARGET.md',
         ],
         'remaining_gaps': remaining_rfc_gaps,

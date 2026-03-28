@@ -22,4 +22,4 @@ Use `MUT.json` markers plus index files for navigation.
 
 - new mutable docs must land under `docs/`
 - root receives no new operational notes
-- legacy root docs remain grandfathered until a dedicated migration
+- the previous root current-state / delivery-note / RFC-report docs are migrated into `docs/review/conformance/`, and new mutable docs stay out of root

@@ -31,9 +31,9 @@ class ReleaseGateTests(unittest.TestCase):
                 'docs/protocols/websocket.md',
                 'docs/review/conformance/README.md',
                 'docs/review/rfc_compliance_review.md',
-                'RFC_HARDENING_REPORT.md',
-                'CURRENT_REPOSITORY_STATE.md',
-                'RFC_CERTIFICATION_STATUS.md',
+                'docs/review/conformance/reports/RFC_HARDENING_REPORT.md',
+                'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+                'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
             ]:
                 path = root / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -213,9 +213,9 @@ class ReleaseGateTests(unittest.TestCase):
                     'docs/protocols/websocket.md',
                     'docs/review/conformance/README.md',
                     'docs/review/rfc_compliance_review.md',
-                    'RFC_HARDENING_REPORT.md',
-                    'CURRENT_REPOSITORY_STATE.md',
-                    'RFC_CERTIFICATION_STATUS.md',
+                    'docs/review/conformance/reports/RFC_HARDENING_REPORT.md',
+                    'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+                    'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
                 ],
             }
             (root / 'docs/review/conformance/certification_boundary.json').write_text(json.dumps(boundary), encoding='utf-8')

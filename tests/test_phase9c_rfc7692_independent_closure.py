@@ -20,7 +20,7 @@ def _load_json(path: Path) -> dict:
 def test_phase9c_docs_and_status_exist() -> None:
     assert (CONFORMANCE / 'PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md').exists()
     assert (CONFORMANCE / 'phase9c_rfc7692_independent_closure.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md').exists()
 
     payload = _load_json(CONFORMANCE / 'phase9c_rfc7692_independent_closure.current.json')
     assert payload['phase'] == '9C'

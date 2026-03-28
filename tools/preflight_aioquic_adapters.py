@@ -46,7 +46,7 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         '--delivery-notes',
-        default='DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md',
+        default='docs/review/conformance/delivery/DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md',
         help='Repository-relative delivery-notes path.',
     )
     parser.add_argument(

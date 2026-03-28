@@ -26,7 +26,7 @@ This checkpoint adds a focused audit for the requested RFC and feature set cover
 ## Files updated
 
 - `README.md`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/README.md`
 
 ## Honest result

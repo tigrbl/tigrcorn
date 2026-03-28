@@ -11,7 +11,7 @@ CONFORMANCE = ROOT / "docs" / "review" / "conformance"
 def test_phase9f3_docs_and_status_exist():
     assert (CONFORMANCE / 'PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
     assert (CONFORMANCE / 'phase9f3_concurrency_keepalive.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
 
     payload = json.loads((CONFORMANCE / 'phase9f3_concurrency_keepalive.current.json').read_text(encoding='utf-8'))
     assert payload['phase'] == '9F3'

@@ -9,7 +9,7 @@ Read this file before changing code, docs, release artifacts, or certification e
 ## First reading order
 
 1. `README.md`
-2. `CURRENT_REPOSITORY_STATE.md`
+2. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 3. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 4. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
 5. `docs/review/conformance/README.md`
@@ -136,12 +136,12 @@ Use this order:
 1. `docs/notes/inprog.md`
 2. `docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md`
 3. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
-4. `CURRENT_REPOSITORY_STATE.md`
+4. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 5. `docs/review/conformance/current_state_chain.current.json`
 
 If those disagree, the canonical current-state chain wins:
 
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/CURRENT_STATE_CHAIN.md`
 - `docs/review/conformance/current_state_chain.current.json`
 
@@ -162,7 +162,7 @@ PY
 
 Read these after validation:
 
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/release_gate_status.current.json`
 - `docs/review/conformance/package_compliance_review_phase9i.current.json`
 
@@ -257,7 +257,7 @@ Naming/path limits for new or renamed mutable paths:
 - folder name length `<= 16`
 - full relative path length `<= 120`
 
-Historical root notes and preserved evidence trees are grandfathered exceptions. They remain for provenance and test stability.
+The prior root current-state / delivery-note / RFC-report Markdown sprawl has been migrated into `docs/review/conformance/`. Preserved evidence trees remain for provenance and test stability.
 
 ## File-to-file pointers and folder metadata
 
@@ -287,7 +287,7 @@ Do not keep mutating released evidence in place.
 ## Quick path map
 
 - repo summary: `README.md`
-- current truth: `CURRENT_REPOSITORY_STATE.md`
+- current truth: `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - mutable docs index: `docs/README.md`
 - governance: `docs/gov/README.md`
 - conformance: `docs/review/conformance/README.md`

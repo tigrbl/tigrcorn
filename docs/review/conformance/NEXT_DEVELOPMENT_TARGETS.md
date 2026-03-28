@@ -97,7 +97,7 @@ This backlog slice is complete in the current checkpoint:
 
 This backlog slice is complete in the current checkpoint:
 
-- README / `CURRENT_REPOSITORY_STATE.md` / `CURRENT_STATE_CHAIN.md` / flag docs / JSON manifests / CLI help snapshots are aligned with the implemented public surface
+- README / `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` / `CURRENT_STATE_CHAIN.md` / flag docs / JSON manifests / CLI help snapshots are aligned with the implemented public surface
 - landed backlog items are recorded in current-state docs and machine-readable checkpoint state
 - the rule that peer deltas do not automatically become product obligations unless they stay inside the canonical T/P/A/D/R boundary is preserved
 

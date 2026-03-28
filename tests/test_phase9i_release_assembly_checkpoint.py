@@ -33,7 +33,7 @@ def current_public_flag_count() -> int:
 def test_phase9i_docs_and_status_exist() -> None:
     assert (CONFORMANCE / 'PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
     assert (CONFORMANCE / 'phase9i_release_assembly.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
 
     status = load_json(CONFORMANCE / 'phase9i_release_assembly.current.json')
     assert status['phase'] == '9I'

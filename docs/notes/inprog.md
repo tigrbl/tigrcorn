@@ -27,4 +27,4 @@ See:
 
 ## Documentation/layout follow-on
 
-The new short-path governance tree is now in place. Historical root archival docs and legacy conformance filenames remain grandfathered until a dedicated migration ADR moves them.
+The new short-path governance tree is now in place. The previous root current-state / delivery-note / RFC-report Markdown files have been migrated into `docs/review/conformance/`, while legacy conformance artifact filenames remain grandfathered where needed for preserved evidence trees.

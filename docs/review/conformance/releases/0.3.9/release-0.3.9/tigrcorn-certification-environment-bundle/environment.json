@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "captured_at": "2026-03-24T10:43:49.369067+00:00",
+  "captured_at": "2026-03-28T06:43:39.101133+00:00",
   "repository_root": ".",
   "git_commit": null,
   "python": {
@@ -33,7 +33,10 @@
         "aioquic>=1.3.0",
         "h2>=4.1.0",
         "websockets>=12.0",
-        "wsproto>=1.3.0"
+        "wsproto>=1.3.0",
+        "PyYAML>=6.0",
+        "brotli>=1.1.0",
+        "uvloop>=0.19.0; platform_system != 'Windows'"
       ]
     },
     "install_command": "python -m pip install -e \".[certification,dev]\"",
@@ -89,16 +92,19 @@
     }
   },
   "environment": {
-    "selected_variables": {
-      "PYTHONPATH": "src"
-    },
+    "selected_variables": {},
     "command": [
       "/usr/local/bin/python",
-      "tools/freeze_certification_environment.py",
+      "/mnt/data/workrepo/tigrcorn-main/tools/freeze_certification_environment.py",
+      "--require-imports",
       "--release-root",
       "docs/review/conformance/releases/0.3.9/release-0.3.9",
       "--bundle-name",
-      "tigrcorn-certification-environment-bundle"
+      "tigrcorn-certification-environment-bundle",
+      "--workflow-path",
+      ".github/workflows/phase9-certification-release.yml",
+      "--wrapper-path",
+      "tools/run_phase9_release_workflow.py"
     ]
   },
   "release_workflow": {

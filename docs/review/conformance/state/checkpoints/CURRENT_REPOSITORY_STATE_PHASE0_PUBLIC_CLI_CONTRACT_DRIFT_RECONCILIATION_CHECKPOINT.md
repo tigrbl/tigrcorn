@@ -19,17 +19,17 @@ The import-string convenience coroutine remains part of the supported Python API
 - CLI public-surface regression tests now patch `tigrcorn.cli.run_config` and assert against the constructed `ServerConfig`
 - the stale `tigrcorn.cli.serve_import_string` patch target has been removed from the public CLI regression tests
 - `src/tigrcorn/cli.py` now documents the config-driven CLI handoff explicitly in `main()`
-- `RFC_PUBLIC_API_CLI_QUIC_MTLS_VERIFICATION.md` now describes the real CLI forwarding path truthfully
+- `docs/review/conformance/reports/RFC_PUBLIC_API_CLI_QUIC_MTLS_VERIFICATION.md` now describes the real CLI forwarding path truthfully
 
 ## Files changed in this checkpoint
 
 - `src/tigrcorn/cli.py`
 - `tests/test_public_api_cli_mtls_surface.py`
 - `tests/test_public_api_tls_cipher_surface.py`
-- `RFC_PUBLIC_API_CLI_QUIC_MTLS_VERIFICATION.md`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/reports/RFC_PUBLIC_API_CLI_QUIC_MTLS_VERIFICATION.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/phase0_public_cli_contract_drift_reconciliation.current.json`
-- `CURRENT_REPOSITORY_STATE_PHASE0_PUBLIC_CLI_CONTRACT_DRIFT_RECONCILIATION_CHECKPOINT.md`
+- `docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE0_PUBLIC_CLI_CONTRACT_DRIFT_RECONCILIATION_CHECKPOINT.md`
 
 ## Validation completed
 

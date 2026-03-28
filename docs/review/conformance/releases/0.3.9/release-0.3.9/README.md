@@ -1,8 +1,8 @@
-# Release 0.3.9 working promotion root
+# Release 0.3.9 canonical release root
 
-This directory is the assembled working release root for the strict-promotion program.
+This directory is the canonical 0.3.9 release root.
 
-It now contains:
+It contains:
 
 - `tigrcorn-independent-certification-release-matrix/`
 - `tigrcorn-same-stack-replay-matrix/`
@@ -12,14 +12,15 @@ It now contains:
 - `tigrcorn-performance-certification-bundle/`
 - `tigrcorn-certification-environment-bundle/`
 - `tigrcorn-aioquic-adapter-preflight-bundle/`
+- `tigrcorn-strict-validation-bundle/`
 - the preserved local negative / behavior / validation bundles created during Phases 9C–9E
 
 Current truth:
 
 - the release root is assembled
-- the release root is **promotable**
-- the authoritative boundary still remains green under the canonical 0.3.6 release root
-- the strict target is now green under the 0.3.9 working release root
-
-
-The originally released 0.3.8 conformance tree remains preserved separately at `docs/review/conformance/releases/0.3.8/release-0.3.8`.
+- the release root is **canonical**
+- the authoritative boundary is green under this canonical 0.3.9 release root
+- the strict target is green
+- the composite promotion target is green
+- the public package version is `0.3.9`
+- the release notes live in `RELEASE_NOTES_0.3.9.md`

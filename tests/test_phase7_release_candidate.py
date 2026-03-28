@@ -50,7 +50,7 @@ def test_phase7_candidate_flag_operator_performance_bundles_are_frozen() -> None
 
 
 def test_phase7_docs_keep_current_boundary_canonical() -> None:
-    current_state = Path('CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
+    current_state = Path('docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
     boundary_doc = Path('docs/review/conformance/CERTIFICATION_BOUNDARY.md').read_text(encoding='utf-8')
     phase7_doc = Path('docs/review/conformance/PHASE7_CANONICAL_PROMOTION_STATUS.md').read_text(encoding='utf-8')
     assert 'Canonical promotion was **not** performed' in current_state

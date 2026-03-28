@@ -34,7 +34,7 @@ LOCAL_NEGATIVE_ROOT = TO_ROOT / 'tigrcorn-rfc7692-local-negative-artifacts'
 TMP_ROOT = ROOT / '.artifacts' / 'phase9c_rfc7692_runs'
 PHASE9C_STATUS_JSON = CONFORMANCE / 'phase9c_rfc7692_independent_closure.current.json'
 PHASE9C_STATUS_MD = CONFORMANCE / 'PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md'
-DELIVERY_NOTES = ROOT / 'DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md'
+DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md'
 RFC7692_SCENARIOS = [
     'websocket-http11-server-websockets-client-permessage-deflate',
     'websocket-http2-server-h2-client-permessage-deflate',
@@ -399,7 +399,7 @@ def _write_phase9c_status_and_docs() -> None:
 
 
 def _update_current_repository_state() -> None:
-    path = ROOT / 'CURRENT_REPOSITORY_STATE.md'
+    path = ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md'
     text = path.read_text(encoding='utf-8')
     phase9c_section = (
         '## Phase 9C RFC 7692 independent-closure checkpoint\n\n'
@@ -407,7 +407,7 @@ def _update_current_repository_state() -> None:
         'Primary Phase 9C artifacts:\n\n'
         '- `docs/review/conformance/PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`\n'
         '- `docs/review/conformance/phase9c_rfc7692_independent_closure.current.json`\n'
-        '- `DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`\n\n'
+        '- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`\n\n'
         'What that means now:\n\n'
         '- RFC 7692 no longer blocks the strict target\n'
         '- the remaining strict-target blockers are only the HTTP/3 CONNECT, trailer-fields, and content-coding scenarios\n\n'

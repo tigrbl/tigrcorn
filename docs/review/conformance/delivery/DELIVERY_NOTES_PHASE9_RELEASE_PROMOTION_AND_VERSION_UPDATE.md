@@ -4,9 +4,9 @@ This checkpoint completes the Step 9 administrative promotion work after the ful
 
 Delivered changes:
 
-- promoted `docs/review/conformance/releases/0.3.8/release-0.3.8` to the canonical release root
-- updated package version to `0.3.8`
-- added `RELEASE_NOTES_0.3.8.md`
+- promoted `docs/review/conformance/releases/0.3.9/release-0.3.9` to the canonical release root
+- updated package version to `0.3.9`
+- added `RELEASE_NOTES_0.3.9.md`
 - added `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
 - added `docs/review/conformance/phase9_release_promotion.current.json`
 - refreshed current-state documentation and top-level release metadata so the canonical release root and public version align

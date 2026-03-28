@@ -8,7 +8,7 @@ This archive updates `tigrcorn` against the package-wide certification target do
 - regenerated and promoted preserved passing artifacts for the nine previously missing independent HTTP/3 / RFC 9220 scenarios
 - enabled those scenarios in `docs/review/conformance/external_matrix.release.json`
 - refreshed `docs/review/conformance/release_gate_status.current.json` and `docs/review/conformance/RELEASE_GATE_STATUS.md` to reflect the green release-gate result
-- updated `CURRENT_REPOSITORY_STATE.md`, `RFC_CERTIFICATION_STATUS.md`, `RFC_HARDENING_REPORT.md`, `docs/review/conformance/README.md`, and `docs/review/conformance/INDEPENDENT_HTTP3_CERTIFICATION_STATE.md` to describe the new current state honestly
+- updated `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`, `docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md`, `docs/review/conformance/reports/RFC_HARDENING_REPORT.md`, `docs/review/conformance/README.md`, and `docs/review/conformance/INDEPENDENT_HTTP3_CERTIFICATION_STATE.md` to describe the new current state honestly
 - corrected the third-party RFC 9220 adapter so it decodes server frames in client mode and drives the CONNECT stream in the same message / echo pattern as the package-owned H3 WebSocket client
 - fixed the runtime interoperability issues that prevented honest third-party HTTP/3 artifact generation:
   - QUIC Initial receive-key derivation across Retry and direction changes

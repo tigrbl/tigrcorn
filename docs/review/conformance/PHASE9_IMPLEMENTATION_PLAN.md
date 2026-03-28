@@ -109,7 +109,7 @@ Remove ambiguity before implementation begins so every remaining blocker has a p
 - `docs/review/conformance/promotion_gate.target.json`
 - `docs/review/conformance/flag_contracts.json`
 - `docs/review/conformance/flag_covering_array.json`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 
 ### Deliverables
 

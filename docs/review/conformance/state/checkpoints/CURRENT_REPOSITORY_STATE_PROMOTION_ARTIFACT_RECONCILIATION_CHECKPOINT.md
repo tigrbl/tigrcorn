@@ -1,4 +1,4 @@
-> Historical checkpoint note: this file is retained as an archival snapshot for provenance and stable test/tool references. It is not the canonical package-wide current-state source. Use `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current package truth.
+> Historical checkpoint note: this file is retained as an archival snapshot for provenance and stable test/tool references. It is not the canonical package-wide current-state source. Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current package truth.
 
 # Current repository state — promotion artifact reconciliation checkpoint
 
@@ -51,7 +51,7 @@ It does **not** expand the certification boundary, and it does **not** claim to 
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle/index.json`
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle/summary.json`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `tests/test_phase9f3_concurrency_keepalive_checkpoint.py`
 - `tests/test_phase9i_release_assembly_checkpoint.py`
 

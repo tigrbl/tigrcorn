@@ -1,6 +1,6 @@
 {
   "bundle_kind": "performance_certification_bundle",
-  "generated_at": "2026-03-28T03:19:57.167719+00:00",
+  "generated_at": "2026-03-28T06:47:35.560515+00:00",
   "release_gate_eligible": true,
   "source_boundary": "docs/review/performance/PERFORMANCE_SLOS.md",
   "source_slos": "docs/review/performance/performance_slos.json",

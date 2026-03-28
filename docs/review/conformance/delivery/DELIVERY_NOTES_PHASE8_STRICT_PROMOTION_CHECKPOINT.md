@@ -23,8 +23,8 @@ This checkpoint completes the requested Phase 8 target-documentation and promoti
 - `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 - `docs/review/conformance/README.md`
 - `docs/review/performance/PERFORMANCE_BOUNDARY.md`
-- `CURRENT_REPOSITORY_STATE.md`
-- `RFC_CERTIFICATION_STATUS.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md`
 - `src/tigrcorn/compat/release_gates.py`
 - `src/tigrcorn/compat/__init__.py`
 

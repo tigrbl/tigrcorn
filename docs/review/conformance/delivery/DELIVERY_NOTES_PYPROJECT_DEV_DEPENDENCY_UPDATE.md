@@ -36,7 +36,7 @@ This update improves packaging and development-environment readiness for the rem
 
 It does **not** by itself make the package certifiably fully featured under the stricter non-authoritative promotion target, and it does **not** by itself make the package certifiably fully RFC compliant under that stricter target.
 
-The repository still has the same four preserved-but-non-passing HTTP/3 `aioquic` strict-target scenarios documented in `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/STRICT_PROFILE_TARGET.md`:
+The repository still has the same four preserved-but-non-passing HTTP/3 `aioquic` strict-target scenarios documented in `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/STRICT_PROFILE_TARGET.md`:
 
 - `websocket-http3-server-aioquic-client-permessage-deflate`
 - `http3-connect-relay-aioquic-client`

@@ -1,7 +1,7 @@
 {
   "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle",
   "bundle_kind": "operator_surface_certification_bundle",
-  "generated_at": "2026-03-28T03:19:55.196605+00:00",
+  "generated_at": "2026-03-28T06:47:34.799114+00:00",
   "implemented_count": 7,
   "validation": {
     "focused_operator_suite_passed": 28,

@@ -21,7 +21,7 @@ def test_phase9d3_docs_and_status_exist() -> None:
     assert (CONFORMANCE / 'phase9d3_content_coding_independent.current.json').exists()
     assert (CONFORMANCE / 'CONTENT_CODING_LOCAL_BEHAVIOR_ARTIFACTS.md').exists()
     assert (CONFORMANCE / 'content_coding_local_behavior_artifacts.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md').exists()
 
     payload = _load_json(CONFORMANCE / 'phase9d3_content_coding_independent.current.json')
     assert payload['phase'] == '9D3'

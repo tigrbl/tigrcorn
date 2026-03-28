@@ -28,7 +28,7 @@ It reassembled the 0.3.9 release root, refreshed bundle manifests / indexes / su
 
 The package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the canonical 0.3.9 release root.
 
-Step 9 promotion has completed the version bump and release-note promotion work, so the canonical release root and the public package version are aligned at `0.3.9`.
+Step 9 promotion has now completed the version bump and release-note promotion work as well, so the canonical release root and the public package version are aligned at `0.3.9`.
 
 ## Full strict validation set
 

@@ -6,13 +6,13 @@ This document defines the **one canonical package-wide current-state chain** for
 
 ### Human-readable sources
 
-- `CURRENT_REPOSITORY_STATE.md`
-- `CURRENT_REPOSITORY_STATE_PHASE9J_RELEASED_0_3_8_REPAIR_AND_0_3_9_PROMOTION_CHECKPOINT.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE9J_RELEASED_0_3_8_REPAIR_AND_0_3_9_PROMOTION_CHECKPOINT.md`
 - `docs/review/conformance/CURRENT_STATE_CHAIN.md`
 - `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
 - `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 - `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md`
-- `RFC_CERTIFICATION_STATUS.md`
+- `docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md`
 
 ### Machine-readable sources
 

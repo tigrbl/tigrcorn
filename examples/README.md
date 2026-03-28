@@ -17,7 +17,7 @@ This repository now uses a single canonical current example tree for the integra
 
 ## Documentation policy
 
-For package-wide current truth, use `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json`.
+For package-wide current truth, use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json`.
 
 For the Phase 4 example policy specifically:
 

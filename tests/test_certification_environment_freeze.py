@@ -25,7 +25,7 @@ def _load_json(path: Path) -> dict:
 def test_certification_environment_docs_bundle_and_workflow_exist() -> None:
     assert (CONFORMANCE / 'CERTIFICATION_ENVIRONMENT_FREEZE.md').exists()
     assert (CONFORMANCE / 'certification_environment_freeze.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md').exists()
     assert BUNDLE_ROOT.exists()
     assert (ROOT / '.github' / 'workflows' / 'phase9-certification-release.yml').exists()
     assert (ROOT / 'tools' / 'run_phase9_release_workflow.py').exists()

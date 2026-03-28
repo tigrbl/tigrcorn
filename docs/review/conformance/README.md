@@ -36,27 +36,6 @@ That canonical 0.3.9 release root contains the assembled strict-promotion bundle
 
 The older `0.3.2`, `0.3.6`, `0.3.6-rfc-hardening`, `0.3.6-current`, and the frozen `0.3.7` candidate root remain preserved for provenance, but they are not the canonical current release root.
 
-
-
-## Mutability and governance pointers
-
-This tree is intentionally **mixed**.
-
-- mutable guidance and current working notes live under `docs/` and `docs/gov/`
-- versioned release roots under `docs/review/conformance/releases/` are immutable after promotion
-- folder state is marked with `MUT.json` and resolved by nearest-ancestor-wins
-- use `python tools/govchk.py state PATH` to resolve mutability before editing an unfamiliar folder
-
-Use:
-
-- `../../gov/README.md`
-- `../../gov/tree.md`
-- `../../gov/mut.md`
-- `../../gov/release.md`
-- `../../../AGENTS.md`
-
-for the repository-level operating rules that sit beside this conformance tree.
-
 ## 1. Local conformance corpus
 
 `corpus.json` maps RFC-oriented behavior to local fixtures and unit tests.
@@ -106,7 +85,7 @@ The canonical package-wide current-state chain is now explicitly defined in:
 
 - `docs/review/conformance/CURRENT_STATE_CHAIN.md`
 - `docs/review/conformance/current_state_chain.current.json`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/package_compliance_review_phase9i.current.json`
 - `docs/review/conformance/release_gate_status.current.json`
 - `docs/review/conformance/phase9_release_promotion.current.json`
@@ -251,7 +230,7 @@ The executed Phase 9C RFC 7692 closure is now documented through:
 
 - `docs/review/conformance/PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`
 - `docs/review/conformance/phase9c_rfc7692_independent_closure.current.json`
-- `DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`
 
 ## Phase 9D1 CONNECT relay independent closure
 
@@ -260,7 +239,7 @@ The executed Phase 9D1 CONNECT relay closure is now documented through:
 - `PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
 - `phase9d1_connect_relay_independent.current.json`
 - `../releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/`
-- `DELIVERY_NOTES_PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
 
 
 
@@ -272,7 +251,7 @@ The executed Phase 9D2 trailer-fields closure is now documented through:
 - `docs/review/conformance/phase9d2_trailer_fields_independent.current.json`
 - `docs/review/conformance/TRAILER_FIELDS_LOCAL_BEHAVIOR_ARTIFACTS.md`
 - `docs/review/conformance/trailer_fields_local_behavior_artifacts.current.json`
-- `DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md`
 
 
 ## Phase 9D3 content-coding independent closure
@@ -283,7 +262,7 @@ The executed Phase 9D3 content-coding closure is now documented through:
 - `docs/review/conformance/phase9d3_content_coding_independent.current.json`
 - `docs/review/conformance/CONTENT_CODING_LOCAL_BEHAVIOR_ARTIFACTS.md`
 - `docs/review/conformance/content_coding_local_behavior_artifacts.current.json`
-- `DELIVERY_NOTES_PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md`
 
 
 ## Phase 9E OCSP independent closure
@@ -294,7 +273,7 @@ The executed Phase 9E OCSP closure is now documented through:
 - `docs/review/conformance/phase9e_ocsp_independent.current.json`
 - `docs/review/conformance/OCSP_LOCAL_VALIDATION_ARTIFACTS.md`
 - `docs/review/conformance/ocsp_local_validation_artifacts.current.json`
-- `DELIVERY_NOTES_PHASE9E_OCSP_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9E_OCSP_INDEPENDENT_CLOSURE.md`
 
 
 ## Phase 9F1 TLS cipher-policy closure
@@ -303,7 +282,7 @@ The executed Phase 9F1 TLS cipher-policy closure is now documented through:
 
 - `docs/review/conformance/PHASE9F1_TLS_CIPHER_POLICY_CLOSURE.md`
 - `docs/review/conformance/phase9f1_tls_cipher_policy.current.json`
-- `DELIVERY_NOTES_PHASE9F1_TLS_CIPHER_POLICY_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F1_TLS_CIPHER_POLICY_CLOSURE.md`
 
 
 ## Phase 9F2 logging and exporter closure
@@ -312,7 +291,7 @@ The executed Phase 9F2 observability closure is now documented through:
 
 - `docs/review/conformance/PHASE9F2_LOGGING_EXPORTER_CLOSURE.md`
 - `docs/review/conformance/phase9f2_logging_exporter.current.json`
-- `DELIVERY_NOTES_PHASE9F2_LOGGING_EXPORTER_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F2_LOGGING_EXPORTER_CLOSURE.md`
 
 
 ## Phase 9F3 concurrency and WebSocket keepalive closure
@@ -321,7 +300,7 @@ The executed Phase 9F3 concurrency / keepalive closure is now documented through
 
 - `docs/review/conformance/PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
 - `docs/review/conformance/phase9f3_concurrency_keepalive.current.json`
-- `DELIVERY_NOTES_PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
 
 
 ## Phase 9G strict performance closure
@@ -330,7 +309,7 @@ The executed Phase 9G strict-performance closure is now documented through:
 
 - `docs/review/conformance/PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
 - `docs/review/conformance/phase9g_strict_performance.current.json`
-- `DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
 
 
 ## Phase 9H promotion-evaluator hardening
@@ -339,7 +318,7 @@ The executed Phase 9H evaluator-hardening checkpoint is now documented through:
 
 - `docs/review/conformance/PHASE9H_PROMOTION_EVALUATOR_HARDENING.md`
 - `docs/review/conformance/phase9h_promotion_evaluator.current.json`
-- `DELIVERY_NOTES_PHASE9H_PROMOTION_EVALUATOR_HARDENING.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9H_PROMOTION_EVALUATOR_HARDENING.md`
 
 
 ## Phase 9I release assembly and certifiable checkpoint
@@ -349,7 +328,7 @@ The executed Phase 9I release-assembly checkpoint is now documented through:
 - `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 - `phase9i_release_assembly.current.json`
 - `../releases/0.3.9/release-0.3.9/`
-- `../../DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 
 
 ## Certification environment freeze
@@ -361,7 +340,7 @@ Current artifacts for that contract live in:
 - `CERTIFICATION_ENVIRONMENT_FREEZE.md`
 - `certification_environment_freeze.current.json`
 - `releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
-- `../../DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
 
 ## aioquic adapter preflight
 
@@ -370,7 +349,7 @@ The direct third-party `aioquic` adapter preflight now also lives in:
 - `AIOQUIC_ADAPTER_PREFLIGHT.md`
 - `aioquic_adapter_preflight.current.json`
 - `releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle/`
-- `../../DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md`
 
 ## Phase 9I strict validation
 

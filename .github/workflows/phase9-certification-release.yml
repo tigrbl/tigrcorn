@@ -12,7 +12,7 @@ on:
       - 'docs/review/performance/**'
       - 'tests/**'
       - 'README.md'
-      - 'CURRENT_REPOSITORY_STATE.md'
+      - 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md'
 
 jobs:
   certification-environment-and-phase9-checkpoints:

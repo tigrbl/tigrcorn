@@ -170,7 +170,7 @@ class Phase4AdvancedDeliveryUnitTests(unittest.TestCase):
             Path('docs/review/conformance/phase4_advanced_delivery/runtime_compatibility_matrix.json'),
             Path('docs/review/conformance/phase4_advanced_delivery/examples_matrix.json'),
             Path('docs/review/conformance/phase4_advanced_protocol_delivery_checkpoint.current.json'),
-            Path('CURRENT_REPOSITORY_STATE_PHASE4_ADVANCED_PROTOCOL_DELIVERY_CHECKPOINT.md'),
+            Path('docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE4_ADVANCED_PROTOCOL_DELIVERY_CHECKPOINT.md'),
             Path('examples/advanced_delivery/app.py'),
             Path('examples/advanced_delivery/client_http1.py'),
             Path('examples/advanced_delivery/client_http2.py'),

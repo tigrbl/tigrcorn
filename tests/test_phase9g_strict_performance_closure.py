@@ -20,7 +20,7 @@ class Phase9GStrictPerformanceClosureTests(unittest.TestCase):
     def test_phase9g_docs_and_status_exist(self) -> None:
         self.assertTrue((CONFORMANCE / 'PHASE9G_STRICT_PERFORMANCE_CLOSURE.md').exists())
         self.assertTrue((CONFORMANCE / 'phase9g_strict_performance.current.json').exists())
-        self.assertTrue((ROOT / 'DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md').exists())
+        self.assertTrue((ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md').exists())
         status = self._load_json('docs/review/conformance/phase9g_strict_performance.current.json')
         self.assertEqual(status['phase'], '9G')
         self.assertEqual(status['checkpoint'], 'phase9g_strict_performance_closure')

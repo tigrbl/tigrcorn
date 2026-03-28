@@ -21,7 +21,7 @@ def test_phase9d2_docs_and_status_exist() -> None:
     assert (CONFORMANCE / 'phase9d2_trailer_fields_independent.current.json').exists()
     assert (CONFORMANCE / 'TRAILER_FIELDS_LOCAL_BEHAVIOR_ARTIFACTS.md').exists()
     assert (CONFORMANCE / 'trailer_fields_local_behavior_artifacts.current.json').exists()
-    assert (ROOT / 'DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md').exists()
 
     payload = _load_json(CONFORMANCE / 'phase9d2_trailer_fields_independent.current.json')
     assert payload['phase'] == '9D2'

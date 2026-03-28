@@ -11,7 +11,7 @@ CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
 def test_phase9_plan_documents_exist_and_remain_honest() -> None:
     plan_md = CONFORMANCE / 'PHASE9_IMPLEMENTATION_PLAN.md'
     plan_json = CONFORMANCE / 'phase9_implementation_plan.current.json'
-    delivery = ROOT / 'DELIVERY_NOTES_PHASE9_IMPLEMENTATION_PLAN.md'
+    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9_IMPLEMENTATION_PLAN.md'
 
     assert plan_md.exists(), 'expected phase9 implementation plan markdown to exist'
     assert plan_json.exists(), 'expected phase9 implementation plan json to exist'
@@ -70,7 +70,7 @@ def test_phase9_plan_json_tracks_current_blockers_and_exit_conditions() -> None:
 
 
 def test_current_state_and_readmes_point_to_phase9_plan() -> None:
-    current_state = (ROOT / 'CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
+    current_state = (ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
     conformance_readme = (CONFORMANCE / 'README.md').read_text(encoding='utf-8')
     top_readme = (ROOT / 'README.md').read_text(encoding='utf-8')
 

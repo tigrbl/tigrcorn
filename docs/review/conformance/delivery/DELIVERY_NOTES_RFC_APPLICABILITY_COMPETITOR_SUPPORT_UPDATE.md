@@ -29,7 +29,7 @@ It also records a current competitor matrix for:
 ## Files updated
 
 - `README.md`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/README.md`
 
 ## Honest result

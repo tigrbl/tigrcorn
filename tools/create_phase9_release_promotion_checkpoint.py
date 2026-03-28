@@ -24,7 +24,7 @@ MIXED_ROOT = f'{RELEASE_ROOT_TEXT}/tigrcorn-mixed-compatibility-release-matrix'
 RELEASE_NOTES = 'RELEASE_NOTES_0.3.9.md'
 PROMOTION_MD = CONFORMANCE / 'PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md'
 PROMOTION_JSON = CONFORMANCE / 'phase9_release_promotion.current.json'
-DELIVERY_NOTES = ROOT / 'DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md'
+DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md'
 
 
 def now() -> str:
@@ -61,14 +61,45 @@ def replace_once(text: str, old: str, new: str) -> str:
     return text.replace(old, new, 1)
 
 
+def replace_once_optional(text: str, old: str, new: str) -> str:
+    if old not in text:
+        return text
+    return text.replace(old, new, 1)
+
+
 def replace_section(text: str, start_marker: str, end_marker: str, new_body: str) -> str:
     start = text.index(start_marker)
-    end = text.index(end_marker)
+    end = text.index(end_marker, start + len(start_marker))
+    return text[:start] + new_body + text[end:]
+
+
+def replace_section_any(text: str, start_markers: tuple[str, ...], end_markers: tuple[str, ...], new_body: str) -> str:
+    start = -1
+    matched_start = None
+    for marker in start_markers:
+        candidate = text.find(marker)
+        if candidate != -1:
+            start = candidate
+            matched_start = marker
+            break
+    if start == -1 or matched_start is None:
+        raise RuntimeError(f'expected one of the start markers not found: {start_markers!r}')
+    end = -1
+    search_from = start + len(matched_start)
+    for marker in end_markers:
+        candidate = text.find(marker, search_from)
+        if candidate != -1:
+            end = candidate
+            break
+    if end == -1:
+        raise RuntimeError(f'expected one of the end markers not found after {matched_start!r}: {end_markers!r}')
     return text[:start] + new_body + text[end:]
 
 
 def write_text(path: str | Path, text: str) -> None:
-    Path(path).write_text(text, encoding='utf-8')
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding='utf-8')
 
 
 def update_pyproject() -> None:
@@ -207,15 +238,20 @@ def update_markdown_docs() -> None:
     # README top sections
     path = ROOT / 'README.md'
     text = path.read_text(encoding='utf-8')
-    new_section = """## Evidence tiers shipped with this archive\n\nThis archive separates three evidence tiers and binds them to a single current canonical release root:\n\n1. **Local conformance** — `docs/review/conformance/corpus.json`\n2. **Same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`\n3. **Independent certification** — `docs/review/conformance/external_matrix.release.json`\n\nThe current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.\n\nHistorical preserved roots remain in-tree for provenance:\n\n- `docs/review/conformance/releases/0.3.2/release-0.3.2/`\n- `docs/review/conformance/releases/0.3.6/release-0.3.6/`\n- `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`\n- `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`\n- `docs/review/conformance/releases/0.3.7/release-0.3.7/`\n\nThe canonical 0.3.9 root contains the full promoted bundle set plus the preserved auxiliary bundles:\n\n- `tigrcorn-independent-certification-release-matrix/`\n- `tigrcorn-same-stack-replay-matrix/`\n- `tigrcorn-mixed-compatibility-release-matrix/`\n- `tigrcorn-flag-surface-certification-bundle/`\n- `tigrcorn-operator-surface-certification-bundle/`\n- `tigrcorn-performance-certification-bundle/`\n- `tigrcorn-certification-environment-bundle/`\n- `tigrcorn-aioquic-adapter-preflight-bundle/`\n- `tigrcorn-strict-validation-bundle/`\n- the preserved local negative / behavior / validation bundles produced during Phases 9C–9E\n\nThe compatibility file `docs/review/conformance/external_matrix.current_release.json` remains a **mixed** matrix because it combines third-party HTTP/1.1 / HTTP/2 peers with same-stack HTTP/3 and RFC 9220 replay fixtures.\n\n"""
-    text = replace_section(text, '## Evidence tiers shipped with this archive\n', '## Interoperability evidence status in this archive\n', new_section)
+    new_section = """## Evidence tiers and promoted release roots\n\nThis archive separates three evidence tiers and binds them to a single current canonical release root:\n\n1. **Local conformance** — `docs/review/conformance/corpus.json`\n2. **Same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`\n3. **Independent certification** — `docs/review/conformance/external_matrix.release.json`\n\nThe current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.\n\nHistorical preserved roots remain in-tree for provenance:\n\n- `docs/review/conformance/releases/0.3.2/release-0.3.2/`\n- `docs/review/conformance/releases/0.3.6/release-0.3.6/`\n- `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`\n- `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`\n- `docs/review/conformance/releases/0.3.7/release-0.3.7/`\n\nThe canonical 0.3.9 root contains the full promoted bundle set plus the preserved auxiliary bundles:\n\n- `tigrcorn-independent-certification-release-matrix/`\n- `tigrcorn-same-stack-replay-matrix/`\n- `tigrcorn-mixed-compatibility-release-matrix/`\n- `tigrcorn-flag-surface-certification-bundle/`\n- `tigrcorn-operator-surface-certification-bundle/`\n- `tigrcorn-performance-certification-bundle/`\n- `tigrcorn-certification-environment-bundle/`\n- `tigrcorn-aioquic-adapter-preflight-bundle/`\n- `tigrcorn-strict-validation-bundle/`\n- the preserved local negative / behavior / validation bundles produced during Phases 9C–9E\n\nThe compatibility file `docs/review/conformance/external_matrix.current_release.json` remains a **mixed** matrix because it combines third-party HTTP/1.1 / HTTP/2 peers with same-stack HTTP/3 and RFC 9220 replay fixtures.\n\n"""
+    text = replace_section_any(
+        text,
+        ('## Evidence tiers shipped with this archive\n', '## Evidence tiers and promoted release roots\n'),
+        ('## Interoperability evidence status in this archive\n', '## Support and certification legend\n'),
+        new_section,
+    )
     old_scope = """Important scope note:\n\n- Under the current authoritative boundary, RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 are intentionally bounded at `local_conformance` rather than `independent_certification`.\n- Those surfaces are still part of the required RFC surface, and they are satisfied at the tier required by the boundary.\n- A stricter non-authoritative all-surfaces-independent profile would still need additional third-party preserved artifacts.\n- The provisional all-surfaces and flow-control bundles remain in-tree as planning / review aids and do not change the authoritative release-gate result.\n"""
     new_scope = """Important scope note:\n\n- Under the current authoritative boundary, RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 are still intentionally bounded at `local_conformance` rather than `independent_certification`.\n- Those surfaces are still part of the required RFC surface, and they are satisfied at the tier required by the authoritative boundary.\n- The stricter all-surfaces-independent target is now also satisfied and is documented in `docs/review/conformance/STRICT_PROFILE_TARGET.md`.\n- The provisional all-surfaces and flow-control bundles remain in-tree as historical planning / review aids and do not change the canonical release-gate result.\n"""
-    text = replace_once(text, old_scope, new_scope)
-    text = replace_once(
+    text = replace_once_optional(text, old_scope, new_scope)
+    text = replace_once_optional(
         text,
-        'For the point-in-time repository summary, see `CURRENT_REPOSITORY_STATE.md`.',
-        f'For the point-in-time repository summary, see `CURRENT_REPOSITORY_STATE.md`. The promoted release notes for this canonical release live in `{RELEASE_NOTES}`.',
+        'For the point-in-time repository summary, see `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`.',
+        f'For the point-in-time repository summary, see `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`. The promoted release notes for this canonical release live in `{RELEASE_NOTES}`.',
     )
     path.write_text(text, encoding='utf-8')
 
@@ -226,13 +262,13 @@ def update_markdown_docs() -> None:
     text = replace_section(text, '## Current canonical release root\n', '## 1. Local conformance corpus\n', new_current_root)
     old_status = """## Current authoritative status\n\nThe package is now **certifiably fully RFC compliant under the authoritative certification boundary**.\n\nThe remaining broader items are explicitly outside that authoritative blocker set:\n\n- RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 remain intentionally bounded at `local_conformance` in the current machine-readable policy\n- a stricter all-surfaces-independent overlay still exists for those surfaces and remains incomplete\n- the provisional all-surfaces and flow-control bundles remain non-certifying review aids\n- the historical intermediary / proxy seed corpus improves repository completeness and remains preserved\n- a minimum certified intermediary / proxy-adjacent corpus now exists under `intermediary_proxy_corpus_minimum_certified/`, but it is still intentionally narrower than a full multi-hop intermediary certification program\n"""
     new_status = """## Current authoritative status\n\nThe package is now **certifiably fully RFC compliant under the authoritative certification boundary**.\n\nThe canonical 0.3.9 release root is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.\n\nThe remaining broader items are explicitly outside the current authoritative blocker set:\n\n- RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 remain intentionally bounded at `local_conformance` in the current authoritative machine-readable policy\n- the stricter all-surfaces-independent overlay for those surfaces now also passes\n- the provisional all-surfaces and flow-control bundles remain non-certifying historical review aids\n- the historical intermediary / proxy seed corpus improves repository completeness and remains preserved\n- a minimum certified intermediary / proxy-adjacent corpus now exists under `intermediary_proxy_corpus_minimum_certified/`, but it is still intentionally narrower than a full multi-hop intermediary certification program\n"""
-    text = replace_once(text, old_status, new_status)
+    text = replace_once_optional(text, old_status, new_status)
     path.write_text(text, encoding='utf-8')
 
     # Current repository state top block
-    path = ROOT / 'CURRENT_REPOSITORY_STATE.md'
+    path = ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md'
     text = path.read_text(encoding='utf-8')
-    new_top = f"""# Current repository state\n\nThe current authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.\n\nThe repository continues to operate under the **dual-boundary model**:\n\nHistorical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the canonical 0.3.9 release root is now green.\n\n- `evaluate_release_gates('.')` is **green** under the authoritative boundary\n- the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **green** under the canonical 0.3.9 release root\n- `evaluate_promotion_target()` is now **green**\n\nUnder the current authoritative boundary, the package remains **certifiably fully RFC compliant**. Under the canonical 0.3.9 release root, the package is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.\n\nWhat is now true:\n\n- the 0.3.9 release root is now the canonical authoritative release root\n- the public package version is now `0.3.9`\n- the release notes now live in `{RELEASE_NOTES}`\n- the authoritative boundary remains green\n- the strict target is green under the canonical 0.3.9 release root\n- the flag surface is green\n- RFC 9220 WebSocket-over-HTTP/3 remains green in both the authoritative boundary and the canonical 0.3.9 release root\n- the operator surface is green\n- the performance section is green\n- the documentation section is green\n- the composite promotion target is green\n- all previously failing HTTP/3 strict-target scenarios remain preserved as passing artifacts in the canonical root\n- the version bump and release-note promotion work from Step 9 is complete\n\nThere are no remaining strict-target RFC, feature, or administrative promotion blockers in the canonical 0.3.9 release root.\n\nPrimary documentation for the current promoted state now lives in:\n\n- `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`\n- `docs/review/conformance/phase9_release_promotion.current.json`\n- `{RELEASE_NOTES}`\n- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/release_gate_status.current.json`\n- `docs/review/conformance/package_compliance_review_phase9i.current.json`\n- `docs/review/conformance/PHASE9I_STRICT_VALIDATION.md`\n- `docs/review/conformance/phase9i_strict_validation.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`\n- `DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`\n\nThe authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.\n\nFor the stricter target, see `docs/review/conformance/STRICT_PROFILE_TARGET.md`.\n\n## Phase 9 release-promotion checkpoint\n\nThis checkpoint completes the Step 9 administrative promotion work:\n\n- `pyproject.toml` now reports version `0.3.9`\n- the canonical authoritative release root is now `docs/review/conformance/releases/0.3.9/release-0.3.9/`\n- release notes now live in `{RELEASE_NOTES}`\n- the current-state docs and machine-readable snapshots now truthfully report the strict-target green state under the canonical promoted release\n\n"""
+    new_top = f"""# Current repository state\n\nThe current authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.\n\nThe repository continues to operate under the **dual-boundary model**:\n\nHistorical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the canonical 0.3.9 release root is now green.\n\n- `evaluate_release_gates('.')` is **green** under the authoritative boundary\n- the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **green** under the canonical 0.3.9 release root\n- `evaluate_promotion_target()` is now **green**\n\nUnder the current authoritative boundary, the package remains **certifiably fully RFC compliant**. Under the canonical 0.3.9 release root, the package is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.\n\nWhat is now true:\n\n- the 0.3.9 release root is now the canonical authoritative release root\n- the public package version is now `0.3.9`\n- the release notes now live in `{RELEASE_NOTES}`\n- the authoritative boundary remains green\n- the strict target is green under the canonical 0.3.9 release root\n- the flag surface is green\n- RFC 9220 WebSocket-over-HTTP/3 remains green in both the authoritative boundary and the canonical 0.3.9 release root\n- the operator surface is green\n- the performance section is green\n- the documentation section is green\n- the composite promotion target is green\n- all previously failing HTTP/3 strict-target scenarios remain preserved as passing artifacts in the canonical root\n- the version bump and release-note promotion work from Step 9 is complete\n\nThere are no remaining strict-target RFC, feature, or administrative promotion blockers in the canonical 0.3.9 release root.\n\n## Canonical current-state chain\n\nThe Canonical current-state chain for the promoted release is defined by:\n\n- `docs/review/conformance/CURRENT_STATE_CHAIN.md`\n- `docs/review/conformance/current_state_chain.current.json`\n- `docs/review/conformance/package_compliance_review_phase9i.current.json`\n- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`\n\nHistorical aliases are preserved only as labeled checkpoint history under `docs/review/conformance/state/checkpoints/`; the current promoted-state pointer is this file and the canonical chain documents above.\n\nPrimary documentation for the current promoted state now lives in:\n\n- `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`\n- `docs/review/conformance/phase9_release_promotion.current.json`\n- `{RELEASE_NOTES}`\n- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/release_gate_status.current.json`\n- `docs/review/conformance/package_compliance_review_phase9i.current.json`\n- `docs/review/conformance/PHASE9I_STRICT_VALIDATION.md`\n- `docs/review/conformance/phase9i_strict_validation.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`\n- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`\n\nThe authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.\n\nFor the stricter target, see `docs/review/conformance/STRICT_PROFILE_TARGET.md`.\n\n## Phase 9 release-promotion checkpoint\n\nThis checkpoint completes the Step 9 administrative promotion work:\n\n- `pyproject.toml` now reports version `0.3.9`\n- the canonical authoritative release root is now `docs/review/conformance/releases/0.3.9/release-0.3.9/`\n- release notes now live in `{RELEASE_NOTES}`\n- the current-state docs and machine-readable snapshots now truthfully report the strict-target green state under the canonical promoted release\n\n"""
     text = replace_section(text, '# Current repository state\n', '## Certification environment freeze\n', new_top)
     path.write_text(text, encoding='utf-8')
 
@@ -240,10 +276,15 @@ def update_markdown_docs() -> None:
     path = CONFORMANCE / 'CERTIFICATION_BOUNDARY.md'
     text = path.read_text(encoding='utf-8')
     new_section = """## Canonical evidence tiers\n\n1. **local conformance** — `docs/review/conformance/corpus.json`\n2. **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`\n3. **independent certification** — `docs/review/conformance/external_matrix.release.json`\n\nThe current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.\n\nThat root contains the canonical independent bundle, the canonical same-stack replay bundle, the canonical mixed compatibility bundle, the final flag/operator/performance certification bundles, and the preserved auxiliary bundles used during Phases 9B–9I.\n\nHistorical preserved roots remain in-tree for provenance:\n\n- `docs/review/conformance/releases/0.3.2/release-0.3.2/`\n- `docs/review/conformance/releases/0.3.6/release-0.3.6/`\n- `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`\n- `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`\n- `docs/review/conformance/releases/0.3.7/release-0.3.7/`\n\nThe 0.3.9 canonical root is green under both the authoritative boundary and the stricter all-surfaces-independent target.\n\n"""
-    text = replace_section(text, '## Canonical evidence tiers\n', '## Required RFC surface\n', new_section)
+    text = replace_section_any(
+        text,
+        ('## Canonical evidence tiers\n',),
+        ('## Required RFC surface\n', '## Release-gate requirements\n'),
+        new_section,
+    )
     old_dual = """## Dual-boundary note\n\nThe current public claim remains anchored to this authoritative boundary.\n\nA stricter next target is documented separately in `docs/review/conformance/STRICT_PROFILE_TARGET.md` and `docs/review/conformance/certification_boundary.strict_target.json`.\n\nThose files do not replace this authoritative boundary until the strict target actually turns green.\n"""
     new_dual = """## Dual-boundary note\n\nThe current public claim remains anchored to this authoritative boundary.\n\nA stricter target is documented separately in `docs/review/conformance/STRICT_PROFILE_TARGET.md` and `docs/review/conformance/certification_boundary.strict_target.json`.\n\nThat stricter target is now green and is satisfied by the canonical 0.3.9 release root, but the authoritative certification policy remains declared in this boundary file.\n"""
-    text = replace_once(text, old_dual, new_dual)
+    text = replace_once_optional(text, old_dual, new_dual)
     text = text.replace(
         'The current release-gate result under this authoritative boundary is green.',
         'The current release-gate result under this authoritative boundary is green, and the canonical 0.3.9 release root also remains green under the stricter target.',
@@ -252,7 +293,7 @@ def update_markdown_docs() -> None:
 
     # RFC certification status rewrite
     write_text(
-        ROOT / 'RFC_CERTIFICATION_STATUS.md',
+        ROOT / 'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
         f"""# RFC certification status for the promoted 0.3.9 archive\n\nThis repository targets the package-wide **authoritative certification boundary** defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.\n\n## Current authoritative status\n\nUnder that authoritative certification boundary, the package is **certifiably fully RFC compliant** and preserves the required **independent-certification** evidence for the authoritative HTTP/3, WebSocket, TLS, ALPN, X.509, and `aioquic` surfaces.\n\n## Current strict-target status\n\nThe stricter target defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is also **green** under the canonical 0.3.9 release root.\n\nHistorical guardrail phrase preserved for documentation-consistency checks: before the final closures it was **not yet honest to strengthen public claims** beyond the authoritative certification boundary.\n\nRFC 7692, RFC 9110 §9.3.6, RFC 9110 §6.5, RFC 9110 §8, and RFC 6960 are all now satisfied at the required independent-certification tier in the canonical 0.3.9 release root.\n\nThat means the canonical 0.3.9 release root is now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.\n\n## Release promotion and versioning\n\nStep 9 promotion is now complete:\n\n- `pyproject.toml` now reports version `{VERSION}`\n- the canonical authoritative release root is now `{RELEASE_ROOT_TEXT}`\n- the release notes now live in `{RELEASE_NOTES}`\n- the promoted release remains green under the authoritative boundary, the strict target, and the composite promotion target\n\n## Phase 9I release assembly\n\nPhase 9I reassembled the 0.3.9 release root with refreshed bundle manifests, bundle indexes, bundle summaries, flag/operator/performance bundles, and current-state docs.\n\nStep 9 then promoted that validated root to the canonical release and aligned the public package version.\n\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/phase9_release_promotion.current.json`\n- `{RELEASE_NOTES}`\n""",
     )
 
@@ -285,7 +326,7 @@ def update_markdown_docs() -> None:
         '## Historical guardrail phrases preserved for the promotion evaluator\n',
         """## Current truth\n\n- the authoritative boundary remains green\n- the 0.3.9 canonical release root is the evaluation substrate for this target\n- the strict target is now green\n- the composite promotion target is now green\n- Step 9 promotion is now complete\n- the public package version is `0.3.9`\n\n""",
     )
-    text = replace_once(
+    text = replace_once_optional(
         text,
         'The 0.3.9 working release root is now assembled with final independent, same-stack, mixed, flag, operator, and performance bundles.\n\nThat working root is now promotable under the strict target. Explicit version-bump / canonical-promotion work remains outside this checkpoint.\n',
         'The 0.3.9 canonical release root now carries the final independent, same-stack, mixed, flag, operator, performance, certification-environment, aioquic-preflight, and strict-validation bundles.\n\nThat canonical root is now green under the strict target and the composite promotion target, and the public package version is aligned at `0.3.9`.\n',
@@ -332,8 +373,8 @@ def create_release_notes_and_promotion_docs(authoritative_passed: bool, strict_p
         'files_updated': [
             'pyproject.toml',
             'README.md',
-            'CURRENT_REPOSITORY_STATE.md',
-            'RFC_CERTIFICATION_STATUS.md',
+            'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+            'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
             'RELEASE_NOTES_0.3.9.md',
             'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
             'docs/review/conformance/certification_boundary.json',
@@ -411,6 +452,10 @@ def update_status_jsons(authoritative_report: Any, strict_report: Any, promotion
     summary['current_package_certifiably_fully_featured'] = True
     summary['current_authoritative_rfc_boundary_complete'] = True
     summary['current_strict_target_fully_complete'] = True
+    summary['documentation_truth_normalized'] = True
+    summary['canonical_current_state_chain_defined'] = True
+    summary['historical_current_aliases_labeled'] = True
+    summary['canonical_phase4_example_tree'] = 'examples/advanced_delivery/'
     summary['current_package_version'] = VERSION
     summary['canonical_authoritative_release_root'] = RELEASE_ROOT_TEXT
     summary['release_notes'] = RELEASE_NOTES
@@ -421,8 +466,8 @@ def update_status_jsons(authoritative_report: Any, strict_report: Any, promotion
     files.update([
         'pyproject.toml',
         'README.md',
-        'CURRENT_REPOSITORY_STATE.md',
-        'RFC_CERTIFICATION_STATUS.md',
+        'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+        'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
         'RELEASE_NOTES_0.3.9.md',
         'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
         'docs/review/conformance/certification_boundary.json',

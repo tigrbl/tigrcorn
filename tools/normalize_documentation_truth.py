@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
 CURRENT_STATE_CHAIN_JSON = 'docs/review/conformance/current_state_chain.current.json'
 CURRENT_STATE_CHAIN_MD = 'docs/review/conformance/CURRENT_STATE_CHAIN.md'
-CURRENT_STATE_MD = 'CURRENT_REPOSITORY_STATE.md'
+CURRENT_STATE_MD = 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md'
 PACKAGE_REVIEW_JSON = 'docs/review/conformance/package_compliance_review_phase9i.current.json'
 PACKAGE_REVIEW_MD = 'docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md'
 REVIEWED_AT = '2026-03-26'
@@ -51,7 +51,7 @@ CANONICAL_CHAIN_HUMAN = [
     'docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md',
     'docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md',
     PACKAGE_REVIEW_MD,
-    'RFC_CERTIFICATION_STATUS.md',
+    'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
 ]
 
 CANONICAL_CHAIN_MACHINE = [
@@ -87,18 +87,18 @@ SCOPED_AUDIT_INFO = {
 }
 
 CHECKPOINT_ROOT_MDS = [
-    'CURRENT_REPOSITORY_STATE_PHASE1_SURFACE_PARITY_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_PHASE2_CORE_HTTP_ENTITY_SEMANTICS_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_PHASE3_TRANSPORT_CORE_STRICTNESS_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_PHASE4_ADVANCED_PROTOCOL_DELIVERY_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_PROMOTION_ARTIFACT_RECONCILIATION_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_TRIO_RUNTIME_SURFACE_RECONCILIATION_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_DEPENDENCY_DECLARATION_RECONCILIATION_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_STATIC_DELIVERY_PRODUCTIONIZATION_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_RESPONSE_PIPELINE_STREAMING_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_PHASE2_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_PHASE4_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md',
-    'CURRENT_REPOSITORY_STATE_DOCUMENTATION_TRUTH_NORMALIZATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE1_SURFACE_PARITY_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE2_CORE_HTTP_ENTITY_SEMANTICS_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE3_TRANSPORT_CORE_STRICTNESS_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE4_ADVANCED_PROTOCOL_DELIVERY_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PROMOTION_ARTIFACT_RECONCILIATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_TRIO_RUNTIME_SURFACE_RECONCILIATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_DEPENDENCY_DECLARATION_RECONCILIATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_STATIC_DELIVERY_PRODUCTIONIZATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_RESPONSE_PIPELINE_STREAMING_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE2_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE4_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md',
+    'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_DOCUMENTATION_TRUTH_NORMALIZATION_CHECKPOINT.md',
 ]
 
 CHECKPOINT_CONFORMANCE_MDS = [
@@ -109,13 +109,13 @@ CHECKPOINT_CONFORMANCE_MDS = [
 
 ARCHIVAL_NOTE = (
     '> Historical checkpoint note: this file is retained as an archival snapshot for provenance and stable test/tool '
-    'references. It is not the canonical package-wide current-state source. Use `CURRENT_REPOSITORY_STATE.md` and '
+    'references. It is not the canonical package-wide current-state source. Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and '
     f'`{CURRENT_STATE_CHAIN_JSON}` for current package truth.\n\n'
 )
 
 SCOPED_AUDIT_NOTE = (
     '> Scope note: this document is a focused current audit, not the canonical package-wide current-state source. '
-    f'Use `CURRENT_REPOSITORY_STATE.md` and `{CURRENT_STATE_CHAIN_JSON}` for package-wide truth.\n\n'
+    f'Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `{CURRENT_STATE_CHAIN_JSON}` for package-wide truth.\n\n'
 )
 
 ADVANCED_PROTOCOL_DELIVERY_NOTE = (
@@ -195,7 +195,7 @@ This repository now uses a single canonical current example tree for the integra
 
 ## Documentation policy
 
-For package-wide current truth, use `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json`.
+For package-wide current truth, use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json`.
 
 For the Phase 4 example policy specifically:
 
@@ -336,7 +336,7 @@ The canonical current integrated Phase 4 example tree is `examples/advanced_deli
 
 
 def _update_current_repository_state() -> None:
-    path = ROOT / 'CURRENT_REPOSITORY_STATE.md'
+    path = ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md'
     text = path.read_text(encoding='utf-8')
     marker = 'Primary documentation for the current promoted state now lives in:\n\n'
     insert = f'''## Canonical current-state chain
@@ -397,7 +397,7 @@ def _update_package_review_json() -> None:
         'docs/review/conformance/phase4_advanced_protocol_delivery/example_matrix.json',
         'docs/review/conformance/phase4_advanced_delivery/examples_matrix.json',
         'docs/review/conformance/documentation_truth_normalization_checkpoint.current.json',
-        'CURRENT_REPOSITORY_STATE_DOCUMENTATION_TRUTH_NORMALIZATION_CHECKPOINT.md',
+        'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_DOCUMENTATION_TRUTH_NORMALIZATION_CHECKPOINT.md',
         'docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md',
     ]:
         if rel not in files:
@@ -477,10 +477,10 @@ def _update_readme() -> None:
     path = ROOT / 'README.md'
     text = path.read_text(encoding='utf-8')
     old = (
-        'For the point-in-time repository summary, see `CURRENT_REPOSITORY_STATE.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. For an explicit gap analysis of the current Phase 9I checkpoint, see `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md` and `docs/review/conformance/package_compliance_review_phase9i.current.json`. For the machine-readable certification policy, see `docs/review/conformance/certification_boundary.json`. For the offline remediation attempt that produced the provisional bundles, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`. A detailed execution plan for the remaining strict-promotion work now also lives in `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` and `docs/review/conformance/phase9_implementation_plan.current.json`. The executed Phase 9A contract freeze now also lives in `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`, `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`, `docs/review/conformance/phase9a_promotion_contract.current.json`, and `docs/review/conformance/phase9a_execution_backlog.current.json`. The executed Phase 9B independent-harness foundation now also lives in `docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md`, `docs/review/conformance/INTEROP_HARNESS_ARTIFACT_SCHEMA.md`, `docs/review/conformance/interop_wrapper_registry.current.json`, and `docs/review/conformance/phase9b_independent_harness.current.json`. The direct third-party aioquic adapter preflight now also lives in `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md` and `docs/review/conformance/aioquic_adapter_preflight.current.json`.'
+        'For the point-in-time repository summary, see `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. For an explicit gap analysis of the current Phase 9I checkpoint, see `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md` and `docs/review/conformance/package_compliance_review_phase9i.current.json`. For the machine-readable certification policy, see `docs/review/conformance/certification_boundary.json`. For the offline remediation attempt that produced the provisional bundles, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`. A detailed execution plan for the remaining strict-promotion work now also lives in `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` and `docs/review/conformance/phase9_implementation_plan.current.json`. The executed Phase 9A contract freeze now also lives in `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`, `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`, `docs/review/conformance/phase9a_promotion_contract.current.json`, and `docs/review/conformance/phase9a_execution_backlog.current.json`. The executed Phase 9B independent-harness foundation now also lives in `docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md`, `docs/review/conformance/INTEROP_HARNESS_ARTIFACT_SCHEMA.md`, `docs/review/conformance/interop_wrapper_registry.current.json`, and `docs/review/conformance/phase9b_independent_harness.current.json`. The direct third-party aioquic adapter preflight now also lives in `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md` and `docs/review/conformance/aioquic_adapter_preflight.current.json`.'
     )
     new = (
-        'For the point-in-time repository summary, use `CURRENT_REPOSITORY_STATE.md` together with `docs/review/conformance/current_state_chain.current.json`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. For an explicit gap analysis of the current Phase 9I checkpoint, see `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md` and `docs/review/conformance/package_compliance_review_phase9i.current.json`. For the machine-readable certification policy, see `docs/review/conformance/certification_boundary.json`. For the offline remediation attempt that produced the provisional bundles, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`. Historical execution-plan and phase-closure records remain in-tree for provenance, including `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` / `docs/review/conformance/phase9_implementation_plan.current.json`, `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md` / `docs/review/conformance/phase9a_promotion_contract.current.json`, and `docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md` / `docs/review/conformance/phase9b_independent_harness.current.json`. Those retained phase records are not the canonical package-wide current-state chain. The direct third-party aioquic adapter preflight now also lives in `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md` and `docs/review/conformance/aioquic_adapter_preflight.current.json`.'
+        'For the point-in-time repository summary, use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` together with `docs/review/conformance/current_state_chain.current.json`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. For an explicit gap analysis of the current Phase 9I checkpoint, see `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md` and `docs/review/conformance/package_compliance_review_phase9i.current.json`. For the machine-readable certification policy, see `docs/review/conformance/certification_boundary.json`. For the offline remediation attempt that produced the provisional bundles, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`. Historical execution-plan and phase-closure records remain in-tree for provenance, including `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` / `docs/review/conformance/phase9_implementation_plan.current.json`, `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md` / `docs/review/conformance/phase9a_promotion_contract.current.json`, and `docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md` / `docs/review/conformance/phase9b_independent_harness.current.json`. Those retained phase records are not the canonical package-wide current-state chain. The direct third-party aioquic adapter preflight now also lives in `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md` and `docs/review/conformance/aioquic_adapter_preflight.current.json`.'
     )
     if old in text:
         text = text.replace(old, new)
@@ -556,7 +556,7 @@ This checkpoint normalizes documentation truth without changing the package RFC/
 
 This checkpoint improves documentation truth and provenance clarity. It does **not** by itself widen the RFC boundary or add new runtime/protocol features.
 '''
-    report_path = ROOT / 'CURRENT_REPOSITORY_STATE_DOCUMENTATION_TRUTH_NORMALIZATION_CHECKPOINT.md'
+    report_path = ROOT / 'docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_DOCUMENTATION_TRUTH_NORMALIZATION_CHECKPOINT.md'
     report_path.write_text(ARCHIVAL_NOTE + report, encoding='utf-8')
 
 

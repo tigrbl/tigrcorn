@@ -1,9 +1,4 @@
 {
-  "document_role": "canonical_current_state_source",
-  "current_truth_source": true,
-  "truth_scope": "canonical_current_state_chain",
-  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
-  "documentation_truth_reviewed_at": "2026-03-26",
   "phase": "9I",
   "checkpoint": "phase9i_release_assembly_and_certifiable_checkpoint",
   "status": "canonical_release_promoted_and_version_aligned",
@@ -28,8 +23,7 @@
     "remaining_strict_target_rfc_gaps": [],
     "release_notes": "RELEASE_NOTES_0.3.9.md",
     "release_promoted": true,
-    "remaining_plan_phases": [],
-    "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8"
+    "remaining_plan_phases": []
   },
   "validation": {
     "compileall": {
@@ -72,5 +66,5 @@
     "release_notes": "RELEASE_NOTES_0.3.9.md",
     "reason_not_promoted": ""
   },
-  "generated_at": "2026-03-28T03:59:49.931630+00:00"
+  "generated_at": "2026-03-28T06:47:38.042990+00:00"
 }

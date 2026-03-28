@@ -8,7 +8,7 @@ version = "0.3.9"
 description = "ASGI3-compatible transport server with a transport-agnostic core and stdlib-only implementation."
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 authors = [
   {name = "Jacob Stewart", email = "jacob@swarmauri.com"}
 ]
@@ -17,7 +17,7 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Framework :: AsyncIO",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.11",
@@ -68,6 +68,7 @@ tigrcorn-interop = "tigrcorn.compat.interop_cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
 tigrcorn = ["py.typed"]

@@ -6,13 +6,13 @@ What changed:
 
 - added a reusable aioquic preflight module at `src/tigrcorn/compat/aioquic_preflight.py`
 - added a runnable checkpoint tool at `tools/preflight_aioquic_adapters.py`
-- added a preserved preflight bundle under the 0.3.8 working release root
+- added a preserved preflight bundle under the 0.3.9 working release root
 - updated the release workflow and local wrapper so aioquic adapter preflight is now mandatory before Phase 9 checkpoint scripts run
 - updated current-state documentation
 
 Current result:
 
-- preflight bundle root: `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle`
+- preflight bundle root: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle`
 - all adapters passed: `True`
 - no peer exit code 2: `True`
 - strict target after preflight: `True`

@@ -71,9 +71,9 @@
     "docs/review/conformance/phase4_advanced_protocol_delivery_checkpoint.current.json",
     "docs/review/conformance/phase4_advanced_delivery/runtime_compatibility_matrix.json",
     "docs/review/conformance/phase4_advanced_protocol_delivery/runtime_compatibility_matrix.json",
-    "CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
     "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
-    "CURRENT_REPOSITORY_STATE_TRIO_RUNTIME_SURFACE_RECONCILIATION_CHECKPOINT.md",
+    "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_TRIO_RUNTIME_SURFACE_RECONCILIATION_CHECKPOINT.md",
     "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
     "tests/test_trio_runtime_surface_reconciliation_checkpoint.py"
   ]

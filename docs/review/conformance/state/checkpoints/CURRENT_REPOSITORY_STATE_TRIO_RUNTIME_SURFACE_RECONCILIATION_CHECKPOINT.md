@@ -1,4 +1,4 @@
-> Historical checkpoint note: this file is retained as an archival snapshot for provenance and stable test/tool references. It is not the canonical package-wide current-state source. Use `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current package truth.
+> Historical checkpoint note: this file is retained as an archival snapshot for provenance and stable test/tool references. It is not the canonical package-wide current-state source. Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current package truth.
 
 # Current Repository State — Trio Runtime Surface Reconciliation Checkpoint
 
@@ -46,7 +46,7 @@ Primary artifact / documentation files:
 - `docs/review/conformance/phase4_advanced_protocol_delivery_checkpoint.current.json`
 - `docs/review/conformance/phase4_advanced_delivery/runtime_compatibility_matrix.json`
 - `docs/review/conformance/phase4_advanced_protocol_delivery/runtime_compatibility_matrix.json`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md`
 
 Validation/tests:

@@ -84,7 +84,7 @@ def test_repository_documents_reference_rfc_applicability_report() -> None:
     root = Path(__file__).resolve().parents[1]
     report_name = 'RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md'
     readme = (root / 'README.md').read_text(encoding='utf-8')
-    current_state = (root / 'CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
+    current_state = (root / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
     conformance_readme = (root / 'docs' / 'review' / 'conformance' / 'README.md').read_text(encoding='utf-8')
 
     assert report_name in readme

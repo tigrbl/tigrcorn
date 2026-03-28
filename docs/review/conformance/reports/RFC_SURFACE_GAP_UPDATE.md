@@ -20,7 +20,7 @@ Modified:
 - `src/tigrcorn/protocols/http2/streams.py`
 - `src/tigrcorn/protocols/http2/handler.py`
 - `docs/protocols/http2.md`
-- `RFC_HARDENING_REPORT.md`
+- `docs/review/conformance/reports/RFC_HARDENING_REPORT.md`
 - `tests/test_http2_state_machine_completion.py`
 
 Added:

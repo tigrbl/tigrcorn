@@ -30,7 +30,7 @@ def test_phase9b_docs_wrapper_registry_and_release_root_exist() -> None:
     schema_doc = CONFORMANCE / 'INTEROP_HARNESS_ARTIFACT_SCHEMA.md'
     status_json = CONFORMANCE / 'phase9b_independent_harness.current.json'
     wrapper_json = CONFORMANCE / 'interop_wrapper_registry.current.json'
-    delivery = ROOT / 'DELIVERY_NOTES_PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md'
+    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md'
 
     assert doc.exists()
     assert schema_doc.exists()

@@ -12,13 +12,16 @@ Mutable root files are limited to:
 
 - `README.md`
 - `AGENTS.md`
-- `CURRENT_REPOSITORY_STATE.md`
 - `RELEASE_NOTES_*.md`
 - build/config roots such as `pyproject.toml`, `Makefile`, `.gitignore`, `LICENSE`
 
-New operational, design, governance, or progress notes must **not** be added to root. New documentation belongs under `docs/`.
+Canonical current-state, delivery-note, and root-report material now lives under:
 
-Historical root notes that already exist are grandfathered as legacy archival files. They are treated as immutable compatibility artifacts unless a dedicated migration ADR moves them.
+- `docs/review/conformance/state/`
+- `docs/review/conformance/delivery/`
+- `docs/review/conformance/reports/`
+
+New operational, design, governance, or progress notes must **not** be added to root. New documentation belongs under `docs/`. The prior root note sprawl has been migrated into the conformance tree.
 
 ## Mutable documentation layout
 
@@ -49,9 +52,8 @@ Use abbreviations only when they remain obvious, searchable, and stable.
 
 ## Grandfathered legacy exceptions
 
-Pre-existing legacy paths are grandfathered until they are explicitly migrated. This includes:
+Pre-existing legacy paths are grandfathered until they are explicitly migrated. The root current-state, delivery-note, and RFC-report Markdown files have already been migrated into `docs/review/conformance/`. Remaining exceptions primarily cover:
 
-- preserved root archival notes
 - preserved release/conformance artifact trees
 - pre-existing ADR names
 - pre-existing example paths
@@ -90,7 +92,7 @@ Allowed states:
 
 1. `README.md`
 2. `AGENTS.md`
-3. `CURRENT_REPOSITORY_STATE.md`
+3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 4. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 5. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
 6. `docs/review/conformance/README.md`

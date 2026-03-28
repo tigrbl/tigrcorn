@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "target_name": "phase9j_release_repair_and_promotion_program",
-  "status": "phase9j_released_0_3_8_restored_and_0_3_9_promoted",
+  "status": "phase9_release_promoted_canonical",
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "strict_target_boundary": {
     "boundary_path": "docs/review/conformance/certification_boundary.strict_target.json"
@@ -115,7 +115,7 @@
         ]
       },
       {
-        "path": "CURRENT_REPOSITORY_STATE.md",
+        "path": "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
         "must_contain": [
           "dual-boundary model",
           "evaluate_promotion_target",
@@ -125,7 +125,7 @@
         ]
       },
       {
-        "path": "RFC_CERTIFICATION_STATUS.md",
+        "path": "docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md",
         "must_contain": [
           "authoritative certification boundary",
           "strict target",
@@ -194,6 +194,8 @@
       "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle"
     ],
     "promotion_ready": true,
-    "version_bump_performed": true
+    "version_bump_performed": true,
+    "canonical_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "current_package_version": "0.3.9"
   }
 }

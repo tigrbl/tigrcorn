@@ -13,7 +13,7 @@
     "archival_current_alias_count": 34
   },
   "files_updated": [
-    "CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
     "docs/review/conformance/CURRENT_STATE_CHAIN.md",
     "docs/review/conformance/current_state_chain.current.json",
     "docs/review/conformance/HTTP_INTEGRITY_CACHING_SIGNATURES_STATUS.md",

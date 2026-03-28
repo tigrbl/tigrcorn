@@ -6,7 +6,7 @@ Read in this order:
 
 1. `../README.md`
 2. `../AGENTS.md`
-3. `../CURRENT_REPOSITORY_STATE.md`
+3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 4. `review/conformance/CERTIFICATION_BOUNDARY.md`
 5. `review/conformance/BOUNDARY_NON_GOALS.md`
 

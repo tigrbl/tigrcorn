@@ -20,7 +20,7 @@ The current package boundary is now explicitly frozen as a **T/P/A/D/R** boundar
 - `docs/review/conformance/BOUNDARY_NON_GOALS.md` now states the canonical out-of-bounds policy directly
 - `docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md` now tracks the remaining **in-bounds** post-promotion backlog instead of acting like an older strict-promotion planning document
 - `README.md` now points to the same canonical in-bounds and out-of-bounds policy sources
-- `CURRENT_REPOSITORY_STATE.md` now treats the canonical boundary/non-goals pair as the current package-governance truth and no longer treats the repository as operating under a competing dual-boundary current-claim model
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` now treats the canonical boundary/non-goals pair as the current package-governance truth and no longer treats the repository as operating under a competing dual-boundary current-claim model
 - `docs/review/conformance/README.md`, `docs/review/conformance/CURRENT_STATE_CHAIN.md`, and `docs/review/conformance/current_state_chain.current.json` now point to the same canonical policy chain
 - `docs/review/conformance/CERTIFICATION_POLICY_ALIGNMENT.md` now reflects the current green state and the new in-bounds / out-of-bounds policy split
 
@@ -42,7 +42,7 @@ This checkpoint makes the following items explicit non-goals for the current pac
 ## Files changed in this checkpoint
 
 - `README.md`
-- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 - `docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md`
 - `docs/review/conformance/BOUNDARY_NON_GOALS.md`
@@ -51,7 +51,7 @@ This checkpoint makes the following items explicit non-goals for the current pac
 - `docs/review/conformance/current_state_chain.current.json`
 - `docs/review/conformance/CERTIFICATION_POLICY_ALIGNMENT.md`
 - `docs/review/conformance/STRICT_PROFILE_TARGET.md`
-- `CURRENT_REPOSITORY_STATE_PHASE1_BOUNDARY_AND_NON_GOALS_NORMALIZATION_CHECKPOINT.md`
+- `docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE1_BOUNDARY_AND_NON_GOALS_NORMALIZATION_CHECKPOINT.md`
 - `docs/review/conformance/phase1_boundary_and_non_goals_normalization.current.json`
 
 ## Validation completed

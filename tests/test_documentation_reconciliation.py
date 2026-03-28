@@ -25,7 +25,7 @@ class DocumentationReconciliationTests(unittest.TestCase):
             'external_matrix.release.json',
             'external_matrix.current_release.json',
             'certifiably fully RFC compliant under the authoritative certification boundary',
-            'CURRENT_REPOSITORY_STATE.md',
+            'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
         )
 
     def test_http3_quic_and_websocket_docs_reference_boundary_and_current_blockers(self):
@@ -57,9 +57,9 @@ class DocumentationReconciliationTests(unittest.TestCase):
     def test_conformance_boundary_and_status_docs_are_aligned(self):
         boundary = self._read('docs/review/conformance/CERTIFICATION_BOUNDARY.md')
         conformance = self._read('docs/review/conformance/README.md')
-        status = self._read('RFC_CERTIFICATION_STATUS.md')
-        current = self._read('CURRENT_REPOSITORY_STATE.md')
-        hardening = self._read('RFC_HARDENING_REPORT.md')
+        status = self._read('docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md')
+        current = self._read('docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md')
+        hardening = self._read('docs/review/conformance/reports/RFC_HARDENING_REPORT.md')
         for text in (boundary, conformance, status, current, hardening):
             self.assertIn(BOUNDARY_DOC, text)
         self.assertContainsAll(

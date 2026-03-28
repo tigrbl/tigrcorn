@@ -2,7 +2,7 @@
 
 The canonical package-wide certification target remains `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-This document is preserved as a historical record of the pre-closure offline remediation state. It has been superseded as a current-state description by `CURRENT_REPOSITORY_STATE.md`, `docs/review/conformance/INDEPENDENT_HTTP3_CERTIFICATION_STATE.md`, and `docs/review/conformance/RELEASE_GATE_STATUS.md`.
+This document is preserved as a historical record of the pre-closure offline remediation state. It has been superseded as a current-state description by `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`, `docs/review/conformance/INDEPENDENT_HTTP3_CERTIFICATION_STATE.md`, and `docs/review/conformance/RELEASE_GATE_STATUS.md`.
 
 This document records the additional work performed in the offline update bundle created from the supplied archive.
 

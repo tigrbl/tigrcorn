@@ -1,4 +1,4 @@
-> Scope note: this document is a focused current audit, not the canonical package-wide current-state source. Use `CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for package-wide truth.
+> Scope note: this document is a focused current audit, not the canonical package-wide current-state source. Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for package-wide truth.
 
 # RFC applicability and competitor status
 

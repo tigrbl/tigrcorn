@@ -48,8 +48,8 @@
   "files_touched": [
     "pyproject.toml",
     "README.md",
-    "CURRENT_REPOSITORY_STATE.md",
-    "CURRENT_REPOSITORY_STATE_DEPENDENCY_DECLARATION_RECONCILIATION_CHECKPOINT.md",
+    "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_DEPENDENCY_DECLARATION_RECONCILIATION_CHECKPOINT.md",
     "docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md",
     "docs/review/conformance/optional_dependency_surface.current.json",
     "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
