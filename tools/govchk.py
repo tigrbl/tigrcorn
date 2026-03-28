@@ -55,9 +55,24 @@ def scan() -> int:
     folder_max = int(root_cfg.get("folder_name_max", 16))
     path_max = int(root_cfg.get("path_max", 120))
 
+    ignored_dir_names = {
+        ".git",
+        "__pycache__",
+        ".pytest_cache",
+        ".mypy_cache",
+        ".ruff_cache",
+        ".tox",
+        ".nox",
+        ".venv",
+        "venv",
+        "dist",
+        "build",
+    }
     violations: list[str] = []
     for path in ROOT.rglob("*"):
-        if ".git" in path.parts or "__pycache__" in path.parts or ".pytest_cache" in path.parts:
+        if any(part in ignored_dir_names for part in path.parts):
+            continue
+        if any(part.endswith(".egg-info") for part in path.parts):
             continue
         rel_path = rel(path)
         if is_exempt(path, root_cfg):
