@@ -1,0 +1,102 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": 2,
+  "checkpoint": "core_http_entity_semantics",
+  "status": "implemented_checkpoint_with_focused_green_validation",
+  "boundary": {
+    "current_internal_promotion_target_green": null,
+    "expanded_program_fully_featured": false,
+    "expanded_program_fully_rfc_compliant": false,
+    "excluded_boundaries": [
+      "cache_freshness_policy",
+      "integrity_trust",
+      "gateway_enforcement"
+    ]
+  },
+  "implemented": {
+    "entity_modules": [
+      "etag",
+      "conditional",
+      "range",
+      "entity"
+    ],
+    "conditional_requests": {
+      "if_match": true,
+      "if_none_match": true,
+      "if_modified_since": true,
+      "if_unmodified_since": true,
+      "server_generated_304": true,
+      "server_generated_412": true
+    },
+    "etag_generation": {
+      "complete_direct_responses": true,
+      "static_files": true,
+      "generic_last_modified_auto_generation": false
+    },
+    "ranges": {
+      "single_range": true,
+      "multi_range": true,
+      "if_range": true,
+      "status_206": true,
+      "status_416": true,
+      "content_range": true,
+      "accept_ranges": true
+    },
+    "cross_protocol_entity_closure": {
+      "http1": true,
+      "http2": true,
+      "http3": true,
+      "head_body_suppression": true,
+      "content_length_normalization": true
+    },
+    "content_coding_behavior": {
+      "gzip": true,
+      "brotli_when_available": true,
+      "vary_accept_encoding": true,
+      "content_length_replacement": true,
+      "range_requests_bypass_dynamic_content_coding": true
+    },
+    "static_files": {
+      "etag": true,
+      "last_modified": true,
+      "conditional_requests": true,
+      "ranges": true,
+      "head": true
+    },
+    "examples": {
+      "static_http_entity_server": true,
+      "matching_http1_client": true
+    }
+  },
+  "validation": {
+    "compileall_passed": true,
+    "focused_test_bundle": {
+      "passed": 46,
+      "failed": 0,
+      "files": [
+        "tests/test_phase1_surface_parity_checkpoint.py",
+        "tests/test_phase2_entity_semantics_checkpoint.py",
+        "tests/test_http1_hardening_pass.py",
+        "tests/test_http_content_coding_rfc9110.py",
+        "tests/test_response_trailers_rfc9110.py",
+        "tests/test_trailers_rfc9110.py",
+        "tests/test_server_http1.py",
+        "tests/test_server_http2.py",
+        "tests/test_http2_rfc9113.py",
+        "tests/test_http3_server.py",
+        "tests/test_http3_rfc9114.py"
+      ]
+    }
+  },
+  "known_partials": [
+    "generic app responses honor Last-Modified when supplied, but do not auto-generate it",
+    "http1 direct app responses are buffered to completion for Phase 2 entity processing",
+    "range requests intentionally bypass dynamic content coding",
+    "broader full-RFC closure remains outside this checkpoint"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "checkpoint": "phase3_transport_core_strictness",
+  "scope": "transport-core strictness only",
+  "targeted_validation": {
+    "passed": 92,
+    "failed": 0
+  },
+  "global_recertified": false,
+  "fully_featured_expanded_program": false,
+  "fully_rfc_compliant_expanded_program": false
+}

@@ -24,7 +24,7 @@ PY
 - environment ready for the release workflow: `False`
 - release workflow path: `.github/workflows/phase9-certification-release.yml`
 - wrapper path: `tools/run_phase9_release_workflow.py`
-- preserved bundle root: `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle`
+- preserved bundle root: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle`
 
 ## What this checkpoint changes
 

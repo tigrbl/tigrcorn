@@ -17,7 +17,7 @@ from tigrcorn.workers.supervisor import WorkerSupervisor
 
 @dataclass(slots=True)
 class ServerSupervisor:
-    app_target: str
+    app_target: str | None
     config: ServerConfig
     started: bool = False
     hooks: list[Any] = field(default_factory=list)
@@ -34,14 +34,15 @@ class ServerSupervisor:
 
     def _worker_payload(self) -> dict[str, Any]:
         payload = config_to_dict(self.config)
-        payload.setdefault('app', {})['target'] = self.app_target
+        if self.app_target is not None:
+            payload.setdefault('app', {})['target'] = self.app_target
         return payload
 
     def _build_workers(self) -> None:
         worker_count = max(1, self.config.process.workers)
         payload = self._worker_payload()
         for index in range(worker_count):
-            worker = ProcessWorker(name=f'tigrcorn-worker-{index}')
+            worker = ProcessWorker(name=f'tigrcorn-worker-{index}', healthcheck_timeout=self.config.process.worker_healthcheck_timeout)
             worker.start(run_worker_from_config_payload, payload)
             self.workers.add(worker)
 
@@ -57,7 +58,7 @@ class ServerSupervisor:
     def replace_worker(self, index: int) -> None:
         payload = self._worker_payload()
         worker = self.workers.workers[index]
-        replacement = ProcessWorker(name=f'{worker.name}-replacement')
+        replacement = ProcessWorker(name=f'{worker.name}-replacement', healthcheck_timeout=self.config.process.worker_healthcheck_timeout)
         replacement.start(run_worker_from_config_payload, payload)
         self.workers.replace(index, replacement)
 
@@ -65,12 +66,19 @@ class ServerSupervisor:
         restarted: list[dict[str, Any]] = []
         payload = self._worker_payload()
         for index, worker in enumerate(list(self.workers.workers)):
-            if isinstance(worker, ProcessWorker) and worker.process is not None and not worker.is_alive() and not self._stopping:
+            if not isinstance(worker, ProcessWorker):
+                continue
+            worker.poll_ready()
+            should_restart = worker.process is not None and not worker.is_alive()
+            if worker.startup_timed_out() and not self._stopping:
+                worker.stop(timeout=min(5.0, self.config.process.worker_healthcheck_timeout))
+                should_restart = True
+            if should_restart and not self._stopping:
                 worker.restart_count += 1
-                replacement = ProcessWorker(name=worker.name)
+                replacement = ProcessWorker(name=worker.name, healthcheck_timeout=self.config.process.worker_healthcheck_timeout)
                 replacement.start(run_worker_from_config_payload, payload)
                 self.workers.workers[index] = replacement
-                restarted.append({'index': index, 'name': replacement.name})
+                restarted.append({'index': index, 'name': replacement.name, 'ready': replacement.ready})
         return restarted
 
     def stop(self) -> None:

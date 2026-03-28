@@ -7,18 +7,71 @@ async def app(scope, receive, send):
     ...
 ```
 
+## Installation
+
+Base install:
+
+```bash
+python -m pip install -e .
+```
+
+Certification / repository-development install:
+
+```bash
+python -m pip install -e ".[certification,dev]"
+```
+
+Optional public feature surfaces are now declared explicitly in `pyproject.toml`:
+
+```bash
+python -m pip install -e ".[config-yaml]"      # YAML config files
+python -m pip install -e ".[compression]"      # Brotli content coding / .br sidecars
+python -m pip install -e ".[runtime-uvloop]"   # uvloop runtime selection
+python -m pip install -e ".[full-featured]"    # current public optional feature bundle
+```
+
+An additional reserved extra is also declared:
+
+```bash
+python -m pip install -e ".[runtime-trio]"
+```
+
+`runtime-trio` is provided only as an explicit dependency path for future/internal work. This checkpoint does **not** advertise `--runtime trio` as a supported public runtime.
+
+## Package boundary and non-goals
+
+The current public package boundary is intentionally frozen as a **T/P/A/D/R** boundary and is governed by:
+
+- `docs/review/conformance/CERTIFICATION_BOUNDARY.md` — authoritative in-bounds statement
+- `docs/review/conformance/certification_boundary.json` — authoritative machine-readable RFC evidence policy
+- `docs/review/conformance/BOUNDARY_NON_GOALS.md` — authoritative out-of-bounds statement
+- `docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md` — post-promotion in-bounds backlog
+
+Boundary classes:
+
+- **T — transport**
+- **P — protocol**
+- **A — application hosting**
+- **D — delivery/origin behavior**
+- **R — runtime/operator**
+
+The current supported public runtime surface is **`auto`, `asyncio`, and `uvloop`**. The reserved `runtime-trio` extra does **not** widen that runtime contract.
+
+Current explicit non-goals include Trio runtime, RFC 9218, RFC 9111, RFC 9530, RFC 9421, JOSE/COSE, parser/backend selection, WebSocket engine selection, and alternate app-interface pluggability. See `docs/review/conformance/BOUNDARY_NON_GOALS.md` for the full governing statement.
+
 ## Implemented surfaces in this archive
 
 - HTTP/1.1 server path with streaming request bodies
 - HTTP/1.1, HTTP/2, and HTTP/3 CONNECT relay tunneling
 - trailer-field exposure on the HTTP/1.1, HTTP/2, and HTTP/3 request paths through an extension event
-- HTTP content-coding negotiation for buffered responses (`gzip`, `deflate`, and `br` when Brotli support is present)
+- HTTP content-coding negotiation for buffered responses (`gzip`, `deflate`, and `br` when Brotli support is present through `.[compression]`)
 - WebSocket upgrade and frame processing over HTTP/1.1
 - WebSocket permessage-deflate on the HTTP/1.1, HTTP/2, and HTTP/3 paths
 - HTTP/2 codec, HPACK dynamic state, RFC 8441 WebSocket bootstrap, server push, and prior-knowledge server path
 - RFC 9220 WebSocket bootstrap on the HTTP/3 carrier
 - QUIC transport helpers, QUIC-TLS handshake support, session tickets, Retry, resumption, 0-RTT, migration handling, and HTTP/3 over UDP through the public API and CLI
 - public mTLS-style client-certificate configuration for TLS and QUIC-TLS listeners through `ssl_ca_certs` and `ssl_require_client_cert`
+- encrypted private-key PEM loading through `ssl_keyfile_password` and direct local CRL material loading through `ssl_crl`
 - QPACK encoder/decoder streams and dynamic state
 - certificate path validation, OCSP, CRL, and ALPN helpers in the package security subsystem
 - package-owned TLS 1.3 server path on TCP/Unix listeners with record protection, ALPN selection, X.509 path validation, OCSP/CRL policy hooks, mTLS, and ASGI `tls` scope exposure
@@ -27,14 +80,21 @@ async def app(scope, receive, send):
 
 ## Canonical certification boundary
 
-The package-wide certification target is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+The package-wide certification target is defined by the canonical policy chain:
 
-That boundary names the required RFC surface for RFC 9112, RFC 9113, RFC 9114, RFC 9000, RFC 9001, RFC 9002, RFC 7541, RFC 9204, RFC 6455, RFC 7692, RFC 8441, RFC 9220, RFC 8446, RFC 9110 CONNECT semantics, RFC 9110 trailer fields, RFC 9110 content coding, RFC 5280, RFC 6960, and RFC 7301.
+- `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
+- `docs/review/conformance/certification_boundary.json`
+- `docs/review/conformance/BOUNDARY_NON_GOALS.md`
 
-For a focused audit of RFC 7232, RFC 9111, RFC 9530, RFC 9421, JOSE, COSE, and related HTTP integrity / caching / signature features, see `docs/review/conformance/HTTP_INTEGRITY_CACHING_SIGNATURES_STATUS.md`.
+The in-bounds boundary names the required RFC surface for RFC 9112, RFC 9113, RFC 9114, RFC 9000, RFC 9001, RFC 9002, RFC 7541, RFC 9204, RFC 6455, RFC 7692, RFC 8441, RFC 9220, RFC 8446, RFC 9110 CONNECT semantics, RFC 9110 trailer fields, RFC 9110 content coding, RFC 7232, RFC 7233, RFC 8297, RFC 7838 §3 (Alt-Svc header-field advertisement), RFC 5280, RFC 6960, and RFC 7301.
+
+The current public claim remains anchored to that canonical T/P/A/D/R boundary. The preserved stricter target in `docs/review/conformance/STRICT_PROFILE_TARGET.md` is green, but it is a stricter satisfied profile rather than a competing current package boundary.
+
+For a focused audit of RFC 7232, RFC 7233, RFC 9111, RFC 9530, RFC 9421, JOSE, COSE, and related HTTP integrity / caching / signature features, see `docs/review/conformance/HTTP_INTEGRITY_CACHING_SIGNATURES_STATUS.md`.
 
 For a focused applicability / prioritization review of that RFC table plus a current competitor comparison against Uvicorn, Hypercorn, Daphne, and Granian, see `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`.
 For a broader applicability / roadmap / competitor-positioning note covering that same RFC family, see `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md`.
+For the exact Early Hints / Alt-Svc boundary decision, see `docs/review/conformance/PHASE4_RFC_BOUNDARY_FORMALIZATION.md`.
 
 ## Evidence tiers shipped with this archive
 
@@ -44,17 +104,18 @@ This archive separates three evidence tiers and binds them to a single current c
 2. **Same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`
 3. **Independent certification** — `docs/review/conformance/external_matrix.release.json`
 
-The current canonical release root is `docs/review/conformance/releases/0.3.8/release-0.3.8/`.
+The current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
 
 Historical preserved roots remain in-tree for provenance:
 
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/`
 - `docs/review/conformance/releases/0.3.2/release-0.3.2/`
 - `docs/review/conformance/releases/0.3.6/release-0.3.6/`
 - `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`
 - `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`
 - `docs/review/conformance/releases/0.3.7/release-0.3.7/`
 
-The canonical 0.3.8 root contains the full promoted bundle set plus the preserved auxiliary bundles:
+The canonical 0.3.9 root contains the full promoted bundle set plus the preserved auxiliary bundles:
 
 - `tigrcorn-independent-certification-release-matrix/`
 - `tigrcorn-same-stack-replay-matrix/`
@@ -83,12 +144,12 @@ As a result, the canonical release gates now pass and the package is **certifiab
 
 Important scope note:
 
-- Under the current authoritative boundary, RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 are still intentionally bounded at `local_conformance` rather than `independent_certification`.
+- Under the current authoritative boundary, RFC 7692, RFC 9110 CONNECT / trailers / content coding, RFC 7232, RFC 7233, RFC 8297, RFC 7838 §3, and RFC 6960 are intentionally satisfied at `local_conformance` rather than `independent_certification`.
 - Those surfaces are still part of the required RFC surface, and they are satisfied at the tier required by the authoritative boundary.
 - The stricter all-surfaces-independent target is now also satisfied and is documented in `docs/review/conformance/STRICT_PROFILE_TARGET.md`.
 - The provisional all-surfaces and flow-control bundles remain in-tree as historical planning / review aids and do not change the canonical release-gate result.
 
-For the point-in-time repository summary, see `CURRENT_REPOSITORY_STATE.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.8.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.8.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.8.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.8.md`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.8.md`. For an explicit gap analysis of the current Phase 9I checkpoint, see `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md` and `docs/review/conformance/package_compliance_review_phase9i.current.json`. For the machine-readable certification policy, see `docs/review/conformance/certification_boundary.json`. For the offline remediation attempt that produced the provisional bundles, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`. A detailed execution plan for the remaining strict-promotion work now also lives in `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` and `docs/review/conformance/phase9_implementation_plan.current.json`. The executed Phase 9A contract freeze now also lives in `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`, `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`, `docs/review/conformance/phase9a_promotion_contract.current.json`, and `docs/review/conformance/phase9a_execution_backlog.current.json`. The executed Phase 9B independent-harness foundation now also lives in `docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md`, `docs/review/conformance/INTEROP_HARNESS_ARTIFACT_SCHEMA.md`, `docs/review/conformance/interop_wrapper_registry.current.json`, and `docs/review/conformance/phase9b_independent_harness.current.json`. The direct third-party aioquic adapter preflight now also lives in `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md` and `docs/review/conformance/aioquic_adapter_preflight.current.json`.
+For the point-in-time repository summary, use `CURRENT_REPOSITORY_STATE.md` together with `docs/review/conformance/current_state_chain.current.json`. The promoted release notes for this canonical release live in `RELEASE_NOTES_0.3.9.md`. For an explicit gap analysis of the current Phase 9I checkpoint, see `docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md` and `docs/review/conformance/package_compliance_review_phase9i.current.json`. For the machine-readable certification policy, see `docs/review/conformance/certification_boundary.json`. For the offline remediation attempt that produced the provisional bundles, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`. Historical execution-plan and phase-closure records remain in-tree for provenance, including `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` / `docs/review/conformance/phase9_implementation_plan.current.json`, `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md` / `docs/review/conformance/phase9a_promotion_contract.current.json`, and `docs/review/conformance/PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md` / `docs/review/conformance/phase9b_independent_harness.current.json`. Those retained phase records are not the canonical package-wide current-state chain. The direct third-party aioquic adapter preflight now also lives in `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md` and `docs/review/conformance/aioquic_adapter_preflight.current.json`.
 
 ## Running
 
@@ -115,6 +176,19 @@ python -m tigrcorn examples.echo_http.app:app --transport udp --protocol http3 -
 ```
 
 ## Config and CLI substrate
+
+## Public lifecycle and embedding contract
+
+The public lifecycle-hook and embedding contract is now documented in `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+
+That document freezes:
+
+- `on_startup`, `on_shutdown`, and `on_reload` hook signatures
+- ordering relative to `lifespan.startup()` and `lifespan.shutdown()`
+- startup / shutdown / reload failure semantics
+- the public `EmbeddedServer` contract, including idempotent `start()`, no-op `close()` before startup, and bound-endpoint inspection
+
+The package-owned TLS / revocation material surface now also includes `--ssl-keyfile-password` and `--ssl-crl` with matching config/env/docs/test coverage.
 
 This checkpoint adds a nested configuration model and grouped CLI families for:
 
@@ -230,7 +304,7 @@ The repository now ships:
 - `tools/interop_wrappers.py`
 - `docs/review/conformance/interop_wrapper_registry.current.json`
 - `docs/review/conformance/INTEROP_HARNESS_ARTIFACT_SCHEMA.md`
-- a proof bundle under `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle/`
+- a proof bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-harness-foundation-bundle/`
 
 Important qualification:
 
@@ -348,7 +422,7 @@ The executed Phase 9I release-assembly checkpoint is now documented through:
 
 - `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 - `docs/review/conformance/phase9i_release_assembly.current.json`
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/`
 - `DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 
 
@@ -360,7 +434,7 @@ Current artifacts for that contract live in:
 
 - `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`
 - `docs/review/conformance/certification_environment_freeze.current.json`
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
 - `DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
 
 ## aioquic adapter preflight
@@ -371,7 +445,7 @@ Current artifacts for that proof live in:
 
 - `docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md`
 - `docs/review/conformance/aioquic_adapter_preflight.current.json`
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle/`
 - `DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md`
 
 The release workflow path is `.github/workflows/phase9-certification-release.yml`, and the local wrapper is `tools/run_phase9_release_workflow.py`.

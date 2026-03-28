@@ -51,6 +51,8 @@ class _WSAppSend:
     state: dict
     accepted: asyncio.Event
     allowed_subprotocols: list[str] = field(default_factory=list)
+    include_date_header: bool = True
+    default_headers: list[tuple[bytes, bytes]] = field(default_factory=list)
     config: ServerConfig | None = None
     write_lock: asyncio.Lock | None = None
     keepalive: KeepAliveRuntime | None = None
@@ -99,6 +101,8 @@ class _WSAppSend:
                 subprotocol=subprotocol,
                 headers=[(k, v) for k, v in headers if k != b'sec-websocket-extensions'] + negotiated_extensions,
                 server_header=self.server_header,
+                include_date_header=self.include_date_header,
+                default_headers=self.default_headers,
             )
             await self._write(payload)
             self._record_activity()
@@ -140,6 +144,8 @@ class _WSAppSend:
                         body=b'',
                         keep_alive=False,
                         server_header=self.server_header,
+                        include_date_header=self.include_date_header,
+                        default_headers=self.default_headers,
                     )
                 )
                 self.state['http_denied'] = True
@@ -169,6 +175,8 @@ class _WSAppSend:
                         keep_alive=False,
                         server_header=self.server_header,
                         chunked=True,
+                        include_date_header=self.include_date_header,
+                        default_headers=self.default_headers,
                     )
                     await self._write(head + (f'{len(body):X}'.encode('ascii') + b'\r\n' + body + b'\r\n' if body else b''))
                 else:
@@ -221,7 +229,7 @@ class WebSocketConnectionHandler:
         self.scheme = scheme
         self.scope_extensions = dict(scope_extensions or {})
         self.metrics = metrics
-        self.receive = QueueReceive()
+        self.receive = QueueReceive(max_size=self.config.websocket.max_queue)
         self.accepted = asyncio.Event()
         self.write_lock = asyncio.Lock()
         self.keepalive_policy = KeepAlivePolicy(
@@ -257,6 +265,8 @@ class WebSocketConnectionHandler:
                 root_path=self.config.proxy.root_path,
                 proxy=self.config.proxy,
             )['subprotocols'],
+            include_date_header=config.include_date_header,
+            default_headers=list(config.default_response_headers),
             config=config,
             write_lock=self.write_lock,
             keepalive=self.keepalive,
@@ -293,6 +303,8 @@ class WebSocketConnectionHandler:
                         body=b'',
                         keep_alive=False,
                         server_header=self.config.server_header_value,
+                        include_date_header=self.config.include_date_header,
+                        default_headers=self.config.default_response_headers,
                     )
                 )
                 self.state['closed'] = True
@@ -304,6 +316,8 @@ class WebSocketConnectionHandler:
                         body=b'',
                         keep_alive=False,
                         server_header=self.config.server_header_value,
+                        include_date_header=self.config.include_date_header,
+                        default_headers=self.config.default_response_headers,
                     )
                 )
                 self.state['closed'] = True

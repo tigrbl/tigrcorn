@@ -2,7 +2,7 @@
 
 This checkpoint executes **Phase 9I** of the Phase 9 implementation plan.
 
-It reassembled the 0.3.8 release root, refreshed bundle manifests / indexes / summaries, and updated the machine-readable current-state snapshots after the final HTTP/3 strict-target closures.
+It reassembled the 0.3.9 release root, refreshed bundle manifests / indexes / summaries, and updated the machine-readable current-state snapshots after the final HTTP/3 strict-target closures.
 
 ## Current machine-readable result
 
@@ -16,9 +16,9 @@ It reassembled the 0.3.8 release root, refreshed bundle manifests / indexes / su
 
 ## Release-root artifacts refreshed by this checkpoint
 
-- manifest: `docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json`
-- bundle index: `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json`
-- bundle summary: `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json`
+- manifest: `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`
+- bundle index: `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`
+- bundle summary: `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`
 
 ## Remaining blockers
 
@@ -26,13 +26,13 @@ It reassembled the 0.3.8 release root, refreshed bundle manifests / indexes / su
 
 ## Honest current result
 
-The package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the canonical 0.3.8 release root.
+The package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the canonical 0.3.9 release root.
 
-Step 9 promotion has now completed the version bump and release-note promotion work as well, so the canonical release root and the public package version are aligned at `0.3.8`.
+Step 9 promotion has completed the version bump and release-note promotion work, so the canonical release root and the public package version are aligned at `0.3.9`.
 
 ## Full strict validation set
 
-The full Step 8 strict validation set has been executed against the reassembled 0.3.8 release root.
+The full Step 8 strict validation set has been executed against the reassembled 0.3.9 release root.
 
 - compileall: `True`
 - authoritative boundary: `True`
@@ -40,4 +40,4 @@ The full Step 8 strict validation set has been executed against the reassembled 
 - promotion target: `True`
 - targeted pytest suite: `True` (27 passed)
 
-Preserved artifact bundle: `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-strict-validation-bundle`
+Preserved artifact bundle: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-strict-validation-bundle`

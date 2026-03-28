@@ -545,6 +545,56 @@ class QuicStreamManager:
         return QuicMaxStreamsFrame(maximum_streams=self._local_max_streams_current[bidirectional], bidirectional=bidirectional)
 
 
+QUIC_FRAME_TYPE_LABELS: dict[int, str] = {
+    FRAME_PADDING: 'PADDING',
+    FRAME_PING: 'PING',
+    FRAME_ACK: 'ACK',
+    FRAME_RESET_STREAM: 'RESET_STREAM',
+    FRAME_STOP_SENDING: 'STOP_SENDING',
+    FRAME_CRYPTO: 'CRYPTO',
+    FRAME_NEW_TOKEN: 'NEW_TOKEN',
+    FRAME_STREAM: 'STREAM',
+    FRAME_MAX_DATA: 'MAX_DATA',
+    FRAME_MAX_STREAM_DATA: 'MAX_STREAM_DATA',
+    FRAME_MAX_STREAMS_BIDI: 'MAX_STREAMS_BIDI',
+    FRAME_MAX_STREAMS_UNI: 'MAX_STREAMS_UNI',
+    FRAME_DATA_BLOCKED: 'DATA_BLOCKED',
+    FRAME_STREAM_DATA_BLOCKED: 'STREAM_DATA_BLOCKED',
+    FRAME_STREAMS_BLOCKED_BIDI: 'STREAMS_BLOCKED_BIDI',
+    FRAME_STREAMS_BLOCKED_UNI: 'STREAMS_BLOCKED_UNI',
+    FRAME_NEW_CONNECTION_ID: 'NEW_CONNECTION_ID',
+    FRAME_RETIRE_CONNECTION_ID: 'RETIRE_CONNECTION_ID',
+    FRAME_PATH_CHALLENGE: 'PATH_CHALLENGE',
+    FRAME_PATH_RESPONSE: 'PATH_RESPONSE',
+    FRAME_CONNECTION_CLOSE: 'CONNECTION_CLOSE',
+    FRAME_CONNECTION_CLOSE_APP: 'CONNECTION_CLOSE_APP',
+    FRAME_HANDSHAKE_DONE: 'HANDSHAKE_DONE',
+}
+
+QUIC_PACKET_SPACE_PROHIBITIONS: tuple[dict[str, object], ...] = (
+    {
+        'packet_space': _PACKET_SPACE_INITIAL,
+        'frame': 'CONNECTION_CLOSE_APP',
+        'reason': 'application close is not permitted in Initial packets',
+    },
+    {
+        'packet_space': _PACKET_SPACE_HANDSHAKE,
+        'frame': 'CONNECTION_CLOSE_APP',
+        'reason': 'application close is not permitted in Handshake packets',
+    },
+    {
+        'packet_space': _PACKET_SPACE_ZERO_RTT,
+        'frame': 'PATH_CHALLENGE|PATH_RESPONSE|NEW_CONNECTION_ID',
+        'reason': 'path validation and connection id rotation are forbidden in 0-RTT packets',
+    },
+    {
+        'packet_space': 'client-only',
+        'frame': 'HANDSHAKE_DONE|NEW_TOKEN',
+        'reason': 'clients must not send HANDSHAKE_DONE or NEW_TOKEN',
+    },
+)
+
+
 _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE: dict[str, frozenset[int]] = {
     _PACKET_SPACE_INITIAL: frozenset({
         FRAME_PADDING,
@@ -667,6 +717,18 @@ def validate_frame_for_packet_space(frame: QuicFrame, packet_space: str, *, is_c
 def validate_frames_for_packet_space(frames: Iterable[QuicFrame], packet_space: str, *, is_client: bool | None = None) -> None:
     for frame in frames:
         validate_frame_for_packet_space(frame, packet_space, is_client=is_client)
+
+
+def quic_packet_space_legality_table() -> dict[str, tuple[str, ...]]:
+    return {
+        packet_space: tuple(QUIC_FRAME_TYPE_LABELS.get(frame_type, f'0x{frame_type:x}') for frame_type in sorted(frame_types))
+        for packet_space, frame_types in _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE.items()
+    }
+
+
+
+def quic_packet_space_prohibitions() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in QUIC_PACKET_SPACE_PROHIBITIONS)
 
 
 def encode_frame(frame: QuicFrame) -> bytes:

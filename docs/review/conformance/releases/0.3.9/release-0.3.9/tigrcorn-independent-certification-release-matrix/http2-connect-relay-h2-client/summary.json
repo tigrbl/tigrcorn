@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "scenario_id": "http2-connect-relay-h2-client",
+  "protocol": "http2",
+  "feature": "connect-relay",
+  "peer": "python-h2",
+  "role": "server",
+  "evidence_tier": "independent_certification",
+  "passed": true,
+  "error": null,
+  "assertions_failed": [],
+  "required_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "artifact_files": {
+    "summary.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/summary.json",
+      "exists": true,
+      "size": 6086,
+      "sha256": "73e0439a12ccf90163e5b0ae2ac8718119c1ccf8faf62f43dd7713e861693738"
+    },
+    "index.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/index.json",
+      "exists": true,
+      "size": 6401,
+      "sha256": "1f8d780044e6819222e76997d006951446fc5a433688e7c166090e44a87aa1ec"
+    },
+    "result.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/result.json",
+      "exists": true,
+      "size": 24523,
+      "sha256": "50a102300480fc29e48f8863b9d500c366d59536ed2755627bf9c317317082ad"
+    },
+    "scenario.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/scenario.json",
+      "exists": true,
+      "size": 3044,
+      "sha256": "282b74b9eeef896511b304ca3858a2e6f01312278028c31ceae21f4536878cc9"
+    },
+    "command.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/command.json",
+      "exists": true,
+      "size": 902,
+      "sha256": "ac93b81aa280498ddcef424daccddb162a0dff6c2e7cdda7df86ffd4b2d229df"
+    },
+    "env.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/env.json",
+      "exists": true,
+      "size": 83,
+      "sha256": "7fb84daa9987b72dcb5d814cf00c13aee94c8b23c01ac85353dc5039d020c514"
+    },
+    "versions.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/versions.json",
+      "exists": true,
+      "size": 9610,
+      "sha256": "391432bea64d9332bdf5a8ed9a803aaa2df05309ba020a41ff387ced1deb9f04"
+    },
+    "wire_capture.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/wire_capture.json",
+      "exists": true,
+      "size": 3018,
+      "sha256": "edcc890627ab09801a9e5564f9b918c57b1d5be226ca70fd08356a8b6faa9c9b"
+    },
+    "packet_trace.jsonl": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/packet_trace.jsonl",
+      "exists": true,
+      "size": 3011,
+      "sha256": "fbc47f81f4920c05da3f4f8817b633bcacabaa970998a1ae8db21e558a9d1ba9"
+    },
+    "qlog.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/qlog.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "sut_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_stderr.log",
+      "exists": true,
+      "size": 67,
+      "sha256": "1bbf8031a76f11b21e33c2bb19537fd4a9e94100dfee7ca5ebab34841082e4ba"
+    },
+    "peer_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_stdout.log",
+      "exists": true,
+      "size": 795,
+      "sha256": "49728b414edfe365931b0ec75e280517ffbaed5b3030a38c01da30979638f404"
+    },
+    "peer_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_transcript.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_transcript.json",
+      "exists": true,
+      "size": 1187,
+      "sha256": "8f86a736b78b9a472fecbe70274cd1effd4ee14ebdd8d0a65e216f739ec21438"
+    },
+    "sut_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_negotiation.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_negotiation.json",
+      "exists": true,
+      "size": 161,
+      "sha256": "7f6d6633c50b2eeae8c99f17bc5b1a1729c8c7c38e88e9c2b7735892cd1591db"
+    }
+  }
+}

@@ -17,7 +17,7 @@ It freezes the Phase 9A execution backlog so every remaining promotion blocker h
 - `websocket_runtime_owner` — Owns WebSocket keepalive policy, outbound ping scheduling, timeout-driven close behavior, and carrier parity.
 - `performance_owner` — Owns the strict performance program, matrix lanes, SLO thresholds, artifact preservation, and platform declarations.
 - `promotion_gate_owner` — Owns the composite evaluator, artifact validation, negative fixtures, and documentation/gate alignment.
-- `release_assembly_owner` — Owns final 0.3.8 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness.
+- `release_assembly_owner` — Owns final 0.3.9 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness.
 
 ## Strict-target independent-scenario backlog
 
@@ -83,6 +83,6 @@ The backlog also freezes:
 ## Release-root reminder
 
 - immutable candidate root: `docs/review/conformance/releases/0.3.7/release-0.3.7/`
-- reserved next promotable root: `docs/review/conformance/releases/0.3.8/release-0.3.8/`
+- reserved next promotable root: `docs/review/conformance/releases/0.3.9/release-0.3.9/`
 
 This backlog does **not** claim the repository is already strict-target green. It freezes the execution contract needed to get there.

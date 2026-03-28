@@ -1,0 +1,13 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts",
+  "bundle_kind": "local_validation_artifacts",
+  "total": 4,
+  "passed": 4,
+  "failed": 0,
+  "scenario_ids": [
+    "ocsp-good-response-cache-reuse-client-auth",
+    "ocsp-stale-response-require-fails",
+    "ocsp-revoked-client-certificate-fails",
+    "ocsp-unreachable-soft-fail-vs-require"
+  ]
+}

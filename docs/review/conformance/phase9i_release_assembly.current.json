@@ -1,4 +1,9 @@
 {
+  "document_role": "canonical_current_state_source",
+  "current_truth_source": true,
+  "truth_scope": "canonical_current_state_chain",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
   "phase": "9I",
   "checkpoint": "phase9i_release_assembly_and_certifiable_checkpoint",
   "status": "canonical_release_promoted_and_version_aligned",
@@ -10,20 +15,21 @@
     "performance_passed": true,
     "documentation_passed": true,
     "promotion_target_passed": true,
-    "certification_environment_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
-    "aioquic_adapter_preflight_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle",
+    "certification_environment_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
+    "aioquic_adapter_preflight_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle",
     "aioquic_adapter_preflight_passed": true,
-    "current_package_version": "0.3.8",
-    "assembled_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-    "release_root_manifest": "docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json",
-    "release_root_bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json",
-    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json",
-    "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "current_package_version": "0.3.9",
+    "assembled_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
+    "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "remaining_non_passing_independent_scenarios": [],
     "remaining_strict_target_rfc_gaps": [],
-    "release_notes": "RELEASE_NOTES_0.3.8.md",
+    "release_notes": "RELEASE_NOTES_0.3.9.md",
     "release_promoted": true,
-    "remaining_plan_phases": []
+    "remaining_plan_phases": [],
+    "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8"
   },
   "validation": {
     "compileall": {
@@ -48,23 +54,23 @@
   },
   "release_assembly": {
     "assembled_bundles": [
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-flag-surface-certification-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle"
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle"
     ],
-    "release_root_manifest": "docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json",
-    "release_root_bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json",
-    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json",
+    "release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
     "version_bump_performed": true,
     "release_notes_promoted": true,
     "canonical_release_promoted": true,
-    "release_notes": "RELEASE_NOTES_0.3.8.md",
+    "release_notes": "RELEASE_NOTES_0.3.9.md",
     "reason_not_promoted": ""
   },
-  "generated_at": "2026-03-24T10:43:51.704508+00:00"
+  "generated_at": "2026-03-28T03:59:49.931630+00:00"
 }

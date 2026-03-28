@@ -1,4 +1,10 @@
 {
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
   "phase": "9F1",
   "checkpoint": "phase9f1_tls_cipher_policy_closure",
   "implemented_flag": "--ssl-ciphers",

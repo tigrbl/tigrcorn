@@ -189,3 +189,38 @@ class H2ConnectionState:
     @property
     def client_allows_push(self) -> bool:
         return self.remote_settings.get(SETTING_ENABLE_PUSH, 1) != 0
+
+
+H2_STREAM_TRANSITION_TABLE: tuple[dict[str, object], ...] = (
+    {'from': 'idle', 'event': 'remote headers', 'to': 'open', 'notes': 'peer opens the stream without END_STREAM'},
+    {'from': 'idle', 'event': 'remote headers + END_STREAM', 'to': 'half-closed-remote', 'notes': 'request headers end the peer send side immediately'},
+    {'from': 'idle', 'event': 'reserve_local', 'to': 'reserved-local', 'notes': 'local PUSH_PROMISE reservation state'},
+    {'from': 'reserved-local', 'event': 'local headers', 'to': 'half-closed-remote', 'notes': 'reserved local stream becomes locally open and remotely closed'},
+    {'from': 'reserved-local', 'event': 'local headers + END_STREAM', 'to': 'closed', 'notes': 'reserved local stream can close immediately when local side ends'},
+    {'from': 'open', 'event': 'receive_end_stream', 'to': 'half-closed-remote', 'notes': 'peer closed its send side'},
+    {'from': 'open', 'event': 'send_end_stream', 'to': 'half-closed-local', 'notes': 'local side closed while peer may still send'},
+    {'from': 'half-closed-remote', 'event': 'send_end_stream', 'to': 'closed', 'notes': 'stream fully closed after local END_STREAM'},
+    {'from': 'half-closed-local', 'event': 'receive_end_stream', 'to': 'closed', 'notes': 'stream fully closed after peer END_STREAM'},
+    {'from': 'open|half-closed-local|half-closed-remote|reserved-local|reserved-remote', 'event': 'reset sent/received', 'to': 'closed', 'notes': 'RST_STREAM transitions to closed regardless of prior active lifecycle'},
+)
+
+H2_CONNECTION_RULE_TABLE: tuple[dict[str, object], ...] = (
+    {'rule': 'first-frame-after-preface-is-settings', 'source': 'handler', 'notes': 'peer frame sequence starts with SETTINGS'},
+    {'rule': 'continuation-sequences-are-exclusive', 'source': 'handler', 'notes': 'no interleaved frames are permitted while CONTINUATION is pending'},
+    {'rule': 'priority-self-dependency-forbidden', 'source': 'handler', 'notes': 'PRIORITY cannot depend on its own stream'},
+    {'rule': 'client-push-promise-forbidden', 'source': 'handler', 'notes': 'server rejects PUSH_PROMISE received from the client'},
+    {'rule': 'max-concurrent-streams-enforced', 'source': 'handler/state', 'notes': 'new streams are rejected beyond advertised local limits'},
+    {'rule': 'goaway-last-stream-id-monotonic', 'source': 'handler', 'notes': 'peer GOAWAY last_stream_id must not increase'},
+    {'rule': 'new-stream-after-goaway-forbidden', 'source': 'handler', 'notes': 'new remotely initiated streams are rejected after peer GOAWAY'},
+    {'rule': 'flow-control-window-overflow-forbidden', 'source': 'state', 'notes': 'flow-control windows cannot overflow 2^31-1 or go negative under DATA'},
+    {'rule': 'window-update-on-closed-stream-ignored', 'source': 'handler', 'notes': 'closed-stream WINDOW_UPDATE does not reopen or mutate stream state'},
+)
+
+
+def h2_stream_transition_table() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in H2_STREAM_TRANSITION_TABLE)
+
+
+
+def h2_connection_rule_table() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in H2_CONNECTION_RULE_TABLE)

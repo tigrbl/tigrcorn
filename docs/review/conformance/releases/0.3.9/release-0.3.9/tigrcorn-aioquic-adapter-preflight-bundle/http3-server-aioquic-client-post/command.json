@@ -1,0 +1,56 @@
+{
+  "peer": {
+    "adapter": "subprocess",
+    "command": [
+      "/mnt/data/step6venv/bin/python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--servername",
+      "localhost",
+      "--cacert",
+      "tests/fixtures_certs/interop-localhost-cert.pem"
+    ],
+    "cwd": "/mnt/data/step6work/tigrcorn_phase9i_release_assembly_checkpoint",
+    "version_command": [
+      "/mnt/data/step6venv/bin/python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--version"
+    ]
+  },
+  "scenario_id": "http3-server-aioquic-client-post",
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--transport",
+      "udp",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "56860",
+      "--protocol",
+      "http3",
+      "--http",
+      "3",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--no-access-log",
+      "--lifespan",
+      "off",
+      "--disable-websocket"
+    ],
+    "cwd": "/mnt/data/step6work/tigrcorn_phase9i_release_assembly_checkpoint",
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

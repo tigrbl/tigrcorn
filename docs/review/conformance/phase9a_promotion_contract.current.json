@@ -1,4 +1,10 @@
 {
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
   "schema_version": 1,
   "phase": "9A",
   "checkpoint": "phase9a_promotion_contract_freeze",
@@ -65,7 +71,7 @@
     "authoritative_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6",
     "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
     "allow_mutation_of_candidate_release_root": false,
-    "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "next_promotable_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "next_promotable_release_root_frozen": true
   },
   "owner_roles": {
@@ -80,7 +86,7 @@
     "websocket_runtime_owner": "Owns WebSocket keepalive policy, outbound ping scheduling, timeout-driven close behavior, and carrier parity.",
     "performance_owner": "Owns the strict performance program, matrix lanes, SLO thresholds, artifact preservation, and platform declarations.",
     "promotion_gate_owner": "Owns the composite evaluator, artifact validation, negative fixtures, and documentation/gate alignment.",
-    "release_assembly_owner": "Owns final 0.3.8 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness."
+    "release_assembly_owner": "Owns final 0.3.9 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness."
   },
   "tracked_backlog_files": [
     "docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md",
@@ -170,6 +176,6 @@
     "all 7 remaining public flag gaps are tracked with owner role, touch-file list, artifact contract, and exit tests",
     "the exact performance key, artifact, and lane sets are frozen from performance_slos.json",
     "the operator surface is explicitly locked green and treated as a no-regression surface",
-    "the 0.3.8 release root exists as the reserved next promotable root and the 0.3.7 candidate root remains immutable"
+    "the 0.3.9 release root exists as the reserved next promotable root and the 0.3.7 candidate root remains immutable"
   ]
 }

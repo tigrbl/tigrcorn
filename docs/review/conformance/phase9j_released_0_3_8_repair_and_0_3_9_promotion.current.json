@@ -1,0 +1,19 @@
+{
+  "phase": "9J",
+  "checkpoint": "released_0_3_8_repair_and_0_3_9_promotion",
+  "generated_at": "2026-03-28T04:09:19.336750+00:00",
+  "historical_release_root_restored": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "canonical_current_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+  "current_package_version": "0.3.9",
+  "release_notes": "RELEASE_NOTES_0.3.9.md",
+  "compileall_passed": true,
+  "targeted_pytest_passed": true,
+  "targeted_pytest_pass_count": 27,
+  "full_matrix_pytest_passed": true,
+  "full_matrix_pytest_pass_count": 99,
+  "authoritative_boundary_passed": true,
+  "strict_target_boundary_passed": true,
+  "promotion_target_passed": true,
+  "restored_0_3_8_tree_identical_to_released_archive": true,
+  "restored_0_3_8_file_count": 1308
+}

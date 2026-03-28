@@ -1,0 +1,58 @@
+{
+  "initial": [
+    "PADDING",
+    "PING",
+    "ACK",
+    "CRYPTO",
+    "CONNECTION_CLOSE"
+  ],
+  "handshake": [
+    "PADDING",
+    "PING",
+    "ACK",
+    "CRYPTO",
+    "CONNECTION_CLOSE"
+  ],
+  "0rtt": [
+    "PADDING",
+    "PING",
+    "RESET_STREAM",
+    "STOP_SENDING",
+    "STREAM",
+    "MAX_DATA",
+    "MAX_STREAM_DATA",
+    "MAX_STREAMS_BIDI",
+    "MAX_STREAMS_UNI",
+    "DATA_BLOCKED",
+    "STREAM_DATA_BLOCKED",
+    "STREAMS_BLOCKED_BIDI",
+    "STREAMS_BLOCKED_UNI",
+    "CONNECTION_CLOSE",
+    "CONNECTION_CLOSE_APP"
+  ],
+  "application": [
+    "PADDING",
+    "PING",
+    "ACK",
+    "RESET_STREAM",
+    "STOP_SENDING",
+    "CRYPTO",
+    "NEW_TOKEN",
+    "STREAM",
+    "MAX_DATA",
+    "MAX_STREAM_DATA",
+    "MAX_STREAMS_BIDI",
+    "MAX_STREAMS_UNI",
+    "DATA_BLOCKED",
+    "STREAM_DATA_BLOCKED",
+    "STREAMS_BLOCKED_BIDI",
+    "STREAMS_BLOCKED_UNI",
+    "NEW_CONNECTION_ID",
+    "RETIRE_CONNECTION_ID",
+    "PATH_CHALLENGE",
+    "PATH_RESPONSE",
+    "CONNECTION_CLOSE",
+    "CONNECTION_CLOSE_APP",
+    "HANDSHAKE_DONE"
+  ]
+}

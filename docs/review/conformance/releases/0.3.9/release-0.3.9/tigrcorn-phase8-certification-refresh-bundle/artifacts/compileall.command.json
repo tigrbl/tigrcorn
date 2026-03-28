@@ -1,0 +1,11 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "compileall",
+    "-q",
+    "src",
+    "benchmarks",
+    "tools"
+  ]
+}

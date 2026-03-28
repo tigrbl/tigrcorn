@@ -1,0 +1,59 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts",
+  "bundle_kind": "local_behavior_artifacts",
+  "total": 10,
+  "passed": 10,
+  "failed": 0,
+  "scenarios": [
+    {
+      "id": "http11-request-trailers-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http11-request-trailers-pass"
+    },
+    {
+      "id": "http11-request-trailers-drop",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http11-request-trailers-drop"
+    },
+    {
+      "id": "http11-request-trailers-strict-invalid",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http11-request-trailers-strict-invalid"
+    },
+    {
+      "id": "http11-response-trailers-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http11-response-trailers-pass"
+    },
+    {
+      "id": "http2-request-trailers-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http2-request-trailers-pass"
+    },
+    {
+      "id": "http2-request-trailers-strict-invalid",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http2-request-trailers-strict-invalid"
+    },
+    {
+      "id": "http2-response-trailers-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http2-response-trailers-pass"
+    },
+    {
+      "id": "http3-request-trailers-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http3-request-trailers-pass"
+    },
+    {
+      "id": "http3-request-trailers-strict-invalid",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http3-request-trailers-strict-invalid"
+    },
+    {
+      "id": "http3-response-trailers-pass",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/http3-response-trailers-pass"
+    }
+  ]
+}

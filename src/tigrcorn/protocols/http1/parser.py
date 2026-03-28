@@ -78,6 +78,24 @@ async def _readexactly(reader: StreamReaderLike, amount: int) -> bytes:
         raise ProtocolError('unexpected EOF while reading HTTP/1.1 body') from exc
 
 
+async def _read_request_head_until_terminator(
+    reader: StreamReaderLike,
+    *,
+    limit: int,
+    buffer_size: int,
+) -> bytes:
+    limited_readuntil = getattr(reader, 'readuntil_limited', None)
+    if callable(limited_readuntil):
+        try:
+            return await limited_readuntil(b"\r\n\r\n", limit=limit, read_chunk_size=buffer_size)
+        except TypeError:
+            return await limited_readuntil(b"\r\n\r\n", limit=limit)
+    head = await reader.readuntil(b"\r\n\r\n")
+    if len(head) > limit:
+        raise asyncio.LimitOverrunError('request head exceeds configured HTTP/1.1 request-head limit', consumed=len(head))
+    return head
+
+
 async def _consume_chunked_trailers(reader: StreamReaderLike) -> None:
     while True:
         trailer = await _read_line(reader)
@@ -275,18 +293,27 @@ async def read_http11_request_head(
     *,
     max_body_size: int = 16 * 1024 * 1024,
     max_header_size: int = 64 * 1024,
+    max_incomplete_event_size: int | None = None,
+    buffer_size: int = 64 * 1024,
 ) -> ParsedRequestHead | None:
+    request_head_limit = max_header_size if max_incomplete_event_size is None else min(max_header_size, max_incomplete_event_size)
     try:
-        head = await reader.readuntil(b"\r\n\r\n")
+        head = await _read_request_head_until_terminator(
+            reader,
+            limit=request_head_limit,
+            buffer_size=buffer_size,
+        )
     except asyncio.IncompleteReadError as exc:
         if exc.partial == b'':
             return None
         raise ProtocolError('unexpected EOF while reading request head') from exc
     except asyncio.LimitOverrunError as exc:
-        raise ProtocolError('request head exceeds configured max_header_size') from exc
+        raise ProtocolError('request head exceeds configured HTTP/1.1 request-head limit') from exc
 
     if not head:
         return None
+    if len(head) > request_head_limit:
+        raise ProtocolError('request head exceeds configured HTTP/1.1 request-head limit')
     if len(head) > max_header_size:
         raise ProtocolError('request head exceeds configured max_header_size')
 
@@ -296,6 +323,126 @@ async def read_http11_request_head(
     if parsed.content_length is not None and parsed.content_length > max_body_size:
         raise ProtocolError('request body exceeds configured max_body_size')
     return parsed
+
+
+HTTP11_REQUEST_HEAD_ERROR_MATRIX: tuple[dict[str, object], ...] = (
+    {
+        'case': 'request_line_shape',
+        'rfc': 'RFC 9112 request line',
+        'trigger': 'request line must contain exactly method, target, and version tokens',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid HTTP request line',
+    },
+    {
+        'case': 'http_version_token',
+        'rfc': 'RFC 9112 version token',
+        'trigger': 'version token must begin with HTTP/ and resolve to 1.0 or 1.1',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid HTTP version token',
+    },
+    {
+        'case': 'unsupported_http_version',
+        'rfc': 'RFC 9112 version negotiation',
+        'trigger': 'request line advertises an unsupported HTTP version',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'unsupported HTTP version',
+    },
+    {
+        'case': 'method_token',
+        'rfc': 'RFC 9110 method token syntax',
+        'trigger': 'method token contains invalid bytes',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid HTTP method token',
+    },
+    {
+        'case': 'target_form_authority',
+        'rfc': 'RFC 9112 CONNECT authority-form',
+        'trigger': 'CONNECT target is not valid authority-form',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid authority-form request-target',
+    },
+    {
+        'case': 'target_form_absolute',
+        'rfc': 'RFC 9112 absolute-form',
+        'trigger': 'absolute-form target is syntactically malformed',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid absolute-form request-target',
+    },
+    {
+        'case': 'target_form_origin',
+        'rfc': 'RFC 9112 origin-form',
+        'trigger': 'origin-form target does not start with /',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid origin-form request-target',
+    },
+    {
+        'case': 'target_form_asterisk',
+        'rfc': 'RFC 9112 asterisk-form',
+        'trigger': 'asterisk-form is used with a method other than OPTIONS',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'asterisk-form request-target is only valid for OPTIONS',
+    },
+    {
+        'case': 'header_line_folding',
+        'rfc': 'RFC 9110 field line syntax',
+        'trigger': 'obs-fold / line folding appears in field section',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'obsolete line folding is not supported',
+    },
+    {
+        'case': 'header_name_and_value',
+        'rfc': 'RFC 9110 field syntax',
+        'trigger': 'header field name or value contains forbidden octets',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'invalid header field',
+    },
+    {
+        'case': 'content_length_conflict',
+        'rfc': 'RFC 9112 message body length',
+        'trigger': 'multiple Content-Length values disagree or are negative',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'Content-Length',
+    },
+    {
+        'case': 'host_header_requirements',
+        'rfc': 'RFC 9112 Host requirements',
+        'trigger': 'HTTP/1.1 request does not include exactly one non-empty Host header',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'must include exactly one Host header',
+    },
+    {
+        'case': 'transfer_encoding_chain',
+        'rfc': 'RFC 9112 transfer-coding',
+        'trigger': 'chunked is repeated, not final, or appears with an unsupported chain',
+        'expected_exception': 'ProtocolError|UnsupportedFeature',
+        'message_fragment': 'transfer-encoding',
+    },
+    {
+        'case': 'content_length_and_chunked_conflict',
+        'rfc': 'RFC 9112 message body length',
+        'trigger': 'Content-Length appears with chunked transfer-encoding',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'both Content-Length and chunked transfer-encoding',
+    },
+    {
+        'case': 'chunked_body_syntax',
+        'rfc': 'RFC 9112 chunked coding',
+        'trigger': 'chunk size, terminator, or trailers are malformed',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'chunk',
+    },
+    {
+        'case': 'size_limits',
+        'rfc': 'RFC 9112 implementation limits',
+        'trigger': 'request head or body exceeds configured limits',
+        'expected_exception': 'ProtocolError',
+        'message_fragment': 'configured max_',
+    },
+)
+
+
+def http11_request_head_error_matrix() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in HTTP11_REQUEST_HEAD_ERROR_MATRIX)
 
 
 async def read_http11_request(

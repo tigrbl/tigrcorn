@@ -1,0 +1,27 @@
+[
+  {
+    "rule": "packet-threshold-loss",
+    "value": 3,
+    "notes": "packets older than packet threshold behind largest_acked are declared lost"
+  },
+  {
+    "rule": "time-threshold-loss",
+    "value": 1.125,
+    "notes": "loss delay is 9/8 of the max(latest_rtt, smoothed_rtt)"
+  },
+  {
+    "rule": "pto-base",
+    "value": "smoothed_rtt + max(4*rttvar, granularity) + max_ack_delay(application only)",
+    "notes": "PTO doubles with pto_count and excludes max_ack_delay outside application space"
+  },
+  {
+    "rule": "persistent-congestion-threshold",
+    "value": 3,
+    "notes": "persistent congestion spans three PTO intervals"
+  },
+  {
+    "rule": "pacing-budget",
+    "value": "congestion-window-bounded token bucket",
+    "notes": "send pacing budget is refreshed over time and never exceeds congestion window"
+  }
+]

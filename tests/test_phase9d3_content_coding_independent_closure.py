@@ -7,7 +7,7 @@ from tigrcorn.compat.release_gates import evaluate_release_gates, validate_indep
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 INDEPENDENT = RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'
 LOCAL_BEHAVIOR = RELEASE_ROOT / 'tigrcorn-content-coding-local-behavior-artifacts'
 
@@ -76,8 +76,8 @@ def test_phase9d3_release_root_contains_content_coding_artifacts_and_local_behav
 
 def test_phase9d3_strict_boundary_tracks_content_coding_progress_in_0_3_8_root() -> None:
     boundary = _load_json(CONFORMANCE / 'certification_boundary.strict_target.json')
-    assert boundary['canonical_release_bundle'] == 'docs/review/conformance/releases/0.3.8/release-0.3.8'
-    assert boundary['artifact_bundles']['independent_certification'].endswith('releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix')
+    assert boundary['canonical_release_bundle'] == 'docs/review/conformance/releases/0.3.9/release-0.3.9'
+    assert boundary['artifact_bundles']['independent_certification'].endswith('releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix')
 
     report = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
     failures = '\n'.join(report.failures)

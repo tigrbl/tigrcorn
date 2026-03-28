@@ -11,7 +11,7 @@ def test_rfc_applicability_and_competitor_status_document_exists() -> None:
 
     data = json.loads(report.read_text())
     assert data['checkpoint'] == 'rfc_applicability_and_competitor_status'
-    assert data['reviewed_at'] == '2026-03-20'
+    assert data['reviewed_at'] == '2026-03-26'
 
     summary = data['summary']
     assert summary['current_core_applicable_rfcs'] == [
@@ -21,8 +21,13 @@ def test_rfc_applicability_and_competitor_status_document_exists() -> None:
         'RFC 9110 §9.3.6',
         'RFC 9110 §6.5',
         'RFC 9110 §8',
+        'RFC 7232',
+        'RFC 7233',
+        'RFC 8297',
+        'RFC 7838 §3',
     ]
-    assert summary['recommended_next_rfcs'] == ['RFC 7232', 'RFC 9530']
+    assert summary['recommended_next_rfcs'] == ['RFC 9530']
+    assert summary['transport_adjacent_optional_rfcs'] == ['RFC 9218']
     assert summary['conditional_rfcs_if_boundary_expands'] == ['RFC 9111', 'RFC 9421']
     assert summary['non_core_product_layer_rfcs'] == ['RFC 7515', 'RFC 7516', 'RFC 7519', 'RFC 8152', 'RFC 9052']
     assert summary['competitor_review_scope'] == ['uvicorn', 'hypercorn', 'daphne', 'granian']
@@ -34,8 +39,16 @@ def test_rfc_applicability_and_competitor_status_document_exists() -> None:
     assert applicability['rfc9114']['status'] == 'core_current_boundary'
     assert applicability['rfc9110']['status'] == 'core_current_boundary_partial'
     assert applicability['rfc9110']['covered_sections'] == ['§9.3.6', '§6.5', '§8']
-    assert applicability['rfc7232']['status'] == 'adjacent_next_recommended'
-    assert applicability['rfc7232']['current_support'] == 'not_supported'
+    assert applicability['rfc7232']['status'] == 'core_current_boundary'
+    assert applicability['rfc7232']['current_support'] == 'targeted_and_supported'
+    assert applicability['rfc7233']['status'] == 'core_current_boundary'
+    assert applicability['rfc7233']['current_support'] == 'targeted_and_supported'
+    assert applicability['rfc8297']['status'] == 'core_current_boundary'
+    assert applicability['rfc8297']['current_support'] == 'targeted_and_supported'
+    assert applicability['rfc7838']['status'] == 'core_current_boundary_bounded'
+    assert applicability['rfc7838']['covered_sections'] == ['§3']
+    assert applicability['rfc9218']['status'] == 'transport_adjacent_optional'
+    assert applicability['rfc9218']['current_support'] == 'not_targeted'
     assert applicability['rfc9530']['status'] == 'adjacent_next_recommended'
     assert applicability['rfc9111']['status'] == 'conditional_boundary_expansion'
     assert applicability['rfc9421']['status'] == 'conditional_boundary_expansion'
@@ -44,14 +57,17 @@ def test_rfc_applicability_and_competitor_status_document_exists() -> None:
         assert applicability[key]['current_support'] == 'not_supported'
 
     roadmap = data['recommended_roadmap']
-    assert [entry['order'] for entry in roadmap] == [1, 2, 3, 4, 5, 6]
-    assert roadmap[0]['rfcs'] == ['RFC 7692', 'RFC 9110 §9.3.6', 'RFC 9110 §6.5', 'RFC 9110 §8', 'RFC 6960']
-    assert roadmap[1]['rfcs'] == ['RFC 7232']
+    assert [entry['order'] for entry in roadmap] == [1, 2, 3, 4, 5, 6, 7]
+    assert roadmap[0]['rfcs'] == ['RFC 7232', 'RFC 7233', 'RFC 8297', 'RFC 7838 §3']
+    assert roadmap[1]['rfcs'] == ['RFC 7692', 'RFC 9110 §9.3.6', 'RFC 9110 §6.5', 'RFC 9110 §8', 'RFC 6960']
     assert roadmap[2]['rfcs'] == ['RFC 9530']
+    assert roadmap[3]['rfcs'] == ['RFC 9218']
 
     competitors = data['competitor_matrix']['products']
     assert competitors['tigrcorn']['http3_quic'] == 'yes'
     assert competitors['tigrcorn']['connect_policy_surface'] == 'yes'
+    assert competitors['tigrcorn']['rfc7232'] == 'yes'
+    assert competitors['tigrcorn']['rfc7233'] == 'yes'
     assert competitors['uvicorn']['http1'] == 'documented_yes'
     assert competitors['uvicorn']['http2'] == 'no_official_support_claim_found'
     assert competitors['uvicorn']['websocket_permessage_deflate_policy'] == 'documented_yes'

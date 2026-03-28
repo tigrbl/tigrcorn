@@ -1,4 +1,10 @@
 {
+  "document_role": "current_subsystem_truth_source",
+  "current_truth_source": true,
+  "truth_scope": "subsystem_current_state",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "subsystem_truth_source": true,
   "checkpoint": "certification_environment_freeze",
   "phase": "step1_execution_environment_freeze",
   "status": "environment_contract_frozen_but_not_ready",
@@ -22,8 +28,8 @@
     "python_minor_version": "3.11",
     "python_version_ready": true,
     "environment_ready_for_release_workflow": false,
-    "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-    "bundle_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle",
+    "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "bundle_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
     "workflow_path": ".github/workflows/phase9-certification-release.yml",
     "wrapper_path": "tools/run_phase9_release_workflow.py"
   },

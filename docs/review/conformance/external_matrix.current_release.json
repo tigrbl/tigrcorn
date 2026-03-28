@@ -1,7 +1,7 @@
 {
   "name": "tigrcorn-current-release-matrix",
   "metadata": {
-    "description": "Mixed evidence matrix that combines independent HTTP/1.1 / HTTP/2 / WebSocket peers with same-stack replay fixtures for HTTP/3, QUIC-TLS, and RFC 9220 coverage under the canonical 0.3.8 release root.",
+    "description": "Mixed evidence matrix that combines independent HTTP/1.1 / HTTP/2 / WebSocket peers with same-stack replay fixtures for HTTP/3, QUIC-TLS, and RFC 9220 coverage under the canonical 0.3.9 release root.",
     "independent_peers": [
       "curl",
       "websockets",
@@ -11,7 +11,7 @@
     "same_stack_replay_peers": [
       "tigrcorn-public-client"
     ],
-    "canonical_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix"
+    "canonical_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix"
   },
   "scenarios": [
     {

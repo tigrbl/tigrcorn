@@ -1,0 +1,91 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": 4,
+  "checkpoint": "advanced_protocol_and_delivery_features",
+  "status": "implemented_checkpoint_with_targeted_green_validation",
+  "boundary": {
+    "current_internal_promotion_target_green": true,
+    "expanded_program_fully_featured": false,
+    "expanded_program_fully_rfc_compliant": false,
+    "excluded_boundaries": [
+      "cache_freshness_policy",
+      "integrity_trust",
+      "gateway_enforcement"
+    ],
+    "authoritative_phase4_rfc_targets": [
+      "RFC 8297",
+      "RFC 7838 \u00a73"
+    ],
+    "rfc7838_support_envelope": "header_field_advertisement_only",
+    "rfc9218_targeted": false
+  },
+  "implemented": {
+    "early_hints": {
+      "http1": true,
+      "http2": true,
+      "http3": true,
+      "safe_link_only_policy": true,
+      "rfc8297_targeted": true
+    },
+    "alt_svc": {
+      "explicit_values": true,
+      "auto_h3_advertisement": true,
+      "operator_surface": true,
+      "ephemeral_port_binding_sync": true,
+      "rfc7838_section3_targeted": true
+    },
+    "runtime_embedding": {
+      "runtime_compatibility_matrix": true,
+      "embedded_server_helper": true,
+      "supported_runtimes": [
+        "auto",
+        "asyncio",
+        "uvloop"
+      ],
+      "trio_surface": "descoped_not_supported"
+    },
+    "static_files": {
+      "precompressed_sidecars": true,
+      "gzip_sidecar": true,
+      "brotli_sidecar": true,
+      "range_bypasses_coding": true,
+      "head_preserves_encoded_length": true
+    },
+    "examples": {
+      "advanced_delivery_server": true,
+      "http1_client": true,
+      "http2_client": true,
+      "http3_client": true,
+      "pairing_inventory": true
+    }
+  },
+  "validation": {
+    "compileall_passed": true,
+    "targeted_test_bundle": {
+      "passed": 62,
+      "failed": 0,
+      "files": [
+        "tests/test_phase1_surface_parity_checkpoint.py",
+        "tests/test_phase2_entity_semantics_checkpoint.py",
+        "tests/test_phase3_transport_core_strictness_checkpoint.py",
+        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+        "tests/test_http1_hardening_pass.py",
+        "tests/test_server_http1.py",
+        "tests/test_server_http2.py",
+        "tests/test_http2_rfc9113.py",
+        "tests/test_http3_server.py",
+        "tests/test_http3_rfc9114.py",
+        "tests/test_http3_request_stream_state_machine.py"
+      ]
+    }
+  },
+  "known_partials": [
+    "RFC 9218 prioritization remains transport-adjacent and is not part of the current package boundary",
+    "global release-gate recertification was not re-run in the original Phase 4 checkpoint and is now covered by later repository-level current-state artifacts"
+  ]
+}

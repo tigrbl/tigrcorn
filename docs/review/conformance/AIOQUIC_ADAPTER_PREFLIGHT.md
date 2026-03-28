@@ -20,8 +20,8 @@ This checkpoint executes the third-party aioquic HTTP/3 adapters directly before
 - wsproto version: `1.3.2`
 - h2 version: `4.3.0`
 - websockets version: `16.0`
-- release root: `docs/review/conformance/releases/0.3.8/release-0.3.8`
-- preflight bundle root: `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle`
+- release root: `docs/review/conformance/releases/0.3.9/release-0.3.9`
+- preflight bundle root: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle`
 
 ## Scenario results
 
@@ -65,4 +65,4 @@ This checkpoint executes the third-party aioquic HTTP/3 adapters directly before
 - strict target after preflight: `True`
 - promotion target after preflight: `True`
 
-This preflight closes the adapter-execution ambiguity: the aioquic HTTP/3 client and aioquic RFC 9220 WebSocket client both ran successfully and emitted negotiation metadata. It does **not** by itself promote the remaining strict-target HTTP/3 scenario artifacts into the 0.3.8 release root, so the package may still remain non-green under the stricter target until those artifacts are regenerated and assembled.
+This preflight closes the adapter-execution ambiguity: the aioquic HTTP/3 client and aioquic RFC 9220 WebSocket client both ran successfully and emitted negotiation metadata. It does **not** by itself promote the remaining strict-target HTTP/3 scenario artifacts into the 0.3.9 release root, so the package may still remain non-green under the stricter target until those artifacts are regenerated and assembled.

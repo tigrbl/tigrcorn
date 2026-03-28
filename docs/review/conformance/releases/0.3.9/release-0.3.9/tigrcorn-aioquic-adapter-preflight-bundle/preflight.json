@@ -1,0 +1,132 @@
+{
+  "environment": {
+    "aioquic_version": "1.3.0",
+    "h2_version": "4.3.0",
+    "python_minor_version": "3.13",
+    "python_version": "3.13.5 (main, Jun 25 2025, 18:55:22) [GCC 14.2.0]",
+    "websockets_version": "16.0",
+    "wsproto_version": "1.3.2"
+  },
+  "gate_status_after_preflight": {
+    "authoritative_boundary_passed": true,
+    "promotion_target_passed": true,
+    "strict_target_boundary_passed": true
+  },
+  "generated_at": "2026-03-24T05:05:00.222288+00:00",
+  "scenario_records": [
+    {
+      "artifact_dir": "http3-server-aioquic-client-post",
+      "ca_cert_exists": true,
+      "ca_cert_path": "tests/fixtures_certs/interop-localhost-cert.pem",
+      "certificate_inputs": {
+        "ca_cert": {
+          "exists": true,
+          "is_file": true,
+          "path": "tests/fixtures_certs/interop-localhost-cert.pem"
+        },
+        "client_cert": {
+          "exists": false,
+          "is_file": false,
+          "path": null
+        },
+        "client_key": {
+          "exists": false,
+          "is_file": false,
+          "path": null
+        },
+        "client_material_ready": true,
+        "client_material_requested": false,
+        "ready": true
+      },
+      "certificate_inputs_ready": true,
+      "client_material_requested": false,
+      "handshake_complete": true,
+      "kind": "http3_client_adapter",
+      "negotiation_metadata_emitted": true,
+      "packet_trace_exists": true,
+      "passed": true,
+      "peer_command": [
+        "/mnt/data/step6venv/bin/python",
+        "-m",
+        "tests.fixtures_third_party.aioquic_http3_client",
+        "--servername",
+        "localhost",
+        "--cacert",
+        "tests/fixtures_certs/interop-localhost-cert.pem"
+      ],
+      "peer_exit_code": 0,
+      "peer_module": "tests.fixtures_third_party.aioquic_http3_client",
+      "peer_negotiation_path": "http3-server-aioquic-client-post/peer_negotiation.json",
+      "peer_transcript_path": "http3-server-aioquic-client-post/peer_transcript.json",
+      "peer_version": null,
+      "protocol": "h3",
+      "qlog_exists": true,
+      "response_status": 200,
+      "result_path": "http3-server-aioquic-client-post/result.json",
+      "retry_observed": false,
+      "scenario_id": "http3-server-aioquic-client-post",
+      "server_name": "localhost",
+      "tls_version": "TLSv1.3",
+      "transcript_emitted": true,
+      "websocket_connect_protocol_enabled": null,
+      "websocket_negotiated_extensions": []
+    },
+    {
+      "artifact_dir": "websocket-http3-server-aioquic-client",
+      "ca_cert_exists": true,
+      "ca_cert_path": "tests/fixtures_certs/interop-localhost-cert.pem",
+      "certificate_inputs": {
+        "ca_cert": {
+          "exists": true,
+          "is_file": true,
+          "path": "tests/fixtures_certs/interop-localhost-cert.pem"
+        },
+        "client_cert": {
+          "exists": false,
+          "is_file": false,
+          "path": null
+        },
+        "client_key": {
+          "exists": false,
+          "is_file": false,
+          "path": null
+        },
+        "client_material_ready": true,
+        "client_material_requested": false,
+        "ready": true
+      },
+      "certificate_inputs_ready": true,
+      "client_material_requested": false,
+      "handshake_complete": true,
+      "kind": "http3_websocket_adapter",
+      "negotiation_metadata_emitted": true,
+      "packet_trace_exists": true,
+      "passed": true,
+      "peer_command": [
+        "/mnt/data/step6venv/bin/python",
+        "-m",
+        "tests.fixtures_third_party.aioquic_http3_websocket_client",
+        "--servername",
+        "localhost",
+        "--cacert",
+        "tests/fixtures_certs/interop-localhost-cert.pem"
+      ],
+      "peer_exit_code": 0,
+      "peer_module": "tests.fixtures_third_party.aioquic_http3_websocket_client",
+      "peer_negotiation_path": "websocket-http3-server-aioquic-client/peer_negotiation.json",
+      "peer_transcript_path": "websocket-http3-server-aioquic-client/peer_transcript.json",
+      "peer_version": null,
+      "protocol": "h3",
+      "qlog_exists": true,
+      "response_status": 200,
+      "result_path": "websocket-http3-server-aioquic-client/result.json",
+      "retry_observed": false,
+      "scenario_id": "websocket-http3-server-aioquic-client",
+      "server_name": "localhost",
+      "tls_version": "TLSv1.3",
+      "transcript_emitted": true,
+      "websocket_connect_protocol_enabled": true,
+      "websocket_negotiated_extensions": []
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from collections import deque
 
 
 class PrebufferedReader:
@@ -38,6 +37,9 @@ class PrebufferedReader:
         return prefix + await self._reader.readexactly(n - len(prefix))
 
     async def readuntil(self, separator: bytes = b"\n") -> bytes:
+        return await self.readuntil_limited(separator, limit=None)
+
+    async def readuntil_limited(self, separator: bytes = b"\n", *, limit: int | None, read_chunk_size: int = 65536) -> bytes:
         if not separator:
             raise ValueError("separator must not be empty")
         while True:
@@ -47,7 +49,11 @@ class PrebufferedReader:
                 data = bytes(self._buffer[:end])
                 del self._buffer[:end]
                 return data
-            chunk = await self._reader.read(65536)
+            if limit is not None and len(self._buffer) > limit:
+                raise asyncio.LimitOverrunError("separator is not found, and chunk exceed the limit", consumed=len(self._buffer))
+            chunk = await self._reader.read(max(1, read_chunk_size))
             if not chunk:
                 raise asyncio.IncompleteReadError(partial=bytes(self._buffer), expected=None)
             self._buffer.extend(chunk)
+            if limit is not None and len(self._buffer) > limit:
+                raise asyncio.LimitOverrunError("separator is not found, and chunk exceed the limit", consumed=len(self._buffer))

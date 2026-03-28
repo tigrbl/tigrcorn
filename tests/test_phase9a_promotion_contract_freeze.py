@@ -19,7 +19,7 @@ def test_phase9a_contract_freeze_docs_and_release_root_exist() -> None:
     status_json = CONFORMANCE / 'phase9a_promotion_contract.current.json'
     backlog_json = CONFORMANCE / 'phase9a_execution_backlog.current.json'
     delivery = ROOT / 'DELIVERY_NOTES_PHASE9A_PROMOTION_CONTRACT_FREEZE.md'
-    release_root = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+    release_root = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
     manifest = release_root / 'manifest.json'
     readme = release_root / 'README.md'
 
@@ -34,7 +34,7 @@ def test_phase9a_contract_freeze_docs_and_release_root_exist() -> None:
 
     text = doc.read_text(encoding='utf-8')
     assert 'Phase 9A' in text
-    assert '0.3.8' in text
+    assert '0.3.9' in text
     assert '0.3.7' in text
     assert '13 strict-target independent-scenario gaps' in text
     assert '7 public flag/runtime gaps' in text
@@ -62,7 +62,7 @@ def test_phase9a_status_snapshot_freezes_release_root_policy_and_scope() -> None
     policy = payload['release_root_policy']
     assert policy['immutable_candidate_release_root'].endswith('releases/0.3.7/release-0.3.7')
     assert policy['allow_mutation_of_candidate_release_root'] is False
-    assert policy['next_promotable_release_root'].endswith('releases/0.3.8/release-0.3.8')
+    assert policy['next_promotable_release_root'].endswith('releases/0.3.9/release-0.3.9')
     assert policy['next_promotable_release_root_frozen'] is True
 
     operator = payload['operator_surface_no_regression']

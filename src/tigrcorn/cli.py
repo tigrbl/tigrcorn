@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import argparse
-import asyncio
 import os
 import sys
 
-from tigrcorn.api import serve_import_string
 from tigrcorn.config.load import build_config_from_namespace
+from tigrcorn.constants import SUPPORTED_RUNTIMES
+from tigrcorn.server.bootstrap import run_config
 from tigrcorn.server.reloader import PollingReloader
 from tigrcorn.server.supervisor import ServerSupervisor
 
@@ -28,9 +28,12 @@ def build_parser() -> argparse.ArgumentParser:
     app_group.add_argument("--reload-include", action="append", default=None, help="Glob to include in reload watch set")
     app_group.add_argument("--reload-exclude", action="append", default=None, help="Glob to exclude from reload watch set")
     app_group.add_argument("--workers", type=int, default=None, help="Worker process count")
-    app_group.add_argument("--worker-class", default=None, help="Worker/runtime implementation class")
+    app_group.add_argument("--worker-class", default=None, help="Worker implementation class")
+    app_group.add_argument("--runtime", choices=list(SUPPORTED_RUNTIMES), default=None, help="Runtime backend for sync entrypoints and worker processes")
     app_group.add_argument("--pid", default=None, help="PID file path")
-    app_group.add_argument("--config", default=None, help="Config file path (.json, .toml, .py)")
+    app_group.add_argument("--worker-healthcheck-timeout", type=float, default=None, help="Worker startup healthcheck timeout in seconds")
+    app_group.add_argument("--config", default=None, help="Config source: file path (.json, .toml, .yaml, .yml, .py), module:<module>, or object:<module>:<name>")
+    app_group.add_argument("--env-file", dest="env_file", default=None, help="Load additional prefixed config values from a dotenv file")
     app_group.add_argument("--env-prefix", default=None, help="Environment variable prefix for config loading")
     app_group.add_argument("--lifespan", choices=["auto", "on", "off"], default=None)
     app_group.add_argument("--limit-max-requests", type=int, default=None, dest="limit_max_requests")
@@ -49,10 +52,21 @@ def build_parser() -> argparse.ArgumentParser:
     bind_group.add_argument("--reuse-port", action="store_true", default=None)
     bind_group.add_argument("--reuse-address", action="store_true", default=None)
     bind_group.add_argument("--backlog", type=int, default=None)
+    bind_group.add_argument("--user", default=None, help="User name or uid to own Unix sockets")
+    bind_group.add_argument("--group", default=None, help="Group name or gid to own Unix sockets")
+    bind_group.add_argument("--umask", default=None, help="Umask applied while creating Unix sockets (octal or integer)")
+
+    static_group = parser.add_argument_group("Static / delivery")
+    static_group.add_argument("--static-path-route", dest="static_path_route", default=None, help="HTTP route prefix served from the mounted static directory")
+    static_group.add_argument("--static-path-mount", dest="static_path_mount", default=None, help="Filesystem directory mounted at --static-path-route")
+    _add_flag_pair(static_group, "--static-path-dir-to-file", "--no-static-path-dir-to-file", dest="static_path_dir_to_file", help_text="directory index resolution for the mounted static path")
+    static_group.add_argument("--static-path-index-file", dest="static_path_index_file", default=None, help="Index file name served when directory index resolution is enabled")
+    static_group.add_argument("--static-path-expires", dest="static_path_expires", type=int, default=None, help="Static-response cache TTL in seconds; 0 disables caching headers")
 
     tls_group = parser.add_argument_group("TLS / security")
     tls_group.add_argument("--ssl-certfile", default=None, help="Certificate for TLS on TCP/Unix or QUIC-TLS on UDP")
     tls_group.add_argument("--ssl-keyfile", default=None, help="Private key for TLS on TCP/Unix or QUIC-TLS on UDP")
+    tls_group.add_argument("--ssl-keyfile-password", default=None, help="Password for an encrypted private key PEM used by package-owned TLS/QUIC-TLS listeners")
     tls_group.add_argument("--ssl-ca-certs", default=None, help="Trusted CA bundle for client-certificate verification")
     tls_group.add_argument("--ssl-require-client-cert", action="store_true", default=None, help="Require peer client certificates")
     tls_group.add_argument("--ssl-ciphers", default=None)
@@ -62,12 +76,16 @@ def build_parser() -> argparse.ArgumentParser:
     tls_group.add_argument("--ssl-ocsp-cache-size", type=int, default=None)
     tls_group.add_argument("--ssl-ocsp-max-age", type=float, default=None)
     tls_group.add_argument("--ssl-crl-mode", choices=["off", "soft-fail", "require"], default=None)
+    tls_group.add_argument("--ssl-crl", default=None, help="Local CRL file (PEM or DER) loaded into the package-owned revocation material set")
     tls_group.add_argument("--ssl-revocation-fetch", choices=["off", "on"], default=None)
     tls_group.add_argument("--proxy-headers", action="store_true", default=None)
     tls_group.add_argument("--forwarded-allow-ips", action="append", default=None, help="Trusted forwarded-header peers; repeat or use comma-separated values")
     tls_group.add_argument("--root-path", default=None, help="ASGI root_path mount prefix")
     tls_group.add_argument("--server-header", nargs="?", const="tigrcorn", default=None, help="Enable or override the Server header value")
     tls_group.add_argument("--no-server-header", action="store_true", default=False, help="Disable the Server header")
+    _add_flag_pair(tls_group, "--date-header", "--no-date-header", dest="date_header", help_text="Date header injection")
+    tls_group.add_argument("--header", dest="headers", action="append", default=None, help="Default response header in name:value form; repeat to add multiple headers")
+    tls_group.add_argument("--server-name", action="append", default=None, help="Allowed Host/:authority value; repeat or use comma-separated values")
 
     log_group = parser.add_argument_group("Logging / observability")
     log_group.add_argument("--log-level", default=None)
@@ -77,6 +95,7 @@ def build_parser() -> argparse.ArgumentParser:
     log_group.add_argument("--error-log-file", default=None)
     log_group.add_argument("--log-config", default=None)
     log_group.add_argument("--structured-log", action="store_true", default=None)
+    _add_flag_pair(log_group, "--use-colors", "--no-use-colors", dest="use_colors", help_text="Colorized logging")
     log_group.add_argument("--metrics", action="store_true", default=None)
     log_group.add_argument("--metrics-bind", default=None)
     log_group.add_argument("--statsd-host", default=None)
@@ -93,7 +112,20 @@ def build_parser() -> argparse.ArgumentParser:
     limit_group.add_argument("--max-streams", type=int, default=None)
     limit_group.add_argument("--max-body-size", type=int, default=None)
     limit_group.add_argument("--max-header-size", type=int, default=None)
+    limit_group.add_argument("--http1-max-incomplete-event-size", type=int, default=None, help="Cap buffered incomplete HTTP/1.1 request-head bytes before the parser rejects the request")
+    limit_group.add_argument("--http1-buffer-size", type=int, default=None, help="Read-buffer size used for HTTP/1.1 request-head/body incremental reads")
+    limit_group.add_argument("--http1-header-read-timeout", type=float, default=None, help="HTTP/1.1 request-head read timeout in seconds; when set it tightens the generic read/keep-alive timeout")
+    _add_flag_pair(limit_group, "--http1-keep-alive", "--no-http1-keep-alive", dest="http1_keep_alive", help_text="HTTP/1.1 connection persistence")
+    limit_group.add_argument("--http2-max-concurrent-streams", type=int, default=None, help="Advertised HTTP/2 MAX_CONCURRENT_STREAMS value for inbound peer-created streams")
+    limit_group.add_argument("--http2-max-headers-size", type=int, default=None, help="HTTP/2-specific request-header and decoded header-list size cap")
+    limit_group.add_argument("--http2-max-frame-size", type=int, default=None, help="Advertised HTTP/2 MAX_FRAME_SIZE for inbound peer frames")
+    _add_flag_pair(limit_group, "--http2-adaptive-window", "--no-http2-adaptive-window", dest="http2_adaptive_window", help_text="HTTP/2 adaptive receive-window growth")
+    limit_group.add_argument("--http2-initial-connection-window-size", type=int, default=None, help="HTTP/2 connection-level receive window target; values below 65535 are clamped to the protocol default")
+    limit_group.add_argument("--http2-initial-stream-window-size", type=int, default=None, help="Advertised HTTP/2 INITIAL_WINDOW_SIZE for peer-created streams")
+    limit_group.add_argument("--http2-keep-alive-interval", type=float, default=None, help="Idle interval before the server sends an HTTP/2 connection-level PING")
+    limit_group.add_argument("--http2-keep-alive-timeout", type=float, default=None, help="HTTP/2 keep-alive PING acknowledgement timeout in seconds")
     limit_group.add_argument("--websocket-max-message-size", type=int, default=None)
+    limit_group.add_argument("--websocket-max-queue", type=int, default=None, help="Maximum queued inbound WebSocket messages before transport backpressure is applied")
     limit_group.add_argument("--websocket-ping-interval", type=float, default=None)
     limit_group.add_argument("--websocket-ping-timeout", type=float, default=None)
     limit_group.add_argument("--idle-timeout", type=float, default=None)
@@ -109,6 +141,10 @@ def build_parser() -> argparse.ArgumentParser:
     protocol_group.add_argument("--trailer-policy", choices=["pass", "drop", "strict"], default=None)
     protocol_group.add_argument("--content-coding-policy", choices=["allowlist", "identity-only", "strict"], default=None)
     protocol_group.add_argument("--content-codings", action="append", default=None, help="Repeat or use comma-separated values")
+    protocol_group.add_argument("--alt-svc", action="append", default=None, help="Advertise Alt-Svc values; repeat or use comma-separated values")
+    _add_flag_pair(protocol_group, "--alt-svc-auto", "--no-alt-svc-auto", dest="alt_svc_auto", help_text="automatic Alt-Svc advertisement for HTTP/3-capable UDP listeners")
+    protocol_group.add_argument("--alt-svc-ma", type=int, default=None, help="Alt-Svc max-age for automatic advertisement")
+    protocol_group.add_argument("--alt-svc-persist", action="store_true", default=None, help="Set persist=1 on automatic Alt-Svc advertisements")
     protocol_group.add_argument("--quic-require-retry", action="store_true", default=None, help="Require a QUIC Retry before completing the initial handshake")
     protocol_group.add_argument("--quic-max-datagram-size", type=int, default=None)
     protocol_group.add_argument("--quic-idle-timeout", type=float, default=None)
@@ -119,13 +155,19 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Parse CLI arguments, build a ServerConfig, and hand off to run_config.
+
+    The CLI entrypoint is intentionally config-driven. The stable import-string
+    convenience surface lives in :mod:`tigrcorn.api` as ``serve_import_string``;
+    the CLI does not re-expose that helper as a module-level patch seam.
+    """
     parser = build_parser()
     effective_argv = list(sys.argv[1:] if argv is None else argv)
     ns = parser.parse_args(effective_argv)
     config = build_config_from_namespace(ns)
     app_target = config.app.target or ns.app
-    if not app_target:
-        parser.error("an application import string is required (either as APP or in the config file)")
+    if not app_target and not config.static_mount_enabled:
+        parser.error("an application import string is required (either as APP or in the config file) unless a static mount is configured")
 
     if config.app.reload and not PollingReloader.is_child_process():
         reloader = PollingReloader(effective_argv, config=config)
@@ -136,30 +178,6 @@ def main(argv: list[str] | None = None) -> int:
         supervisor.run()
         return 0
 
-    asyncio.run(
-        serve_import_string(
-            app_target,
-            host=ns.host or config.listeners[0].host,
-            port=ns.port or config.listeners[0].port,
-            uds=ns.uds,
-            transport=ns.transport or config.listeners[0].kind,
-            lifespan=config.app.lifespan,
-            log_level=config.logging.level,
-            access_log=config.logging.access_log,
-            ssl_certfile=config.tls.certfile,
-            ssl_keyfile=config.tls.keyfile,
-            ssl_ca_certs=config.tls.ca_certs,
-            ssl_require_client_cert=config.tls.require_client_cert,
-            ssl_ciphers=config.tls.ciphers,
-            http_versions=config.http.http_versions,
-            websocket=config.websocket.enabled,
-            enable_h2c=config.http.enable_h2c,
-            max_body_size=config.http.max_body_size,
-            protocols=ns.protocols or list(config.listeners[0].protocols),
-            quic_require_retry=config.quic.require_retry,
-            pipe_mode=config.listeners[0].pipe_mode,
-            config=config,
-            factory=config.app.factory,
-        )
-    )
+    config.app.target = app_target
+    run_config(config)
     return 0

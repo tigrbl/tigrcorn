@@ -76,7 +76,9 @@
         "--worker-class",
         "--pid",
         "--limit-max-requests",
-        "--max-requests-jitter"
+        "--max-requests-jitter",
+        "--runtime",
+        "--worker-healthcheck-timeout"
       ],
       "family": "App / process / development",
       "config_path": "process.*",
@@ -85,7 +87,9 @@
       "default_value": null,
       "validation_rules": [
         "workers positive integer",
-        "worker_class in supported set"
+        "worker_class in supported set",
+        "runtime in {auto, asyncio, uvloop}",
+        "healthcheck timeout positive float"
       ],
       "unit_tests": [
         "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
@@ -103,7 +107,8 @@
       "flag_id": "config_source",
       "flags": [
         "--config",
-        "--env-prefix"
+        "--env-prefix",
+        "--env-file"
       ],
       "family": "App / process / development",
       "config_path": "app.config_file / app.env_prefix",
@@ -112,7 +117,8 @@
       "default_value": null,
       "validation_rules": [
         "config file path",
-        "env prefix string"
+        "env prefix string",
+        "optional env-file bootstrap"
       ],
       "unit_tests": [
         "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
@@ -159,7 +165,10 @@
         "--transport",
         "--reuse-port",
         "--reuse-address",
-        "--backlog"
+        "--backlog",
+        "--user",
+        "--group",
+        "--umask"
       ],
       "family": "Listener / binding",
       "config_path": "listeners[]",
@@ -175,7 +184,8 @@
       "validation_rules": [
         "listener kinds validated",
         "ports in range",
-        "paths/FDs typed"
+        "paths/FDs typed",
+        "unix socket ownership controls only apply to unix listeners"
       ],
       "unit_tests": [
         "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
@@ -199,10 +209,52 @@
       ]
     },
     {
+      "flag_id": "static_path",
+      "flags": [
+        "--static-path-route",
+        "--static-path-mount",
+        "--static-path-dir-to-file",
+        "--no-static-path-dir-to-file",
+        "--static-path-index-file",
+        "--static-path-expires"
+      ],
+      "family": "Static / delivery",
+      "config_path": "static.*",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": {
+        "route": null,
+        "mount": null,
+        "dir_to_file": true,
+        "index_file": "index.html",
+        "expires": null
+      },
+      "validation_rules": [
+        "route string",
+        "path string",
+        "boolean toggle",
+        "string or null",
+        "non-negative integer or null"
+      ],
+      "unit_tests": [
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags",
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_phase2_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "performance_profiles": []
+    },
+    {
       "flag_id": "tls",
       "flags": [
         "--ssl-certfile",
         "--ssl-keyfile",
+        "--ssl-keyfile-password",
         "--ssl-ca-certs",
         "--ssl-require-client-cert",
         "--ssl-ciphers",
@@ -212,6 +264,7 @@
         "--ssl-ocsp-cache-size",
         "--ssl-ocsp-max-age",
         "--ssl-crl-mode",
+        "--ssl-crl",
         "--ssl-revocation-fetch"
       ],
       "family": "TLS / security",
@@ -226,15 +279,20 @@
       "default_value": "defaults file",
       "validation_rules": [
         "cert/key pairing",
+        "encrypted key password requires ssl_keyfile",
         "CA required for client cert mode",
         "OCSP mode enum",
         "ocsp max age positive",
         "CRL mode enum",
+        "local CRL path exists and parses",
         "revocation fetch toggle"
       ],
       "unit_tests": [
         "tests/test_public_api_cli_mtls_surface.py::PublicRunAndCLIClientCertificateSurfaceTests::test_cli_main_forwards_client_certificate_options",
-        "tests/test_config_matrix.py::ConfigMatrixTests::test_udp_client_auth_is_accepted_with_a_trust_store"
+        "tests/test_config_matrix.py::ConfigMatrixTests::test_udp_client_auth_is_accepted_with_a_trust_store",
+        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
+        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context",
+        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected"
       ],
       "interop_scenarios": [
         "http3-server-aioquic-client-mtls",
@@ -257,7 +315,11 @@
         "--forwarded-allow-ips",
         "--root-path",
         "--server-header",
-        "--no-server-header"
+        "--no-server-header",
+        "--date-header",
+        "--no-date-header",
+        "--header",
+        "--server-name"
       ],
       "family": "TLS / security",
       "config_path": "proxy.*",
@@ -265,7 +327,9 @@
       "rfc_targets": [],
       "default_value": "defaults file",
       "validation_rules": [
-        "root_path empty or leading /"
+        "root_path empty or leading /",
+        "default headers use name:value syntax",
+        "server names repeatable / comma-separated allowlist"
       ],
       "unit_tests": [
         "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
@@ -291,7 +355,9 @@
         "--metrics",
         "--metrics-bind",
         "--statsd-host",
-        "--otel-endpoint"
+        "--otel-endpoint",
+        "--use-colors",
+        "--no-use-colors"
       ],
       "family": "Logging / observability",
       "config_path": "logging.* / metrics.*",
@@ -299,7 +365,8 @@
       "rfc_targets": [],
       "default_value": "defaults file",
       "validation_rules": [
-        "path/string/bool parsing"
+        "path/string/bool parsing",
+        "optional colorized stream logging toggle"
       ],
       "unit_tests": [
         "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
@@ -323,7 +390,22 @@
         "--max-streams",
         "--max-body-size",
         "--max-header-size",
+        "--http1-max-incomplete-event-size",
+        "--http1-buffer-size",
+        "--http1-header-read-timeout",
+        "--http1-keep-alive",
+        "--no-http1-keep-alive",
+        "--http2-max-concurrent-streams",
+        "--http2-max-headers-size",
+        "--http2-max-frame-size",
+        "--http2-adaptive-window",
+        "--no-http2-adaptive-window",
+        "--http2-initial-connection-window-size",
+        "--http2-initial-stream-window-size",
+        "--http2-keep-alive-interval",
+        "--http2-keep-alive-timeout",
         "--websocket-max-message-size",
+        "--websocket-max-queue",
         "--websocket-ping-interval",
         "--websocket-ping-timeout",
         "--idle-timeout"
@@ -345,7 +427,10 @@
         "positive numeric values"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
+        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -370,15 +455,20 @@
         "--disable-h2c",
         "--websocket-compression",
         "--connect-policy",
+        "--connect-allow",
         "--trailer-policy",
         "--content-coding-policy",
         "--content-codings",
+        "--alt-svc",
+        "--alt-svc-auto",
+        "--no-alt-svc-auto",
+        "--alt-svc-ma",
+        "--alt-svc-persist",
         "--quic-require-retry",
         "--quic-max-datagram-size",
         "--quic-idle-timeout",
         "--quic-early-data-policy",
-        "--pipe-mode",
-        "--connect-allow"
+        "--pipe-mode"
       ],
       "family": "Protocol / transport",
       "config_path": "http.* / websocket.* / quic.* / listeners[].protocols",
@@ -459,5 +549,7 @@
         "--protocol custom"
       ]
     }
-  ]
+  ],
+  "public_flag_string_count": 124,
+  "promotion_ready_count": 124
 }

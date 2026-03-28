@@ -1,0 +1,58 @@
+{
+  "document_role": "current_subsystem_truth_source",
+  "current_truth_source": true,
+  "canonical_current_example_tree": "examples/advanced_delivery/",
+  "retained_archival_example_tree": "examples/advanced_protocol_delivery/",
+  "lanes": [
+    {
+      "lane": "http1_basic_and_early_hints",
+      "server": "examples/advanced_delivery/app.py",
+      "client": "examples/advanced_delivery/client_http1.py"
+    },
+    {
+      "lane": "http2_basic_and_early_hints",
+      "server": "examples/advanced_delivery/app.py",
+      "client": "examples/advanced_delivery/client_http2.py"
+    },
+    {
+      "lane": "http3_basic",
+      "server": "examples/advanced_delivery/app.py",
+      "client": "examples/advanced_delivery/client_http3.py"
+    },
+    {
+      "lane": "static_range_etag",
+      "server": "examples/http_entity_static/app.py",
+      "client": "examples/http_entity_static/client_http1.py"
+    },
+    {
+      "lane": "websocket",
+      "server": "examples/websocket_echo/app.py",
+      "client": "tests/fixtures_pkg/external_websocket_client.py"
+    },
+    {
+      "lane": "permessage_deflate",
+      "server": "examples/websocket_echo/app.py",
+      "client": "tests/fixtures_pkg/external_h2_websocket_client.py"
+    },
+    {
+      "lane": "connect",
+      "server": "package_runtime",
+      "client": "tests/fixtures_pkg/_connect_relay_fixture.py"
+    },
+    {
+      "lane": "trailers",
+      "server": "tests/fixtures_pkg/interop_trailer_app.py",
+      "client": "tests/fixtures_pkg/external_h2_http_client.py"
+    },
+    {
+      "lane": "content_coding",
+      "server": "tests/fixtures_pkg/interop_content_coding_app.py",
+      "client": "tests/fixtures_pkg/external_curl_client.py"
+    },
+    {
+      "lane": "alt_svc",
+      "server": "examples/advanced_delivery/app.py",
+      "client": "examples/advanced_delivery/client_http1.py"
+    }
+  ]
+}

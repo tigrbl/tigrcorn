@@ -1,0 +1,18 @@
+[
+  {
+    "rule": "blocked-header-sections-are-retained",
+    "notes": "request body and partial parse state are preserved until QPACK unblocks"
+  },
+  {
+    "rule": "encoder-stream-errors-map-to-encoder-stream-error",
+    "notes": "invalid encoder stream payload is surfaced as QPACK_ENCODER_STREAM_ERROR"
+  },
+  {
+    "rule": "decoder-stream-errors-map-to-decoder-stream-error",
+    "notes": "invalid decoder stream payload is surfaced as QPACK_DECODER_STREAM_ERROR"
+  },
+  {
+    "rule": "field-section-errors-map-to-decompression-failed",
+    "notes": "bad field sections surface as QPACK_DECOMPRESSION_FAILED"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/http2-tls-server-h2-client",
+  "request": {
+    "authority": "localhost",
+    "body": "hello-http2-tls",
+    "method": "POST",
+    "path": "/interop",
+    "scheme": "https"
+  },
+  "response": {
+    "body": "echo:hello-http2-tls",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200
+  }
+}

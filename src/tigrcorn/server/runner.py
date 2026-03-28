@@ -7,7 +7,7 @@ from typing import Any
 
 from tigrcorn.asgi.receive import HTTPRequestReceive, HTTPStreamingRequestReceive
 from tigrcorn.asgi.scopes.http import build_http_scope
-from tigrcorn.asgi.send import HTTPResponseWriter
+from tigrcorn.asgi.send import FileBodySegment, HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
 from tigrcorn.compat.asgi3 import assert_asgi3_app
 from tigrcorn.errors import ProtocolError
 from tigrcorn.config.model import ListenerConfig, ServerConfig
@@ -21,8 +21,11 @@ from tigrcorn.observability.logging import AccessLogger, configure_logging, reso
 from tigrcorn.observability.metrics import StatsdExporter
 from tigrcorn.observability.tracing import OtelExporter, span
 from tigrcorn.protocols.connect import is_connect_allowed, parse_connect_authority
+from tigrcorn.http.alt_svc import configured_alt_svc_values
+from tigrcorn.http.entity import apply_response_entity_semantics, plan_file_backed_response_entity_semantics
+from tigrcorn.protocols.http1.keepalive import apply_keep_alive_policy
 from tigrcorn.protocols.http1.parser import ParsedRequestHead, read_http11_request_head
-from tigrcorn.protocols.http1.serializer import serialize_http11_response_whole
+from tigrcorn.protocols.http1.serializer import finalize_chunked_body, serialize_http11_response_chunk, serialize_http11_response_head, serialize_http11_response_whole
 from tigrcorn.protocols.http2.handler import HTTP2ConnectionHandler
 from tigrcorn.protocols.http3.handler import HTTP3DatagramHandler
 from tigrcorn.protocols.lifespan.driver import LifespanManager
@@ -30,9 +33,12 @@ from tigrcorn.protocols.rawframed.handler import RawFramedApplicationHandler
 from tigrcorn.protocols.websocket.handler import WebSocketConnectionHandler
 from tigrcorn.scheduler import ProductionScheduler, SchedulerPolicy
 from tigrcorn.security.tls import build_server_ssl_context, tls_extension_payload
+from tigrcorn.server.hooks import run_async_hooks
 from tigrcorn.server.state import ServerState
 from tigrcorn.transports.tcp.reader import PrebufferedReader
 from tigrcorn.types import ASGIApp, StreamReaderLike
+from tigrcorn.utils.authority import authority_allowed
+from tigrcorn.utils.headers import get_header
 from tigrcorn.utils.net import peer_parts
 from tigrcorn.utils.proxy import resolve_proxy_view
 
@@ -78,9 +84,11 @@ class TigrCornServer:
             return
         with span('server.start', attrs={'listener_count': len(self.config.listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
             await self.lifespan.startup()
+            await run_async_hooks(self.config.hooks.on_startup, self)
             for listener_cfg in self.config.listeners:
                 listener = await self._make_listener(listener_cfg)
                 await listener.start(self._make_client_handler(listener_cfg))
+                self._sync_listener_bound_address(listener_cfg, listener)
                 self._listeners.append(listener)
                 self.logger.info('listening on %s', listener_cfg.label)
             if self.config.metrics.enabled and self.config.metrics.bind:
@@ -99,6 +107,30 @@ class TigrCornServer:
             await self._should_exit.wait()
         finally:
             await self.close()
+
+    @staticmethod
+    def _sync_listener_bound_address(cfg: ListenerConfig, listener: Any) -> None:
+        server = getattr(listener, 'server', None)
+        sockets = getattr(server, 'sockets', None) if server is not None else None
+        if sockets:
+            sockname = sockets[0].getsockname()
+            if isinstance(sockname, tuple) and len(sockname) >= 2:
+                cfg.host = str(sockname[0])
+                cfg.port = int(sockname[1])
+                return
+            if isinstance(sockname, str):
+                cfg.path = sockname
+                return
+        transport = getattr(listener, 'transport', None)
+        if transport is not None:
+            sockname = transport.get_extra_info('sockname')
+            if isinstance(sockname, tuple) and len(sockname) >= 2:
+                cfg.host = str(sockname[0])
+                cfg.port = int(sockname[1])
+                return
+            if isinstance(sockname, str):
+                cfg.path = sockname
+                return
 
     def request_shutdown(self) -> None:
         self._should_exit.set()
@@ -125,6 +157,8 @@ class TigrCornServer:
                 await asyncio.wait_for(self.scheduler.close(), timeout=self.config.http.shutdown_timeout)
             with suppress(Exception):
                 await self.lifespan.shutdown()
+            with suppress(Exception):
+                await run_async_hooks(self.config.hooks.on_shutdown, self)
         if self._statsd_exporter is not None:
             with suppress(Exception):
                 await self._statsd_exporter.stop(self.state.metrics)
@@ -304,12 +338,16 @@ class TigrCornServer:
         handled_requests = 0
         while keep_handling and not self.state.shutting_down:
             request_timeout = self.config.http.keep_alive_timeout if handled_requests else self.config.http.read_timeout
+            if self.config.http.http1_header_read_timeout is not None:
+                request_timeout = min(request_timeout, self.config.http.http1_header_read_timeout)
             try:
                 request = await asyncio.wait_for(
                     read_http11_request_head(
                         reader,
                         max_body_size=self.config.max_body_size,
                         max_header_size=self.config.max_header_size,
+                        max_incomplete_event_size=self.config.http.http1_max_incomplete_event_size,
+                        buffer_size=self.config.http.http1_buffer_size,
                     ),
                     timeout=request_timeout,
                 )
@@ -336,6 +374,7 @@ class TigrCornServer:
             request_server = proxy_view.server
             request_scheme = proxy_view.scheme
             request_ws_scheme = 'wss' if request_scheme == 'https' else 'ws'
+            request.keep_alive = apply_keep_alive_policy(request.keep_alive, enabled=self.config.http.http1_keep_alive)
 
             if request.method.upper() == 'CONNECT':
                 await self._handle_http11_connect_tunnel(reader, writer, request, client=request_client)
@@ -414,6 +453,7 @@ class TigrCornServer:
             max_body_size=self.config.max_body_size,
             expect_continue=request.expect_continue,
             on_expect_continue=lambda: self._write_continue(writer),
+            max_chunk_size=self.config.http.http1_buffer_size,
             trailer_policy=self.config.http.trailer_policy,
         )
 
@@ -423,6 +463,8 @@ class TigrCornServer:
             extensions['tigrcorn.http.request_trailers'] = {}
         if request.method.upper() == 'CONNECT':
             extensions['tigrcorn.http.connect'] = {'authority': request.target}
+        extensions['tigrcorn.http.response.file'] = {'protocol': 'http/1.1', 'streaming': True, 'sendfile': True}
+        extensions['http.response.pathsend'] = {}
         return extensions
 
     @staticmethod
@@ -442,6 +484,96 @@ class TigrCornServer:
             writer.close()
             with suppress(Exception):
                 await writer.wait_closed()
+
+    async def _try_http11_sendfile(self, writer: asyncio.StreamWriter, segment: FileBodySegment) -> bool:
+        if segment.count is not None and segment.count <= 0:
+            return True
+        if writer.get_extra_info('ssl_object') is not None or writer.get_extra_info('sslcontext') is not None:
+            return False
+        transport = getattr(writer, 'transport', None) or getattr(writer, '_transport', None)
+        if transport is None:
+            return False
+        loop = asyncio.get_running_loop()
+        try:
+            with open(segment.path, 'rb') as handle:
+                await loop.sendfile(transport, handle, offset=segment.offset, count=segment.count, fallback=False)
+            return True
+        except Exception:
+            return False
+
+    async def _send_http11_body_segments(self, writer: asyncio.StreamWriter, body_segments: list, *, chunked: bool = False) -> None:
+        if not chunked and len(body_segments) == 1 and isinstance(body_segments[0], FileBodySegment):
+            if await self._try_http11_sendfile(writer, body_segments[0]):
+                return
+        async for chunk in iter_response_body_segments(body_segments):
+            self.state.metrics.bytes_sent += len(chunk)
+            if chunked:
+                writer.write(serialize_http11_response_chunk(chunk))
+            else:
+                writer.write(chunk)
+            if len(chunk) >= 64 * 1024:
+                await self._drain_writer(writer)
+        await self._drain_writer(writer)
+
+    async def _send_http11_streamed_response(
+        self,
+        writer: asyncio.StreamWriter,
+        *,
+        request: ParsedRequestHead,
+        status: int,
+        headers: list[tuple[bytes, bytes]],
+        body_segments: list,
+        trailers: list[tuple[bytes, bytes]],
+    ) -> None:
+        has_body = response_body_segments_have_bytes(body_segments)
+        if trailers:
+            writer.write(
+                serialize_http11_response_head(
+                    status=status,
+                    headers=headers,
+                    keep_alive=request.keep_alive,
+                    server_header=self.config.server_header_value,
+                    chunked=True,
+                    include_date_header=self.config.include_date_header,
+                    default_headers=self.config.default_response_headers,
+                    alt_svc_values=configured_alt_svc_values(self.config, request_http_version=request.http_version),
+                )
+            )
+            await self._drain_writer(writer)
+            if has_body:
+                await self._send_http11_body_segments(writer, body_segments, chunked=True)
+            writer.write(finalize_chunked_body(trailers))
+            await self._drain_writer(writer)
+            return
+        if not has_body:
+            writer.write(
+                serialize_http11_response_whole(
+                    status=status,
+                    headers=headers,
+                    body=b'',
+                    keep_alive=request.keep_alive,
+                    server_header=self.config.server_header_value,
+                    include_date_header=self.config.include_date_header,
+                    default_headers=self.config.default_response_headers,
+                    alt_svc_values=configured_alt_svc_values(self.config, request_http_version=request.http_version),
+                )
+            )
+            await self._drain_writer(writer)
+            return
+        writer.write(
+            serialize_http11_response_head(
+                status=status,
+                headers=headers,
+                keep_alive=request.keep_alive,
+                server_header=self.config.server_header_value,
+                chunked=False,
+                include_date_header=self.config.include_date_header,
+                default_headers=self.config.default_response_headers,
+                alt_svc_values=configured_alt_svc_values(self.config, request_http_version=request.http_version),
+            )
+        )
+        await self._drain_writer(writer)
+        await self._send_http11_body_segments(writer, body_segments, chunked=False)
 
     async def _handle_http11_connect_tunnel(
         self,
@@ -511,6 +643,10 @@ class TigrCornServer:
         scheme: str,
         scope_extensions: dict | None = None,
     ) -> bool:
+        host_header = get_header(request.headers, b'host')
+        if self.config.allowed_server_names and not authority_allowed(host_header, self.config.allowed_server_names):
+            await self._write_error(writer, 421, b'misdirected request', keep_alive=False)
+            return False
         scope = build_http_scope(
             request,
             client=client,
@@ -521,32 +657,150 @@ class TigrCornServer:
             proxy=self.config.proxy,
         )
         receive = self._build_http11_receive(reader, writer, request)
-        send = HTTPResponseWriter(
-            writer,
-            keep_alive=request.keep_alive,
-            server_header=self.config.server_header_value,
-            method=request.method,
-            request_headers=request.headers,
-            content_coding_policy=self.config.http.content_coding_policy,
-            content_codings=tuple(self.config.http.content_codings),
-        )
+        send = HTTPResponseCollector()
         status = 500
+        trailers: list[tuple[bytes, bytes]] = []
         try:
             await self.app(scope, receive, send)
-            await asyncio.wait_for(send.ensure_complete(), timeout=self.config.http.write_timeout)
-            status = send.status or 500
+            send.finalize()
+            assert send.status is not None
+            status = send.status
+            headers = list(send.headers)
+            trailers = list(send.trailers)
+            body = b''
+            body_segments = list(send.body_segments) if send.uses_streamed_body else None
+            for interim_status, interim_headers in send.informational_responses:
+                writer.write(
+                    serialize_http11_response_head(
+                        status=interim_status,
+                        headers=interim_headers,
+                        keep_alive=request.keep_alive,
+                        server_header=self.config.server_header_value,
+                        chunked=False,
+                        include_date_header=self.config.include_date_header,
+                        default_headers=self.config.default_response_headers,
+                        alt_svc_values=configured_alt_svc_values(self.config, request_http_version=request.http_version),
+                    )
+                )
+            if body_segments is None and send.has_spooled_body():
+                spooled_segments = send.spooled_body_segments()
+                spooled_path = ''
+                if spooled_segments:
+                    first_segment = spooled_segments[0]
+                    if isinstance(first_segment, FileBodySegment):
+                        spooled_path = first_segment.path
+                planned = plan_file_backed_response_entity_semantics(
+                    method=request.method,
+                    request_headers=request.headers,
+                    response_headers=headers,
+                    status=status,
+                    body_path=spooled_path,
+                    body_length=send.body_length,
+                    generated_etag=send.generated_entity_tag(),
+                    apply_content_coding=True,
+                    trailers_present=bool(trailers) and request.method.upper() != 'HEAD',
+                )
+                if planned.requires_materialization:
+                    body = await send.materialize_body()
+                    processed = apply_response_entity_semantics(
+                        method=request.method,
+                        request_headers=request.headers,
+                        response_headers=headers,
+                        body=body,
+                        status=status,
+                        content_coding_policy=self.config.http.content_coding_policy,
+                        supported_codings=tuple(self.config.http.content_codings),
+                        apply_content_coding=True,
+                        generate_etag=True,
+                        trailers_present=bool(trailers) and request.method.upper() != 'HEAD',
+                    )
+                    status = processed.status
+                    headers = processed.headers
+                    body = processed.body
+                    if processed.head_response:
+                        trailers = []
+                elif planned.use_body_segments:
+                    status = planned.status
+                    headers = planned.headers
+                    body_segments = list(planned.body_segments)
+                    body = b''
+                else:
+                    status = planned.status
+                    headers = planned.headers
+                    body = planned.body
+                    trailers = []
+            elif body_segments is None:
+                body = await send.materialize_body()
+                processed = apply_response_entity_semantics(
+                    method=request.method,
+                    request_headers=request.headers,
+                    response_headers=headers,
+                    body=body,
+                    status=status,
+                    content_coding_policy=self.config.http.content_coding_policy,
+                    supported_codings=tuple(self.config.http.content_codings),
+                    apply_content_coding=True,
+                    generate_etag=True,
+                    trailers_present=bool(trailers) and request.method.upper() != 'HEAD',
+                )
+                status = processed.status
+                headers = processed.headers
+                body = processed.body
+                if processed.head_response:
+                    trailers = []
+            if body_segments is None:
+                if trailers:
+                    writer.write(
+                        serialize_http11_response_head(
+                            status=status,
+                            headers=headers,
+                            keep_alive=request.keep_alive,
+                            server_header=self.config.server_header_value,
+                            chunked=True,
+                            include_date_header=self.config.include_date_header,
+                            default_headers=self.config.default_response_headers,
+                            alt_svc_values=configured_alt_svc_values(self.config, request_http_version=request.http_version),
+                        )
+                    )
+                    if body:
+                        writer.write(serialize_http11_response_chunk(body))
+                    writer.write(finalize_chunked_body(trailers))
+                    await self._drain_writer(writer)
+                else:
+                    writer.write(
+                        serialize_http11_response_whole(
+                            status=status,
+                            headers=headers,
+                            body=body,
+                            keep_alive=request.keep_alive,
+                            server_header=self.config.server_header_value,
+                            include_date_header=self.config.include_date_header,
+                            default_headers=self.config.default_response_headers,
+                            alt_svc_values=configured_alt_svc_values(self.config, request_http_version=request.http_version),
+                        )
+                    )
+                    await self._drain_writer(writer)
+            else:
+                await self._send_http11_streamed_response(
+                    writer,
+                    request=request,
+                    status=status,
+                    headers=headers,
+                    body_segments=body_segments,
+                    trailers=trailers,
+                )
             self.state.metrics.requests_served += 1
         except ProtocolError:
             self.state.metrics.requests_failed += 1
-            if not send.started:
-                await self._write_error(writer, 400, b'bad request trailers', keep_alive=False)
+            await self._write_error(writer, 400, b'bad request trailers', keep_alive=False)
             return False
         except Exception:
             self.state.metrics.requests_failed += 1
             self.logger.exception('application error')
-            if not send.started:
-                await self._write_error(writer, 500, b'internal server error', keep_alive=False)
+            await self._write_error(writer, 500, b'internal server error', keep_alive=False)
             return False
+        finally:
+            send.cleanup()
         self.access_logger.log_http(client, request.method, request.path, status, f'HTTP/{request.http_version}')
         body_complete = getattr(receive, 'body_complete', True)
         return request.keep_alive and body_complete
@@ -566,6 +820,9 @@ class TigrCornServer:
                 body=body,
                 keep_alive=keep_alive,
                 server_header=self.config.server_header_value,
+                include_date_header=self.config.include_date_header,
+                default_headers=self.config.default_response_headers,
+                alt_svc_values=configured_alt_svc_values(self.config, request_http_version='1.1'),
             )
         )
         await self._drain_writer(writer)
@@ -580,12 +837,14 @@ class TigrCornServer:
         with suppress(Exception):
             await asyncio.wait_for(reader.readuntil(b'\r\n\r\n'), timeout=1.0)
         payload = self.state.metrics.render_prometheus().encode('utf-8')
-        response = (
-            b'HTTP/1.1 200 OK\r\n'
-            b'content-type: text/plain; version=0.0.4\r\n'
-            + f'content-length: {len(payload)}\r\n'.encode('ascii')
-            + b'connection: close\r\n\r\n'
-            + payload
+        response = serialize_http11_response_whole(
+            status=200,
+            headers=[(b'content-type', b'text/plain; version=0.0.4')],
+            body=payload,
+            keep_alive=False,
+            server_header=self.config.server_header_value,
+            include_date_header=self.config.include_date_header,
+            default_headers=self.config.default_response_headers,
         )
         writer.write(response)
         with suppress(Exception):

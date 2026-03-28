@@ -1,0 +1,58 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "trailers",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http3",
+  "request": {
+    "accept_encoding": null,
+    "authority": "localhost",
+    "body": "",
+    "method": "GET",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "ok",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain; charset=utf-8"
+      ],
+      [
+        "trailer",
+        "x-trailer-one, x-trailer-two"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "trailers": [
+      [
+        "x-trailer-one",
+        "yes"
+      ],
+      [
+        "x-trailer-two",
+        "done"
+      ]
+    ]
+  },
+  "role": "server",
+  "scenario_id": "http3-trailer-fields-aioquic-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http3",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http3-trailer-fields",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/sut_stderr.log",
+    "stdout_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/sut_stdout.log"
+  }
+}

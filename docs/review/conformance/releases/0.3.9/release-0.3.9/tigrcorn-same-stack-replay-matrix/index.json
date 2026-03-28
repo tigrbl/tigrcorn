@@ -1,0 +1,83 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+  "commit_hash": "release-0.3.7-candidate",
+  "failed": 0,
+  "matrix_name": "tigrcorn-same-stack-replay-matrix",
+  "passed": 9,
+  "scenarios": [
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post-mtls",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post-retry",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post-resumption",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post-zero-rtt",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post-migration",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack",
+      "assertions_failed": [],
+      "error": null,
+      "id": "http3-server-public-client-post-goaway-qpack",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-http3-server-public-client",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    },
+    {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls",
+      "assertions_failed": [],
+      "error": null,
+      "id": "websocket-http3-server-public-client-mtls",
+      "passed": true,
+      "source_bundle": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+    }
+  ],
+  "skipped": 0,
+  "total": 9
+}

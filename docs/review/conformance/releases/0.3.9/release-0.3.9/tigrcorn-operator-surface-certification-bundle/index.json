@@ -1,0 +1,23 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle",
+  "bundle_kind": "operator_surface_certification_bundle",
+  "generated_at": "2026-03-28T03:19:55.196605+00:00",
+  "implemented": {
+    "metrics_endpoint": true,
+    "proxy_header_normalization": true,
+    "reload": true,
+    "resource_timeout_controls_wired": true,
+    "root_path_scope_injection": true,
+    "structured_logging": true,
+    "workers_process_supervision": true
+  },
+  "implemented_count": 7,
+  "validation": {
+    "focused_operator_suite_passed": 28,
+    "release_gate_suite_passed": 9,
+    "server_runtime_suite_passed": 9,
+    "total_targeted_passed": 46
+  },
+  "note": "This bundle freezes the operator-surface implementation/testing plane. It does not waive any strict RFC evidence requirement.",
+  "release_gate_eligible": true
+}

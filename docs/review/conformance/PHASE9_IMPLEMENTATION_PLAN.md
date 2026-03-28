@@ -65,7 +65,7 @@ The current strict-promotion work therefore remains a **three-stream closure pro
 ## Phase sequencing rules
 
 1. Do **not** mutate `docs/review/conformance/releases/0.3.7/release-0.3.7/`.
-2. Assemble the promotable release under a **new** root such as `docs/review/conformance/releases/0.3.8/release-0.3.8/`.
+2. Assemble the promotable release under a **new** root such as `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
 3. Keep public claims pinned to the authoritative boundary until the strict target is genuinely green.
 4. Do not expand the package boundary to RFC 7232 / RFC 9530 / RFC 9111 / RFC 9421 until the current strict target is closed.
 5. Use package-owned local tests for rapid iteration, but require preserved third-party artifacts before claiming strict RFC closure.
@@ -94,7 +94,7 @@ Remove ambiguity before implementation begins so every remaining blocker has a p
 
 ### Work items
 
-1. Freeze the next promotable release path as `docs/review/conformance/releases/0.3.8/release-0.3.8/`.
+1. Freeze the next promotable release path as `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
 2. Create a tracker row for each of the 13 missing strict-target scenarios.
 3. Create a tracker row for each of the 7 non-closed public flags.
 4. Freeze the exact strict performance target fields from `docs/review/performance/performance_slos.json`.
@@ -145,12 +145,12 @@ Build the reusable harness and artifact plumbing needed for the missing third-pa
    - wire captures / logs where applicable
    - pass/fail result record
 3. Add negative tests proving a scenario is rejected when required artifact files are absent or incomplete.
-4. Validate that one already-green scenario can be rerun into the new 0.3.8 layout without changing its semantic claim.
+4. Validate that one already-green scenario can be rerun into the new 0.3.9 layout without changing its semantic claim.
 
 ### Files and modules to update
 
 - `docs/review/conformance/external_matrix.release.json`
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/` (new)
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/` (new)
 - `tools/` scenario runners and artifact-capture helpers
 - `src/tigrcorn/compat/release_gates.py`
 - new or expanded interop tests under `tests/`
@@ -426,7 +426,7 @@ Turn the 7 non-promotion-ready public flags into fully wired, test-backed, docum
 
 ### Exit criteria for Phase 9F
 
-- all 84 public flag strings are promotion-ready
+- all current public flag strings are promotion-ready
 - `evaluate_promotion_target(...).flag_surface.passed` is true
 - every hazard cluster in `flag_covering_array.json` has passing coverage for the affected flags
 
@@ -533,7 +533,7 @@ Assemble the first promotable release root that satisfies the authoritative boun
 
 ### Work items
 
-1. Create `docs/review/conformance/releases/0.3.8/release-0.3.8/`.
+1. Create `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
 2. Promote all new independent scenario artifacts into that root.
 3. Promote the final flag/operator/performance bundles into that root.
 4. Update machine-readable current-state snapshots.

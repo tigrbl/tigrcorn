@@ -1,0 +1,114 @@
+[
+  {
+    "case": "request_line_shape",
+    "rfc": "RFC 9112 request line",
+    "trigger": "request line must contain exactly method, target, and version tokens",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid HTTP request line"
+  },
+  {
+    "case": "http_version_token",
+    "rfc": "RFC 9112 version token",
+    "trigger": "version token must begin with HTTP/ and resolve to 1.0 or 1.1",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid HTTP version token"
+  },
+  {
+    "case": "unsupported_http_version",
+    "rfc": "RFC 9112 version negotiation",
+    "trigger": "request line advertises an unsupported HTTP version",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "unsupported HTTP version"
+  },
+  {
+    "case": "method_token",
+    "rfc": "RFC 9110 method token syntax",
+    "trigger": "method token contains invalid bytes",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid HTTP method token"
+  },
+  {
+    "case": "target_form_authority",
+    "rfc": "RFC 9112 CONNECT authority-form",
+    "trigger": "CONNECT target is not valid authority-form",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid authority-form request-target"
+  },
+  {
+    "case": "target_form_absolute",
+    "rfc": "RFC 9112 absolute-form",
+    "trigger": "absolute-form target is syntactically malformed",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid absolute-form request-target"
+  },
+  {
+    "case": "target_form_origin",
+    "rfc": "RFC 9112 origin-form",
+    "trigger": "origin-form target does not start with /",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid origin-form request-target"
+  },
+  {
+    "case": "target_form_asterisk",
+    "rfc": "RFC 9112 asterisk-form",
+    "trigger": "asterisk-form is used with a method other than OPTIONS",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "asterisk-form request-target is only valid for OPTIONS"
+  },
+  {
+    "case": "header_line_folding",
+    "rfc": "RFC 9110 field line syntax",
+    "trigger": "obs-fold / line folding appears in field section",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "obsolete line folding is not supported"
+  },
+  {
+    "case": "header_name_and_value",
+    "rfc": "RFC 9110 field syntax",
+    "trigger": "header field name or value contains forbidden octets",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "invalid header field"
+  },
+  {
+    "case": "content_length_conflict",
+    "rfc": "RFC 9112 message body length",
+    "trigger": "multiple Content-Length values disagree or are negative",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "Content-Length"
+  },
+  {
+    "case": "host_header_requirements",
+    "rfc": "RFC 9112 Host requirements",
+    "trigger": "HTTP/1.1 request does not include exactly one non-empty Host header",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "must include exactly one Host header"
+  },
+  {
+    "case": "transfer_encoding_chain",
+    "rfc": "RFC 9112 transfer-coding",
+    "trigger": "chunked is repeated, not final, or appears with an unsupported chain",
+    "expected_exception": "ProtocolError|UnsupportedFeature",
+    "message_fragment": "transfer-encoding"
+  },
+  {
+    "case": "content_length_and_chunked_conflict",
+    "rfc": "RFC 9112 message body length",
+    "trigger": "Content-Length appears with chunked transfer-encoding",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "both Content-Length and chunked transfer-encoding"
+  },
+  {
+    "case": "chunked_body_syntax",
+    "rfc": "RFC 9112 chunked coding",
+    "trigger": "chunk size, terminator, or trailers are malformed",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "chunk"
+  },
+  {
+    "case": "size_limits",
+    "rfc": "RFC 9112 implementation limits",
+    "trigger": "request head or body exceeds configured limits",
+    "expected_exception": "ProtocolError",
+    "message_fragment": "configured max_"
+  }
+]

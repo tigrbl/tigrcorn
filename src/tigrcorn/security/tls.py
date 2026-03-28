@@ -52,6 +52,7 @@ _CIPHER_NAMES = {
 class ServerTLSContext:
     certificate_pem: bytes
     private_key_pem: bytes
+    private_key_password: bytes | None
     trusted_certificates: tuple[bytes, ...]
     alpn_protocols: tuple[str, ...]
     require_client_certificate: bool
@@ -125,6 +126,7 @@ class PackageOwnedTLSConnection:
             server_name=context.server_name,
             certificate_pem=context.certificate_pem,
             private_key_pem=context.private_key_pem,
+            private_key_password=context.private_key_password,
             trusted_certificates=context.trusted_certificates,
             require_client_certificate=context.require_client_certificate,
             transport_mode='stream',
@@ -251,6 +253,9 @@ class PackageOwnedTLSConnection:
             return data
 
     async def readuntil(self, separator: bytes = b'\n') -> bytes:
+        return await self.readuntil_limited(separator, limit=None)
+
+    async def readuntil_limited(self, separator: bytes = b'\n', *, limit: int | None) -> bytes:
         if not separator:
             raise ValueError('separator must not be empty')
         async with self._read_lock:
@@ -261,11 +266,15 @@ class PackageOwnedTLSConnection:
                     data = bytes(self._plaintext_buffer[:end])
                     del self._plaintext_buffer[:end]
                     return data
+                if limit is not None and len(self._plaintext_buffer) > limit:
+                    raise asyncio.LimitOverrunError('separator is not found, and chunk exceed the limit', consumed=len(self._plaintext_buffer))
                 if self._eof:
                     partial = bytes(self._plaintext_buffer)
                     self._plaintext_buffer.clear()
                     raise asyncio.IncompleteReadError(partial=partial, expected=len(partial) + len(separator))
                 await self._fill_plaintext_buffer()
+                if limit is not None and len(self._plaintext_buffer) > limit:
+                    raise asyncio.LimitOverrunError('separator is not found, and chunk exceed the limit', consumed=len(self._plaintext_buffer))
 
     def write(self, data: bytes) -> None:
         if self._closed or not data:
@@ -475,12 +484,16 @@ def build_server_ssl_context(listener: ListenerConfig) -> ServerTLSContext | Non
     assert listener.ssl_keyfile is not None
     certificate_pem = Path(listener.ssl_certfile).read_bytes()
     private_key_pem = Path(listener.ssl_keyfile).read_bytes()
+    private_key_password = getattr(listener, 'ssl_keyfile_password', None)
+    if private_key_password is not None and not isinstance(private_key_password, bytes):
+        private_key_password = str(private_key_password).encode('utf-8')
     trusted = (Path(listener.ssl_ca_certs).read_bytes(),) if listener.ssl_ca_certs else ()
     validation_policy = build_validation_policy_for_listener(listener)
     server_name = _listener_server_name(listener)
     return ServerTLSContext(
         certificate_pem=certificate_pem,
         private_key_pem=private_key_pem,
+        private_key_password=private_key_password,
         trusted_certificates=trusted,
         alpn_protocols=tuple(listener.alpn_protocols),
         require_client_certificate=listener.ssl_require_client_cert,

@@ -1,11 +1,11 @@
 {
   "claim": "package-wide RFC coverage across all advertised surfaces, with the required evidence tier declared per RFC in this boundary",
   "canonical_doc": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
-  "canonical_release_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "canonical_release_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9",
   "artifact_bundles": {
-    "independent_certification": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
-    "same_stack_replay": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
-    "mixed": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix"
+    "independent_certification": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+    "same_stack_replay": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+    "mixed": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix"
   },
   "evidence_tiers": [
     {
@@ -38,6 +38,10 @@
     "RFC 9110 \u00a79.3.6",
     "RFC 9110 \u00a76.5",
     "RFC 9110 \u00a78",
+    "RFC 7232",
+    "RFC 7233",
+    "RFC 8297",
+    "RFC 7838 \u00a73",
     "RFC 5280",
     "RFC 6960",
     "RFC 7301"
@@ -292,6 +296,38 @@
           "http2-tls-server-curl-client",
           "http2-tls-server-h2-client",
           "http3-server-openssl-quic-handshake"
+        ]
+      }
+    },
+    "RFC 7232": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-conditional-requests"
+        ]
+      }
+    },
+    "RFC 7233": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-byte-ranges"
+        ]
+      }
+    },
+    "RFC 8297": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-early-hints"
+        ]
+      }
+    },
+    "RFC 7838 \u00a73": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-alt-svc-header-advertisement"
         ]
       }
     }

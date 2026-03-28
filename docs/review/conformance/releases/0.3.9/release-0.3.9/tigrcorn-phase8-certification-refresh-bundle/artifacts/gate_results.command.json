@@ -1,0 +1,7 @@
+{
+  "command": [
+    "evaluate_release_gates(.)",
+    "evaluate_release_gates(strict)",
+    "evaluate_promotion_target(.)"
+  ]
+}

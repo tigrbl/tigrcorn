@@ -1,0 +1,7 @@
+{
+  "close_code": 1000,
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/websocket-server-websockets-client",
+  "extensions": [],
+  "implementation": "websockets",
+  "subprotocol": null
+}

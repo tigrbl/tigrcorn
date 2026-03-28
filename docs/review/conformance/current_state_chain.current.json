@@ -1,0 +1,119 @@
+{
+  "checkpoint": "documentation_truth_normalization",
+  "reviewed_at": "2026-03-26",
+  "document_role": "canonical_current_state_source",
+  "current_truth_source": true,
+  "canonical_human_current_state_chain": [
+    "CURRENT_REPOSITORY_STATE.md",
+    "CURRENT_REPOSITORY_STATE_PHASE9J_RELEASED_0_3_8_REPAIR_AND_0_3_9_PROMOTION_CHECKPOINT.md",
+    "docs/review/conformance/CURRENT_STATE_CHAIN.md",
+    "docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md",
+    "docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md",
+    "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
+    "RFC_CERTIFICATION_STATUS.md"
+  ],
+  "canonical_machine_current_state_chain": [
+    "docs/review/conformance/current_state_chain.current.json",
+    "docs/review/conformance/phase9j_released_0_3_8_repair_and_0_3_9_promotion.current.json",
+    "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "docs/review/conformance/release_gate_status.current.json",
+    "docs/review/conformance/phase9_release_promotion.current.json",
+    "docs/review/conformance/phase9i_release_assembly.current.json",
+    "docs/review/conformance/phase9i_strict_validation.current.json"
+  ],
+  "canonical_policy_sources": [
+    "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+    "docs/review/conformance/certification_boundary.json",
+    "docs/review/conformance/STRICT_PROFILE_TARGET.md",
+    "docs/review/conformance/certification_boundary.strict_target.json",
+    "docs/review/conformance/promotion_gate.target.json"
+  ],
+  "scoped_current_audits_not_package_wide_truth_sources": [
+    {
+      "path": "docs/review/conformance/http_integrity_caching_signatures_status.current.json",
+      "human_doc": "docs/review/conformance/HTTP_INTEGRITY_CACHING_SIGNATURES_STATUS.md",
+      "document_role": "scoped_current_audit_not_package_wide_truth_source",
+      "scope": "focused_current_http_integrity_caching_and_signatures_audit"
+    },
+    {
+      "path": "docs/review/conformance/rfc_applicability_and_competitor_status.current.json",
+      "human_doc": "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md",
+      "document_role": "scoped_current_audit_not_package_wide_truth_source",
+      "scope": "focused_current_rfc_applicability_and_competitor_status_review"
+    },
+    {
+      "path": "docs/review/conformance/rfc_applicability_and_competitor_support.current.json",
+      "human_doc": "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md",
+      "document_role": "scoped_current_audit_not_package_wide_truth_source",
+      "scope": "focused_current_rfc_applicability_support_snapshot"
+    }
+  ],
+  "current_subsystem_truth_sources": [
+    "docs/review/conformance/aioquic_adapter_preflight.current.json",
+    "docs/review/conformance/certification_environment_freeze.current.json",
+    "docs/review/conformance/content_coding_local_behavior_artifacts.current.json",
+    "docs/review/conformance/interop_wrapper_registry.current.json",
+    "docs/review/conformance/ocsp_local_validation_artifacts.current.json",
+    "docs/review/conformance/optional_dependency_surface.current.json",
+    "docs/review/conformance/packet_space_legality_corpus.current.json",
+    "docs/review/conformance/phase3_strict_rfc_status.current.json",
+    "docs/review/conformance/phase4_operator_surface_status.current.json",
+    "docs/review/conformance/phase5_interop_flow_status.current.json",
+    "docs/review/conformance/phase6_performance_status.current.json",
+    "docs/review/conformance/replayable_fixture_suite.phase3_transport_core.current.json",
+    "docs/review/conformance/trailer_fields_local_behavior_artifacts.current.json"
+  ],
+  "historical_current_aliases_retained_for_stability": [
+    "docs/review/conformance/dependency_declaration_reconciliation_checkpoint.current.json",
+    "docs/review/conformance/documentation_truth_normalization_checkpoint.current.json",
+    "docs/review/conformance/phase0_public_cli_contract_drift_reconciliation.current.json",
+    "docs/review/conformance/phase1_boundary_and_non_goals_normalization.current.json",
+    "docs/review/conformance/phase1_surface_parity_checkpoint.current.json",
+    "docs/review/conformance/phase2_core_http_entity_semantics_checkpoint.current.json",
+    "docs/review/conformance/phase2_rfc_boundary_formalization_checkpoint.current.json",
+    "docs/review/conformance/phase2_static_and_file_delivery_surface.current.json",
+    "docs/review/conformance/phase3_h1_and_websocket_operator_surface.current.json",
+    "docs/review/conformance/phase3_transport_core_strictness_checkpoint.current.json",
+    "docs/review/conformance/phase4_advanced_protocol_delivery_checkpoint.current.json",
+    "docs/review/conformance/phase4_h2_operator_surface.current.json",
+    "docs/review/conformance/phase4_rfc_boundary_formalization_checkpoint.current.json",
+    "docs/review/conformance/phase5_phase6_phase7_tls_lifecycle_flag_truth.current.json",
+    "docs/review/conformance/phase7_canonical_promotion_status.current.json",
+    "docs/review/conformance/phase8_strict_promotion_target_status.current.json",
+    "docs/review/conformance/phase9_implementation_plan.current.json",
+    "docs/review/conformance/phase9a_execution_backlog.current.json",
+    "docs/review/conformance/phase9a_promotion_contract.current.json",
+    "docs/review/conformance/phase9b_independent_harness.current.json",
+    "docs/review/conformance/phase9c_rfc7692_independent_closure.current.json",
+    "docs/review/conformance/phase9d1_connect_relay_independent.current.json",
+    "docs/review/conformance/phase9d2_trailer_fields_independent.current.json",
+    "docs/review/conformance/phase9d3_content_coding_independent.current.json",
+    "docs/review/conformance/phase9e_ocsp_independent.current.json",
+    "docs/review/conformance/phase9f1_tls_cipher_policy.current.json",
+    "docs/review/conformance/phase9f2_logging_exporter.current.json",
+    "docs/review/conformance/phase9f3_concurrency_keepalive.current.json",
+    "docs/review/conformance/phase9g_strict_performance.current.json",
+    "docs/review/conformance/phase9h_promotion_evaluator.current.json",
+    "docs/review/conformance/promotion_artifact_reconciliation_checkpoint.current.json",
+    "docs/review/conformance/response_pipeline_streaming_checkpoint.current.json",
+    "docs/review/conformance/static_delivery_productionization_checkpoint.current.json",
+    "docs/review/conformance/trio_runtime_surface_reconciliation_checkpoint.current.json"
+  ],
+  "example_path_policy": {
+    "canonical_current_phase4_example_tree": "examples/advanced_delivery/",
+    "canonical_pairing_doc": "examples/PHASE4_PROTOCOL_PAIRING.md",
+    "retained_archival_feature_specific_tree": "examples/advanced_protocol_delivery/",
+    "retained_archival_conformance_checkpoint_matrix": "docs/review/conformance/phase4_advanced_protocol_delivery/example_matrix.json",
+    "canonical_current_examples_matrix": "docs/review/conformance/phase4_advanced_delivery/examples_matrix.json"
+  },
+  "naming_policy": {
+    "rule": "A .current.json suffix alone does not define canonical package truth; document_role and current_truth_source do.",
+    "why_aliases_remain": "Stable references for tests, tooling, and historical provenance."
+  },
+  "exit_criteria": {
+    "one_canonical_current_state_chain": true,
+    "historical_snapshots_clearly_marked_archival": true,
+    "scoped_audits_relabelled_non_canonical": true,
+    "example_path_documentation_normalized": true
+  }
+}

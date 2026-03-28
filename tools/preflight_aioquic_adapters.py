@@ -22,7 +22,7 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         '--release-root',
-        default='docs/review/conformance/releases/0.3.8/release-0.3.8',
+        default='docs/review/conformance/releases/0.3.9/release-0.3.9',
         help='Repository-relative release root where the preserved preflight bundle should be written by default.',
     )
     parser.add_argument(

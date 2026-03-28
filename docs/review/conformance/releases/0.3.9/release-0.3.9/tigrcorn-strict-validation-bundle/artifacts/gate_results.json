@@ -1,0 +1,11 @@
+{
+  "authoritative_boundary_passed": true,
+  "authoritative_failure_count": 0,
+  "authoritative_failures": [],
+  "strict_boundary_passed": true,
+  "strict_failure_count": 0,
+  "strict_failures": [],
+  "promotion_target_passed": true,
+  "promotion_failure_count": 0,
+  "promotion_failures": []
+}

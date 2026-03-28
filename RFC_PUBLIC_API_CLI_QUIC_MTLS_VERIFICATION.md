@@ -7,7 +7,7 @@ This update verifies that the QUIC/TLS client-certificate controls are not only 
 - `tigrcorn.api.serve()` accepts and forwards `ssl_ca_certs` and `ssl_require_client_cert`
 - `tigrcorn.api.serve_import_string()` accepts and forwards the same parameters
 - `tigrcorn.api.run()` forwards those parameters for both import-string and in-memory ASGI app entry paths
-- `tigrcorn.cli.main()` forwards `--ssl-ca-certs` and `--ssl-require-client-cert` to the import-string serving path
+- `tigrcorn.cli.main()` builds a `ServerConfig` and forwards `--ssl-ca-certs` and `--ssl-require-client-cert` through the config-driven `run_config(...)` path
 - `README.md` now shows the top-level Python API example alongside the CLI example for UDP / HTTP/3 client-certificate verification
 
 ## Added verification coverage

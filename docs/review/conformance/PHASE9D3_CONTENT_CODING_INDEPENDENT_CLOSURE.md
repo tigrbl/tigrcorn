@@ -2,13 +2,13 @@
 
 This checkpoint executes **Phase 9D3** of `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`.
 
-It closes the strict-target closure for **RFC 9110 §8** by preserving passing independent third-party content-coding artifacts across HTTP/1.1, HTTP/2, and HTTP/3 in the 0.3.8 working release root.
+It closes the strict-target closure for **RFC 9110 §8** by preserving passing independent third-party content-coding artifacts across HTTP/1.1, HTTP/2, and HTTP/3 in the 0.3.9 working release root.
 
 ## What changed in this checkpoint
 
 1. The deterministic content-coding fixture app remains the proof target at `tests/fixtures_pkg/interop_content_coding_app.py`.
 2. The third-party wrappers preserve explicit content-coding modes for curl, h2, and aioquic.
-3. The 0.3.8 working independent bundle now contains preserved **passing** content-coding artifacts for all three carriers.
+3. The 0.3.9 working independent bundle now contains preserved **passing** content-coding artifacts for all three carriers.
 4. The local content-coding behavior bundle continues to preserve gzip parity plus identity-only and strict negative vectors.
 
 ## Current preserved third-party artifact status
@@ -51,4 +51,4 @@ What is true now:
 - the authoritative boundary remains green
 - the strict target is green
 - the composite promotion target is green
-- there are no remaining non-passing strict-target independent scenarios in the 0.3.8 working release root
+- there are no remaining non-passing strict-target independent scenarios in the 0.3.9 working release root

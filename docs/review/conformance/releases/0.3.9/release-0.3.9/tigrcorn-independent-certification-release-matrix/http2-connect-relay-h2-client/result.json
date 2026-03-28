@@ -1,0 +1,212 @@
+{
+  "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client",
+  "artifacts": {
+    "packet_trace": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/packet_trace.jsonl",
+      "sha256": "fbc47f81f4920c05da3f4f8817b633bcacabaa970998a1ae8db21e558a9d1ba9",
+      "size": 3011
+    },
+    "peer_negotiation": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_negotiation.json",
+      "sha256": "7f6d6633c50b2eeae8c99f17bc5b1a1729c8c7c38e88e9c2b7735892cd1591db",
+      "size": 161
+    },
+    "peer_transcript": {
+      "exists": true,
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_transcript.json",
+      "sha256": "8f86a736b78b9a472fecbe70274cd1effd4ee14ebdd8d0a65e216f739ec21438",
+      "size": 1187
+    },
+    "qlog": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/qlog.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_negotiation": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_negotiation.json",
+      "sha256": null,
+      "size": 0
+    },
+    "sut_transcript": {
+      "exists": false,
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_transcript.json",
+      "sha256": null,
+      "size": 0
+    }
+  },
+  "assertions_failed": [],
+  "commit_hash": "phase9d1-connect-relay-checkpoint",
+  "error": null,
+  "negotiation": {
+    "peer": {
+      "alpn": null,
+      "connect_tunnel_established": true,
+      "implementation": "python-h2",
+      "protocol": "h2c",
+      "scheme": "http",
+      "server_name": "127.0.0.1"
+    },
+    "sut": null
+  },
+  "passed": true,
+  "peer": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "python-h2-connect-relay-client",
+    "provenance": {
+      "implementation_identity": "python-h2",
+      "implementation_source": "python-hyper/h2",
+      "implementation_version": null,
+      "kind": "third_party_library",
+      "observed_version_output": "h2 4.2.0"
+    },
+    "role": "client",
+    "stderr_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_stderr.log",
+    "stderr_text": "",
+    "stdout_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/peer_stdout.log",
+    "stdout_text": "{\"request\": {\"authority\": \"127.0.0.1:35471\", \"body\": \"hello-connect-http2\", \"method\": \"CONNECT\", \"mode\": \"connect-relay\", \"path\": \"/interop\"}, \"response\": {\"body\": \"echo:hello-connect-http2\", \"headers\": [[\"Content-Type\", \"text/plain\"], [\"Content-Length\", \"24\"], [\"Connection\", \"close\"], [\"X-Tunnel-Echo\", \"deterministic\"]], \"status\": 200, \"status_line\": \"HTTP/1.1 200 OK\"}, \"tunnel\": {\"connect_headers\": [[\":status\", \"200\"]], \"connect_status\": 200, \"observed_target\": {\"body\": \"hello-connect-http2\", \"headers\": [[\"Host\", \"127.0.0.1:35471\"], [\"Content-Length\", \"19\"], [\"Connection\", \"close\"]], \"method\": \"POST\", \"path\": \"/interop\", \"raw_request\": \"POST /interop HTTP/1.1\\r\\nHost: 127.0.0.1:35471\\r\\nContent-Length: 19\\r\\nConnection: close\\r\\n\\r\\nhello-connect-http2\"}, \"raw_response_size\": 138}}\n",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_h2_http_client",
+        "--connect-relay"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tests.fixtures_pkg.external_h2_http_client",
+        "--version"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "h2 4.2.0"
+    }
+  },
+  "scenario_id": "http2-connect-relay-h2-client",
+  "sut": {
+    "adapter": "subprocess",
+    "error": null,
+    "exit_code": 0,
+    "name": "tigrcorn-http2-connect-relay",
+    "provenance": {
+      "implementation_identity": "tigrcorn-http2",
+      "implementation_source": "tigrcorn",
+      "implementation_version": "0.3.6",
+      "kind": "package_owned",
+      "observed_version_output": "usage: tigrcorn [-h] [--factory] [--app-dir APP_DIR] [--reload]\n                [--reload-dir RELOAD_DIR] [--reload-include RELOAD_INCLUDE]\n                [--reload-exclude RELOAD_EXCLUDE] [--workers WORKERS]\n                [--worker-class WORKER_CLASS] [--pid PID] [--config CONFIG]\n                [--env-prefix ENV_PREFIX] [--lifespan {auto,on,off}]\n                [--limit-max-requests LIMIT_MAX_REQUESTS]\n                [--max-requests-jitter MAX_REQUESTS_JITTER] [--bind BIND]\n                [--host HOST] [--port PORT] [--uds UDS] [--fd FD]\n                [--endpoint ENDPOINT] [--insecure-bind INSECURE_BIND]\n                [--quic-bind QUIC_BIND]\n                [--transport {tcp,udp,unix,pipe,inproc}] [--reuse-port]\n                [--reuse-address] [--backlog BACKLOG]\n                [--ssl-certfile SSL_CERTFILE] [--ssl-keyfile SSL_KEYFILE]\n                [--ssl-ca-certs SSL_CA_CERTS] [--ssl-require-client-cert]\n                [--ssl-ciphers SSL_CIPHERS] [--ssl-alpn SSL_ALPN]\n                [--ssl-ocsp-mode {off,soft-fail,require}]\n                [--ssl-ocsp-soft-fail]\n                [--ssl-ocsp-cache-size SSL_OCSP_CACHE_SIZE]\n                [--ssl-ocsp-max-age SSL_OCSP_MAX_AGE]\n                [--ssl-crl-mode {off,soft-fail,require}]\n                [--ssl-revocation-fetch {off,on}] [--proxy-headers]\n                [--forwarded-allow-ips FORWARDED_ALLOW_IPS]\n                [--root-path ROOT_PATH] [--server-header [SERVER_HEADER]]\n                [--no-server-header] [--log-level LOG_LEVEL] [--access-log]\n                [--no-access-log] [--access-log-file ACCESS_LOG_FILE]\n                [--access-log-format ACCESS_LOG_FORMAT]\n                [--error-log-file ERROR_LOG_FILE] [--log-config LOG_CONFIG]\n                [--structured-log] [--metrics] [--metrics-bind METRICS_BIND]\n                [--statsd-host STATSD_HOST] [--otel-endpoint OTEL_ENDPOINT]\n                [--timeout-keep-alive TIMEOUT_KEEP_ALIVE]\n                [--read-timeout READ_TIMEOUT] [--write-timeout WRITE_TIMEOUT]\n                [--timeout-graceful-shutdown TIMEOUT_GRACEFUL_SHUTDOWN]\n                [--limit-concurrency LIMIT_CONCURRENCY]\n                [--max-connections MAX_CONNECTIONS] [--max-tasks MAX_TASKS]\n                [--max-streams MAX_STREAMS] [--max-body-size MAX_BODY_SIZE]\n                [--max-header-size MAX_HEADER_SIZE]\n                [--websocket-max-message-size WEBSOCKET_MAX_MESSAGE_SIZE]\n                [--websocket-ping-interval WEBSOCKET_PING_INTERVAL]\n                [--websocket-ping-timeout WEBSOCKET_PING_TIMEOUT]\n                [--idle-timeout IDLE_TIMEOUT] [--http {1.1,2,3}]\n                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]\n                [--disable-websocket] [--disable-h2c]\n                [--websocket-compression {off,permessage-deflate}]\n                [--connect-policy {relay,deny,allowlist}]\n                [--connect-allow CONNECT_ALLOW]\n                [--trailer-policy {pass,drop,strict}]\n                [--content-coding-policy {allowlist,identity-only,strict}]\n                [--content-codings CONTENT_CODINGS] [--quic-require-retry]\n                [--quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE]\n                [--quic-idle-timeout QUIC_IDLE_TIMEOUT]\n                [--quic-early-data-policy {allow,deny,require}]\n                [--pipe-mode {rawframed,stream}]\n                [app]\n\nASGI3-compatible transport server\n\npositional arguments:\n  app                   Application import string in module:attr form\n\noptions:\n  -h, --help            show this help message and exit\n\nApp / process / development:\n  --factory             Treat APP as an application factory\n  --app-dir APP_DIR     Add a directory to sys.path before loading the app\n  --reload              Enable development autoreload\n  --reload-dir RELOAD_DIR\n                        Directory to watch for reload\n  --reload-include RELOAD_INCLUDE\n                        Glob to include in reload watch set\n  --reload-exclude RELOAD_EXCLUDE\n                        Glob to exclude from reload watch set\n  --workers WORKERS     Worker process count\n  --worker-class WORKER_CLASS\n                        Worker/runtime implementation class\n  --pid PID             PID file path\n  --config CONFIG       Config file path (.json, .toml, .py)\n  --env-prefix ENV_PREFIX\n                        Environment variable prefix for config loading\n  --lifespan {auto,on,off}\n  --limit-max-requests LIMIT_MAX_REQUESTS\n  --max-requests-jitter MAX_REQUESTS_JITTER\n\nListener / binding:\n  --bind BIND           Bind listener as host:port\n  --host HOST           Bind host for TCP/UDP listeners\n  --port PORT           Bind port for TCP/UDP listeners\n  --uds UDS             Bind Unix domain socket or pipe path\n  --fd FD               Use an inherited file descriptor listener\n  --endpoint ENDPOINT   Endpoint / raw listener description\n  --insecure-bind INSECURE_BIND\n                        Additional insecure bind alongside TLS listener(s)\n  --quic-bind QUIC_BIND\n                        Additional UDP/QUIC bind\n  --transport {tcp,udp,unix,pipe,inproc}\n  --reuse-port\n  --reuse-address\n  --backlog BACKLOG\n\nTLS / security:\n  --ssl-certfile SSL_CERTFILE\n                        Certificate for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-keyfile SSL_KEYFILE\n                        Private key for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-ca-certs SSL_CA_CERTS\n                        Trusted CA bundle for client-certificate verification\n  --ssl-require-client-cert\n                        Require peer client certificates\n  --ssl-ciphers SSL_CIPHERS\n  --ssl-alpn SSL_ALPN   ALPN protocol(s); repeat or use comma-separated values\n  --ssl-ocsp-mode {off,soft-fail,require}\n  --ssl-ocsp-soft-fail\n  --ssl-ocsp-cache-size SSL_OCSP_CACHE_SIZE\n  --ssl-ocsp-max-age SSL_OCSP_MAX_AGE\n  --ssl-crl-mode {off,soft-fail,require}\n  --ssl-revocation-fetch {off,on}\n  --proxy-headers\n  --forwarded-allow-ips FORWARDED_ALLOW_IPS\n                        Trusted forwarded-header peers; repeat or use comma-\n                        separated values\n  --root-path ROOT_PATH\n                        ASGI root_path mount prefix\n  --server-header [SERVER_HEADER]\n                        Enable or override the Server header value\n  --no-server-header    Disable the Server header\n\nLogging / observability:\n  --log-level LOG_LEVEL\n  --access-log          Access logging\n  --no-access-log       Disable access logging\n  --access-log-file ACCESS_LOG_FILE\n  --access-log-format ACCESS_LOG_FORMAT\n  --error-log-file ERROR_LOG_FILE\n  --log-config LOG_CONFIG\n  --structured-log\n  --metrics\n  --metrics-bind METRICS_BIND\n  --statsd-host STATSD_HOST\n  --otel-endpoint OTEL_ENDPOINT\n\nResource / timeouts / concurrency:\n  --timeout-keep-alive TIMEOUT_KEEP_ALIVE\n  --read-timeout READ_TIMEOUT\n  --write-timeout WRITE_TIMEOUT\n  --timeout-graceful-shutdown TIMEOUT_GRACEFUL_SHUTDOWN\n  --limit-concurrency LIMIT_CONCURRENCY\n  --max-connections MAX_CONNECTIONS\n  --max-tasks MAX_TASKS\n  --max-streams MAX_STREAMS\n  --max-body-size MAX_BODY_SIZE\n  --max-header-size MAX_HEADER_SIZE\n  --websocket-max-message-size WEBSOCKET_MAX_MESSAGE_SIZE\n  --websocket-ping-interval WEBSOCKET_PING_INTERVAL\n  --websocket-ping-timeout WEBSOCKET_PING_TIMEOUT\n  --idle-timeout IDLE_TIMEOUT\n\nProtocol / transport:\n  --http {1.1,2,3}      Enable an HTTP version\n  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}\n                        Enable a listener protocol\n  --disable-websocket\n  --disable-h2c\n  --websocket-compression {off,permessage-deflate}\n  --connect-policy {relay,deny,allowlist}\n  --connect-allow CONNECT_ALLOW\n                        Repeat or use comma-separated host:port, host, or CIDR\n                        entries\n  --trailer-policy {pass,drop,strict}\n  --content-coding-policy {allowlist,identity-only,strict}\n  --content-codings CONTENT_CODINGS\n                        Repeat or use comma-separated values\n  --quic-require-retry  Require a QUIC Retry before completing the initial\n                        handshake\n  --quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE\n  --quic-idle-timeout QUIC_IDLE_TIMEOUT\n  --quic-early-data-policy {allow,deny,require}\n  --pipe-mode {rawframed,stream}"
+    },
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_stderr.log",
+    "stderr_text": "2026-03-21 23:14:12,162 INFO tigrcorn listening on 127.0.0.1:41601\n",
+    "stdout_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/sut_stdout.log",
+    "stdout_text": "",
+    "timed_out": false,
+    "version": {
+      "command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "examples.echo_http.app:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "41601",
+        "--protocol",
+        "http2",
+        "--http",
+        "2",
+        "--connect-policy",
+        "relay",
+        "--disable-websocket",
+        "--no-access-log",
+        "--lifespan",
+        "off"
+      ],
+      "executable": "/usr/local/bin/python",
+      "executable_sha256": "68d146e8194a1987707aa69a45be2a3c4c079ffd101a4a584a59d3fed777834c",
+      "version_command": [
+        "python",
+        "-m",
+        "tigrcorn",
+        "--help"
+      ],
+      "version_exit_code": 0,
+      "version_stderr": "",
+      "version_stdout": "usage: tigrcorn [-h] [--factory] [--app-dir APP_DIR] [--reload]\n                [--reload-dir RELOAD_DIR] [--reload-include RELOAD_INCLUDE]\n                [--reload-exclude RELOAD_EXCLUDE] [--workers WORKERS]\n                [--worker-class WORKER_CLASS] [--pid PID] [--config CONFIG]\n                [--env-prefix ENV_PREFIX] [--lifespan {auto,on,off}]\n                [--limit-max-requests LIMIT_MAX_REQUESTS]\n                [--max-requests-jitter MAX_REQUESTS_JITTER] [--bind BIND]\n                [--host HOST] [--port PORT] [--uds UDS] [--fd FD]\n                [--endpoint ENDPOINT] [--insecure-bind INSECURE_BIND]\n                [--quic-bind QUIC_BIND]\n                [--transport {tcp,udp,unix,pipe,inproc}] [--reuse-port]\n                [--reuse-address] [--backlog BACKLOG]\n                [--ssl-certfile SSL_CERTFILE] [--ssl-keyfile SSL_KEYFILE]\n                [--ssl-ca-certs SSL_CA_CERTS] [--ssl-require-client-cert]\n                [--ssl-ciphers SSL_CIPHERS] [--ssl-alpn SSL_ALPN]\n                [--ssl-ocsp-mode {off,soft-fail,require}]\n                [--ssl-ocsp-soft-fail]\n                [--ssl-ocsp-cache-size SSL_OCSP_CACHE_SIZE]\n                [--ssl-ocsp-max-age SSL_OCSP_MAX_AGE]\n                [--ssl-crl-mode {off,soft-fail,require}]\n                [--ssl-revocation-fetch {off,on}] [--proxy-headers]\n                [--forwarded-allow-ips FORWARDED_ALLOW_IPS]\n                [--root-path ROOT_PATH] [--server-header [SERVER_HEADER]]\n                [--no-server-header] [--log-level LOG_LEVEL] [--access-log]\n                [--no-access-log] [--access-log-file ACCESS_LOG_FILE]\n                [--access-log-format ACCESS_LOG_FORMAT]\n                [--error-log-file ERROR_LOG_FILE] [--log-config LOG_CONFIG]\n                [--structured-log] [--metrics] [--metrics-bind METRICS_BIND]\n                [--statsd-host STATSD_HOST] [--otel-endpoint OTEL_ENDPOINT]\n                [--timeout-keep-alive TIMEOUT_KEEP_ALIVE]\n                [--read-timeout READ_TIMEOUT] [--write-timeout WRITE_TIMEOUT]\n                [--timeout-graceful-shutdown TIMEOUT_GRACEFUL_SHUTDOWN]\n                [--limit-concurrency LIMIT_CONCURRENCY]\n                [--max-connections MAX_CONNECTIONS] [--max-tasks MAX_TASKS]\n                [--max-streams MAX_STREAMS] [--max-body-size MAX_BODY_SIZE]\n                [--max-header-size MAX_HEADER_SIZE]\n                [--websocket-max-message-size WEBSOCKET_MAX_MESSAGE_SIZE]\n                [--websocket-ping-interval WEBSOCKET_PING_INTERVAL]\n                [--websocket-ping-timeout WEBSOCKET_PING_TIMEOUT]\n                [--idle-timeout IDLE_TIMEOUT] [--http {1.1,2,3}]\n                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]\n                [--disable-websocket] [--disable-h2c]\n                [--websocket-compression {off,permessage-deflate}]\n                [--connect-policy {relay,deny,allowlist}]\n                [--connect-allow CONNECT_ALLOW]\n                [--trailer-policy {pass,drop,strict}]\n                [--content-coding-policy {allowlist,identity-only,strict}]\n                [--content-codings CONTENT_CODINGS] [--quic-require-retry]\n                [--quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE]\n                [--quic-idle-timeout QUIC_IDLE_TIMEOUT]\n                [--quic-early-data-policy {allow,deny,require}]\n                [--pipe-mode {rawframed,stream}]\n                [app]\n\nASGI3-compatible transport server\n\npositional arguments:\n  app                   Application import string in module:attr form\n\noptions:\n  -h, --help            show this help message and exit\n\nApp / process / development:\n  --factory             Treat APP as an application factory\n  --app-dir APP_DIR     Add a directory to sys.path before loading the app\n  --reload              Enable development autoreload\n  --reload-dir RELOAD_DIR\n                        Directory to watch for reload\n  --reload-include RELOAD_INCLUDE\n                        Glob to include in reload watch set\n  --reload-exclude RELOAD_EXCLUDE\n                        Glob to exclude from reload watch set\n  --workers WORKERS     Worker process count\n  --worker-class WORKER_CLASS\n                        Worker/runtime implementation class\n  --pid PID             PID file path\n  --config CONFIG       Config file path (.json, .toml, .py)\n  --env-prefix ENV_PREFIX\n                        Environment variable prefix for config loading\n  --lifespan {auto,on,off}\n  --limit-max-requests LIMIT_MAX_REQUESTS\n  --max-requests-jitter MAX_REQUESTS_JITTER\n\nListener / binding:\n  --bind BIND           Bind listener as host:port\n  --host HOST           Bind host for TCP/UDP listeners\n  --port PORT           Bind port for TCP/UDP listeners\n  --uds UDS             Bind Unix domain socket or pipe path\n  --fd FD               Use an inherited file descriptor listener\n  --endpoint ENDPOINT   Endpoint / raw listener description\n  --insecure-bind INSECURE_BIND\n                        Additional insecure bind alongside TLS listener(s)\n  --quic-bind QUIC_BIND\n                        Additional UDP/QUIC bind\n  --transport {tcp,udp,unix,pipe,inproc}\n  --reuse-port\n  --reuse-address\n  --backlog BACKLOG\n\nTLS / security:\n  --ssl-certfile SSL_CERTFILE\n                        Certificate for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-keyfile SSL_KEYFILE\n                        Private key for TLS on TCP/Unix or QUIC-TLS on UDP\n  --ssl-ca-certs SSL_CA_CERTS\n                        Trusted CA bundle for client-certificate verification\n  --ssl-require-client-cert\n                        Require peer client certificates\n  --ssl-ciphers SSL_CIPHERS\n  --ssl-alpn SSL_ALPN   ALPN protocol(s); repeat or use comma-separated values\n  --ssl-ocsp-mode {off,soft-fail,require}\n  --ssl-ocsp-soft-fail\n  --ssl-ocsp-cache-size SSL_OCSP_CACHE_SIZE\n  --ssl-ocsp-max-age SSL_OCSP_MAX_AGE\n  --ssl-crl-mode {off,soft-fail,require}\n  --ssl-revocation-fetch {off,on}\n  --proxy-headers\n  --forwarded-allow-ips FORWARDED_ALLOW_IPS\n                        Trusted forwarded-header peers; repeat or use comma-\n                        separated values\n  --root-path ROOT_PATH\n                        ASGI root_path mount prefix\n  --server-header [SERVER_HEADER]\n                        Enable or override the Server header value\n  --no-server-header    Disable the Server header\n\nLogging / observability:\n  --log-level LOG_LEVEL\n  --access-log          Access logging\n  --no-access-log       Disable access logging\n  --access-log-file ACCESS_LOG_FILE\n  --access-log-format ACCESS_LOG_FORMAT\n  --error-log-file ERROR_LOG_FILE\n  --log-config LOG_CONFIG\n  --structured-log\n  --metrics\n  --metrics-bind METRICS_BIND\n  --statsd-host STATSD_HOST\n  --otel-endpoint OTEL_ENDPOINT\n\nResource / timeouts / concurrency:\n  --timeout-keep-alive TIMEOUT_KEEP_ALIVE\n  --read-timeout READ_TIMEOUT\n  --write-timeout WRITE_TIMEOUT\n  --timeout-graceful-shutdown TIMEOUT_GRACEFUL_SHUTDOWN\n  --limit-concurrency LIMIT_CONCURRENCY\n  --max-connections MAX_CONNECTIONS\n  --max-tasks MAX_TASKS\n  --max-streams MAX_STREAMS\n  --max-body-size MAX_BODY_SIZE\n  --max-header-size MAX_HEADER_SIZE\n  --websocket-max-message-size WEBSOCKET_MAX_MESSAGE_SIZE\n  --websocket-ping-interval WEBSOCKET_PING_INTERVAL\n  --websocket-ping-timeout WEBSOCKET_PING_TIMEOUT\n  --idle-timeout IDLE_TIMEOUT\n\nProtocol / transport:\n  --http {1.1,2,3}      Enable an HTTP version\n  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}\n                        Enable a listener protocol\n  --disable-websocket\n  --disable-h2c\n  --websocket-compression {off,permessage-deflate}\n  --connect-policy {relay,deny,allowlist}\n  --connect-allow CONNECT_ALLOW\n                        Repeat or use comma-separated host:port, host, or CIDR\n                        entries\n  --trailer-policy {pass,drop,strict}\n  --content-coding-policy {allowlist,identity-only,strict}\n  --content-codings CONTENT_CODINGS\n                        Repeat or use comma-separated values\n  --quic-require-retry  Require a QUIC Retry before completing the initial\n                        handshake\n  --quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE\n  --quic-idle-timeout QUIC_IDLE_TIMEOUT\n  --quic-early-data-policy {allow,deny,require}\n  --pipe-mode {rawframed,stream}"
+    }
+  },
+  "transcript": {
+    "peer": {
+      "request": {
+        "authority": "127.0.0.1:35471",
+        "body": "hello-connect-http2",
+        "method": "CONNECT",
+        "mode": "connect-relay",
+        "path": "/interop"
+      },
+      "response": {
+        "body": "echo:hello-connect-http2",
+        "headers": [
+          [
+            "Content-Type",
+            "text/plain"
+          ],
+          [
+            "Content-Length",
+            "24"
+          ],
+          [
+            "Connection",
+            "close"
+          ],
+          [
+            "X-Tunnel-Echo",
+            "deterministic"
+          ]
+        ],
+        "status": 200,
+        "status_line": "HTTP/1.1 200 OK"
+      },
+      "tunnel": {
+        "connect_headers": [
+          [
+            ":status",
+            "200"
+          ]
+        ],
+        "connect_status": 200,
+        "observed_target": {
+          "body": "hello-connect-http2",
+          "headers": [
+            [
+              "Host",
+              "127.0.0.1:35471"
+            ],
+            [
+              "Content-Length",
+              "19"
+            ],
+            [
+              "Connection",
+              "close"
+            ]
+          ],
+          "method": "POST",
+          "path": "/interop",
+          "raw_request": "POST /interop HTTP/1.1\r\nHost: 127.0.0.1:35471\r\nContent-Length: 19\r\nConnection: close\r\n\r\nhello-connect-http2"
+        },
+        "raw_response_size": 138
+      }
+    },
+    "sut": null
+  }
+}

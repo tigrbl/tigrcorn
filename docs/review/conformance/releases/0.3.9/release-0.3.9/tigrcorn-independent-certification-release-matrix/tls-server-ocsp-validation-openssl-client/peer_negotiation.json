@@ -1,0 +1,9 @@
+{
+  "alpn": "http/1.1",
+  "client_auth_present": true,
+  "implementation": "openssl",
+  "protocol": "tls",
+  "tls_version": null,
+  "verification": "OK",
+  "verification_detail": null
+}

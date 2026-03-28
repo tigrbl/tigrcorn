@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.utils.headers import append_if_missing, get_header
+from tigrcorn.utils.headers import apply_response_header_policy, get_header, sanitize_early_hints_headers, strip_connection_specific_headers
 
 
 _REASON_PHRASES = {
@@ -20,6 +20,7 @@ _REASON_PHRASES = {
     404: b"Not Found",
     405: b"Method Not Allowed",
     413: b"Payload Too Large",
+    421: b"Misdirected Request",
     426: b"Upgrade Required",
     500: b"Internal Server Error",
     503: b"Service Unavailable",
@@ -48,22 +49,75 @@ def _normalize_response_headers(
     keep_alive: bool,
     server_header: bytes | None,
     chunked: bool,
+    include_date_header: bool,
+    default_headers: list[tuple[bytes, bytes]] | None,
+    alt_svc_values: list[bytes] | None,
 ) -> list[tuple[bytes, bytes]]:
-    normalized = [(k.lower(), v) for k, v in headers]
-    if server_header:
-        append_if_missing(normalized, b"server", server_header)
-    append_if_missing(normalized, b"connection", b"keep-alive" if keep_alive else b"close")
+    if 100 <= status < 200:
+        if status == 103:
+            return sanitize_early_hints_headers(headers)
+        return [(bytes(k).lower(), bytes(v)) for k, v in strip_connection_specific_headers(headers)]
+
+    normalized = apply_response_header_policy(
+        headers,
+        server_header=server_header,
+        include_date_header=include_date_header,
+        default_headers=default_headers or (),
+        alt_svc_values=alt_svc_values or (),
+    )
+    if get_header(normalized, b'connection') is None:
+        normalized.append((b'connection', b'keep-alive' if keep_alive else b'close'))
 
     if not response_allows_body(status):
-        normalized = [(k, v) for k, v in normalized if k != b"transfer-encoding"]
-        if 100 <= status < 200 or status == 204:
-            normalized = [(k, v) for k, v in normalized if k != b"content-length"]
+        normalized = [(k, v) for k, v in normalized if k != b'transfer-encoding']
+        if status == 204:
+            normalized = [(k, v) for k, v in normalized if k != b'content-length']
         return normalized
 
-    if chunked and get_header(normalized, b"transfer-encoding") is None and get_header(normalized, b"content-length") is None:
-        normalized.append((b"transfer-encoding", b"chunked"))
+    if chunked and get_header(normalized, b'transfer-encoding') is None and get_header(normalized, b'content-length') is None:
+        normalized.append((b'transfer-encoding', b'chunked'))
     return normalized
 
+
+
+HTTP11_RESPONSE_METADATA_RULES: tuple[dict[str, object], ...] = (
+    {
+        'selector': '1xx',
+        'allows_body': False,
+        'allows_transfer_encoding': False,
+        'allows_content_length': False,
+        'implicit_content_length': False,
+        'notes': 'informational responses never carry a final response body',
+    },
+    {
+        'selector': '204',
+        'allows_body': False,
+        'allows_transfer_encoding': False,
+        'allows_content_length': False,
+        'implicit_content_length': False,
+        'notes': '204 response body is always empty',
+    },
+    {
+        'selector': '304',
+        'allows_body': False,
+        'allows_transfer_encoding': False,
+        'allows_content_length': True,
+        'implicit_content_length': False,
+        'notes': '304 is bodyless but may carry representation metadata',
+    },
+    {
+        'selector': 'other-final',
+        'allows_body': True,
+        'allows_transfer_encoding': True,
+        'allows_content_length': True,
+        'implicit_content_length': True,
+        'notes': 'non-bodyless final responses may receive implicit Content-Length when fully buffered',
+    },
+)
+
+
+def http11_response_metadata_rules() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in HTTP11_RESPONSE_METADATA_RULES)
 
 
 def serialize_http11_response_head(
@@ -73,6 +127,9 @@ def serialize_http11_response_head(
     keep_alive: bool,
     server_header: bytes | None = None,
     chunked: bool = False,
+    include_date_header: bool = True,
+    default_headers: list[tuple[bytes, bytes]] | None = None,
+    alt_svc_values: list[bytes] | None = None,
 ) -> bytes:
     normalized = _normalize_response_headers(
         status=status,
@@ -80,6 +137,9 @@ def serialize_http11_response_head(
         keep_alive=keep_alive,
         server_header=server_header,
         chunked=chunked,
+        include_date_header=include_date_header,
+        default_headers=default_headers,
+        alt_svc_values=alt_svc_values,
     )
     status_line = b"HTTP/1.1 " + str(status).encode("ascii") + b" " + _reason(status)
     lines = [status_line] + [k + b": " + v for k, v in normalized]
@@ -94,6 +154,9 @@ def serialize_http11_response_whole(
     body: bytes,
     keep_alive: bool,
     server_header: bytes | None = None,
+    include_date_header: bool = True,
+    default_headers: list[tuple[bytes, bytes]] | None = None,
+    alt_svc_values: list[bytes] | None = None,
 ) -> bytes:
     normalized = [(k.lower(), v) for k, v in headers]
     payload = body if response_allows_body(status) else b""
@@ -105,6 +168,9 @@ def serialize_http11_response_whole(
         keep_alive=keep_alive,
         server_header=server_header,
         chunked=False,
+        include_date_header=include_date_header,
+        default_headers=default_headers,
+        alt_svc_values=alt_svc_values,
     )
     return head + payload
 

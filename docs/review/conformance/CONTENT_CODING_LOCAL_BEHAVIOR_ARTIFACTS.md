@@ -4,7 +4,7 @@ This document records the local content-coding behavior vectors preserved during
 
 Artifact bundle:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-content-coding-local-behavior-artifacts/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-content-coding-local-behavior-artifacts/`
 
 The preserved vectors are:
 

@@ -4,7 +4,7 @@ This document records the local behavior vectors preserved during **Phase 9D2**.
 
 Artifact bundle:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-trailer-fields-local-behavior-artifacts/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-trailer-fields-local-behavior-artifacts/`
 
 The preserved vectors are:
 

@@ -23,7 +23,7 @@ from tools.interop_wrappers import describe_wrapper_registry  # noqa: E402
 from tools.retrofit_independent_bundle_schema import retrofit_bundle  # noqa: E402
 
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 INDEPENDENT_ROOT = RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'
 LOCAL_BEHAVIOR_ROOT = RELEASE_ROOT / 'tigrcorn-trailer-fields-local-behavior-artifacts'
 MATRIX_PATH = CONFORMANCE / 'external_matrix.release.json'
@@ -151,7 +151,7 @@ def _overlay_generated_scenarios(generated_root: Path) -> None:
     manifest_payload['required_scenario_files'] = ['summary.json', 'index.json', 'result.json', 'scenario.json', 'command.json', 'env.json', 'versions.json', 'wire_capture.json']
     manifest_payload['wrapper_families'] = wrapper_families
     notes = list(manifest_payload.get('notes', []))
-    note = 'Phase 9D2 overlays fresh trailer-field independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.'
+    note = 'Phase 9D2 overlays fresh trailer-field independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.9 working release root.'
     if note not in notes:
         notes.append(note)
     manifest_payload['notes'] = notes
@@ -261,7 +261,7 @@ def _update_release_root_manifest() -> None:
         }
     )
     notes = list(payload.get('notes', []))
-    note = 'Phase 9D2 now preserves passing RFC 9110 trailer-field independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root. The remaining strict-target blocker is now the HTTP/3 content-coding scenario only.'
+    note = 'Phase 9D2 now preserves passing RFC 9110 trailer-field independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.9 working release root. The remaining strict-target blocker is now the HTTP/3 content-coding scenario only.'
     if note not in notes:
         notes.append(note)
     payload['notes'] = notes
@@ -270,7 +270,7 @@ def _update_release_root_manifest() -> None:
     if readme.exists():
         text = readme.read_text(encoding='utf-8')
     else:
-        text = '# Release 0.3.8 working promotion root\n\n'
+        text = '# Release 0.3.9 working promotion root\n\n'
     if 'Phase 9D2 adds trailer-field independent-artifact overlays' not in text:
         text += '\nPhase 9D2 adds trailer-field independent-artifact overlays for HTTP/1.1 and HTTP/2, plus a preserved HTTP/3 failing artifact in this environment.\n'
     readme.write_text(text, encoding='utf-8')

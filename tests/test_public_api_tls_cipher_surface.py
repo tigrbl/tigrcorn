@@ -31,12 +31,7 @@ class PublicAPITLSCipherSurfaceTests(unittest.TestCase):
 
 class PublicCLITLSCipherSurfaceTests(unittest.TestCase):
     def test_cli_main_forwards_ssl_ciphers(self):
-        real_asyncio_run = asyncio.run
-        serve_import_string = AsyncMock()
-        with (
-            patch('tigrcorn.cli.serve_import_string', new=serve_import_string),
-            patch('tigrcorn.cli.asyncio.run', side_effect=real_asyncio_run),
-        ):
+        with patch('tigrcorn.cli.run_config') as run_config:
             rc = main([
                 'tests.fixtures_pkg.appmod:app',
                 '--ssl-certfile', 'server-cert.pem',
@@ -44,8 +39,11 @@ class PublicCLITLSCipherSurfaceTests(unittest.TestCase):
                 '--ssl-ciphers', 'TLS_AES_128_GCM_SHA256',
             ])
         self.assertEqual(rc, 0)
-        serve_import_string.assert_awaited_once()
-        self.assertEqual(serve_import_string.await_args.kwargs['ssl_ciphers'], 'TLS_AES_128_GCM_SHA256')
+        run_config.assert_called_once()
+        config = run_config.call_args.args[0]
+        self.assertEqual(config.app.target, 'tests.fixtures_pkg.appmod:app')
+        self.assertEqual(config.tls.ciphers, 'TLS_AES_128_GCM_SHA256')
+        self.assertEqual(config.listeners[0].ssl_ciphers, 'TLS_AES_128_GCM_SHA256')
 
 
 if __name__ == '__main__':

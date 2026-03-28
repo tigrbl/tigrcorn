@@ -1,4 +1,10 @@
 {
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
   "schema_version": 1,
   "phase": "9A",
   "checkpoint": "phase9a_promotion_contract_freeze",
@@ -7,7 +13,7 @@
     "authoritative_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6",
     "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
     "allow_mutation_of_candidate_release_root": false,
-    "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "next_promotable_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "next_promotable_release_root_frozen": true
   },
   "owner_roles": {
@@ -22,7 +28,7 @@
     "websocket_runtime_owner": "Owns WebSocket keepalive policy, outbound ping scheduling, timeout-driven close behavior, and carrier parity.",
     "performance_owner": "Owns the strict performance program, matrix lanes, SLO thresholds, artifact preservation, and platform declarations.",
     "promotion_gate_owner": "Owns the composite evaluator, artifact validation, negative fixtures, and documentation/gate alignment.",
-    "release_assembly_owner": "Owns final 0.3.8 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness."
+    "release_assembly_owner": "Owns final 0.3.9 release-root assembly, bundle promotion, status snapshots, and release-note truthfulness."
   },
   "strict_target_scenario_rows": [
     {
@@ -39,14 +45,14 @@
       "peer_stack": "websockets",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/websocket/extensions.py",
         "src/tigrcorn/protocols/websocket/handler.py",
         "tests/fixtures_pkg/external_websocket_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -65,7 +71,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for websocket-http11-server-websockets-client-permessage-deflate under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for websocket-http11-server-websockets-client-permessage-deflate under the 0.3.9 release root",
         "RFC 7692 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "negative local vectors still reject malformed or unsupported extension offers"
       ]
@@ -84,14 +90,14 @@
       "peer_stack": "h2",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/websocket/extensions.py",
         "src/tigrcorn/protocols/http2/websocket.py",
         "tests/fixtures_pkg/external_h2_websocket_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -110,7 +116,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for websocket-http2-server-h2-client-permessage-deflate under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for websocket-http2-server-h2-client-permessage-deflate under the 0.3.9 release root",
         "RFC 7692 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "carrier-specific local vectors still prove clean fallback when compression is disabled"
       ]
@@ -129,14 +135,14 @@
       "peer_stack": "aioquic",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/websocket/extensions.py",
         "src/tigrcorn/protocols/http3/websocket.py",
         "tests/fixtures_third_party/aioquic_http3_websocket_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -156,7 +162,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for websocket-http3-server-aioquic-client-permessage-deflate under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for websocket-http3-server-aioquic-client-permessage-deflate under the 0.3.9 release root",
         "RFC 7692 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "HTTP/3 local vectors still cover malformed extension offers and clean refusal paths"
       ]
@@ -175,14 +181,14 @@
       "peer_stack": "curl",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/connect.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_pkg/external_curl_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -201,7 +207,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http11-connect-relay-curl-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http11-connect-relay-curl-client under the 0.3.9 release root",
         "RFC 9110 \u00a79.3.6 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "deny and allowlist rejection remain covered by local negative vectors"
       ]
@@ -220,14 +226,14 @@
       "peer_stack": "h2",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/connect.py",
         "src/tigrcorn/protocols/http2/handler.py",
         "tests/fixtures_pkg/external_h2_http_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -246,7 +252,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http2-connect-relay-h2-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http2-connect-relay-h2-client under the 0.3.9 release root",
         "RFC 9110 \u00a79.3.6 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "allowlist and deny-mode local vectors still prove bounded policy behavior"
       ]
@@ -265,14 +271,14 @@
       "peer_stack": "aioquic",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/connect.py",
         "src/tigrcorn/protocols/http3/handler.py",
         "tests/fixtures_third_party/aioquic_http3_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -292,7 +298,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http3-connect-relay-aioquic-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http3-connect-relay-aioquic-client under the 0.3.9 release root",
         "RFC 9110 \u00a79.3.6 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "HTTP/3 local vectors still cover deny and allowlist rejection paths"
       ]
@@ -311,15 +317,15 @@
       "peer_stack": "curl",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/asgi/receive.py",
         "src/tigrcorn/protocols/http1/serializer.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_pkg/external_curl_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -338,7 +344,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http11-trailer-fields-curl-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http11-trailer-fields-curl-client under the 0.3.9 release root",
         "RFC 9110 \u00a76.5 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "drop/pass/strict local vectors still prove policy behavior"
       ]
@@ -357,15 +363,15 @@
       "peer_stack": "h2",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/asgi/receive.py",
         "src/tigrcorn/protocols/http2/handler.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_pkg/external_h2_http_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -384,7 +390,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http2-trailer-fields-h2-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http2-trailer-fields-h2-client under the 0.3.9 release root",
         "RFC 9110 \u00a76.5 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "HTTP/2 local vectors still cover pass/drop/strict behavior"
       ]
@@ -403,15 +409,15 @@
       "peer_stack": "aioquic",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/asgi/receive.py",
         "src/tigrcorn/protocols/http3/handler.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_third_party/aioquic_http3_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -431,7 +437,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http3-trailer-fields-aioquic-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http3-trailer-fields-aioquic-client under the 0.3.9 release root",
         "RFC 9110 \u00a76.5 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "HTTP/3 local vectors still cover pass/drop/strict behavior"
       ]
@@ -450,15 +456,15 @@
       "peer_stack": "curl",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/content_coding.py",
         "src/tigrcorn/asgi/send.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_pkg/external_curl_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -477,7 +483,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http11-content-coding-curl-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http11-content-coding-curl-client under the 0.3.9 release root",
         "RFC 9110 \u00a78 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "identity-only and strict local vectors still prove negative behavior"
       ]
@@ -496,15 +502,15 @@
       "peer_stack": "curl",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/content_coding.py",
         "src/tigrcorn/protocols/http2/handler.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_pkg/external_curl_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -523,7 +529,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http2-content-coding-curl-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http2-content-coding-curl-client under the 0.3.9 release root",
         "RFC 9110 \u00a78 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "HTTP/2 local vectors still cover identity-only and strict negative behavior"
       ]
@@ -542,15 +548,15 @@
       "peer_stack": "aioquic",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/protocols/content_coding.py",
         "src/tigrcorn/protocols/http3/handler.py",
         "src/tigrcorn/server/runner.py",
         "tests/fixtures_third_party/aioquic_http3_client.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -570,7 +576,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for http3-content-coding-aioquic-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for http3-content-coding-aioquic-client under the 0.3.9 release root",
         "RFC 9110 \u00a78 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "HTTP/3 local vectors still cover identity-only and strict negative behavior"
       ]
@@ -589,15 +595,15 @@
       "peer_stack": "openssl",
       "touch_files": [
         "docs/review/conformance/external_matrix.release.json",
-        "docs/review/conformance/releases/0.3.8/release-0.3.8/",
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/",
         "src/tigrcorn/security/tls.py",
         "src/tigrcorn/security/policies.py",
         "src/tigrcorn/security/x509/path.py",
         "tests/test_x509_webpki_validation.py"
       ],
       "artifact_contract": {
-        "release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-        "bundle_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+        "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+        "bundle_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
         "required_scenario_files": [
           "scenario.json",
           "result.json",
@@ -616,7 +622,7 @@
         ]
       },
       "exit_tests": [
-        "preserved passing third-party artifact exists for tls-server-ocsp-validation-openssl-client under the 0.3.8 release root",
+        "preserved passing third-party artifact exists for tls-server-ocsp-validation-openssl-client under the 0.3.9 release root",
         "RFC 6960 resolves at independent_certification in evaluate_release_gates for the strict boundary",
         "local negative vectors still cover stale, revoked, soft-fail, and require-mode behavior"
       ]

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "target_name": "phase8_flag_covering_array",
   "status": "planned",
-  "public_flag_string_count": 84,
+  "public_flag_string_count": 124,
   "strategy": {
     "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
     "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
@@ -2754,6 +2754,662 @@
         "fd_inherited_worker"
       ],
       "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-115-date_header",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--date-header",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-116-env_file",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--env-file",
+          "value": ".env"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-117-group",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--group",
+          "value": "1000"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-118-header",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--header",
+          "value": "x-service: tigrcorn"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-119-no_date_header",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-date-header",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-120-no_use_colors",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-use-colors",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-121-runtime-auto",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--runtime",
+          "value": "auto"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-121-runtime-asyncio",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--runtime",
+          "value": "asyncio"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-121-runtime-uvloop",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--runtime",
+          "value": "uvloop"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-122-server_name",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--server-name",
+          "value": "example.com"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-123-umask",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--umask",
+          "value": "022"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-124-use_colors",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--use-colors",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-125-user",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--user",
+          "value": "1000"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-126-worker_healthcheck_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--worker-healthcheck-timeout",
+          "value": 30.0
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-127-alt_svc",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--alt-svc",
+          "value": "h3=\":8443\"; ma=86400"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-128-alt_svc_auto",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--alt-svc-auto",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-129-no_alt_svc_auto",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-alt-svc-auto",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-130-alt_svc_ma",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--alt-svc-ma",
+          "value": 86400
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-131-alt_svc_persist",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--alt-svc-persist",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-132-static_path_route",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--static-path-route",
+          "value": "/assets"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-133-static_path_mount",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--static-path-mount",
+          "value": "/srv/assets"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-134-static_path_dir_to_file",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--static-path-dir-to-file",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-135-no_static_path_dir_to_file",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-static-path-dir-to-file",
+          "value": false
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-136-static_path_index_file",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--static-path-index-file",
+          "value": "index.html"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-137-static_path_expires",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--static-path-expires",
+          "value": 3600
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-138-http1_max_incomplete_event_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http1-max-incomplete-event-size",
+          "value": 32768
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-139-http1_buffer_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http1-buffer-size",
+          "value": 4096
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-140-http1_header_read_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http1-header-read-timeout",
+          "value": 1.5
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-141-http1_keep_alive",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http1-keep-alive",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-142-no_http1_keep_alive",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-http1-keep-alive",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-143-websocket_max_queue",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--websocket-max-queue",
+          "value": 16
+        }
+      ],
+      "deployment_profiles": [
+        "websocket_http11",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-144-http2_max_concurrent_streams",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-max-concurrent-streams",
+          "value": 8
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-145-http2_max_headers_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-max-headers-size",
+          "value": 12288
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-146-http2_max_frame_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-max-frame-size",
+          "value": 32768
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-147-http2_adaptive_window",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-adaptive-window",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-148-no_http2_adaptive_window",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--no-http2-adaptive-window",
+          "value": true
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-149-http2_initial_connection_window_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-initial-connection-window-size",
+          "value": 131072
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-150-http2_initial_stream_window_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-initial-stream-window-size",
+          "value": 98304
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-151-http2_keep_alive_interval",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-keep-alive-interval",
+          "value": 2.5
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-152-http2_keep_alive_timeout",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--http2-keep-alive-timeout",
+          "value": 1.25
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls"
+      ],
+      "claim_plane": "hybrid",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-153-ssl_keyfile_password",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-keyfile-password",
+          "value": "hunter2"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-154-ssl_crl",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--ssl-crl",
+          "value": "tests/fixtures_certs/client-revocations.pem"
+        }
+      ],
+      "deployment_profiles": [
+        "http2_tls",
+        "http3_quic_mtls"
+      ],
+      "claim_plane": "rfc_scoped",
       "status": "planned"
     }
   ],

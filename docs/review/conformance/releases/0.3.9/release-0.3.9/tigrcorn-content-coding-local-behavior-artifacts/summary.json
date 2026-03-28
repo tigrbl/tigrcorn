@@ -1,0 +1,18 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-content-coding-local-behavior-artifacts",
+  "bundle_kind": "local_behavior_artifacts",
+  "total": 9,
+  "passed": 9,
+  "failed": 0,
+  "scenario_ids": [
+    "http11-content-coding-gzip-pass",
+    "http11-content-coding-identity-forbidden-406",
+    "http11-content-coding-strict-unsupported-406",
+    "http2-content-coding-gzip-pass",
+    "http2-content-coding-identity-forbidden-406",
+    "http2-content-coding-strict-unsupported-406",
+    "http3-content-coding-gzip-pass",
+    "http3-content-coding-identity-forbidden-406",
+    "http3-content-coding-strict-unsupported-406"
+  ]
+}

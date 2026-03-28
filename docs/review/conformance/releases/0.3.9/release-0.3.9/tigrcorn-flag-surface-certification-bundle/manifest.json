@@ -1,0 +1,9 @@
+{
+  "bundle_kind": "flag_surface_certification_bundle",
+  "generated_at": "2026-03-28T03:19:55.194303+00:00",
+  "release_gate_eligible": true,
+  "source_contracts": "docs/review/conformance/flag_contracts.json",
+  "source_covering_array": "docs/review/conformance/flag_covering_array.json",
+  "source_status": "docs/review/conformance/phase9f3_concurrency_keepalive.current.json",
+  "note": "This assembled bundle freezes the fully promotion-ready public flag surface for the 0.3.9 working release root."
+}

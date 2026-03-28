@@ -4,14 +4,30 @@ import json
 from pathlib import Path
 
 from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target
+from tigrcorn.cli import build_parser
+import argparse
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 
 
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
+
+
+def current_public_flag_count() -> int:
+    parser = build_parser()
+    flags: set[str] = set()
+    for action in parser._actions:
+        if isinstance(action, argparse._HelpAction):
+            continue
+        if action.help == argparse.SUPPRESS:
+            continue
+        for flag in action.option_strings:
+            if flag.startswith('--'):
+                flags.add(flag)
+    return len(flags)
 
 
 def test_phase9i_docs_and_status_exist() -> None:
@@ -29,7 +45,7 @@ def test_phase9i_docs_and_status_exist() -> None:
     assert status['current_state']['performance_passed'] is True
     assert status['current_state']['documentation_passed'] is True
     assert status['current_state']['promotion_target_passed'] is True
-    assert status['current_state']['current_package_version'] == '0.3.8'
+    assert status['current_state']['current_package_version'] == '0.3.9'
     assert status['release_assembly']['version_bump_performed'] is True
     assert status['release_assembly']['release_notes_promoted'] is True
 
@@ -69,8 +85,9 @@ def test_phase9i_release_root_contains_final_bundle_set() -> None:
 
 def test_phase9i_flag_operator_and_performance_bundles_are_current() -> None:
     flag_index = load_json(RELEASE_ROOT / 'tigrcorn-flag-surface-certification-bundle' / 'index.json')
-    assert flag_index['public_flag_count'] == 84
-    assert flag_index['promotion_ready_count'] == 84
+    expected_public_flag_count = current_public_flag_count()
+    assert flag_index['public_flag_count'] == expected_public_flag_count
+    assert flag_index['promotion_ready_count'] == expected_public_flag_count
     assert flag_index['hazard_clusters_green'] is True
 
     operator_index = load_json(RELEASE_ROOT / 'tigrcorn-operator-surface-certification-bundle' / 'index.json')

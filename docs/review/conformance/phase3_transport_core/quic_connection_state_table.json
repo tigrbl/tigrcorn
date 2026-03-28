@@ -1,0 +1,50 @@
+[
+  {
+    "from": "new",
+    "event": "build_initial|send_crypto_data|send_early_stream_data",
+    "to": "establishing",
+    "notes": "connection leaves idle/new state once handshake or 0-RTT data is emitted"
+  },
+  {
+    "from": "new",
+    "event": "handle_version_negotiation(match)",
+    "to": "version_negotiated",
+    "notes": "client selected an alternate supported version"
+  },
+  {
+    "from": "new",
+    "event": "handle_version_negotiation(no-match)",
+    "to": "version_negotiation_failed",
+    "notes": "no mutually supported version remained"
+  },
+  {
+    "from": "establishing",
+    "event": "stream-data-send",
+    "to": "established",
+    "notes": "1-RTT stream transmission implies established application state"
+  },
+  {
+    "from": "establishing",
+    "event": "handshake_done|handshake_complete|stream-receive",
+    "to": "established",
+    "notes": "handshake completion and 1-RTT traffic converge on established"
+  },
+  {
+    "from": "established",
+    "event": "connection_close",
+    "to": "closing",
+    "notes": "local protocol violations or explicit close enter closing"
+  },
+  {
+    "from": "established",
+    "event": "peer_connection_close",
+    "to": "draining",
+    "notes": "peer close moves runtime to draining"
+  },
+  {
+    "from": "any-active",
+    "event": "stateless_reset",
+    "to": "closed",
+    "notes": "validated stateless reset closes the connection immediately"
+  }
+]

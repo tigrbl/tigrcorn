@@ -108,7 +108,7 @@ def encode_content(coding: str, payload: bytes) -> bytes:
         return zlib.compress(payload)
     if coding == 'br':
         if brotli is None:
-            raise RuntimeError('brotli support is not available')
+            raise RuntimeError('brotli support is not available; install tigrcorn[compression]')
         return brotli.compress(payload)
     raise ValueError(f'unsupported content coding: {coding}')
 

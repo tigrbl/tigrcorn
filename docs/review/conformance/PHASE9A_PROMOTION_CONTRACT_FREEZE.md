@@ -18,7 +18,7 @@ It freezes the promotion contract before heavier implementation starts. It is **
 
 - the authoritative release evidence still lives under `docs/review/conformance/releases/0.3.6/release-0.3.6/`
 - the frozen candidate root `docs/review/conformance/releases/0.3.7/release-0.3.7/` remains **immutable**
-- the next promotable root is now explicitly reserved as `docs/review/conformance/releases/0.3.8/release-0.3.8/`
+- the next promotable root is now explicitly reserved as `docs/review/conformance/releases/0.3.9/release-0.3.9/`
 - no work in this phase changes the current release-gate truth; it only freezes the execution contract and reserves the next release path
 
 ## Backlog frozen in this checkpoint

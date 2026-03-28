@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "target_name": "phase8_strict_promotion_program",
-  "status": "phase9_release_promoted_canonical",
+  "target_name": "phase9j_release_repair_and_promotion_program",
+  "status": "phase9j_released_0_3_8_restored_and_0_3_9_promoted",
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "strict_target_boundary": {
     "boundary_path": "docs/review/conformance/certification_boundary.strict_target.json"
@@ -9,8 +9,8 @@
   "authoritative_boundary": {
     "boundary_path": "docs/review/conformance/certification_boundary.json"
   },
-  "candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
-  "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "candidate_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "next_promotable_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
   "flag_surface": {
     "contracts_path": "docs/review/conformance/flag_contracts.json",
     "covering_array_path": "docs/review/conformance/flag_covering_array.json",
@@ -44,7 +44,7 @@
     ]
   },
   "operator_surface": {
-    "bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle/index.json",
+    "bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle/index.json",
     "required_implemented_keys": [
       "workers_process_supervision",
       "reload",
@@ -98,7 +98,7 @@
       {
         "path": "docs/review/conformance/FLAG_CERTIFICATION_TARGET.md",
         "must_contain": [
-          "84 public flag strings",
+          "all current public flag strings",
           "flag_contracts.json",
           "flag_covering_array.json",
           "runtime gaps"
@@ -157,8 +157,8 @@
     "backlog_doc": "docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md",
     "backlog_json": "docs/review/conformance/phase9a_execution_backlog.current.json",
     "candidate_root_policy": {
-      "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.7/release-0.3.7",
-      "next_promotable_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+      "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+      "next_promotable_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
       "allow_mutation_of_candidate_release_root": false
     },
     "operator_surface_no_regression": {
@@ -184,18 +184,16 @@
     ]
   },
   "release_assembly": {
-    "working_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+    "working_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "assembled_bundles": [
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-flag-surface-certification-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle",
-      "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle"
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle"
     ],
     "promotion_ready": true,
-    "version_bump_performed": true,
-    "canonical_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-    "current_package_version": "0.3.8"
+    "version_bump_performed": true
   }
 }

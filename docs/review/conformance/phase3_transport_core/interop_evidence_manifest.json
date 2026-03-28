@@ -1,0 +1,30 @@
+{
+  "release": "0.3.9",
+  "bundle": "phase3_transport_core_strictness_checkpoint",
+  "scenario_classes": [
+    {
+      "class": "http11_framing_and_origin_form_runtime",
+      "artifact": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/result.json"
+    },
+    {
+      "class": "http2_frame_and_stream_state_runtime",
+      "artifact": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-h2-client/result.json"
+    },
+    {
+      "class": "http3_goaway_and_qpack_runtime",
+      "artifact": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack/result.json"
+    },
+    {
+      "class": "quic_retry_runtime",
+      "artifact": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry/result.json"
+    },
+    {
+      "class": "quic_resumption_runtime",
+      "artifact": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption/result.json"
+    },
+    {
+      "class": "quic_path_migration_runtime",
+      "artifact": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration/result.json"
+    }
+  ]
+}

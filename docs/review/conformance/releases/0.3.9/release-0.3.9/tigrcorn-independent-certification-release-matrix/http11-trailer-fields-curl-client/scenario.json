@@ -1,0 +1,143 @@
+{
+  "assertions": [
+    {
+      "equals": 0,
+      "path": "peer.exit_code"
+    },
+    {
+      "equals": 200,
+      "path": "transcript.peer.response.status"
+    },
+    {
+      "equals": "ok",
+      "path": "transcript.peer.response.body"
+    },
+    {
+      "equals": "x-trailer-one",
+      "path": "transcript.peer.response.trailers.0.0"
+    },
+    {
+      "equals": "yes",
+      "path": "transcript.peer.response.trailers.0.1"
+    },
+    {
+      "equals": "x-trailer-two",
+      "path": "transcript.peer.response.trailers.1.0"
+    },
+    {
+      "equals": "done",
+      "path": "transcript.peer.response.trailers.1.1"
+    },
+    {
+      "equals": "http/1.1",
+      "path": "negotiation.peer.protocol"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.packet_trace.exists"
+    },
+    {
+      "equals": true,
+      "path": "artifacts.peer_transcript.exists"
+    }
+  ],
+  "capture": {},
+  "dimensions": {
+    "cipher_group": null,
+    "evidence_tier": "independent_certification",
+    "feature": "trailers",
+    "goaway": false,
+    "ip_family": "ipv4",
+    "key_update": false,
+    "migration": false,
+    "peer": "curl",
+    "protocol": "http1",
+    "qpack_blocking": false,
+    "resumption": false,
+    "retry": false,
+    "role": "server",
+    "zero_rtt": false
+  },
+  "id": "http11-trailer-fields-curl-client",
+  "metadata": {
+    "peer_implementation": "curl",
+    "peer_independence": "third-party",
+    "phase9b_wrapper_id": "curl.http1_client",
+    "rfc": [
+      "RFC 9110 \u00a76.5",
+      "RFC 9112"
+    ]
+  },
+  "peer_process": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_curl_client",
+      "--http1",
+      "--response-trailers"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "implementation_identity": "curl",
+    "implementation_source": "curl project",
+    "implementation_version": null,
+    "metadata": {
+      "wrapper_family": "curl",
+      "wrapper_id": "curl.http1_client"
+    },
+    "name": "curl-http1-trailer-fields-client",
+    "provenance_kind": "third_party_binary",
+    "ready_pattern": null,
+    "ready_timeout": 10.0,
+    "role": "client",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_curl_client",
+      "--version"
+    ]
+  },
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "tests.fixtures_pkg.interop_trailer_app:app",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http1",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "cwd": null,
+    "enabled": true,
+    "env": {},
+    "image": null,
+    "implementation_identity": "tigrcorn-http1",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "metadata": {},
+    "name": "tigrcorn-http1-trailer-fields",
+    "provenance_kind": "package_owned",
+    "ready_pattern": "listening on",
+    "ready_timeout": 10.0,
+    "role": "server",
+    "run_timeout": 30.0,
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

@@ -14,3 +14,8 @@ def keep_alive_for_request(http_version: str, headers: list[tuple[bytes, bytes]]
 def expect_continue(headers: list[tuple[bytes, bytes]]) -> bool:
     value = get_header(headers, b"expect")
     return bool(value and value.lower() == b"100-continue")
+
+
+
+def apply_keep_alive_policy(request_keep_alive: bool, *, enabled: bool) -> bool:
+    return request_keep_alive and enabled

@@ -1,8 +1,8 @@
 {
   "metadata": {
     "bundle_kind": "independent_certification",
-    "canonical_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
-    "description": "Canonical independent certification matrix for the current 0.3.8 release bundle. Every enabled scenario has preserved passing artifacts in the canonical independent bundle.",
+    "canonical_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+    "description": "Canonical independent certification matrix for the current 0.3.9 release bundle. Every enabled scenario has preserved passing artifacts in the canonical independent bundle.",
     "evidence_tier": "independent_certification",
     "independent_peers": [
       "curl",

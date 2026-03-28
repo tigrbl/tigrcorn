@@ -1,0 +1,53 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle",
+  "bundle_kind": "flag_surface_certification_bundle",
+  "generated_at": "2026-03-28T03:19:55.194303+00:00",
+  "public_flag_count": 124,
+  "contract_row_count": 124,
+  "promotion_ready_count": 124,
+  "runtime_state_counts": {
+    "implemented": 124
+  },
+  "families": [
+    {
+      "family": "App / process / development",
+      "flag_count": 17
+    },
+    {
+      "family": "Listener / binding",
+      "flag_count": 15
+    },
+    {
+      "family": "Logging / observability",
+      "flag_count": 14
+    },
+    {
+      "family": "Protocol / transport",
+      "flag_count": 20
+    },
+    {
+      "family": "Resource / timeouts / concurrency",
+      "flag_count": 29
+    },
+    {
+      "family": "Static / delivery",
+      "flag_count": 6
+    },
+    {
+      "family": "TLS / security",
+      "flag_count": 23
+    }
+  ],
+  "family_count": 7,
+  "hazard_clusters": [
+    "transport_protocol_tls",
+    "protocol_timeout_concurrency",
+    "websocket_compression_carrier_transport",
+    "semantic_extensions_by_http_version",
+    "workers_reload_inherited_fd"
+  ],
+  "hazard_cluster_count": 5,
+  "hazard_clusters_green": true,
+  "note": "All current public flags are promotion-ready in this checkpoint; the flag surface is green.",
+  "release_gate_eligible": true
+}

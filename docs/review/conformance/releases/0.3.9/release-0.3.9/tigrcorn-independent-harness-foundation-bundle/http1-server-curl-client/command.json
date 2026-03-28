@@ -1,0 +1,45 @@
+{
+  "peer": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_curl_client",
+      "--http1"
+    ],
+    "cwd": "/mnt/data/tigrcorn_phase9a/tigrcorn_phase9a_promotion_contract_freeze_checkpoint",
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_curl_client",
+      "--version"
+    ]
+  },
+  "scenario_id": "http1-server-curl-client",
+  "sut": {
+    "adapter": "subprocess",
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "56331",
+      "--protocol",
+      "http1",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "cwd": "/mnt/data/tigrcorn_phase9a/tigrcorn_phase9a_promotion_contract_freeze_checkpoint",
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ]
+  }
+}

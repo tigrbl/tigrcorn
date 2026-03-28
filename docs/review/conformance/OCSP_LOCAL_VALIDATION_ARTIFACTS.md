@@ -4,7 +4,7 @@ This document records the local OCSP validation vectors preserved during **Phase
 
 Artifact bundle:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-ocsp-local-validation-artifacts/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts/`
 
 The preserved vectors are:
 

@@ -1,0 +1,45 @@
+{
+  "checkpoint": "documentation_truth_normalization",
+  "status": "implemented_checkpoint_with_green_validation",
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "reviewed_at": "2026-03-26",
+  "implemented": {
+    "canonical_current_state_chain_defined": true,
+    "scoped_current_audits_relabeled": true,
+    "historical_current_aliases_relabeled": true,
+    "example_path_documentation_normalized": true,
+    "archival_current_alias_count": 34
+  },
+  "files_updated": [
+    "CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/CURRENT_STATE_CHAIN.md",
+    "docs/review/conformance/current_state_chain.current.json",
+    "docs/review/conformance/HTTP_INTEGRITY_CACHING_SIGNATURES_STATUS.md",
+    "docs/review/conformance/http_integrity_caching_signatures_status.current.json",
+    "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md",
+    "docs/review/conformance/rfc_applicability_and_competitor_status.current.json",
+    "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md",
+    "docs/review/conformance/rfc_applicability_and_competitor_support.current.json",
+    "docs/review/conformance/README.md",
+    "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
+    "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "examples/README.md",
+    "examples/advanced_protocol_delivery/README.md",
+    "examples/PHASE4_PROTOCOL_PAIRING.md",
+    "docs/review/conformance/phase4_advanced_protocol_delivery/example_matrix.json",
+    "docs/review/conformance/phase4_advanced_delivery/examples_matrix.json"
+  ],
+  "validation": {
+    "expected_exit_criteria": {
+      "one_canonical_current_state_chain": true,
+      "historical_snapshots_clearly_marked_archival": true,
+      "no_machine_readable_file_ambiguously_current_when_historical": true
+    }
+  },
+  "known_partials": [
+    "Historical checkpoint file names are retained for stable references rather than physically renamed.",
+    "Some phase-labelled subsystem status files remain current for their own narrow subsystem scopes and are not the package-wide current-state source."
+  ]
+}

@@ -18,7 +18,7 @@ class CertificationPolicyAlignmentTests(unittest.TestCase):
     def test_policy_docs_name_local_tier_rfcs_explicitly(self):
         text = (ROOT / POLICY_DOC).read_text(encoding='utf-8')
         self.assertIn(BOUNDARY_DOC, text)
-        for needle in ('RFC 7692', 'RFC 9110 §9.3.6', 'RFC 9110 §6.5', 'RFC 9110 §8', 'RFC 6960'):
+        for needle in ('RFC 7692', 'RFC 9110 §9.3.6', 'RFC 9110 §6.5', 'RFC 9110 §8', 'RFC 7232', 'RFC 7233', 'RFC 8297', 'RFC 7838 §3', 'RFC 6960'):
             self.assertIn(needle, text)
         self.assertIn('certifiably fully RFC compliant', text)
 

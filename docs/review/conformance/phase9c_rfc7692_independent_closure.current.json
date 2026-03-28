@@ -1,4 +1,10 @@
 {
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
   "phase": "9C",
   "checkpoint": "phase9c_rfc7692_independent_closure",
   "status": "rfc7692_independent_closure_complete_all_carriers_green",
@@ -18,44 +24,44 @@
   },
   "rfc7692": {
     "strict_target_required_evidence_tier": "independent_certification",
-    "artifact_bundle": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
+    "artifact_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
     "scenario_status": {
       "websocket-http11-server-websockets-client-permessage-deflate": {
-        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate",
+        "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate",
         "assertions_failed": [],
         "error": null,
         "id": "websocket-http11-server-websockets-client-permessage-deflate",
-        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/index.json",
+        "index_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/index.json",
         "passed": true,
-        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/result.json",
-        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/summary.json",
+        "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/summary.json",
         "source_bundle": ".artifacts/phase9c_rfc7692_runs/tree-63c29a5a34a02f50/tigrcorn-independent-certification-release-matrix"
       },
       "websocket-http2-server-h2-client-permessage-deflate": {
-        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate",
+        "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate",
         "assertions_failed": [],
         "error": null,
         "id": "websocket-http2-server-h2-client-permessage-deflate",
-        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/index.json",
+        "index_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/index.json",
         "passed": true,
-        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/result.json",
-        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/summary.json",
+        "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/summary.json",
         "source_bundle": ".artifacts/phase9c_rfc7692_runs/tree-63c29a5a34a02f50/tigrcorn-independent-certification-release-matrix"
       },
       "websocket-http3-server-aioquic-client-permessage-deflate": {
-        "artifact_dir": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate",
+        "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate",
         "assertions_failed": [],
         "error": null,
         "id": "websocket-http3-server-aioquic-client-permessage-deflate",
-        "index_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/index.json",
+        "index_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/index.json",
         "passed": true,
-        "result_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/result.json",
-        "summary_path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/summary.json",
+        "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/result.json",
+        "summary_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/summary.json",
         "source_bundle": ".artifacts/phase9c_rfc7692_runs/tree-b4e164fc3247736c/tigrcorn-independent-certification-release-matrix"
       }
     },
     "negative_local_artifacts": {
-      "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-rfc7692-local-negative-artifacts",
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-rfc7692-local-negative-artifacts",
       "vector_ids": [
         "invalid-offer-parameters-ignored",
         "unsolicited-client-max-window-bits-rejected",
@@ -70,7 +76,7 @@
     "RFC 9110 \u00a78 requires independent_certification evidence, but the resolved evidence only reaches local_conformance"
   ],
   "honest_current_result": [
-    "RFC 7692 independent-certification evidence remains preserved as passing third-party artifacts across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root.",
+    "RFC 7692 independent-certification evidence remains preserved as passing third-party artifacts across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.9 working release root.",
     "The strict boundary and the composite promotion target remain red only because the HTTP/3 trailer-fields and content-coding scenarios are still preserved as non-passing artifacts."
   ]
 }

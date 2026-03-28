@@ -1,0 +1,15 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts",
+  "bundle_kind": "local_negative_artifacts",
+  "total": 6,
+  "passed": 6,
+  "failed": 0,
+  "scenario_ids": [
+    "http11-connect-policy-deny",
+    "http11-connect-allowlist-rejection",
+    "http2-connect-policy-deny",
+    "http2-connect-allowlist-rejection",
+    "http3-connect-policy-deny",
+    "http3-connect-allowlist-rejection"
+  ]
+}

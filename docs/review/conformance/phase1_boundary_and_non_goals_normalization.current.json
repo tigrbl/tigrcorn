@@ -1,0 +1,59 @@
+{
+  "document_role": "checkpoint_current_state_source",
+  "current_truth_source": true,
+  "truth_scope": "phase1_boundary_and_non_goals_normalization",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-27",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": "1",
+  "checkpoint": "phase1_boundary_and_non_goals_normalization",
+  "status": "completed",
+  "current_state": {
+    "canonical_in_bounds_statement_present": true,
+    "canonical_out_of_bounds_statement_present": true,
+    "boundary_model": [
+      "T",
+      "P",
+      "A",
+      "D",
+      "R"
+    ],
+    "supported_public_runtime_surface": [
+      "auto",
+      "asyncio",
+      "uvloop"
+    ],
+    "reserved_runtime_trio_extra_does_not_expand_runtime_contract": true,
+    "explicit_non_goals_cover_trio_rfc9218_rfc9111_rfc9530_rfc9421_jose_cose": true,
+    "explicit_non_goals_cover_parser_ws_engine_interface_pluggability": true,
+    "readme_current_state_doc_chain_reconciled": true,
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "current_package_version": "0.3.9",
+    "certifiably_fully_rfc_compliant_current_boundary": true,
+    "certifiably_fully_featured_current_boundary": true,
+    "unified_policy_matrix_complete": false
+  },
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q src benchmarks tools",
+      "result": "passed"
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true
+    },
+    "evaluate_promotion_target": {
+      "passed": true
+    },
+    "targeted_pytest_suite": {
+      "command": "PYTHONPATH=src pytest -q tests/test_public_api_cli_mtls_surface.py tests/test_public_api_tls_cipher_surface.py tests/test_documentation_truth_normalization_checkpoint.py tests/test_certification_policy_alignment.py tests/test_documentation_reconciliation.py tests/test_dependency_declaration_reconciliation_checkpoint.py tests/test_trio_runtime_surface_reconciliation_checkpoint.py tests/test_rfc_applicability_and_competitor_status.py tests/test_phase9_implementation_plan.py tests/test_phase9a_promotion_contract_freeze.py",
+      "result": "passed",
+      "test_count": 35
+    }
+  },
+  "generated_at": "2026-03-27T06:54:17.235935+00:00"
+}

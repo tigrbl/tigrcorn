@@ -1,0 +1,183 @@
+{
+  "artifact_schema_version": 1,
+  "bundle_kind": "independent_harness_foundation",
+  "commit_hash": "phase9b-independent-harness-foundation",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "evidence_tier": [
+      "independent_certification"
+    ],
+    "feature": [
+      "https-post-echo",
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "quic-tls-handshake",
+      "text-echo",
+      "websocket-extended-connect",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "goaway": [
+      false,
+      true
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false,
+      true
+    ],
+    "peer": [
+      "aioquic",
+      "curl",
+      "openssl",
+      "python-h2",
+      "websockets"
+    ],
+    "protocol": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket"
+    ],
+    "qpack_blocking": [
+      false,
+      true
+    ],
+    "resumption": [
+      false,
+      true
+    ],
+    "retry": [
+      false,
+      true
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false,
+      true
+    ]
+  },
+  "environment": {
+    "generated_at": "2026-03-20T22:23:56.109626+00:00",
+    "platform": {
+      "machine": "x86_64",
+      "platform": "Linux-4.4.0-x86_64-with-glibc2.41",
+      "release": "4.4.0",
+      "system": "Linux"
+    },
+    "python": {
+      "executable": "/opt/pyvenv/bin/python",
+      "implementation": "CPython",
+      "version": "3.13.5"
+    },
+    "tigrcorn": {
+      "commit_hash": "phase9b-independent-harness-foundation",
+      "source_tree_sha256": "b927546a301f57286a73a0e7f0202af94a356f0753e4a3c28b864bd91579c9dd",
+      "version": "0.3.6"
+    },
+    "tools": {
+      "curl": {
+        "available": true,
+        "command": [
+          "curl",
+          "--version"
+        ],
+        "executable": "/usr/local/bin/curl",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "curl 8.10.1 (x86_64-pc-linux-gnu) libcurl/8.10.1 OpenSSL/3.5.4 zlib/1.3.1 brotli/1.1.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.2 nghttp2/1.64.0 librtmp/2.3 OpenLDAP/2.6.10\nRelease-Date: 2024-09-18\nProtocols: dict file ftp ftps gopher gophers http https imap imaps ipfs ipns ldap ldaps mqtt pop3 pop3s rtmp rtsp smb smbs smtp smtps telnet tftp\nFeatures: alt-svc AsynchDNS brotli HSTS HTTP2 HTTPS-proxy IDN IPv6 Largefile libz NTLM PSL SSL threadsafe TLS-SRP UnixSockets zstd"
+      },
+      "docker": {
+        "available": false,
+        "command": [
+          "docker",
+          "--version"
+        ],
+        "executable": null
+      },
+      "git": {
+        "available": true,
+        "command": [
+          "git",
+          "--version"
+        ],
+        "executable": "/usr/bin/git",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "git version 2.47.3"
+      },
+      "openssl": {
+        "available": true,
+        "command": [
+          "openssl",
+          "version"
+        ],
+        "executable": "/usr/bin/openssl",
+        "exit_code": 0,
+        "stderr": "",
+        "stdout": "OpenSSL 3.5.4 30 Sep 2025 (Library: OpenSSL 3.5.4 30 Sep 2025)"
+      }
+    }
+  },
+  "generated_at": "2026-03-20T22:23:56.473553+00:00",
+  "matrix_name": "tigrcorn-independent-certification-release-matrix",
+  "matrix_sha256": "875b3e2d20c7175d12020aa58c023a763fb5a450b818dd8a92b3740f36215c59",
+  "phase": "9B",
+  "proof_scenarios": [
+    "http1-server-curl-client"
+  ],
+  "release": "0.3.9",
+  "release_gate_eligible": false,
+  "required_bundle_files": [
+    "manifest.json",
+    "summary.json",
+    "index.json"
+  ],
+  "required_scenario_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "source_matrix": "docs/review/conformance/external_matrix.release.json",
+  "strict_target_complete": false,
+  "wrapper_families": {
+    "aioquic": [
+      "aioquic.http3_client",
+      "aioquic.http3_websocket_client"
+    ],
+    "curl": [
+      "curl.http1_client",
+      "curl.http2_client"
+    ],
+    "h2": [
+      "h2.http2_client",
+      "h2.http2_websocket_client"
+    ],
+    "openssl": [
+      "openssl.quic_client"
+    ],
+    "websockets": [
+      "websockets.http11_client"
+    ]
+  },
+  "wrapper_registry_module": "tools.interop_wrappers"
+}

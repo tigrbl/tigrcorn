@@ -1,0 +1,71 @@
+{
+  "capture": {},
+  "logs": {
+    "peer_stderr": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "peer_stdout": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_stdout.log",
+      "sha256": "5f7228510a22c26a161ee5bcc25b93d8436a891093a64481eff9bbb9fafd04d5",
+      "size": 1627
+    },
+    "sut_stderr": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_stderr.log",
+      "sha256": "6076b326d25ae60f96ecf51921d26d5c57e1d0d16221c7e2edbcf46a08c923c0",
+      "size": 73
+    },
+    "sut_stdout": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  },
+  "negotiation": {
+    "peer_negotiation": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_negotiation.json",
+      "sha256": "36664f527e2d497ac8a1e1a3d1889f28b308b6351b05b45ad02130b01c3d1354",
+      "size": 1086
+    },
+    "sut_negotiation": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_negotiation.json",
+      "sha256": "da5e102fc86893e01d99f2b8edc8e3ffd935a5a0a8f7bd4b53ff5329a281331c",
+      "size": 895
+    }
+  },
+  "packet_trace": {
+    "exists": true,
+    "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/packet_trace.jsonl",
+    "sha256": "9a016839959fcfe55f045dc01cf6ede759ad354500cd65e7c859a0875c7691db",
+    "size": 15598
+  },
+  "qlog": {
+    "exists": true,
+    "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/qlog.json",
+    "sha256": "05a19df88b220f28fb90e71f6674afca5162a27531f091fd33bd4bf49ada22f7",
+    "size": 14565
+  },
+  "scenario_id": "websocket-http3-server-aioquic-client",
+  "transcripts": {
+    "peer_transcript": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/peer_transcript.json",
+      "sha256": "e1d6010b262b2983d29e6b214b38bf1f47473836b7bbcd176f001cd2fcf0d7ef",
+      "size": 937
+    },
+    "sut_transcript": {
+      "exists": true,
+      "path": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/sut_transcript.json",
+      "sha256": "8b9e5b3d2903d29f2b161c54c04cb51932207a5a794107fd4d8797df4f7415fd",
+      "size": 1389
+    }
+  },
+  "transport": "udp"
+}

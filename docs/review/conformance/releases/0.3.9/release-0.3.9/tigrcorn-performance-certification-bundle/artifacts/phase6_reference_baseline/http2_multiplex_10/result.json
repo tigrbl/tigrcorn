@@ -1,0 +1,136 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "hpack_roundtrip": true
+    },
+    "lane": "end_to_end_release",
+    "live_listener_required": true,
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": true
+  },
+  "deployment_profile": "http2_cleartext",
+  "description": "HTTP/2 multiplexing at 10 streams.",
+  "driver": "http2_multiplex",
+  "failure_reasons": [],
+  "family": "HTTP",
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+  "metrics": {
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ],
+    "connections": 0,
+    "cpu_seconds": 0.0,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "lane": "end_to_end_release",
+    "live_listener_required": true,
+    "p50_ms": 0.18551699986346648,
+    "p95_ms": 0.19474790008189302,
+    "p99_9_ms": 0.1960807981799917,
+    "p99_ms": 0.19583598016197357,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "sample_count": 15,
+    "scheduler_rejections": 0,
+    "streams": 150,
+    "throughput_ops_per_sec": 52824.60189737526,
+    "time_to_first_byte_ms": 0.18551699986346648,
+    "total_attempts": 15,
+    "total_duration_seconds": 0.0028395859999363893,
+    "total_units": 150
+  },
+  "passed": true,
+  "profile_id": "http2_multiplex_10",
+  "relative_regression": {
+    "evaluated": false,
+    "passed": true,
+    "reason": "no baseline root configured"
+  },
+  "rfc_targets": [
+    "RFC 9113",
+    "RFC 7541"
+  ],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_handshake_latency_ms": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 5.0
+      },
+      "max_p50_ms": {
+        "observed": 0.18551699986346648,
+        "passed": true,
+        "threshold": 1.665842
+      },
+      "max_p95_ms": {
+        "observed": 0.19474790008189302,
+        "passed": true,
+        "threshold": 1.894489
+      },
+      "max_p99_9_ms": {
+        "observed": 0.1960807981799917,
+        "passed": true,
+        "threshold": 2.754987
+      },
+      "max_p99_ms": {
+        "observed": 0.19583598016197357,
+        "passed": true,
+        "threshold": 2.04124
+      },
+      "max_protocol_stalls": {
+        "observed": 0,
+        "passed": true,
+        "threshold": 4
+      },
+      "max_rss_kib": {
+        "observed": 40004.0,
+        "passed": true,
+        "threshold": 50438.0
+      },
+      "max_scheduler_rejections": {
+        "observed": 0,
+        "passed": true,
+        "threshold": 4
+      },
+      "max_time_to_first_byte_ms": {
+        "observed": 0.18551699986346648,
+        "passed": true,
+        "threshold": 1.894489
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 52824.60189737526,
+        "passed": true,
+        "threshold": 13132.383683
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_handshake_latency_ms": 5.0,
+      "max_p50_ms": 1.665842,
+      "max_p95_ms": 1.894489,
+      "max_p99_9_ms": 2.754987,
+      "max_p99_ms": 2.04124,
+      "max_protocol_stalls": 4,
+      "max_rss_kib": 50438.0,
+      "max_scheduler_rejections": 4,
+      "max_time_to_first_byte_ms": 1.894489,
+      "min_throughput_ops_per_sec": 13132.383683
+    }
+  }
+}

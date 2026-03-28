@@ -1,0 +1,42 @@
+{
+  "consolidated_from": "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/http3-server-public-client-post-resumption",
+  "quic": {
+    "client_goaway_sent": false,
+    "migration": {
+      "from": [
+        "127.0.0.1",
+        41458
+      ],
+      "used": false
+    },
+    "resumption_attempted": true,
+    "resumption_seeded": true,
+    "retry_observed": false,
+    "session_ticket_received": true,
+    "zero_rtt_attempted": false
+  },
+  "request": {
+    "authority": "localhost",
+    "body": "hello-http3-resumption",
+    "method": "POST",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-http3-resumption",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200
+  }
+}

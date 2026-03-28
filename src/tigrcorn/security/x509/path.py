@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from enum import Enum
 from ipaddress import ip_address
+from pathlib import Path
 import re
 from threading import RLock
 from typing import Iterable, Sequence
@@ -431,6 +432,25 @@ def _load_crl(data: x509.CertificateRevocationList | bytes) -> x509.CertificateR
     if _looks_like_pem(data):
         return x509.load_pem_x509_crl(data)
     return x509.load_der_x509_crl(data)
+
+
+def _split_pem_crls(data: bytes) -> tuple[bytes, ...]:
+    matches = tuple(
+        match.strip() + b'\n'
+        for match in re.findall(
+            rb'-----BEGIN (?:X509 )?CRL-----.*?-----END (?:X509 )?CRL-----',
+            data,
+            flags=re.DOTALL,
+        )
+    )
+    return matches or (data,)
+
+
+def load_crls_from_file(path: str | Path) -> tuple[x509.CertificateRevocationList, ...]:
+    data = Path(path).read_bytes()
+    if _looks_like_pem(data):
+        return tuple(_load_crl(blob) for blob in _split_pem_crls(data))
+    return (_load_crl(data),)
 
 
 def _load_ocsp_response(data: ocsp.OCSPResponse | bytes) -> ocsp.OCSPResponse:
@@ -1231,6 +1251,7 @@ __all__ = [
     'RevocationMode',
     'VerifiedCertificatePath',
     'load_pem_certificates',
+    'load_crls_from_file',
     'verify_certificate_chain',
     'verify_certificate_hostname',
     'verify_certificate_validity',

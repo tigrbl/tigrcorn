@@ -25,7 +25,7 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Freeze and record the certification environment contract.')
     parser.add_argument(
         '--release-root',
-        default='docs/review/conformance/releases/0.3.8/release-0.3.8',
+        default='docs/review/conformance/releases/0.3.9/release-0.3.9',
         help='Repository-relative release root that should receive the preserved certification-environment bundle.',
     )
     parser.add_argument(

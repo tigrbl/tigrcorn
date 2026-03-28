@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http1_baseline",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.010000000000000009,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "p50_ms": 0.015587500001856824,
+    "p95_ms": 0.024786650044461567,
+    "p99_9_ms": 0.026009053029838473,
+    "p99_ms": 0.025784530032524344,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 50168.188855139044,
+    "time_to_first_byte_ms": 0.015587500001856824
+  },
+  "passed": true,
+  "profile_id": "http11_chunked_upload_download"
+}

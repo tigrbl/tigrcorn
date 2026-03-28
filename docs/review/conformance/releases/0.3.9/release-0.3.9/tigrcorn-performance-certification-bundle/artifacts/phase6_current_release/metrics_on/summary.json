@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http1_baseline",
+  "failure_reasons": [],
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "p50_ms": 0.01981100001557934,
+    "p95_ms": 0.029509600028632125,
+    "p99_9_ms": 0.03577709200476421,
+    "p99_ms": 0.034625920009148096,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 41759.66892160386,
+    "time_to_first_byte_ms": 0.01981100001557934
+  },
+  "passed": true,
+  "profile_id": "metrics_on"
+}

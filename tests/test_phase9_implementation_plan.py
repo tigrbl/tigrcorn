@@ -24,7 +24,7 @@ def test_phase9_plan_documents_exist_and_remain_honest() -> None:
     assert 'operator surface: green' in text
     assert 'performance target: blocked by stricter SLO and lane gaps' in text
     assert 'Do **not** mutate `docs/review/conformance/releases/0.3.7/release-0.3.7/`.' in text
-    assert 'docs/review/conformance/releases/0.3.8/release-0.3.8/' in text
+    assert 'docs/review/conformance/releases/0.3.9/release-0.3.9/' in text
 
 
 def test_phase9_plan_json_tracks_current_blockers_and_exit_conditions() -> None:

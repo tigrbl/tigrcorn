@@ -55,11 +55,11 @@ The runner also preserves the underlying logs and wire artifacts already produce
 
 The new helpers are used for the Phase 9B proof bundle and are covered by negative tests.
 
-### 4. A real proof bundle was generated into the new 0.3.8 release root
+### 4. A real proof bundle was generated into the new 0.3.9 release root
 
 A real rerun of one already-green independent scenario now exists under:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-harness-foundation-bundle/`
 
 That bundle contains a fresh rerun of:
 
@@ -96,4 +96,4 @@ What changed is the execution substrate:
 - the repo now has a standardized wrapper registry
 - the repo now has a standardized artifact schema for newly generated independent bundles
 - the repo now has a validator that rejects incomplete bundles
-- the repo now has a proof bundle under the reserved `0.3.8` release root showing the new harness is real
+- the repo now has a proof bundle under the reserved `0.3.9` release root showing the new harness is real

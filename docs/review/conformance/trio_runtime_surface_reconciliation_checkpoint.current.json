@@ -1,0 +1,80 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "checkpoint": "trio_runtime_surface_reconciliation",
+  "status": "trio_descoped_and_runtime_contract_reconciled",
+  "decision": {
+    "selected_path": "de_scope",
+    "supported_runtimes": [
+      "auto",
+      "asyncio",
+      "uvloop"
+    ],
+    "descoped_runtime": "trio",
+    "expands_certification_boundary": false
+  },
+  "validation": {
+    "compileall": {
+      "passed": true,
+      "command": "python -m compileall -q src benchmarks tools"
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true,
+      "failures": []
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true,
+      "failures": []
+    },
+    "evaluate_promotion_target": {
+      "passed": true,
+      "failures": []
+    },
+    "targeted_pytest": {
+      "passed": true,
+      "summary": "37 passed",
+      "files": [
+        "tests/test_phase1_surface_parity_checkpoint.py",
+        "tests/test_phase2_cli_config_surface.py",
+        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+        "tests/test_trio_runtime_surface_reconciliation_checkpoint.py",
+        "tests/test_phase8_promotion_targets.py",
+        "tests/test_release_gates.py"
+      ]
+    }
+  },
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "public_runtime_surface": [
+      "auto",
+      "asyncio",
+      "uvloop"
+    ],
+    "trio_supported": false
+  },
+  "files_touched": [
+    "src/tigrcorn/constants.py",
+    "src/tigrcorn/cli.py",
+    "src/tigrcorn/config/normalize.py",
+    "src/tigrcorn/config/validate.py",
+    "src/tigrcorn/server/bootstrap.py",
+    "docs/review/conformance/cli_flag_surface.json",
+    "docs/review/conformance/flag_contracts.json",
+    "docs/review/conformance/flag_covering_array.json",
+    "docs/review/conformance/phase1_surface_parity_checkpoint.current.json",
+    "docs/review/conformance/phase4_advanced_protocol_delivery_checkpoint.current.json",
+    "docs/review/conformance/phase4_advanced_delivery/runtime_compatibility_matrix.json",
+    "docs/review/conformance/phase4_advanced_protocol_delivery/runtime_compatibility_matrix.json",
+    "CURRENT_REPOSITORY_STATE.md",
+    "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
+    "CURRENT_REPOSITORY_STATE_TRIO_RUNTIME_SURFACE_RECONCILIATION_CHECKPOINT.md",
+    "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+    "tests/test_trio_runtime_surface_reconciliation_checkpoint.py"
+  ]
+}

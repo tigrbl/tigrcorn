@@ -1,0 +1,49 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "connect-relay",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http3",
+  "request": {
+    "authority": "127.0.0.1:46755",
+    "body": "hello-connect-http3",
+    "method": "CONNECT",
+    "mode": "connect-relay",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "echo:hello-connect-http3",
+    "headers": [
+      [
+        "Content-Type",
+        "text/plain"
+      ],
+      [
+        "Content-Length",
+        "24"
+      ],
+      [
+        "Connection",
+        "close"
+      ],
+      [
+        "X-Tunnel-Echo",
+        "deterministic"
+      ]
+    ],
+    "status": 200,
+    "status_line": "HTTP/1.1 200 OK"
+  },
+  "role": "server",
+  "scenario_id": "http3-connect-relay-aioquic-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http3",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http3-connect-relay",
+    "role": "server",
+    "stderr_path": ".artifacts/step4_probe/tree-27df63153084f239/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client/sut_stderr.log",
+    "stdout_path": ".artifacts/step4_probe/tree-27df63153084f239/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client/sut_stdout.log"
+  }
+}

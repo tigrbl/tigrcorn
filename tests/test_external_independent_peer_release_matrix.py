@@ -13,7 +13,7 @@ from tigrcorn.compat.interop_runner import ExternalInteropRunner, load_external_
 
 ROOT = Path(__file__).resolve().parents[1]
 MATRIX_PATH = ROOT / 'docs/review/conformance/external_matrix.release.json'
-RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix'
+RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix'
 EXPECTED_ENABLED_SCENARIO_IDS = {
     'http1-server-curl-client',
     'http11-connect-relay-curl-client',
@@ -87,8 +87,8 @@ class ExternalIndependentPeerReleaseMatrixTests(unittest.TestCase):
         self.assertEqual(index_payload['total'], 30)
         self.assertEqual(index_payload['passed'], 30)
         self.assertEqual(index_payload['failed'], 0)
-        self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.8')
-        self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.8')
+        self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.9')
+        self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.9')
         self.assertEqual(manifest_payload['bundle_kind'], 'independent_certification')
         self.assertIn('0.3.2', ''.join(manifest_payload['source_bundles']))
         self.assertIn('0.3.6-rfc-hardening', ''.join(manifest_payload['source_bundles']))

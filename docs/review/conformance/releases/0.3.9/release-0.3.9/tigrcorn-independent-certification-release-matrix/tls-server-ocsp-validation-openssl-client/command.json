@@ -1,0 +1,34 @@
+{
+  "sut": {
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.ocsp_listener_launcher",
+      "{bind_host}",
+      "{bind_port}"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ],
+    "name": "tigrcorn-tls-ocsp-server",
+    "adapter": "subprocess"
+  },
+  "peer": {
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_openssl_tls_client"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_pkg.external_openssl_tls_client",
+      "--version"
+    ],
+    "name": "openssl-tls-ocsp-client",
+    "adapter": "subprocess"
+  }
+}

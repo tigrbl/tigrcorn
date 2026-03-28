@@ -1,0 +1,38 @@
+[
+  {
+    "from": "client_idle",
+    "event": "start() / outbound ClientHello",
+    "to": "client_wait_server",
+    "notes": "client has emitted ClientHello and waits for the server flight"
+  },
+  {
+    "from": "server_idle",
+    "event": "ClientHello accepted without HRR",
+    "to": "server_wait_client_finished",
+    "notes": "server selected parameters and waits for the client Finished"
+  },
+  {
+    "from": "server_idle",
+    "event": "ClientHello requires HRR",
+    "to": "server_wait_client_hello_retry",
+    "notes": "server issued HelloRetryRequest and waits for a replacement ClientHello"
+  },
+  {
+    "from": "server_wait_client_hello_retry",
+    "event": "replacement ClientHello accepted",
+    "to": "server_wait_client_finished",
+    "notes": "retry path converges on the same post-ServerHello wait state"
+  },
+  {
+    "from": "client_wait_server",
+    "event": "server flight validated and Finished processed",
+    "to": "complete",
+    "notes": "client completed certificate verification, Finished, and traffic secret installation"
+  },
+  {
+    "from": "server_wait_client_finished",
+    "event": "client Finished validated",
+    "to": "complete",
+    "notes": "server completed handshake and may issue session tickets"
+  }
+]

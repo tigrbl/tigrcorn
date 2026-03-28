@@ -1,4 +1,10 @@
 {
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
   "artifact_schema": {
     "bundle_required_files": [
       "manifest.json",
@@ -30,7 +36,7 @@
   "phase": "9B",
   "proof_bundle": {
     "bundle_kind": "independent_harness_foundation",
-    "path": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle",
+    "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-harness-foundation-bundle",
     "proof_scenarios": [
       "http1-server-curl-client"
     ],

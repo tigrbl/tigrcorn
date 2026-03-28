@@ -7,7 +7,7 @@ from logging import Logger
 from pathlib import Path
 from typing import Any, Mapping
 
-from tigrcorn.config.files import ConfigFileError, load_config_file
+from tigrcorn.config.files import ConfigFileError, load_config_source
 
 
 class LoggingConfigError(RuntimeError):
@@ -22,6 +22,7 @@ _ALLOWED_PROFILE_KEYS = {
     'access_log_format',
     'error_log_file',
     'stream',
+    'use_colors',
 }
 
 
@@ -34,6 +35,7 @@ class ResolvedLoggingConfig:
     access_log_format: str | None = None
     error_log_file: str | None = None
     stream: bool = True
+    use_colors: bool | None = None
     log_config: str | None = None
     explicit_fields: tuple[str, ...] = ()
 
@@ -51,6 +53,24 @@ class JSONFormatter(logging.Formatter):
             if value is not None:
                 payload[key] = value
         return json.dumps(payload, sort_keys=True)
+
+
+class ColorFormatter(logging.Formatter):
+    _COLORS = {
+        logging.DEBUG: '\x1b[36m',
+        logging.INFO: '\x1b[32m',
+        logging.WARNING: '\x1b[33m',
+        logging.ERROR: '\x1b[31m',
+        logging.CRITICAL: '\x1b[35m',
+    }
+    _RESET = '\x1b[0m'
+
+    def format(self, record: logging.LogRecord) -> str:
+        message = super().format(record)
+        color = self._COLORS.get(record.levelno)
+        if not color:
+            return message
+        return f'{color}{message}{self._RESET}'
 
 
 class AccessLogger:
@@ -96,7 +116,7 @@ def _coerce_profile_bool(name: str, value: Any) -> bool:
 
 def load_logging_profile(path: str | Path) -> dict[str, Any]:
     try:
-        payload = load_config_file(path)
+        payload = load_config_source(path)
     except ConfigFileError as exc:
         raise LoggingConfigError(str(exc)) from exc
     if 'logging' in payload and isinstance(payload['logging'], Mapping):
@@ -108,7 +128,7 @@ def load_logging_profile(path: str | Path) -> dict[str, Any]:
         raise LoggingConfigError(f'log_config contains unsupported keys: {unknown}')
     result: dict[str, Any] = {}
     for key, value in payload.items():
-        if key in {'structured', 'access_log', 'stream'}:
+        if key in {'structured', 'access_log', 'stream', 'use_colors'}:
             result[key] = _coerce_profile_bool(key, value)
         elif key in {'level', 'access_log_file', 'access_log_format', 'error_log_file'}:
             if value is not None and not isinstance(value, str):
@@ -131,10 +151,7 @@ def resolve_logging_config(level: str = 'info', *, config: Any | None = None) ->
                 setattr(resolved, key, value)
         resolved.log_config = str(log_config_path)
 
-    # Defaults/config-file values on the merged config remain authoritative only when
-    # there is no log_config file. When a log_config file is present, only explicit CLI
-    # logging flags override the loaded profile.
-    source_fields = ('level', 'structured', 'access_log', 'access_log_file', 'access_log_format', 'error_log_file')
+    source_fields = ('level', 'structured', 'access_log', 'access_log_file', 'access_log_format', 'error_log_file', 'use_colors')
     if not log_config_path:
         for field_name in source_fields:
             value = getattr(config, field_name, getattr(resolved, field_name))
@@ -155,6 +172,14 @@ def validate_logging_contract(config: Any | None) -> None:
         resolve_logging_config(getattr(config, 'level', 'info'), config=config)
 
 
+def _stream_formatter(*, structured: bool, use_colors: bool) -> logging.Formatter:
+    if structured:
+        return JSONFormatter()
+    if use_colors:
+        return ColorFormatter('%(asctime)s %(levelname)s %(name)s %(message)s')
+    return logging.Formatter('%(asctime)s %(levelname)s %(name)s %(message)s')
+
+
 def configure_logging(level: str = 'info', *, config: Any | None = None) -> logging.Logger:
     logger = logging.getLogger('tigrcorn')
     for handler in list(logger.handlers):
@@ -167,21 +192,25 @@ def configure_logging(level: str = 'info', *, config: Any | None = None) -> logg
     resolved = resolve_logging_config(level, config=config)
     logger.setLevel(_coerce_level(resolved.level))
     logger.propagate = False
-    formatter: logging.Formatter = JSONFormatter() if resolved.structured else logging.Formatter('%(asctime)s %(levelname)s %(name)s %(message)s')
 
     if resolved.stream:
         stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(formatter)
+        enable_colors = resolved.use_colors
+        if enable_colors is None:
+            stream = getattr(stream_handler, 'stream', None)
+            enable_colors = bool(getattr(stream, 'isatty', lambda: False)())
+        stream_handler.setFormatter(_stream_formatter(structured=resolved.structured, use_colors=bool(enable_colors)))
         logger.addHandler(stream_handler)
 
+    file_formatter: logging.Formatter = JSONFormatter() if resolved.structured else logging.Formatter('%(asctime)s %(levelname)s %(name)s %(message)s')
     if resolved.access_log_file:
-        logger.addHandler(_file_handler(resolved.access_log_file, formatter))
+        logger.addHandler(_file_handler(resolved.access_log_file, file_formatter))
     if resolved.error_log_file and resolved.error_log_file != resolved.access_log_file:
-        logger.addHandler(_file_handler(resolved.error_log_file, formatter))
+        logger.addHandler(_file_handler(resolved.error_log_file, file_formatter))
 
     if not logger.handlers:
         stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(formatter)
+        stream_handler.setFormatter(_stream_formatter(structured=resolved.structured, use_colors=False))
         logger.addHandler(stream_handler)
 
     return logger

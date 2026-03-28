@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "scenario_id": "websocket-http2-server-h2-client",
+  "protocol": "http2",
+  "feature": "websocket-extended-connect",
+  "peer": "python-h2",
+  "role": "server",
+  "evidence_tier": "independent_certification",
+  "passed": true,
+  "error": null,
+  "assertions_failed": [],
+  "required_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "artifact_files": {
+    "summary.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/summary.json",
+      "exists": true,
+      "size": 6154,
+      "sha256": "c3b1fc2c2eef8598c98046c10eb5720f587d50e67cf2baeb7fc1c46d991ee3bd"
+    },
+    "index.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/index.json",
+      "exists": true,
+      "size": 6465,
+      "sha256": "73aa661245f68eb66be24ac7d8521895d7eabe8fe30b4b4a881a3652c6d1089b"
+    },
+    "result.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/result.json",
+      "exists": true,
+      "size": 7752,
+      "sha256": "0bf8ca0cd30335622c1df447151d2bcfdc29fc727e299766db9b195ccecfcfaa"
+    },
+    "scenario.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/scenario.json",
+      "exists": true,
+      "size": 2496,
+      "sha256": "5738a4539b3ce54a71537a888417355a0427adda8bf7fea90832b641c9c6a032"
+    },
+    "command.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/command.json",
+      "exists": true,
+      "size": 814,
+      "sha256": "c4c34e73390f24233a496c9051ae45063fb5f02e212c4145a390acd870d07f24"
+    },
+    "env.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/env.json",
+      "exists": true,
+      "size": 82,
+      "sha256": "d0d791eab0605489cd37fd3e1c957a3f76a66fb2ec4bb8e23c2be0c6a2dc8bf4"
+    },
+    "versions.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/versions.json",
+      "exists": true,
+      "size": 3445,
+      "sha256": "660be79f868c2051c1280056a6e9e89574fcd1f4b38e4c989266d08fdb8791b5"
+    },
+    "wire_capture.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/wire_capture.json",
+      "exists": true,
+      "size": 3047,
+      "sha256": "f720a32c2947db7c40f833d8377e9e5ac9f590352ec8244d180dbe7a00f33766"
+    },
+    "packet_trace.jsonl": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/packet_trace.jsonl",
+      "exists": true,
+      "size": 2815,
+      "sha256": "74349475e01e03bd600693ff573f9d7d14d8f3cd9dd90d871560cc20ae3cc571"
+    },
+    "qlog.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/qlog.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "sut_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/sut_stderr.log",
+      "exists": true,
+      "size": 67,
+      "sha256": "02abeb211001a877f1293e8e441eb2492cf1c624c56c2f83540895acec155cac"
+    },
+    "peer_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/peer_stdout.log",
+      "exists": true,
+      "size": 180,
+      "sha256": "187eed26dbc87bc920fe4561902b50997935601ea8b1216112ef096e083e4bbe"
+    },
+    "peer_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/sut_transcript.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/peer_transcript.json",
+      "exists": true,
+      "size": 414,
+      "sha256": "92ff39fd5702049e0fcc27efe7c082a64a0d3483e996757fb9d0abe6f4c93ea8"
+    },
+    "sut_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/sut_negotiation.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/peer_negotiation.json",
+      "exists": true,
+      "size": 261,
+      "sha256": "edb4a87666d02dc33cfd905d072e32d280944fb76a3c60c43a21d1de285ecf25"
+    }
+  }
+}

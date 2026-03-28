@@ -1,0 +1,26 @@
+{
+  "feature": "static_files",
+  "status": "productionized_checkpoint",
+  "supports": [
+    "etag",
+    "last-modified",
+    "conditional requests",
+    "byte ranges",
+    "HEAD",
+    "gzip",
+    "brotli",
+    "safe path normalization",
+    "file-stat metadata without full body reads",
+    "range slicing from file offsets",
+    "streaming file delivery",
+    "http1 best-effort sendfile",
+    "http2 streamed file segments",
+    "http3 streamed file segments",
+    "precompressed sidecar selection"
+  ],
+  "known_partials": [
+    "dynamic on-the-fly content coding remains intentionally buffered and size-limited to small static representations",
+    "generic non-static application responses now spill to file-backed temporary segments and stream when possible, but transforms that require whole-body bytes still materialize",
+    "HTTP/3 large-response delivery continues to respect QUIC anti-amplification and requires normal client ACK/timer progress"
+  ]
+}

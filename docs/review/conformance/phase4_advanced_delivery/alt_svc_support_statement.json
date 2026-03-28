@@ -1,0 +1,35 @@
+{
+  "feature": "alt_svc",
+  "status": "certified_authoritative_and_strict_local_conformance_target",
+  "operator_surface": {
+    "cli_flags": [
+      "--alt-svc",
+      "--alt-svc-auto",
+      "--no-alt-svc-auto",
+      "--alt-svc-ma",
+      "--alt-svc-persist"
+    ],
+    "config_fields": [
+      "http.alt_svc_headers",
+      "http.alt_svc_auto",
+      "http.alt_svc_max_age",
+      "http.alt_svc_persist"
+    ]
+  },
+  "behavior": {
+    "explicit_values_supported": true,
+    "auto_h3_advertisement_supported": true,
+    "automatic_advertisement_suppressed_on_http3_requests": true,
+    "bounded_profile": "response_header_field_only"
+  },
+  "certification_boundary": {
+    "target_rfc": "RFC 7838 \u00a73",
+    "highest_required_evidence_tier": "local_conformance",
+    "corpus_vector": "http-alt-svc-header-advertisement",
+    "support_envelope": "header_field_advertisement_only"
+  },
+  "non_targeted_surfaces": [
+    "RFC 7838 protocol-level frame surfaces outside header-field advertisement",
+    "RFC 9218 prioritization"
+  ]
+}

@@ -26,7 +26,7 @@ from tools.interop_wrappers import describe_wrapper_registry
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
 RELEASES = CONFORMANCE / 'releases'
 STRICT_BOUNDARY = CONFORMANCE / 'certification_boundary.strict_target.json'
-TO_ROOT = RELEASES / '0.3.8' / 'release-0.3.8'
+TO_ROOT = RELEASES / '0.3.9' / 'release-0.3.9'
 TO_INDEPENDENT = TO_ROOT / 'tigrcorn-independent-certification-release-matrix'
 TO_SAME_STACK = TO_ROOT / 'tigrcorn-same-stack-replay-matrix'
 TO_MIXED = TO_ROOT / 'tigrcorn-mixed-compatibility-release-matrix'
@@ -164,7 +164,7 @@ def _overlay_generated_scenarios(generated_root: Path) -> None:
     feature_values.add('permessage-deflate')
     manifest_payload.setdefault('dimensions', {})['feature'] = sorted(feature_values)
     notes = list(manifest_payload.get('notes', []))
-    note = 'Phase 9C overlays a passing RFC 7692 HTTP/3 aioquic permessage-deflate artifact into the 0.3.8 working release root while preserving the existing HTTP/1.1 and HTTP/2 passing artifacts.'
+    note = 'Phase 9C overlays a passing RFC 7692 HTTP/3 aioquic permessage-deflate artifact into the 0.3.9 working release root while preserving the existing HTTP/1.1 and HTTP/2 passing artifacts.'
     if note not in notes:
         notes.append(note)
     manifest_payload['notes'] = notes
@@ -267,11 +267,11 @@ def _create_local_negative_artifacts() -> None:
 
 def _update_strict_boundary() -> None:
     payload = _load_json(STRICT_BOUNDARY)
-    payload['canonical_release_bundle'] = 'docs/review/conformance/releases/0.3.8/release-0.3.8'
+    payload['canonical_release_bundle'] = 'docs/review/conformance/releases/0.3.9/release-0.3.9'
     payload['artifact_bundles'] = {
-        'independent_certification': 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix',
-        'same_stack_replay': 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix',
-        'mixed': 'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix',
+        'independent_certification': 'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix',
+        'same_stack_replay': 'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix',
+        'mixed': 'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix',
     }
     _dump_json(STRICT_BOUNDARY, payload)
 
@@ -280,7 +280,7 @@ def _update_release_root_manifest() -> None:
     manifest_path = TO_ROOT / 'manifest.json'
     manifest = _load_json(manifest_path) if manifest_path.exists() else {}
     manifest.update({
-        'release': '0.3.8',
+        'release': '0.3.9',
         'schema_version': 1,
         'generated_at': _now(),
         'source_checkpoint': 'phase9c_rfc7692_independent_closure',
@@ -311,13 +311,13 @@ def _update_release_root_manifest() -> None:
     manifest['bundles'] = bundles
     manifest['notes'] = [
         'Phase 9B independent harness foundation remains preserved in this release root.',
-        'Phase 9C now preserves passing RFC 7692 independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root.',
+        'Phase 9C now preserves passing RFC 7692 independent artifacts for HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.9 working release root.',
         'This release root remains non-promotable because the strict target and promotion target are still blocked by the remaining HTTP/3 CONNECT, trailer-fields, and content-coding scenarios.',
     ]
     _dump_json(manifest_path, manifest)
 
     (TO_ROOT / 'README.md').write_text(
-        '# Release 0.3.8 working promotion root\n\n'
+        '# Release 0.3.9 working promotion root\n\n'
         'This directory remains the next promotable working root reserved by the Phase 9 plan.\n\n'
         'Current truth after the Step 3 RFC 7692 HTTP/3 closure checkpoint:\n\n'
         '- the release root is **not yet promotable**\n'
@@ -371,14 +371,14 @@ def _write_phase9c_status_and_docs() -> None:
         },
         'strict_boundary_failures': strict.failures,
         'honest_current_result': [
-            'RFC 7692 independent-certification evidence is now preserved as passing third-party artifacts across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root.',
+            'RFC 7692 independent-certification evidence is now preserved as passing third-party artifacts across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.9 working release root.',
             'The strict boundary and the composite promotion target remain red only because the HTTP/3 CONNECT, trailer-fields, and content-coding scenarios are still preserved as non-passing artifacts.',
         ],
     }
     _dump_json(PHASE9C_STATUS_JSON, payload)
     PHASE9C_STATUS_MD.write_text(
         '# Phase 9C RFC 7692 independent-certification closure\n\n'
-        'This checkpoint now records RFC 7692 as green across all three required carriers in the 0.3.8 working release root.\n\n'
+        'This checkpoint now records RFC 7692 as green across all three required carriers in the 0.3.9 working release root.\n\n'
         '## Current result\n\n'
         f"- authoritative boundary: `{authoritative.passed}`\n"
         f"- strict target boundary: `{strict.passed}`\n"
@@ -392,7 +392,7 @@ def _write_phase9c_status_and_docs() -> None:
     )
     DELIVERY_NOTES.write_text(
         '# Delivery notes — Phase 9C RFC 7692 independent closure\n\n'
-        'This checkpoint closes the remaining RFC 7692 HTTP/3 strict-target artifact gap by overlaying a passing `aioquic` WebSocket permessage-deflate scenario into the existing 0.3.8 working release root.\n\n'
+        'This checkpoint closes the remaining RFC 7692 HTTP/3 strict-target artifact gap by overlaying a passing `aioquic` WebSocket permessage-deflate scenario into the existing 0.3.9 working release root.\n\n'
         'RFC 7692 is now green across HTTP/1.1, HTTP/2, and HTTP/3. The package remains non-promotable because the HTTP/3 CONNECT, trailer-fields, and content-coding scenarios are still non-passing.\n',
         encoding='utf-8',
     )
@@ -403,7 +403,7 @@ def _update_current_repository_state() -> None:
     text = path.read_text(encoding='utf-8')
     phase9c_section = (
         '## Phase 9C RFC 7692 independent-closure checkpoint\n\n'
-        'The HTTP/3 RFC 7692 strict-target scenario is now preserved as a **passing** third-party `aioquic` artifact, so RFC 7692 is now green across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root.\n\n'
+        'The HTTP/3 RFC 7692 strict-target scenario is now preserved as a **passing** third-party `aioquic` artifact, so RFC 7692 is now green across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.9 working release root.\n\n'
         'Primary Phase 9C artifacts:\n\n'
         '- `docs/review/conformance/PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`\n'
         '- `docs/review/conformance/phase9c_rfc7692_independent_closure.current.json`\n'

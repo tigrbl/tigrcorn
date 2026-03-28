@@ -1,0 +1,44 @@
+[
+  {
+    "from": "initial",
+    "event": "HEADERS",
+    "to": "data",
+    "notes": "initial request header section decoded successfully"
+  },
+  {
+    "from": "initial",
+    "event": "HEADERS (QPACK blocked)",
+    "to": "initial",
+    "notes": "blocked section is preserved until encoder instructions arrive"
+  },
+  {
+    "from": "initial",
+    "event": "DATA",
+    "to": "error",
+    "notes": "DATA before initial HEADERS is forbidden"
+  },
+  {
+    "from": "data",
+    "event": "DATA",
+    "to": "data",
+    "notes": "body payload accumulates and content-length accounting advances"
+  },
+  {
+    "from": "data",
+    "event": "HEADERS",
+    "to": "trailers",
+    "notes": "trailing header section closes the data phase"
+  },
+  {
+    "from": "trailers",
+    "event": "DATA",
+    "to": "error",
+    "notes": "DATA after trailers is forbidden"
+  },
+  {
+    "from": "initial|data|trailers",
+    "event": "FIN + complete parse + validators satisfied",
+    "to": "ready",
+    "notes": "request is ready only when fin is seen, initial headers exist, no blocked sections remain, and content-length matches"
+  }
+]

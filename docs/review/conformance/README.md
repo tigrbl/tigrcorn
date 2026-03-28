@@ -2,11 +2,22 @@
 
 The canonical package-wide certification target is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
+## Canonical policy sources
+
+The current package policy chain is:
+
+- `CERTIFICATION_BOUNDARY.md` — authoritative in-bounds statement
+- `certification_boundary.json` — authoritative machine-readable RFC evidence policy
+- `BOUNDARY_NON_GOALS.md` — authoritative out-of-bounds statement
+- `NEXT_DEVELOPMENT_TARGETS.md` — current in-bounds post-promotion backlog
+
+The preserved stricter profile in `STRICT_PROFILE_TARGET.md` remains green, but it is a satisfied stricter profile rather than a competing current package boundary.
+
 ## Current canonical release root
 
-The current release evidence is consolidated under `docs/review/conformance/releases/0.3.8/release-0.3.8/`.
+The current release evidence is consolidated under `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
 
-That canonical 0.3.8 release root contains the assembled strict-promotion bundle set plus the preserved auxiliary bundles:
+That canonical 0.3.9 release root contains the assembled strict-promotion bundle set plus the preserved auxiliary bundles:
 
 - `tigrcorn-independent-certification-release-matrix/`
 - `tigrcorn-same-stack-replay-matrix/`
@@ -54,7 +65,7 @@ That matrix now includes preserved passing artifacts for:
 
 The package is now **certifiably fully RFC compliant under the authoritative certification boundary**.
 
-The canonical 0.3.8 release root is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.
+The canonical 0.3.9 release root is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.
 
 The remaining broader items are explicitly outside the current authoritative blocker set:
 
@@ -68,12 +79,35 @@ For the explicit policy decision that resolved the earlier documentation mismatc
 
 For historical offline remediation artifacts and strict-profile planning material, see `docs/review/conformance/OFFLINE_COMPLETION_ATTEMPT.md`, `docs/review/conformance/offline_completion_state.json`, `docs/review/conformance/ALL_SURFACES_INDEPENDENT_STATUS.md`, `docs/review/conformance/all_surfaces_independent_state.json`, `docs/review/conformance/FLOW_CONTROL_CERTIFICATION_STATUS.md`, `docs/review/conformance/SECONDARY_PARTIALS_STATUS.md`, and `docs/review/conformance/secondary_partials_state.json`.
 
+## Canonical current-state chain
+
+The canonical package-wide current-state chain is now explicitly defined in:
+
+- `docs/review/conformance/CURRENT_STATE_CHAIN.md`
+- `docs/review/conformance/current_state_chain.current.json`
+- `CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/package_compliance_review_phase9i.current.json`
+- `docs/review/conformance/release_gate_status.current.json`
+- `docs/review/conformance/phase9_release_promotion.current.json`
+- `docs/review/conformance/phase9i_release_assembly.current.json`
+- `docs/review/conformance/phase9i_strict_validation.current.json`
+
+Historical phase checkpoint snapshots still keep stable `*.current.json` file names where needed for tests and provenance, but they are now explicitly labeled by `document_role` and are not ambiguous current-state sources.
+
+## Scoped current audits and archival compatibility docs
+
+The focused HTTP integrity/caching/signatures audit and the RFC applicability / competitor comparison documents remain current for their own scopes, but they are **not** the canonical package-wide current-state source. Use `docs/review/conformance/current_state_chain.current.json` to distinguish canonical package truth from scoped audits and historical snapshots.
+
+The canonical current integrated Phase 4 example tree is `examples/advanced_delivery/`. The older `examples/advanced_protocol_delivery/` path is retained as an archival compatibility path for the original Phase 4 checkpoint examples.
+
 ## Config / CLI substrate tracking
 
 The Phase 2 config / CLI surface is documented in:
 
 - `CLI_FLAG_SURFACE.md`
 - `cli_flag_surface.json`
+- `OPTIONAL_DEPENDENCY_SURFACE.md`
+- `optional_dependency_surface.current.json`
 - `DEPLOYMENT_PROFILES.md`
 - `deployment_profiles.json`
 - `NEXT_DEVELOPMENT_TARGETS.md`
@@ -85,6 +119,11 @@ The current operator-surface checkpoint is documented in:
 
 - `PHASE4_OPERATOR_SURFACE_STATUS.md`
 - `phase4_operator_surface_status.current.json`
+
+The current public lifecycle / embedder contract is documented in:
+
+- `../../LIFECYCLE_AND_EMBEDDED_SERVER.md`
+- `phase5_phase6_phase7_tls_lifecycle_flag_truth.current.json`
 
 Those documents track the public production operator surface separately from the canonical RFC boundary so the package can remain honest about what is RFC-certified versus what is operationally implemented and tested.
 
@@ -118,23 +157,25 @@ A focused audit for RFC 7232, RFC 9111, RFC 9530, RFC 9421, JOSE, COSE, and rela
 - `HTTP_INTEGRITY_CACHING_SIGNATURES_STATUS.md`
 - `http_integrity_caching_signatures_status.current.json`
 
-That audit explains why the package remains honest under its transport-centric certification boundary while still not claiming the broader HTTP validator / caching / signature stack.
+That audit explains why the package remains honest under its transport-centric certification boundary, now including RFC 7232 / RFC 7233 direct entity semantics, RFC 8297 Early Hints, and the bounded RFC 7838 §3 Alt-Svc header-field surface, while still not claiming the broader HTTP caching / digest / signature stack.
 
 A companion applicability / prioritization and competitor comparison now lives in:
 
 - `RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`
 - `rfc_applicability_and_competitor_status.current.json`
 
-That companion classifies the broader RFC table into core current-boundary work, adjacent next-step work, conditional boundary-expansion work, and non-core product-layer work, while also preserving a current documented comparison against Uvicorn, Hypercorn, Daphne, and Granian.
+That companion classifies the broader RFC table into core current-boundary work, adjacent optional next-step work, conditional boundary-expansion work, and non-core product-layer work, while also preserving a current documented comparison against Uvicorn, Hypercorn, Daphne, and Granian.
 
 A companion applicability / roadmap / competitor snapshot now lives in:
 
 - `RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md`
 - `rfc_applicability_and_competitor_support.current.json`
+- `PHASE4_RFC_BOUNDARY_FORMALIZATION.md`
+- `phase4_rfc_boundary_formalization_checkpoint.current.json`
 
-## Phase 8 target tracking
+## Preserved stricter profile and current development tracking
 
-The strict-promotion target is now documented through:
+The preserved stricter profile remains documented through:
 
 - `STRICT_PROFILE_TARGET.md`
 - `certification_boundary.strict_target.json`
@@ -145,14 +186,21 @@ The strict-promotion target is now documented through:
 - `../performance/performance_slos.json`
 - `promotion_gate.target.json`
 
-Those files define the next target without changing the current authoritative package claim.
+Those files remain useful for promotion/audit provenance, but they do **not** redefine the current package boundary.
+
+The current **in-bounds** post-promotion backlog is now documented through:
+
+- `NEXT_DEVELOPMENT_TARGETS.md`
+- `BOUNDARY_NON_GOALS.md`
+
+That pair defines what the repository is still choosing to build next, and what it is explicitly **not** choosing to build, inside the current T/P/A/D/R governance model.
 
 A repository-level package compliance review for the assembled Phase 9I checkpoint now also lives in:
 
 - `PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md`
 - `package_compliance_review_phase9i.current.json`
 
-A focused current-state snapshot for this target lives in `PHASE8_STRICT_PROMOTION_TARGET_STATUS.md` and `phase8_strict_promotion_target_status.current.json`.
+The historical strict-target snapshot for this target remains preserved in `PHASE8_STRICT_PROMOTION_TARGET_STATUS.md` and `phase8_strict_promotion_target_status.current.json`. Those files are retained for provenance and are not the canonical package-wide current-state chain.
 
 A detailed execution plan for closing the remaining work now also lives in:
 
@@ -173,6 +221,8 @@ The executed Phase 9B independent-harness foundation is now documented through:
 - `interop_wrapper_registry.current.json`
 - `phase9b_independent_harness.current.json`
 
+Those executed phase records remain in-tree for provenance and stable references. Their `*.current.json` file names do not make them the canonical package-wide current-state chain.
+
 
 ## Phase 9C RFC 7692 independent closure
 
@@ -188,7 +238,7 @@ The executed Phase 9D1 CONNECT relay closure is now documented through:
 
 - `PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
 - `phase9d1_connect_relay_independent.current.json`
-- `../releases/0.3.8/release-0.3.8/tigrcorn-connect-relay-local-negative-artifacts/`
+- `../releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/`
 - `DELIVERY_NOTES_PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
 
 
@@ -277,7 +327,7 @@ The executed Phase 9I release-assembly checkpoint is now documented through:
 
 - `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 - `phase9i_release_assembly.current.json`
-- `../releases/0.3.8/release-0.3.8/`
+- `../releases/0.3.9/release-0.3.9/`
 - `../../DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 
 
@@ -289,7 +339,7 @@ Current artifacts for that contract live in:
 
 - `CERTIFICATION_ENVIRONMENT_FREEZE.md`
 - `certification_environment_freeze.current.json`
-- `releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle/`
+- `releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
 - `../../DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
 
 ## aioquic adapter preflight
@@ -298,7 +348,7 @@ The direct third-party `aioquic` adapter preflight now also lives in:
 
 - `AIOQUIC_ADAPTER_PREFLIGHT.md`
 - `aioquic_adapter_preflight.current.json`
-- `releases/0.3.8/release-0.3.8/tigrcorn-aioquic-adapter-preflight-bundle/`
+- `releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle/`
 - `../../DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md`
 
 ## Phase 9I strict validation

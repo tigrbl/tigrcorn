@@ -1,0 +1,89 @@
+{
+  "document_role": "current_subsystem_truth_source",
+  "current_truth_source": true,
+  "truth_scope": "subsystem_current_state",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "subsystem_truth_source": true,
+  "checkpoint": "optional_dependency_surface",
+  "generated_at": "2026-03-26T14:31:31.010861+00:00",
+  "status": "declared_install_paths_aligned_with_current_optional_feature_surface",
+  "public_runtime_surface": [
+    "auto",
+    "asyncio",
+    "uvloop"
+  ],
+  "extras": {
+    "config-yaml": {
+      "dependencies": [
+        "PyYAML>=6.0"
+      ],
+      "public_status": "supported",
+      "purpose": "Enable .yaml/.yml config loading"
+    },
+    "compression": {
+      "dependencies": [
+        "brotli>=1.1.0"
+      ],
+      "public_status": "supported",
+      "purpose": "Enable Brotli content coding and .br static sidecars"
+    },
+    "runtime-uvloop": {
+      "dependencies": [
+        "uvloop>=0.19.0; platform_system != 'Windows'"
+      ],
+      "public_status": "supported",
+      "purpose": "Enable --runtime uvloop"
+    },
+    "runtime-trio": {
+      "dependencies": [
+        "trio>=0.25.0"
+      ],
+      "public_status": "declared_not_supported",
+      "purpose": "Reserved dependency path for future/internal trio runtime work"
+    },
+    "full-featured": {
+      "dependencies": [
+        "PyYAML>=6.0",
+        "brotli>=1.1.0",
+        "uvloop>=0.19.0; platform_system != 'Windows'"
+      ],
+      "public_status": "supported",
+      "purpose": "Aggregate the current public optional feature surface"
+    },
+    "certification": {
+      "dependencies": [
+        "aioquic>=1.3.0",
+        "h2>=4.1.0",
+        "websockets>=12.0",
+        "wsproto>=1.3.0"
+      ],
+      "public_status": "supported",
+      "purpose": "Certification/interoperability tooling and preserved peer paths"
+    },
+    "dev": {
+      "dependencies": [
+        "pytest>=8.0",
+        "aioquic>=1.3.0",
+        "h2>=4.1.0",
+        "websockets>=12.0",
+        "wsproto>=1.3.0",
+        "PyYAML>=6.0",
+        "brotli>=1.1.0",
+        "uvloop>=0.19.0; platform_system != 'Windows'"
+      ],
+      "public_status": "supported",
+      "purpose": "Repository development and checkpoint validation"
+    }
+  },
+  "installation_paths": {
+    "minimal": "python -m pip install -e .",
+    "public_optional_bundle": "python -m pip install -e \".[full-featured]\"",
+    "certification_dev": "python -m pip install -e \".[certification,dev]\""
+  },
+  "notes": [
+    "Declaring runtime-trio does not change the supported runtime contract for this checkpoint.",
+    "The public runtime surface remains auto, asyncio, and uvloop.",
+    "Missing optional dependency errors now point to the corresponding declared extra."
+  ]
+}

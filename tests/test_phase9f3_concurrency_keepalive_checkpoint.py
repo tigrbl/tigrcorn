@@ -25,7 +25,7 @@ def test_phase9f3_docs_and_status_exist():
 
 def test_flag_contracts_now_mark_all_rows_promotion_ready():
     payload = json.loads((CONFORMANCE / 'flag_contracts.json').read_text(encoding='utf-8'))
-    assert payload['current_state']['promotion_ready_rows'] == 84
+    assert payload['current_state']['promotion_ready_rows'] == payload['public_flag_string_count']
     assert payload['current_state']['runtime_gap_flags'] == []
     rows = {row['flag_strings'][0]: row for row in payload['contracts']}
     for flag in ['--limit-concurrency', '--websocket-ping-interval', '--websocket-ping-timeout']:

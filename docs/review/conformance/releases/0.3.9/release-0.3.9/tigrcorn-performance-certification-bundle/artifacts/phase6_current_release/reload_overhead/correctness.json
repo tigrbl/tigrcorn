@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "reload_detects_change": true
+  },
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": false
+}

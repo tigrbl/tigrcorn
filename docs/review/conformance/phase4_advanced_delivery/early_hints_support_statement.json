@@ -1,0 +1,26 @@
+{
+  "feature": "early_hints",
+  "status": "certified_authoritative_and_strict_local_conformance_target",
+  "safe_header_policy": {
+    "allowed_on_103": [
+      "link"
+    ],
+    "connection_specific_headers_removed": true
+  },
+  "protocols": {
+    "http1": true,
+    "http2": true,
+    "http3": true
+  },
+  "notes": [
+    "103 responses are forwarded before the final response start event",
+    "only Link preload hints are preserved on 103 in this certified support envelope",
+    "the current boundary certifies direct server delivery behavior and does not widen into client-side preload policy"
+  ],
+  "certification_boundary": {
+    "target_rfc": "RFC 8297",
+    "highest_required_evidence_tier": "local_conformance",
+    "corpus_vector": "http-early-hints",
+    "support_envelope": "direct_server_103_early_hints"
+  }
+}

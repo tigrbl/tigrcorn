@@ -23,7 +23,7 @@ from tools.interop_wrappers import describe_wrapper_registry  # noqa: E402
 from tools.retrofit_independent_bundle_schema import retrofit_bundle  # noqa: E402
 
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 INDEPENDENT_ROOT = RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'
 LOCAL_BEHAVIOR_ROOT = RELEASE_ROOT / 'tigrcorn-content-coding-local-behavior-artifacts'
 MATRIX_PATH = CONFORMANCE / 'external_matrix.release.json'
@@ -146,7 +146,7 @@ def _overlay_generated_scenarios(generated_root: Path) -> None:
     manifest_payload['required_scenario_files'] = ['summary.json', 'index.json', 'result.json', 'scenario.json', 'command.json', 'env.json', 'versions.json', 'wire_capture.json']
     manifest_payload['wrapper_families'] = wrapper_families
     notes = list(manifest_payload.get('notes', []))
-    note = 'Phase 9D3 overlays fresh content-coding independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.'
+    note = 'Phase 9D3 overlays fresh content-coding independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.9 working release root.'
     if note not in notes:
         notes.append(note)
     manifest_payload['notes'] = notes
@@ -262,7 +262,7 @@ def _update_release_root_manifest() -> None:
         }
     )
     notes = list(payload.get('notes', []))
-    green_note = 'Phase 9D3 preserves RFC 9110 content-coding independent artifacts as passing third-party evidence across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.8 working release root.'
+    green_note = 'Phase 9D3 preserves RFC 9110 content-coding independent artifacts as passing third-party evidence across HTTP/1.1, HTTP/2, and HTTP/3 under the 0.3.9 working release root.'
     blocked_note = 'Phase 9D3 overlays RFC 9110 content-coding independent artifacts for HTTP/1.1 and HTTP/2, plus a preserved HTTP/3 failure artifact caused by the missing aioquic runtime dependency in the current environment.'
     if content_coding_green:
         if green_note not in notes:
@@ -276,7 +276,7 @@ def _update_release_root_manifest() -> None:
     if readme.exists():
         text = readme.read_text(encoding='utf-8')
     else:
-        text = '# Release 0.3.8 working promotion root\n\n'
+        text = '# Release 0.3.9 working promotion root\n\n'
     marker = 'Phase 9D3 content-coding status:'
     line = ('Phase 9D3 content-coding status: HTTP/1.1, HTTP/2, and HTTP/3 preserved independent artifacts are now all passing, so RFC 9110 §8 no longer blocks the strict target.' if content_coding_green else 'Phase 9D3 content-coding status: HTTP/1.1 and HTTP/2 independent artifacts are passing, while HTTP/3 remains a preserved failing artifact in this environment.')
     if marker in text:

@@ -1,0 +1,47 @@
+{
+  "document_role": "checkpoint_current_state_source",
+  "current_truth_source": true,
+  "truth_scope": "phase0_public_cli_contract_drift_reconciliation",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-27",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": "0",
+  "checkpoint": "phase0_public_cli_contract_drift_reconciliation",
+  "status": "completed",
+  "current_state": {
+    "cli_entrypoint_mode": "config_driven",
+    "cli_builds_server_config": true,
+    "cli_invokes_run_config": true,
+    "cli_reexports_api_serve_import_string": false,
+    "stale_cli_patch_target_removed_from_tests": true,
+    "targeted_public_surface_tests_passed": true,
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "current_package_version": "0.3.9",
+    "certifiably_fully_rfc_compliant_current_boundary": true,
+    "certifiably_fully_featured_current_boundary": true,
+    "unified_policy_matrix_complete": false
+  },
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q src benchmarks tools",
+      "result": "passed"
+    },
+    "targeted_pytest_suite": {
+      "command": "PYTHONPATH=src pytest -q tests/test_public_api_cli_mtls_surface.py tests/test_public_api_tls_cipher_surface.py",
+      "result": "passed",
+      "test_count": 7
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true
+    },
+    "evaluate_promotion_target": {
+      "passed": true
+    }
+  },
+  "generated_at": "2026-03-27T05:55:23.378149+00:00"
+}

@@ -1,0 +1,174 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "commit_hash": "unknown",
+  "correctness": {
+    "checks": {
+      "hpack_roundtrip": true
+    },
+    "lane": "end_to_end_release",
+    "live_listener_required": true,
+    "note": "same-stack correctness-under-load checks",
+    "passed": true,
+    "required": true
+  },
+  "deployment_profile": "http2_cleartext",
+  "description": "HTTP/2 multiplexing at 1000 streams.",
+  "driver": "http2_multiplex",
+  "failure_reasons": [],
+  "family": "HTTP",
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+  "metrics": {
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ],
+    "connections": 0,
+    "cpu_seconds": 0.10999999999999999,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "lane": "end_to_end_release",
+    "live_listener_required": true,
+    "p50_ms": 20.149505499944098,
+    "p95_ms": 20.27779625001358,
+    "p99_9_ms": 20.284675604958693,
+    "p99_ms": 20.283412049968774,
+    "profile_metadata": {},
+    "protocol_stall_counts": {},
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "sample_count": 6,
+    "scheduler_rejections": 0,
+    "streams": 6000,
+    "throughput_ops_per_sec": 49667.7833723449,
+    "time_to_first_byte_ms": 20.149505499944098,
+    "total_attempts": 6,
+    "total_duration_seconds": 0.12080265299982784,
+    "total_units": 6000
+  },
+  "passed": true,
+  "profile_id": "http2_multiplex_1000",
+  "relative_regression": {
+    "baseline_profile": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline/http2_multiplex_1000/result.json",
+    "baseline_root": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline",
+    "checks": {
+      "cpu_increase_fraction": {
+        "absolute_slack_seconds": 0.02,
+        "baseline": 0.10999999999999999,
+        "maximum_allowed": 0.23999999999999996,
+        "observed": 0.10999999999999999,
+        "passed": true
+      },
+      "p99_9_increase_fraction": {
+        "absolute_slack_ms": 0.5,
+        "baseline": 19.988565499965034,
+        "maximum_allowed": 39.97713099993007,
+        "observed": 20.284675604958693,
+        "passed": true
+      },
+      "p99_increase_fraction": {
+        "absolute_slack_ms": 0.25,
+        "baseline": 19.987615999968966,
+        "maximum_allowed": 39.97523199993793,
+        "observed": 20.283412049968774,
+        "passed": true
+      },
+      "rss_increase_fraction": {
+        "absolute_rss_slack_kib": 2048.0,
+        "baseline": 40004.0,
+        "maximum_allowed": 62054.0,
+        "observed": 40004.0,
+        "passed": true
+      },
+      "throughput_drop_fraction": {
+        "baseline": 50391.193554374266,
+        "minimum_allowed": 25195.596777187133,
+        "observed": 49667.7833723449,
+        "passed": true
+      }
+    },
+    "evaluated": true,
+    "failure_reasons": [],
+    "passed": true
+  },
+  "rfc_targets": [
+    "RFC 9113",
+    "RFC 7541"
+  ],
+  "threshold_evaluation": {
+    "checks": {
+      "max_error_rate": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 0.0
+      },
+      "max_handshake_latency_ms": {
+        "observed": 0.0,
+        "passed": true,
+        "threshold": 5.0
+      },
+      "max_p50_ms": {
+        "observed": 20.149505499944098,
+        "passed": true,
+        "threshold": 188.839028
+      },
+      "max_p95_ms": {
+        "observed": 20.27779625001358,
+        "passed": true,
+        "threshold": 189.83658
+      },
+      "max_p99_9_ms": {
+        "observed": 20.284675604958693,
+        "passed": true,
+        "threshold": 253.325601
+      },
+      "max_p99_ms": {
+        "observed": 20.283412049968774,
+        "passed": true,
+        "threshold": 189.969201
+      },
+      "max_protocol_stalls": {
+        "observed": 0,
+        "passed": true,
+        "threshold": 4
+      },
+      "max_rss_kib": {
+        "observed": 40004.0,
+        "passed": true,
+        "threshold": 50438.0
+      },
+      "max_scheduler_rejections": {
+        "observed": 0,
+        "passed": true,
+        "threshold": 4
+      },
+      "max_time_to_first_byte_ms": {
+        "observed": 20.149505499944098,
+        "passed": true,
+        "threshold": 189.83658
+      },
+      "min_throughput_ops_per_sec": {
+        "observed": 49667.7833723449,
+        "passed": true,
+        "threshold": 11595.750151
+      }
+    },
+    "passed": true,
+    "thresholds": {
+      "max_error_rate": 0.0,
+      "max_handshake_latency_ms": 5.0,
+      "max_p50_ms": 188.839028,
+      "max_p95_ms": 189.83658,
+      "max_p99_9_ms": 253.325601,
+      "max_p99_ms": 189.969201,
+      "max_protocol_stalls": 4,
+      "max_rss_kib": 50438.0,
+      "max_scheduler_rejections": 4,
+      "max_time_to_first_byte_ms": 189.83658,
+      "min_throughput_ops_per_sec": 11595.750151
+    }
+  }
+}

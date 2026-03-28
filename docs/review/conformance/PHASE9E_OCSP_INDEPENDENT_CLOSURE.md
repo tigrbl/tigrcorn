@@ -2,7 +2,7 @@
 
 This checkpoint executes **Phase 9E** of `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`.
 
-It advances the strict-target closure for **RFC 6960** by preserving a live **OpenSSL-backed** OCSP validation artifact in the 0.3.8 working release root.
+It advances the strict-target closure for **RFC 6960** by preserving a live **OpenSSL-backed** OCSP validation artifact in the 0.3.9 working release root.
 
 ## What changed in this checkpoint
 
@@ -35,11 +35,11 @@ That row uses:
 - a third-party OpenSSL TLS client wrapper
 - a deterministic OCSP responder returning a valid `GOOD` response for the client certificate
 
-### 3. The 0.3.8 working release root now carries a passing OCSP artifact
+### 3. The 0.3.9 working release root now carries a passing OCSP artifact
 
 The canonical working independent bundle under:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix`
 
 now contains a preserved OpenSSL OCSP validation artifact with this status:
 
@@ -56,7 +56,7 @@ The preserved artifact records that:
 
 This checkpoint also preserves local validation vectors under:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-ocsp-local-validation-artifacts/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts/`
 
 Those vectors cover:
 
@@ -103,4 +103,4 @@ The strict target is still blocked by the three preserved-but-failing HTTP/3 thi
 - `http3-connect-relay-aioquic-client`
 - `http3-content-coding-aioquic-client`
 
-Those three scenarios remain preserved as failing artifacts in the 0.3.8 working release root and have not yet been refreshed from successful third-party `aioquic` runs.
+Those three scenarios remain preserved as failing artifacts in the 0.3.9 working release root and have not yet been refreshed from successful third-party `aioquic` runs.

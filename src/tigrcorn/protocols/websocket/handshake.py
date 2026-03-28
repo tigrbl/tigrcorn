@@ -4,7 +4,7 @@ import base64
 import hashlib
 
 from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.headers import get_header, header_contains_token
+from tigrcorn.utils.headers import apply_response_header_policy, get_header, header_contains_token
 
 _MAGIC = b"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 
@@ -44,17 +44,23 @@ def build_handshake_response(
     subprotocol: str | None = None,
     headers: list[tuple[bytes, bytes]] | None = None,
     server_header: bytes | None = None,
+    include_date_header: bool = True,
+    default_headers: list[tuple[bytes, bytes]] | tuple[tuple[bytes, bytes], ...] = (),
 ) -> bytes:
     response_headers = [
         (b"upgrade", b"websocket"),
         (b"connection", b"Upgrade"),
         (b"sec-websocket-accept", websocket_accept_value(sec_websocket_key)),
     ]
-    if server_header:
-        response_headers.append((b"server", server_header))
     if subprotocol:
         response_headers.append((b"sec-websocket-protocol", subprotocol.encode("ascii")))
     if headers:
         response_headers.extend([(k.lower(), v) for k, v in headers])
+    response_headers = apply_response_header_policy(
+        response_headers,
+        server_header=server_header,
+        include_date_header=include_date_header,
+        default_headers=default_headers,
+    )
     lines = [b"HTTP/1.1 101 Switching Protocols"] + [k + b": " + v for k, v in response_headers]
     return b"\r\n".join(lines) + b"\r\n\r\n"

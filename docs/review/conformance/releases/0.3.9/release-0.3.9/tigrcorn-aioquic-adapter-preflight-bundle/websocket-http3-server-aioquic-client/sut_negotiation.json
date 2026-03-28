@@ -1,0 +1,28 @@
+{
+  "certificate_inputs": {
+    "server_certfile": {
+      "exists": true,
+      "path": "tests/fixtures_certs/interop-localhost-cert.pem"
+    },
+    "server_keyfile": {
+      "exists": true,
+      "path": "tests/fixtures_certs/interop-localhost-key.pem"
+    }
+  },
+  "compression_requested": "off",
+  "connect_protocol_enabled": true,
+  "derived_from_peer_negotiation": true,
+  "feature": "websocket-rfc9220-echo",
+  "handshake_complete": true,
+  "implementation": "tigrcorn",
+  "implementation_identity": "tigrcorn-http3-websocket",
+  "implementation_source": "tigrcorn",
+  "implementation_version": "0.3.6",
+  "negotiated_extensions": [],
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "h3",
+  "response_extension_header": "",
+  "role": "server",
+  "scenario_id": "websocket-http3-server-aioquic-client",
+  "settings_enable_connect_protocol": null
+}

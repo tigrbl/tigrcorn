@@ -1,0 +1,10 @@
+{
+  "close_code": 1000,
+  "compression_requested": "permessage-deflate",
+  "implementation": "websockets",
+  "negotiated_extensions": [
+    "PerMessageDeflate"
+  ],
+  "response_extension_header": "permessage-deflate",
+  "subprotocol": null
+}

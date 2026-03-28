@@ -48,6 +48,9 @@ from tigrcorn.protocols.http3.state import (
     HTTP3BlockedSection,
     HTTP3ConnectionState,
     HTTP3PushPromiseState,
+    HTTP3RequestPhase_DATA,
+    HTTP3RequestPhase_INITIAL,
+    HTTP3RequestPhase_TRAILERS,
     HTTP3RequestState,
     HTTP3UniStreamState,
 )
@@ -65,9 +68,9 @@ STREAM_TYPE_QPACK_DECODER = 0x03
 SETTING_QPACK_MAX_TABLE_CAPACITY = 0x01
 SETTING_MAX_FIELD_SECTION_SIZE = 0x06
 SETTING_QPACK_BLOCKED_STREAMS = 0x07
-_REQUEST_STATE_INITIAL = 'initial'
-_REQUEST_STATE_DATA = 'data'
-_REQUEST_STATE_TRAILERS = 'trailers'
+_REQUEST_STATE_INITIAL = HTTP3RequestPhase_INITIAL
+_REQUEST_STATE_DATA = HTTP3RequestPhase_DATA
+_REQUEST_STATE_TRAILERS = HTTP3RequestPhase_TRAILERS
 
 
 def _header_section_size(headers: list[tuple[bytes, bytes]]) -> int:
@@ -96,6 +99,15 @@ def _parse_content_length(headers: list[tuple[bytes, bytes]], *, stream_id: int)
             raise HTTP3StreamError('conflicting content-length values', error_code=H3_MESSAGE_ERROR, stream_id=stream_id)
     return parsed
 
+
+def _extract_status_code(headers: list[tuple[bytes, bytes]]) -> int | None:
+    for name, value in headers:
+        if name != b':status':
+            continue
+        if not value.isdigit():
+            return None
+        return int(value)
+    return None
 
 
 def _control_sender_is_client(stream_id: int) -> bool:
@@ -158,6 +170,10 @@ class HTTP3RequestStream:
 
     def _apply_initial_headers(self, headers: list[tuple[bytes, bytes]]) -> None:
         self._enforce_field_section_size(headers)
+        status_code = _extract_status_code(headers)
+        if self.role == 'client' and status_code is not None and 100 <= status_code < 200:
+            self.state.informational_headers.append(list(headers))
+            return
         self.state.headers.extend(headers)
         self.state.received_initial_headers = True
         self.state.phase = _REQUEST_STATE_DATA

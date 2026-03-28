@@ -1,0 +1,51 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "permessage-deflate",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http3",
+  "request": {
+    "authority": "localhost",
+    "compression": "permessage-deflate",
+    "extension_offer": "permessage-deflate; client_max_window_bits=15; server_max_window_bits=15",
+    "path": "/ws",
+    "text": "hello-h3-websocket-compressed"
+  },
+  "response": {
+    "close_code": 1000,
+    "close_reason": "",
+    "extension_header": "permessage-deflate; server_max_window_bits=15; client_max_window_bits=15",
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "sec-websocket-extensions",
+        "permessage-deflate; server_max_window_bits=15; client_max_window_bits=15"
+      ],
+      [
+        "sec-websocket-protocol",
+        "chat"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "text": "hello-h3-websocket-compressed"
+  },
+  "role": "server",
+  "scenario_id": "websocket-http3-server-aioquic-client-permessage-deflate",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http3-websocket",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http3-websocket-permessage-deflate",
+    "role": "server",
+    "stderr_path": "/mnt/data/step3repo/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stderr.log",
+    "stdout_path": "/mnt/data/step3repo/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stdout.log"
+  }
+}

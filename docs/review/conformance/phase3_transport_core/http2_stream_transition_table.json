@@ -1,0 +1,62 @@
+[
+  {
+    "from": "idle",
+    "event": "remote headers",
+    "to": "open",
+    "notes": "peer opens the stream without END_STREAM"
+  },
+  {
+    "from": "idle",
+    "event": "remote headers + END_STREAM",
+    "to": "half-closed-remote",
+    "notes": "request headers end the peer send side immediately"
+  },
+  {
+    "from": "idle",
+    "event": "reserve_local",
+    "to": "reserved-local",
+    "notes": "local PUSH_PROMISE reservation state"
+  },
+  {
+    "from": "reserved-local",
+    "event": "local headers",
+    "to": "half-closed-remote",
+    "notes": "reserved local stream becomes locally open and remotely closed"
+  },
+  {
+    "from": "reserved-local",
+    "event": "local headers + END_STREAM",
+    "to": "closed",
+    "notes": "reserved local stream can close immediately when local side ends"
+  },
+  {
+    "from": "open",
+    "event": "receive_end_stream",
+    "to": "half-closed-remote",
+    "notes": "peer closed its send side"
+  },
+  {
+    "from": "open",
+    "event": "send_end_stream",
+    "to": "half-closed-local",
+    "notes": "local side closed while peer may still send"
+  },
+  {
+    "from": "half-closed-remote",
+    "event": "send_end_stream",
+    "to": "closed",
+    "notes": "stream fully closed after local END_STREAM"
+  },
+  {
+    "from": "half-closed-local",
+    "event": "receive_end_stream",
+    "to": "closed",
+    "notes": "stream fully closed after peer END_STREAM"
+  },
+  {
+    "from": "open|half-closed-local|half-closed-remote|reserved-local|reserved-remote",
+    "event": "reset sent/received",
+    "to": "closed",
+    "notes": "RST_STREAM transitions to closed regardless of prior active lifecycle"
+  }
+]

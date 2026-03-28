@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 BUNDLE_ROOT = RELEASE_ROOT / 'tigrcorn-aioquic-adapter-preflight-bundle'
 
 

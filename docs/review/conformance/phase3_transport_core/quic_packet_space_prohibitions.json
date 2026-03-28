@@ -1,0 +1,22 @@
+[
+  {
+    "packet_space": "initial",
+    "frame": "CONNECTION_CLOSE_APP",
+    "reason": "application close is not permitted in Initial packets"
+  },
+  {
+    "packet_space": "handshake",
+    "frame": "CONNECTION_CLOSE_APP",
+    "reason": "application close is not permitted in Handshake packets"
+  },
+  {
+    "packet_space": "0rtt",
+    "frame": "PATH_CHALLENGE|PATH_RESPONSE|NEW_CONNECTION_ID",
+    "reason": "path validation and connection id rotation are forbidden in 0-RTT packets"
+  },
+  {
+    "packet_space": "client-only",
+    "frame": "HANDSHAKE_DONE|NEW_TOKEN",
+    "reason": "clients must not send HANDSHAKE_DONE or NEW_TOKEN"
+  }
+]

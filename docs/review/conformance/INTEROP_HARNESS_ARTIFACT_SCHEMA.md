@@ -104,6 +104,6 @@ The per-scenario summary and artifact inventory used by the validator.
 
 The first Phase 9B proof bundle using this schema is:
 
-- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle/`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-harness-foundation-bundle/`
 
 That proof bundle is intentionally small. It demonstrates schema completeness and validator enforcement without claiming that the full strict-target independent scenario backlog is already closed.

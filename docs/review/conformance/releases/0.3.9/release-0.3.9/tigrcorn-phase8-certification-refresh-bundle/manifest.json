@@ -1,0 +1,66 @@
+{
+  "bundle": "tigrcorn-phase8-certification-refresh-bundle",
+  "generated_at": "2026-03-28T04:08:38.574908+00:00",
+  "validated": true,
+  "targeted_pytest_pass_count": 27,
+  "full_matrix_pytest_pass_count": 99,
+  "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "canonical_current_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+  "artifacts": [
+    {
+      "path": "artifacts/compileall.command.json",
+      "size": 116,
+      "sha256": "460e951d3be9d0b8a772b1d78b19067969cd5c9a41b3df0add14f5de1522dd6f"
+    },
+    {
+      "path": "artifacts/compileall.stdout.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/compileall.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/targeted_pytest.command.json",
+      "size": 436,
+      "sha256": "9796b58756c4f103364ad28b9164e6dcb716d380aff67572ff00d147ba7528ec"
+    },
+    {
+      "path": "artifacts/targeted_pytest.stdout.txt",
+      "size": 99,
+      "sha256": "3cf9b6b2943a47604e1ff2310ef4d80804d6c520d6c1e75c2741cfb7a0725769"
+    },
+    {
+      "path": "artifacts/targeted_pytest.stderr.txt",
+      "size": 262,
+      "sha256": "79e56e929e30bc4507da6eacba4c4affd779abca78209d3abc31a14383f5e6b7"
+    },
+    {
+      "path": "artifacts/full_matrix_pytest.command.json",
+      "size": 1430,
+      "sha256": "b478e66d330e8a1a730432e5d8c585da5c6f586303828b7a4ad38bc7bcfb1a4d"
+    },
+    {
+      "path": "artifacts/full_matrix_pytest.stdout.txt",
+      "size": 190,
+      "sha256": "b814bfca1393d63f43e8af8edacab9b0f638cbf814383d308d5fc813bde52900"
+    },
+    {
+      "path": "artifacts/full_matrix_pytest.stderr.txt",
+      "size": 262,
+      "sha256": "79e56e929e30bc4507da6eacba4c4affd779abca78209d3abc31a14383f5e6b7"
+    },
+    {
+      "path": "artifacts/gate_results.command.json",
+      "size": 129,
+      "sha256": "b75890c2deee53dbdd58ad6ff4c30ee8358740b28d41d36c820004c810300424"
+    },
+    {
+      "path": "artifacts/gate_results.json",
+      "size": 5901,
+      "sha256": "9d8a765e39cb3d3cbaec143760dcab21ccccdb1b194b4e6407e97fa7139494da"
+    }
+  ]
+}

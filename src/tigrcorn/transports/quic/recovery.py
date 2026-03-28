@@ -397,6 +397,39 @@ class QuicLossRecovery:
 
 RECOVERY_PRESSURE_CERTIFICATION_SCOPES: tuple[str, ...] = ('loss-recovery-under-pressure', 'pto-backpressure-interaction')
 
+QUIC_RECOVERY_RULES: tuple[dict[str, object], ...] = (
+    {
+        'rule': 'packet-threshold-loss',
+        'value': _PACKET_THRESHOLD,
+        'notes': 'packets older than packet threshold behind largest_acked are declared lost',
+    },
+    {
+        'rule': 'time-threshold-loss',
+        'value': _TIME_THRESHOLD,
+        'notes': 'loss delay is 9/8 of the max(latest_rtt, smoothed_rtt)',
+    },
+    {
+        'rule': 'pto-base',
+        'value': 'smoothed_rtt + max(4*rttvar, granularity) + max_ack_delay(application only)',
+        'notes': 'PTO doubles with pto_count and excludes max_ack_delay outside application space',
+    },
+    {
+        'rule': 'persistent-congestion-threshold',
+        'value': _PERSISTENT_CONGESTION_THRESHOLD,
+        'notes': 'persistent congestion spans three PTO intervals',
+    },
+    {
+        'rule': 'pacing-budget',
+        'value': 'congestion-window-bounded token bucket',
+        'notes': 'send pacing budget is refreshed over time and never exceeds congestion window',
+    },
+)
+
+
+def quic_recovery_rule_table() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in QUIC_RECOVERY_RULES)
+
+
 
 def supported_recovery_pressure_certification_scopes() -> tuple[str, ...]:
     return RECOVERY_PRESSURE_CERTIFICATION_SCOPES

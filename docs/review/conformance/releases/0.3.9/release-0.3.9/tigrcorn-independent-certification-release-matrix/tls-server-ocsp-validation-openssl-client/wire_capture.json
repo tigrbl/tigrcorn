@@ -1,0 +1,64 @@
+{
+  "packet_trace": {
+    "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/packet_trace.jsonl",
+    "exists": true,
+    "size": 10895,
+    "sha256": "db22060c4f98a0dd0377219d593af8c57f251c4228a158f51860861390b361e6"
+  },
+  "logs": {
+    "sut_stdout": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/sut_stderr.log",
+      "exists": true,
+      "size": 67,
+      "sha256": "60a25c4bfaa9392b2f71253fa5f8211022addc25e89a002ab37b2beb203eca41"
+    },
+    "peer_stdout": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/peer_stdout.log",
+      "exists": true,
+      "size": 1308,
+      "sha256": "33513452009d1194a4034661bb36cfd90df3fdfdacacc72119bb99eb9e298573"
+    },
+    "peer_stderr": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/sut_transcript.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_transcript": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/peer_transcript.json",
+      "exists": true,
+      "size": 1346,
+      "sha256": "c99b43c1d3fe57b08ba0f03f83dcb0df5cb242e589ce62c282f98f895642e7c7"
+    },
+    "sut_negotiation": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/sut_negotiation.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_negotiation": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/peer_negotiation.json",
+      "exists": true,
+      "size": 186,
+      "sha256": "bdb6399761fba4431acd5af10ba282c2fed5500010ad4b92ef43d7372ffde36c"
+    },
+    "qlog": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/qlog.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    }
+  }
+}

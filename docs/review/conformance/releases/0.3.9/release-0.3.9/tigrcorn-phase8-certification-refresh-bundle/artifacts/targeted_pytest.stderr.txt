@@ -1,0 +1,2 @@
+/usr/local/lib/python3.11/site-packages/ddtrace/vendor/psutil/_pslinux.py:527: RuntimeWarning: 'sin' and 'sout' swap memory stats couldn't be determined and were set to 0 ([Errno 2] No such file or directory: '/proc/vmstat')
+  warnings.warn(msg, RuntimeWarning)

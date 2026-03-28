@@ -45,7 +45,7 @@ class H2WebSocketSession:
         self.send_data = send_data
         self.metrics = metrics
         self.on_close = on_close
-        self.receive = QueueReceive()
+        self.receive = QueueReceive(max_size=self.config.websocket.max_queue)
         self.task: asyncio.Task[None] | None = None
         self.accepted = False
         self.closed = False

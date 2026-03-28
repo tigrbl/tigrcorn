@@ -1,0 +1,71 @@
+{
+  "phase": 8,
+  "checkpoint": "phase8_certification_refresh_and_promotion",
+  "generated_at": "2026-03-28T04:09:19.336750+00:00",
+  "status": "canonical_release_promoted_authoritative_green_strict_target_green_promotion_green",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "current_package_version": "0.3.9",
+    "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "release_notes": "RELEASE_NOTES_0.3.9.md",
+    "version_bump_performed": true,
+    "release_notes_promoted": true,
+    "release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
+    "phase8_certification_refresh_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-phase8-certification-refresh-bundle",
+    "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8"
+  },
+  "validation": {
+    "compileall": {
+      "passed": true,
+      "command": "python -m compileall -q src benchmarks tools"
+    },
+    "targeted_pytest": {
+      "passed": true,
+      "pass_count": 27,
+      "test_files": [
+        "tests/test_websocket_rfc7692.py",
+        "tests/test_phase9c_rfc7692_independent_closure.py",
+        "tests/test_phase9d1_connect_relay_independent_closure.py",
+        "tests/test_phase9d2_trailer_fields_independent_closure.py",
+        "tests/test_phase9d3_content_coding_independent_closure.py",
+        "tests/test_phase9i_release_assembly_checkpoint.py",
+        "tests/test_release_gates.py"
+      ]
+    },
+    "full_matrix_pytest": {
+      "passed": true,
+      "pass_count": 99,
+      "test_files": [
+        "tests/test_public_api_cli_mtls_surface.py",
+        "tests/test_public_api_tls_cipher_surface.py",
+        "tests/test_phase5_tls_operator_material_surface.py",
+        "tests/test_phase6_public_lifecycle_and_embedder_contract.py",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py",
+        "tests/test_phase8_promotion_targets.py",
+        "tests/test_phase9i_release_assembly_checkpoint.py",
+        "tests/test_phase4_rfc_boundary_formalization_checkpoint.py",
+        "tests/test_documentation_truth_normalization_checkpoint.py",
+        "tests/test_documentation_reconciliation.py",
+        "tests/test_phase9a_promotion_contract_freeze.py",
+        "tests/test_phase9_implementation_plan.py",
+        "tests/test_phase7_release_candidate.py",
+        "tests/test_release_gates.py"
+      ]
+    },
+    "evaluate_release_gates_authoritative": true,
+    "evaluate_release_gates_strict_target": true,
+    "evaluate_promotion_target": true
+  },
+  "artifacts": {
+    "bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-phase8-certification-refresh-bundle",
+    "release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
+    "package_review": "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "release_gate_status": "docs/review/conformance/release_gate_status.current.json"
+  }
+}

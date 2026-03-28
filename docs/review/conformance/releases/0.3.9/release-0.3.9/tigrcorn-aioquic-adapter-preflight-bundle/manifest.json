@@ -1,0 +1,12 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle",
+  "bundle_kind": "aioquic_adapter_preflight_bundle",
+  "generated_at": "2026-03-24T05:05:00.221736+00:00",
+  "matrix_path": "docs/review/conformance/external_matrix.release.json",
+  "note": "This bundle proves the third-party aioquic HTTP/3 adapters can execute cleanly before strict-target checkpoint promotion work continues.",
+  "release_gate_eligible": false,
+  "scenario_ids": [
+    "http3-server-aioquic-client-post",
+    "websocket-http3-server-aioquic-client"
+  ]
+}

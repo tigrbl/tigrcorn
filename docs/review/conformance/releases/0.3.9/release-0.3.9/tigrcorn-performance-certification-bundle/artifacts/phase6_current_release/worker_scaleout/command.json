@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "tools/create_phase9g_performance_checkpoint.py"
+  ],
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "worker_prefork_proxy",
+  "driver": "worker_scaleout",
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "profile_id": "worker_scaleout"
+}

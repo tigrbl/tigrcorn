@@ -1,0 +1,612 @@
+{
+  "qlog_version": "0.3",
+  "traces": [
+    {
+      "common_fields": {
+        "protocol_type": "QUIC"
+      },
+      "events": [
+        [
+          0.0,
+          "connectivity",
+          "connection_started",
+          {
+            "ip_version": "ipv4",
+            "protocol": "http3",
+            "server": {
+              "host": "127.0.0.1",
+              "port": 53506
+            }
+          }
+        ],
+        [
+          0.0,
+          "transport",
+          "parameters_set",
+          {
+            "client_auth_present": false,
+            "client_control_stream_id": 2,
+            "client_goaway_sent": false,
+            "early_data_accepted": false,
+            "early_data_requested": false,
+            "implementation": "aioquic",
+            "migration_used": true,
+            "protocol": "h3",
+            "qpack_decoder_stream_seen": true,
+            "qpack_encoder_stream_seen": true,
+            "received_settings": {
+              "1": 0,
+              "6": 1200
+            },
+            "resumption_used": false,
+            "retry_observed": false,
+            "server_name": "localhost",
+            "tls_version": "TLSv1.3"
+          }
+        ],
+        [
+          0.0,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 1200,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "length": 530,
+                "packet_number": 108,
+                "packet_type": "initial",
+                "scid": "38d2a0496ff89a8f",
+                "version": 1
+              },
+              {
+                "dcid": "0000000000000000",
+                "key_phase": false,
+                "length": 670,
+                "packet_number": 0,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          71.667,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 819,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "length": 140,
+                "packet_number": 3629027391,
+                "packet_type": "initial",
+                "scid": "5da84999eeb619aa",
+                "version": 1
+              },
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "length": 679,
+                "packet_number": 56403,
+                "packet_type": "handshake",
+                "scid": "5da84999eeb619aa",
+                "version": 1
+              }
+            ]
+          }
+        ],
+        [
+          72.223,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 51,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "length": 51,
+                "packet_number": 4157478185,
+                "packet_type": "initial",
+                "scid": "5da84999eeb619aa",
+                "version": 1
+              }
+            ]
+          }
+        ],
+        [
+          79.258,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 1200,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "length": 50,
+                "packet_number": 142,
+                "packet_type": "initial",
+                "scid": "38d2a0496ff89a8f",
+                "version": 1
+              },
+              {
+                "dcid": "5da84999eeb619aa",
+                "length": 105,
+                "packet_number": 62321,
+                "packet_type": "handshake",
+                "scid": "38d2a0496ff89a8f",
+                "version": 1
+              },
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": true,
+                "length": 1045,
+                "packet_number": 186959199,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          80.475,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 80,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": true,
+                "length": 80,
+                "packet_number": 3890521292,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          81.225,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 29,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": true,
+                "length": 29,
+                "packet_number": 2232250,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          171.99,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 30,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 30,
+                "packet_number": 51036,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          172.54,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 40,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 40,
+                "packet_number": 67,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          172.957,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 419,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 419,
+                "packet_number": 23357,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          173.294,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 50,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "length": 50,
+                "packet_number": 14965592,
+                "packet_type": "handshake",
+                "scid": "5da84999eeb619aa",
+                "version": 1
+              }
+            ]
+          }
+        ],
+        [
+          173.628,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 30,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 30,
+                "packet_number": 594079872,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          173.905,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 30,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 30,
+                "packet_number": 40569,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          174.357,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 32,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": true,
+                "length": 32,
+                "packet_number": 120,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          176.334,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 34,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": true,
+                "length": 34,
+                "packet_number": 40095,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          189.656,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 33,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": false,
+                "length": 33,
+                "packet_number": 13475024,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          191.35,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 45,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 45,
+                "packet_number": 85,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          191.737,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 67,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 67,
+                "packet_number": 3876161300,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          192.296,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 32,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 32,
+                "packet_number": 2266,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          192.713,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 35,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 35,
+                "packet_number": 13638173,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          193.593,
+          "transport",
+          "packet_received",
+          {
+            "direction": "client_to_server",
+            "length": 38,
+            "packets": [
+              {
+                "dcid": "5da84999eeb619aa",
+                "key_phase": false,
+                "length": 38,
+                "packet_number": 2013494885,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          205.261,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 34,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 34,
+                "packet_number": 49952,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          218.48,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 32,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 32,
+                "packet_number": 24428,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          241.911,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 35,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 35,
+                "packet_number": 7838,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          298.16,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 32,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 32,
+                "packet_number": 580370300,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          298.941,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 30,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 30,
+                "packet_number": 208,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          370.08,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 32,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": true,
+                "length": 32,
+                "packet_number": 1912792,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          370.702,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 30,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 30,
+                "packet_number": 95,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          512.501,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 32,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 32,
+                "packet_number": 4190571744,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ],
+        [
+          512.999,
+          "transport",
+          "packet_sent",
+          {
+            "direction": "server_to_client",
+            "length": 30,
+            "packets": [
+              {
+                "dcid": "38d2a0496ff89a8f",
+                "key_phase": false,
+                "length": 30,
+                "packet_number": 2632819,
+                "packet_type": "1rtt"
+              }
+            ]
+          }
+        ]
+      ],
+      "title": "http3-server-aioquic-client-post-migration",
+      "vantage_point": {
+        "name": "tigrcorn-interop-runner",
+        "type": "network"
+      }
+    }
+  ]
+}

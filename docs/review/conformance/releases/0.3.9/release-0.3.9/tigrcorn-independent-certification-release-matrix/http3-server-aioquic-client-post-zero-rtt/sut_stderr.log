@@ -1,0 +1,30 @@
+2026-03-17 05:54:08,005 INFO tigrcorn listening on udp://127.0.0.1:51767
+Task exception was never retrieved
+future: <Task finished name='Task-38' coro=<HTTP3DatagramHandler._on_session_timer() done, defined at /mnt/data/tigrcorn_work/tigrcorn_0.3.6_certification_update/src/tigrcorn/protocols/http3/handler.py:268> exception=AttributeError("'NoneType' object has no attribute 'call_exception_handler'")>
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/asyncio/selector_events.py", line 1268, in sendto
+    self._sock.sendto(data, addr)
+    ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'sendto'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/data/tigrcorn_work/tigrcorn_0.3.6_certification_update/src/tigrcorn/protocols/http3/handler.py", line 275, in _on_session_timer
+    self._queue_or_send(session, raw, endpoint, session.addr)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/tigrcorn_work/tigrcorn_0.3.6_certification_update/src/tigrcorn/protocols/http3/handler.py", line 211, in _queue_or_send
+    endpoint.send(raw, addr)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/mnt/data/tigrcorn_work/tigrcorn_0.3.6_certification_update/src/tigrcorn/transports/udp/endpoint.py", line 13, in send
+    self.transport.sendto(data, addr)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/usr/lib/python3.13/asyncio/selector_events.py", line 1278, in sendto
+    self._fatal_error(
+    ~~~~~~~~~~~~~~~~~^
+        exc, 'Fatal write error on datagram transport')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/asyncio/selector_events.py", line 880, in _fatal_error
+    self._loop.call_exception_handler({
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'call_exception_handler'

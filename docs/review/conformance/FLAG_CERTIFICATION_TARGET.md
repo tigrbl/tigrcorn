@@ -6,7 +6,7 @@ This target document is driven by `docs/review/conformance/flag_contracts.json` 
 
 ## Current state
 
-The repository currently exposes **84 public flag strings** in `src/tigrcorn/cli.py`.
+The repository currently exposes the full current public flag string set declared by `src/tigrcorn/cli.py` and frozen in `flag_contracts.json`. In other words, all current public flag strings must remain covered by the row-level contracts and the covering array.
 
 The older grouped metadata plane in `cli_flag_surface.json` is still useful as a taxonomy, but it is not sufficient for certifiable per-flag closure.
 
@@ -28,7 +28,7 @@ Every flag contract row carries:
 
 There are no remaining public-flag runtime gaps.
 
-All **84** public flag rows are now marked `promotion_ready=true` in `flag_contracts.json`. The remaining promotion blockers now live in strict-target RFC evidence and the stricter performance / promotion-gate work.
+All current public flag rows are now marked `promotion_ready=true` in `flag_contracts.json`. The remaining promotion blockers now live in strict-target RFC evidence and the stricter performance / promotion-gate work.
 
 ## Covering-array rules
 

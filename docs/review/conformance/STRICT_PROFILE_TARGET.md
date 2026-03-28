@@ -5,11 +5,11 @@ This target document defines the stricter next-step target that sits alongside t
 ## Current truth
 
 - the authoritative boundary remains green
-- the 0.3.8 canonical release root is the evaluation substrate for this target
+- the 0.3.9 canonical release root is the evaluation substrate for this target
 - the strict target is now green
 - the composite promotion target is now green
 - Step 9 promotion is now complete
-- the public package version is `0.3.8`
+- the public package version is `0.3.9`
 
 ## Historical guardrail phrases preserved for the promotion evaluator
 
@@ -35,6 +35,15 @@ Relative to `docs/review/conformance/certification_boundary.json`, `docs/review/
 
 ## Phase 9I release assembly progress
 
-The 0.3.8 canonical release root now carries the final independent, same-stack, mixed, flag, operator, performance, certification-environment, aioquic-preflight, and strict-validation bundles.
+The 0.3.9 canonical release root now carries the final independent, same-stack, mixed, flag, operator, performance, certification-environment, aioquic-preflight, and strict-validation bundles.
 
-That canonical root is now green under the strict target and the composite promotion target, and the public package version is aligned at `0.3.8`.
+That canonical root is now green under the strict target and the composite promotion target, and the public package version is aligned at `0.3.9`.
+
+## Historical contract references preserved for provenance
+
+- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
+- `docs/review/conformance/phase9a_promotion_contract.current.json`
+- `docs/review/conformance/phase9a_execution_backlog.current.json`
+
+RFC 7232, RFC 9530, RFC 9111, RFC 9421, JOSE, and COSE remain out-of-scope for the preserved Phase 9A freeze contract and remain outside the current T/P/A/D/R boundary and non-goals governance.

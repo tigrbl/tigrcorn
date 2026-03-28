@@ -6,6 +6,7 @@ from typing import cast
 from tigrcorn.config.load import build_config
 from tigrcorn.config.model import ServerConfig
 from tigrcorn.server.app_loader import load_app
+from tigrcorn.server.bootstrap import run_coro_with_runtime
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.server.signals import install_signal_handlers
 from tigrcorn.types import ASGIApp
@@ -23,9 +24,11 @@ async def serve(
     access_log: bool = True,
     ssl_certfile: str | None = None,
     ssl_keyfile: str | None = None,
+    ssl_keyfile_password: str | bytes | None = None,
     ssl_ca_certs: str | None = None,
     ssl_require_client_cert: bool = False,
     ssl_ciphers: str | None = None,
+    ssl_crl: str | None = None,
     http_versions: list[str] | None = None,
     websocket: bool = True,
     enable_h2c: bool = True,
@@ -47,9 +50,11 @@ async def serve(
             access_log=access_log,
             ssl_certfile=ssl_certfile,
             ssl_keyfile=ssl_keyfile,
+            ssl_keyfile_password=ssl_keyfile_password,
             ssl_ca_certs=ssl_ca_certs,
             ssl_require_client_cert=ssl_require_client_cert,
             ssl_ciphers=ssl_ciphers,
+            ssl_crl=ssl_crl,
             http_versions=http_versions,
             websocket=websocket,
             enable_h2c=enable_h2c,
@@ -76,9 +81,11 @@ async def serve_import_string(
     access_log: bool = True,
     ssl_certfile: str | None = None,
     ssl_keyfile: str | None = None,
+    ssl_keyfile_password: str | bytes | None = None,
     ssl_ca_certs: str | None = None,
     ssl_require_client_cert: bool = False,
     ssl_ciphers: str | None = None,
+    ssl_crl: str | None = None,
     http_versions: list[str] | None = None,
     websocket: bool = True,
     enable_h2c: bool = True,
@@ -111,9 +118,11 @@ async def serve_import_string(
         access_log=access_log,
         ssl_certfile=ssl_certfile,
         ssl_keyfile=ssl_keyfile,
+        ssl_keyfile_password=ssl_keyfile_password,
         ssl_ca_certs=ssl_ca_certs,
         ssl_require_client_cert=ssl_require_client_cert,
         ssl_ciphers=ssl_ciphers,
+        ssl_crl=ssl_crl,
         http_versions=http_versions,
         websocket=websocket,
         enable_h2c=enable_h2c,
@@ -138,9 +147,11 @@ def run(
     access_log: bool = True,
     ssl_certfile: str | None = None,
     ssl_keyfile: str | None = None,
+    ssl_keyfile_password: str | bytes | None = None,
     ssl_ca_certs: str | None = None,
     ssl_require_client_cert: bool = False,
     ssl_ciphers: str | None = None,
+    ssl_crl: str | None = None,
     http_versions: list[str] | None = None,
     websocket: bool = True,
     enable_h2c: bool = True,
@@ -152,9 +163,10 @@ def run(
     factory: bool = False,
     config: ServerConfig | None = None,
 ) -> None:
+    runtime = config.process.runtime if config is not None else 'auto'
     if isinstance(app, str):
-        asyncio.run(
-            serve_import_string(
+        run_coro_with_runtime(
+            lambda: serve_import_string(
                 app,
                 host=host,
                 port=port,
@@ -165,9 +177,11 @@ def run(
                 access_log=access_log,
                 ssl_certfile=ssl_certfile,
                 ssl_keyfile=ssl_keyfile,
+                ssl_keyfile_password=ssl_keyfile_password,
                 ssl_ca_certs=ssl_ca_certs,
                 ssl_require_client_cert=ssl_require_client_cert,
                 ssl_ciphers=ssl_ciphers,
+                ssl_crl=ssl_crl,
                 http_versions=http_versions,
                 websocket=websocket,
                 enable_h2c=enable_h2c,
@@ -178,11 +192,12 @@ def run(
                 pipe_mode=pipe_mode,
                 factory=factory,
                 config=config,
-            )
+            ),
+            runtime=runtime,
         )
     else:
-        asyncio.run(
-            serve(
+        run_coro_with_runtime(
+            lambda: serve(
                 app,
                 host=host,
                 port=port,
@@ -193,9 +208,11 @@ def run(
                 access_log=access_log,
                 ssl_certfile=ssl_certfile,
                 ssl_keyfile=ssl_keyfile,
+                ssl_keyfile_password=ssl_keyfile_password,
                 ssl_ca_certs=ssl_ca_certs,
                 ssl_require_client_cert=ssl_require_client_cert,
                 ssl_ciphers=ssl_ciphers,
+                ssl_crl=ssl_crl,
                 http_versions=http_versions,
                 websocket=websocket,
                 enable_h2c=enable_h2c,
@@ -205,5 +222,6 @@ def run(
                 quic_require_retry=quic_require_retry,
                 pipe_mode=pipe_mode,
                 config=config,
-            )
+            ),
+            runtime=runtime,
         )

@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass, field
 
-from tigrcorn.protocols.http2.state import FlowWindow
+from tigrcorn.protocols.http2.state import FlowWindow, MAX_FLOW_WINDOW
 
 
 @dataclass(slots=True)
@@ -23,3 +23,13 @@ class FlowWaiter:
         while self.window.available <= 0:
             self._event.clear()
             await self._event.wait()
+
+
+def next_adaptive_window_target(current_target: int, observed_bytes: int) -> int:
+    if observed_bytes <= 0:
+        return current_target
+    threshold = max(1, current_target // 2)
+    if observed_bytes < threshold:
+        return current_target
+    proposed = max(current_target * 2, observed_bytes * 2)
+    return min(MAX_FLOW_WINDOW, proposed)

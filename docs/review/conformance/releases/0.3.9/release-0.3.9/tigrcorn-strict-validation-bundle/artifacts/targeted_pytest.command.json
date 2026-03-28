@@ -1,0 +1,12 @@
+{
+  "command": [
+    "PYTHONPATH=src pytest -q",
+    "tests/test_websocket_rfc7692.py",
+    "tests/test_phase9c_rfc7692_independent_closure.py",
+    "tests/test_phase9d1_connect_relay_independent_closure.py",
+    "tests/test_phase9d2_trailer_fields_independent_closure.py",
+    "tests/test_phase9d3_content_coding_independent_closure.py",
+    "tests/test_phase9i_release_assembly_checkpoint.py",
+    "tests/test_release_gates.py"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "request": {
+    "compression": "permessage-deflate",
+    "path": "/ws",
+    "text": "hello-websocket-compressed",
+    "url": "ws://127.0.0.1:58159/ws"
+  },
+  "response": {
+    "extension_header": "permessage-deflate",
+    "headers": [
+      [
+        "upgrade",
+        "websocket"
+      ],
+      [
+        "connection",
+        "Upgrade"
+      ],
+      [
+        "sec-websocket-accept",
+        "r+EfigHSbRZtrSJxT4dKFh9SoW0="
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ],
+      [
+        "sec-websocket-extensions",
+        "permessage-deflate"
+      ]
+    ],
+    "text": "hello-websocket-compressed"
+  }
+}

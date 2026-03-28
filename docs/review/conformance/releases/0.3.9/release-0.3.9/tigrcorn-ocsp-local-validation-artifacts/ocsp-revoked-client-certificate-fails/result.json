@@ -1,0 +1,10 @@
+{
+  "id": "ocsp-revoked-client-certificate-fails",
+  "passed": true,
+  "result": {
+    "error": "peer certificate has been revoked"
+  },
+  "source_tests": [
+    "tests/test_phase9e_ocsp_local_validation.py::test_revoked_client_certificate_fails_in_require_mode"
+  ]
+}

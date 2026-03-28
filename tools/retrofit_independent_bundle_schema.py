@@ -212,7 +212,7 @@ def retrofit_bundle(bundle_root: Path) -> tuple[int, int]:
 
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
-    bundle_root = Path(argv[0]) if argv else ROOT / 'docs' / 'review' / 'conformance' / 'releases' / '0.3.8' / 'release-0.3.8' / 'tigrcorn-independent-certification-release-matrix'
+    bundle_root = Path(argv[0]) if argv else ROOT / 'docs' / 'review' / 'conformance' / 'releases' / '0.3.9' / 'release-0.3.9' / 'tigrcorn-independent-certification-release-matrix'
     retrofitted, total = retrofit_bundle(bundle_root)
     print(json.dumps({'bundle_root': _relative(bundle_root), 'retrofitted_scenarios': retrofitted, 'total_scenarios': total}, indent=2))
     return 0

@@ -1,0 +1,79 @@
+{
+  "bundle_kind": "same_stack_replay",
+  "commit_hash": "release-0.3.9",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "evidence_tier": [
+      "same_stack_replay"
+    ],
+    "feature": [
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "goaway": [
+      false,
+      true
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false,
+      true
+    ],
+    "peer": [
+      "tigrcorn-public-client"
+    ],
+    "protocol": [
+      "http3"
+    ],
+    "qpack_blocking": [
+      false,
+      true
+    ],
+    "resumption": [
+      false,
+      true
+    ],
+    "retry": [
+      false,
+      true
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false,
+      true
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This canonical 0.3.9 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Phase 9 closure artifacts while keeping the underlying packet traces and peer transcripts intact."
+    },
+    "tigrcorn": {
+      "bundle_scope": "curated-preserved-artifacts",
+      "commit_hash": "release-0.3.9",
+      "version": "0.3.9"
+    }
+  },
+  "generated_at": "2026-03-28T03:08:29.288514+00:00",
+  "matrix_name": "tigrcorn-same-stack-replay-matrix",
+  "matrix_sha256": "442cafbd957b660871ad0eaf1f47a4802df1385a9736b1cb7416cc4a292e135d",
+  "source_bundles": [
+    "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+  ],
+  "canonical_release_promoted": true
+}

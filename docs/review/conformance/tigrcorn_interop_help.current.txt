@@ -1,0 +1,16 @@
+usage: tigrcorn-interop [-h] --matrix MATRIX --output OUTPUT
+                        [--source-root SOURCE_ROOT] [--only SCENARIO_IDS]
+                        [--strict]
+
+Run the tigrcorn external interoperability matrix and write evidence bundles
+
+options:
+  -h, --help            show this help message and exit
+  --matrix MATRIX       Path to the external interop matrix JSON file
+  --output OUTPUT       Root directory for result bundles
+  --source-root SOURCE_ROOT
+                        Repository root used for manifest hashing and commit
+                        detection
+  --only SCENARIO_IDS   Run only the named scenario id (may be given multiple
+                        times)
+  --strict              Stop after the first failed scenario

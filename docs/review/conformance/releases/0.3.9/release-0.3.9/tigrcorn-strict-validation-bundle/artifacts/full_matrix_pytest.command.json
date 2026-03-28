@@ -1,0 +1,19 @@
+{
+  "command": [
+    "PYTHONPATH=src pytest -q",
+    "tests/test_public_api_cli_mtls_surface.py",
+    "tests/test_public_api_tls_cipher_surface.py",
+    "tests/test_phase5_tls_operator_material_surface.py",
+    "tests/test_phase6_public_lifecycle_and_embedder_contract.py",
+    "tests/test_phase7_flag_surface_truth_reconciliation.py",
+    "tests/test_phase8_promotion_targets.py",
+    "tests/test_phase9i_release_assembly_checkpoint.py",
+    "tests/test_phase4_rfc_boundary_formalization_checkpoint.py",
+    "tests/test_documentation_truth_normalization_checkpoint.py",
+    "tests/test_documentation_reconciliation.py",
+    "tests/test_phase9a_promotion_contract_freeze.py",
+    "tests/test_phase9_implementation_plan.py",
+    "tests/test_phase7_release_candidate.py",
+    "tests/test_release_gates.py"
+  ]
+}

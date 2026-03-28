@@ -1,6 +1,6 @@
 # Phase 9D2 trailer fields independent-artifact closure
 
-This checkpoint now records **RFC 9110 §6.5** as green across all three required carriers in the 0.3.8 working release root.
+This checkpoint now records **RFC 9110 §6.5** as green across all three required carriers in the 0.3.9 working release root.
 
 ## Current result
 
@@ -22,4 +22,4 @@ The HTTP/3 `aioquic` trailer-fields scenario now preserves the required sidecar 
 
 ## Honest current result
 
-The package is now **certifiably fully featured** and **strict-target certifiably fully RFC compliant** under the evaluated 0.3.8 working release root. Historical earlier checkpoints remain preserved as historical records.
+The package is now **certifiably fully featured** and **strict-target certifiably fully RFC compliant** under the evaluated 0.3.9 working release root. Historical earlier checkpoints remain preserved as historical records.

@@ -7,16 +7,16 @@ This checkpoint completes the Step 9 administrative release-promotion work after
 - authoritative boundary: `True`
 - strict target boundary: `True`
 - promotion target: `True`
-- canonical authoritative release root: `docs/review/conformance/releases/0.3.8/release-0.3.8`
-- public package version: `0.3.8`
-- release notes: `RELEASE_NOTES_0.3.8.md`
+- canonical authoritative release root: `docs/review/conformance/releases/0.3.9/release-0.3.9`
+- public package version: `0.3.9`
+- release notes: `RELEASE_NOTES_0.3.9.md`
 
 ## What this checkpoint changed
 
-- promoted the 0.3.8 release root from a validated working root into the canonical authoritative release root
-- updated `pyproject.toml` from `0.3.6` to `0.3.8`
+- promoted the 0.3.9 release root from a validated working root into the canonical authoritative release root
+- updated `pyproject.toml` from `0.3.6` to `0.3.9`
 - updated release notes, README/current-state docs, conformance docs, and machine-readable status snapshots to truthfully claim the strict-target green state
-- aligned the external matrix metadata and top-level release manifests with the promoted 0.3.8 release
+- aligned the external matrix metadata and top-level release manifests with the promoted 0.3.9 release
 
 ## Honest current result
 
@@ -26,4 +26,4 @@ The package is now honestly:
 - **strict-target certifiably fully RFC compliant**
 - **certifiably fully featured**
 
-under the canonical 0.3.8 release root.
+under the canonical 0.3.9 release root.

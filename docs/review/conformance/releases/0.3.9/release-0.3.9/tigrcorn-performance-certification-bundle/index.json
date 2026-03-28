@@ -1,0 +1,137 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle",
+  "bundle_kind": "performance_certification_bundle",
+  "generated_at": "2026-03-28T03:19:57.167719+00:00",
+  "note": "This bundle freezes the preserved strict-performance artifacts and threshold metadata for the 0.3.9 working release root.",
+  "release_gate_eligible": true,
+  "phase9g_status": {
+    "document_role": "archival_named_current_snapshot_for_stability",
+    "current_truth_source": false,
+    "truth_scope": "archival_snapshot",
+    "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+    "documentation_truth_reviewed_at": "2026-03-26",
+    "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+    "phase": "9G",
+    "checkpoint": "phase9g_strict_performance_closure",
+    "status": "performance_section_green_not_yet_strict_complete",
+    "current_state": {
+      "authoritative_boundary_passed": true,
+      "strict_target_boundary_passed": false,
+      "promotion_target_passed": false,
+      "flag_surface_passed": true,
+      "operator_surface_passed": true,
+      "performance_passed": true,
+      "documentation_passed": true,
+      "remaining_non_passing_independent_scenarios": [
+        "http3-content-coding-aioquic-client"
+      ],
+      "remaining_plan_phases": [
+        "9H",
+        "9I"
+      ],
+      "remaining_missing_independent_scenarios": []
+    },
+    "performance_contract": {
+      "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+      "profile_count": 32,
+      "lane_counts": {
+        "end_to_end_release": 23,
+        "component_regression": 9
+      },
+      "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
+      "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",
+      "required_metric_keys": [
+        "throughput_ops_per_sec",
+        "p50_ms",
+        "p95_ms",
+        "p99_ms",
+        "p99_9_ms",
+        "time_to_first_byte_ms",
+        "handshake_latency_ms",
+        "error_rate",
+        "scheduler_rejections",
+        "protocol_stalls",
+        "cpu_seconds",
+        "rss_kib"
+      ],
+      "required_threshold_keys": [
+        "min_throughput_ops_per_sec",
+        "max_p50_ms",
+        "max_p95_ms",
+        "max_p99_ms",
+        "max_p99_9_ms",
+        "max_time_to_first_byte_ms",
+        "max_handshake_latency_ms",
+        "max_error_rate",
+        "max_scheduler_rejections",
+        "max_protocol_stalls",
+        "max_rss_kib"
+      ],
+      "required_relative_regression_budget_keys": [
+        "max_throughput_drop_fraction",
+        "max_p99_increase_fraction",
+        "max_p99_9_increase_fraction",
+        "max_cpu_increase_fraction",
+        "max_rss_increase_fraction"
+      ],
+      "required_matrix_lanes": [
+        "component_regression",
+        "end_to_end_release"
+      ],
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ]
+    }
+  },
+  "profile_count": 32,
+  "lane_counts": {
+    "end_to_end_release": 23,
+    "component_regression": 9
+  },
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "artifact_snapshot_roots": {
+    "current_release": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release",
+    "reference_baseline": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle/artifacts/phase6_reference_baseline"
+  },
+  "current_release_artifact_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/index.json",
+  "current_release_artifact_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle/artifacts/phase6_current_release/summary.json",
+  "current_release_total": 32,
+  "current_release_passed": 32,
+  "current_release_failed": 0,
+  "profile_ids": [
+    "http11_baseline",
+    "http11_keepalive",
+    "http11_chunked_upload_download",
+    "http2_multiplex_10",
+    "http2_multiplex_100",
+    "http2_multiplex_1000",
+    "http2_tls",
+    "http3_clean_network",
+    "http3_loss_jitter",
+    "ws_http11",
+    "ws_http11_permessage_deflate",
+    "ws_http2",
+    "ws_http2_permessage_deflate",
+    "ws_http3",
+    "ws_http3_permessage_deflate",
+    "ws_fanout_broadcast",
+    "tls_handshake",
+    "mtls_handshake",
+    "ocsp_strict_mode",
+    "alpn_negotiation_cost",
+    "connect_relay_throughput",
+    "trailers_under_load",
+    "content_coding_under_load",
+    "logging_off",
+    "logging_on",
+    "metrics_off",
+    "metrics_on",
+    "proxy_headers_off",
+    "proxy_headers_on",
+    "worker_scaleout",
+    "graceful_drain",
+    "reload_overhead"
+  ]
+}

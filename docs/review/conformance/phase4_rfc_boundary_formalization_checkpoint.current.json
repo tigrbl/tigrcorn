@@ -1,0 +1,71 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": 4,
+  "checkpoint": "phase4_rfc_boundary_formalization_checkpoint",
+  "generated_at": "2026-03-26T21:23:29.888961Z",
+  "status": "implemented_checkpoint_with_boundary_and_docs_aligned",
+  "boundary": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "promotion_target_passed": true,
+    "phase4_rfc_targets": [
+      "RFC 8297",
+      "RFC 7838 \u00a73"
+    ],
+    "rfc7838_support_envelope": "header_field_advertisement_only",
+    "rfc9218_targeted": false
+  },
+  "validation": {
+    "compileall_passed": true,
+    "targeted_pytest_bundle": {
+      "passed": 41,
+      "failed": 0,
+      "files": [
+        "tests/test_conformance_corpus.py",
+        "tests/test_rfc_applicability_and_competitor_status.py",
+        "tests/test_certification_policy_alignment.py",
+        "tests/test_phase2_rfc_boundary_formalization_checkpoint.py",
+        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+        "tests/test_rfc8297_early_hints.py",
+        "tests/test_rfc7838_alt_svc.py",
+        "tests/test_phase4_rfc_boundary_formalization_checkpoint.py",
+        "tests/test_release_gates.py",
+        "tests/test_phase9i_release_assembly_checkpoint.py"
+      ]
+    },
+    "authoritative_release_gates_passed": true,
+    "strict_release_gates_passed": true,
+    "promotion_target_passed": true
+  },
+  "artifacts_updated": [
+    "docs/review/conformance/certification_boundary.json",
+    "docs/review/conformance/certification_boundary.strict_target.json",
+    "docs/review/conformance/corpus.json",
+    "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+    "docs/review/conformance/STRICT_PROFILE_TARGET.md",
+    "docs/review/conformance/CERTIFICATION_POLICY_ALIGNMENT.md",
+    "docs/review/conformance/PHASE4_RFC_BOUNDARY_FORMALIZATION.md",
+    "docs/review/conformance/phase4_rfc_boundary_formalization_checkpoint.current.json",
+    "docs/review/conformance/rfc_applicability_and_competitor_status.current.json",
+    "docs/review/conformance/rfc_applicability_and_competitor_support.current.json",
+    "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md",
+    "docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md",
+    "docs/review/conformance/release_gate_status.current.json",
+    "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
+    "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "docs/review/conformance/phase9i_release_assembly.current.json",
+    "CURRENT_REPOSITORY_STATE.md",
+    "CURRENT_REPOSITORY_STATE_PHASE4_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md"
+  ],
+  "notes": [
+    "RFC 8297 is certified for direct-server 103 Early Hints behavior across HTTP/1.1, HTTP/2, and HTTP/3.",
+    "RFC 7838 is certified only for the bounded \u00a73 Alt-Svc response header-field advertisement profile.",
+    "RFC 9218 remains explicitly outside the current package boundary.",
+    "This checkpoint does not widen the package boundary into RFC 9111 freshness policy, RFC 9530 digest fields, RFC 9421 signatures, JOSE, or COSE."
+  ]
+}

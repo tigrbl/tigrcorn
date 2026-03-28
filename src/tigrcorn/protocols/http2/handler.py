@@ -6,13 +6,15 @@ from urllib.parse import urlsplit
 
 from tigrcorn.asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
 from tigrcorn.asgi.scopes.http import build_http_scope
-from tigrcorn.asgi.send import HTTPResponseCollector
+from tigrcorn.asgi.send import HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
 from tigrcorn.config.model import ServerConfig
+from tigrcorn.flow.keepalive import KeepAlivePolicy, KeepAliveRuntime
 from tigrcorn.constants import H2_PREFACE
 from tigrcorn.errors import ProtocolError
 from tigrcorn.observability.metrics import Metrics
 from tigrcorn.observability.logging import AccessLogger
-from tigrcorn.protocols.content_coding import apply_http_content_coding
+from tigrcorn.http.alt_svc import configured_alt_svc_values
+from tigrcorn.http.entity import apply_response_entity_semantics, plan_file_backed_response_entity_semantics
 from tigrcorn.protocols.http1.parser import ParsedRequest
 from tigrcorn.protocols.http2.codec import (
     DEFAULT_SETTINGS,
@@ -47,18 +49,23 @@ from tigrcorn.protocols.http2.codec import (
     serialize_settings_ack,
     SETTING_ENABLE_CONNECT_PROTOCOL,
     SETTING_ENABLE_PUSH,
+    SETTING_INITIAL_WINDOW_SIZE,
     SETTING_MAX_CONCURRENT_STREAMS,
+    SETTING_MAX_FRAME_SIZE,
+    SETTING_MAX_HEADER_LIST_SIZE,
     serialize_window_update,
     strip_padding,
 )
-from tigrcorn.protocols.http2.flow import FlowWaiter
+from tigrcorn.protocols.http2.flow import FlowWaiter, next_adaptive_window_target
 from tigrcorn.protocols.http2.hpack import HPACKDecoder, HPACKEncoder
 from tigrcorn.protocols.http2.state import H2ConnectionState, H2StreamLifecycle, H2StreamState
+from tigrcorn.scheduler.runtime import ProductionScheduler, WorkLease
 from tigrcorn.protocols.http2.streams import H2StreamRegistry
 from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
 from tigrcorn.protocols.http2.websocket import H2WebSocketSession
 from tigrcorn.types import ASGIApp
-from tigrcorn.utils.headers import strip_connection_specific_headers
+from tigrcorn.utils.authority import authority_allowed
+from tigrcorn.utils.headers import apply_response_header_policy, sanitize_early_hints_headers, strip_connection_specific_headers
 
 
 class _HTTP2ConnectTunnel:
@@ -163,8 +170,8 @@ class HTTP2ConnectionHandler:
         app: ASGIApp,
         config: ServerConfig,
         access_logger: AccessLogger,
-        scheduler: ProductionScheduler | None,
-        metrics: Metrics | None,
+        scheduler: ProductionScheduler | None = None,
+        metrics: Metrics | None = None,
         reader: asyncio.StreamReader,
         writer: asyncio.StreamWriter,
         client: tuple[str, int] | None,
@@ -186,8 +193,17 @@ class HTTP2ConnectionHandler:
         self.prebuffer = prebuffer
         self.scope_extensions = dict(scope_extensions or {})
         self.state = H2ConnectionState()
-        if self.config.scheduler.max_streams is not None:
-            self.state.local_settings[SETTING_MAX_CONCURRENT_STREAMS] = self.config.scheduler.max_streams
+        self.state.local_settings[SETTING_MAX_CONCURRENT_STREAMS] = self.config.http.http2_max_concurrent_streams
+        self.state.local_settings[SETTING_MAX_HEADER_LIST_SIZE] = self.config.http.http2_max_headers_size
+        self.state.local_settings[SETTING_MAX_FRAME_SIZE] = self.config.http.http2_max_frame_size
+        self.state.local_settings[SETTING_INITIAL_WINDOW_SIZE] = self.config.http.http2_initial_stream_window_size
+        self.state.connection_receive_window_target = self.config.http.http2_initial_connection_window_size
+        self._initial_connection_window_increment = max(
+            0,
+            self.state.connection_receive_window_target - DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE],
+        )
+        if self._initial_connection_window_increment:
+            self.state.connection_receive_window.increase(self._initial_connection_window_increment)
         self.streams = H2StreamRegistry()
         self.stream_tasks: dict[int, asyncio.Task[None]] = {}
         self.stream_work_leases: dict[int, WorkLease] = {}
@@ -198,28 +214,67 @@ class HTTP2ConnectionHandler:
         self.hpack_decoder = HPACKDecoder(
             max_table_size=DEFAULT_SETTINGS[0x1],
             max_header_list_size=self.state.max_header_list_size,
-            max_header_block_size=self.config.max_header_size,
+            max_header_block_size=self.config.http.http2_max_headers_size,
         )
         self.hpack_encoder = HPACKEncoder(max_table_size=DEFAULT_SETTINGS[0x1])
+        self.keepalive_policy = KeepAlivePolicy(
+            idle_timeout=self.config.http.idle_timeout,
+            ping_interval=self.config.http.http2_keep_alive_interval,
+            ping_timeout=self.config.http.http2_keep_alive_timeout,
+        )
+        self.keepalive = KeepAliveRuntime(self.keepalive_policy) if self.keepalive_policy.enabled else None
+        self.keepalive_task: asyncio.Task[None] | None = None
         self.running = True
         self._continuation_stream_id: int | None = None
 
+    def _record_keepalive_activity(self) -> None:
+        if self.keepalive is not None:
+            self.keepalive.record_activity()
+
+    async def _keepalive_loop(self) -> None:
+        while self.running and not self.writer.is_closing():
+            await asyncio.sleep(0.05)
+            if self.keepalive is None or not self.running:
+                return
+            if not self.state.remote_settings_seen:
+                continue
+            if self.keepalive.ping_timed_out():
+                self.running = False
+                self.writer.close()
+                with suppress(Exception):
+                    await self.writer.wait_closed()
+                return
+            payload = self.keepalive.next_ping_payload()
+            if payload is None:
+                continue
+            await self._write_raw(serialize_ping(payload, ack=False), record_activity=False)
+
     async def handle(self) -> None:
         await self._ensure_preface()
-        await self._write_raw(serialize_settings(self.state.local_settings))
-        while self.running:
-            if self._should_finish_after_peer_goaway():
-                break
-            frames = self.frame_buffer.pop_all()
-            if frames:
-                for frame in frames:
-                    await self._handle_frame(frame)
-                continue
-            data = await asyncio.wait_for(self.reader.read(65535), timeout=self.config.http.read_timeout)
-            if not data:
-                break
-            self.frame_buffer.feed(data)
-        await self._shutdown_streams()
+        try:
+            await self._write_raw(serialize_settings(self.state.local_settings))
+            if self._initial_connection_window_increment:
+                await self._write_raw(serialize_window_update(0, self._initial_connection_window_increment))
+            if self.keepalive is not None:
+                self.keepalive_task = asyncio.create_task(self._keepalive_loop(), name='tigrcorn-h2-keepalive')
+            while self.running:
+                if self._should_finish_after_peer_goaway():
+                    break
+                frames = self.frame_buffer.pop_all()
+                if frames:
+                    for frame in frames:
+                        await self._handle_frame(frame)
+                    continue
+                data = await asyncio.wait_for(self.reader.read(65535), timeout=self.config.http.read_timeout)
+                if not data:
+                    break
+                self.frame_buffer.feed(data)
+        finally:
+            if self.keepalive_task is not None:
+                self.keepalive_task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await self.keepalive_task
+            await self._shutdown_streams()
 
     async def _ensure_preface(self) -> None:
         if self.prebuffer == H2_PREFACE:
@@ -244,6 +299,7 @@ class HTTP2ConnectionHandler:
 
     async def _handle_frame(self, frame: HTTP2Frame) -> None:
         self._check_frame_header(frame)
+        self._record_keepalive_activity()
         if frame.frame_type == FRAME_SETTINGS:
             await self._handle_settings(frame)
             return
@@ -314,8 +370,8 @@ class HTTP2ConnectionHandler:
 
     def _append_header_fragment(self, state: H2StreamState, fragment: bytes) -> None:
         next_size = state.header_block_bytes + len(fragment)
-        if next_size > self.config.max_header_size:
-            raise ProtocolError("request head exceeds configured max_header_size")
+        if next_size > self.config.http.http2_max_headers_size:
+            raise ProtocolError("request head exceeds configured http2_max_headers_size")
         state.header_block_bytes = next_size
         state.header_fragments.append(fragment)
 
@@ -411,6 +467,17 @@ class HTTP2ConnectionHandler:
             return
         updates: list[bytes] = []
         self.state.connection_receive_consumed_since_update += amount
+        connection_increment = 0
+        if self.config.http.http2_adaptive_window:
+            new_connection_target = next_adaptive_window_target(
+                self.state.connection_receive_window_target,
+                max(amount, self.state.connection_receive_consumed_since_update),
+            )
+            if new_connection_target > self.state.connection_receive_window_target:
+                delta_target = new_connection_target - self.state.connection_receive_window_target
+                self.state.connection_receive_window_target = new_connection_target
+                self.state.connection_receive_window.increase(delta_target)
+                connection_increment += delta_target
         connection_threshold = max(1, self.state.connection_receive_window_target // 2)
         if (
             self.state.connection_receive_window.available <= connection_threshold
@@ -419,19 +486,34 @@ class HTTP2ConnectionHandler:
             increment = self.state.connection_receive_consumed_since_update
             self.state.connection_receive_consumed_since_update = 0
             self.state.connection_receive_window.increase(increment)
-            updates.append(serialize_window_update(0, increment))
+            connection_increment += increment
+        if connection_increment > 0:
+            updates.append(serialize_window_update(0, connection_increment))
         state = self.streams.find(stream_id)
         if state is None:
             for update in updates:
                 await self._write_raw(update)
             return
         state.receive_consumed_since_update += amount
+        stream_increment = 0
+        if self.config.http.http2_adaptive_window:
+            new_stream_target = next_adaptive_window_target(
+                state.receive_window_target,
+                max(amount, state.receive_consumed_since_update),
+            )
+            if new_stream_target > state.receive_window_target:
+                delta_target = new_stream_target - state.receive_window_target
+                state.receive_window_target = new_stream_target
+                state.receive_window.increase(delta_target)
+                stream_increment += delta_target
         stream_threshold = max(1, state.receive_window_target // 2)
         if state.receive_window.available <= stream_threshold or state.receive_consumed_since_update >= stream_threshold:
             increment = state.receive_consumed_since_update
             state.receive_consumed_since_update = 0
             state.receive_window.increase(increment)
-            updates.append(serialize_window_update(stream_id, increment))
+            stream_increment += increment
+        if stream_increment > 0:
+            updates.append(serialize_window_update(stream_id, stream_increment))
         for update in updates:
             await self._write_raw(update)
 
@@ -529,6 +611,8 @@ class HTTP2ConnectionHandler:
         if len(frame.payload) != 8:
             raise ProtocolError("PING payload must be 8 bytes")
         if frame.flags & FLAG_ACK:
+            if self.keepalive is not None:
+                self.keepalive.acknowledge_pong(frame.payload)
             return
         await self._write_raw(serialize_ping(frame.payload, ack=True))
 
@@ -694,20 +778,22 @@ class HTTP2ConnectionHandler:
             websocket_upgrade=False,
         ), pseudo_headers + extra_headers
 
-    async def _run_http_app(self, stream_id: int, request: ParsedRequest, *, allow_push: bool) -> tuple[int, list[tuple[bytes, bytes]], bytes, list[tuple[bytes, bytes]]]:
+    async def _run_http_app(self, stream_id: int, request: ParsedRequest, *, allow_push: bool) -> tuple[int, list[tuple[bytes, bytes]], bytes, list[tuple[bytes, bytes]], list[tuple[int, list[tuple[bytes, bytes]]]], list | None, object | None]:
         extensions = dict(self.scope_extensions)
         state = self.streams.find(stream_id)
         raw_request_trailers = list(state.trailers) if state is not None else []
         try:
             request_trailers = apply_request_trailer_policy(raw_request_trailers, self.config.http.trailer_policy)
         except ProtocolError:
-            return 400, [(b"content-type", b"text/plain")], b"bad request trailers", []
+            return 400, [(b"content-type", b"text/plain")], b"bad request trailers", [], [], None, None
         if request.method.upper() == "CONNECT":
             extensions["tigrcorn.http.connect"] = {"authority": request.target}
         if request_trailers and self.config.http.trailer_policy != 'drop':
             extensions["tigrcorn.http.request_trailers"] = {}
         if allow_push and self.state.client_allows_push:
             extensions["http.response.push"] = {}
+        extensions['tigrcorn.http.response.file'] = {'protocol': 'http/2', 'streaming': True, 'sendfile': False}
+        extensions['http.response.pathsend'] = {}
         scope = build_http_scope(request, client=self.client, server=self.server, scheme=self.scheme, extensions=extensions, root_path=self.config.proxy.root_path, proxy=self.config.proxy)
         receive = HTTPRequestReceive(request.body, trailers=request_trailers, trailer_policy=self.config.http.trailer_policy)
         collector = HTTPResponseCollector()
@@ -721,20 +807,73 @@ class HTTP2ConnectionHandler:
             await collector(message)
 
         status = 500
+        cleanup: object | None = None
         try:
             await self.app(scope, receive, send)
-            status, headers, body, trailers = collector.response_tuple()
+            collector.finalize()
+            assert collector.status is not None
+            status = collector.status
+            headers = list(collector.headers)
+            trailers = list(collector.trailers)
+            informational = list(collector.informational_responses)
+            body_segments = list(collector.body_segments) if collector.uses_streamed_body else None
+            if body_segments is not None:
+                cleanup = collector.cleanup if collector.has_spooled_body() else None
+                return status, headers, b'', trailers, informational, body_segments, cleanup
+            if collector.has_spooled_body():
+                spooled_segments = collector.spooled_body_segments()
+                spooled_path = ''
+                if spooled_segments:
+                    first_segment = spooled_segments[0]
+                    spooled_path = getattr(first_segment, 'path', '')
+                planned = plan_file_backed_response_entity_semantics(
+                    method=request.method,
+                    request_headers=request.headers,
+                    response_headers=headers,
+                    status=status,
+                    body_path=spooled_path,
+                    body_length=collector.body_length,
+                    generated_etag=collector.generated_entity_tag(),
+                    apply_content_coding=True,
+                    trailers_present=bool(trailers) and request.method.upper() != 'HEAD',
+                )
+                cleanup = collector.cleanup
+                if planned.requires_materialization:
+                    body = await collector.materialize_body()
+                    processed = apply_response_entity_semantics(
+                        method=request.method,
+                        request_headers=request.headers,
+                        response_headers=headers,
+                        body=body,
+                        status=status,
+                        content_coding_policy=self.config.http.content_coding_policy,
+                        supported_codings=tuple(self.config.http.content_codings),
+                        apply_content_coding=True,
+                        generate_etag=True,
+                    )
+                    return processed.status, processed.headers, processed.body, ([] if processed.head_response else trailers), informational, None, cleanup
+                if planned.use_body_segments:
+                    return planned.status, planned.headers, b'', trailers, informational, list(planned.body_segments), cleanup
+                return planned.status, planned.headers, planned.body, [], informational, None, cleanup
+            body = await collector.materialize_body()
         except Exception:
+            collector.cleanup()
             status, headers, body, trailers = 500, [(b"content-type", b"text/plain")], b"internal server error", []
-        status, headers, body, _selection = apply_http_content_coding(
+            informational = []
+            body_segments = None
+            cleanup = None
+        processed = apply_response_entity_semantics(
+            method=request.method,
             request_headers=request.headers,
             response_headers=headers,
             body=body,
             status=status,
-            policy=self.config.http.content_coding_policy,
-            supported=tuple(self.config.http.content_codings),
+            content_coding_policy=self.config.http.content_coding_policy,
+            supported_codings=tuple(self.config.http.content_codings),
+            apply_content_coding=True,
+            generate_etag=True,
         )
-        return status, headers, body, trailers
+        return processed.status, processed.headers, processed.body, ([] if processed.head_response else trailers), informational, None, cleanup
 
     async def _send_push_promise(self, parent_stream_id: int, message: dict) -> None:
         if not self.state.client_allows_push:
@@ -749,12 +888,14 @@ class HTTP2ConnectionHandler:
             receive_window=self.state.local_initial_window_size,
         )
         self.state.last_stream_id = max(self.state.last_stream_id, promised_stream_id)
-        status, headers, body, trailers = await self._run_http_app(promised_stream_id, request, allow_push=False)
-        headers = strip_connection_specific_headers(headers)
-        if self.config.server_header_value:
-            headers = list(headers)
-            headers.append((b"server", self.config.server_header_value))
-        await self._send_response(promised_stream_id, status, headers, body, trailers)
+        status, headers, body, trailers, informational, body_segments, cleanup = await self._run_http_app(promised_stream_id, request, allow_push=False)
+        for interim_status, interim_headers in informational:
+            await self._send_stream_headers(promised_stream_id, interim_status, sanitize_early_hints_headers(interim_headers), end_stream=False)
+        try:
+            await self._send_response(promised_stream_id, status, headers, body, trailers, body_segments=body_segments)
+        finally:
+            if cleanup is not None:
+                cleanup()
         if self.streams.find(promised_stream_id) is not None:
             self._cancel_stream(promised_stream_id)
             self.streams.close(promised_stream_id)
@@ -819,7 +960,15 @@ class HTTP2ConnectionHandler:
         state = self.streams.find(stream_id)
         if state is None or state.closed:
             raise ProtocolError("attempted to send HEADERS on a closed HTTP/2 stream")
-        header_block = self.hpack_encoder.encode_header_block([(b":status", str(status).encode("ascii")), *headers])
+        normalized_headers = sanitize_early_hints_headers(headers) if status == 103 else strip_connection_specific_headers(headers)
+        policy_headers = apply_response_header_policy(
+            normalized_headers,
+            server_header=self.config.server_header_value,
+            include_date_header=self.config.include_date_header,
+            default_headers=self.config.default_response_headers,
+            alt_svc_values=() if status < 200 else configured_alt_svc_values(self.config, request_http_version='2'),
+        )
+        header_block = self.hpack_encoder.encode_header_block([(b":status", str(status).encode("ascii")), *policy_headers])
         await self._write_raw(self.frame_writer.headers(stream_id, header_block, end_stream=end_stream))
         if end_stream:
             state.send_end_stream()
@@ -900,6 +1049,15 @@ class HTTP2ConnectionHandler:
         if state is None:
             raise ProtocolError("websocket stream disappeared before dispatch")
         request = self._build_request(state)
+        authority = self._pseudo_headers(state.headers).get(b":authority")
+        if self.config.allowed_server_names and not authority_allowed(authority, self.config.allowed_server_names):
+            await self._send_response(stream_id, 421, [(b"content-type", b"text/plain")], b"misdirected request")
+            self.access_logger.log_http(self.client, "CONNECT", request.path, 421, "HTTP/2")
+            self._release_stream_work_lease(stream_id)
+            self._cancel_stream(stream_id)
+            self.streams.close(stream_id)
+            self._maybe_finish_after_goaway()
+            return
         session = H2WebSocketSession(
             app=self.app,
             config=self.config,
@@ -994,13 +1152,24 @@ class HTTP2ConnectionHandler:
             self._release_stream_work_lease(stream_id)
             return
         request = self._build_request(state)
+        authority = self._pseudo_headers(state.headers).get(b":authority")
         try:
-            status, headers, body, trailers = await self._run_http_app(stream_id, request, allow_push=True)
-            headers = strip_connection_specific_headers(headers)
-            if self.config.server_header_value:
-                headers = list(headers)
-                headers.append((b"server", self.config.server_header_value))
-            await self._send_response(stream_id, status, headers, body, trailers)
+            if self.config.allowed_server_names and not authority_allowed(authority, self.config.allowed_server_names):
+                await self._send_response(stream_id, 421, [(b"content-type", b"text/plain")], b"misdirected request")
+                self.access_logger.log_http(self.client, request.method, request.path, 421, "HTTP/2")
+                if self.streams.find(stream_id) is not None:
+                    self._cancel_stream(stream_id)
+                    self.streams.close(stream_id)
+                self._maybe_finish_after_goaway()
+                return
+            status, headers, body, trailers, informational, body_segments, cleanup = await self._run_http_app(stream_id, request, allow_push=True)
+            for interim_status, interim_headers in informational:
+                await self._send_stream_headers(stream_id, interim_status, sanitize_early_hints_headers(interim_headers), end_stream=False)
+            try:
+                await self._send_response(stream_id, status, headers, body, trailers, body_segments=body_segments)
+            finally:
+                if cleanup is not None:
+                    cleanup()
             self.access_logger.log_http(self.client, request.method, request.path, status, "HTTP/2")
             if self.streams.find(stream_id) is not None:
                 self._cancel_stream(stream_id)
@@ -1009,16 +1178,41 @@ class HTTP2ConnectionHandler:
         finally:
             self._release_stream_work_lease(stream_id)
 
-    async def _send_response(self, stream_id: int, status: int, headers: list[tuple[bytes, bytes]], body: bytes, trailers: list[tuple[bytes, bytes]] | None = None) -> None:
+    async def _send_response(self, stream_id: int, status: int, headers: list[tuple[bytes, bytes]], body: bytes, trailers: list[tuple[bytes, bytes]] | None = None, *, body_segments: list | None = None) -> None:
         state = self.streams.find(stream_id)
         if state is None or state.closed:
             raise ProtocolError("attempted to send response on a closed HTTP/2 stream")
+        streamed_body = response_body_segments_have_bytes(body_segments or []) if body_segments is not None else False
         if state.reserved_local and not state.opened:
-            state.open_local_reserved(end_stream=not body)
+            state.open_local_reserved(end_stream=not body and not streamed_body and not bool(trailers))
+        headers = apply_response_header_policy(
+            strip_connection_specific_headers(headers),
+            server_header=self.config.server_header_value,
+            include_date_header=self.config.include_date_header,
+            default_headers=self.config.default_response_headers,
+            alt_svc_values=configured_alt_svc_values(self.config, request_http_version='2'),
+        )
         header_block = self.hpack_encoder.encode_header_block([(b":status", str(status).encode("ascii")), *headers])
         trailers = list(trailers or [])
-        end_after_headers = not body and not trailers
+        end_after_headers = not body and not streamed_body and not trailers
         await self._write_raw(self.frame_writer.headers(stream_id, header_block, end_stream=end_after_headers))
+        if body_segments is not None:
+            if not streamed_body and not trailers:
+                state.send_end_stream()
+                self._finalize_stream_if_complete(stream_id)
+                return
+            if streamed_body:
+                async for chunk in iter_response_body_segments(body_segments, chunk_size=self.state.max_frame_size):
+                    await self._send_stream_data(stream_id, chunk, end_stream=False)
+            if trailers:
+                trailer_block = self.hpack_encoder.encode_header_block(trailers)
+                await self._write_raw(self.frame_writer.headers(stream_id, trailer_block, end_stream=True))
+                state.send_end_stream()
+                self._finalize_stream_if_complete(stream_id)
+                return
+            await self._send_stream_data(stream_id, b'', end_stream=True)
+            self._finalize_stream_if_complete(stream_id)
+            return
         if not body and not trailers:
             state.send_end_stream()
             self._finalize_stream_if_complete(stream_id)
@@ -1066,10 +1260,12 @@ class HTTP2ConnectionHandler:
             if state is None or state.closed:
                 raise ProtocolError("stream closed while waiting for flow-control credit")
 
-    async def _write_raw(self, data: bytes) -> None:
+    async def _write_raw(self, data: bytes, *, record_activity: bool = True) -> None:
         async with self.writer_lock:
             self.writer.write(data)
             await self.writer.drain()
+        if record_activity:
+            self._record_keepalive_activity()
 
     def _notify_waiter(self, stream_id: int) -> None:
         if stream_id == 0:

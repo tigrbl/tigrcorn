@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "worker_prefork_proxy",
+  "failure_reasons": [],
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "p50_ms": 0.0048220000508081284,
+    "p95_ms": 0.0060703499912051475,
+    "p99_9_ms": 0.006697206979879412,
+    "p99_ms": 0.006582069981959649,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 602598.7066518125,
+    "time_to_first_byte_ms": 0.0048220000508081284
+  },
+  "passed": true,
+  "profile_id": "graceful_drain"
+}

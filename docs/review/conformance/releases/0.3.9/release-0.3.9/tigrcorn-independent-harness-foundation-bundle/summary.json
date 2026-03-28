@@ -1,0 +1,56 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-harness-foundation-bundle",
+  "bundle_kind": "independent_harness_foundation",
+  "commit_hash": "phase9b-independent-harness-foundation",
+  "failed": 0,
+  "matrix_name": "tigrcorn-independent-certification-release-matrix",
+  "passed": 1,
+  "phase": "9B",
+  "proof_scenarios": [
+    "http1-server-curl-client"
+  ],
+  "release": "0.3.9",
+  "release_gate_eligible": false,
+  "required_bundle_files": [
+    "manifest.json",
+    "summary.json",
+    "index.json"
+  ],
+  "required_scenario_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "scenario_ids": [
+    "http1-server-curl-client"
+  ],
+  "schema_version": 1,
+  "skipped": 16,
+  "strict_target_complete": false,
+  "total": 1,
+  "wrapper_families": {
+    "aioquic": [
+      "aioquic.http3_client",
+      "aioquic.http3_websocket_client"
+    ],
+    "curl": [
+      "curl.http1_client",
+      "curl.http2_client"
+    ],
+    "h2": [
+      "h2.http2_client",
+      "h2.http2_websocket_client"
+    ],
+    "openssl": [
+      "openssl.quic_client"
+    ],
+    "websockets": [
+      "websockets.http11_client"
+    ]
+  }
+}

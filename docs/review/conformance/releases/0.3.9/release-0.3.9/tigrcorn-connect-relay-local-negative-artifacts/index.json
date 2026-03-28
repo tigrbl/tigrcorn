@@ -1,0 +1,39 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts",
+  "bundle_kind": "local_negative_artifacts",
+  "total": 6,
+  "passed": 6,
+  "failed": 0,
+  "scenarios": [
+    {
+      "id": "http11-connect-policy-deny",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/http11-connect-policy-deny"
+    },
+    {
+      "id": "http11-connect-allowlist-rejection",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/http11-connect-allowlist-rejection"
+    },
+    {
+      "id": "http2-connect-policy-deny",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/http2-connect-policy-deny"
+    },
+    {
+      "id": "http2-connect-allowlist-rejection",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/http2-connect-allowlist-rejection"
+    },
+    {
+      "id": "http3-connect-policy-deny",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/http3-connect-policy-deny"
+    },
+    {
+      "id": "http3-connect-allowlist-rejection",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/http3-connect-allowlist-rejection"
+    }
+  ]
+}

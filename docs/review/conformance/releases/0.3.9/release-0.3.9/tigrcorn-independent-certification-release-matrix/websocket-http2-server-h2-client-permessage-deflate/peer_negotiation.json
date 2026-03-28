@@ -1,0 +1,10 @@
+{
+  "compression_requested": "permessage-deflate",
+  "implementation": "python-h2",
+  "negotiated_extensions": [
+    "PerMessageDeflate"
+  ],
+  "protocol": "h2c",
+  "response_extension_header": "permessage-deflate; server_max_window_bits=15; client_max_window_bits=15",
+  "settings_enable_connect_protocol": true
+}

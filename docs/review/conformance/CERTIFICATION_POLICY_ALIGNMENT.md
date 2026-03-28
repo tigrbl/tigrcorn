@@ -1,14 +1,22 @@
 # Certification policy alignment
 
-The canonical policy source for package-wide certification is `docs/review/conformance/CERTIFICATION_BOUNDARY.md` together with `docs/review/conformance/certification_boundary.json`.
+The canonical policy source for package-wide certification is now the explicit policy chain:
 
-## Decision made in this update
+- `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
+- `docs/review/conformance/certification_boundary.json`
+- `docs/review/conformance/BOUNDARY_NON_GOALS.md`
 
-The machine-readable boundary is authoritative.
+## Decision preserved in this update
 
-That means the current release gate uses the per-RFC evidence tier declared in `required_rfc_evidence`, and narrative documentation must not silently strengthen that requirement into an all-surfaces-independent rule.
+The machine-readable boundary remains authoritative for per-RFC evidence policy.
 
-## RFC surfaces affected by the earlier mismatch
+The human-readable boundary document is authoritative for the current in-bounds T/P/A/D/R package statement.
+
+The boundary non-goals document is authoritative for the current out-of-bounds statement.
+
+That means the current release gate uses the per-RFC evidence tier declared in `required_rfc_evidence`, while current docs also have one explicit place that says what the package is **not** claiming.
+
+## RFC surfaces intentionally satisfied at local conformance in the canonical boundary
 
 The current boundary intentionally keeps these RFCs at `local_conformance`:
 
@@ -16,28 +24,24 @@ The current boundary intentionally keeps these RFCs at `local_conformance`:
 - RFC 9110 §9.3.6 (CONNECT)
 - RFC 9110 §6.5 (trailers)
 - RFC 9110 §8 (content coding)
+- RFC 7232
+- RFC 7233
+- RFC 8297
+- RFC 7838 §3
 - RFC 6960
 
-Those RFCs are still inside the required package surface. They are simply not required to reach `independent_certification` in the current release gate.
-
-## Why this choice was made
-
-- the repository already contains local conformance evidence for those RFCs
-- the immediate certification blocker is preserved third-party HTTP/3 / RFC 9220 evidence, not a missing local implementation
-- promoting the listed RFCs to `independent_certification` without preserved third-party artifacts would make the boundary stricter than the evidence actually committed in the tree
-
-## What would be required for a stricter profile
-
-A stricter all-surfaces-independent profile would still need new third-party preserved artifacts for:
-
-- RFC 7692 permessage-deflate behavior
-- RFC 9110 CONNECT relay behavior
-- RFC 9110 trailer propagation
-- RFC 9110 content-coding negotiation
-- RFC 6960 OCSP-backed revocation behavior
+Those RFCs are still inside the required package surface. RFC 7232 / RFC 7233 are current package-owned entity semantics, RFC 8297 is the current 103 Early Hints direct-delivery surface, and RFC 7838 §3 is the current bounded Alt-Svc header-field advertisement surface.
 
 ## Current repository state
 
-This update resolves the policy/documentation mismatch, but it does **not** make the archive certifiably fully RFC compliant.
+The current canonical `0.3.9` release root is green under:
 
-The current release remains blocked by the missing preserved third-party `aioquic` HTTP/3 / RFC 9220 artifacts declared in `docs/review/conformance/external_matrix.release.json`.
+- the canonical certification boundary
+- the preserved stricter target
+- the composite promotion target
+
+The package is therefore currently **certifiably fully RFC compliant** under the canonical boundary and **certifiably fully featured** under the canonical `0.3.9` release root.
+
+## Current governance note
+
+The new out-of-bounds statement in `BOUNDARY_NON_GOALS.md` resolves repeated review ambiguity around Trio/runtime breadth, RFC 9218, RFC 9111, RFC 9530, RFC 9421, JOSE/COSE, and parser/backend/interface pluggability.

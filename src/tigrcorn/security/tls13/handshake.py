@@ -491,6 +491,7 @@ class QuicTlsHandshakeDriver:
         transport_parameters: TransportParameters | None = None,
         certificate_pem: bytes | None = None,
         private_key_pem: bytes | None = None,
+        private_key_password: bytes | None = None,
         trusted_certificates: Iterable[bytes] | None = None,
         require_client_certificate: bool = False,
         session_ticket: QuicSessionTicket | bytes | None = None,
@@ -535,7 +536,7 @@ class QuicTlsHandshakeDriver:
             raise ValueError('trusted_certificates are required when client certificates are mandatory')
         if self.transport_mode == 'stream':
             self.enable_early_data = False
-        self._private_key = serialization.load_pem_private_key(private_key_pem, password=None) if private_key_pem is not None else None
+        self._private_key = serialization.load_pem_private_key(private_key_pem, password=private_key_password) if private_key_pem is not None else None
         if certificate_pem is not None:
             self._certificate_chain = tuple(load_pem_certificates((certificate_pem,)))
             self._certificate_chain_pem = tuple(
@@ -1335,3 +1336,47 @@ class QuicTlsHandshakeDriver:
             extensions=tuple(extensions),
         )
         return message.encode()
+
+
+TLS13_HANDSHAKE_STATE_TABLE: tuple[dict[str, object], ...] = (
+    {
+        'from': 'client_idle',
+        'event': 'start() / outbound ClientHello',
+        'to': 'client_wait_server',
+        'notes': 'client has emitted ClientHello and waits for the server flight',
+    },
+    {
+        'from': 'server_idle',
+        'event': 'ClientHello accepted without HRR',
+        'to': 'server_wait_client_finished',
+        'notes': 'server selected parameters and waits for the client Finished',
+    },
+    {
+        'from': 'server_idle',
+        'event': 'ClientHello requires HRR',
+        'to': 'server_wait_client_hello_retry',
+        'notes': 'server issued HelloRetryRequest and waits for a replacement ClientHello',
+    },
+    {
+        'from': 'server_wait_client_hello_retry',
+        'event': 'replacement ClientHello accepted',
+        'to': 'server_wait_client_finished',
+        'notes': 'retry path converges on the same post-ServerHello wait state',
+    },
+    {
+        'from': 'client_wait_server',
+        'event': 'server flight validated and Finished processed',
+        'to': 'complete',
+        'notes': 'client completed certificate verification, Finished, and traffic secret installation',
+    },
+    {
+        'from': 'server_wait_client_finished',
+        'event': 'client Finished validated',
+        'to': 'complete',
+        'notes': 'server completed handshake and may issue session tickets',
+    },
+)
+
+
+def tls13_handshake_state_table() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in TLS13_HANDSHAKE_STATE_TABLE)

@@ -26,7 +26,7 @@ from tigrcorn.compat.release_gates import assert_independent_certification_bundl
 from tools.interop_wrappers import describe_wrapper_registry  # noqa: E402
 
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 BUNDLE_ROOT = RELEASE_ROOT / 'tigrcorn-independent-harness-foundation-bundle'
 MATRIX_PATH = CONFORMANCE / 'external_matrix.release.json'
 PROOF_SCENARIOS = ['http1-server-curl-client']
@@ -93,7 +93,7 @@ def main() -> int:
         {
             'bundle_kind': 'independent_harness_foundation',
             'phase': '9B',
-            'release': '0.3.8',
+            'release': '0.3.9',
             'proof_scenarios': PROOF_SCENARIOS,
             'release_gate_eligible': False,
             'strict_target_complete': False,
@@ -112,7 +112,7 @@ def main() -> int:
         {
             'bundle_kind': 'independent_harness_foundation',
             'phase': '9B',
-            'release': '0.3.8',
+            'release': '0.3.9',
             'proof_scenarios': PROOF_SCENARIOS,
             'release_gate_eligible': False,
             'strict_target_complete': False,
@@ -125,7 +125,7 @@ def main() -> int:
         {
             'bundle_kind': 'independent_harness_foundation',
             'phase': '9B',
-            'release': '0.3.8',
+            'release': '0.3.9',
             'proof_scenarios': PROOF_SCENARIOS,
             'release_gate_eligible': False,
             'strict_target_complete': False,
@@ -172,7 +172,7 @@ def main() -> int:
     _write_json(RELEASE_ROOT / 'manifest.json', release_manifest)
 
     (RELEASE_ROOT / 'README.md').write_text(
-        '# Release 0.3.8 working promotion root\n\n'
+        '# Release 0.3.9 working promotion root\n\n'
         'This directory remains the next promotable release root reserved by Phase 9A.\n\n'
         'Phase 9B adds the shared independent-certification harness foundation proof bundle at:\n\n'
         '- `tigrcorn-independent-harness-foundation-bundle/`\n\n'

@@ -1,0 +1,34 @@
+[
+  {
+    "selector": "1xx",
+    "allows_body": false,
+    "allows_transfer_encoding": false,
+    "allows_content_length": false,
+    "implicit_content_length": false,
+    "notes": "informational responses never carry a final response body"
+  },
+  {
+    "selector": "204",
+    "allows_body": false,
+    "allows_transfer_encoding": false,
+    "allows_content_length": false,
+    "implicit_content_length": false,
+    "notes": "204 response body is always empty"
+  },
+  {
+    "selector": "304",
+    "allows_body": false,
+    "allows_transfer_encoding": false,
+    "allows_content_length": true,
+    "implicit_content_length": false,
+    "notes": "304 is bodyless but may carry representation metadata"
+  },
+  {
+    "selector": "other-final",
+    "allows_body": true,
+    "allows_transfer_encoding": true,
+    "allows_content_length": true,
+    "implicit_content_length": true,
+    "notes": "non-bodyless final responses may receive implicit Content-Length when fully buffered"
+  }
+]

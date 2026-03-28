@@ -1,0 +1,69 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "checkpoint": "phase2_rfc_boundary_formalization_checkpoint",
+  "generated_at": "2026-03-26T20:13:23.966669+00:00",
+  "status": "phase2_rfc_boundary_formalized_current_model_green",
+  "implemented": {
+    "rfc7232_in_authoritative_boundary": true,
+    "rfc7233_in_authoritative_boundary": true,
+    "rfc7232_in_strict_boundary": true,
+    "rfc7233_in_strict_boundary": true,
+    "rfc7232_local_conformance_vector": "http-conditional-requests",
+    "rfc7233_local_conformance_vector": "http-byte-ranges",
+    "broader_cache_integrity_signature_boundary_expanded": false
+  },
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q src benchmarks tools",
+      "result": "passed"
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true,
+      "failure_count": 0,
+      "failures": []
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true,
+      "failure_count": 0,
+      "failures": []
+    },
+    "evaluate_promotion_target": {
+      "passed": true,
+      "failure_count": 0,
+      "failures": []
+    },
+    "targeted_pytest": {
+      "command": "pytest -q tests/test_rfc7232_conditional_requests.py tests/test_rfc7233_range_requests.py tests/test_phase2_rfc_boundary_formalization_checkpoint.py tests/test_http_integrity_caching_signatures_status.py tests/test_rfc_applicability_and_competitor_status.py tests/test_rfc_applicability_and_competitor_support.py tests/test_conformance_corpus.py tests/test_certification_policy_alignment.py tests/test_phase2_entity_semantics_checkpoint.py tests/test_phase9i_release_assembly_checkpoint.py",
+      "result": "passed",
+      "passed": 30,
+      "failed": 0
+    }
+  },
+  "files_updated": [
+    "docs/review/conformance/certification_boundary.json",
+    "docs/review/conformance/certification_boundary.strict_target.json",
+    "docs/review/conformance/corpus.json",
+    "docs/review/conformance/http_integrity_caching_signatures_status.current.json",
+    "docs/review/conformance/rfc_applicability_and_competitor_status.current.json",
+    "docs/review/conformance/rfc_applicability_and_competitor_support.current.json",
+    "docs/review/conformance/release_gate_status.current.json",
+    "docs/review/conformance/phase9i_release_assembly.current.json",
+    "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "CURRENT_REPOSITORY_STATE.md",
+    "CURRENT_REPOSITORY_STATE_PHASE2_RFC_BOUNDARY_FORMALIZATION_CHECKPOINT.md",
+    "README.md",
+    "RFC_CERTIFICATION_STATUS.md",
+    "tests/test_rfc7232_conditional_requests.py",
+    "tests/test_rfc7233_range_requests.py",
+    "tests/test_phase2_rfc_boundary_formalization_checkpoint.py"
+  ],
+  "notes": [
+    "RFC 7232 and RFC 7233 are now fully targeted and release-gated within the current package boundary.",
+    "The current package boundary still intentionally excludes RFC 9111 freshness policy, RFC 9530 digest fields, RFC 9421 signatures, JOSE, and COSE."
+  ]
+}

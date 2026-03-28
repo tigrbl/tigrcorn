@@ -41,7 +41,7 @@ from tools.interop_wrappers import describe_wrapper_registry, write_wrapper_regi
 from tools.retrofit_independent_bundle_schema import retrofit_bundle  # noqa: E402
 
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 INDEPENDENT_ROOT = RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'
 LOCAL_VALIDATION_ROOT = RELEASE_ROOT / 'tigrcorn-ocsp-local-validation-artifacts'
 MATRIX_PATH = CONFORMANCE / 'external_matrix.release.json'
@@ -276,7 +276,7 @@ def _overlay_generated_scenario(generated_root: Path, responder) -> None:
     manifest_payload['required_scenario_files'] = ['summary.json', 'index.json', 'result.json', 'scenario.json', 'command.json', 'env.json', 'versions.json', 'wire_capture.json']
     manifest_payload['wrapper_families'] = wrapper_families
     notes = list(manifest_payload.get('notes', []))
-    note = 'Phase 9E overlays a fresh OpenSSL OCSP/mTLS independent-artifact run into the 0.3.8 working release root.'
+    note = 'Phase 9E overlays a fresh OpenSSL OCSP/mTLS independent-artifact run into the 0.3.9 working release root.'
     if note not in notes:
         notes.append(note)
     manifest_payload['notes'] = notes
@@ -425,7 +425,7 @@ def _update_release_root_manifest() -> None:
     manifest_path = RELEASE_ROOT / 'manifest.json'
     manifest = _load_json(manifest_path) if manifest_path.exists() else {}
     manifest.update({
-        'release': '0.3.8',
+        'release': '0.3.9',
         'schema_version': 1,
         'generated_at': _now(),
         'source_checkpoint': 'phase9e_ocsp',
@@ -448,7 +448,7 @@ def _update_release_root_manifest() -> None:
     manifest['bundles'] = bundles
     notes = list(manifest.get('notes', []))
     add_notes = [
-        'Phase 9E overlays a passing OpenSSL OCSP validation scenario into the 0.3.8 working release root.',
+        'Phase 9E overlays a passing OpenSSL OCSP validation scenario into the 0.3.9 working release root.',
         'Phase 9E also preserves local OCSP validation vectors for stale responses, revoked client certificates, soft-fail vs require behavior, and cache reuse.',
         'This release root remains non-promotable because the remaining HTTP/3 strict-target blockers, flag gaps, and strict performance target are still incomplete.',
     ]
@@ -460,7 +460,7 @@ def _update_release_root_manifest() -> None:
 
     readme = RELEASE_ROOT / 'README.md'
     readme.write_text(
-        '# Release 0.3.8 working promotion root\n\n'
+        '# Release 0.3.9 working promotion root\n\n'
         'This directory remains the next promotable release root reserved by Phase 9A.\n\n'
         'Phase 9B adds the shared independent-certification harness foundation proof bundle.\n'
         'Phase 9C adds an RFC 7692 independent-artifact overlay into the canonical independent bundle for this working root.\n'
@@ -470,7 +470,7 @@ def _update_release_root_manifest() -> None:
         'Phase 9E adds an OpenSSL OCSP validation independent-artifact overlay into the canonical independent bundle for this working root.\n\n'
         'Current truth:\n\n'
         '- the release root is **not** yet promotable\n'
-        '- the OpenSSL OCSP validation scenario now passes under the 0.3.8 working release root\n'
+        '- the OpenSSL OCSP validation scenario now passes under the 0.3.9 working release root\n'
         '- the remaining strict-target blockers are now concentrated in the HTTP/3 third-party scenarios for RFC 7692, CONNECT relay, trailer fields, and content coding\n'
         '- the strict target is therefore **not** yet complete\n',
         encoding='utf-8',

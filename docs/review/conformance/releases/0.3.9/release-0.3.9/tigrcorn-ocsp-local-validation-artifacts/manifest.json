@@ -1,0 +1,10 @@
+{
+  "bundle_kind": "local_validation_artifacts",
+  "phase": "9E",
+  "rfc": [
+    "RFC 6960"
+  ],
+  "generated_at": "2026-03-22T08:13:06.201010+00:00",
+  "commit_hash": "phase9e-ocsp-checkpoint",
+  "description": "Local OCSP validation vectors preserved during Phase 9E independent OCSP closure work."
+}

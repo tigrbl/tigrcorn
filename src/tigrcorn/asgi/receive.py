@@ -180,14 +180,16 @@ class HTTPStreamingRequestReceive:
 
 
 class QueueReceive:
-    def __init__(self) -> None:
-        self._queue: asyncio.Queue[Message] = asyncio.Queue()
+    def __init__(self, max_size: int | None = None) -> None:
+        self.max_size = max_size
+        self._queue: asyncio.Queue[Message] = asyncio.Queue(maxsize=0 if not max_size else max_size)
 
     async def put(self, message: Message) -> None:
         await self._queue.put(message)
 
     async def __call__(self) -> Message:
         return await self._queue.get()
+
 
 
 class LifespanReceive(QueueReceive):

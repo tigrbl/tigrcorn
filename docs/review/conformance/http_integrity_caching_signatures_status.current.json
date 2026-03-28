@@ -1,18 +1,27 @@
 {
+  "document_role": "scoped_current_audit_not_package_wide_truth_source",
+  "current_truth_source": false,
+  "truth_scope": "scoped_current_audit",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "scoped_audit_scope": "focused_current_http_integrity_caching_and_signatures_audit",
+  "not_package_wide_truth_source": true,
   "changes_required_for_requested_stack": [
-    "add a representation metadata subsystem that can compute ETag or equivalent validators and evaluate If-None-Match / If-Modified-Since before response emission",
-    "add explicit RFC 7232 and RFC 9111 policy and test coverage for validation and caching",
-    "add RFC 9530 digest field generation and verification for content and representation digests",
-    "add a dedicated HTTP Message Signatures component for RFC 9421, including covered-component selection and signature verification",
-    "if JOSE or COSE is desired, add a dedicated auth / crypto boundary rather than folding those features into the current transport-only certification boundary",
-    "extend machine-readable certification manifests, release gates, contracts, and evidence bundles if any of these RFCs are to become claimed targets"
+    "keep RFC 7232 and RFC 7233 inside the certification boundary with maintained local conformance vectors and release-gate alignment",
+    "add explicit RFC 9111 policy and test coverage only if cache freshness / revalidation behavior becomes a deliberate product boundary",
+    "add RFC 9530 digest field generation and verification for content and representation digests only if integrity fields become product requirements",
+    "add a dedicated HTTP Message Signatures component for RFC 9421 only if signed HTTP request/response handling becomes a declared product goal",
+    "if JOSE or COSE is desired, add a dedicated auth / crypto boundary rather than folding those features into the current direct-server certification boundary",
+    "extend machine-readable certification manifests, release gates, and evidence bundles before any broader cache / integrity / signature RFC is newly claimed"
   ],
   "checkpoint": "http_integrity_caching_signatures_audit",
   "closest_existing_modules": [
-    "src/tigrcorn/protocols/content_coding.py",
-    "src/tigrcorn/protocols/http1/serializer.py",
-    "src/tigrcorn/protocols/http2/hpack.py",
-    "src/tigrcorn/protocols/http3/qpack.py"
+    "src/tigrcorn/http/etag.py",
+    "src/tigrcorn/http/conditional.py",
+    "src/tigrcorn/http/range.py",
+    "src/tigrcorn/http/entity.py",
+    "src/tigrcorn/static.py",
+    "src/tigrcorn/protocols/content_coding.py"
   ],
   "feature_status": {
     "accept_encoding": {
@@ -20,72 +29,16 @@
         "src/tigrcorn/protocols/content_coding.py"
       ],
       "current_support": "supported",
-      "notes": "Accept-Encoding parsing and qvalue selection are implemented for the buffered response coding path.",
+      "notes": "Accept-Encoding parsing and qvalue selection are implemented for the package-owned response coding path.",
       "targeted": true
-    },
-    "content_digest": {
-      "closest_modules": [],
-      "current_support": "not_supported",
-      "notes": "No Content-Digest field implementation was found.",
-      "targeted": false
     },
     "content_encoding": {
       "closest_modules": [
         "src/tigrcorn/protocols/content_coding.py"
       ],
       "current_support": "supported",
-      "notes": "gzip, deflate, and optional br are emitted when the response qualifies for coding.",
+      "notes": "gzip, deflate, and optional br are emitted when the response qualifies for content coding.",
       "targeted": true
-    },
-    "cose_signing": {
-      "closest_modules": [],
-      "current_support": "not_supported",
-      "notes": "No COSE signing surface was found.",
-      "targeted": false
-    },
-    "etag": {
-      "closest_modules": [
-        "src/tigrcorn/protocols/http2/hpack.py",
-        "src/tigrcorn/protocols/http3/qpack.py"
-      ],
-      "current_support": "header-name-only",
-      "notes": "The name appears in HPACK/QPACK static tables, but no ETag generation or validator comparison engine was found.",
-      "targeted": false
-    },
-    "http_signatures": {
-      "closest_modules": [],
-      "current_support": "not_supported",
-      "notes": "No HTTP Message Signatures implementation was found.",
-      "targeted": false
-    },
-    "if_none_match": {
-      "closest_modules": [
-        "src/tigrcorn/protocols/http2/hpack.py",
-        "src/tigrcorn/protocols/http3/qpack.py"
-      ],
-      "current_support": "header-name-only",
-      "notes": "The name appears in HPACK/QPACK static tables, but no If-None-Match evaluation path was found.",
-      "targeted": false
-    },
-    "jose_signing": {
-      "closest_modules": [],
-      "current_support": "not_supported",
-      "notes": "No JOSE/JWS signing surface was found.",
-      "targeted": false
-    },
-    "repr_digest": {
-      "closest_modules": [],
-      "current_support": "not_supported",
-      "notes": "No Repr-Digest field implementation was found.",
-      "targeted": false
-    },
-    "response_304": {
-      "closest_modules": [
-        "src/tigrcorn/protocols/http1/serializer.py"
-      ],
-      "current_support": "generic_status_only",
-      "notes": "HTTP/1.1 serialization knows status 304 and suppresses the body, but no RFC 7232 conditional-request decision engine was found.",
-      "targeted": false
     },
     "vary": {
       "closest_modules": [
@@ -94,11 +47,108 @@
       "current_support": "supported_for_content_coding",
       "notes": "Vary: accept-encoding is emitted on the content-coding path.",
       "targeted": true
+    },
+    "etag": {
+      "closest_modules": [
+        "src/tigrcorn/http/etag.py",
+        "src/tigrcorn/http/entity.py"
+      ],
+      "current_support": "supported",
+      "notes": "Entity tags are generated for package-owned response entity handling and used by the conditional engine.",
+      "targeted": true
+    },
+    "if_none_match": {
+      "closest_modules": [
+        "src/tigrcorn/http/conditional.py"
+      ],
+      "current_support": "supported",
+      "notes": "If-None-Match drives 304 / 412 outcomes through the conditional request engine.",
+      "targeted": true
+    },
+    "if_match": {
+      "closest_modules": [
+        "src/tigrcorn/http/conditional.py"
+      ],
+      "current_support": "supported",
+      "notes": "If-Match is evaluated against the generated or supplied current entity tag.",
+      "targeted": true
+    },
+    "if_modified_since": {
+      "closest_modules": [
+        "src/tigrcorn/http/conditional.py"
+      ],
+      "current_support": "supported",
+      "notes": "If-Modified-Since is evaluated against Last-Modified when present.",
+      "targeted": true
+    },
+    "if_unmodified_since": {
+      "closest_modules": [
+        "src/tigrcorn/http/conditional.py"
+      ],
+      "current_support": "supported",
+      "notes": "If-Unmodified-Since is evaluated against Last-Modified when present.",
+      "targeted": true
+    },
+    "response_304": {
+      "closest_modules": [
+        "src/tigrcorn/http/conditional.py",
+        "src/tigrcorn/http/entity.py"
+      ],
+      "current_support": "supported_by_conditional_engine",
+      "notes": "The conditional engine produces 304 Not Modified responses and strips the response body.",
+      "targeted": true
+    },
+    "range": {
+      "closest_modules": [
+        "src/tigrcorn/http/range.py",
+        "src/tigrcorn/http/entity.py",
+        "src/tigrcorn/static.py"
+      ],
+      "current_support": "supported",
+      "notes": "Byte ranges, multipart byteranges, and 416 handling are implemented for package-owned response entity processing.",
+      "targeted": true
+    },
+    "if_range": {
+      "closest_modules": [
+        "src/tigrcorn/http/range.py"
+      ],
+      "current_support": "supported",
+      "notes": "If-Range is honored for both entity-tag and Last-Modified validators.",
+      "targeted": true
+    },
+    "content_digest": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No Content-Digest field implementation was found.",
+      "targeted": false
+    },
+    "repr_digest": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No Repr-Digest field implementation was found.",
+      "targeted": false
+    },
+    "http_signatures": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No RFC 9421 HTTP Message Signatures implementation was found.",
+      "targeted": false
+    },
+    "jose_signing": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No JOSE signing surface was found.",
+      "targeted": false
+    },
+    "cose_signing": {
+      "closest_modules": [],
+      "current_support": "not_supported",
+      "notes": "No COSE signing surface was found.",
+      "targeted": false
     }
   },
   "missing_modules_or_capability_classes": [
-    "conditional request validator / revalidation engine",
-    "HTTP cache key and cache-control / revalidation subsystem",
+    "HTTP cache key and cache-control / freshness subsystem",
     "Content-Digest / Repr-Digest field generator and verifier",
     "HTTP Message Signatures component and policy surface",
     "JOSE token / signing / encryption surface",
@@ -106,89 +156,91 @@
   ],
   "rfc_status": {
     "rfc7232": {
-      "current_support": "not_supported",
-      "notes": "No conditional-request validator engine was found for ETag, If-None-Match, or 304 revalidation semantics.",
-      "targeted_by_authoritative_boundary": false,
-      "targeted_by_strict_target_boundary": false,
+      "current_support": "supported_and_targeted",
+      "notes": "The package now has a conditional-request validator engine for ETag, If-Match / If-None-Match, If-Modified-Since / If-Unmodified-Since, and 304 / 412 semantics.",
+      "targeted_by_authoritative_boundary": true,
+      "targeted_by_strict_target_boundary": true,
       "title": "HTTP Conditional Requests"
     },
-    "rfc7515": {
-      "current_support": "not_supported",
-      "notes": "No JOSE signing surface is declared or implemented by the transport server boundary.",
-      "targeted_by_authoritative_boundary": false,
-      "targeted_by_strict_target_boundary": false,
-      "title": "JWS"
-    },
-    "rfc7516": {
-      "current_support": "not_supported",
-      "notes": "No JOSE encryption surface is declared or implemented by the transport server boundary.",
-      "targeted_by_authoritative_boundary": false,
-      "targeted_by_strict_target_boundary": false,
-      "title": "JWE"
-    },
-    "rfc7519": {
-      "current_support": "not_supported",
-      "notes": "No JWT token model or validation surface is declared or implemented by the transport server boundary.",
-      "targeted_by_authoritative_boundary": false,
-      "targeted_by_strict_target_boundary": false,
-      "title": "JWT"
-    },
-    "rfc8152": {
-      "current_support": "not_supported",
-      "notes": "No COSE signing or envelope surface was found in this checkpoint.",
-      "targeted_by_authoritative_boundary": false,
-      "targeted_by_strict_target_boundary": false,
-      "title": "COSE"
-    },
-    "rfc9052": {
-      "current_support": "not_supported",
-      "notes": "No COSE bis update surface was found in this checkpoint.",
-      "targeted_by_authoritative_boundary": false,
-      "targeted_by_strict_target_boundary": false,
-      "title": "COSE bis"
+    "rfc7233": {
+      "current_support": "supported_and_targeted",
+      "notes": "The package now has byte-range, multipart byterange, If-Range, 206, 416, Content-Range, and Accept-Ranges semantics in the direct entity boundary.",
+      "targeted_by_authoritative_boundary": true,
+      "targeted_by_strict_target_boundary": true,
+      "title": "HTTP Range Requests"
     },
     "rfc9110": {
       "current_support": "partially_supported",
-      "notes": "The current certification boundary does not claim full RFC 9110 coverage.",
-      "target_scope": [
-        "section 9.3.6 CONNECT",
-        "section 6.5 trailer fields",
-        "section 8 content coding"
-      ],
+      "notes": "RFC 9110 remains a bounded package target for CONNECT semantics, trailer fields, and content coding; RFC 7232 / RFC 7233 are now separately targeted direct entity-semantic RFCs.",
       "targeted_by_authoritative_boundary": true,
       "targeted_by_strict_target_boundary": true,
       "title": "HTTP Semantics"
     },
     "rfc9111": {
       "current_support": "not_supported",
-      "notes": "No HTTP cache or cache revalidation subsystem was found in this checkpoint.",
+      "notes": "No cache / freshness / revalidation subsystem was found.",
       "targeted_by_authoritative_boundary": false,
       "targeted_by_strict_target_boundary": false,
       "title": "HTTP Caching"
     },
+    "rfc9530": {
+      "current_support": "not_supported",
+      "notes": "No Content-Digest or Repr-Digest field generator / verifier was found.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "Digest Fields"
+    },
     "rfc9421": {
       "current_support": "not_supported",
-      "notes": "No HTTP Signature-Input, Signature, or signing policy subsystem was found in this checkpoint.",
+      "notes": "No Signature-Input / Signature subsystem was found.",
       "targeted_by_authoritative_boundary": false,
       "targeted_by_strict_target_boundary": false,
       "title": "HTTP Message Signatures"
     },
-    "rfc9530": {
+    "rfc7515": {
       "current_support": "not_supported",
-      "notes": "No Content-Digest or Repr-Digest field implementation was found in this checkpoint.",
+      "notes": "No JOSE signing surface is declared by the direct-server boundary.",
       "targeted_by_authoritative_boundary": false,
       "targeted_by_strict_target_boundary": false,
-      "title": "Content-Digest / Repr-Digest"
+      "title": "JSON Web Signature (JWS)"
+    },
+    "rfc7516": {
+      "current_support": "not_supported",
+      "notes": "No JOSE encryption surface is declared by the direct-server boundary.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "JSON Web Encryption (JWE)"
+    },
+    "rfc7519": {
+      "current_support": "not_supported",
+      "notes": "No JWT token model or validation surface is declared by the direct-server boundary.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "JSON Web Token (JWT)"
+    },
+    "rfc8152": {
+      "current_support": "not_supported",
+      "notes": "No COSE envelope / signing surface was found.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "CBOR Object Signing and Encryption (COSE)"
+    },
+    "rfc9052": {
+      "current_support": "not_supported",
+      "notes": "No COSE bis update surface was found.",
+      "targeted_by_authoritative_boundary": false,
+      "targeted_by_strict_target_boundary": false,
+      "title": "CBOR Object Signing and Encryption (COSE): Structures and Process"
     }
   },
   "summary": {
     "authoritative_boundary_certifiably_fully_rfc_compliant": true,
-    "notes": [
-      "tigrcorn is certifiably fully RFC compliant only under its declared authoritative certification boundary",
-      "the requested stack extends beyond that declared boundary",
-      "RFC 9110 is only partially targeted here, limited to CONNECT semantics, trailer fields, and content coding"
-    ],
     "requested_http_integrity_caching_signatures_stack_fully_supported": false,
-    "requested_http_integrity_caching_signatures_stack_fully_targeted": false
+    "requested_http_integrity_caching_signatures_stack_fully_targeted": false,
+    "notes": [
+      "tigrcorn is certifiably fully RFC compliant under its declared authoritative certification boundary",
+      "that boundary now includes RFC 7232 and RFC 7233 as direct package-owned HTTP entity semantics at local_conformance",
+      "broader cache freshness, digest, signature, JOSE, and COSE surfaces remain outside the current direct-server certification boundary"
+    ]
   }
 }

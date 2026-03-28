@@ -1,0 +1,64 @@
+{
+  "packet_trace": {
+    "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/packet_trace.jsonl",
+    "exists": true,
+    "size": 11374,
+    "sha256": "dececf45ea166788510fdc5cdecb617e5ddb445d63a3db9b57e7cb5e2683aa6c"
+  },
+  "logs": {
+    "sut_stdout": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_stderr.log",
+      "exists": true,
+      "size": 73,
+      "sha256": "45ddd5ab6443c4df1d6faeeadfe1b923f127559769df2722cd5e997a92463314"
+    },
+    "peer_stdout": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_stdout.log",
+      "exists": true,
+      "size": 658,
+      "sha256": "471d90d3226a53950a1555422f564e6a8698934b22daaecf3d98557ef6ba0c43"
+    },
+    "peer_stderr": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_transcript.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_transcript": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_transcript.json",
+      "exists": true,
+      "size": 602,
+      "sha256": "7603245520dd7ae797a9b37cd5cd62290c906e33ae68d0cd20d7c6ecaf1ecced"
+    },
+    "sut_negotiation": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/sut_negotiation.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_negotiation": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/peer_negotiation.json",
+      "exists": true,
+      "size": 422,
+      "sha256": "6469a55618dba49f638e4854576a8f1f7b3305ef010c22a289e26de5e316fe08"
+    },
+    "qlog": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/qlog.json",
+      "exists": true,
+      "size": 6379,
+      "sha256": "063672350861a1e0903f8bb31f169813a9c1b85e166c8d8cfc18015df59559f1"
+    }
+  }
+}

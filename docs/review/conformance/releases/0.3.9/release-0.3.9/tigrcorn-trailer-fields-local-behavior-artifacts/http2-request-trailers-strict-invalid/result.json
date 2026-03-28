@@ -1,0 +1,8 @@
+{
+  "scenario_id": "http2-request-trailers-strict-invalid",
+  "passed": true,
+  "preserved_via": "local_unit_test",
+  "source_tests": [
+    "tests/test_trailer_policy_strict_local.py::TrailerPolicyStrictLocalTests::test_http2_invalid_request_trailer_returns_400"
+  ]
+}

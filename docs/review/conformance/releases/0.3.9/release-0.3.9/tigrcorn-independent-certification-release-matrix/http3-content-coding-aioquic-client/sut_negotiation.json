@@ -1,0 +1,28 @@
+{
+  "certificate_inputs": {
+    "server_certfile": {
+      "exists": true,
+      "path": "tests/fixtures_certs/interop-localhost-cert.pem"
+    },
+    "server_keyfile": {
+      "exists": true,
+      "path": "tests/fixtures_certs/interop-localhost-key.pem"
+    }
+  },
+  "compression_requested": null,
+  "connect_protocol_enabled": null,
+  "derived_from_peer_negotiation": true,
+  "feature": "content-coding",
+  "handshake_complete": true,
+  "implementation": "tigrcorn",
+  "implementation_identity": "tigrcorn-http3",
+  "implementation_source": "tigrcorn",
+  "implementation_version": "0.3.6",
+  "negotiated_extensions": [],
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "h3",
+  "response_extension_header": null,
+  "role": "server",
+  "scenario_id": "http3-content-coding-aioquic-client",
+  "settings_enable_connect_protocol": null
+}

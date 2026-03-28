@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 from tigrcorn.constants import (
     DEFAULT_BACKLOG,
@@ -15,6 +15,10 @@ from tigrcorn.constants import (
     DEFAULT_MAX_BODY_SIZE,
     DEFAULT_MAX_DATAGRAM_SIZE,
     DEFAULT_MAX_HEADER_SIZE,
+    DEFAULT_HTTP1_BUFFER_SIZE,
+    DEFAULT_HTTP1_MAX_INCOMPLETE_EVENT_SIZE,
+    DEFAULT_HTTP2_INITIAL_CONNECTION_WINDOW_SIZE,
+    DEFAULT_HTTP2_INITIAL_STREAM_WINDOW_SIZE,
     DEFAULT_PIPE_MODE,
     DEFAULT_PORT,
     DEFAULT_QUIC_SECRET,
@@ -22,7 +26,10 @@ from tigrcorn.constants import (
     DEFAULT_SERVER_HEADER,
     DEFAULT_SHUTDOWN_TIMEOUT,
     DEFAULT_WEBSOCKET_MAX_MESSAGE_SIZE,
+    DEFAULT_WEBSOCKET_MAX_QUEUE,
+    DEFAULT_RUNTIME,
     DEFAULT_WORKER_CLASS,
+    DEFAULT_WORKER_HEALTHCHECK_TIMEOUT,
     DEFAULT_WORKERS,
     DEFAULT_WRITE_TIMEOUT,
 )
@@ -39,6 +46,7 @@ class AppConfig:
     app_dir: str | None = None
     config_file: str | None = None
     env_prefix: str = DEFAULT_ENV_PREFIX
+    env_file: str | None = None
     lifespan: Literal["auto", "on", "off"] = DEFAULT_LIFESPAN
     reload: bool = False
     reload_dirs: list[str] = field(default_factory=list)
@@ -50,7 +58,9 @@ class AppConfig:
 class ProcessConfig:
     workers: int = DEFAULT_WORKERS
     worker_class: str = DEFAULT_WORKER_CLASS
+    runtime: str = DEFAULT_RUNTIME
     pid_file: str | None = None
+    worker_healthcheck_timeout: float = DEFAULT_WORKER_HEALTHCHECK_TIMEOUT
     limit_max_requests: int | None = None
     max_requests_jitter: int = 0
 
@@ -59,6 +69,7 @@ class ProcessConfig:
 class TLSConfig:
     certfile: str | None = None
     keyfile: str | None = None
+    keyfile_password: str | bytes | None = None
     ca_certs: str | None = None
     require_client_cert: bool = False
     ciphers: str | None = None
@@ -69,6 +80,7 @@ class TLSConfig:
     ocsp_cache_size: int = 128
     ocsp_max_age: float | None = 43_200.0
     crl_mode: Literal["off", "soft-fail", "require"] = "off"
+    crl: str | None = None
     revocation_fetch: bool = True
 
 
@@ -79,6 +91,9 @@ class ProxyConfig:
     root_path: str = ""
     server_header: bytes | str = DEFAULT_SERVER_HEADER
     include_server_header: bool = True
+    include_date_header: bool = True
+    default_headers: list[tuple[bytes | str, bytes | str] | list[bytes | str] | dict[str, bytes | str]] = field(default_factory=list)
+    server_names: list[str] = field(default_factory=list)
 
 
 @dataclass(slots=True)
@@ -92,20 +107,46 @@ class HTTPConfig:
     idle_timeout: float = DEFAULT_IDLE_TIMEOUT
     max_body_size: int = DEFAULT_MAX_BODY_SIZE
     max_header_size: int = DEFAULT_MAX_HEADER_SIZE
+    http1_max_incomplete_event_size: int = DEFAULT_HTTP1_MAX_INCOMPLETE_EVENT_SIZE
+    http1_buffer_size: int = DEFAULT_HTTP1_BUFFER_SIZE
+    http1_header_read_timeout: float | None = None
+    http1_keep_alive: bool = True
+    http2_max_concurrent_streams: int | None = None
+    http2_max_headers_size: int | None = None
+    http2_max_frame_size: int | None = None
+    http2_adaptive_window: bool = False
+    http2_initial_connection_window_size: int | None = DEFAULT_HTTP2_INITIAL_CONNECTION_WINDOW_SIZE
+    http2_initial_stream_window_size: int | None = DEFAULT_HTTP2_INITIAL_STREAM_WINDOW_SIZE
+    http2_keep_alive_interval: float | None = None
+    http2_keep_alive_timeout: float | None = None
     connect_policy: Literal["relay", "deny", "allowlist"] = "relay"
     connect_allow: list[str] = field(default_factory=list)
     trailer_policy: Literal["pass", "drop", "strict"] = "pass"
     content_coding_policy: Literal["allowlist", "identity-only", "strict"] = "allowlist"
     content_codings: list[str] = field(default_factory=lambda: list(DEFAULT_HTTP_CONTENT_CODINGS))
+    alt_svc_headers: list[bytes | str] = field(default_factory=list)
+    alt_svc_auto: bool = False
+    alt_svc_max_age: int = 86_400
+    alt_svc_persist: bool = False
 
 
 @dataclass(slots=True)
 class WebSocketConfig:
     enabled: bool = True
     max_message_size: int = DEFAULT_WEBSOCKET_MAX_MESSAGE_SIZE
+    max_queue: int = DEFAULT_WEBSOCKET_MAX_QUEUE
     ping_interval: float | None = None
     ping_timeout: float | None = None
     compression: Literal["off", "permessage-deflate"] = "off"
+
+
+@dataclass(slots=True)
+class StaticConfig:
+    route: str | None = None
+    mount: str | None = None
+    dir_to_file: bool = True
+    index_file: str | None = 'index.html'
+    expires: int | None = None
 
 
 @dataclass(slots=True)
@@ -126,6 +167,7 @@ class LoggingConfig:
     error_log_file: str | None = None
     log_config: str | None = None
     structured: bool = False
+    use_colors: bool | None = None
     explicit_fields: list[str] = field(default_factory=list)
 
 
@@ -159,6 +201,7 @@ class ListenerConfig:
     backlog: int = DEFAULT_BACKLOG
     ssl_certfile: str | None = None
     ssl_keyfile: str | None = None
+    ssl_keyfile_password: str | bytes | None = None
     ssl_ca_certs: str | None = None
     ssl_require_client_cert: bool = False
     ssl_ciphers: str | None = None
@@ -169,6 +212,7 @@ class ListenerConfig:
     ocsp_cache_size: int = 128
     ocsp_max_age: float | None = 43_200.0
     crl_mode: Literal["off", "soft-fail", "require"] = "off"
+    ssl_crl: str | None = None
     revocation_fetch: bool = True
     http_versions: list[str] = field(default_factory=lambda: ["1.1", "2"])
     websocket: bool = True
@@ -180,6 +224,9 @@ class ListenerConfig:
     quic_require_retry: bool = False
     max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
     pipe_mode: Literal["rawframed", "stream"] = DEFAULT_PIPE_MODE
+    user: str | int | None = None
+    group: str | int | None = None
+    umask: int | None = None
     scheme: str | None = None
 
     @property
@@ -228,6 +275,13 @@ class ListenerConfig:
 
 
 @dataclass(slots=True)
+class HooksConfig:
+    on_startup: list[Any] = field(default_factory=list)
+    on_shutdown: list[Any] = field(default_factory=list)
+    on_reload: list[Any] = field(default_factory=list)
+
+
+@dataclass(slots=True)
 class ServerConfig:
     app: AppConfig = field(default_factory=AppConfig)
     process: ProcessConfig = field(default_factory=ProcessConfig)
@@ -236,10 +290,12 @@ class ServerConfig:
     proxy: ProxyConfig = field(default_factory=ProxyConfig)
     http: HTTPConfig = field(default_factory=HTTPConfig)
     websocket: WebSocketConfig = field(default_factory=WebSocketConfig)
+    static: StaticConfig = field(default_factory=StaticConfig)
     quic: QUICConfig = field(default_factory=QUICConfig)
     logging: LoggingConfig = field(default_factory=LoggingConfig)
     metrics: MetricsConfig = field(default_factory=MetricsConfig)
     scheduler: SchedulerConfig = field(default_factory=SchedulerConfig)
+    hooks: HooksConfig = field(default_factory=HooksConfig)
     debug: bool = False
 
     @property
@@ -315,6 +371,14 @@ class ServerConfig:
         self.websocket.max_message_size = value
 
     @property
+    def websocket_max_queue(self) -> int:
+        return self.websocket.max_queue
+
+    @websocket_max_queue.setter
+    def websocket_max_queue(self, value: int) -> None:
+        self.websocket.max_queue = value
+
+    @property
     def server_header(self) -> bytes | str:
         return self.proxy.server_header
 
@@ -332,9 +396,64 @@ class ServerConfig:
         return value or None
 
     @property
+    def include_date_header(self) -> bool:
+        return self.proxy.include_date_header
+
+    @include_date_header.setter
+    def include_date_header(self, value: bool) -> None:
+        self.proxy.include_date_header = value
+
+    @property
+    def default_response_headers(self) -> list[tuple[bytes, bytes]]:
+        normalized: list[tuple[bytes, bytes]] = []
+        for entry in self.proxy.default_headers:
+            if isinstance(entry, tuple) and len(entry) == 2:
+                name, value = entry
+                normalized.append((name.encode("latin1") if isinstance(name, str) else bytes(name), value.encode("latin1") if isinstance(value, str) else bytes(value)))
+        return normalized
+
+    @property
+    def allowed_server_names(self) -> tuple[str, ...]:
+        return tuple(self.proxy.server_names)
+
+    @property
+    def alt_svc_values(self) -> tuple[bytes, ...]:
+        explicit: list[bytes] = []
+        for entry in self.http.alt_svc_headers:
+            if isinstance(entry, str):
+                value = entry.encode("ascii") if entry else b""
+            else:
+                value = bytes(entry)
+            if value:
+                explicit.append(value)
+        if explicit:
+            return tuple(explicit)
+        if not self.http.alt_svc_auto:
+            return ()
+        values: list[bytes] = []
+        seen: set[bytes] = set()
+        for listener in self.listeners:
+            if listener.kind != 'udp':
+                continue
+            if 'http3' not in listener.enabled_protocols and '3' not in listener.http_versions:
+                continue
+            rendered = f'h3=":{int(listener.port)}"; ma={int(self.http.alt_svc_max_age)}'
+            if self.http.alt_svc_persist:
+                rendered += '; persist=1'
+            payload = rendered.encode('ascii')
+            if payload not in seen:
+                seen.add(payload)
+                values.append(payload)
+        return tuple(values)
+
+    @property
     def enable_h2c(self) -> bool:
         return self.http.enable_h2c
 
     @enable_h2c.setter
     def enable_h2c(self, value: bool) -> None:
         self.http.enable_h2c = value
+
+    @property
+    def static_mount_enabled(self) -> bool:
+        return bool(self.static.mount)

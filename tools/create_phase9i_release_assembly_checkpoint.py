@@ -27,7 +27,7 @@ from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promo
 
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
 PERF = ROOT / 'docs' / 'review' / 'performance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 FLAG_BUNDLE = RELEASE_ROOT / 'tigrcorn-flag-surface-certification-bundle'
 OPERATOR_BUNDLE = RELEASE_ROOT / 'tigrcorn-operator-surface-certification-bundle'
 PERFORMANCE_BUNDLE = RELEASE_ROOT / 'tigrcorn-performance-certification-bundle'
@@ -248,7 +248,7 @@ def build_flag_bundle() -> None:
         'source_contracts': 'docs/review/conformance/flag_contracts.json',
         'source_covering_array': 'docs/review/conformance/flag_covering_array.json',
         'source_status': 'docs/review/conformance/phase9f3_concurrency_keepalive.current.json',
-        'note': 'This assembled bundle freezes the fully promotion-ready public flag surface for the 0.3.8 working release root.',
+        'note': 'This assembled bundle freezes the fully promotion-ready public flag surface for the 0.3.9 working release root.',
     }
     index = {
         'artifact_root': str(FLAG_BUNDLE.relative_to(ROOT)),
@@ -266,7 +266,7 @@ def build_flag_bundle() -> None:
         'hazard_clusters': hazard_clusters,
         'hazard_cluster_count': len(hazard_clusters),
         'hazard_clusters_green': ready_count == len(contracts) and phase9f3['current_state']['remaining_flag_runtime_blockers'] == [],
-        'note': 'All 84 public flags are promotion-ready in this checkpoint; the flag surface is green even though the strict target is not.',
+        'note': 'All current public flags are promotion-ready in this checkpoint; the flag surface is green.',
         'release_gate_eligible': True,
     }
     summary = {
@@ -283,7 +283,7 @@ def build_flag_bundle() -> None:
     dump_json(FLAG_BUNDLE / 'summary.json', summary)
     (FLAG_BUNDLE / 'README.md').write_text(
         '# Flag surface certification bundle\n\n'
-        'This bundle freezes the fully promotion-ready public flag surface for the 0.3.8 working release root.\n',
+        'This bundle freezes the fully promotion-ready public flag surface for the 0.3.9 working release root.\n',
         encoding='utf-8',
     )
 
@@ -300,7 +300,7 @@ def build_operator_bundle() -> None:
         'release_gate_eligible': True,
         'source_doc': 'docs/review/conformance/PHASE4_OPERATOR_SURFACE_STATUS.md',
         'source_status': 'docs/review/conformance/phase4_operator_surface_status.current.json',
-        'note': 'This assembled bundle freezes the operator-surface implementation/testing plane for the 0.3.8 working release root.',
+        'note': 'This assembled bundle freezes the operator-surface implementation/testing plane for the 0.3.9 working release root.',
     }
     index = {
         'artifact_root': str(OPERATOR_BUNDLE.relative_to(ROOT)),
@@ -324,7 +324,7 @@ def build_operator_bundle() -> None:
     dump_json(OPERATOR_BUNDLE / 'summary.json', summary)
     (OPERATOR_BUNDLE / 'README.md').write_text(
         '# Operator surface certification bundle\n\n'
-        'This bundle freezes the process, reload, proxy, observability, and runtime-control implementation plane for the 0.3.8 working release root.\n',
+        'This bundle freezes the process, reload, proxy, observability, and runtime-control implementation plane for the 0.3.9 working release root.\n',
         encoding='utf-8',
     )
 
@@ -361,13 +361,13 @@ def build_performance_bundle() -> None:
         'source_slos': 'docs/review/performance/performance_slos.json',
         'source_matrix': 'docs/review/performance/performance_matrix.json',
         'source_status': 'docs/review/conformance/phase9g_strict_performance.current.json',
-        'note': 'This assembled bundle freezes the strict performance artifacts and metadata for the 0.3.8 working release root.',
+        'note': 'This assembled bundle freezes the strict performance artifacts and metadata for the 0.3.9 working release root.',
     }
     index = {
         'artifact_root': str(PERFORMANCE_BUNDLE.relative_to(ROOT)),
         'bundle_kind': 'performance_certification_bundle',
         'generated_at': manifest['generated_at'],
-        'note': 'This bundle freezes the preserved strict-performance artifacts and threshold metadata for the 0.3.8 working release root.',
+        'note': 'This bundle freezes the preserved strict-performance artifacts and threshold metadata for the 0.3.9 working release root.',
         'release_gate_eligible': True,
         'phase9g_status': phase9g,
         'profile_count': phase9g['performance_contract']['profile_count'],
@@ -408,7 +408,7 @@ def build_performance_bundle() -> None:
     })
     (PERFORMANCE_BUNDLE / 'README.md').write_text(
         '# Performance certification bundle\n\n'
-        'This bundle freezes the preserved strict-performance artifacts for the 0.3.8 working release root.\n',
+        'This bundle freezes the preserved strict-performance artifacts for the 0.3.9 working release root.\n',
         encoding='utf-8',
     )
 
@@ -483,9 +483,9 @@ def update_release_root_manifest() -> None:
     manifest['strict_target_complete'] = promotion_ready
     notes = list(manifest.get('notes', []))
     additions = [
-        'Phase 9I assembles the working 0.3.8 release root with final flag, operator, and performance bundles alongside the independent, same-stack, mixed, and local auxiliary bundles.',
+        'Phase 9I assembles the working 0.3.9 release root with final flag, operator, and performance bundles alongside the independent, same-stack, mixed, and local auxiliary bundles.',
         'The working release root also preserves a direct aioquic adapter preflight bundle proving the HTTP/3 request and RFC 9220 WebSocket adapters execute cleanly in the observed environment.',
-        ('This assembled release root is now strict-target complete and promotion-ready under the working 0.3.8 release root.' if promotion_ready else 'This assembled release root remains non-promotable because the preserved-but-non-passing HTTP/3 aioquic strict-target scenarios still block the strict boundary and composite promotion gate.'),
+        ('This assembled release root is now strict-target complete and promotion-ready under the working 0.3.9 release root.' if promotion_ready else 'This assembled release root remains non-promotable because the preserved-but-non-passing HTTP/3 aioquic strict-target scenarios still block the strict boundary and composite promotion gate.'),
         ('The package version and public authoritative boundary remain unchanged in this checkpoint because explicit promotion/version-bump work is deferred.' if promotion_ready else 'Because the full validation set does not pass, the package version and public authoritative boundary remain unchanged in this checkpoint.'),
     ]
     for note in additions:
@@ -494,7 +494,7 @@ def update_release_root_manifest() -> None:
     manifest['notes'] = notes
     dump_json(manifest_path, manifest)
     readme_text = (
-        '# Release 0.3.8 working promotion root\n\n'
+        '# Release 0.3.9 working promotion root\n\n'
         'This directory is the assembled working release root for the strict-promotion program.\n\n'
         'It now contains:\n\n'
         '- `tigrcorn-independent-certification-release-matrix/`\n'
@@ -510,7 +510,7 @@ def update_release_root_manifest() -> None:
         '- the release root is assembled\n'
         + ('- the release root is **promotable**\n' if promotion_ready else '- the release root is **not yet promotable**\n')
         + '- the authoritative boundary still remains green under the canonical 0.3.6 release root\n'
-        + ('- the strict target is now green under the 0.3.8 working release root\n' if promotion_ready else '- the strict target remains blocked only by the preserved-but-non-passing HTTP/3 `aioquic` scenarios\n')
+        + ('- the strict target is now green under the 0.3.9 working release root\n' if promotion_ready else '- the strict target remains blocked only by the preserved-but-non-passing HTTP/3 `aioquic` scenarios\n')
     )
     (RELEASE_ROOT / 'README.md').write_text(readme_text, encoding='utf-8')
 
@@ -606,24 +606,24 @@ def update_docs_and_status() -> None:
         '',
         'The repository continues to operate under the **dual-boundary model**:',
         '',
-        'Historical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the live 0.3.8 working root is now green.',
+        'Historical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the live 0.3.9 working root is now green.',
         '',
         "- `evaluate_release_gates('.')` is **green** under the authoritative boundary",
-        f"- the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **{truth_word(strict.passed)}** under the 0.3.8 working release root",
+        f"- the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **{truth_word(strict.passed)}** under the 0.3.9 working release root",
         f"- `evaluate_promotion_target()` is now **{truth_word(promotion.passed)}**",
         '',
     ]
     if promotion.passed:
         current_state_lines.extend([
-            'Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. Under the evaluated 0.3.8 working release root, the package is also now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.',
+            'Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. Under the evaluated 0.3.9 working release root, the package is also now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.',
             '',
             'What is now true:',
             '',
-            '- the 0.3.8 working release root has been reassembled with refreshed manifests, bundle indexes, and bundle summaries',
+            '- the 0.3.9 working release root has been reassembled with refreshed manifests, bundle indexes, and bundle summaries',
             '- the authoritative boundary remains green',
-            '- the strict target is green under the 0.3.8 working release root',
+            '- the strict target is green under the 0.3.9 working release root',
             '- the flag surface is green',
-            '- RFC 9220 WebSocket-over-HTTP/3 remains green in both the authoritative boundary and the assembled 0.3.8 working root',
+            '- RFC 9220 WebSocket-over-HTTP/3 remains green in both the authoritative boundary and the assembled 0.3.9 working root',
             '- the operator surface is green',
             '- the performance section is green',
             '- the documentation section is green',
@@ -631,12 +631,12 @@ def update_docs_and_status() -> None:
             '- all previously failing HTTP/3 strict-target scenarios are now preserved as passing artifacts in the assembled root',
             '- the package version remains unchanged because explicit release-promotion/version-bump work is deferred outside this checkpoint',
             '',
-            'There are no remaining strict-target RFC or feature blockers in the evaluated 0.3.8 working release root. The only remaining follow-on work is administrative promotion/version-bump work.',
+            'There are no remaining strict-target RFC or feature blockers in the evaluated 0.3.9 working release root. The only remaining follow-on work is administrative promotion/version-bump work.',
             '',
         ])
     else:
         current_state_lines.extend([
-            'Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. The stricter 0.3.8 working release root is assembled, but it is not yet strict-target complete or certifiably fully featured.',
+            'Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. The stricter 0.3.9 working release root is assembled, but it is not yet strict-target complete or certifiably fully featured.',
             '',
             'Remaining strict-target blockers:',
             '',
@@ -653,9 +653,9 @@ def update_docs_and_status() -> None:
         '- `docs/review/conformance/phase9i_release_assembly.current.json`',
         '- `docs/review/conformance/release_gate_status.current.json`',
         '- `docs/review/conformance/package_compliance_review_phase9i.current.json`',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json`',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json`',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`',
         '- `DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`',
         '',
         'The authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.',
@@ -668,7 +668,7 @@ def update_docs_and_status() -> None:
         '',
         '- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`',
         '- `docs/review/conformance/certification_environment_freeze.current.json`',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle/`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`',
         '',
         'What that freeze now means:',
         '',
@@ -703,24 +703,24 @@ def update_readme_like(path: Path, *, conformance_relative: bool = False) -> Non
 
     if conformance_relative:
         old_variants = [
-            'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`, but it is still non-promotable because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.',
-            'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled and promotable under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.',
+            'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`, but it is still non-promotable because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.',
+            'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled and promotable under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.',
         ]
         new_line = (
-            'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled and **promotable** under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.'
+            'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled and **promotable** under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.'
             if promotion_ready
-            else 'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`, but it is still non-promotable because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.'
+            else 'A current assembled strict-promotion working root also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`, but it is still non-promotable because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.'
         )
     else:
         old_variants = [
-            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled, but it is **not yet promotable** because the strict target remains blocked only by the preserved-but-non-passing HTTP/3 trailer-fields and content-coding `aioquic` scenarios.',
-            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled, but it is **not yet promotable** because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.',
-            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled and promotable under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.',
+            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled, but it is **not yet promotable** because the strict target remains blocked only by the preserved-but-non-passing HTTP/3 trailer-fields and content-coding `aioquic` scenarios.',
+            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled, but it is **not yet promotable** because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.',
+            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled and promotable under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.',
         ]
         new_line = (
-            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled and **promotable** under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.'
+            'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled and **promotable** under the strict target, but it is not yet the canonical authoritative release root because explicit version-bump / canonical promotion work remains deferred.'
             if promotion_ready
-            else 'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root is assembled, but it is **not yet promotable** because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.'
+            else 'A current assembled strict-promotion working root now also exists under `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root is assembled, but it is **not yet promotable** because the strict target remains blocked by preserved-but-non-passing HTTP/3 `aioquic` scenarios.'
         )
 
     replaced = False
@@ -733,10 +733,10 @@ def update_readme_like(path: Path, *, conformance_relative: bool = False) -> Non
         if anchor in text:
             text = text.replace(anchor, anchor + '\n' + new_line + '\n')
 
-    bundle_line = ('That 0.3.8 working root now contains the assembled strict-promotion bundle set plus refreshed bundle manifests / indexes / summaries, alongside the preserved auxiliary bundles:' if conformance_relative else 'That 0.3.8 working root currently contains the assembled strict-promotion bundle set plus refreshed bundle manifests / indexes / summaries:')
+    bundle_line = ('That 0.3.9 working root now contains the assembled strict-promotion bundle set plus refreshed bundle manifests / indexes / summaries, alongside the preserved auxiliary bundles:' if conformance_relative else 'That 0.3.9 working root currently contains the assembled strict-promotion bundle set plus refreshed bundle manifests / indexes / summaries:')
     for old in [
-        'That 0.3.8 working root now contains the assembled strict-promotion bundle set plus the preserved auxiliary bundles:',
-        'That 0.3.8 working root currently contains:',
+        'That 0.3.9 working root now contains the assembled strict-promotion bundle set plus the preserved auxiliary bundles:',
+        'That 0.3.9 working root currently contains:',
     ]:
         if old in text:
             text = text.replace(old, bundle_line)
@@ -745,14 +745,14 @@ def update_readme_like(path: Path, *, conformance_relative: bool = False) -> Non
         addition = (
             '\n\n## Phase 9I release assembly and certifiable checkpoint\n\n'
             'The executed Phase 9I release-assembly checkpoint is now documented through:\n\n'
-            + ('- `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `phase9i_release_assembly.current.json`\n- `../releases/0.3.8/release-0.3.8/`\n- `../../DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n' if conformance_relative else '- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/releases/0.3.8/release-0.3.8/`\n- `DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n')
+            + ('- `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `phase9i_release_assembly.current.json`\n- `../releases/0.3.9/release-0.3.9/`\n- `../../DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n' if conformance_relative else '- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n- `docs/review/conformance/phase9i_release_assembly.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/`\n- `DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`\n')
         )
         text += addition
     if '## Certification environment freeze' not in text:
         addition = (
             '\n\n## Certification environment freeze\n\n'
             'The strict-promotion release workflow now freezes the certification environment before it invokes any Phase 9 checkpoint script. Current documentation and preserved artifacts live in:\n\n'
-            + ('- `CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `certification_environment_freeze.current.json`\n- `../releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle/`\n- `../../DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n' if conformance_relative else '- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `docs/review/conformance/certification_environment_freeze.current.json`\n- `docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-certification-environment-bundle/`\n- `DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n')
+            + ('- `CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `certification_environment_freeze.current.json`\n- `../releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`\n- `../../DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n' if conformance_relative else '- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`\n- `docs/review/conformance/certification_environment_freeze.current.json`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`\n- `DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`\n')
         )
         text += addition
     path.write_text(text, encoding='utf-8')
@@ -773,16 +773,16 @@ def update_rfc_certification_status() -> None:
         '',
         '## Current strict-target status',
         '',
-        ('The stricter next-target program defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **green** under the 0.3.8 working release root.' if strict.passed else 'The stricter next-target program defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is still **not green** under the 0.3.8 working release root.'),
+        ('The stricter next-target program defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **green** under the 0.3.9 working release root.' if strict.passed else 'The stricter next-target program defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is still **not green** under the 0.3.9 working release root.'),
         '',
         'Historical guardrail phrase preserved for documentation-consistency checks: before the final closures it was **not yet honest to strengthen public claims** beyond the authoritative certification boundary.',
         '',
     ]
     if strict.passed:
         lines.extend([
-            'RFC 7692, RFC 9110 §9.3.6, RFC 9110 §6.5, RFC 9110 §8, and RFC 6960 are all now satisfied at the required independent-certification tier in the 0.3.8 working release root.',
+            'RFC 7692, RFC 9110 §9.3.6, RFC 9110 §6.5, RFC 9110 §8, and RFC 6960 are all now satisfied at the required independent-certification tier in the 0.3.9 working release root.',
             '',
-            'That means the evaluated 0.3.8 working release root is now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.',
+            'That means the evaluated 0.3.9 working release root is now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.',
             '',
             'The remaining work is administrative: explicit version-bump / canonical-promotion work has not yet been performed, so `pyproject.toml` still reports `0.3.6` and the authoritative canonical release root remains `0.3.6`.',
         ])
@@ -796,13 +796,13 @@ def update_rfc_certification_status() -> None:
         '',
         '## Phase 9I release assembly',
         '',
-        'Phase 9I reassembles the 0.3.8 working release root with refreshed bundle manifests, bundle indexes, bundle summaries, flag/operator/performance bundles, and current-state docs.',
+        'Phase 9I reassembles the 0.3.9 working release root with refreshed bundle manifests, bundle indexes, bundle summaries, flag/operator/performance bundles, and current-state docs.',
         '',
         ('That assembled root is **promotable** under the strict target, but it is not yet the canonical authoritative release root because explicit release-promotion/version-bump work remains deferred.' if promotion.passed else 'That assembled root is **not yet promotable** because the strict target and the composite promotion gate do not yet pass.'),
         '',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json`',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json`',
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`',
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`',
         '- `docs/review/conformance/phase9i_release_assembly.current.json`',
     ])
     path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
@@ -820,7 +820,7 @@ def update_strict_profile_target() -> None:
         '## Current truth',
         '',
         '- the authoritative boundary remains green',
-        '- the 0.3.8 working release root is the evaluation substrate for this target',
+        '- the 0.3.9 working release root is the evaluation substrate for this target',
         f"- the strict target is now {truth_word(strict.passed)}",
         f"- the composite promotion target is now {truth_word(promotion.passed)}",
         '',
@@ -853,7 +853,7 @@ def update_strict_profile_target() -> None:
         '',
         '## Phase 9I release assembly progress',
         '',
-        'The 0.3.8 working release root is now assembled with final independent, same-stack, mixed, flag, operator, and performance bundles.',
+        'The 0.3.9 working release root is now assembled with final independent, same-stack, mixed, flag, operator, and performance bundles.',
         '',
         ('That working root is now promotable under the strict target. Explicit version-bump / canonical-promotion work remains outside this checkpoint.' if promotion.passed else 'That working root remains non-promotable until the strict-target failures are cleared.'),
         '',
@@ -864,8 +864,8 @@ def update_strict_profile_target() -> None:
 def update_certification_boundary_doc() -> None:
     path = CONFORMANCE / 'CERTIFICATION_BOUNDARY.md'
     text = path.read_text(encoding='utf-8')
-    old = 'A later assembled working root now also exists at `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root assembles the next strict-promotion bundle set, but it is **not** authoritative or promotable until the strict target actually turns green.'
-    new = 'A later assembled working root now also exists at `docs/review/conformance/releases/0.3.8/release-0.3.8/`. That root assembles the next strict-promotion bundle set and is now strict-target complete and promotable, but it is **not** yet the authoritative canonical release root because explicit version-bump / canonical-promotion work remains deferred.'
+    old = 'A later assembled working root now also exists at `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root assembles the next strict-promotion bundle set, but it is **not** authoritative or promotable until the strict target actually turns green.'
+    new = 'A later assembled working root now also exists at `docs/review/conformance/releases/0.3.9/release-0.3.9/`. That root assembles the next strict-promotion bundle set and is now strict-target complete and promotable, but it is **not** yet the authoritative canonical release root because explicit version-bump / canonical-promotion work remains deferred.'
     if old in text:
         text = text.replace(old, new)
     elif new not in text:
@@ -880,14 +880,14 @@ def update_promotion_gate_target() -> None:
     payload = load_json(path)
     payload['status'] = 'phase9i_release_assembly_current_tree_promotion_ready' if evaluate_promotion_target(ROOT).passed else 'phase9i_release_assembly_current_tree_not_promotion_ready'
     payload['release_assembly'] = {
-        'working_release_root': 'docs/review/conformance/releases/0.3.8/release-0.3.8',
+        'working_release_root': 'docs/review/conformance/releases/0.3.9/release-0.3.9',
         'assembled_bundles': [
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-flag-surface-certification-bundle',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-operator-surface-certification-bundle',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-performance-certification-bundle',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle',
         ],
         'promotion_ready': evaluate_promotion_target(ROOT).passed,
         'version_bump_performed': False,
@@ -940,10 +940,10 @@ def build_release_gate_status_markdown(payload: dict[str, Any]) -> str:
         '## Current result\n\n'
         f"- `evaluate_release_gates('.')` → `passed={payload['passed']}`\n"
         f"- `failure_count={len(payload['failures'])}`\n"
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json` is refreshed\n'
-        '- `docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json` is refreshed\n\n'
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json` is refreshed\n'
+        '- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json` is refreshed\n\n'
         'The canonical release gates are green.\n\n'
-        'Under the authoritative certification boundary, the package is **certifiably fully RFC compliant**. The evaluated 0.3.8 working release root is additionally strict-target complete and promotable, but explicit version-bump / canonical-promotion work remains deferred.\n\n'
+        'Under the authoritative certification boundary, the package is **certifiably fully RFC compliant**. The evaluated 0.3.9 working release root is additionally strict-target complete and promotable, but explicit version-bump / canonical-promotion work remains deferred.\n\n'
         'A machine-readable copy of this status is stored in `docs/review/conformance/release_gate_status.current.json`.\n'
     )
 
@@ -975,7 +975,7 @@ def build_package_review_markdown(payload: dict[str, Any]) -> str:
     lines = [
         '# Package compliance review — Phase 9I current state',
         '',
-        'The authoritative boundary is green. The strict target is green, and the composite promotion target is green under the 0.3.8 working release root.',
+        'The authoritative boundary is green. The strict target is green, and the composite promotion target is green under the 0.3.9 working release root.',
         '',
         '## Current summary',
         '',
@@ -996,7 +996,7 @@ def build_package_review_markdown(payload: dict[str, Any]) -> str:
         f"- {summary['public_flag_count']} / {summary['public_flag_count']} public flags are promotion-ready",
         f"- {summary['operator_implemented_count']} / {summary['operator_implemented_count']} operator-surface capabilities are green",
         f"- the strict performance target is green across {summary['performance_profile_count']} profiles",
-        '- the 0.3.8 working release root has refreshed manifest / bundle index / bundle summary files',
+        '- the 0.3.9 working release root has refreshed manifest / bundle index / bundle summary files',
         '',
         '## Remaining strict-target blockers',
         '',
@@ -1007,7 +1007,7 @@ def build_package_review_markdown(payload: dict[str, Any]) -> str:
         lines.append('- none')
     lines.extend([
         '',
-        'The remaining administrative work is explicit release promotion/version bumping, not unresolved RFC or feature work in the 0.3.8 working release root.',
+        'The remaining administrative work is explicit release promotion/version bumping, not unresolved RFC or feature work in the 0.3.9 working release root.',
         '',
         f"Operational note: {payload['operational_note']}",
         '',
@@ -1057,16 +1057,16 @@ def write_package_compliance_review(auth: Any, *, strict: Any, promotion: Any) -
             'docs/review/conformance/release_gate_status.current.json',
             'docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md',
             'docs/review/conformance/package_compliance_review_phase9i.current.json',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json',
-            'docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json',
             'README.md',
             'docs/review/conformance/README.md',
             'RFC_CERTIFICATION_STATUS.md',
             'docs/review/conformance/STRICT_PROFILE_TARGET.md',
         ],
         'remaining_gaps': remaining_rfc_gaps,
-        'operational_note': 'The current local workspace still runs under Python 3.13, while the frozen release-workflow contract requires Python 3.11 or 3.12. That does not change the preserved artifact truth in the 0.3.8 working release root.',
+        'operational_note': 'The current local workspace still runs under Python 3.13, while the frozen release-workflow contract requires Python 3.11 or 3.12. That does not change the preserved artifact truth in the 0.3.9 working release root.',
     }
     normalized = normalize_workspace_paths(payload)
     dump_json(PACKAGE_REVIEW_JSON, normalized)
@@ -1087,7 +1087,7 @@ def build_phase9i_markdown(status: dict[str, Any]) -> str:
         '',
         'This checkpoint executes **Phase 9I** of the Phase 9 implementation plan.',
         '',
-        'It reassembles the 0.3.8 working release root, refreshes bundle manifests / indexes / summaries, and updates the machine-readable current-state snapshots after the final HTTP/3 strict-target closures.',
+        'It reassembles the 0.3.9 working release root, refreshes bundle manifests / indexes / summaries, and updates the machine-readable current-state snapshots after the final HTTP/3 strict-target closures.',
         '',
         '## Current machine-readable result',
         '',
@@ -1116,7 +1116,7 @@ def build_phase9i_markdown(status: dict[str, Any]) -> str:
         '',
         '## Honest current result',
         '',
-        ('The package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the evaluated working 0.3.8 release root.' if status['current_state']['promotion_target_passed'] else 'The package remains **certifiably fully RFC compliant under the authoritative certification boundary**, but it is **not yet certifiably fully featured** and **not yet strict-target certifiably fully RFC compliant**.'),
+        ('The package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the evaluated working 0.3.9 release root.' if status['current_state']['promotion_target_passed'] else 'The package remains **certifiably fully RFC compliant under the authoritative certification boundary**, but it is **not yet certifiably fully featured** and **not yet strict-target certifiably fully RFC compliant**.'),
         '',
         'Explicit version-bump / canonical-promotion work remains outside this checkpoint.',
     ])
@@ -1126,11 +1126,11 @@ def build_phase9i_markdown(status: dict[str, Any]) -> str:
 def build_delivery_notes(status: dict[str, Any]) -> str:
     return (
         '# Delivery notes — Phase 9I release assembly and certifiable checkpoint\n\n'
-        'This checkpoint reassembles the 0.3.8 working release root with refreshed bundle manifests, bundle indexes, bundle summaries, and machine-readable status snapshots.\n\n'
+        'This checkpoint reassembles the 0.3.9 working release root with refreshed bundle manifests, bundle indexes, bundle summaries, and machine-readable status snapshots.\n\n'
         f"- release-root manifest: `{status['current_state']['release_root_manifest']}`\n"
         f"- release-root bundle index: `{status['current_state']['release_root_bundle_index']}`\n"
         f"- release-root bundle summary: `{status['current_state']['release_root_bundle_summary']}`\n\n"
-        'All four previously failing HTTP/3 strict-target scenarios are now preserved as passing artifacts in the assembled 0.3.8 working release root.\n\n'
+        'All four previously failing HTTP/3 strict-target scenarios are now preserved as passing artifacts in the assembled 0.3.9 working release root.\n\n'
         'Validation summary is recorded in `docs/review/conformance/phase9i_release_assembly.current.json`. Explicit version-bump / canonical-promotion work remains outside this checkpoint.\n'
     )
 

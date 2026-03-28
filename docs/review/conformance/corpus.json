@@ -132,6 +132,34 @@
       "rfc": "9220",
       "description": "Extended CONNECT bootstrap and framed WebSocket data over an HTTP/3 request stream.",
       "fixture": "tests/test_http3_websocket_rfc9220.py"
+    },
+    {
+      "name": "http-conditional-requests",
+      "protocol": "http-conditional",
+      "rfc": "7232",
+      "description": "Entity-tag generation, validator comparison, If-Match / If-None-Match / If-Modified-Since / If-Unmodified-Since processing, and 304/412 response semantics across package-owned HTTP handling.",
+      "fixture": "tests/test_rfc7232_conditional_requests.py"
+    },
+    {
+      "name": "http-byte-ranges",
+      "protocol": "http-range",
+      "rfc": "7233",
+      "description": "Byte-range parsing, single-range and multipart 206 responses, If-Range handling, unsatisfied-range 416 behavior, and Accept-Ranges / Content-Range semantics for package-owned responses.",
+      "fixture": "tests/test_rfc7233_range_requests.py"
+    },
+    {
+      "name": "http-early-hints",
+      "protocol": "http-early-hints",
+      "rfc": "8297",
+      "description": "103 Early Hints emission, safe informational-header sanitization, and preserved interim response ordering across HTTP/1.1, HTTP/2, and HTTP/3 direct server delivery.",
+      "fixture": "tests/test_rfc8297_early_hints.py"
+    },
+    {
+      "name": "http-alt-svc-header-advertisement",
+      "protocol": "http-alt-svc",
+      "rfc": "RFC 7838 \u00a73",
+      "description": "Alt-Svc header-field advertisement through explicit values and automatic HTTP/3 endpoint advertisement on non-HTTP/3 responses, with bounded suppression on HTTP/3 requests.",
+      "fixture": "tests/test_rfc7838_alt_svc.py"
     }
   ]
 }

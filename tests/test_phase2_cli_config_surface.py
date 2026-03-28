@@ -31,6 +31,11 @@ class Phase2CLIConfigSurfaceTests(unittest.TestCase):
                 '--transport', 'udp',
                 '--reuse-port',
                 '--backlog', '100',
+                '--static-path-route', '/assets',
+                '--static-path-mount', '/srv/assets',
+                '--static-path-dir-to-file',
+                '--static-path-index-file', 'index.html',
+                '--static-path-expires', '3600',
                 '--ssl-certfile', 'cert.pem',
                 '--ssl-keyfile', 'key.pem',
                 '--ssl-ca-certs', 'ca.pem',
@@ -76,6 +81,11 @@ class Phase2CLIConfigSurfaceTests(unittest.TestCase):
         )
         self.assertEqual(ns.worker_class, 'process')
         self.assertEqual(ns.backlog, 100)
+        self.assertEqual(ns.static_path_route, '/assets')
+        self.assertEqual(ns.static_path_mount, '/srv/assets')
+        self.assertEqual(ns.static_path_dir_to_file, True)
+        self.assertEqual(ns.static_path_index_file, 'index.html')
+        self.assertEqual(ns.static_path_expires, 3600)
         self.assertEqual(ns.root_path, '/svc')
         self.assertEqual(ns.quic_bind, ['127.0.0.1:9443'])
         self.assertEqual(ns.content_codings, ['gzip,deflate'])
@@ -99,6 +109,11 @@ class Phase2CLIConfigSurfaceTests(unittest.TestCase):
                 '--websocket-compression', 'permessage-deflate',
                 '--quic-require-retry',
                 '--quic-max-datagram-size', '1400',
+                '--static-path-route', '/assets',
+                '--static-path-mount', '/srv/assets',
+                '--no-static-path-dir-to-file',
+                '--static-path-index-file', 'home.html',
+                '--static-path-expires', '90',
                 '--connect-policy', 'allowlist',
                 '--trailer-policy', 'drop',
                 '--content-coding-policy', 'identity-only',
@@ -118,6 +133,11 @@ class Phase2CLIConfigSurfaceTests(unittest.TestCase):
         self.assertEqual(config.websocket.compression, 'permessage-deflate')
         self.assertEqual(config.quic.max_datagram_size, 1400)
         self.assertEqual(config.quic.require_retry, True)
+        self.assertEqual(config.static.route, '/assets')
+        self.assertEqual(config.static.mount, '/srv/assets')
+        self.assertEqual(config.static.dir_to_file, False)
+        self.assertEqual(config.static.index_file, 'home.html')
+        self.assertEqual(config.static.expires, 90)
         self.assertEqual(config.http.connect_policy, 'allowlist')
         self.assertEqual(config.http.trailer_policy, 'drop')
         self.assertEqual(config.http.content_coding_policy, 'identity-only')

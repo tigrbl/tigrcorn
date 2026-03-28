@@ -91,6 +91,36 @@ _TIMER_PTO = 'pto'
 _ACK_DELAY_DEFAULT = 0.025
 _MIN_INITIAL_DATAGRAM_SIZE = 1200
 
+QUIC_CONNECTION_STATE_TRANSITION_TABLE: tuple[dict[str, object], ...] = (
+    {'from': 'new', 'event': 'build_initial|send_crypto_data|send_early_stream_data', 'to': 'establishing', 'notes': 'connection leaves idle/new state once handshake or 0-RTT data is emitted'},
+    {'from': 'new', 'event': 'handle_version_negotiation(match)', 'to': 'version_negotiated', 'notes': 'client selected an alternate supported version'},
+    {'from': 'new', 'event': 'handle_version_negotiation(no-match)', 'to': 'version_negotiation_failed', 'notes': 'no mutually supported version remained'},
+    {'from': 'establishing', 'event': 'stream-data-send', 'to': 'established', 'notes': '1-RTT stream transmission implies established application state'},
+    {'from': 'establishing', 'event': 'handshake_done|handshake_complete|stream-receive', 'to': 'established', 'notes': 'handshake completion and 1-RTT traffic converge on established'},
+    {'from': 'established', 'event': 'connection_close', 'to': 'closing', 'notes': 'local protocol violations or explicit close enter closing'},
+    {'from': 'established', 'event': 'peer_connection_close', 'to': 'draining', 'notes': 'peer close moves runtime to draining'},
+    {'from': 'any-active', 'event': 'stateless_reset', 'to': 'closed', 'notes': 'validated stateless reset closes the connection immediately'},
+)
+
+QUIC_TRANSPORT_ERROR_MATRIX: tuple[dict[str, object], ...] = (
+    {'name': 'NO_ERROR', 'code': TRANSPORT_ERROR_NO_ERROR, 'trigger': 'graceful close with no transport error'},
+    {'name': 'INTERNAL_ERROR', 'code': TRANSPORT_ERROR_INTERNAL_ERROR, 'trigger': 'implementation-internal failure mapped to transport close'},
+    {'name': 'TRANSPORT_PARAMETER_ERROR', 'code': TRANSPORT_ERROR_TRANSPORT_PARAMETER, 'trigger': 'invalid or forbidden transport parameter combinations'},
+    {'name': 'PROTOCOL_VIOLATION', 'code': TRANSPORT_ERROR_PROTOCOL_VIOLATION, 'trigger': 'frame legality or packet-sequencing invariant failure'},
+    {'name': 'INVALID_TOKEN', 'code': TRANSPORT_ERROR_INVALID_TOKEN, 'trigger': 'Retry or NEW_TOKEN validation failure'},
+    {'name': 'APPLICATION_ERROR', 'code': TRANSPORT_ERROR_APPLICATION_ERROR, 'trigger': 'application close surfaced through QUIC transport'},
+)
+
+
+def quic_connection_state_table() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in QUIC_CONNECTION_STATE_TRANSITION_TABLE)
+
+
+
+def quic_transport_error_matrix() -> tuple[dict[str, object], ...]:
+    return tuple(dict(entry) for entry in QUIC_TRANSPORT_ERROR_MATRIX)
+
+
 QUIC_FLOW_CONTROL_EVIDENCE_MAP: dict[str, tuple[str, ...]] = {
     'credit-exhaustion': ('FRAME_DATA_BLOCKED', 'MAX_DATA'),
     'replenishment': ('MAX_DATA', 'MAX_STREAM_DATA'),

@@ -1,0 +1,29 @@
+{
+  "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts",
+  "bundle_kind": "local_validation_artifacts",
+  "total": 4,
+  "passed": 4,
+  "failed": 0,
+  "scenarios": [
+    {
+      "id": "ocsp-good-response-cache-reuse-client-auth",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts/ocsp-good-response-cache-reuse-client-auth"
+    },
+    {
+      "id": "ocsp-stale-response-require-fails",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts/ocsp-stale-response-require-fails"
+    },
+    {
+      "id": "ocsp-revoked-client-certificate-fails",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts/ocsp-revoked-client-certificate-fails"
+    },
+    {
+      "id": "ocsp-unreachable-soft-fail-vs-require",
+      "passed": true,
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts/ocsp-unreachable-soft-fail-vs-require"
+    }
+  ]
+}

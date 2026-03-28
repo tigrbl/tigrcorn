@@ -1,5 +1,10 @@
 {
-  "generated_at": "2026-03-24T10:43:51.704508+00:00",
+  "document_role": "canonical_current_state_source",
+  "current_truth_source": true,
+  "truth_scope": "canonical_current_state_chain",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "generated_at": "2026-03-28T04:10:43.806183+00:00",
   "boundary": "docs/review/conformance/certification_boundary.json",
   "strict_target_boundary": "docs/review/conformance/certification_boundary.strict_target.json",
   "passed": true,
@@ -19,15 +24,15 @@
     "CURRENT_REPOSITORY_STATE.md",
     "RFC_CERTIFICATION_STATUS.md",
     "src/tigrcorn/security/tls.py",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/index.json",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/manifest.json",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/index.json",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/manifest.json",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/index.json",
-    "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/manifest.json"
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/index.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/manifest.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/index.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/manifest.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/index.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/manifest.json"
   ],
   "rfc_status": {
     "RFC 9112": {
@@ -759,6 +764,74 @@
       },
       "highest_observed_evidence_tier": "local_conformance"
     },
+    "RFC 7232": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-conditional-requests"
+        ]
+      },
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "vector": "http-conditional-requests",
+            "rfc": "RFC 7232"
+          }
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance"
+    },
+    "RFC 7233": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-byte-ranges"
+        ]
+      },
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "vector": "http-byte-ranges",
+            "rfc": "RFC 7233"
+          }
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance"
+    },
+    "RFC 8297": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-early-hints"
+        ]
+      },
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "vector": "http-early-hints",
+            "rfc": "RFC 8297"
+          }
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance"
+    },
+    "RFC 7838 \u00a73": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-alt-svc-header-advertisement"
+        ]
+      },
+      "resolved_evidence": {
+        "local_conformance": [
+          {
+            "vector": "http-alt-svc-header-advertisement",
+            "rfc": "RFC 7838 \u00a73"
+          }
+        ]
+      },
+      "highest_observed_evidence_tier": "local_conformance"
+    },
     "RFC 5280": {
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
@@ -855,334 +928,331 @@
     }
   },
   "artifact_status": {
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http1-server-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http1-server-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-connect-relay-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-connect-relay-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-connect-relay-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-connect-relay-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-connect-relay-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-connect-relay-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-content-coding-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http11-trailer-fields-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-connect-relay-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-content-coding-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-server-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-server-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-server-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-server-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-server-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-server-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-server-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-tls-server-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-tls-server-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http2-trailer-fields-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-connect-relay-aioquic-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-goaway-qpack/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-migration/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-mtls/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-resumption/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-retry/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-aioquic-client-post-zero-rtt/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-server-openssl-quic-handshake/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-trailer-fields-aioquic-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/tls-server-ocsp-validation-openssl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http11-server-websockets-client-permessage-deflate/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http2-server-h2-client-permessage-deflate/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-mtls/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-server-websockets-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-mtls/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-retry/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-resumption/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-zero-rtt/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-migration/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/http3-server-public-client-post-goaway-qpack/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/websocket-http3-server-public-client-mtls/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http1-server-curl-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http2-server-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http2-tls-server-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-server-websockets-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http2-server-h2-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-mtls/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-retry/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-resumption/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-zero-rtt/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-migration/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/http3-server-public-client-post-goaway-qpack/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client/result.json",
       "exists": true
     },
-    "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls": {
-      "artifact_dir": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls": {
+      "artifact_dir": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls",
       "passed": true,
-      "result_path": "/mnt/data/fix_step9/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls/result.json",
+      "result_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix/websocket-http3-server-public-client-mtls/result.json",
       "exists": true
     }
   },
   "strict_target_passed": true,
   "promotion_target_passed": true,
-  "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-  "canonical_release_root_manifest": "docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json",
-  "canonical_release_root_bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json",
-  "canonical_release_root_bundle_summary": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json",
-  "working_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
-  "working_release_root_manifest": "docs/review/conformance/releases/0.3.8/release-0.3.8/manifest.json",
-  "working_release_root_bundle_index": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_index.json",
-  "working_release_root_bundle_summary": "docs/review/conformance/releases/0.3.8/release-0.3.8/bundle_summary.json",
-  "current_package_version": "0.3.8"
+  "working_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+  "working_release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+  "working_release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+  "working_release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
+  "historical_released_root_preserved": "docs/review/conformance/releases/0.3.8/release-0.3.8",
+  "canonical_current_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9"
 }

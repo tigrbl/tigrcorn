@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http2_tls",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0012874999129053322,
+    "p50_ms": 0.0012874999129053322,
+    "p95_ms": 0.0022138999497656182,
+    "p99_9_ms": 0.002287391125719296,
+    "p99_ms": 0.0022819100649940083,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 295758.8184143671,
+    "time_to_first_byte_ms": 0.0012874999129053322
+  },
+  "passed": true,
+  "profile_id": "alpn_negotiation_cost"
+}

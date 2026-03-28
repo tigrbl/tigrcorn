@@ -1,0 +1,10 @@
+{
+  "bundle_kind": "performance_certification_bundle",
+  "generated_at": "2026-03-28T03:19:57.167719+00:00",
+  "release_gate_eligible": true,
+  "source_boundary": "docs/review/performance/PERFORMANCE_SLOS.md",
+  "source_slos": "docs/review/performance/performance_slos.json",
+  "source_matrix": "docs/review/performance/performance_matrix.json",
+  "source_status": "docs/review/conformance/phase9g_strict_performance.current.json",
+  "note": "This assembled bundle freezes the strict performance artifacts and metadata for the 0.3.9 working release root."
+}

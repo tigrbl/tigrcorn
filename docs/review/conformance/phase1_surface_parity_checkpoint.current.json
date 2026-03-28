@@ -1,0 +1,78 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": 1,
+  "checkpoint": "surface_parity_and_configuration_foundation",
+  "status": "implemented_checkpoint_with_focused_green_validation",
+  "boundary": {
+    "current_internal_promotion_target_green": true,
+    "expanded_program_fully_featured": false,
+    "expanded_program_fully_rfc_compliant": false,
+    "excluded_boundaries": [
+      "cache_freshness_policy",
+      "integrity_trust",
+      "gateway_enforcement"
+    ]
+  },
+  "implemented": {
+    "default_response_header_injection": true,
+    "date_header_toggle": true,
+    "env_file_loading": true,
+    "mature_config_loading": {
+      "json": true,
+      "toml": true,
+      "yaml_when_loader_available": true,
+      "python_file": true,
+      "python_module": true,
+      "python_object": true,
+      "dict_object_ingestion": true
+    },
+    "unix_socket_user_group_umask": true,
+    "server_name_allowlist": true,
+    "embedded_lifecycle_hooks": {
+      "startup": true,
+      "shutdown": true,
+      "reload": true
+    },
+    "worker_healthcheck_timeout": true,
+    "colorized_log_toggle": true,
+    "static_files_foundation": true,
+    "runtime_surface": {
+      "auto": true,
+      "asyncio": true,
+      "uvloop": true,
+      "trio_surface": "descoped_not_supported"
+    },
+    "header_policy_applied_to": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket_http_handshake_and_denial_paths"
+    ]
+  },
+  "validation": {
+    "compileall_passed": true,
+    "focused_test_bundle": {
+      "passed": 41,
+      "failed": 0,
+      "files": [
+        "tests/test_phase1_surface_parity_checkpoint.py",
+        "tests/test_phase2_cli_config_surface.py",
+        "tests/test_phase4_operator_surface.py",
+        "tests/test_server_http1.py",
+        "tests/test_server_unix.py",
+        "tests/test_server_websocket.py",
+        "tests/test_config_matrix.py",
+        "tests/test_phase9f2_logging_exporter_closure.py"
+      ]
+    }
+  },
+  "known_partials": [
+    "static files are foundational and do not claim full conditional/range closure",
+    "expanded-program full RFC closure is outside this checkpoint"
+  ]
+}

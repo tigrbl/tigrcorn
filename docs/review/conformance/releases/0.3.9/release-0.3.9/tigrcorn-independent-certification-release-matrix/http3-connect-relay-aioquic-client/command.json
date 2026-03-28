@@ -1,0 +1,58 @@
+{
+  "sut": {
+    "command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "examples.echo_http.app:app",
+      "--transport",
+      "udp",
+      "--host",
+      "{bind_host}",
+      "--port",
+      "{bind_port}",
+      "--protocol",
+      "http3",
+      "--http",
+      "3",
+      "--ssl-certfile",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--ssl-keyfile",
+      "tests/fixtures_certs/interop-localhost-key.pem",
+      "--connect-policy",
+      "relay",
+      "--disable-websocket",
+      "--no-access-log",
+      "--lifespan",
+      "off"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tigrcorn",
+      "--help"
+    ],
+    "name": "tigrcorn-http3-connect-relay",
+    "adapter": "subprocess"
+  },
+  "peer": {
+    "command": [
+      "python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--servername",
+      "localhost",
+      "--cacert",
+      "tests/fixtures_certs/interop-localhost-cert.pem",
+      "--connect-relay"
+    ],
+    "version_command": [
+      "python",
+      "-m",
+      "tests.fixtures_third_party.aioquic_http3_client",
+      "--version"
+    ],
+    "name": "aioquic-connect-relay-client",
+    "adapter": "subprocess"
+  }
+}

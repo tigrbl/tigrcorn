@@ -7,7 +7,7 @@ from tigrcorn.compat.release_gates import evaluate_release_gates, validate_indep
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 INDEPENDENT = RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'
 LOCAL_VALIDATION = RELEASE_ROOT / 'tigrcorn-ocsp-local-validation-artifacts'
 
@@ -61,8 +61,8 @@ def test_phase9e_release_root_contains_passing_ocsp_artifact_and_local_vectors()
 def test_phase9e_strict_boundary_and_validator_reflect_ocsp_progress() -> None:
     report = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
     failures = '\n'.join(report.failures)
-    assert report.passed is False
-    assert len(report.failures) == 2
+    assert report.passed is True
+    assert report.failures == []
     assert 'RFC 6960 independent_certification scenario tls-server-ocsp-validation-openssl-client is missing preserved artifacts under the canonical independent release bundle' not in failures
     assert 'RFC 9110 §9.3.6 independent_certification scenario http3-connect-relay-aioquic-client has preserved artifacts but they are not marked passing' not in failures
     assert 'RFC 6960 requires independent_certification evidence, but the resolved evidence only reaches local_conformance' not in failures

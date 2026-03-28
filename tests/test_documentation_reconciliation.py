@@ -3,7 +3,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.8/release-0.3.8/'
+CANONICAL_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.9/release-0.3.9/'
 BOUNDARY_DOC = 'docs/review/conformance/CERTIFICATION_BOUNDARY.md'
 
 

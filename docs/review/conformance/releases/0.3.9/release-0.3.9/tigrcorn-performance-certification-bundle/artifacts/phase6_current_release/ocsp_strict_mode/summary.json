@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "tls_ocsp_strict",
+  "failure_reasons": [],
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.1846719999321067,
+    "p50_ms": 0.1846719999321067,
+    "p95_ms": 0.20761445010748503,
+    "p99_9_ms": 0.21682502911039592,
+    "p99_ms": 0.21513329010986126,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 5273.309015211605,
+    "time_to_first_byte_ms": 0.1846719999321067
+  },
+  "passed": true,
+  "profile_id": "ocsp_strict_mode"
+}

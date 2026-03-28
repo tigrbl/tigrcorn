@@ -1,0 +1,70 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "checkpoint": "dependency_declaration_reconciliation",
+  "generated_at": "2026-03-26T14:31:31.010861+00:00",
+  "status": "optional_dependency_install_paths_declared_and_docs_reconciled",
+  "public_runtime_surface": [
+    "auto",
+    "asyncio",
+    "uvloop"
+  ],
+  "supported_public_optional_extras": [
+    "config-yaml",
+    "compression",
+    "runtime-uvloop",
+    "full-featured"
+  ],
+  "reserved_non_public_optional_extras": [
+    "runtime-trio"
+  ],
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q src benchmarks tools",
+      "result": "passed"
+    },
+    "pytest": {
+      "command": "pytest -q tests/test_dependency_declaration_reconciliation_checkpoint.py tests/test_certification_environment_freeze.py tests/test_trio_runtime_surface_reconciliation_checkpoint.py",
+      "result": "passed",
+      "summary": "13 passed"
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true,
+      "failure_count": 0
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true,
+      "failure_count": 0
+    },
+    "evaluate_promotion_target": {
+      "passed": true,
+      "failure_count": 0
+    }
+  },
+  "files_touched": [
+    "pyproject.toml",
+    "README.md",
+    "CURRENT_REPOSITORY_STATE.md",
+    "CURRENT_REPOSITORY_STATE_DEPENDENCY_DECLARATION_RECONCILIATION_CHECKPOINT.md",
+    "docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md",
+    "docs/review/conformance/optional_dependency_surface.current.json",
+    "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
+    "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "docs/review/conformance/README.md",
+    "docs/review/conformance/phase9i_release_assembly.current.json",
+    "examples/PHASE4_PROTOCOL_PAIRING.md",
+    "src/tigrcorn/config/files.py",
+    "src/tigrcorn/protocols/content_coding.py",
+    "src/tigrcorn/server/bootstrap.py",
+    "tests/test_dependency_declaration_reconciliation_checkpoint.py"
+  ],
+  "honest_status": {
+    "rfc_boundary_expanded": false,
+    "trio_publicly_supported": false,
+    "promotion_green_under_current_model": true
+  }
+}

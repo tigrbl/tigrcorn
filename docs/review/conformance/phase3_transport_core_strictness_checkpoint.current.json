@@ -1,0 +1,69 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": 3,
+  "checkpoint": "transport_core_strictness",
+  "status": "implemented_checkpoint_with_targeted_green_validation",
+  "boundary": {
+    "current_internal_promotion_target_green": null,
+    "expanded_program_fully_featured": false,
+    "expanded_program_fully_rfc_compliant": false,
+    "excluded_boundaries": [
+      "cache_freshness_policy",
+      "integrity_trust",
+      "gateway_enforcement"
+    ]
+  },
+  "implemented": {
+    "runtime_exported_tables": {
+      "http11_error_matrix": true,
+      "http11_response_metadata_rules": true,
+      "http2_stream_transition_table": true,
+      "http2_connection_rule_table": true,
+      "http3_request_transition_table": true,
+      "http3_control_stream_rule_table": true,
+      "http3_qpack_accounting_rule_table": true,
+      "quic_packet_space_legality": true,
+      "quic_packet_space_prohibitions": true,
+      "quic_recovery_rule_table": true,
+      "quic_connection_state_table": true,
+      "quic_transport_error_matrix": true,
+      "tls13_handshake_state_table": true
+    },
+    "generated_snapshot_artifacts": true,
+    "preserved_interop_evidence_manifest": true,
+    "release_bundle_summary": true,
+    "checkpoint_tests": true
+  },
+  "validation": {
+    "compileall_passed": true,
+    "targeted_test_bundle": {
+      "passed": 92,
+      "failed": 0,
+      "files": [
+        "tests/test_phase3_transport_core_strictness_checkpoint.py",
+        "tests/test_http1_rfc9112.py",
+        "tests/test_http1_hardening_pass.py",
+        "tests/test_http2_rfc9113.py",
+        "tests/test_http2_state_machine_completion.py",
+        "tests/test_http3_rfc9114.py",
+        "tests/test_http3_request_stream_state_machine.py",
+        "tests/test_qpack_completion.py",
+        "tests/test_quic_packets_rfc9000.py",
+        "tests/test_quic_stream_flow_state_machine.py",
+        "tests/test_quic_tls_rfc9001.py",
+        "tests/test_quic_recovery_rfc9002.py",
+        "tests/test_phase3_strict_rfc_surface.py"
+      ]
+    }
+  },
+  "known_partials": [
+    "independent peer artifacts were preserved and indexed rather than fully re-run in this checkpoint",
+    "global release-gate recertification was not re-executed in this checkpoint",
+    "phase 4 advanced delivery features remain outside this checkpoint"
+  ]
+}

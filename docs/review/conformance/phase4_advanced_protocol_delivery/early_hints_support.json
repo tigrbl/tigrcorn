@@ -1,0 +1,26 @@
+{
+  "feature": "early_hints",
+  "status": "certified_authoritative_and_strict_local_conformance_target",
+  "http_versions": [
+    "1.1",
+    "2",
+    "3"
+  ],
+  "interim_status_codes": [
+    103
+  ],
+  "safe_headers": [
+    "link"
+  ],
+  "notes": [
+    "unsafe headers are stripped from 103 responses",
+    "Early Hints are emitted before the final response head/block",
+    "the certified support envelope is intentionally limited to direct server delivery behavior"
+  ],
+  "certification_boundary": {
+    "target_rfc": "RFC 8297",
+    "highest_required_evidence_tier": "local_conformance",
+    "corpus_vector": "http-early-hints",
+    "support_envelope": "direct_server_103_early_hints"
+  }
+}

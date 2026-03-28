@@ -34,7 +34,7 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         '--release-root',
-        default='docs/review/conformance/releases/0.3.8/release-0.3.8',
+        default='docs/review/conformance/releases/0.3.9/release-0.3.9',
         help='Release root passed through to the certification-environment freeze step.',
     )
     parser.add_argument(

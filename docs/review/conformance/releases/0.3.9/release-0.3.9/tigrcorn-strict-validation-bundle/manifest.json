@@ -1,0 +1,76 @@
+{
+  "bundle": "tigrcorn-strict-validation-bundle",
+  "generated_at": "2026-03-28T03:22:26Z",
+  "artifacts": [
+    {
+      "path": "README.md",
+      "size": 516,
+      "sha256": "0254c6528402cd49646146d781bd623e6839b57691a68c49d4f74fca19d049b4"
+    },
+    {
+      "path": "artifacts/compileall.command.json",
+      "size": 74,
+      "sha256": "5c42568c9a227e66c133643c0a18e2a0a2ae1576c0c194eafd2d67fd13e55da8"
+    },
+    {
+      "path": "artifacts/compileall.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/compileall.stdout.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/full_matrix_pytest.command.json",
+      "size": 810,
+      "sha256": "2d51df9e027bbbf67230cc7067ff10e2a5d3f86b230413045faa149d8d92798e"
+    },
+    {
+      "path": "artifacts/full_matrix_pytest.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/full_matrix_pytest.stdout.txt",
+      "size": 99,
+      "sha256": "b677b05154320ca230164110277d432a1bda5784d6cb91a627f3445dc0467e89"
+    },
+    {
+      "path": "artifacts/gate_results.command.json",
+      "size": 129,
+      "sha256": "b75890c2deee53dbdd58ad6ff4c30ee8358740b28d41d36c820004c810300424"
+    },
+    {
+      "path": "artifacts/gate_results.json",
+      "size": 295,
+      "sha256": "c15d5f92a347ac3be770a222b042db07ad78c9dc773c8953c30de769f7b95d35"
+    },
+    {
+      "path": "artifacts/targeted_pytest.command.json",
+      "size": 436,
+      "sha256": "9796b58756c4f103364ad28b9164e6dcb716d380aff67572ff00d147ba7528ec"
+    },
+    {
+      "path": "artifacts/targeted_pytest.stderr.txt",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/targeted_pytest.stdout.txt",
+      "size": 99,
+      "sha256": "6922996011319a94e719ed40a550437ddf77c474b67c04fc32ef86269fe45fc6"
+    },
+    {
+      "path": "manifest.json",
+      "size": 1596,
+      "sha256": "7e70308dbe427360568fd727a54ff9c3d65438ff533d50620307142d009b1fe0"
+    },
+    {
+      "path": "summary.json",
+      "size": 1614,
+      "sha256": "4002133f3c63cfec8e8e101d72d8f3e8646f08800a99bddacffd7a603603dcbb"
+    }
+  ]
+}

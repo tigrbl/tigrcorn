@@ -8,7 +8,7 @@ from typing import Any
 from tigrcorn.asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
 from tigrcorn.asgi.scopes.custom import build_custom_scope
 from tigrcorn.asgi.scopes.http import build_http_scope
-from tigrcorn.asgi.send import HTTPResponseCollector
+from tigrcorn.asgi.send import HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
 from tigrcorn.config.model import ListenerConfig, ServerConfig
 from tigrcorn.errors import ProtocolError
 from tigrcorn.observability.logging import AccessLogger
@@ -17,7 +17,8 @@ from tigrcorn.security.tls import build_server_ssl_context
 from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
 from tigrcorn.protocols.custom.adapters import adapt_scope
 from tigrcorn.protocols.http1.parser import ParsedRequest
-from tigrcorn.protocols.content_coding import apply_http_content_coding
+from tigrcorn.http.alt_svc import configured_alt_svc_values
+from tigrcorn.http.entity import apply_response_entity_semantics, plan_file_backed_response_entity_semantics
 from tigrcorn.protocols.http3.codec import (
     FRAME_DATA,
     FRAME_HEADERS,
@@ -42,7 +43,8 @@ from tigrcorn.transports.udp.endpoint import UDPEndpoint
 from tigrcorn.transports.udp.packet import UDPPacket
 from tigrcorn.types import ASGIApp
 from tigrcorn.utils.bytes import encode_quic_varint
-from tigrcorn.utils.headers import strip_connection_specific_headers
+from tigrcorn.utils.authority import authority_allowed
+from tigrcorn.utils.headers import apply_response_header_policy, sanitize_early_hints_headers, strip_connection_specific_headers
 
 
 @dataclass(slots=True)
@@ -206,6 +208,7 @@ class HTTP3DatagramHandler:
                 server_name=self.listener.host or 'localhost',
                 certificate_pem=context.certificate_pem,
                 private_key_pem=context.private_key_pem,
+                private_key_password=context.private_key_password,
                 trusted_certificates=context.trusted_certificates,
                 require_client_certificate=context.require_client_certificate,
                 validation_policy=context.validation_policy,
@@ -216,6 +219,9 @@ class HTTP3DatagramHandler:
         )
 
     def _queue_or_send(self, session: HTTP3Session, raw: bytes, endpoint: UDPEndpoint, addr: tuple[str, int]) -> None:
+        transport = getattr(endpoint, 'transport', None)
+        if transport is None or transport.is_closing():
+            return
         session.quic.defer_datagram(raw)
         if self._can_send_now(session, raw):
             session.quic.confirm_datagram_sent(raw)
@@ -268,6 +274,9 @@ class HTTP3DatagramHandler:
         session.timer_handle = loop.call_later(delay, self._fire_session_timer, session, endpoint)
 
     def _fire_session_timer(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
+        transport = getattr(endpoint, 'transport', None)
+        if transport is None or transport.is_closing():
+            return
         try:
             loop = asyncio.get_running_loop()
         except RuntimeError:
@@ -279,6 +288,9 @@ class HTTP3DatagramHandler:
     async def _on_session_timer(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
         async with self._lock:
             session.timer_handle = None
+            transport = getattr(endpoint, 'transport', None)
+            if transport is None or transport.is_closing():
+                return
             if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
                 return
             outbound = session.quic.drain_scheduled_datagrams()
@@ -594,9 +606,13 @@ class HTTP3DatagramHandler:
         *,
         end_stream: bool,
     ) -> list[bytes]:
-        response_headers = list(strip_connection_specific_headers(headers))
-        if self.config.server_header_value:
-            response_headers.append((b'server', self.config.server_header_value))
+        response_headers = apply_response_header_policy(
+            strip_connection_specific_headers(headers),
+            server_header=self.config.server_header_value,
+            include_date_header=self.config.include_date_header,
+            default_headers=self.config.default_response_headers,
+            alt_svc_values=configured_alt_svc_values(self.config, request_http_version='3'),
+        )
         header_block = session.h3.encode_headers(
             stream_id,
             [(b':status', str(status).encode('ascii')), *response_headers],
@@ -605,6 +621,51 @@ class HTTP3DatagramHandler:
         if body:
             payload.extend(encode_frame(FRAME_DATA, body))
         return [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, bytes(payload), fin=end_stream)]
+
+    async def _send_http3_streamed_response_locked(
+        self,
+        session: HTTP3Session,
+        stream_id: int,
+        status: int,
+        headers: list[tuple[bytes, bytes]],
+        body_segments: list,
+        trailers: list[tuple[bytes, bytes]],
+        informational: list[tuple[int, list[tuple[bytes, bytes]]]],
+        endpoint: UDPEndpoint,
+    ) -> None:
+        if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
+            return
+        for interim_status, interim_headers in informational:
+            interim_header_block = session.h3.encode_headers(
+                stream_id,
+                [(b':status', str(interim_status).encode('ascii')), *sanitize_early_hints_headers(interim_headers)],
+            )
+            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, encode_frame(FRAME_HEADERS, interim_header_block), fin=False)]
+            self._queue_session_outbound_locked(session, outbound, endpoint)
+        has_body = response_body_segments_have_bytes(body_segments)
+        response_headers = apply_response_header_policy(
+            strip_connection_specific_headers(headers),
+            server_header=self.config.server_header_value,
+            include_date_header=self.config.include_date_header,
+            default_headers=self.config.default_response_headers,
+            alt_svc_values=configured_alt_svc_values(self.config, request_http_version='3'),
+        )
+        header_block = session.h3.encode_headers(stream_id, [(b':status', str(status).encode('ascii')), *response_headers])
+        outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, encode_frame(FRAME_HEADERS, header_block), fin=(not has_body and not trailers))]
+        self._queue_session_outbound_locked(session, outbound, endpoint)
+        if not has_body and not trailers:
+            return
+        if has_body:
+            chunk_size = max(1024, int(self.listener.max_datagram_size) - 256)
+            async for chunk in iter_response_body_segments(body_segments, chunk_size=chunk_size):
+                outbound = self._build_http3_data_datagrams_locked(session, stream_id, chunk, end_stream=False)
+                self._queue_session_outbound_locked(session, outbound, endpoint)
+        if trailers:
+            trailer_block = session.h3.encode_headers(stream_id, list(trailers))
+            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, encode_frame(FRAME_HEADERS, trailer_block), fin=True)]
+        else:
+            outbound = self._build_http3_data_datagrams_locked(session, stream_id, b'', end_stream=True)
+        self._queue_session_outbound_locked(session, outbound, endpoint)
 
     def _build_http3_data_datagrams_locked(
         self,
@@ -924,6 +985,17 @@ class HTTP3DatagramHandler:
         endpoint: UDPEndpoint,
     ) -> list[bytes]:
         request = self._build_request(request_state, header_map)
+        authority = header_map.get(b':authority')
+        if self.config.allowed_server_names and not authority_allowed(authority, self.config.allowed_server_names):
+            self.access_logger.log_http(session.addr, 'CONNECT', request.path, 421, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                421,
+                [(b'content-type', b'text/plain')],
+                b'misdirected request',
+                end_stream=True,
+            )
         local = endpoint.local_addr
         server = (local[0], local[1]) if isinstance(local, tuple) and len(local) >= 2 else ('', None)
         scheme = header_map.get(
@@ -1109,6 +1181,20 @@ class HTTP3DatagramHandler:
             extensions['tigrcorn.http.connect'] = {'authority': request.target}
         if request_trailers and self.config.http.trailer_policy != 'drop':
             extensions['tigrcorn.http.request_trailers'] = {}
+        extensions['tigrcorn.http.response.file'] = {'protocol': 'http/3', 'streaming': True, 'sendfile': False}
+        extensions['http.response.pathsend'] = {}
+        authority = header_map.get(b':authority')
+        if self.config.allowed_server_names and not authority_allowed(authority, self.config.allowed_server_names):
+            self._release_stream_work_lease(session, stream_id)
+            self.access_logger.log_http(client, request.method, request.path, 421, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                421,
+                [(b'content-type', b'text/plain')],
+                b'misdirected request',
+                end_stream=True,
+            )
         scope = build_http_scope(request, client=client, server=server, scheme=scheme, extensions=extensions, root_path=self.config.proxy.root_path, proxy=self.config.proxy)
         receive = HTTPRequestReceive(request.body, trailers=request_trailers, trailer_policy=self.config.http.trailer_policy)
         send = HTTPResponseCollector()
@@ -1116,21 +1202,109 @@ class HTTP3DatagramHandler:
         try:
             try:
                 await self.app(scope, receive, send)
-                status, headers, body, trailers = send.response_tuple()
+                send.finalize()
+                assert send.status is not None
+                status = send.status
+                headers = list(send.headers)
+                trailers = list(send.trailers)
+                informational = list(send.informational_responses)
+                body_segments = list(send.body_segments) if send.uses_streamed_body else None
+                if body_segments is None and send.has_spooled_body():
+                    spooled_segments = send.spooled_body_segments()
+                    spooled_path = ''
+                    if spooled_segments:
+                        first_segment = spooled_segments[0]
+                        spooled_path = getattr(first_segment, 'path', '')
+                    planned = plan_file_backed_response_entity_semantics(
+                        method=request.method,
+                        request_headers=request.headers,
+                        response_headers=headers,
+                        status=status,
+                        body_path=spooled_path,
+                        body_length=send.body_length,
+                        generated_etag=send.generated_entity_tag(),
+                        apply_content_coding=True,
+                        trailers_present=bool(trailers) and request.method.upper() != 'HEAD',
+                    )
+                    if planned.requires_materialization:
+                        body = await send.materialize_body()
+                        processed = apply_response_entity_semantics(
+                            method=request.method,
+                            request_headers=request.headers,
+                            response_headers=headers,
+                            body=body,
+                            status=status,
+                            content_coding_policy=self.config.http.content_coding_policy,
+                            supported_codings=tuple(self.config.http.content_codings),
+                            apply_content_coding=True,
+                            generate_etag=True,
+                        )
+                        status = processed.status
+                        headers = processed.headers
+                        body = processed.body
+                        if processed.head_response:
+                            trailers = []
+                    elif planned.use_body_segments:
+                        status = planned.status
+                        headers = planned.headers
+                        body_segments = list(planned.body_segments)
+                        body = b''
+                    else:
+                        status = planned.status
+                        headers = planned.headers
+                        body = planned.body
+                        trailers = []
+                elif body_segments is None:
+                    body = await send.materialize_body()
+                    processed = apply_response_entity_semantics(
+                        method=request.method,
+                        request_headers=request.headers,
+                        response_headers=headers,
+                        body=body,
+                        status=status,
+                        content_coding_policy=self.config.http.content_coding_policy,
+                        supported_codings=tuple(self.config.http.content_codings),
+                        apply_content_coding=True,
+                        generate_etag=True,
+                    )
+                    status = processed.status
+                    headers = processed.headers
+                    body = processed.body
+                    if processed.head_response:
+                        trailers = []
             except Exception:
+                send.cleanup()
                 status, headers, body, trailers = 500, [(b'content-type', b'text/plain')], b'internal server error', []
-            status, headers, body, _selection = apply_http_content_coding(
-                request_headers=request.headers,
-                response_headers=headers,
-                body=body,
-                status=status,
-                policy=self.config.http.content_coding_policy,
-                supported=tuple(self.config.http.content_codings),
+                informational = []
+                body_segments = None
+            if body_segments is not None:
+                await self._send_http3_streamed_response_locked(
+                    session,
+                    stream_id,
+                    status,
+                    headers,
+                    body_segments,
+                    trailers,
+                    informational,
+                    endpoint,
+                )
+                self.access_logger.log_http(client, request.method, request.path, status, 'HTTP/3')
+                self.sessions[session.addr] = session
+                return []
+            headers = apply_response_header_policy(
+                strip_connection_specific_headers(headers),
+                server_header=self.config.server_header_value,
+                include_date_header=self.config.include_date_header,
+                default_headers=self.config.default_response_headers,
+                alt_svc_values=configured_alt_svc_values(self.config, request_http_version='3'),
             )
-            headers = list(strip_connection_specific_headers(headers))
-            if self.config.server_header_value:
-                headers.append((b'server', self.config.server_header_value))
             frame_payload = bytearray()
+            for interim_status, interim_headers in informational:
+                interim_header_block = session.h3.encode_headers(
+                    stream_id,
+                    [(b':status', str(interim_status).encode('ascii')), *sanitize_early_hints_headers(interim_headers)],
+                )
+                frame_payload.extend(encode_frame(FRAME_HEADERS, interim_header_block))
             header_lines = [(b':status', str(status).encode('ascii')), *headers]
             header_block = session.h3.encode_headers(stream_id, header_lines)
             qpack_outbound = self._flush_qpack_streams(session)
@@ -1144,6 +1318,7 @@ class HTTP3DatagramHandler:
             self.sessions[session.addr] = session
             return [*qpack_outbound, session.quic.send_stream_data(stream_id, bytes(frame_payload), fin=True)]
         finally:
+            send.cleanup()
             self._release_stream_work_lease(session, stream_id)
 
     async def _invoke_custom_quic_app(self, session: HTTP3Session, event: Any, endpoint: UDPEndpoint) -> list[bytes]:

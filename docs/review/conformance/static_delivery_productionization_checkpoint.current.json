@@ -1,0 +1,71 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "checkpoint": "static_delivery_productionization",
+  "generated_at": "2026-03-26T16:51:17.079503+00:00",
+  "status": "implemented_checkpoint_with_targeted_green_validation",
+  "scope": {
+    "step": 4,
+    "name": "productionize_static_delivery",
+    "expanded_program_fully_featured": false,
+    "expanded_program_fully_rfc_compliant": false,
+    "boundary_model": "current_declared_authoritative_strict_promotion_model_remains_green"
+  },
+  "implemented": {
+    "whole_file_read_bytes_removed_from_static_path": true,
+    "file_stat_metadata_without_full_body_reads": true,
+    "range_slicing_from_file_offsets": true,
+    "streaming_file_delivery": {
+      "http1": true,
+      "http2": true,
+      "http3": true
+    },
+    "http11_best_effort_sendfile": true,
+    "precompressed_sidecars_preserved": true,
+    "etag_conditional_range_head_preserved": true
+  },
+  "validation": {
+    "compileall_passed": true,
+    "authoritative_boundary_passed": true,
+    "strict_target_passed": true,
+    "promotion_target_passed": true,
+    "targeted_test_bundle": {
+      "passed": 31,
+      "failed": 0,
+      "files": [
+        "tests/test_phase1_surface_parity_checkpoint.py",
+        "tests/test_phase2_entity_semantics_checkpoint.py",
+        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+        "tests/test_static_delivery_productionization_checkpoint.py",
+        "tests/test_server_http1.py",
+        "tests/test_server_http2.py",
+        "tests/test_http3_server.py"
+      ]
+    }
+  },
+  "known_partials": [
+    "dynamic on-the-fly content coding remains intentionally buffered and size-limited to small static representations",
+    "generic non-static application responses still use the broader buffered entity pipeline",
+    "HTTP/3 large-response delivery continues to respect QUIC anti-amplification and requires normal client ACK/timer progress"
+  ],
+  "files_updated": [
+    "CURRENT_REPOSITORY_STATE.md",
+    "CURRENT_REPOSITORY_STATE_STATIC_DELIVERY_PRODUCTIONIZATION_CHECKPOINT.md",
+    "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
+    "docs/review/conformance/package_compliance_review_phase9i.current.json",
+    "docs/review/conformance/phase4_advanced_protocol_delivery/static_delivery_status.json",
+    "docs/review/conformance/static_delivery_productionization_checkpoint.current.json",
+    "src/tigrcorn/asgi/send.py",
+    "src/tigrcorn/http/entity.py",
+    "src/tigrcorn/http/range.py",
+    "src/tigrcorn/protocols/http2/handler.py",
+    "src/tigrcorn/protocols/http3/handler.py",
+    "src/tigrcorn/server/runner.py",
+    "src/tigrcorn/static.py",
+    "tests/test_static_delivery_productionization_checkpoint.py"
+  ]
+}

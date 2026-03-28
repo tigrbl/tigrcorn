@@ -1,0 +1,89 @@
+{
+  "bundle_kind": "mixed",
+  "commit_hash": "release-0.3.9",
+  "dimensions": {
+    "cipher_group": [
+      null
+    ],
+    "evidence_tier": [
+      "independent_certification",
+      "same_stack_replay"
+    ],
+    "feature": [
+      "https-post-echo",
+      "post-echo",
+      "post-echo-goaway-qpack",
+      "post-echo-migration",
+      "post-echo-mtls",
+      "post-echo-resumption",
+      "post-echo-retry",
+      "post-echo-zero-rtt",
+      "text-echo",
+      "websocket-extended-connect",
+      "websocket-rfc9220-echo",
+      "websocket-rfc9220-echo-mtls"
+    ],
+    "goaway": [
+      false,
+      true
+    ],
+    "ip_family": [
+      "ipv4"
+    ],
+    "key_update": [
+      false
+    ],
+    "migration": [
+      false,
+      true
+    ],
+    "peer": [
+      "curl",
+      "python-h2",
+      "tigrcorn-public-client",
+      "websockets"
+    ],
+    "protocol": [
+      "http1",
+      "http2",
+      "http3",
+      "websocket"
+    ],
+    "qpack_blocking": [
+      false,
+      true
+    ],
+    "resumption": [
+      false,
+      true
+    ],
+    "retry": [
+      false,
+      true
+    ],
+    "role": [
+      "server"
+    ],
+    "zero_rtt": [
+      false,
+      true
+    ]
+  },
+  "environment": {
+    "curation": {
+      "note": "This canonical 0.3.9 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Phase 9 closure artifacts while keeping the underlying packet traces and peer transcripts intact."
+    },
+    "tigrcorn": {
+      "bundle_scope": "curated-preserved-artifacts",
+      "commit_hash": "release-0.3.9",
+      "version": "0.3.9"
+    }
+  },
+  "generated_at": "2026-03-28T03:08:29.288514+00:00",
+  "matrix_name": "tigrcorn-current-release-matrix",
+  "matrix_sha256": "d5fb0af9c1f9941876d65255bcae3febb05b7dfa1d6b861ff0e73c5db4d3f56e",
+  "source_bundles": [
+    "docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix"
+  ],
+  "canonical_release_promoted": true
+}

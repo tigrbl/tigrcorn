@@ -140,12 +140,7 @@ class PublicRunAndCLIClientCertificateSurfaceTests(unittest.TestCase):
         self.assertTrue(kwargs['ssl_require_client_cert'])
 
     def test_cli_main_forwards_client_certificate_options(self):
-        real_asyncio_run = asyncio.run
-        serve_import_string = AsyncMock()
-        with (
-            patch('tigrcorn.cli.serve_import_string', new=serve_import_string),
-            patch('tigrcorn.cli.asyncio.run', side_effect=real_asyncio_run),
-        ):
+        with patch('tigrcorn.cli.run_config') as run_config:
             rc = main([
                 'tests.fixtures_pkg.appmod:app',
                 '--transport', 'udp',
@@ -159,18 +154,18 @@ class PublicRunAndCLIClientCertificateSurfaceTests(unittest.TestCase):
             ])
 
         self.assertEqual(rc, 0)
-        serve_import_string.assert_awaited_once()
-        args = serve_import_string.await_args.args
-        kwargs = serve_import_string.await_args.kwargs
-        self.assertEqual(args, ('tests.fixtures_pkg.appmod:app',))
-        self.assertEqual(kwargs['transport'], 'udp')
-        self.assertEqual(kwargs['protocols'], ['http3'])
-        self.assertEqual(kwargs['http_versions'], ['3'])
-        self.assertEqual(kwargs['ssl_certfile'], 'server-cert.pem')
-        self.assertEqual(kwargs['ssl_keyfile'], 'server-key.pem')
-        self.assertEqual(kwargs['ssl_ca_certs'], 'client-ca.pem')
-        self.assertTrue(kwargs['ssl_require_client_cert'])
-        self.assertTrue(kwargs['factory'])
+        run_config.assert_called_once()
+        config = run_config.call_args.args[0]
+        listener = config.listeners[0]
+        self.assertEqual(config.app.target, 'tests.fixtures_pkg.appmod:app')
+        self.assertTrue(config.app.factory)
+        self.assertEqual(listener.kind, 'udp')
+        self.assertEqual(listener.protocols, ['quic', 'http3'])
+        self.assertEqual(listener.http_versions, ['3'])
+        self.assertEqual(listener.ssl_certfile, 'server-cert.pem')
+        self.assertEqual(listener.ssl_keyfile, 'server-key.pem')
+        self.assertEqual(listener.ssl_ca_certs, 'client-ca.pem')
+        self.assertTrue(listener.ssl_require_client_cert)
 
 
 if __name__ == '__main__':

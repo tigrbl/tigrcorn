@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "context_built": true,
+    "ocsp_mode_require": true
+  },
+  "lane": "end_to_end_release",
+  "live_listener_required": true,
+  "note": "same-stack correctness-under-load checks",
+  "passed": true,
+  "required": true
+}

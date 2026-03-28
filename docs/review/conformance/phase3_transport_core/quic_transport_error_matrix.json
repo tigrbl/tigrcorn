@@ -1,0 +1,32 @@
+[
+  {
+    "name": "NO_ERROR",
+    "code": 0,
+    "trigger": "graceful close with no transport error"
+  },
+  {
+    "name": "INTERNAL_ERROR",
+    "code": 1,
+    "trigger": "implementation-internal failure mapped to transport close"
+  },
+  {
+    "name": "TRANSPORT_PARAMETER_ERROR",
+    "code": 8,
+    "trigger": "invalid or forbidden transport parameter combinations"
+  },
+  {
+    "name": "PROTOCOL_VIOLATION",
+    "code": 10,
+    "trigger": "frame legality or packet-sequencing invariant failure"
+  },
+  {
+    "name": "INVALID_TOKEN",
+    "code": 11,
+    "trigger": "Retry or NEW_TOKEN validation failure"
+  },
+  {
+    "name": "APPLICATION_ERROR",
+    "code": 12,
+    "trigger": "application close surfaced through QUIC transport"
+  }
+]

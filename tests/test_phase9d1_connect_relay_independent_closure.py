@@ -8,7 +8,7 @@ from tigrcorn.compat.release_gates import evaluate_release_gates, validate_indep
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
-RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.8' / 'release-0.3.8'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
 INDEPENDENT = RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'
 LOCAL_NEGATIVE = RELEASE_ROOT / 'tigrcorn-connect-relay-local-negative-artifacts'
 

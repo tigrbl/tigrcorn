@@ -1,0 +1,34 @@
+{
+  "document_role": "current_subsystem_truth_source",
+  "current_truth_source": true,
+  "truth_scope": "subsystem_current_state",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "subsystem_truth_source": true,
+  "checkpoint": "phase3_transport_core_strictness",
+  "suite": "replayable_fixture_suite",
+  "focus": [
+    "rfc9112_http11_framing",
+    "rfc9113_http2_state_machine",
+    "rfc7541_hpack_correctness",
+    "rfc9114_http3_request_control_state",
+    "rfc9204_qpack_blocking_and_errors",
+    "rfc9000_quic_packets_and_runtime",
+    "rfc9001_quic_tls_handshake_and_transport_parameters"
+  ],
+  "tests": [
+    "tests/test_http1_hardening_pass.py",
+    "tests/test_http1_rfc9112.py",
+    "tests/test_http2_rfc9113.py",
+    "tests/test_http2_state_machine_completion.py",
+    "tests/test_hpack_completion_pass.py",
+    "tests/test_http3_rfc9114.py",
+    "tests/test_http3_request_stream_state_machine.py",
+    "tests/test_qpack_completion.py",
+    "tests/test_quic_packets_rfc9000.py",
+    "tests/test_quic_tls_rfc9001.py",
+    "tests/test_quic_stream_flow_state_machine.py",
+    "tests/test_quic_transport_runtime_completion.py"
+  ],
+  "independent_evidence_status": "local_and_same_stack_artifacts_present; broader third-party replay remains partial"
+}

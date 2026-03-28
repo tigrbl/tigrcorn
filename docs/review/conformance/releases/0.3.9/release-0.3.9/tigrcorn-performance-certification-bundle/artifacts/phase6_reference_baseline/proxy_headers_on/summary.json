@@ -1,0 +1,25 @@
+{
+  "certification_platforms": [
+    "linux-x86_64-cpython3.11"
+  ],
+  "deployment_profile": "http1_proxy",
+  "failure_reasons": [],
+  "lane": "component_regression",
+  "live_listener_required": false,
+  "metrics": {
+    "cpu_seconds": 0.0,
+    "error_rate": 0.0,
+    "handshake_latency_ms": 0.0,
+    "p50_ms": 0.011952000022574794,
+    "p95_ms": 0.022426799932873102,
+    "p99_9_ms": 0.07663283982583394,
+    "p99_ms": 0.06473339984040638,
+    "protocol_stalls": 0,
+    "rss_kib": 40004.0,
+    "scheduler_rejections": 0,
+    "throughput_ops_per_sec": 52906.35786363917,
+    "time_to_first_byte_ms": 0.011952000022574794
+  },
+  "passed": true,
+  "profile_id": "proxy_headers_on"
+}

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "scenario_id": "http1-server-curl-client",
+  "protocol": "http1",
+  "feature": "post-echo",
+  "peer": "curl",
+  "role": "server",
+  "evidence_tier": "independent_certification",
+  "passed": true,
+  "error": null,
+  "assertions_failed": [],
+  "required_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "artifact_files": {
+    "summary.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/summary.json",
+      "exists": true,
+      "size": 5983,
+      "sha256": "deaf10fbb821113b34cab49b512206d572263899c8c0e6610928181ee2186e1b"
+    },
+    "index.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/index.json",
+      "exists": true,
+      "size": 6292,
+      "sha256": "b8f2283c2e8f6ac196cfc1115fdac4c52de4b5b70d333ad0d2d8a03ce586544f"
+    },
+    "result.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/result.json",
+      "exists": true,
+      "size": 12313,
+      "sha256": "004cdcb6a2c1921411d30f3065ba96a40e6afb0027d71798e918b9e514b1d9f8"
+    },
+    "scenario.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/scenario.json",
+      "exists": true,
+      "size": 2388,
+      "sha256": "a48bc8f05a5bdd59b76bc44deddc0e7a3ee85f04f00ec58d4f520054337627e3"
+    },
+    "command.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/command.json",
+      "exists": true,
+      "size": 793,
+      "sha256": "9dcaed720492ef42d6fe0767cf677075d8316036087699b8387ac1e75c4c6cb7"
+    },
+    "env.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/env.json",
+      "exists": true,
+      "size": 75,
+      "sha256": "c782cde8fbeb3011637cdaa296660b4997f3775e71c5ede2795d820a1654545d"
+    },
+    "versions.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/versions.json",
+      "exists": true,
+      "size": 3548,
+      "sha256": "fc9e87c9699753ffe04544deb0f49f9a0582a14613a2314cca113972bea894ab"
+    },
+    "wire_capture.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/wire_capture.json",
+      "exists": true,
+      "size": 2969,
+      "sha256": "2ff5bb004137158bb7597bfb7b2080c3b032469bdd1d0949dd948d88bb0dce90"
+    },
+    "packet_trace.jsonl": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/packet_trace.jsonl",
+      "exists": true,
+      "size": 1011,
+      "sha256": "56977b32c93525c2bc4aa1dabda6d1c691b2c8b88de3277f299ba7094ec626cd"
+    },
+    "qlog.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/qlog.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "sut_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_stdout.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_stderr.log",
+      "exists": true,
+      "size": 67,
+      "sha256": "f3f1a9710d54f328f8bd5edab3fcd659244beb35fb29c38cca2617017a3a319c"
+    },
+    "peer_stdout.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_stdout.log",
+      "exists": true,
+      "size": 1948,
+      "sha256": "387e7ae89d5778950286a59603249c681f64a3404dd58c9c9a29227c810ffd97"
+    },
+    "peer_stderr.log": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_stderr.log",
+      "exists": true,
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sut_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_transcript.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_transcript.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_transcript.json",
+      "exists": true,
+      "size": 2546,
+      "sha256": "8bfadc48aecbe041eea61c06988d92e1fe2f7ad204a4e37ac05d0bfe85331027"
+    },
+    "sut_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/sut_negotiation.json",
+      "exists": false,
+      "size": 0,
+      "sha256": null
+    },
+    "peer_negotiation.json": {
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http1-server-curl-client/peer_negotiation.json",
+      "exists": true,
+      "size": 385,
+      "sha256": "3d5980770dd5a0c9672976a8e9fcc128f55d7a98c2b0cbdf36204b85e7d71731"
+    }
+  }
+}

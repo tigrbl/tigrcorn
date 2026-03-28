@@ -1,0 +1,62 @@
+{
+  "derived_from_peer_transcript": true,
+  "feature": "content-coding",
+  "observation_model": "interop_runner_synthesized_from_peer_observation",
+  "protocol": "http3",
+  "request": {
+    "accept_encoding": "gzip",
+    "authority": "localhost",
+    "body": "",
+    "method": "GET",
+    "path": "/interop"
+  },
+  "response": {
+    "body": "",
+    "content_encoding": "gzip",
+    "decoded_body": "compress-me",
+    "decoded_length": 11,
+    "encoded_length": 31,
+    "headers": [
+      [
+        ":status",
+        "200"
+      ],
+      [
+        "content-type",
+        "text/plain; charset=utf-8"
+      ],
+      [
+        "content-encoding",
+        "gzip"
+      ],
+      [
+        "vary",
+        "accept-encoding"
+      ],
+      [
+        "content-length",
+        "31"
+      ],
+      [
+        "server",
+        "tigrcorn"
+      ]
+    ],
+    "status": 200,
+    "trailers": [],
+    "vary": "accept-encoding"
+  },
+  "role": "server",
+  "scenario_id": "http3-content-coding-aioquic-client",
+  "server_process": {
+    "adapter": "subprocess",
+    "exit_code": 0,
+    "implementation_identity": "tigrcorn-http3",
+    "implementation_source": "tigrcorn",
+    "implementation_version": "0.3.6",
+    "name": "tigrcorn-http3-content-coding",
+    "role": "server",
+    "stderr_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/sut_stderr.log",
+    "stdout_path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/http3-content-coding-aioquic-client/sut_stdout.log"
+  }
+}

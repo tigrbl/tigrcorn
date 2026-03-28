@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Iterable
 
 from tigrcorn.config.model import ServerConfig
+from tigrcorn.server.hooks import run_sync_hooks
 from tigrcorn.server.signals import install_sync_signal_handlers, restore_signal_handlers
 
 _RELOADER_ENV = 'TIGRCORN_INTERNAL_RELOADER_CHILD'
@@ -72,6 +73,8 @@ class PollingReloader:
         self.child = subprocess.Popen([sys.executable, '-m', 'tigrcorn', *self.argv], env=env)
 
     def restart_child(self) -> None:
+        if self.config.hooks.on_reload:
+            run_sync_hooks(self.config.hooks.on_reload, self.config)
         self.stop_child()
         self.spawn_child()
 

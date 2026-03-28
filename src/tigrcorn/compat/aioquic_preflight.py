@@ -21,7 +21,7 @@ DEFAULT_STATUS_DOC = 'docs/review/conformance/AIOQUIC_ADAPTER_PREFLIGHT.md'
 DEFAULT_STATUS_JSON = 'docs/review/conformance/aioquic_adapter_preflight.current.json'
 DEFAULT_DELIVERY_NOTES = 'DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md'
 DEFAULT_MATRIX_PATH = 'docs/review/conformance/external_matrix.release.json'
-DEFAULT_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.8/release-0.3.8'
+DEFAULT_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.9/release-0.3.9'
 
 
 class AioquicAdapterPreflightError(RuntimeError):
@@ -294,7 +294,7 @@ def _status_markdown(snapshot: Mapping[str, Any], *, release_root: str, bundle_r
         f"- strict target after preflight: `{current['gate_status_after_preflight']['strict_target_boundary_passed']}`",
         f"- promotion target after preflight: `{current['gate_status_after_preflight']['promotion_target_passed']}`",
         '',
-        'This preflight closes the adapter-execution ambiguity: the aioquic HTTP/3 client and aioquic RFC 9220 WebSocket client both ran successfully and emitted negotiation metadata. It does **not** by itself promote the remaining strict-target HTTP/3 scenario artifacts into the 0.3.8 release root, so the package may still remain non-green under the stricter target until those artifacts are regenerated and assembled.',
+        'This preflight closes the adapter-execution ambiguity: the aioquic HTTP/3 client and aioquic RFC 9220 WebSocket client both ran successfully and emitted negotiation metadata. It does **not** by itself promote the remaining strict-target HTTP/3 scenario artifacts into the 0.3.9 release root, so the package may still remain non-green under the stricter target until those artifacts are regenerated and assembled.',
         '',
     ])
     return '\n'.join(lines)
@@ -308,7 +308,7 @@ def _delivery_notes(snapshot: Mapping[str, Any], *, release_root: str, bundle_ro
         'What changed:\n\n'
         '- added a reusable aioquic preflight module at `src/tigrcorn/compat/aioquic_preflight.py`\n'
         '- added a runnable checkpoint tool at `tools/preflight_aioquic_adapters.py`\n'
-        '- added a preserved preflight bundle under the 0.3.8 working release root\n'
+        '- added a preserved preflight bundle under the 0.3.9 working release root\n'
         '- updated the release workflow and local wrapper so aioquic adapter preflight is now mandatory before Phase 9 checkpoint scripts run\n'
         '- updated current-state documentation\n\n'
         'Current result:\n\n'

@@ -1,0 +1,73 @@
+{
+  "document_role": "current_subsystem_truth_source",
+  "current_truth_source": true,
+  "truth_scope": "subsystem_current_state",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "subsystem_truth_source": true,
+  "checkpoint": "phase3_transport_core_strictness",
+  "artifact": "packet_space_legality_corpus",
+  "packet_spaces": {
+    "initial": [
+      "PADDING",
+      "PING",
+      "ACK",
+      "CRYPTO",
+      "CONNECTION_CLOSE"
+    ],
+    "handshake": [
+      "PADDING",
+      "PING",
+      "ACK",
+      "CRYPTO",
+      "CONNECTION_CLOSE"
+    ],
+    "0rtt": [
+      "PADDING",
+      "PING",
+      "RESET_STREAM",
+      "STOP_SENDING",
+      "STREAM",
+      "MAX_DATA",
+      "MAX_STREAM_DATA",
+      "MAX_STREAMS_BIDI",
+      "MAX_STREAMS_UNI",
+      "DATA_BLOCKED",
+      "STREAM_DATA_BLOCKED",
+      "STREAMS_BLOCKED_BIDI",
+      "STREAMS_BLOCKED_UNI",
+      "CONNECTION_CLOSE",
+      "CONNECTION_CLOSE_APP"
+    ],
+    "application": [
+      "PADDING",
+      "PING",
+      "ACK",
+      "RESET_STREAM",
+      "STOP_SENDING",
+      "CRYPTO",
+      "NEW_TOKEN",
+      "STREAM",
+      "MAX_DATA",
+      "MAX_STREAM_DATA",
+      "MAX_STREAMS_BIDI",
+      "MAX_STREAMS_UNI",
+      "DATA_BLOCKED",
+      "STREAM_DATA_BLOCKED",
+      "STREAMS_BLOCKED_BIDI",
+      "STREAMS_BLOCKED_UNI",
+      "NEW_CONNECTION_ID",
+      "RETIRE_CONNECTION_ID",
+      "PATH_CHALLENGE",
+      "PATH_RESPONSE",
+      "CONNECTION_CLOSE",
+      "CONNECTION_CLOSE_APP",
+      "HANDSHAKE_DONE"
+    ]
+  },
+  "notes": [
+    "0-RTT legality is intentionally separate from application packet legality.",
+    "Application CONNECTION_CLOSE is forbidden in Initial and Handshake spaces.",
+    "Client-only role restrictions remain enforced for NEW_TOKEN and HANDSHAKE_DONE."
+  ]
+}

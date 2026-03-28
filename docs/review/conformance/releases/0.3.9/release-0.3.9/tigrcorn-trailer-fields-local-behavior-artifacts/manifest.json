@@ -1,0 +1,10 @@
+{
+  "bundle_kind": "local_behavior_artifacts",
+  "phase": "9D2",
+  "rfc": [
+    "RFC 9110 \u00a76.5"
+  ],
+  "generated_at": "2026-03-24T03:45:46.982186+00:00",
+  "commit_hash": "phase9d2-trailer-fields-checkpoint",
+  "description": "Local request/response trailer behavior vectors preserved during Phase 9D2 independent trailer-field closure work."
+}

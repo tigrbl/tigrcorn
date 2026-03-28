@@ -18,6 +18,10 @@ class ProcessWorker:
     start_count: int = 0
     restart_count: int = 0
     last_started_at: float | None = None
+    healthcheck_timeout: float = 30.0
+    ready: bool = False
+    ready_at: float | None = None
+    _ready_parent: Any | None = None
 
     def _ctx(self) -> multiprocessing.context.BaseContext:
         if os.name == 'posix':
@@ -37,10 +41,33 @@ class ProcessWorker:
         if self.process is not None and self.process.is_alive():
             return
         ctx = self._ctx()
-        self.process = ctx.Process(target=self.target, args=self.args, kwargs=self.kwargs, name=self.name)
+        parent_ready, child_ready = ctx.Pipe(duplex=False)
+        child_kwargs = dict(self.kwargs)
+        child_kwargs['ready_pipe'] = child_ready
+        self.process = ctx.Process(target=self.target, args=self.args, kwargs=child_kwargs, name=self.name)
         self.process.start()
+        self._ready_parent = parent_ready
+        self.ready = False
+        self.ready_at = None
         self.start_count += 1
         self.last_started_at = monotonic()
+
+    def poll_ready(self) -> None:
+        if self.ready or self._ready_parent is None:
+            return
+        try:
+            if self._ready_parent.poll():
+                self._ready_parent.recv()
+                self.ready = True
+                self.ready_at = monotonic()
+        except EOFError:
+            self._ready_parent = None
+
+    def startup_timed_out(self) -> bool:
+        self.poll_ready()
+        if self.ready or self.healthcheck_timeout <= 0 or self.last_started_at is None:
+            return False
+        return (monotonic() - self.last_started_at) > self.healthcheck_timeout
 
     def stop(self, timeout: float = 5.0) -> None:
         if self.process is None:
@@ -57,6 +84,14 @@ class ProcessWorker:
                 except Exception:
                     pass
                 self.process.join(timeout=1.0)
+        if self._ready_parent is not None:
+            try:
+                self._ready_parent.close()
+            except Exception:
+                pass
+            self._ready_parent = None
+        self.ready = False
+        self.ready_at = None
 
     def restart(self, timeout: float = 5.0) -> None:
         self.restart_count += 1
@@ -70,12 +105,16 @@ class ProcessWorker:
         return bool(self.process is not None and self.process.is_alive())
 
     def health(self) -> dict[str, Any]:
+        self.poll_ready()
         return {
             'name': self.name,
             'pid': self.process.pid if self.process else None,
             'alive': self.is_alive(),
+            'ready': self.ready,
             'exitcode': self.process.exitcode if self.process else None,
             'start_count': self.start_count,
             'restart_count': self.restart_count,
             'last_started_at': self.last_started_at,
+            'ready_at': self.ready_at,
+            'startup_timed_out': self.startup_timed_out(),
         }

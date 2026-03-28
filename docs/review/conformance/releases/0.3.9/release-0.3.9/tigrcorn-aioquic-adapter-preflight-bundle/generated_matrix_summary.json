@@ -1,0 +1,50 @@
+{
+  "artifact_root": "/tmp/aioquic-preflight-y4ex4se0/tree-e5483c318a2b177d/tigrcorn-independent-certification-release-matrix",
+  "bundle_kind": "independent_certification",
+  "commit_hash": "tree-e5483c318a2b177d",
+  "failed": 0,
+  "matrix_name": "tigrcorn-independent-certification-release-matrix",
+  "passed": 2,
+  "required_bundle_files": [
+    "manifest.json",
+    "summary.json",
+    "index.json"
+  ],
+  "required_scenario_files": [
+    "summary.json",
+    "index.json",
+    "result.json",
+    "scenario.json",
+    "command.json",
+    "env.json",
+    "versions.json",
+    "wire_capture.json"
+  ],
+  "scenario_ids": [
+    "http3-server-aioquic-client-post",
+    "websocket-http3-server-aioquic-client"
+  ],
+  "schema_version": 1,
+  "skipped": 28,
+  "total": 2,
+  "wrapper_families": {
+    "aioquic": [
+      "aioquic.http3_client",
+      "aioquic.http3_websocket_client"
+    ],
+    "curl": [
+      "curl.http1_client",
+      "curl.http2_client"
+    ],
+    "h2": [
+      "h2.http2_client",
+      "h2.http2_websocket_client"
+    ],
+    "openssl": [
+      "openssl.quic_client"
+    ],
+    "websockets": [
+      "websockets.http11_client"
+    ]
+  }
+}

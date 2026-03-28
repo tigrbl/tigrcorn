@@ -1,0 +1,19 @@
+{
+  "auto": {
+    "implemented": true,
+    "strategy": "prefers uvloop when installed, otherwise asyncio",
+    "requires": []
+  },
+  "asyncio": {
+    "implemented": true,
+    "strategy": "native asyncio event loop",
+    "requires": []
+  },
+  "uvloop": {
+    "implemented": true,
+    "strategy": "uvloop event loop",
+    "requires": [
+      "uvloop"
+    ]
+  }
+}

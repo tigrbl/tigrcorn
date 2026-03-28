@@ -1,0 +1,24 @@
+{
+  "document_role": "archival_named_current_snapshot_for_stability",
+  "current_truth_source": false,
+  "truth_scope": "archival_snapshot",
+  "canonical_current_state_chain": "docs/review/conformance/current_state_chain.current.json",
+  "documentation_truth_reviewed_at": "2026-03-26",
+  "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
+  "phase": "5-7",
+  "checkpoint": "tls_material_lifecycle_and_flag_truth_reconciliation",
+  "generated_at": "2026-03-28T02:35:26+00:00",
+  "current_state": {
+    "public_flag_count": 124,
+    "tls_keyfile_password_implemented": true,
+    "tls_crl_path_implemented": true,
+    "lifecycle_contract_documented": true,
+    "embedded_server_documented": true,
+    "cli_help_snapshot_reconciled": true,
+    "flag_surface_truth_reconciled": true,
+    "selected_in_bounds_backlog_complete": true,
+    "promotion_target_green": true,
+    "certifiably_fully_rfc_compliant_canonical_boundary": true,
+    "certifiably_fully_featured_canonical_release_root": true
+  }
+}
