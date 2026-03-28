@@ -36,6 +36,27 @@ That canonical 0.3.9 release root contains the assembled strict-promotion bundle
 
 The older `0.3.2`, `0.3.6`, `0.3.6-rfc-hardening`, `0.3.6-current`, and the frozen `0.3.7` candidate root remain preserved for provenance, but they are not the canonical current release root.
 
+
+
+## Mutability and governance pointers
+
+This tree is intentionally **mixed**.
+
+- mutable guidance and current working notes live under `docs/` and `docs/gov/`
+- versioned release roots under `docs/review/conformance/releases/` are immutable after promotion
+- folder state is marked with `MUT.json` and resolved by nearest-ancestor-wins
+- use `python tools/govchk.py state PATH` to resolve mutability before editing an unfamiliar folder
+
+Use:
+
+- `../../gov/README.md`
+- `../../gov/tree.md`
+- `../../gov/mut.md`
+- `../../gov/release.md`
+- `../../../AGENTS.md`
+
+for the repository-level operating rules that sit beside this conformance tree.
+
 ## 1. Local conformance corpus
 
 `corpus.json` maps RFC-oriented behavior to local fixtures and unit tests.

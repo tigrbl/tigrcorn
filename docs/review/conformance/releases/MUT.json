@@ -1,0 +1,5 @@
+{
+  "state": "mixed",
+  "scope": "docs/review/conformance/releases",
+  "reason": "versioned release children are immutable once promoted; parent remains mixed to allow new versions."
+}

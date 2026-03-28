@@ -1,0 +1,5 @@
+{
+  "state": "mixed",
+  "scope": "docs/review",
+  "reason": "review contains mutable current-state docs and immutable promoted release evidence."
+}

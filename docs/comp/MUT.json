@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs/comp",
+  "reason": "comparison matrices are mutable and reviewed against current external docs."
+}

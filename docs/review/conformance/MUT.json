@@ -1,0 +1,5 @@
+{
+  "state": "mixed",
+  "scope": "docs/review/conformance",
+  "reason": "conformance holds mutable current-state docs plus immutable versioned release roots."
+}

@@ -32,3 +32,14 @@ The promoted 0.3.9 release is **certifiably fully RFC compliant**, **strict-targ
 ## Operational note
 
 The local workspace used for this checkpoint still runs under Python 3.13. The frozen release-workflow contract remains Python 3.11 or 3.12 with `.[certification,dev]` installed. That does not change the preserved release-artifact truth of the canonical 0.3.9 release root.
+
+
+## Documentation and governance organization
+
+This promoted line also organizes the mutable documentation surface:
+
+- adds `AGENTS.md` as the agent-facing operating contract
+- adds governed short-path mutable docs under `docs/gov/`, `docs/comp/`, and `docs/notes/`
+- introduces `MUT.json` mutability markers and `tools/govchk.py`
+- keeps frozen `0.3.8` and `0.3.9` release roots immutable
+- keeps legacy root archival docs grandfathered for provenance rather than rewriting historical evidence in place

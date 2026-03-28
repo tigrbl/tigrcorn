@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs/gov",
+  "reason": "governance docs evolve with the mutable repository surface."
+}

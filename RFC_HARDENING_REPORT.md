@@ -1,14 +1,12 @@
 # RFC hardening report
 
-This archive was updated in place against the package-wide certification target described in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+This repository has been hardened and promoted against the package-wide certification target defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-## Completed in this revision
+## Completed on the promoted line
 
-- explicit separation between local conformance, same-stack replay, and independent certification evidence
-- a current canonical `0.3.6` release root that consolidates preserved evidence from the historical `0.3.2`, `0.3.6-rfc-hardening`, and `0.3.6-current` bundles
-- folding of the hardening candidate RFC 8441 and HTTP/2-over-TLS scenarios into the canonical independent certification matrix
-- release-gate enforcement for required RFC evidence policies, per-RFC highest-tier validation, and preserved artifact presence for independent scenarios
-- package-owned TCP/TLS listener-path integration for TLS 1.3, ALPN, X.509 validation, revocation policy hooks, and mTLS
+- clear separation between local conformance, same-stack replay, and independent certification evidence
+- preserved historical `0.3.8` release artifacts alongside the promoted canonical `0.3.9` release root
+- package-owned TCP/TLS listener-path integration for TLS 1.3, ALPN, X.509 path validation, OCSP/CRL policy hooks, and mTLS
 - preserved third-party `aioquic` HTTP/3 request/response artifacts for the canonical independent bundle
 - preserved third-party `aioquic` RFC 9220 WebSocket-over-HTTP/3 artifacts for the canonical independent bundle
 - QUIC / HTTP/3 runtime fixes required for honest third-party interoperability:
@@ -17,27 +15,30 @@ This archive was updated in place against the package-wide certification target 
   - RFC-correct STREAM frame parsing for LEN / OFF flag combinations
   - compact QUIC session-ticket encoding for resumption interop
   - original-length ClientHello binder hashing for PSK verification
-- third-party RFC 9220 adapter fixes required to decode server frames correctly and drive the CONNECT stream without racing the echo path
+- RFC 7692, CONNECT, trailer, content-coding, TLS material, lifecycle/embedder, and operator-surface closure work folded into the promoted `0.3.9` line
 
 ## Current result
 
-The canonical release gates now pass, and the package is **certifiably fully RFC compliant under the authoritative certification boundary**.
+The canonical release gates pass, and the package is **certifiably fully RFC compliant under the authoritative certification boundary**.
 
-The previously blocked RFCs are now satisfied at `independent_certification`:
+The promoted `0.3.9` release root is also **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.
 
-- RFC 9114
-- RFC 9000
-- RFC 9001
-- RFC 9002
-- RFC 9204
-- RFC 9220
+## Release roots
 
-## Remaining follow-on work
+Canonical promoted root:
 
-The repository still preserves broader, non-authoritative strengthening work:
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/`
 
-- a stricter all-surfaces-independent overlay for RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960
-- a provisional QUIC / HTTP/3 flow-control review bundle
-- a seed intermediary / proxy corpus
+Historical preserved released root:
 
-Those items do not change the passing authoritative release-gate result.
+- `docs/review/conformance/releases/0.3.8/release-0.3.8/`
+
+## Follow-on posture
+
+The current line has no remaining in-bounds certification blockers.
+
+Future work must begin by deciding whether it is:
+
+- in-boundary patch work
+- boundary expansion requiring a minor-version decision
+- explicitly outside the current boundary per `docs/review/conformance/BOUNDARY_NON_GOALS.md`

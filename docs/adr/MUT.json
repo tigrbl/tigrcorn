@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs/adr",
+  "reason": "ADR log grows over time; existing ADR files may themselves be historical but the folder is still mutable."
+}

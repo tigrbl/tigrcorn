@@ -1,0 +1,5 @@
+{
+  "state": "mixed",
+  "scope": "docs",
+  "reason": "docs contains mutable guidance plus mixed/immutable review and release trees."
+}
