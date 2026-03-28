@@ -1,136 +1,473 @@
-# tigrcorn
+<div align="center">
 
-[![repo line](https://img.shields.io/badge/repo_line-0.3.9-2f7ed8)](docs/review/conformance/releases/0.3.9/release-0.3.9/)
-[![repo size](https://img.shields.io/badge/repo_size-24.25_MB-5c7cfa)](docs/gov/tree.md)
-[![PyPI published](https://img.shields.io/pypi/v/tigrcorn?label=last%20pypi%20publish)](https://pypi.org/project/tigrcorn/)
-[![PyPI downloads](https://img.shields.io/pepy/dt/tigrcorn?label=pypi%20downloads)](https://pypi.org/project/tigrcorn/)
-[![authoritative boundary](https://img.shields.io/badge/authoritative_boundary-green)](docs/review/conformance/CERTIFICATION_BOUNDARY.md)
-[![strict profile](https://img.shields.io/badge/strict_profile-green)](docs/review/conformance/STRICT_PROFILE_TARGET.md)
-[![operator surface](https://img.shields.io/badge/operator_surface-green)](docs/review/conformance/PHASE4_OPERATOR_SURFACE_STATUS.md)
-[![promotion](https://img.shields.io/badge/promotion-green)](docs/review/conformance/releases/0.3.9/release-0.3.9/)
+# Tigrcorn
 
-`tigrcorn` is an ASGI3-compatible transport server implemented with package-owned transport, protocol, runtime, delivery, and security code. The repository target is the promoted `0.3.9` line, while external publication can lag repository promotion.
+> Package-owned ASGI3 transport server with audited protocol, operator, release, and certification surfaces.
 
-```python
-async def app(scope, receive, send):
-    ...
-```
+---
+</div>
+
+<p align="center">
+<a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/tigrcorn?label=PyPI"></a> 
+<a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI downloads" src="https://img.shields.io/pepy/dt/tigrcorn?label=downloads"></a> 
+<a href="docs/review/conformance/releases/0.3.9/release-0.3.9/"><img alt="repo line 0.3.9" src="https://img.shields.io/badge/repo_line-0.3.9-2f7ed8"></a> 
+<a href="LICENSE"><img alt="license Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
+<a href="pyproject.toml"><img alt="Python 3.11 supported" src="https://img.shields.io/badge/python-3.11-3776ab"></a> <a href="pyproject.toml"><img alt="Python 3.12 supported" src="https://img.shields.io/badge/python-3.12-3776ab"></a> 
+</p>
+
+
+<p align="center">
+<a href="docs/review/conformance/CERTIFICATION_BOUNDARY.md"><img alt="authoritative boundary green" src="https://img.shields.io/badge/authoritative_boundary-green-1f883d"></a> <a href="docs/review/conformance/STRICT_PROFILE_TARGET.md"><img alt="strict profile green" src="https://img.shields.io/badge/strict_profile-green-1f883d"></a> <a href="docs/review/conformance/releases/0.3.9/release-0.3.9/"><img alt="promotion green" src="https://img.shields.io/badge/promotion-green-1f883d"></a> <a href="AGENTS.md"><img alt="agents documented" src="https://img.shields.io/badge/agents-documented-6f42c1"></a>
+</p>
+
+---
+
+<p align="center">
+Tigrcorn is an ASGI3 server whose core transport, protocol, lifecycle, delivery, and operator behavior stays inside the package instead of being delegated to a loose stack of external wrappers. In practice that means the project is opinionated about owning the parts that operators and reviewers actually need to reason about: listener setup, protocol selection, TLS and QUIC controls, static and entity semantics, lifecycle hooks, release gates, and preserved certification artifacts.
+
+Tigrcorn exists because “supports protocol X” is not enough for a serious server. Operators need to know **what is inside the product boundary**, implementers need stable public surfaces, maintainers need auditable release gates, and reviewers need frozen evidence roots that are not rewritten after promotion. The repository therefore distinguishes between the **authoritative certification boundary**, the broader **public/operator surface**, mutable current-state docs, and immutable release roots. That boundary discipline is what lets the repository say, in its own current-state records, that the package is **certifiably fully RFC compliant under the authoritative certification boundary** and that the canonical `0.3.9` promoted root is **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.[^boundary]
+</p>
+
+## Table of contents
+
+- [Status at a glance](#status-at-a-glance)
+- [What Tigrcorn is](#what-tigrcorn-is)
+- [Why Tigrcorn exists](#why-tigrcorn-exists)
+- [Package boundary, evidence tiers, and support model](#package-boundary-evidence-tiers-and-support-model)
+- [Installation and optional dependency surface](#installation-and-optional-dependency-surface)
+- [Protocol and feature map](#protocol-and-feature-map)
+- [CLI usage](#cli-usage)
+- [Public operator and programmatic usage](#public-operator-and-programmatic-usage)
+- [Matrix legend and comparison matrices](#matrix-legend-and-comparison-matrices)
+- [Where to look](#where-to-look)
+- [Authoring and maintainer workflow](#authoring-and-maintainer-workflow)
+- [Governance and repo cleanliness](#governance-and-repo-cleanliness)
+- [Validation and promotion](#validation-and-promotion)
+- [Current-state and historical planning](#current-state-and-historical-planning)
+- [Certification environment freeze](#certification-environment-freeze)
+- [Contributing, conduct, and community norms](#contributing-conduct-and-community-norms)
+- [Footnotes](#footnotes)
 
 ## Status at a glance
 
-| Item | Current state |
+| Topic | Current state | Primary source |
+|---|---|---|
+| Repo line | `0.3.9` | `pyproject.toml`, `src/tigrcorn/version.py` |
+| Canonical release root | `docs/review/conformance/releases/0.3.9/release-0.3.9/` | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
+| Historical promoted root kept for provenance | `docs/review/conformance/releases/0.3.8/release-0.3.8/` | release history in `docs/review/conformance/releases/` |
+| Authoritative boundary | green | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
+| Strict profile | green | `docs/review/conformance/STRICT_PROFILE_TARGET.md` |
+| Promotion target | green | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
+| Current package claim | **certifiably fully RFC compliant under the authoritative certification boundary**[^boundary] | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
+| Promoted-root claim | **strict-target certifiably fully RFC compliant** and **certifiably fully featured** | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
+| Current-state entrypoint | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` | canonical human current-state source |
+| Machine-readable current-state chain | `docs/review/conformance/current_state_chain.current.json` | canonical machine current-state source |
+| Operator docs | `docs/ops/README.md`, `docs/ops/cli.md`, `docs/ops/public.md` | operator-focused mutable docs |
+| Lifecycle/embedder contract | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` | public lifecycle and `EmbeddedServer` contract |
+| Maintainer/authoring docs | `docs/gov/authoring.md`, `CONTRIBUTING.md` | authoring and repo workflow |
+| Certification environment freeze | `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md` | frozen release-workflow contract[^freeze] |
+
+
+## What Tigrcorn is
+
+Tigrcorn is the server package for teams that want the **runtime entrypoint**, the **listener model**, the **RFC-facing protocol claims**, the **operator flags**, and the **promotion/release evidence** to line up in one place.
+
+It provides, in the current public surface:
+
+- ASGI3 execution with package-owned HTTP/1.1, HTTP/2, HTTP/3, QUIC, and WebSocket carriers.
+- Operator-facing CLI and config assembly for listener binding, TLS, QUIC, logging, metrics, static delivery, resource limits, proxy normalization, reload, and workers.
+- Programmatic entrypoints for direct execution (`run`, `serve`, `serve_import_string`), embedding (`EmbeddedServer`), static mounting (`StaticFilesApp`, `mount_static_app`), config construction (`build_config*`), and release/promotion evaluation (`evaluate_release_gates`, `evaluate_promotion_target`).
+- Current-state, planning, and release-artifact discipline under `docs/review/conformance/` and immutable versioned release roots.
+
+The package is intentionally **not** a “support everything” server. Several families remain explicit non-goals or outside-boundary work, including Trio runtime support, WSGI/ASGI2/RSGI compatibility layers, parser pluggability, WebSocket engine pluggability, JOSE/COSE, RFC 9111 caching, RFC 9530, RFC 9421, and other out-of-scope items called out in `docs/review/conformance/BOUNDARY_NON_GOALS.md`.
+
+## Why Tigrcorn exists
+
+Three constraints shape the project:
+
+1. **Boundary clarity.** Tigrcorn separates what is certified in the RFC claim from what is available in the broader operator surface. This is the role of `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `docs/review/conformance/STRICT_PROFILE_TARGET.md`, and `docs/review/conformance/BOUNDARY_NON_GOALS.md`.
+2. **Auditable releases.** The project keeps canonical promoted roots under `docs/review/conformance/releases/0.3.9/release-0.3.9/` and older preserved roots such as `docs/review/conformance/releases/0.3.8/release-0.3.8/`. Mutable work happens elsewhere; frozen roots stay frozen.
+3. **Operator-grade truth.** The CLI, config model, public lifecycle contract, current-state chain, promotion contract, and environment freeze are all documented and checkpointed so operators, maintainers, and reviewers do not have to infer product truth from implementation accidents.
+
+## Package boundary, evidence tiers, and support model
+
+### Boundary model
+
+Tigrcorn uses a T/P/A/D/R style boundary language across the repository. For a concise operational reading:
+
+| Slice | Meaning in this repository | Canonical source |
+|---|---|---|
+| `T` | transport and listener ownership | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
+| `P` | protocol implementation and RFC-scoped behavior | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
+| `A` | ASGI3 application interface boundary | `docs/adr/0001-preserve-asgi-boundary.md` |
+| `D` | delivery/entity semantics and public operator surface | `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `docs/ops/public.md` |
+| `R` | release, promotion, and preserved evidence/provenance | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`, `docs/gov/release.md` |
+
+The **authoritative certification boundary** is the contract for RFC-scoped claims. The **strict profile** is a stricter promoted-root target. The **public/operator surface** is broader and includes valuable operational capabilities that are intentionally not all part of the RFC certification claim.
+
+### Evidence tiers
+
+| Tier | Meaning | Primary sources |
+|---|---|---|
+| `local_conformance` | package-owned local validation and repo-side conformance evidence | `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `docs/review/conformance/README.md` |
+| `same_stack_replay` | preserved replay evidence against the package stack | `docs/review/conformance/external_matrix.same_stack_replay.json` |
+| `independent_certification` | preserved third-party / cross-stack evidence used for promoted release claims | `docs/review/conformance/external_matrix.release.json`, `docs/review/conformance/external_matrix.current_release.json` |
+
+Promotion is not a fourth evidence tier. It is the result of the release-gate and promotion-target evaluators over the current repository and the canonical promoted root. See `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`, `docs/review/conformance/current_state_chain.current.json`, and `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
+
+### Support model
+
+| Marker | Meaning |
 |---|---|
-| Repo line | `0.3.9` |
-| Canonical release root | `docs/review/conformance/releases/0.3.9/release-0.3.9/` |
-| Historical released root preserved | `docs/review/conformance/releases/0.3.8/release-0.3.8/` |
-| Authoritative boundary | green |
-| Strict profile | green |
-| Promotion target | green |
-| Current package claim | **certifiably fully RFC compliant under the authoritative certification boundary** |
-| Current package claim under promoted root | **certifiably fully featured** |
-| Canonical current-state entrypoint | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
-| Mutable governance entrypoint | `docs/gov/README.md` |
-| Agentic workflow entrypoint | `AGENTS.md` |
+| `C-RFC` | implemented and included inside Tigrcorn's current certified RFC boundary |
+| `C-OP` | implemented and included inside Tigrcorn's current certified public/operator surface |
+| `O` | intentionally outside Tigrcorn's current product boundary |
 
-Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` for the point-in-time repository summary, and use `docs/review/conformance/current_state_chain.current.json` for the machine-readable current-state chain.
+Use `docs/review/conformance/CERTIFICATION_BOUNDARY.md` for the normative claim boundary and `docs/review/conformance/BOUNDARY_NON_GOALS.md` for excluded families.
 
-## Install
+## Installation and optional dependency surface
 
-Base install:
+### Base install
 
 ```bash
-python -m pip install -e .
+python -m pip install tigrcorn
 ```
 
-Certification / repository-development install:
+### Development / certification install
 
 ```bash
 python -m pip install -e ".[certification,dev]"
 ```
 
-Optional feature/dependency surfaces:
+This is the frozen install contract referenced by `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md` and `docs/review/conformance/certification_environment_freeze.current.json`.
+
+### Optional extras
+
+| Extra | Public status | Purpose | Declared dependencies |
+|---|---|---|---|
+| `config-yaml` | supported | Enable .yaml/.yml config loading | `PyYAML>=6.0` |
+| `compression` | supported | Enable Brotli content coding and .br static sidecars | `brotli>=1.1.0` |
+| `runtime-uvloop` | supported | Enable --runtime uvloop | `uvloop>=0.19.0; platform_system != 'Windows'` |
+| `runtime-trio` | declared not supported | Reserved dependency path for future/internal trio runtime work | `trio>=0.25.0` |
+| `full-featured` | supported | Aggregate the current public optional feature surface | `PyYAML>=6.0`, `brotli>=1.1.0`, `uvloop>=0.19.0; platform_system != 'Windows'` |
+| `certification` | supported | Certification/interoperability tooling and preserved peer paths | `aioquic>=1.3.0`, `h2>=4.1.0`, `websockets>=12.0`, `wsproto>=1.3.0` |
+| `dev` | supported | Repository development and checkpoint validation | `pytest>=8.0`, `aioquic>=1.3.0`, `h2>=4.1.0`, `websockets>=12.0`, `wsproto>=1.3.0`, `PyYAML>=6.0`, `brotli>=1.1.0`, `uvloop>=0.19.0; platform_system != 'Windows'` |
+
+### Practical install examples
 
 ```bash
+# YAML config support
 python -m pip install -e ".[config-yaml]"
+
+# Brotli content-coding + precompressed sidecars
 python -m pip install -e ".[compression]"
+
+# uvloop runtime option (non-Windows)
 python -m pip install -e ".[runtime-uvloop]"
+
+# current aggregate operator feature surface
 python -m pip install -e ".[full-featured]"
 ```
 
-Reserved extra:
+Notes:
 
-```bash
-python -m pip install -e ".[runtime-trio]"
+- `runtime-trio` is declared but remains **not supported** in the current public runtime surface.
+- The release workflow currently supports Python `3.11` and `3.12`; the local recorded environment snapshot in this workspace is documented in the freeze files.[^freeze]
+- See `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md` for the authoritative optional dependency truth source.
+
+## Protocol and feature map
+
+| Area | Surface | Status | Primary docs / examples |
+|---|---|---|---|
+| Core protocol | HTTP/1.1 (`RFC 9112`) | `C-RFC` | `docs/protocols/http1.md`, `examples/echo_http/app.py` |
+| Core protocol | HTTP/2 (`RFC 9113`) | `C-RFC` | `docs/protocols/http2.md`, `docs/review/conformance/DEPLOYMENT_PROFILES.md` |
+| Core protocol | HTTP/3 + QUIC (`RFC 9114`, `RFC 9000`, `RFC 9001`, `RFC 9002`) | `C-RFC` | `docs/protocols/http3.md`, `docs/protocols/quic.md` |
+| WebSocket carriers | RFC 6455 / RFC 8441 / RFC 9220 | `C-RFC` | `docs/protocols/websocket.md`, `examples/websocket_echo/app.py` |
+| Delivery/origin | CONNECT relay, trailer fields, content coding | `C-RFC` | `docs/review/conformance/DEPLOYMENT_PROFILES.md`, `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
+| Delivery/origin | Conditional requests, range requests, Early Hints, bounded Alt-Svc | `C-RFC` | `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`, `examples/advanced_protocol_delivery/` |
+| Security | TLS 1.3, ALPN, X.509, OCSP, CRL | `C-RFC` | `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md` |
+| Static delivery | `StaticFilesApp`, mounted static path, precompressed sidecars | `C-OP` | `examples/http_entity_static/app.py`, `docs/ops/public.md` |
+| Embedding | `EmbeddedServer`, startup/shutdown/reload hooks | `C-OP` | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`, `examples/advanced_protocol_delivery/runtime_embedding.py` |
+| Operator control | reload, workers, runtime selection, logging, metrics, proxy normalization | `C-OP` | `docs/ops/cli.md`, `docs/review/conformance/CLI_FLAG_SURFACE.md` |
+| Custom transports | pipe / inproc / rawframed / custom | `C-OP` inside the operator surface, outside the strict RFC claim where noted | `docs/ops/cli.md`, `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
+
+
+## CLI usage
+
+The primary executable is `tigrcorn`. The external interoperability runner is `tigrcorn-interop`.
+
+For the exhaustive operator reference, read:
+
+- `docs/ops/cli.md`
+- `docs/review/conformance/CLI_FLAG_SURFACE.md`
+- `docs/review/conformance/DEPLOYMENT_PROFILES.md`
+- `docs/review/conformance/cli_help.current.txt`
+- `docs/review/conformance/tigrcorn_interop_help.current.txt`
+
+### CLI truth model
+
+Tigrcorn's config precedence remains:
+
+```text
+CLI > env > config file > defaults
 ```
 
-`runtime-trio` is declared as a reserved dependency path only. Runtime `trio` is **not** part of the supported public runtime surface. See `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`.
+That rule is documented in `docs/gov/code.md` and implemented by the config loaders exposed through `build_config_from_sources`.
 
-## Package boundary
+### Common launch patterns
 
-The canonical policy chain is:
+#### Minimal HTTP/1.1 + HTTP/2 server
 
-- `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
-- `docs/review/conformance/certification_boundary.json`
-- `docs/review/conformance/BOUNDARY_NON_GOALS.md`
+```bash
+tigrcorn examples.echo_http.app:app --host 127.0.0.1 --port 8000
+```
 
-The current package boundary is intentionally frozen as a **T/P/A/D/R** boundary:
+#### App factory loading
 
-- **T — transport**
-- **P — protocol**
-- **A — application hosting**
-- **D — delivery/origin behavior**
-- **R — runtime/operator**
+```bash
+tigrcorn examples.echo_http.app:create_app --factory --host 127.0.0.1 --port 8000
+```
 
-The current supported public runtime surface is `auto`, `asyncio`, and `uvloop`.
+#### Config file + environment merge
 
-Explicit non-goals include:
+```bash
+tigrcorn examples.echo_http.app:app \
+  --config ./tigrcorn.toml \
+  --env-file ./.env \
+  --env-prefix TIGRCORN
+```
 
-- Trio runtime
-- RFC 9218 prioritization
-- RFC 9111 caching/freshness
-- RFC 9530 digest fields
-- RFC 9421 HTTP signatures
-- JOSE / COSE
-- parser/backend pluggability
-- WebSocket engine pluggability
-- alternate interface families such as ASGI2 / WSGI / RSGI
+#### HTTP/2 over TLS
 
-Use `docs/review/conformance/BOUNDARY_NON_GOALS.md` as the authoritative out-of-bounds statement.
+```bash
+tigrcorn examples.echo_http.app:app \
+  --host 127.0.0.1 \
+  --port 8443 \
+  --http 2 \
+  --ssl-certfile ./certs/server.pem \
+  --ssl-keyfile ./certs/server.key
+```
 
-## Evidence tiers and promoted release roots
+#### HTTP/3 / QUIC
 
-This archive separates three evidence tiers and binds them to a single current canonical release root:
+```bash
+tigrcorn examples.echo_http.app:app \
+  --quic-bind 127.0.0.1:8443 \
+  --http 3 \
+  --protocol http3 \
+  --protocol quic \
+  --ssl-certfile ./certs/server.pem \
+  --ssl-keyfile ./certs/server.key
+```
 
-1. **Local conformance** — `docs/review/conformance/corpus.json`
-2. **Same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`
-3. **Independent certification** — `docs/review/conformance/external_matrix.release.json`
+#### HTTP/3 / QUIC with client-certificate verification
 
-The current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.
+```bash
+tigrcorn examples.echo_http.app:app \
+  --quic-bind 127.0.0.1:8443 \
+  --http 3 \
+  --protocol http3 \
+  --protocol quic \
+  --ssl-certfile ./certs/server.pem \
+  --ssl-keyfile ./certs/server.key \
+  --ssl-ca-certs ./certs/ca.pem \
+  --ssl-require-client-cert
+```
 
-Historical preserved roots remain in-tree for provenance:
+#### WebSocket compression
 
-- `docs/review/conformance/releases/0.3.2/release-0.3.2/`
-- `docs/review/conformance/releases/0.3.6/release-0.3.6/`
-- `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`
-- `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`
-- `docs/review/conformance/releases/0.3.7/release-0.3.7/`
+```bash
+tigrcorn examples.websocket_echo.app:app \
+  --host 127.0.0.1 \
+  --port 9000 \
+  --websocket-compression permessage-deflate
+```
 
-The canonical 0.3.9 root contains the full promoted bundle set plus the preserved auxiliary bundles:
+#### Static route mounting
 
-- `tigrcorn-independent-certification-release-matrix/`
-- `tigrcorn-same-stack-replay-matrix/`
-- `tigrcorn-mixed-compatibility-release-matrix/`
-- `tigrcorn-flag-surface-certification-bundle/`
-- `tigrcorn-operator-surface-certification-bundle/`
-- `tigrcorn-performance-certification-bundle/`
-- `tigrcorn-certification-environment-bundle/`
-- `tigrcorn-aioquic-adapter-preflight-bundle/`
-- `tigrcorn-strict-validation-bundle/`
-- the preserved local negative / behavior / validation bundles produced during Phases 9C–9E
+```bash
+tigrcorn examples.http_entity_static.app:app \
+  --static-path-route /assets \
+  --static-path-mount ./public \
+  --static-path-index-file index.html \
+  --static-path-expires 3600
+```
 
-The compatibility file `docs/review/conformance/external_matrix.current_release.json` remains a **mixed** matrix because it combines third-party HTTP/1.1 / HTTP/2 peers with same-stack HTTP/3 and RFC 9220 replay fixtures.
+#### CONNECT relay, trailer, and content-coding policies
 
-## Support and certification legend
+```bash
+tigrcorn examples.echo_http.app:app \
+  --connect-policy allowlist \
+  --connect-allow 127.0.0.1:5432 \
+  --trailer-policy strict \
+  --content-coding-policy allowlist \
+  --content-codings br,gzip,deflate
+```
+
+#### Automatic Alt-Svc advertisement for HTTP/3-capable UDP listeners
+
+```bash
+tigrcorn examples.advanced_protocol_delivery.alt_svc_app:app \
+  --bind 127.0.0.1:8080 \
+  --quic-bind 127.0.0.1:8443 \
+  --http 1.1 --http 2 --http 3 \
+  --alt-svc-auto \
+  --alt-svc-ma 86400 \
+  --alt-svc-persist
+```
+
+#### Metrics and structured logging
+
+```bash
+tigrcorn examples.echo_http.app:app \
+  --structured-log \
+  --metrics \
+  --metrics-bind 127.0.0.1:9100 \
+  --statsd-host 127.0.0.1:8125 \
+  --otel-endpoint http://127.0.0.1:4318
+```
+
+#### Workers, reload, and runtime selection
+
+```bash
+tigrcorn examples.echo_http.app:app \
+  --workers 4 \
+  --runtime auto \
+  --reload \
+  --reload-dir ./src \
+  --reload-include '*.py' \
+  --reload-exclude '*.tmp'
+```
+
+#### Interoperability matrix execution
+
+```bash
+tigrcorn-interop \
+  --matrix docs/review/conformance/external_matrix.release.json \
+  --output ./artifacts/interop
+```
+
+Use `--matrix docs/review/conformance/external_matrix.current_release.json` to run the current-release bundle contract, or `--matrix docs/review/conformance/external_matrix.same_stack_replay.json` for preserved same-stack replay coverage.
+
+## Public operator and programmatic usage
+
+The package's most important public import surfaces are documented in full in `docs/ops/public.md` and `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+
+### Top-level imports
+
+```python
+from tigrcorn import EmbeddedServer, StaticFilesApp, run, serve, serve_import_string
+from tigrcorn.config import build_config, build_config_from_sources
+from tigrcorn.static import mount_static_app, normalize_static_route
+from tigrcorn.compat.release_gates import (
+    assert_promotion_target_ready,
+    assert_release_ready,
+    evaluate_promotion_target,
+    evaluate_release_gates,
+)
+```
+
+### Run from code
+
+```python
+from tigrcorn import run
+
+run(
+    "examples.echo_http.app:app",
+    host="127.0.0.1",
+    port=8000,
+    http_versions=["1.1", "2"],
+)
+```
+
+### Async serve with an in-memory ASGI app
+
+```python
+from tigrcorn import serve
+
+async def app(scope, receive, send):
+    ...
+
+await serve(app, host="127.0.0.1", port=8000)
+```
+
+### Serve from an import string inside an existing async runtime
+
+```python
+from tigrcorn import serve_import_string
+
+await serve_import_string(
+    "examples.websocket_echo.app:app",
+    host="127.0.0.1",
+    port=9000,
+)
+```
+
+### Embedded lifecycle control
+
+```python
+from tigrcorn import EmbeddedServer
+from tigrcorn.config import build_config
+
+config = build_config(host="127.0.0.1", port=0, lifespan="on")
+
+async with EmbeddedServer(app, config) as embedded:
+    print(embedded.listeners)
+    print(embedded.bound_endpoints())
+```
+
+The lifecycle ordering, hook contract, idempotent `start()`, no-op `close()` before startup, and failure semantics are defined in `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+
+### Static delivery composition
+
+```python
+from tigrcorn.static import mount_static_app
+
+app = mount_static_app(
+    app,
+    route="/assets",
+    directory="./public",
+    apply_content_coding=True,
+    content_coding_policy="allowlist",
+)
+```
+
+### Config assembly
+
+```python
+from tigrcorn.config import build_config_from_sources
+
+config = build_config_from_sources(
+    config_path="./tigrcorn.toml",
+    env_prefix="TIGRCORN",
+    env_file=".env",
+    cli_overrides={
+        "app": {"target": "examples.echo_http.app:app"},
+        "logging": {"level": "debug"},
+    },
+)
+```
+
+### Release and promotion evaluation
+
+```python
+from tigrcorn.compat.release_gates import evaluate_promotion_target, evaluate_release_gates
+
+release_report = evaluate_release_gates(".")
+promotion_report = evaluate_promotion_target(".")
+
+print(release_report.passed)
+print(promotion_report.passed)
+```
+
+## Matrix legend and comparison matrices
+
+The matrices below are kept in the README for “status at a glance” reading, with maintained companion sources under `docs/comp/`.
+
+> [!NOTE]
+> The legend below applies to the comparison matrices. `C-RFC` and `C-OP` describe Tigrcorn status inside this repository's own documented certification or operator boundary. Peer cells are documentation snapshots reviewed on `2026-03-28`, not repository-issued certifications.[^peers]
+
+### Matrix legend
 
 These status markers are used in the comparison matrices below.
 
@@ -147,7 +484,8 @@ These status markers are used in the comparison matrices below.
 
 Peer statuses below are documentation snapshots, not certification claims by this repository. The maintained companion sources for these tables live in `docs/comp/`.
 
-## RFC target comparison
+<details open>
+<summary><strong>RFC target comparison</strong></summary>
 
 Reviewed against current official peer docs on `2026-03-28`.
 
@@ -179,7 +517,10 @@ Reviewed against current official peer docs on `2026-03-28`.
 
 Companion source: `docs/comp/rfc.md`
 
-## CLI feature comparison
+</details>
+
+<details open>
+<summary><strong>CLI feature comparison</strong></summary>
 
 Reviewed against current official peer docs on `2026-03-28`.
 
@@ -222,7 +563,10 @@ Reviewed against current official peer docs on `2026-03-28`.
 
 Companion source: `docs/comp/cli.md`
 
-## Public operator surface comparison
+</details>
+
+<details open>
+<summary><strong>Public operator surface comparison</strong></summary>
 
 Reviewed against current official peer docs on `2026-03-28`.
 
@@ -246,7 +590,10 @@ Reviewed against current official peer docs on `2026-03-28`.
 
 Companion source: `docs/comp/ops.md`
 
-## Outside-boundary matrices
+</details>
+
+<details open>
+<summary><strong>Outside-boundary matrices</strong></summary>
 
 These surfaces are intentionally outside tigrcorn's current T/P/A/D/R product boundary.
 
@@ -285,141 +632,156 @@ These surfaces are intentionally outside tigrcorn's current T/P/A/D/R product bo
 
 Companion source: `docs/comp/oob.md`
 
+</details>
+
+
 ## Where to look
 
-| Path | Purpose |
-|---|---|
-| `AGENTS.md` | agent-facing operating guide: where to start, how to validate, how to certify, how to promote, how mutability works |
-| `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` | canonical human-readable point-in-time repository summary |
-| `docs/README.md` | mutable documentation entrypoint |
-| `docs/adr/README.md` | architecture-decision index |
-| `docs/gov/README.md` | governance index; layout, naming, mutability, commit/PR/release rules |
-| `docs/gov/tree.md` | sustainable repo layout, path limits, pointer rules, root-cleanliness rules |
-| `docs/gov/mut.md` | mutable/immutable folder governance and flip rules |
-| `docs/gov/release.md` | versioning, certification, promotion, and release-close workflow |
-| `docs/notes/inprog.md` | mutable notes on what remains, what is frozen, and what is out of scope |
-| `docs/review/conformance/README.md` | certification/conformance index |
-| `docs/review/conformance/CERTIFICATION_BOUNDARY.md` | authoritative in-bounds statement |
-| `docs/review/conformance/BOUNDARY_NON_GOALS.md` | authoritative out-of-bounds statement |
-| `docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md` | in-bounds future backlog after promotion |
-| `docs/review/conformance/releases/0.3.9/release-0.3.9/` | canonical frozen promoted release artifacts for the repo line |
-| `docs/review/conformance/releases/0.3.8/release-0.3.8/` | frozen previously released historical artifacts |
-| `docs/review/conformance/CLI_FLAG_SURFACE.md` | human-readable CLI flag surface |
-| `docs/review/conformance/cli_flag_surface.json` | machine-readable CLI flag surface |
-| `docs/review/conformance/flag_contracts.json` | flag contracts used for promotion checks |
-| `docs/review/conformance/flag_covering_array.json` | combinatorial flag coverage model |
-| `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` | scoped RFC applicability and competitor comparison audit |
-| `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_SUPPORT.md` | broader applicability / roadmap / competitor-positioning companion |
-| `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md` | preserved historical execution plan and closure record |
-| `docs/review/conformance/phase9_implementation_plan.current.json` | machine-readable historical execution-plan snapshot |
-| `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` | public lifecycle and `EmbeddedServer` contract |
-| `src/tigrcorn/` | implementation source |
-| `examples/` | runnable examples; `examples/advanced_delivery/` is current, `examples/advanced_protocol_delivery/` is archival compatibility |
-| `tests/` | unit, integration, promotion, and documentation verification |
-| `tools/` | local helpers, release utilities, governance checker |
-| `tools/govchk.py` | mutable/immutable and naming/path-limit checker |
+| If you are… | Start here | Then go to |
+|---|---|---|
+| Operator launching the server | `docs/ops/cli.md` | `docs/review/conformance/DEPLOYMENT_PROFILES.md`, `docs/review/conformance/CLI_FLAG_SURFACE.md` |
+| Embedder / application developer | `docs/ops/public.md` | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`, `examples/advanced_protocol_delivery/runtime_embedding.py` |
+| Static/delivery implementer | `examples/http_entity_static/app.py` | `docs/ops/public.md`, `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` |
+| Maintainer / release owner | `docs/gov/authoring.md` | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`, `docs/gov/release.md` |
+| Certification / audit reviewer | `docs/review/conformance/README.md` | `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `docs/review/conformance/releases/0.3.9/release-0.3.9/` |
+| Author writing new docs | `CONTRIBUTING.md` | `docs/gov/authoring.md`, `docs/gov/tree.md`, `docs/gov/mut.md` |
+| Agent / automation | `AGENTS.md` | `docs/review/conformance/current_state_chain.current.json`, `tools/govchk.py` |
+| Contributor looking for current truth | `docs/review/conformance/state/README.md` | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`, `docs/review/conformance/state/checkpoints/` |
+
+
+## Authoring and maintainer workflow
+
+The repository now has a dedicated maintainer/authoring guide:
+
+- `docs/gov/authoring.md` — documentation ownership, truth hierarchy, update triggers, and maintainer checklist
+- `CONTRIBUTING.md` — contributor workflow, validation checklist, and change expectations
+- `AGENTS.md` — repo operating instructions for agents/automation
+- `docs/gov/release.md` — release and promotion governance
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` — canonical human current-state truth
+- `docs/review/conformance/current_state_chain.current.json` — canonical machine current-state truth
+
+Maintainer responsibilities include keeping the following aligned when public behavior changes:
+
+1. code
+2. tests
+3. machine-readable docs / manifests / JSON truth files
+4. human docs
+5. current-state and promotion docs
+6. immutable release-root pointers when promotion-relevant
 
 ## Governance and repo cleanliness
 
-The repository now distinguishes between **mutable working trees** and **immutable release/evidence trees**.
+Repository cleanliness is governed by `MUT.json`, `docs/gov/tree.md`, `docs/gov/mut.md`, and `docs/gov/code.md`.
 
-- Folder state is marked with `MUT.json`.
-- Resolution is nearest-ancestor-wins.
-- States are `mutable`, `immutable`, and `mixed`.
-- Run `python tools/govchk.py state PATH` to resolve a folder state.
-- Run `python tools/govchk.py scan` to check naming/path limits on mutable non-exempt paths.
+### Core rules
 
-Rules for **new or renamed mutable paths**:
+- Root docs stay narrow: `README.md`, `AGENTS.md`, release notes, packaging/build roots, and community entrypoints such as `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`.
+- New mutable docs belong under short, purpose-scoped folders in `docs/`, including `docs/ops/`, `docs/gov/`, `docs/comp/`, `docs/review/`, `docs/protocols/`, `docs/architecture/`, and `docs/adr/`.
+- Immutable release roots are not development workspaces.
+- New or renamed mutable paths follow the repo path policy: file name `<= 24`, folder name `<= 16`, full relative path `<= 120`.
+- Mutability uses a nearest-ancestor-wins `MUT.json` rule.
 
-- file name length `<= 24`
-- folder name length `<= 16`
-- full relative path length `<= 120`
-
-The prior root current-state / delivery-note / RFC-report Markdown sprawl has been migrated into `docs/review/conformance/state/`, `docs/review/conformance/delivery/`, and `docs/review/conformance/reports/`. Preserved release/conformance trees remain in-tree for provenance and test stability; they are not a license to create new path/name sprawl.
-
-## Public lifecycle and embedded use
-
-The public lifecycle and embedder contract is documented in `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
-
-That document freezes:
-
-- `on_startup`, `on_shutdown`, and `on_reload`
-- ordering relative to `lifespan.startup()` and `lifespan.shutdown()`
-- failure semantics
-- `EmbeddedServer` behavior and examples
-
-## Running
-
-Basic run:
+### Useful governance commands
 
 ```bash
-python -m tigrcorn examples.echo_http.app:app
-```
-
-HTTP/3 / QUIC example:
-
-```bash
-python -m tigrcorn examples.echo_http.app:app --transport udp --protocol http3 --http 3 --port 9443 --ssl-certfile cert.pem --ssl-keyfile key.pem
-```
-
-HTTP/3 / QUIC with mTLS-style client certificate verification:
-
-```bash
-python -m tigrcorn examples.echo_http.app:app --transport udp --protocol http3 --http 3 --port 9443 --ssl-certfile cert.pem --ssl-keyfile key.pem --ssl-ca-certs client-ca.pem --ssl-require-client-cert
-```
-
-HTTP/3 / QUIC with Retry enabled:
-
-```bash
-python -m tigrcorn examples.echo_http.app:app --transport udp --protocol http3 --http 3 --port 9443 --ssl-certfile cert.pem --ssl-keyfile key.pem --quic-require-retry
+python tools/govchk.py state README.md
+python tools/govchk.py state docs/review/conformance/releases/0.3.9
+python tools/govchk.py scan
 ```
 
 ## Validation and promotion
 
-Promotion-relevant validation typically includes:
+A practical maintainer validation pass looks like this:
 
 ```bash
-python -m compileall -q src benchmarks tools
-pytest -q
-python - <<'PY'
+python tools/govchk.py scan
+PYTHONPATH=src python -m compileall -q src benchmarks tools
+PYTHONPATH=src pytest -q
+```
+
+Promotion-facing evaluators:
+
+```bash
+PYTHONPATH=src python - <<'PY'
 from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target
+
 print(evaluate_release_gates('.').passed)
-print(evaluate_release_gates('.', boundary_path='docs/review/conformance/certification_boundary.strict_target.json').passed)
+print(
+    evaluate_release_gates(
+        '.',
+        boundary_path='docs/review/conformance/certification_boundary.strict_target.json',
+    ).passed
+)
 print(evaluate_promotion_target('.').passed)
 PY
 ```
 
-For detailed release workflow rules, see `docs/gov/release.md`. For agentic execution rules, see `AGENTS.md`.
+Read next:
 
-## Current-state and historical planning notes
+- `docs/gov/release.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/STRICT_PROFILE_TARGET.md`
+- `docs/review/conformance/FLAG_CERTIFICATION_TARGET.md`
+- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
 
-Use `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` and `docs/review/conformance/current_state_chain.current.json` for current truth.
+## Current-state and historical planning
 
-Use the following preserved records for historical planning/provenance, not as competing current-state sources:
+For current package truth, start with:
+
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/state/README.md`
+- `docs/review/conformance/CURRENT_STATE_CHAIN.md`
+- `docs/review/conformance/current_state_chain.current.json`
+
+For historical planning and release-provenance checkpoints, use:
 
 - `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`
 - `docs/review/conformance/phase9_implementation_plan.current.json`
 - `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
 - `docs/review/conformance/phase9a_promotion_contract.current.json`
-
-The repo line is `0.3.9`. External publication remains an operator action outside the repository; consult the package index before claiming a new publish has occurred.
-
-
-## Phase 9I release assembly and certifiable checkpoint
-
-The executed Phase 9I release-assembly checkpoint is now documented through:
-
+- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
+- `docs/review/conformance/phase9a_execution_backlog.current.json`
 - `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 - `docs/review/conformance/phase9i_release_assembly.current.json`
-- `docs/review/conformance/releases/0.3.9/release-0.3.9/`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`
+- `docs/review/conformance/state/checkpoints/`
 
+These planning and checkpoint files explain **how the repository got to the current promoted state** and what constraints were in force at each checkpoint. They are historical and operational provenance; they do not replace the canonical current-state pointer.
 
 ## Certification environment freeze
 
-The strict-promotion release workflow now freezes the certification environment before it invokes any Phase 9 checkpoint script. Current documentation and preserved artifacts live in:
+The certification-environment freeze documents the install contract and runtime prerequisites for the strict release workflow and preserved certification bundle.
+
+Start here:
 
 - `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`
 - `docs/review/conformance/certification_environment_freeze.current.json`
-- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
 - `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
+- `.github/workflows/phase9-certification-release.yml`
+- `tools/run_phase9_release_workflow.py`
+
+Frozen install command:
+
+```bash
+python -m pip install -e ".[certification,dev]"
+```
+
+The current recorded snapshot freezes the workflow contract even though the live checked environment in this repository reports a missing `aioquic` import. The freeze files make that distinction explicit instead of hiding it.[^freeze]
+
+## Contributing, conduct, and community norms
+
+- `CONTRIBUTING.md` explains how to make changes without breaking the boundary, docs, tests, or release evidence.
+- `CODE_OF_CONDUCT.md` defines project participation expectations and reporting guidance.
+- `docs/gov/authoring.md` explains how maintainers and authors should update the repository without creating truth conflicts.
+- `docs/gov/tree.md` and `docs/gov/mut.md` explain where new files belong and which trees are frozen.
+
+## Footnotes
+
+[^boundary]: Certification language in this repository is scoped by `docs/review/conformance/CERTIFICATION_BOUNDARY.md` and the promoted-root policy described in `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`. Out-of-scope families remain out of scope unless the boundary docs say otherwise.
+
+[^peers]: Peer comparison matrices are documentation snapshots reviewed on `2026-03-28`. They are not vendor attestations, and they should not be read as this repository certifying another project.
+
+[^freeze]: The freeze distinguishes the **authoritative release-workflow contract** from the **observed local environment snapshot**. A preserved release workflow may remain the normative contract even when the current editing environment is missing one certification dependency such as `aioquic`.
+
+[^publish]: Repository promotion, preserved release roots, and external publication are different events. External publication remains an operator action outside the repository, as described in `docs/gov/release.md`.

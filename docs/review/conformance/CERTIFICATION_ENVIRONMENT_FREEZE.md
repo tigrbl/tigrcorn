@@ -1,6 +1,26 @@
 # Certification environment freeze
 
-This checkpoint freezes the certification-environment installation contract for the strict-promotion workflow.
+This checkpoint freezes the certification-environment installation contract for the strict release workflow and preserved certification bundle.
+
+Canonical sources:
+
+- `docs/review/conformance/certification_environment_freeze.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
+- `.github/workflows/phase9-certification-release.yml`
+- `tools/run_phase9_release_workflow.py`
+
+## Purpose
+
+The goal of this document is to make the release-workflow environment contract explicit and stable:
+
+- how the certification environment is installed
+- which extras are mandatory
+- which imports must succeed before Phase 9 scripts run
+- where the preserved bundle lives
+- whether the **current observed local environment** is ready
+
+The workflow contract is frozen even when the current editing environment is not fully ready.
 
 ## Required bootstrap
 
@@ -17,22 +37,47 @@ PY
 
 ## Current recorded state
 
-- python minor version: `3.11`
-- python version ready for the release workflow: `True`
-- required imports ready: `False`
-- missing imports: `aioquic`
-- environment ready for the release workflow: `False`
-- release workflow path: `.github/workflows/phase9-certification-release.yml`
-- wrapper path: `tools/run_phase9_release_workflow.py`
-- preserved bundle root: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle`
+| Item | Value |
+|---|---|
+| status | `environment_contract_frozen_but_not_ready` |
+| required install command | `python -m pip install -e ".[certification,dev]"` |
+| required extras | `certification, dev` |
+| required imports | `aioquic, h2, websockets, wsproto` |
+| required imports ready | `False` |
+| missing imports | `aioquic` |
+| python minor version | `3.11` |
+| python version ready | `True` |
+| supported release workflow versions | `3.11, 3.12` |
+| environment ready for release workflow | `False` |
+| release root | `docs/review/conformance/releases/0.3.9/release-0.3.9` |
+| bundle root | `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle` |
+| workflow path | `.github/workflows/phase9-certification-release.yml` |
+| wrapper path | `tools/run_phase9_release_workflow.py` |
+
+## Interpretation
+
+This checkpoint records two different facts:
+
+1. the **authoritative release-workflow contract** is frozen
+2. the **currently observed local environment** may still be non-ready
+
+At this checkpoint, the frozen contract is explicit, but the observed environment still reports a missing `aioquic` import. That is an honest status report, not a contradiction.
 
 ## What this checkpoint changes
 
-- makes the strict-promotion installation contract explicit
+- makes the strict release-workflow installation contract explicit
 - records the observed environment snapshot in a preserved certification bundle
-- adds a release-workflow guard that fails when the required imports are missing
-- adds a local wrapper that freezes the environment before invoking Phase 9 checkpoint scripts
+- ties the release workflow and local wrapper to the same install/import expectations
+- removes ambiguity about which extras and imports are mandatory before Phase 9 release scripts run
 
-## Honest current result
+## What this checkpoint does not mean
 
-This update improves the package operationally, but it does **not** by itself make the package certifiably fully featured or strict-target fully RFC compliant. The remaining strict-target HTTP/3 evidence blockers still need to be closed separately.
+This freeze does **not** by itself widen the product boundary, close unrelated strict-target blockers, or replace the canonical current-state/promotion docs.
+
+Use:
+
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/phase9a_promotion_contract.current.json`
+
+for promotion and current-state truth.

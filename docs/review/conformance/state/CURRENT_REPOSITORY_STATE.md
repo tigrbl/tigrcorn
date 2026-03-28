@@ -43,6 +43,7 @@ Historical aliases are preserved only as labeled checkpoint history under `docs/
 
 Primary documentation for the current promoted state now lives in:
 
+- `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`
 - `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
 - `docs/review/conformance/phase9_release_promotion.current.json`
 - `RELEASE_NOTES_0.3.9.md`
@@ -69,6 +70,18 @@ This checkpoint completes the Step 9 administrative promotion work:
 - the canonical authoritative release root is now `docs/review/conformance/releases/0.3.9/release-0.3.9/`
 - release notes now live in `RELEASE_NOTES_0.3.9.md`
 - the current-state docs and machine-readable snapshots now truthfully report the strict-target green state under the canonical promoted release
+
+
+## Phase 9A promotion-contract-freeze checkpoint
+
+The historical Phase 9A promotion-contract-freeze checkpoint remains part of the current provenance chain:
+
+- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/phase9a_promotion_contract.current.json`
+- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
+- `docs/review/conformance/phase9a_execution_backlog.current.json`
+
+These documents are historical planning/provenance inputs. They do not override the current promoted-state truth above, but they remain the correct place to inspect the earlier contract freeze and backlog closure requirements.
 
 ## Certification environment freeze
 

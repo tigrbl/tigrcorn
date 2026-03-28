@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs/ops",
+  "reason": "operator-facing CLI and public surface docs evolve with the mutable repository surface."
+}

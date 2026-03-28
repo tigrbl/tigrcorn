@@ -38,3 +38,17 @@ Relative to `docs/review/conformance/certification_boundary.json`, `docs/review/
 The 0.3.9 canonical release root now carries the final independent, same-stack, mixed, flag, operator, performance, certification-environment, aioquic-preflight, and strict-validation bundles.
 
 That canonical root is now green under the strict target and the composite promotion target, and the public package version is aligned at `0.3.9`.
+
+
+## Phase 9A promotion-contract-freeze provenance
+
+The historical promotion-contract-freeze checkpoint remains part of the preserved planning chain:
+
+- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/phase9a_promotion_contract.current.json`
+- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
+- `docs/review/conformance/phase9a_execution_backlog.current.json`
+
+Historical checkpoint phrase preserved for provenance and reconciliation only:
+
+`RFC 7232, RFC 9530, RFC 9111, RFC 9421, JOSE, and COSE remain out-of-scope`

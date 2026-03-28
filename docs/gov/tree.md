@@ -12,21 +12,24 @@ Mutable root files are limited to:
 
 - `README.md`
 - `AGENTS.md`
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
 - `RELEASE_NOTES_*.md`
 - build/config roots such as `pyproject.toml`, `Makefile`, `.gitignore`, `LICENSE`
 
-Canonical current-state, delivery-note, and root-report material now lives under:
+Canonical current-state, delivery-note, and root-report material lives under:
 
 - `docs/review/conformance/state/`
 - `docs/review/conformance/delivery/`
 - `docs/review/conformance/reports/`
 
-New operational, design, governance, or progress notes must **not** be added to root. New documentation belongs under `docs/`. The prior root note sprawl has been migrated into the conformance tree.
+New operational, design, governance, or progress notes must **not** be added to root. New documentation belongs under `docs/`. The root is for package entrypoints and narrow community entrypoints only.
 
 ## Mutable documentation layout
 
 New mutable docs land in short, purpose-scoped folders:
 
+- `docs/ops/` — operator-facing CLI and public-surface docs
 - `docs/gov/` — governance
 - `docs/comp/` — comparison matrices
 - `docs/notes/` — mutable notes and current work tracking
