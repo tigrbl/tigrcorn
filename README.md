@@ -13,6 +13,7 @@
 <p align="center">
 <a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/tigrcorn?label=PyPI"></a> 
 <a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI downloads" src="https://img.shields.io/pepy/dt/tigrcorn?label=downloads"></a> 
+<a href="https://hits.sh/github.com/tigrbl/tigrcorn"><img alt="Project hits badge" src="https://hits.sh/github.com/tigrbl/tigrcorn.svg?label=hits"></a>
 <a href="docs/review/conformance/releases/0.3.9/release-0.3.9/"><img alt="repo line 0.3.9" src="https://img.shields.io/badge/repo_line-0.3.9-2f7ed8"></a> 
 <a href="LICENSE"><img alt="license Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
 <a href="pyproject.toml"><img alt="Python 3.11 supported" src="https://img.shields.io/badge/python-3.11-3776ab"></a> <a href="pyproject.toml"><img alt="Python 3.12 supported" src="https://img.shields.io/badge/python-3.12-3776ab"></a> 
