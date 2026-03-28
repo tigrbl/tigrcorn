@@ -1,6 +1,9 @@
 <div align="center">
 
-# Tigrcorn
+<img
+  src="https://github.com/Tigrbl/tigrcorn/blob/68c5baadd745555de1c6bee70d9b9f3763a7ed3c/assets/tigrcorn_brand_frag_light.png?raw=1"
+  alt="Tigrcorn light branding fragment"
+/>
 
 > Package-owned ASGI3 transport server with audited protocol, operator, release, and certification surfaces.
 
