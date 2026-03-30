@@ -5,7 +5,7 @@ from pathlib import Path
 from benchmarks.registry import get_driver
 from tigrcorn.compat.perf_runner import PerfProfile
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 _ITERATIONS = 10
 _WARMUPS = 1

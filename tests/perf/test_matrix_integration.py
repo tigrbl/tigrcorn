@@ -6,7 +6,7 @@ from pathlib import Path
 
 from tigrcorn.compat.perf_runner import run_performance_matrix
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def _run_profiles_and_assert(profile_ids: list[str]) -> None:
