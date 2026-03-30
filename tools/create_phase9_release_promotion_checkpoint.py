@@ -239,20 +239,27 @@ def update_markdown_docs() -> None:
     path = ROOT / 'README.md'
     text = path.read_text(encoding='utf-8')
     new_section = """## Evidence tiers and promoted release roots\n\nThis archive separates three evidence tiers and binds them to a single current canonical release root:\n\n1. **Local conformance** — `docs/review/conformance/corpus.json`\n2. **Same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json`\n3. **Independent certification** — `docs/review/conformance/external_matrix.release.json`\n\nThe current canonical release root is `docs/review/conformance/releases/0.3.9/release-0.3.9/`.\n\nHistorical preserved roots remain in-tree for provenance:\n\n- `docs/review/conformance/releases/0.3.2/release-0.3.2/`\n- `docs/review/conformance/releases/0.3.6/release-0.3.6/`\n- `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/`\n- `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`\n- `docs/review/conformance/releases/0.3.7/release-0.3.7/`\n\nThe canonical 0.3.9 root contains the full promoted bundle set plus the preserved auxiliary bundles:\n\n- `tigrcorn-independent-certification-release-matrix/`\n- `tigrcorn-same-stack-replay-matrix/`\n- `tigrcorn-mixed-compatibility-release-matrix/`\n- `tigrcorn-flag-surface-certification-bundle/`\n- `tigrcorn-operator-surface-certification-bundle/`\n- `tigrcorn-performance-certification-bundle/`\n- `tigrcorn-certification-environment-bundle/`\n- `tigrcorn-aioquic-adapter-preflight-bundle/`\n- `tigrcorn-strict-validation-bundle/`\n- the preserved local negative / behavior / validation bundles produced during Phases 9C–9E\n\nThe compatibility file `docs/review/conformance/external_matrix.current_release.json` remains a **mixed** matrix because it combines third-party HTTP/1.1 / HTTP/2 peers with same-stack HTTP/3 and RFC 9220 replay fixtures.\n\n"""
-    text = replace_section_any(
-        text,
-        (
-            '## Evidence tiers shipped with this archive\n',
-            '## Evidence tiers and promoted release roots\n',
-            '## Package boundary, evidence tiers, and support model\n',
-        ),
-        (
-            '## Interoperability evidence status in this archive\n',
-            '## Support and certification legend\n',
-            '## Installation and optional dependency surface\n',
-        ),
-        new_section,
-    )
+    try:
+        text = replace_section_any(
+            text,
+            (
+                '## Evidence tiers shipped with this archive\n',
+                '## Evidence tiers and promoted release roots\n',
+                '## Package boundary, evidence tiers, and support model\n',
+            ),
+            (
+                '## Interoperability evidence status in this archive\n',
+                '## Support and certification legend\n',
+                '## Installation and optional dependency surface\n',
+            ),
+            new_section,
+        )
+    except RuntimeError:
+        if '## Evidence tiers and promoted release roots\n' not in text:
+            anchor = '## Validation and promotion\n'
+            if anchor not in text:
+                raise
+            text = text.replace(anchor, new_section + anchor, 1)
     old_scope = """Important scope note:\n\n- Under the current authoritative boundary, RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 are intentionally bounded at `local_conformance` rather than `independent_certification`.\n- Those surfaces are still part of the required RFC surface, and they are satisfied at the tier required by the boundary.\n- A stricter non-authoritative all-surfaces-independent profile would still need additional third-party preserved artifacts.\n- The provisional all-surfaces and flow-control bundles remain in-tree as planning / review aids and do not change the authoritative release-gate result.\n"""
     new_scope = """Important scope note:\n\n- Under the current authoritative boundary, RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 are still intentionally bounded at `local_conformance` rather than `independent_certification`.\n- Those surfaces are still part of the required RFC surface, and they are satisfied at the tier required by the authoritative boundary.\n- The stricter all-surfaces-independent target is now also satisfied and is documented in `docs/review/conformance/STRICT_PROFILE_TARGET.md`.\n- The provisional all-surfaces and flow-control bundles remain in-tree as historical planning / review aids and do not change the canonical release-gate result.\n"""
     text = replace_once_optional(text, old_scope, new_scope)
