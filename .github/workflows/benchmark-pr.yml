@@ -1,0 +1,77 @@
+name: benchmark-pr
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: uv pip install --system -e ".[certification,dev]"
+
+      - name: Run benchmarks
+        id: bench
+        run: |
+          mkdir -p .perf-artifacts
+          set +e
+          PYTHONPATH=src python tools/run_perf_matrix.py \
+            --establish-baseline \
+            --shuffle \
+            --artifact-root .perf-artifacts \
+            > .perf-artifacts/runner_output.json 2>&1
+          EXIT_CODE=$?
+          set -e
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+
+      - name: Format benchmark comment
+        run: |
+          PYTHONPATH=src python tools/format_benchmark_comment.py \
+            .perf-artifacts/summary.json > .perf-artifacts/comment.md
+
+      - name: Post or update PR comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_TAG="<!-- benchmark-results -->"
+          BODY=$(cat .perf-artifacts/comment.md)
+          FULL_BODY="${COMMENT_TAG}
+          ${BODY}"
+
+          EXISTING=$(gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+            --jq '[.[] | select(.body | startswith("<!-- benchmark-results -->")) | .id][0]' 2>/dev/null || true)
+
+          if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
+            gh api "repos/${{ github.repository }}/issues/comments/${EXISTING}" \
+              -X PATCH -f body="$FULL_BODY"
+          else
+            gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+              -f body="$FULL_BODY"
+          fi
+
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: benchmark-artifacts-${{ github.event.pull_request.number }}
+          path: .perf-artifacts/
+
+      - name: Fail if benchmarks failed
+        if: steps.bench.outputs.exit_code != '0'
+        run: exit 1
