@@ -323,7 +323,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | Family | `App / process / development` |
 | Config path | `app.app_dir` |
 | Claim class | `pure_operator` |
-| Default | `None` |
+| Default | `None` (loads from current working directory when unset) |
 | RFC targets | — |
 | Validation rules | `path string` |
 | Deployment profiles | `http1_baseline` |

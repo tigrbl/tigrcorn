@@ -410,7 +410,9 @@
         "http1_baseline"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip"
+        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip",
+        "tests/test_app_loader.py::AppLoaderTests::test_load_app_from_current_working_directory_without_app_dir",
+        "tests/test_app_loader.py::AppLoaderTests::test_load_factory_from_current_working_directory_without_app_dir"
       ],
       "interop_scenarios": [],
       "performance_profiles": [],
@@ -421,7 +423,8 @@
         "current_evidence_state": "operator_bundle_only",
         "promotion_ready": true,
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
-      }
+      },
+      "release_note": "CWD import-resolution fallback is enforced for module and factory targets when app.app_dir is unset."
     },
     {
       "contract_id": "backlog",
