@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import sys
 from contextlib import contextmanager
 
@@ -10,19 +11,20 @@ from tigrcorn.utils.imports import import_from_string
 
 @contextmanager
 def _temporary_app_dir(app_dir: str | None):
-    if not app_dir:
+    effective_app_dir = os.getcwd() if app_dir is None else app_dir
+    if not effective_app_dir:
         yield
         return
     inserted = False
-    if app_dir not in sys.path:
-        sys.path.insert(0, app_dir)
+    if effective_app_dir not in sys.path:
+        sys.path.insert(0, effective_app_dir)
         inserted = True
     try:
         yield
     finally:
         if inserted:
             try:
-                sys.path.remove(app_dir)
+                sys.path.remove(effective_app_dir)
             except ValueError:  # pragma: no cover
                 pass
 
