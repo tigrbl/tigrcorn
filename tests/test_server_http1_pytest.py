@@ -1,0 +1,54 @@
+import asyncio
+
+import pytest
+
+from tigrcorn.config.load import build_config
+from tigrcorn.server.runner import TigrCornServer
+
+
+async def _start_server(app):
+    config = build_config(
+        host="127.0.0.1", port=0, lifespan="off", http_versions=["1.1"]
+    )
+    server = TigrCornServer(app, config)
+    await server.start()
+    listener = server._listeners[0]
+    port = listener.server.sockets[0].getsockname()[1]
+    return server, port
+
+
+@pytest.mark.asyncio
+async def test_http11_roundtrip():
+    async def app(scope, receive, send):
+        event = await receive()
+        assert scope["type"] == "http"
+        assert scope["path"] == "/echo"
+        await send(
+            {
+                "type": "http.response.start",
+                "status": 200,
+                "headers": [(b"content-type", b"text/plain")],
+            }
+        )
+        await send(
+            {
+                "type": "http.response.body",
+                "body": event["body"],
+                "more_body": False,
+            }
+        )
+
+    server, port = await _start_server(app)
+    try:
+        reader, writer = await asyncio.open_connection("127.0.0.1", port)
+        writer.write(
+            b"POST /echo HTTP/1.1\r\nHost: localhost\r\nContent-Length: 5\r\n\r\nhello"
+        )
+        await writer.drain()
+        data = await reader.read(65535)
+        assert b"200 OK" in data
+        assert data.endswith(b"hello")
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()
