@@ -111,6 +111,7 @@ The Phase 2 config / CLI surface is documented in:
 - `DEPLOYMENT_PROFILES.md`
 - `deployment_profiles.json`
 - `app_load_claims.json`
+- `claims_registry.json`
 - `NEXT_DEVELOPMENT_TARGETS.md`
 
 

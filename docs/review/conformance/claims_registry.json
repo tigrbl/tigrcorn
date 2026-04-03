@@ -1,0 +1,200 @@
+{
+  "registry_date": "2026-04-03",
+  "status": "mutable_working_registry",
+  "scope_note": "This registry inventories current supported targets and candidate claims using the repository's canonical certification evidence tiers. It does not widen the authoritative package boundary by itself.",
+  "canonical_boundary_source": "docs/review/conformance/certification_boundary.json",
+  "canonical_feature_source": "docs/notes/feature_reg.md",
+  "certification_evidence_tiers": [
+    "local_conformance",
+    "same_stack_replay",
+    "independent_certification"
+  ],
+  "current_supported_targets": {
+    "rfc_targets": [
+      { "id": "RFC-9112", "standards_body": "IETF", "family": "http", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9113", "standards_body": "IETF", "family": "http2", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9114", "standards_body": "IETF", "family": "http3", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9000", "standards_body": "IETF", "family": "quic", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9001", "standards_body": "IETF", "family": "quic_tls", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9002", "standards_body": "IETF", "family": "quic_recovery", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-7541", "standards_body": "IETF", "family": "hpack", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9204", "standards_body": "IETF", "family": "qpack", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-6455", "standards_body": "IETF", "family": "websocket_http11", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-7692", "standards_body": "IETF", "family": "websocket_compression", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-8441", "standards_body": "IETF", "family": "websocket_http2", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9220", "standards_body": "IETF", "family": "websocket_http3", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-8446", "standards_body": "IETF", "family": "tls13", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-9110-S9.3.6", "standards_body": "IETF", "family": "connect", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-9110-S6.5", "standards_body": "IETF", "family": "trailers", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-9110-S8", "standards_body": "IETF", "family": "content_coding", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-7232", "standards_body": "IETF", "family": "conditional_requests", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-7233", "standards_body": "IETF", "family": "byte_ranges", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-8297", "standards_body": "IETF", "family": "early_hints", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-7838-S3", "standards_body": "IETF", "family": "alt_svc", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-5280", "standards_body": "IETF", "family": "x509_validation", "highest_required_evidence_tier": "independent_certification" },
+      { "id": "RFC-6960", "standards_body": "IETF", "family": "ocsp", "highest_required_evidence_tier": "local_conformance" },
+      { "id": "RFC-7301", "standards_body": "IETF", "family": "alpn", "highest_required_evidence_tier": "independent_certification" }
+    ],
+    "protocol_targets": [
+      { "id": "http11", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9112"] },
+      { "id": "http2", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9113", "RFC 7541"] },
+      { "id": "http3", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9114", "RFC 9204"] },
+      { "id": "quic", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9000", "RFC 9001", "RFC 9002"] },
+      { "id": "tls13", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 8446", "RFC 5280", "RFC 6960", "RFC 7301"] },
+      { "id": "websocket_http11", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 6455", "RFC 7692"] },
+      { "id": "websocket_http2", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 8441", "RFC 7692"] },
+      { "id": "websocket_http3", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9220", "RFC 7692"] },
+      { "id": "connect", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9110 Section 9.3.6"] },
+      { "id": "trailers", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9110 Section 6.5"] },
+      { "id": "content_coding", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9110 Section 8"] },
+      { "id": "conditional_requests", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 7232"] },
+      { "id": "byte_ranges", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 7233"] },
+      { "id": "early_hints", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 8297"] },
+      { "id": "alt_svc", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 7838 Section 3"] }
+    ],
+    "cli_targets": [
+      { "id": "cli-main", "surface": "command", "targets": ["tigrcorn", "python -m tigrcorn"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-interop", "surface": "command", "targets": ["tigrcorn-interop"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-app-process", "surface": "flag_family", "targets": ["factory", "app_dir", "reload", "workers", "config_source", "lifespan"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-listeners", "surface": "flag_family", "targets": ["binds"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-static", "surface": "flag_family", "targets": ["static_path"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-tls-security", "surface": "flag_family", "targets": ["tls", "proxy_security"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-logging-observability", "surface": "flag_family", "targets": ["logging", "metrics"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-resources", "surface": "flag_family", "targets": ["resource_limits", "http1_controls", "http2_controls", "websocket_controls"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "cli-protocols", "surface": "flag_family", "targets": ["protocols"], "boundary_status": "in_bounds_current_surface" }
+    ],
+    "public_operator_surface_targets": [
+      { "id": "entrypoints", "targets": ["tigrcorn.run", "tigrcorn.serve", "tigrcorn.serve_import_string"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "embedder_server", "targets": ["tigrcorn.EmbeddedServer", "tigrcorn.server.TigrCornServer"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "static_delivery", "targets": ["tigrcorn.StaticFilesApp", "tigrcorn.static.mount_static_app", "tigrcorn.static.normalize_static_route"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "config_surface", "targets": ["tigrcorn.config.build_config", "tigrcorn.config.build_config_from_namespace", "tigrcorn.config.build_config_from_sources", "tigrcorn.config.config_to_dict", "tigrcorn.config.load_env_config", "tigrcorn.config.load_config_file"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "release_evaluators", "targets": ["tigrcorn.compat.release_gates.evaluate_release_gates", "tigrcorn.compat.release_gates.evaluate_promotion_target", "tigrcorn.compat.release_gates.assert_release_ready", "tigrcorn.compat.release_gates.assert_promotion_target_ready"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "runtime_modes", "targets": ["auto", "asyncio", "uvloop"], "boundary_status": "in_bounds_current_surface" }
+    ],
+    "extension_surface_targets": [
+      { "id": "extras_supported", "targets": ["config-yaml", "compression", "runtime-uvloop", "full-featured", "certification", "dev"], "boundary_status": "in_bounds_current_surface" },
+      { "id": "extras_declared_not_supported", "targets": ["runtime-trio"], "boundary_status": "out_of_bounds_now" },
+      { "id": "custom_operator_transports", "targets": ["pipe", "inproc", "rawframed", "custom"], "boundary_status": "public_operator_surface_outside_strict_rfc_claim" },
+      { "id": "peer_certification_tools", "targets": ["aioquic", "h2", "websockets", "wsproto", "sf-http"], "boundary_status": "tooling_surface_only" }
+    ],
+    "w3c_targets": [
+      { "id": "trace_context_fields", "standards_body": "W3C", "spec_refs": ["W3C Trace Context"], "boundary_status": "candidate_not_current_claim", "default_posture": "to_be_classified_as_forwarded_terminated_regenerated_or_suppressed" },
+      { "id": "server_timing_fields", "standards_body": "W3C", "spec_refs": ["Server Timing"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified" },
+      { "id": "nel_fields", "standards_body": "W3C", "spec_refs": ["NEL"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified" },
+      { "id": "reporting_fields", "standards_body": "W3C", "spec_refs": ["Reporting API"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified" }
+    ]
+  },
+  "current_and_candidate_claims": [
+    {
+      "id": "claim-cwd-module-import",
+      "class": "operator_surface",
+      "surface": "app_import_resolution",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "CLI and server import-string loading resolves module targets from the current working directory when app.app_dir is unset.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "local_conformance",
+      "status": "planned_for_independent_certification",
+      "source_files": ["docs/review/conformance/app_load_claims.json"]
+    },
+    {
+      "id": "claim-cwd-factory-import",
+      "class": "operator_surface",
+      "surface": "app_import_resolution",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "CLI and server factory loading resolves factory targets from the current working directory when app.app_dir is unset.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "local_conformance",
+      "status": "planned_for_independent_certification",
+      "source_files": ["docs/review/conformance/app_load_claims.json"]
+    },
+    {
+      "id": "TC-INTEROP-TLS13-OPENSSL35-SCLIENT",
+      "class": "certification",
+      "surface": "tcp_tls13_external_peer_interop",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Tigrcorn custom TLS 1.3 interoperates with OpenSSL s_client 3.5+ for the declared TCP/TLS boundary.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "local_conformance",
+      "status": "candidate_not_yet_evidenced",
+      "issue_refs": ["#15"],
+      "risk_refs": ["R-TLS-8446-OPENSSL35", "R-TLS-TIER-MAPPING-DRIFT"]
+    },
+    {
+      "id": "TC-INTEROP-TLS13-CURL-OPENSSL35",
+      "class": "certification",
+      "surface": "tcp_tls13_external_peer_interop",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Tigrcorn custom TLS 1.3 interoperates with curl built against OpenSSL 3.5+ for HTTPS requests in the declared boundary.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "local_conformance",
+      "status": "candidate_not_yet_evidenced",
+      "issue_refs": ["#15"],
+      "risk_refs": ["R-TLS-8446-OPENSSL35", "R-TLS-TIER-MAPPING-DRIFT"]
+    },
+    {
+      "id": "TC-DIFF-TLS13-STDLIB-CONTROL",
+      "class": "governance_support",
+      "surface": "tcp_tls13_backend_control",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "The stdlib TLS backend exists as a bounded differential control and emergency fallback, without displacing the package-owned TLS claim.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "none",
+      "status": "candidate_not_yet_evidenced",
+      "issue_refs": ["#15"],
+      "risk_refs": ["R-TLS-TIER-MAPPING-DRIFT"]
+    },
+    {
+      "id": "TC-SPEC-STRUCTURED-FIELDS-RFC9651",
+      "class": "certification_support",
+      "surface": "structured_fields",
+      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "text": "Structured field parsing and serialization use RFC 9651 as the active baseline and do not present RFC 8941 as current.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "none",
+      "status": "candidate_not_opened",
+      "risk_refs": ["R-SFV-BASELINE-DRIFT"]
+    },
+    {
+      "id": "TC-FIELD-DEFAULT-PRESENCE-PACKAGE-OWNED",
+      "class": "operator_surface",
+      "surface": "package_owned_http_fields",
+      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "text": "Package-owned HTTP, TLS, WebSocket, and adjacent trace field families have a documented and tested default presence, suppression, and pass-through posture.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "none",
+      "status": "candidate_not_opened",
+      "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
+    },
+    {
+      "id": "TC-FIELD-OBSOLETED-ABSENCE-DEFAULT",
+      "class": "operator_surface",
+      "surface": "package_owned_http_fields",
+      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "text": "Obsoleted HTTP fields that are outside the current surface are absent by default and are not synthesized by normalization paths.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "none",
+      "status": "candidate_not_opened",
+      "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
+    },
+    {
+      "id": "TC-FIELD-DEFAULT-TERMINATION-PACKAGE-OWNED",
+      "class": "operator_surface",
+      "surface": "package_owned_http_fields",
+      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "text": "Package-owned HTTP, TLS, WebSocket, and adjacent trace field families have a frozen default termination, forwarding, stripping, and regeneration contract across supported carriers.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "none",
+      "status": "candidate_not_opened",
+      "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
+    }
+  ],
+  "ordered_candidate_target_queue": [
+    { "order": 1, "target_family": "WS/H1 plus WSS closure", "scope_posture": "in_bounds_hardening_candidate" },
+    { "order": 2, "target_family": "WS/H2 plus WS/H3 closure", "scope_posture": "in_bounds_hardening_candidate" },
+    { "order": 3, "target_family": "SSE hardening", "scope_posture": "cross_repo_or_boundary_review_candidate" },
+    { "order": 4, "target_family": "QUIC/H3 state plus observability closure", "scope_posture": "in_bounds_hardening_candidate" },
+    { "order": 5, "target_family": "WebTransport-H3 session plus streams plus datagrams", "scope_posture": "boundary_expansion_candidate" },
+    { "order": 6, "target_family": "WT protocol negotiation plus RFC 9651 synchronization", "scope_posture": "boundary_expansion_candidate" },
+    { "order": 7, "target_family": "WT/H2 fallback", "scope_posture": "boundary_expansion_candidate" }
+  ]
+}
