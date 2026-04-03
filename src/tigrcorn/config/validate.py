@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from tigrcorn.config.model import ServerConfig
+from tigrcorn.config.normalize import normalize_config
 from tigrcorn.constants import SUPPORTED_RUNTIMES, SUPPORTED_WORKER_CLASS_ALIASES
 from tigrcorn.protocols.connect import validate_connect_allow_entry
 from tigrcorn.observability.logging import validate_logging_contract
@@ -21,6 +22,7 @@ def _require_positive(name: str, value: int | float | None) -> None:
 
 
 def validate_config(config: ServerConfig) -> None:
+    normalize_config(config)
     if config.app.lifespan not in {"auto", "on", "off"}:
         raise ConfigError(f"invalid lifespan mode: {config.app.lifespan!r}")
     if config.process.workers <= 0:

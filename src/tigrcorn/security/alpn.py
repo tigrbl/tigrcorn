@@ -7,6 +7,8 @@ def normalize_alpn(selected: str | None) -> str | None:
     if selected is None:
         return None
     candidate = selected.strip().lower()
+    if not candidate:
+        return None
     if candidate in _ALLOWED_ALPN:
         return candidate
     return candidate

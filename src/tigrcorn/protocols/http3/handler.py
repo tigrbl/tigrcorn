@@ -220,18 +220,20 @@ class HTTP3DatagramHandler:
 
     def _queue_or_send(self, session: HTTP3Session, raw: bytes, endpoint: UDPEndpoint, addr: tuple[str, int]) -> None:
         transport = getattr(endpoint, 'transport', None)
-        if transport is None or transport.is_closing():
+        if transport is not None and transport.is_closing():
             return
-        session.quic.defer_datagram(raw)
         if self._can_send_now(session, raw):
-            session.quic.confirm_datagram_sent(raw)
             endpoint.send(raw, addr)
             session.bytes_sent += len(raw)
             return
+        session.quic.defer_datagram(raw)
         session.pending_outbound.append(raw)
 
     def _flush_pending_outbound(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
         if not session.pending_outbound:
+            return
+        transport = getattr(endpoint, 'transport', None)
+        if transport is not None and transport.is_closing():
             return
         remaining: list[bytes] = []
         for raw in session.pending_outbound:

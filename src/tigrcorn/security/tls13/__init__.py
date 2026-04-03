@@ -24,7 +24,6 @@ from .extensions import (
     format_cipher_suite_allowlist,
     parse_cipher_suite_allowlist,
 )
-from .handshake import HandshakeFlight, QuicSessionTicket, QuicTlsHandshakeDriver, QuicTrafficSecrets, TlsAlertError, generate_self_signed_certificate
 from .key_schedule import Tls13KeySchedule, TrafficSecrets
 from .messages import *
 from .transcript import HandshakeTranscript
@@ -64,3 +63,33 @@ __all__ = [
     'TlsAlertError',
     'generate_self_signed_certificate',
 ]
+
+
+def __getattr__(name: str):
+    if name in {
+        'HandshakeFlight',
+        'QuicSessionTicket',
+        'QuicTlsHandshakeDriver',
+        'QuicTrafficSecrets',
+        'TlsAlertError',
+        'generate_self_signed_certificate',
+    }:
+        from .handshake import (
+            HandshakeFlight,
+            QuicSessionTicket,
+            QuicTlsHandshakeDriver,
+            QuicTrafficSecrets,
+            TlsAlertError,
+            generate_self_signed_certificate,
+        )
+
+        mapping = {
+            'HandshakeFlight': HandshakeFlight,
+            'QuicSessionTicket': QuicSessionTicket,
+            'QuicTlsHandshakeDriver': QuicTlsHandshakeDriver,
+            'QuicTrafficSecrets': QuicTrafficSecrets,
+            'TlsAlertError': TlsAlertError,
+            'generate_self_signed_certificate': generate_self_signed_certificate,
+        }
+        return mapping[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

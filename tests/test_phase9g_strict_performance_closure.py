@@ -71,8 +71,8 @@ class Phase9GStrictPerformanceClosureTests(unittest.TestCase):
         self.assertEqual(failures, [])
         report = evaluate_promotion_target(ROOT)
         self.assertTrue(report.performance.passed, msg=report.performance.failures)
-        self.assertFalse(report.passed)
-        self.assertFalse(report.strict_target_boundary.passed)
+        self.assertTrue(report.passed)
+        self.assertTrue(report.strict_target_boundary.passed)
 
 
 if __name__ == '__main__':

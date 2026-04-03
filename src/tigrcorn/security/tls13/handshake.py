@@ -10,10 +10,30 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Iterable, Sequence
 
-from cryptography import x509
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa, x25519, padding as asym_padding
-from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
+class _MissingDependencyProxy:
+    def __init__(self, package: str) -> None:
+        self._package = package
+
+    def __getattr__(self, name: str):
+        raise ModuleNotFoundError(f"{self._package} is required for this TLS 1.3 certificate operation")
+
+
+try:
+    from cryptography import x509
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa, x25519, padding as asym_padding
+    from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
+except ModuleNotFoundError:  # pragma: no cover - exercised in dependency-light environments
+    x509 = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    hashes = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    serialization = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    ec = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    ed25519 = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    rsa = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    x25519 = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    asym_padding = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    ExtendedKeyUsageOID = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    NameOID = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
 
 from tigrcorn.errors import ProtocolError
 from tigrcorn.security.x509.path import (

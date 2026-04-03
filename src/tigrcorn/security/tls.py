@@ -8,8 +8,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
-from cryptography import x509
-from cryptography.hazmat.primitives import serialization
+class _MissingDependencyProxy:
+    def __init__(self, package: str) -> None:
+        self._package = package
+
+    def __getattr__(self, name: str):
+        raise ModuleNotFoundError(f"{self._package} is required for this TLS/X.509 operation")
+
+
+try:
+    from cryptography import x509
+    from cryptography.hazmat.primitives import serialization
+except ModuleNotFoundError:  # pragma: no cover - exercised in dependency-light environments
+    x509 = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
+    serialization = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
 
 from tigrcorn.config.model import ListenerConfig
 from tigrcorn.errors import ProtocolError

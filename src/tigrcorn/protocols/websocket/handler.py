@@ -79,10 +79,10 @@ class _WSAppSend:
             if subprotocol is not None and subprotocol not in self.allowed_subprotocols:
                 raise RuntimeError('websocket.accept selected a subprotocol not offered by the client')
             headers = [(bytes(k).lower(), bytes(v)) for k, v in message.get('headers', [])]
+            if get_header(headers, b'sec-websocket-extensions') is not None:
+                raise RuntimeError('websocket.accept must not override extension negotiation headers directly')
             compression_mode = self.config.websocket.compression if self.config is not None else 'off'
-            if compression_mode != 'permessage-deflate':
-                headers = [(k, v) for k, v in headers if k != b'sec-websocket-extensions']
-            elif self.state.get('permessage_deflate_offers') and get_header(headers, b'sec-websocket-extensions') is None:
+            if compression_mode == 'permessage-deflate' and self.state.get('permessage_deflate_offers'):
                 default_agreement = default_permessage_deflate_agreement(self.state.get('permessage_deflate_offers') or [])
                 if default_agreement is not None:
                     headers = headers + [(b'sec-websocket-extensions', default_agreement.as_header_value())]

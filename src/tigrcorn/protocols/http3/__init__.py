@@ -17,7 +17,6 @@ from .codec import (
     encode_settings,
     parse_frames,
 )
-from .handler import HTTP3DatagramHandler, HTTP3Session
 from .qpack import (
     FieldLine,
     QpackBlocked,
@@ -69,3 +68,15 @@ __all__ = [
     'QPACK_ENCODER_STREAM_ERROR',
     'QPACK_DECODER_STREAM_ERROR',
 ]
+
+
+def __getattr__(name: str):
+    if name in {"HTTP3DatagramHandler", "HTTP3Session"}:
+        from .handler import HTTP3DatagramHandler, HTTP3Session
+
+        mapping = {
+            "HTTP3DatagramHandler": HTTP3DatagramHandler,
+            "HTTP3Session": HTTP3Session,
+        }
+        return mapping[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

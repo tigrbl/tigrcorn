@@ -1,4 +1,3 @@
-from .connection import QuicConnection, QuicEvent
 from .crypto import (
     QUIC_V1_INITIAL_SALT,
     QuicPacketProtectionKeys,
@@ -83,5 +82,27 @@ __all__ = [
     'QuicLossRecovery',
 ]
 
-from .handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
-from .recovery import QuicLossRecovery
+
+def __getattr__(name: str):
+    if name in {"QuicConnection", "QuicEvent"}:
+        from .connection import QuicConnection, QuicEvent
+
+        mapping = {
+            "QuicConnection": QuicConnection,
+            "QuicEvent": QuicEvent,
+        }
+        return mapping[name]
+    if name in {"QuicTlsHandshakeDriver", "TransportParameters", "generate_self_signed_certificate"}:
+        from .handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
+
+        mapping = {
+            "QuicTlsHandshakeDriver": QuicTlsHandshakeDriver,
+            "TransportParameters": TransportParameters,
+            "generate_self_signed_certificate": generate_self_signed_certificate,
+        }
+        return mapping[name]
+    if name == "QuicLossRecovery":
+        from .recovery import QuicLossRecovery
+
+        return QuicLossRecovery
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
