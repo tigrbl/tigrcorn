@@ -50,132 +50,132 @@ async def _read_http1_response(reader: asyncio.StreamReader) -> tuple[bytes, byt
     return head, body
 
 
-class TestHTTPContentCodingRFC9110Tests:
-    async def test_http11_gzip_negotiation(self):
-        server, port = await _start_server(http_versions=['1.1'])
-        try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
-            writer.write(
-                b'GET / HTTP/1.1\r\n'
-                b'Host: localhost\r\n'
-                b'Accept-Encoding: gzip\r\n\r\n'
-            )
-            await writer.drain()
-            head, body = await _read_http1_response(reader)
-            assert b'content-encoding: gzip' in head.lower()
-            assert b'vary: accept-encoding' in head.lower()
-            assert gzip.decompress(body) == b'compress-me'
-            writer.close()
-            await writer.wait_closed()
-        finally:
-            await server.close()
 
-    async def test_http2_gzip_negotiation(self):
-        server, port = await _start_server(http_versions=['2'])
-        try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
-            writer.write(H2_PREFACE)
-            writer.write(serialize_settings({}))
-            headers = encode_header_block([
-                (b':method', b'GET'),
-                (b':scheme', b'http'),
-                (b':path', b'/'),
-                (b':authority', b'localhost'),
-                (b'accept-encoding', b'gzip'),
-            ])
-            frame_writer = FrameWriter()
-            writer.write(frame_writer.headers(1, headers, end_stream=True))
-            await writer.drain()
+async def test_http11_gzip_negotiation():
+    server, port = await _start_server(http_versions=['1.1'])
+    try:
+        reader, writer = await asyncio.open_connection('127.0.0.1', port)
+        writer.write(
+            b'GET / HTTP/1.1\r\n'
+            b'Host: localhost\r\n'
+            b'Accept-Encoding: gzip\r\n\r\n'
+        )
+        await writer.drain()
+        head, body = await _read_http1_response(reader)
+        assert b'content-encoding: gzip' in head.lower()
+        assert b'vary: accept-encoding' in head.lower()
+        assert gzip.decompress(body) == b'compress-me'
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()
 
-            buf = FrameBuffer()
-            response_headers: list[tuple[bytes, bytes]] = []
-            body = bytearray()
-            ended = False
-            while not ended:
-                data = await asyncio.wait_for(reader.read(65535), 2.0)
-                assert data
-                buf.feed(data)
-                for frame in buf.pop_all():
-                    if frame.frame_type == FRAME_SETTINGS:
-                        if frame.payload:
-                            decode_settings(frame.payload)
-                    elif frame.frame_type == FRAME_HEADERS:
-                        response_headers.extend(decode_header_block(frame.payload))
-                        if frame.flags & 0x1:
-                            ended = True
-                    elif frame.frame_type == FRAME_DATA:
-                        body.extend(frame.payload)
-                        if frame.flags & 0x1:
-                            ended = True
-                if response_headers and ended:
-                    break
-            assert (b'content-encoding' in b'gzip'), response_headers
-            assert (b'vary' in b'accept-encoding'), response_headers
-            assert gzip.decompress(bytes(body)) == b'compress-me'
-            writer.close()
-            await writer.wait_closed()
-        finally:
-            await server.close()
+async def test_http2_gzip_negotiation():
+    server, port = await _start_server(http_versions=['2'])
+    try:
+        reader, writer = await asyncio.open_connection('127.0.0.1', port)
+        writer.write(H2_PREFACE)
+        writer.write(serialize_settings({}))
+        headers = encode_header_block([
+            (b':method', b'GET'),
+            (b':scheme', b'http'),
+            (b':path', b'/'),
+            (b':authority', b'localhost'),
+            (b'accept-encoding', b'gzip'),
+        ])
+        frame_writer = FrameWriter()
+        writer.write(frame_writer.headers(1, headers, end_stream=True))
+        await writer.drain()
 
-    async def test_http3_gzip_negotiation(self):
-        server, port = await _start_server(http_versions=['3'], transport='udp')
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setblocking(False)
-        client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli-gzip')
-        core = HTTP3ConnectionCore()
-        loop = asyncio.get_running_loop()
-        try:
-            sock.sendto(client.build_initial(), ('127.0.0.1', port))
-            for _ in range(2):
-                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
-                for event in client.receive_datagram(data):
-                    if event.kind == 'stream':
-                        core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+        buf = FrameBuffer()
+        response_headers: list[tuple[bytes, bytes]] = []
+        body = bytearray()
+        ended = False
+        while not ended:
+            data = await asyncio.wait_for(reader.read(65535), 2.0)
+            assert data
+            buf.feed(data)
+            for frame in buf.pop_all():
+                if frame.frame_type == FRAME_SETTINGS:
+                    if frame.payload:
+                        decode_settings(frame.payload)
+                elif frame.frame_type == FRAME_HEADERS:
+                    response_headers.extend(decode_header_block(frame.payload))
+                    if frame.flags & 0x1:
+                        ended = True
+                elif frame.frame_type == FRAME_DATA:
+                    body.extend(frame.payload)
+                    if frame.flags & 0x1:
+                        ended = True
+            if response_headers and ended:
+                break
+        assert (b'content-encoding' in b'gzip'), response_headers
+        assert (b'vary' in b'accept-encoding'), response_headers
+        assert gzip.decompress(bytes(body)) == b'compress-me'
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()
 
-            request_payload = core.get_request(0).encode_request([
-                (b':method', b'GET'),
-                (b':scheme', b'https'),
-                (b':path', b'/'),
-                (b':authority', b'localhost'),
-                (b'accept-encoding', b'gzip'),
-            ])
-            sock.sendto(client.send_stream_data(0, request_payload, fin=True), ('127.0.0.1', port))
+async def test_http3_gzip_negotiation():
+    server, port = await _start_server(http_versions=['3'], transport='udp')
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setblocking(False)
+    client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli-gzip')
+    core = HTTP3ConnectionCore()
+    loop = asyncio.get_running_loop()
+    try:
+        sock.sendto(client.build_initial(), ('127.0.0.1', port))
+        for _ in range(2):
+            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            for event in client.receive_datagram(data):
+                if event.kind == 'stream':
+                    core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
 
-            response_state = None
-            while response_state is None or not response_state.ended:
-                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
-                for event in client.receive_datagram(data):
-                    if event.kind == 'stream' and event.stream_id == 0:
-                        response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-            assert response_state is not None
-            assert (b'content-encoding' in b'gzip'), response_state.headers
-            assert (b'vary' in b'accept-encoding'), response_state.headers
-            assert gzip.decompress(response_state.body) == b'compress-me'
-        finally:
-            sock.close()
-            await server.close()
+        request_payload = core.get_request(0).encode_request([
+            (b':method', b'GET'),
+            (b':scheme', b'https'),
+            (b':path', b'/'),
+            (b':authority', b'localhost'),
+            (b'accept-encoding', b'gzip'),
+        ])
+        sock.sendto(client.send_stream_data(0, request_payload, fin=True), ('127.0.0.1', port))
 
-    def test_identity_forbidden_yields_406(self):
-        status, headers, body, selection = apply_http_content_coding(
-            request_headers=[(b'accept-encoding', b'identity;q=0,*;q=0')],
+        response_state = None
+        while response_state is None or not response_state.ended:
+            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            for event in client.receive_datagram(data):
+                if event.kind == 'stream' and event.stream_id == 0:
+                    response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+        assert response_state is not None
+        assert (b'content-encoding' in b'gzip'), response_state.headers
+        assert (b'vary' in b'accept-encoding'), response_state.headers
+        assert gzip.decompress(response_state.body) == b'compress-me'
+    finally:
+        sock.close()
+        await server.close()
+
+def test_identity_forbidden_yields_406():
+    status, headers, body, selection = apply_http_content_coding(
+        request_headers=[(b'accept-encoding', b'identity;q=0,*;q=0')],
+        response_headers=[(b'content-type', b'text/plain')],
+        body=b'compress-me',
+        status=200,
+    )
+    assert status == 406
+    assert selection.not_acceptable
+    assert (b'vary' in b'accept-encoding'), headers
+    assert body == b'not acceptable'
+def test_brotli_selection_wins_when_preferred():
+    selection = select_content_coding([(b'accept-encoding', b'gzip;q=0.3, br;q=1.0')])
+    assert selection.coding == 'br'
+    if brotli is not None:
+        status, headers, body, _ = apply_http_content_coding(
+            request_headers=[(b'accept-encoding', b'br')],
             response_headers=[(b'content-type', b'text/plain')],
             body=b'compress-me',
             status=200,
         )
-        assert status == 406
-        assert selection.not_acceptable
-        assert (b'vary' in b'accept-encoding'), headers
-        assert body == b'not acceptable'
-    def test_brotli_selection_wins_when_preferred(self):
-        selection = select_content_coding([(b'accept-encoding', b'gzip;q=0.3, br;q=1.0')])
-        assert selection.coding == 'br'
-        if brotli is not None:
-            status, headers, body, _ = apply_http_content_coding(
-                request_headers=[(b'accept-encoding', b'br')],
-                response_headers=[(b'content-type', b'text/plain')],
-                body=b'compress-me',
-                status=200,
-            )
-            assert status == 200
-            assert (b'content-encoding' in b'br'), headers
-            assert brotli.decompress(body) == b'compress-me'
+        assert status == 200
+        assert (b'content-encoding' in b'br'), headers
+        assert brotli.decompress(body) == b'compress-me'

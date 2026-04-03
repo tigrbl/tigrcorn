@@ -1,7 +1,10 @@
-.PHONY: test certification-env-freeze phase9-release-workflow
+.PHONY: test test-pytest certification-env-freeze phase9-release-workflow
 
 test:
 	PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py' -v
+
+test-pytest:
+	uv run python -m pytest tests/ -v
 
 
 certification-env-freeze:

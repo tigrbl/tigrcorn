@@ -68,224 +68,224 @@ async def _read_http_response(reader: asyncio.StreamReader) -> tuple[bytes, byte
     return head, body
 
 
-class TestPhase3H1WebSocketOperatorSurfaceTests:
-    def test_parser_accepts_phase3_flags(self):
-        parser = build_parser()
-        ns = parser.parse_args(
-            [
-                'tests.fixtures_pkg.appmod:app',
-                '--http1-max-incomplete-event-size', '8192',
-                '--http1-buffer-size', '4096',
-                '--http1-header-read-timeout', '2.5',
-                '--no-http1-keep-alive',
-                '--websocket-max-queue', '64',
-            ]
-        )
-        assert ns.http1_max_incomplete_event_size == 8192
-        assert ns.http1_buffer_size == 4096
-        assert ns.http1_header_read_timeout == 2.5
-        assert not (ns.http1_keep_alive)
-        assert ns.websocket_max_queue == 64
-    def test_build_config_from_namespace_maps_phase3_submodels(self):
-        parser = build_parser()
-        ns = parser.parse_args(
-            [
-                'tests.fixtures_pkg.appmod:app',
-                '--http1-max-incomplete-event-size', '16384',
-                '--http1-buffer-size', '2048',
-                '--http1-header-read-timeout', '1.25',
-                '--no-http1-keep-alive',
-                '--websocket-max-message-size', '2048',
-                '--websocket-max-queue', '8',
-            ]
-        )
+
+def test_parser_accepts_phase3_flags():
+    parser = build_parser()
+    ns = parser.parse_args(
+        [
+            'tests.fixtures_pkg.appmod:app',
+            '--http1-max-incomplete-event-size', '8192',
+            '--http1-buffer-size', '4096',
+            '--http1-header-read-timeout', '2.5',
+            '--no-http1-keep-alive',
+            '--websocket-max-queue', '64',
+        ]
+    )
+    assert ns.http1_max_incomplete_event_size == 8192
+    assert ns.http1_buffer_size == 4096
+    assert ns.http1_header_read_timeout == 2.5
+    assert not (ns.http1_keep_alive)
+    assert ns.websocket_max_queue == 64
+def test_build_config_from_namespace_maps_phase3_submodels():
+    parser = build_parser()
+    ns = parser.parse_args(
+        [
+            'tests.fixtures_pkg.appmod:app',
+            '--http1-max-incomplete-event-size', '16384',
+            '--http1-buffer-size', '2048',
+            '--http1-header-read-timeout', '1.25',
+            '--no-http1-keep-alive',
+            '--websocket-max-message-size', '2048',
+            '--websocket-max-queue', '8',
+        ]
+    )
+    config = build_config_from_namespace(ns)
+    assert config.http.http1_max_incomplete_event_size == 16384
+    assert config.http.http1_buffer_size == 2048
+    assert config.http.http1_header_read_timeout == 1.25
+    assert not (config.http.http1_keep_alive)
+    assert config.websocket.max_message_size == 2048
+    assert config.websocket.max_queue == 8
+def test_phase3_env_surface_is_respected():
+    parser = build_parser()
+    ns = parser.parse_args(['--env-prefix', 'PHASE3TEST'])
+    with patch.dict(
+        os.environ,
+        {
+            'PHASE3TEST_HTTP1_BUFFER_SIZE': '4096',
+            'PHASE3TEST_HTTP1_MAX_INCOMPLETE_EVENT_SIZE': '8192',
+            'PHASE3TEST_HTTP1_HEADER_READ_TIMEOUT': '0.75',
+            'PHASE3TEST_HTTP1_KEEP_ALIVE': 'false',
+            'PHASE3TEST_WEBSOCKET_MAX_QUEUE': '12',
+        },
+        clear=False,
+    ):
         config = build_config_from_namespace(ns)
-        assert config.http.http1_max_incomplete_event_size == 16384
-        assert config.http.http1_buffer_size == 2048
-        assert config.http.http1_header_read_timeout == 1.25
-        assert not (config.http.http1_keep_alive)
-        assert config.websocket.max_message_size == 2048
-        assert config.websocket.max_queue == 8
-    def test_phase3_env_surface_is_respected(self):
-        parser = build_parser()
-        ns = parser.parse_args(['--env-prefix', 'PHASE3TEST'])
-        with patch.dict(
-            os.environ,
-            {
-                'PHASE3TEST_HTTP1_BUFFER_SIZE': '4096',
-                'PHASE3TEST_HTTP1_MAX_INCOMPLETE_EVENT_SIZE': '8192',
-                'PHASE3TEST_HTTP1_HEADER_READ_TIMEOUT': '0.75',
-                'PHASE3TEST_HTTP1_KEEP_ALIVE': 'false',
-                'PHASE3TEST_WEBSOCKET_MAX_QUEUE': '12',
-            },
-            clear=False,
-        ):
-            config = build_config_from_namespace(ns)
-        assert config.http.http1_buffer_size == 4096
-        assert config.http.http1_max_incomplete_event_size == 8192
-        assert config.http.http1_header_read_timeout == 0.75
-        assert not (config.http.http1_keep_alive)
-        assert config.websocket.max_queue == 12
-    async def test_http11_parser_applies_incomplete_event_cap(self):
-        reader = asyncio.StreamReader()
+    assert config.http.http1_buffer_size == 4096
+    assert config.http.http1_max_incomplete_event_size == 8192
+    assert config.http.http1_header_read_timeout == 0.75
+    assert not (config.http.http1_keep_alive)
+    assert config.websocket.max_queue == 12
+async def test_http11_parser_applies_incomplete_event_cap():
+    reader = asyncio.StreamReader()
+    request = (
+        b'GET / HTTP/1.1\r\n'
+        b'Host: localhost\r\n'
+        b'X-Large: ' + (b'a' * 128) + b'\r\n\r\n'
+    )
+    reader.feed_data(request)
+    reader.feed_eof()
+    with pytest.raises(ProtocolError):
+        await read_http11_request_head(
+            PrebufferedReader(reader),
+            max_header_size=4096,
+            max_incomplete_event_size=64,
+        )
+
+async def test_http11_buffer_size_controls_streaming_request_chunks():
+    seen_chunks: list[int] = []
+
+    async def app(scope, receive, send):
+        while True:
+            message = await receive()
+            if message['type'] != 'http.request':
+                break
+            seen_chunks.append(len(message.get('body', b'')))
+            if not message.get('more_body', False):
+                break
+        body = ','.join(str(size) for size in seen_chunks).encode('ascii')
+        await send({'type': 'http.response.start', 'status': 200, 'headers': [(b'content-type', b'text/plain')]})
+        await send({'type': 'http.response.body', 'body': body, 'more_body': False})
+
+    server, port = await _start_http11_server(
+        app,
+        config_mutator=lambda cfg: setattr(cfg.http, 'http1_buffer_size', 4),
+    )
+    try:
+        reader, writer = await asyncio.open_connection('127.0.0.1', port)
+        payload = b'abcdefghij'
         request = (
-            b'GET / HTTP/1.1\r\n'
+            b'POST /upload HTTP/1.1\r\n'
             b'Host: localhost\r\n'
-            b'X-Large: ' + (b'a' * 128) + b'\r\n\r\n'
+            b'Content-Length: 10\r\n\r\n' + payload
         )
-        reader.feed_data(request)
-        reader.feed_eof()
-        with pytest.raises(ProtocolError):
-            await read_http11_request_head(
-                PrebufferedReader(reader),
-                max_header_size=4096,
-                max_incomplete_event_size=64,
-            )
+        writer.write(request)
+        await writer.drain()
+        _head, body = await _read_http_response(reader)
+        assert body == b'4,4,2'
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()
 
-    async def test_http11_buffer_size_controls_streaming_request_chunks(self):
-        seen_chunks: list[int] = []
+async def test_http11_keep_alive_disable_forces_connection_close():
+    seen_paths: list[str] = []
 
-        async def app(scope, receive, send):
-            while True:
-                message = await receive()
-                if message['type'] != 'http.request':
-                    break
-                seen_chunks.append(len(message.get('body', b'')))
-                if not message.get('more_body', False):
-                    break
-            body = ','.join(str(size) for size in seen_chunks).encode('ascii')
-            await send({'type': 'http.response.start', 'status': 200, 'headers': [(b'content-type', b'text/plain')]})
-            await send({'type': 'http.response.body', 'body': body, 'more_body': False})
+    async def app(scope, receive, send):
+        seen_paths.append(scope['path'])
+        await receive()
+        await send({'type': 'http.response.start', 'status': 200, 'headers': [(b'content-type', b'text/plain')]})
+        await send({'type': 'http.response.body', 'body': b'ok', 'more_body': False})
 
-        server, port = await _start_http11_server(
-            app,
-            config_mutator=lambda cfg: setattr(cfg.http, 'http1_buffer_size', 4),
+    server, port = await _start_http11_server(
+        app,
+        config_mutator=lambda cfg: setattr(cfg.http, 'http1_keep_alive', False),
+    )
+    try:
+        reader, writer = await asyncio.open_connection('127.0.0.1', port)
+        writer.write(
+            b'GET /first HTTP/1.1\r\nHost: localhost\r\n\r\n'
+            b'GET /second HTTP/1.1\r\nHost: localhost\r\n\r\n'
         )
-        try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
-            payload = b'abcdefghij'
-            request = (
-                b'POST /upload HTTP/1.1\r\n'
-                b'Host: localhost\r\n'
-                b'Content-Length: 10\r\n\r\n' + payload
-            )
-            writer.write(request)
-            await writer.drain()
-            _head, body = await _read_http_response(reader)
-            assert body == b'4,4,2'
-            writer.close()
-            await writer.wait_closed()
-        finally:
-            await server.close()
+        await writer.drain()
+        head, body = await _read_http_response(reader)
+        assert b'connection: close' in head.lower()
+        assert body == b'ok'
+        tail = await asyncio.wait_for(reader.read(), 1.0)
+        assert tail == b''
+        assert seen_paths == ['/first']
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()
 
-    async def test_http11_keep_alive_disable_forces_connection_close(self):
-        seen_paths: list[str] = []
+async def test_http11_header_read_timeout_tightens_generic_timeout():
+    async def app(scope, receive, send):
+        await receive()
+        await send({'type': 'http.response.start', 'status': 200, 'headers': []})
+        await send({'type': 'http.response.body', 'body': b'ok', 'more_body': False})
 
-        async def app(scope, receive, send):
-            seen_paths.append(scope['path'])
-            await receive()
-            await send({'type': 'http.response.start', 'status': 200, 'headers': [(b'content-type', b'text/plain')]})
-            await send({'type': 'http.response.body', 'body': b'ok', 'more_body': False})
+    def mutate(cfg):
+        cfg.http.read_timeout = 5.0
+        cfg.http.keep_alive_timeout = 5.0
+        cfg.http.http1_header_read_timeout = 0.1
 
-        server, port = await _start_http11_server(
-            app,
-            config_mutator=lambda cfg: setattr(cfg.http, 'http1_keep_alive', False),
-        )
-        try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
-            writer.write(
-                b'GET /first HTTP/1.1\r\nHost: localhost\r\n\r\n'
-                b'GET /second HTTP/1.1\r\nHost: localhost\r\n\r\n'
-            )
-            await writer.drain()
-            head, body = await _read_http_response(reader)
-            assert b'connection: close' in head.lower()
-            assert body == b'ok'
-            tail = await asyncio.wait_for(reader.read(), 1.0)
-            assert tail == b''
-            assert seen_paths == ['/first']
-            writer.close()
-            await writer.wait_closed()
-        finally:
-            await server.close()
+    server, port = await _start_http11_server(app, config_mutator=mutate)
+    try:
+        reader, writer = await asyncio.open_connection('127.0.0.1', port)
+        writer.write(b'GET / HTTP/1.1\r\nHost: localhost')
+        await writer.drain()
+        data = await asyncio.wait_for(reader.read(), 1.0)
+        assert data == b''
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()
 
-    async def test_http11_header_read_timeout_tightens_generic_timeout(self):
-        async def app(scope, receive, send):
-            await receive()
-            await send({'type': 'http.response.start', 'status': 200, 'headers': []})
-            await send({'type': 'http.response.body', 'body': b'ok', 'more_body': False})
+async def test_queue_receive_honors_max_size():
+    receive = QueueReceive(max_size=1)
+    await receive.put({'type': 'one'})
+    blocked = asyncio.create_task(receive.put({'type': 'two'}))
+    await asyncio.sleep(0.05)
+    assert not (blocked.done())
+    first = await receive()
+    assert first['type'] == 'one'
+    await asyncio.wait_for(blocked, 1.0)
+    second = await receive()
+    assert second['type'] == 'two'
+    assert receive.max_size == 1
+def test_websocket_handlers_receive_queue_size_from_config():
+    config = build_config(websocket_max_queue=7)
+    request = _build_ws_request()
+    access_logger = AccessLogger(logging.getLogger('phase3'), enabled=False)
 
-        def mutate(cfg):
-            cfg.http.read_timeout = 5.0
-            cfg.http.keep_alive_timeout = 5.0
-            cfg.http.http1_header_read_timeout = 0.1
+    h1 = WebSocketConnectionHandler(
+        app=lambda scope, receive, send: None,
+        config=config,
+        access_logger=access_logger,
+        request=request,
+        reader=object(),
+        writer=object(),
+        client=('127.0.0.1', 1),
+        server=('127.0.0.1', 2),
+        scheme='ws',
+    )
+    assert h1.receive.max_size == 7
+    async def _send_headers(status: int, headers: list[tuple[bytes, bytes]], end_stream: bool) -> None:
+        return None
 
-        server, port = await _start_http11_server(app, config_mutator=mutate)
-        try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
-            writer.write(b'GET / HTTP/1.1\r\nHost: localhost')
-            await writer.drain()
-            data = await asyncio.wait_for(reader.read(), 1.0)
-            assert data == b''
-            writer.close()
-            await writer.wait_closed()
-        finally:
-            await server.close()
+    async def _send_data(data: bytes, end_stream: bool) -> None:
+        return None
 
-    async def test_queue_receive_honors_max_size(self):
-        receive = QueueReceive(max_size=1)
-        await receive.put({'type': 'one'})
-        blocked = asyncio.create_task(receive.put({'type': 'two'}))
-        await asyncio.sleep(0.05)
-        assert not (blocked.done())
-        first = await receive()
-        assert first['type'] == 'one'
-        await asyncio.wait_for(blocked, 1.0)
-        second = await receive()
-        assert second['type'] == 'two'
-        assert receive.max_size == 1
-    def test_websocket_handlers_receive_queue_size_from_config(self):
-        config = build_config(websocket_max_queue=7)
-        request = _build_ws_request()
-        access_logger = AccessLogger(logging.getLogger('phase3'), enabled=False)
-
-        h1 = WebSocketConnectionHandler(
-            app=lambda scope, receive, send: None,
-            config=config,
-            access_logger=access_logger,
-            request=request,
-            reader=object(),
-            writer=object(),
-            client=('127.0.0.1', 1),
-            server=('127.0.0.1', 2),
-            scheme='ws',
-        )
-        assert h1.receive.max_size == 7
-        async def _send_headers(status: int, headers: list[tuple[bytes, bytes]], end_stream: bool) -> None:
-            return None
-
-        async def _send_data(data: bytes, end_stream: bool) -> None:
-            return None
-
-        h2 = H2WebSocketSession(
-            app=lambda scope, receive, send: None,
-            config=config,
-            request=request,
-            client=('127.0.0.1', 1),
-            server=('127.0.0.1', 2),
-            scheme='https',
-            send_headers=_send_headers,
-            send_data=_send_data,
-        )
-        assert h2.receive.max_size == 7
-        h3 = H3WebSocketSession(
-            app=lambda scope, receive, send: None,
-            config=config,
-            request=request,
-            client=('127.0.0.1', 1),
-            server=('127.0.0.1', 2),
-            scheme='https',
-            send_headers=_send_headers,
-            send_data=_send_data,
-        )
-        assert h3.receive.max_size == 7
+    h2 = H2WebSocketSession(
+        app=lambda scope, receive, send: None,
+        config=config,
+        request=request,
+        client=('127.0.0.1', 1),
+        server=('127.0.0.1', 2),
+        scheme='https',
+        send_headers=_send_headers,
+        send_data=_send_data,
+    )
+    assert h2.receive.max_size == 7
+    h3 = H3WebSocketSession(
+        app=lambda scope, receive, send: None,
+        config=config,
+        request=request,
+        client=('127.0.0.1', 1),
+        server=('127.0.0.1', 2),
+        scheme='https',
+        send_headers=_send_headers,
+        send_data=_send_data,
+    )
+    assert h3.receive.max_size == 7

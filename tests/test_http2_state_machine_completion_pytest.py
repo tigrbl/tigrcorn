@@ -3,8 +3,8 @@ import asyncio
 from tigrcorn.config.defaults import default_config
 from tigrcorn.errors import ProtocolError
 from tigrcorn.observability.logging import AccessLogger, configure_logging
-from tigrcorn.protocols.http2.codec import (
 import pytest
+from tigrcorn.protocols.http2.codec import (
     FLAG_ACK,
     FLAG_END_HEADERS,
     FLAG_END_STREAM,
@@ -42,161 +42,161 @@ class _CapturingWriter:
         return None
 
 
-class TestHTTP2StateMachineCompletionTests:
-    def _handler(self) -> HTTP2ConnectionHandler:
-        async def app(scope, receive, send):
-            return None
 
-        return HTTP2ConnectionHandler(
-            app=app,
-            config=default_config(),
-            access_logger=AccessLogger(configure_logging("warning"), enabled=False),
-            reader=_DummyReader(),
-            writer=_CapturingWriter(),
-            client=None,
-            server=None,
-            scheme="http",
-        )
+def _handler() -> HTTP2ConnectionHandler:
+    async def app(scope, receive, send):
+        return None
 
-    def _request_headers(self, *, method: bytes = b"GET") -> bytes:
-        return encode_header_block([
-            (b":method", method),
-            (b":path", b"/"),
-            (b":scheme", b"http"),
-            (b":authority", b"example"),
-        ])
+    return HTTP2ConnectionHandler(
+        app=app,
+        config=default_config(),
+        access_logger=AccessLogger(configure_logging("warning"), enabled=False),
+        reader=_DummyReader(),
+        writer=_CapturingWriter(),
+        client=None,
+        server=None,
+        scheme="http",
+    )
 
-    def test_stream_lifecycle_transitions_are_explicit(self):
-        state = H2StreamState(1)
-        assert state.lifecycle == H2StreamLifecycle.IDLE
-        state.open_remote(end_stream=False)
-        assert state.lifecycle == H2StreamLifecycle.OPEN
-        state.receive_end_stream()
-        assert state.lifecycle == H2StreamLifecycle.HALF_CLOSED_REMOTE
-        state.send_end_stream()
-        assert state.lifecycle == H2StreamLifecycle.CLOSED
-        assert state.closed
-    def test_reserved_local_stream_transitions_are_explicit(self):
-        state = H2StreamState(2)
-        state.reserve_local()
-        assert state.lifecycle == H2StreamLifecycle.RESERVED_LOCAL
-        state.open_local_reserved(end_stream=False)
-        assert state.lifecycle == H2StreamLifecycle.HALF_CLOSED_REMOTE
-        state.send_end_stream()
-        assert state.lifecycle == H2StreamLifecycle.CLOSED
-        assert state.closed
-    def test_first_frame_after_preface_must_be_settings(self):
-        handler = self._handler()
-        frame = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=b"")
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_frame(frame))
+def _request_headers(*, method: bytes = b"GET") -> bytes:
+    return encode_header_block([
+        (b":method", method),
+        (b":path", b"/"),
+        (b":scheme", b"http"),
+        (b":authority", b"example"),
+    ])
 
-    def test_max_concurrent_streams_are_enforced(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        handler.state.local_settings[0x3] = 1
-        first = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=self._request_headers())
-        second = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=3, payload=self._request_headers())
-        asyncio.run(handler._handle_headers(first))
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_headers(second))
-
-    def test_continuation_does_not_interpret_end_stream_flag(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        first = HTTP2Frame(
-            frame_type=FRAME_HEADERS,
-            flags=0,
-            stream_id=1,
-            payload=self._request_headers(),
-        )
-        asyncio.run(handler._handle_headers(first))
-        state = handler.streams.find(1)
-        assert state is not None
-        assert state.awaiting_continuation
-        cont = HTTP2Frame(
-            frame_type=FRAME_CONTINUATION,
-            flags=FLAG_END_HEADERS | FLAG_END_STREAM,
-            stream_id=1,
-            payload=b"",
-        )
-        asyncio.run(handler._handle_continuation(cont))
-        state = handler.streams.find(1)
-        assert state is not None
-        assert not (state.end_stream_received)
-        assert state.lifecycle == H2StreamLifecycle.OPEN
-    def test_priority_self_dependency_is_rejected(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        payload = (1).to_bytes(4, "big") + bytes([16])
-        frame = HTTP2Frame(frame_type=FRAME_PRIORITY, flags=0, stream_id=1, payload=payload)
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_frame(frame))
-
-    def test_client_push_promise_is_rejected(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        frame = HTTP2Frame(frame_type=FRAME_PUSH_PROMISE, flags=0, stream_id=1, payload=b"\x00\x00\x00\x02")
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_frame(frame))
-
-    def test_window_update_is_thresholded_not_immediate(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        writer = handler.writer
-        headers = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=self._request_headers())
-        asyncio.run(handler._handle_headers(headers))
-        data_small = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"a" * 32_000)
-        asyncio.run(handler._handle_data(data_small))
-        assert writer.writes == []
-        data_threshold = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"b" * 1_000)
-        asyncio.run(handler._handle_data(data_threshold))
-        buf = FrameBuffer()
-        for raw in writer.writes:
-            buf.feed(raw)
-        frames = buf.pop_all()
-        assert [frame.frame_type for frame in frames] == [FRAME_WINDOW_UPDATE, FRAME_WINDOW_UPDATE]
-        assert frames[0].stream_id == 0
-        assert frames[1].stream_id == 1
-    def test_stream_receive_flow_control_overflow_is_rejected(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        headers = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=self._request_headers())
-        asyncio.run(handler._handle_headers(headers))
-        state = handler.streams.find(1)
-        assert state is not None
-        state.receive_window.available = 8
-        frame = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"0123456789")
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_data(frame))
-
-    def test_goaway_last_stream_id_must_not_increase(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        first = HTTP2Frame(frame_type=FRAME_GOAWAY, flags=0, stream_id=0, payload=serialize_goaway(5)[9:])
-        second = HTTP2Frame(frame_type=FRAME_GOAWAY, flags=0, stream_id=0, payload=serialize_goaway(7)[9:])
-        asyncio.run(handler._handle_frame(first))
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_frame(second))
-
-    def test_new_stream_after_peer_goaway_is_rejected(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        goaway = HTTP2Frame(frame_type=FRAME_GOAWAY, flags=0, stream_id=0, payload=serialize_goaway(0)[9:])
-        asyncio.run(handler._handle_frame(goaway))
-        frame = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=self._request_headers())
-        with pytest.raises(ProtocolError):
-            asyncio.run(handler._handle_headers(frame))
-
-    def test_window_update_on_closed_stream_is_ignored(self):
-        handler = self._handler()
-        handler.state.remote_settings_seen = True
-        headers = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=self._request_headers())
-        asyncio.run(handler._handle_headers(headers))
-        handler.streams.close(1)
-        frame = HTTP2Frame(frame_type=FRAME_WINDOW_UPDATE, flags=0, stream_id=1, payload=(1).to_bytes(4, "big"))
+def test_stream_lifecycle_transitions_are_explicit():
+    state = H2StreamState(1)
+    assert state.lifecycle == H2StreamLifecycle.IDLE
+    state.open_remote(end_stream=False)
+    assert state.lifecycle == H2StreamLifecycle.OPEN
+    state.receive_end_stream()
+    assert state.lifecycle == H2StreamLifecycle.HALF_CLOSED_REMOTE
+    state.send_end_stream()
+    assert state.lifecycle == H2StreamLifecycle.CLOSED
+    assert state.closed
+def test_reserved_local_stream_transitions_are_explicit():
+    state = H2StreamState(2)
+    state.reserve_local()
+    assert state.lifecycle == H2StreamLifecycle.RESERVED_LOCAL
+    state.open_local_reserved(end_stream=False)
+    assert state.lifecycle == H2StreamLifecycle.HALF_CLOSED_REMOTE
+    state.send_end_stream()
+    assert state.lifecycle == H2StreamLifecycle.CLOSED
+    assert state.closed
+def test_first_frame_after_preface_must_be_settings():
+    handler = _handler()
+    frame = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=b"")
+    with pytest.raises(ProtocolError):
         asyncio.run(handler._handle_frame(frame))
 
-    def test_goaway_payload_roundtrip_used_by_handler(self):
-        last_stream_id, error_code, debug = parse_goaway(serialize_goaway(3, error_code=2, debug_data=b"dbg")[9:])
-        assert (last_stream_id == error_code, debug), (3, 2, b"dbg")
+def test_max_concurrent_streams_are_enforced():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    handler.state.local_settings[0x3] = 1
+    first = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=_request_headers())
+    second = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=3, payload=_request_headers())
+    asyncio.run(handler._handle_headers(first))
+    with pytest.raises(ProtocolError):
+        asyncio.run(handler._handle_headers(second))
+
+def test_continuation_does_not_interpret_end_stream_flag():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    first = HTTP2Frame(
+        frame_type=FRAME_HEADERS,
+        flags=0,
+        stream_id=1,
+        payload=_request_headers(),
+    )
+    asyncio.run(handler._handle_headers(first))
+    state = handler.streams.find(1)
+    assert state is not None
+    assert state.awaiting_continuation
+    cont = HTTP2Frame(
+        frame_type=FRAME_CONTINUATION,
+        flags=FLAG_END_HEADERS | FLAG_END_STREAM,
+        stream_id=1,
+        payload=b"",
+    )
+    asyncio.run(handler._handle_continuation(cont))
+    state = handler.streams.find(1)
+    assert state is not None
+    assert not (state.end_stream_received)
+    assert state.lifecycle == H2StreamLifecycle.OPEN
+def test_priority_self_dependency_is_rejected():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    payload = (1).to_bytes(4, "big") + bytes([16])
+    frame = HTTP2Frame(frame_type=FRAME_PRIORITY, flags=0, stream_id=1, payload=payload)
+    with pytest.raises(ProtocolError):
+        asyncio.run(handler._handle_frame(frame))
+
+def test_client_push_promise_is_rejected():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    frame = HTTP2Frame(frame_type=FRAME_PUSH_PROMISE, flags=0, stream_id=1, payload=b"\x00\x00\x00\x02")
+    with pytest.raises(ProtocolError):
+        asyncio.run(handler._handle_frame(frame))
+
+def test_window_update_is_thresholded_not_immediate():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    writer = handler.writer
+    headers = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=_request_headers())
+    asyncio.run(handler._handle_headers(headers))
+    data_small = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"a" * 32_000)
+    asyncio.run(handler._handle_data(data_small))
+    assert writer.writes == []
+    data_threshold = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"b" * 1_000)
+    asyncio.run(handler._handle_data(data_threshold))
+    buf = FrameBuffer()
+    for raw in writer.writes:
+        buf.feed(raw)
+    frames = buf.pop_all()
+    assert [frame.frame_type for frame in frames] == [FRAME_WINDOW_UPDATE, FRAME_WINDOW_UPDATE]
+    assert frames[0].stream_id == 0
+    assert frames[1].stream_id == 1
+def test_stream_receive_flow_control_overflow_is_rejected():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    headers = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=_request_headers())
+    asyncio.run(handler._handle_headers(headers))
+    state = handler.streams.find(1)
+    assert state is not None
+    state.receive_window.available = 8
+    frame = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"0123456789")
+    with pytest.raises(ProtocolError):
+        asyncio.run(handler._handle_data(frame))
+
+def test_goaway_last_stream_id_must_not_increase():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    first = HTTP2Frame(frame_type=FRAME_GOAWAY, flags=0, stream_id=0, payload=serialize_goaway(5)[9:])
+    second = HTTP2Frame(frame_type=FRAME_GOAWAY, flags=0, stream_id=0, payload=serialize_goaway(7)[9:])
+    asyncio.run(handler._handle_frame(first))
+    with pytest.raises(ProtocolError):
+        asyncio.run(handler._handle_frame(second))
+
+def test_new_stream_after_peer_goaway_is_rejected():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    goaway = HTTP2Frame(frame_type=FRAME_GOAWAY, flags=0, stream_id=0, payload=serialize_goaway(0)[9:])
+    asyncio.run(handler._handle_frame(goaway))
+    frame = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=_request_headers())
+    with pytest.raises(ProtocolError):
+        asyncio.run(handler._handle_headers(frame))
+
+def test_window_update_on_closed_stream_is_ignored():
+    handler = _handler()
+    handler.state.remote_settings_seen = True
+    headers = HTTP2Frame(frame_type=FRAME_HEADERS, flags=FLAG_END_HEADERS, stream_id=1, payload=_request_headers())
+    asyncio.run(handler._handle_headers(headers))
+    handler.streams.close(1)
+    frame = HTTP2Frame(frame_type=FRAME_WINDOW_UPDATE, flags=0, stream_id=1, payload=(1).to_bytes(4, "big"))
+    asyncio.run(handler._handle_frame(frame))
+
+def test_goaway_payload_roundtrip_used_by_handler():
+    last_stream_id, error_code, debug = parse_goaway(serialize_goaway(3, error_code=2, debug_data=b"dbg")[9:])
+    assert (last_stream_id == error_code, debug), (3, 2, b"dbg")

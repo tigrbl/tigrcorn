@@ -17,69 +17,69 @@ async def _start_server(app):
     return server, port
 
 
-class TestHTTP2WebSocketRFC8441Tests:
-    async def test_extended_connect_websocket_roundtrip(self):
-        seen = {}
 
-        async def app(scope, receive, send):
-            assert scope['type'] == 'websocket'
-            assert scope['http_version'] == '2'
-            connect = await receive()
-            assert connect['type'] == 'websocket.connect'
-            await send({'type': 'websocket.accept', 'subprotocol': 'chat', 'headers': []})
-            event = await receive()
-            seen['text'] = event['text']
-            await send({'type': 'websocket.send', 'text': event['text']})
-            await send({'type': 'websocket.close', 'code': 1000})
+async def test_extended_connect_websocket_roundtrip():
+    seen = {}
 
-        server, port = await _start_server(app)
-        try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
-            frame_writer = FrameWriter()
-            writer.write(H2_PREFACE)
-            writer.write(serialize_settings({}))
-            header_block = encode_header_block([
-                (b':method', b'CONNECT'),
-                (b':protocol', b'websocket'),
-                (b':scheme', b'http'),
-                (b':path', b'/chat'),
-                (b':authority', b'example'),
-                (b'sec-websocket-version', b'13'),
-                (b'sec-websocket-protocol', b'chat'),
-            ])
-            writer.write(frame_writer.headers(1, header_block, end_stream=False))
-            writer.write(frame_writer.data(1, encode_frame(0x1, b'hello-h2-ws', masked=True), end_stream=False))
-            await writer.drain()
+    async def app(scope, receive, send):
+        assert scope['type'] == 'websocket'
+        assert scope['http_version'] == '2'
+        connect = await receive()
+        assert connect['type'] == 'websocket.connect'
+        await send({'type': 'websocket.accept', 'subprotocol': 'chat', 'headers': []})
+        event = await receive()
+        seen['text'] = event['text']
+        await send({'type': 'websocket.send', 'text': event['text']})
+        await send({'type': 'websocket.close', 'code': 1000})
 
-            buf = FrameBuffer()
-            response_headers = []
-            ws_data = bytearray()
-            end_stream = False
-            while not end_stream:
-                data = await asyncio.wait_for(reader.read(65535), 2.0)
-                assert data
-                buf.feed(data)
-                for frame in buf.pop_all():
-                    if frame.frame_type == FRAME_SETTINGS:
-                        if frame.payload:
-                            decode_settings(frame.payload)
-                    elif frame.frame_type == FRAME_HEADERS:
-                        response_headers.extend(decode_header_block(frame.payload))
-                        if frame.flags & 0x1:
-                            end_stream = True
-                    elif frame.frame_type == FRAME_DATA:
-                        ws_data.extend(frame.payload)
-                        if frame.flags & 0x1:
-                            end_stream = True
-                if response_headers and ws_data and end_stream:
-                    break
+    server, port = await _start_server(app)
+    try:
+        reader, writer = await asyncio.open_connection('127.0.0.1', port)
+        frame_writer = FrameWriter()
+        writer.write(H2_PREFACE)
+        writer.write(serialize_settings({}))
+        header_block = encode_header_block([
+            (b':method', b'CONNECT'),
+            (b':protocol', b'websocket'),
+            (b':scheme', b'http'),
+            (b':path', b'/chat'),
+            (b':authority', b'example'),
+            (b'sec-websocket-version', b'13'),
+            (b'sec-websocket-protocol', b'chat'),
+        ])
+        writer.write(frame_writer.headers(1, header_block, end_stream=False))
+        writer.write(frame_writer.data(1, encode_frame(0x1, b'hello-h2-ws', masked=True), end_stream=False))
+        await writer.drain()
 
-            assert (b':status' in b'200'), response_headers
-            assert (b'sec-websocket-protocol' in b'chat'), response_headers
-            frame = parse_frame_bytes(bytes(ws_data), expect_masked=False)
-            assert frame.payload.decode('utf-8') == 'hello-h2-ws'
-            assert seen['text'] == 'hello-h2-ws'
-            writer.close()
-            await writer.wait_closed()
-        finally:
-            await server.close()
+        buf = FrameBuffer()
+        response_headers = []
+        ws_data = bytearray()
+        end_stream = False
+        while not end_stream:
+            data = await asyncio.wait_for(reader.read(65535), 2.0)
+            assert data
+            buf.feed(data)
+            for frame in buf.pop_all():
+                if frame.frame_type == FRAME_SETTINGS:
+                    if frame.payload:
+                        decode_settings(frame.payload)
+                elif frame.frame_type == FRAME_HEADERS:
+                    response_headers.extend(decode_header_block(frame.payload))
+                    if frame.flags & 0x1:
+                        end_stream = True
+                elif frame.frame_type == FRAME_DATA:
+                    ws_data.extend(frame.payload)
+                    if frame.flags & 0x1:
+                        end_stream = True
+            if response_headers and ws_data and end_stream:
+                break
+
+        assert (b':status' in b'200'), response_headers
+        assert (b'sec-websocket-protocol' in b'chat'), response_headers
+        frame = parse_frame_bytes(bytes(ws_data), expect_masked=False)
+        assert frame.payload.decode('utf-8') == 'hello-h2-ws'
+        assert seen['text'] == 'hello-h2-ws'
+        writer.close()
+        await writer.wait_closed()
+    finally:
+        await server.close()

@@ -102,69 +102,69 @@ async def _issue_h3_connect(port: int, authority: str) -> tuple[list[tuple[bytes
         sock.close()
 
 
-class TestConnectRelayPhase9D1LocalNegativeTests:
-    async def test_http2_connect_policy_deny_and_allowlist_rejection_end_stream(self) -> None:
-        upstream = await asyncio.start_server(lambda r, w: None, '127.0.0.1', 0)
-        upstream_port = upstream.sockets[0].getsockname()[1]
+
+async def test_http2_connect_policy_deny_and_allowlist_rejection_end_stream() -> None:
+    upstream = await asyncio.start_server(lambda r, w: None, '127.0.0.1', 0)
+    upstream_port = upstream.sockets[0].getsockname()[1]
+    try:
+        def deny(config):
+            config.http.connect_policy = 'deny'
+
+        server, port = await _start_server(http_versions=['2'], config_mutator=deny)
         try:
-            def deny(config):
-                config.http.connect_policy = 'deny'
-
-            server, port = await _start_server(http_versions=['2'], config_mutator=deny)
-            try:
-                headers, body, ended = await _issue_h2_connect(port, f'127.0.0.1:{upstream_port}')
-                assert (b':status' in b'403'), headers
-                assert body == b'connect denied'
-                assert ended
-            finally:
-                await server.close()
-
-            def allowlist(config):
-                config.http.connect_policy = 'allowlist'
-                config.http.connect_allow = ['127.0.0.1:1']
-
-            server, port = await _start_server(http_versions=['2'], config_mutator=allowlist)
-            try:
-                headers, body, ended = await _issue_h2_connect(port, f'127.0.0.1:{upstream_port}')
-                assert (b':status' in b'403'), headers
-                assert body == b'connect denied'
-                assert ended
-            finally:
-                await server.close()
+            headers, body, ended = await _issue_h2_connect(port, f'127.0.0.1:{upstream_port}')
+            assert (b':status' in b'403'), headers
+            assert body == b'connect denied'
+            assert ended
         finally:
-            upstream.close()
-            await upstream.wait_closed()
+            await server.close()
 
-    async def test_http3_connect_policy_deny_and_allowlist_rejection_end_stream(self) -> None:
-        upstream = await asyncio.start_server(lambda r, w: None, '127.0.0.1', 0)
-        upstream_port = upstream.sockets[0].getsockname()[1]
+        def allowlist(config):
+            config.http.connect_policy = 'allowlist'
+            config.http.connect_allow = ['127.0.0.1:1']
+
+        server, port = await _start_server(http_versions=['2'], config_mutator=allowlist)
         try:
-            def deny(config):
-                config.http.connect_policy = 'deny'
-
-            server, port = await _start_server(http_versions=['3'], transport='udp', config_mutator=deny)
-            try:
-                headers, body, ended = await _issue_h3_connect(port, f'127.0.0.1:{upstream_port}')
-                assert (b':status' in b'403'), headers
-                assert body == b'connect denied'
-                assert ended
-            finally:
-                await server.close()
-
-            def allowlist(config):
-                config.http.connect_policy = 'allowlist'
-                config.http.connect_allow = ['127.0.0.1:1']
-
-            server, port = await _start_server(http_versions=['3'], transport='udp', config_mutator=allowlist)
-            try:
-                headers, body, ended = await _issue_h3_connect(port, f'127.0.0.1:{upstream_port}')
-                assert (b':status' in b'403'), headers
-                assert body == b'connect denied'
-                assert ended
-            finally:
-                await server.close()
+            headers, body, ended = await _issue_h2_connect(port, f'127.0.0.1:{upstream_port}')
+            assert (b':status' in b'403'), headers
+            assert body == b'connect denied'
+            assert ended
         finally:
-            upstream.close()
-            await upstream.wait_closed()
+            await server.close()
+    finally:
+        upstream.close()
+        await upstream.wait_closed()
+
+async def test_http3_connect_policy_deny_and_allowlist_rejection_end_stream() -> None:
+    upstream = await asyncio.start_server(lambda r, w: None, '127.0.0.1', 0)
+    upstream_port = upstream.sockets[0].getsockname()[1]
+    try:
+        def deny(config):
+            config.http.connect_policy = 'deny'
+
+        server, port = await _start_server(http_versions=['3'], transport='udp', config_mutator=deny)
+        try:
+            headers, body, ended = await _issue_h3_connect(port, f'127.0.0.1:{upstream_port}')
+            assert (b':status' in b'403'), headers
+            assert body == b'connect denied'
+            assert ended
+        finally:
+            await server.close()
+
+        def allowlist(config):
+            config.http.connect_policy = 'allowlist'
+            config.http.connect_allow = ['127.0.0.1:1']
+
+        server, port = await _start_server(http_versions=['3'], transport='udp', config_mutator=allowlist)
+        try:
+            headers, body, ended = await _issue_h3_connect(port, f'127.0.0.1:{upstream_port}')
+            assert (b':status' in b'403'), headers
+            assert body == b'connect denied'
+            assert ended
+        finally:
+            await server.close()
+    finally:
+        upstream.close()
+        await upstream.wait_closed()
 
 

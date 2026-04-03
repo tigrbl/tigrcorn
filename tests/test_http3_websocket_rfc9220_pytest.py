@@ -51,124 +51,124 @@ def _frame_wire_length(data: bytes) -> int:
     return total
 
 
-class TestHTTP3WebSocketRFC9220Tests:
-    async def test_extended_connect_websocket_roundtrip(self):
-        seen = {}
 
-        async def app(scope, receive, send):
-            assert scope['type'] == 'websocket'
-            assert scope['http_version'] == '3'
-            assert scope['path'] == '/chat'
-            assert scope['scheme'] == 'wss'
-            connect = await receive()
-            assert connect['type'] == 'websocket.connect'
-            await send({'type': 'websocket.accept', 'subprotocol': 'chat', 'headers': []})
-            event = await receive()
-            seen['text'] = event['text']
-            await send({'type': 'websocket.send', 'text': event['text']})
-            await send({'type': 'websocket.close', 'code': 1000})
+async def test_extended_connect_websocket_roundtrip():
+    seen = {}
 
-        server, port = await _start_server(app)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setblocking(False)
-        client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1')
-        core = HTTP3ConnectionCore()
-        loop = asyncio.get_running_loop()
-        try:
-            sock.sendto(client.build_initial(), ('127.0.0.1', port))
-            for _ in range(4):
-                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
-                for event in client.receive_datagram(data):
-                    if event.kind == 'stream':
-                        core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-                if core.state.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL) == 1:
-                    break
+    async def app(scope, receive, send):
+        assert scope['type'] == 'websocket'
+        assert scope['http_version'] == '3'
+        assert scope['path'] == '/chat'
+        assert scope['scheme'] == 'wss'
+        connect = await receive()
+        assert connect['type'] == 'websocket.connect'
+        await send({'type': 'websocket.accept', 'subprotocol': 'chat', 'headers': []})
+        event = await receive()
+        seen['text'] = event['text']
+        await send({'type': 'websocket.send', 'text': event['text']})
+        await send({'type': 'websocket.close', 'code': 1000})
 
-            assert core.state.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL) == 1
-            payload = core.get_request(0).encode_request(
-                [
-                    (b':method', b'CONNECT'),
-                    (b':protocol', b'websocket'),
-                    (b':scheme', b'https'),
-                    (b':path', b'/chat'),
-                    (b':authority', b'example'),
-                    (b'sec-websocket-version', b'13'),
-                    (b'sec-websocket-protocol', b'chat'),
-                ],
-                encode_frame(0x1, b'hello-h3-ws', masked=True),
-            )
-            sock.sendto(client.send_stream_data(0, payload, fin=False), ('127.0.0.1', port))
+    server, port = await _start_server(app)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setblocking(False)
+    client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1')
+    core = HTTP3ConnectionCore()
+    loop = asyncio.get_running_loop()
+    try:
+        sock.sendto(client.build_initial(), ('127.0.0.1', port))
+        for _ in range(4):
+            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            for event in client.receive_datagram(data):
+                if event.kind == 'stream':
+                    core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+            if core.state.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL) == 1:
+                break
 
-            response_state = None
-            for _ in range(10):
-                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
-                for event in client.receive_datagram(data):
-                    if event.kind == 'stream':
-                        response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-                if response_state is not None and response_state.ended:
-                    break
+        assert core.state.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL) == 1
+        payload = core.get_request(0).encode_request(
+            [
+                (b':method', b'CONNECT'),
+                (b':protocol', b'websocket'),
+                (b':scheme', b'https'),
+                (b':path', b'/chat'),
+                (b':authority', b'example'),
+                (b'sec-websocket-version', b'13'),
+                (b'sec-websocket-protocol', b'chat'),
+            ],
+            encode_frame(0x1, b'hello-h3-ws', masked=True),
+        )
+        sock.sendto(client.send_stream_data(0, payload, fin=False), ('127.0.0.1', port))
 
-            assert response_state is not None
-            assert response_state is not None
-            assert (b':status' in b'200'), response_state.headers
-            assert (b'sec-websocket-protocol' in b'chat'), response_state.headers
-            assert seen['text'] == 'hello-h3-ws'
-            first_len = _frame_wire_length(response_state.body)
-            message_frame = parse_frame_bytes(response_state.body[:first_len], expect_masked=False)
-            assert message_frame.payload.decode('utf-8') == 'hello-h3-ws'
-            close_frame = parse_frame_bytes(response_state.body[first_len:], expect_masked=False)
-            code, reason = decode_close_payload(close_frame.payload)
-            assert code == 1000
-            assert reason == ''
-        finally:
-            sock.close()
-            await server.close()
+        response_state = None
+        for _ in range(10):
+            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            for event in client.receive_datagram(data):
+                if event.kind == 'stream':
+                    response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+            if response_state is not None and response_state.ended:
+                break
 
-    async def test_unknown_extended_connect_protocol_returns_501(self):
-        async def app(scope, receive, send):
-            raise AssertionError('unsupported extended CONNECT should not dispatch to the ASGI app')
+        assert response_state is not None
+        assert response_state is not None
+        assert (b':status' in b'200'), response_state.headers
+        assert (b'sec-websocket-protocol' in b'chat'), response_state.headers
+        assert seen['text'] == 'hello-h3-ws'
+        first_len = _frame_wire_length(response_state.body)
+        message_frame = parse_frame_bytes(response_state.body[:first_len], expect_masked=False)
+        assert message_frame.payload.decode('utf-8') == 'hello-h3-ws'
+        close_frame = parse_frame_bytes(response_state.body[first_len:], expect_masked=False)
+        code, reason = decode_close_payload(close_frame.payload)
+        assert code == 1000
+        assert reason == ''
+    finally:
+        sock.close()
+        await server.close()
 
-        server, port = await _start_server(app)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setblocking(False)
-        client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli2')
-        core = HTTP3ConnectionCore()
-        loop = asyncio.get_running_loop()
-        try:
-            sock.sendto(client.build_initial(), ('127.0.0.1', port))
-            for _ in range(4):
-                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
-                for event in client.receive_datagram(data):
-                    if event.kind == 'stream':
-                        core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-                if core.state.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL) == 1:
-                    break
+async def test_unknown_extended_connect_protocol_returns_501():
+    async def app(scope, receive, send):
+        raise AssertionError('unsupported extended CONNECT should not dispatch to the ASGI app')
 
-            payload = core.get_request(0).encode_request(
-                [
-                    (b':method', b'CONNECT'),
-                    (b':protocol', b'not-websocket'),
-                    (b':scheme', b'https'),
-                    (b':path', b'/chat'),
-                    (b':authority', b'example'),
-                ],
-                b'',
-            )
-            sock.sendto(client.send_stream_data(0, payload, fin=True), ('127.0.0.1', port))
+    server, port = await _start_server(app)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setblocking(False)
+    client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli2')
+    core = HTTP3ConnectionCore()
+    loop = asyncio.get_running_loop()
+    try:
+        sock.sendto(client.build_initial(), ('127.0.0.1', port))
+        for _ in range(4):
+            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            for event in client.receive_datagram(data):
+                if event.kind == 'stream':
+                    core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+            if core.state.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL) == 1:
+                break
 
-            response_state = None
-            for _ in range(10):
-                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
-                for event in client.receive_datagram(data):
-                    if event.kind == 'stream':
-                        response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-                if response_state is not None and response_state.ended:
-                    break
+        payload = core.get_request(0).encode_request(
+            [
+                (b':method', b'CONNECT'),
+                (b':protocol', b'not-websocket'),
+                (b':scheme', b'https'),
+                (b':path', b'/chat'),
+                (b':authority', b'example'),
+            ],
+            b'',
+        )
+        sock.sendto(client.send_stream_data(0, payload, fin=True), ('127.0.0.1', port))
 
-            assert response_state is not None
-            assert response_state is not None
-            assert (b':status' in b'501'), response_state.headers
-            assert response_state.body == b'unsupported extended connect protocol'
-        finally:
-            sock.close()
-            await server.close()
+        response_state = None
+        for _ in range(10):
+            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            for event in client.receive_datagram(data):
+                if event.kind == 'stream':
+                    response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+            if response_state is not None and response_state.ended:
+                break
+
+        assert response_state is not None
+        assert response_state is not None
+        assert (b':status' in b'501'), response_state.headers
+        assert response_state.body == b'unsupported extended connect protocol'
+    finally:
+        sock.close()
+        await server.close()
