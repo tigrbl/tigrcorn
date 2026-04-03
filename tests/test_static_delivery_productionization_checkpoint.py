@@ -76,7 +76,10 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(sent[0]['status'], 200)
             self.assertEqual(sent[1]['type'], 'tigrcorn.http.response.file')
             self.assertEqual(sent[1]['segments'][0]['type'], 'file')
-            self.assertEqual(sent[1]['segments'][0]['path'], str(root / 'blob.bin'))
+            self.assertEqual(
+                Path(sent[1]['segments'][0]['path']).resolve(strict=False),
+                (root / 'blob.bin').resolve(strict=False),
+            )
             self.assertEqual(sent[1]['segments'][0]['offset'], 0)
             self.assertEqual(sent[1]['segments'][0]['count'], len(payload))
 
