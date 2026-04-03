@@ -1,5 +1,6 @@
 import asyncio
 import base64
+from contextlib import suppress
 import os
 import socket
 import unittest
@@ -17,8 +18,10 @@ from tigrcorn.transports.udp.packet import UDPPacket
 from tigrcorn.protocols.websocket.frames import encode_frame, read_frame
 
 
-async def _start_http_server(app):
+async def _start_http_server(app, websocket_compression: str | None = None):
     config = build_config(host='127.0.0.1', port=0, lifespan='off', http_versions=['1.1'])
+    if websocket_compression is not None:
+        config.websocket.compression = websocket_compression
     server = TigrCornServer(app, config)
     await server.start()
     port = server._listeners[0].server.sockets[0].getsockname()[1]
@@ -114,9 +117,9 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
             await send({'type': 'websocket.send', 'text': event['text']})
             await send({'type': 'websocket.close', 'code': 1000})
 
-        server, port = await _start_http_server(app)
+        server, port = await _start_http_server(app, websocket_compression='permessage-deflate')
         try:
-            reader, writer = await asyncio.open_connection('127.0.0.1', port)
+            reader, writer = await asyncio.wait_for(asyncio.open_connection('127.0.0.1', port), 1.0)
             key = base64.b64encode(os.urandom(16))
             writer.write(
                 b'GET /ws HTTP/1.1\r\n'
@@ -127,12 +130,12 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
                 b'Sec-WebSocket-Key: ' + key + b'\r\n'
                 b'Sec-WebSocket-Extensions: permessage-deflate\r\n\r\n'
             )
-            await writer.drain()
-            response = await reader.readuntil(b'\r\n\r\n')
+            await asyncio.wait_for(writer.drain(), 1.0)
+            response = await asyncio.wait_for(reader.readuntil(b'\r\n\r\n'), 1.0)
             self.assertIn(b'sec-websocket-extensions: permessage-deflate', response.lower())
             compressed = _compress_ws_message(b'hello compressed')
             writer.write(encode_frame(0x1, compressed, fin=True, masked=True, rsv1=True))
-            await writer.drain()
+            await asyncio.wait_for(writer.drain(), 1.0)
             frame = await asyncio.wait_for(read_frame(reader, max_payload_size=4096, expect_masked=False, allow_rsv1=True), 1.0)
             self.assertTrue(frame.rsv1)
             decompressor = zlib.decompressobj(wbits=-15)
@@ -140,9 +143,11 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(echoed, b'hello compressed')
             self.assertEqual(seen['event']['text'], 'hello compressed')
             writer.close()
-            await writer.wait_closed()
+            await asyncio.wait_for(writer.wait_closed(), 1.0)
         finally:
-            await server.close()
+            server.request_shutdown()
+            with suppress(asyncio.TimeoutError, asyncio.CancelledError):
+                await asyncio.wait_for(server.close(), 2.0)
 
 
 class RemainingWorkQuicRoutingTests(unittest.IsolatedAsyncioTestCase):

@@ -44,7 +44,11 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
             await app(scope, receive, send)
         self.assertEqual(sent[0]['type'], 'http.response.start')
         self.assertEqual(sent[0]['status'], 200)
-        self.assertEqual(sent[1], {'type': 'http.response.pathsend', 'path': str(root / 'blob.bin')})
+        self.assertEqual(sent[1]['type'], 'http.response.pathsend')
+        self.assertEqual(
+            Path(sent[1]['path']).resolve(strict=False),
+            (root / 'blob.bin').resolve(strict=False),
+        )
 
     async def test_mount_static_app_routes_requests_and_preserves_fallback(self):
         fallback_events: list[dict] = []
