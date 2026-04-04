@@ -1,7 +1,12 @@
 {
   "registry_date": "2026-04-04",
   "status": "mutable_working_registry",
-  "scope_note": "This registry inventories current supported targets and candidate claims using the repository's canonical certification evidence tiers. It does not widen the authoritative package boundary by itself.",
+  "scope_note": "This registry inventories current supported targets and candidate claims using the repository's canonical certification evidence tiers. It does not widen the authoritative package boundary by itself. Each claim is also tagged as an implementation claim, architectural claim, or design claim.",
+  "claim_kind_legend": {
+    "implementation_claim": "Implemented and shipped package behavior or API surface.",
+    "architectural_claim": "Architecture-level naming or role used to describe the package design, even when a concrete Python symbol differs.",
+    "design_claim": "Selected future design target or bounded design intent that is not yet a shipped implementation claim."
+  },
   "canonical_boundary_source": "docs/review/conformance/certification_boundary.json",
   "canonical_feature_source": "docs/notes/feature_reg.md",
   "certification_evidence_tiers": [
@@ -64,30 +69,31 @@
       { "id": "cli-protocols", "surface": "flag_family", "targets": ["protocols"], "boundary_status": "in_bounds_current_surface" }
     ],
     "public_operator_surface_targets": [
-      { "id": "entrypoints", "targets": ["tigrcorn.run", "tigrcorn.serve", "tigrcorn.serve_import_string"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "embedder_server", "targets": ["tigrcorn.EmbeddedServer", "tigrcorn.server.TigrCornServer"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "static_delivery", "targets": ["tigrcorn.StaticFilesApp", "tigrcorn.static.mount_static_app", "tigrcorn.static.normalize_static_route"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "config_surface", "targets": ["tigrcorn.config.build_config", "tigrcorn.config.build_config_from_namespace", "tigrcorn.config.build_config_from_sources", "tigrcorn.config.config_to_dict", "tigrcorn.config.load_env_config", "tigrcorn.config.load_config_file"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "release_evaluators", "targets": ["tigrcorn.compat.release_gates.evaluate_release_gates", "tigrcorn.compat.release_gates.evaluate_promotion_target", "tigrcorn.compat.release_gates.assert_release_ready", "tigrcorn.compat.release_gates.assert_promotion_target_ready"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "runtime_modes", "targets": ["auto", "asyncio", "uvloop"], "boundary_status": "in_bounds_current_surface" }
+      { "id": "entrypoints", "targets": ["tigrcorn.run", "tigrcorn.serve", "tigrcorn.serve_import_string"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
+      { "id": "embedder_server", "targets": ["tigrcorn.EmbeddedServer", "architectural TigrcornServer implemented today by tigrcorn.server.TigrCornServer"], "boundary_status": "in_bounds_current_surface", "claim_kind": "architectural_claim" },
+      { "id": "static_delivery", "targets": ["tigrcorn.StaticFilesApp", "tigrcorn.static.mount_static_app", "tigrcorn.static.normalize_static_route"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
+      { "id": "config_surface", "targets": ["tigrcorn.config.build_config", "tigrcorn.config.build_config_from_namespace", "tigrcorn.config.build_config_from_sources", "tigrcorn.config.config_to_dict", "tigrcorn.config.load_env_config", "tigrcorn.config.load_config_file"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
+      { "id": "release_evaluators", "targets": ["tigrcorn.compat.release_gates.evaluate_release_gates", "tigrcorn.compat.release_gates.evaluate_promotion_target", "tigrcorn.compat.release_gates.assert_release_ready", "tigrcorn.compat.release_gates.assert_promotion_target_ready"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
+      { "id": "runtime_modes", "targets": ["auto", "asyncio", "uvloop"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" }
     ],
     "extension_surface_targets": [
-      { "id": "extras_supported", "targets": ["config-yaml", "compression", "runtime-uvloop", "full-featured", "certification", "dev"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "extras_declared_not_supported", "targets": ["runtime-trio"], "boundary_status": "out_of_bounds_now" },
-      { "id": "custom_operator_transports", "targets": ["pipe", "inproc", "rawframed", "custom"], "boundary_status": "public_operator_surface_outside_strict_rfc_claim" },
-      { "id": "peer_certification_tools", "targets": ["aioquic", "h2", "websockets", "wsproto", "sf-http"], "boundary_status": "tooling_surface_only" }
+      { "id": "extras_supported", "targets": ["config-yaml", "compression", "runtime-uvloop", "full-featured", "certification", "dev"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
+      { "id": "extras_declared_not_supported", "targets": ["runtime-trio"], "boundary_status": "out_of_bounds_now", "claim_kind": "design_claim" },
+      { "id": "custom_operator_transports", "targets": ["pipe", "inproc", "rawframed", "custom"], "boundary_status": "public_operator_surface_outside_strict_rfc_claim", "claim_kind": "implementation_claim" },
+      { "id": "peer_certification_tools", "targets": ["aioquic", "h2", "websockets", "wsproto", "sf-http"], "boundary_status": "tooling_surface_only", "claim_kind": "design_claim" }
     ],
     "w3c_targets": [
-      { "id": "trace_context_fields", "standards_body": "W3C", "spec_refs": ["W3C Trace Context"], "boundary_status": "candidate_not_current_claim", "default_posture": "to_be_classified_as_forwarded_terminated_regenerated_or_suppressed" },
-      { "id": "server_timing_fields", "standards_body": "W3C", "spec_refs": ["Server Timing"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified" },
-      { "id": "nel_fields", "standards_body": "W3C", "spec_refs": ["NEL"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified" },
-      { "id": "reporting_fields", "standards_body": "W3C", "spec_refs": ["Reporting API"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified" }
+      { "id": "trace_context_fields", "standards_body": "W3C", "spec_refs": ["W3C Trace Context"], "boundary_status": "candidate_not_current_claim", "default_posture": "to_be_classified_as_forwarded_terminated_regenerated_or_suppressed", "claim_kind": "design_claim" },
+      { "id": "server_timing_fields", "standards_body": "W3C", "spec_refs": ["Server Timing"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified", "claim_kind": "design_claim" },
+      { "id": "nel_fields", "standards_body": "W3C", "spec_refs": ["NEL"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified", "claim_kind": "design_claim" },
+      { "id": "reporting_fields", "standards_body": "W3C", "spec_refs": ["Reporting API"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified", "claim_kind": "design_claim" }
     ]
   },
   "current_and_candidate_claims": [
     {
       "id": "claim-cwd-module-import",
       "class": "operator_surface",
+      "claim_kind": "design_claim",
       "surface": "app_import_resolution",
       "boundary_status": "in_bounds_current_surface",
       "text": "CLI and server import-string loading resolves module targets from the current working directory when app.app_dir is unset.",
@@ -99,6 +105,7 @@
     {
       "id": "claim-cwd-factory-import",
       "class": "operator_surface",
+      "claim_kind": "design_claim",
       "surface": "app_import_resolution",
       "boundary_status": "in_bounds_current_surface",
       "text": "CLI and server factory loading resolves factory targets from the current working directory when app.app_dir is unset.",
@@ -110,6 +117,7 @@
     {
       "id": "TC-OPERATOR-CWD-IMPORT-RESOLUTION",
       "class": "operator_surface",
+      "claim_kind": "implementation_claim",
       "surface": "app_import_resolution",
       "boundary_status": "in_bounds_current_surface",
       "text": "Package-owned app loading resolves module and factory targets from the current working directory when app.app_dir is unset.",
@@ -125,6 +133,7 @@
     {
       "id": "TC-RFC9113-HTTP2-DEFAULT-INITIALIZATION",
       "class": "certification_support",
+      "claim_kind": "implementation_claim",
       "surface": "http2_runtime_defaults",
       "boundary_status": "in_bounds_current_surface",
       "text": "HTTP/2 handler and config validation normalize concrete frame-size, header-size, stream-limit, and flow-control defaults before protocol processing.",
@@ -143,6 +152,7 @@
     {
       "id": "TC-RFC7301-ALPN-NORMALIZATION-EMPTY-INPUT",
       "class": "operator_surface",
+      "claim_kind": "implementation_claim",
       "surface": "tls_alpn_policy",
       "boundary_status": "in_bounds_current_surface",
       "text": "Empty ALPN inputs normalize to no negotiated protocol rather than an empty-string protocol identifier.",
@@ -159,6 +169,7 @@
     {
       "id": "TC-RFC6455-WS-ACCEPT-EXTENSION-NEGOTIATION-DISCIPLINE",
       "class": "protocol_surface",
+      "claim_kind": "implementation_claim",
       "surface": "websocket_accept_contract",
       "boundary_status": "in_bounds_current_surface",
       "text": "WebSocket accept handling rejects direct application override of extension-negotiation headers and keeps extension negotiation package-owned.",
@@ -175,6 +186,7 @@
     {
       "id": "TC-RFC9002-QUIC-DEFERRED-SEND-PATH",
       "class": "protocol_surface",
+      "claim_kind": "implementation_claim",
       "surface": "quic_recovery_send_path",
       "boundary_status": "in_bounds_current_surface",
       "text": "HTTP/3 send-path logic defers congestion- or validation-blocked QUIC datagrams into pending outbound state and flushes them when transmission becomes allowed.",
@@ -191,6 +203,7 @@
     {
       "id": "TC-INTEROP-TLS13-OPENSSL35-SCLIENT",
       "class": "certification",
+      "claim_kind": "design_claim",
       "surface": "tcp_tls13_external_peer_interop",
       "boundary_status": "in_bounds_current_surface",
       "text": "Tigrcorn custom TLS 1.3 interoperates with OpenSSL s_client 3.5+ for the declared TCP/TLS boundary. This umbrella row is tracked through atomic RFC claim rows rather than treated as a single indivisible correctness claim.",
@@ -203,6 +216,7 @@
     {
       "id": "TC-INTEROP-TLS13-CURL-OPENSSL35",
       "class": "certification",
+      "claim_kind": "design_claim",
       "surface": "tcp_tls13_external_peer_interop",
       "boundary_status": "in_bounds_current_surface",
       "text": "Tigrcorn custom TLS 1.3 interoperates with curl built against OpenSSL 3.5+ for HTTPS requests in the declared boundary. This umbrella row is tracked through atomic RFC claim rows rather than treated as a single indivisible correctness claim.",
@@ -215,6 +229,7 @@
     {
       "id": "TC-DIFF-TLS13-STDLIB-CONTROL",
       "class": "governance_support",
+      "claim_kind": "design_claim",
       "surface": "tcp_tls13_backend_control",
       "boundary_status": "in_bounds_current_surface",
       "text": "The stdlib TLS backend exists as a bounded differential control and emergency fallback, without displacing the package-owned TLS claim.",
@@ -500,6 +515,7 @@
     {
       "id": "TC-SPEC-STRUCTURED-FIELDS-RFC9651",
       "class": "certification_support",
+      "claim_kind": "design_claim",
       "surface": "structured_fields",
       "boundary_status": "in_bounds_candidate_not_current_claim",
       "text": "Structured field parsing and serialization use RFC 9651 as the active baseline and do not present RFC 8941 as current.",
@@ -511,6 +527,7 @@
     {
       "id": "TC-FIELD-DEFAULT-PRESENCE-PACKAGE-OWNED",
       "class": "operator_surface",
+      "claim_kind": "design_claim",
       "surface": "package_owned_http_fields",
       "boundary_status": "in_bounds_candidate_not_current_claim",
       "text": "Package-owned HTTP, TLS, WebSocket, and adjacent trace field families have a documented and tested default presence, suppression, and pass-through posture.",
@@ -522,6 +539,7 @@
     {
       "id": "TC-FIELD-OBSOLETED-ABSENCE-DEFAULT",
       "class": "operator_surface",
+      "claim_kind": "design_claim",
       "surface": "package_owned_http_fields",
       "boundary_status": "in_bounds_candidate_not_current_claim",
       "text": "Obsoleted HTTP fields that are outside the current surface are absent by default and are not synthesized by normalization paths.",
@@ -533,6 +551,7 @@
     {
       "id": "TC-FIELD-DEFAULT-TERMINATION-PACKAGE-OWNED",
       "class": "operator_surface",
+      "claim_kind": "design_claim",
       "surface": "package_owned_http_fields",
       "boundary_status": "in_bounds_candidate_not_current_claim",
       "text": "Package-owned HTTP, TLS, WebSocket, and adjacent trace field families have a frozen default termination, forwarding, stripping, and regeneration contract across supported carriers.",

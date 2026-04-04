@@ -11,6 +11,12 @@ Sources used for this note:
 
 This register is a mutable research note. It does not change the package boundary, current-state chain, or promoted release truth. Priority, risk, and disposition fields below are repository assessments inferred from the issue text and the current 0.3.9 governance/boundary documents.
 
+Claim posture used in this register:
+
+- `implementation claim` — issue affects a shipped implementation claim
+- `architectural claim` — issue affects an architecture-level naming or role claim
+- `design claim` — issue affects a selected future design target rather than a shipped claim
+
 ## Portfolio summary
 
 - open issues: 10
@@ -19,6 +25,7 @@ This register is a mutable research note. It does not change the package boundar
 - dominant theme: test-suite correctness and expectation drift
 - boundary-sensitive theme: TLS interoperability on the package-owned TCP/TLS path
 - governance-sensitive theme: default-value audit for public CLI/config surface
+- primary claim posture affected: implementation claims, with secondary design-claim hygiene for planned target waves
 
 ## Register
 
@@ -26,6 +33,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: application hosting / CLI correctness
+- claim posture affected: implementation claim
 - subsystem: app loading
 - boundary relation: in-bounds (`A`, `R`)
 - summary: basic `tigrcorn app:app` startup from the current working directory failed because the loader did not place the CWD on `sys.path` unless `--app-dir` was supplied.
@@ -36,6 +44,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: governance / configuration audit
+- claim posture affected: implementation claim plus design-claim hygiene
 - subsystem: config model, CLI defaults, normalization, docs
 - boundary relation: in-bounds (`R`, public operator/API surface)
 - summary: requests a structured audit of default values across constants, dataclass defaults, argparse defaults, and normalization-time backfills, with explicit attention to correctness, safety, and consistency.
@@ -46,6 +55,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: closed
 - class: transport / TLS interoperability
+- claim posture affected: implementation claim
 - subsystem: TCP/TLS listener path
 - boundary relation: in-bounds and certification-sensitive (`T`)
 - summary: external OpenSSL-based clients reportedly failed the TLS 1.3 handshake against the custom TLS stack; the issue describes a workaround using stdlib `ssl`.
@@ -56,6 +66,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: transport / TLS interoperability
+- claim posture affected: implementation claim plus design claim
 - subsystem: TCP/TLS listener path, CLI/config
 - boundary relation: in-bounds and certification-sensitive (`T`)
 - summary: active TLS interoperability issue for external OpenSSL clients, with a proposed explicit backend switch between the custom TLS stack and stdlib `ssl`.
@@ -90,6 +101,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: test infrastructure
+- claim posture affected: implementation claim
 - subsystem: tests, CI, developer workflow docs
 - boundary relation: in-bounds maintenance
 - summary: asks for pytest mirrors of the existing unittest suite plus CI/documentation updates.
@@ -100,6 +112,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: test correctness / configuration validation
+- claim posture affected: implementation claim
 - subsystem: config validation, pytest mirror, unittest parity
 - boundary relation: in-bounds maintenance with operator-surface relevance
 - summary: partial `ServerConfig(...)` instances trigger `TypeError` in `validate_config` because HTTP/2 defaults are missing when the tests expect listener/config validation behavior.
@@ -110,6 +123,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: protocol correctness / test failure
+- claim posture affected: implementation claim
 - subsystem: HTTP/2 handler state initialization
 - boundary relation: in-bounds and RFC-sensitive (`P`)
 - summary: HTTP/2 completion tests fail because handler comparisons encounter `None` for settings/limits that should be concrete before protocol processing.
@@ -120,6 +134,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: test expectation drift
+- claim posture affected: implementation claim
 - subsystem: promotion/performance report tests
 - boundary relation: in-bounds maintenance
 - summary: the test expects `report.passed` to be `False`, but the observed current report is `True`.
@@ -130,6 +145,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: protocol/runtime behavior vs test expectation
+- claim posture affected: implementation claim
 - subsystem: QUIC recovery runtime integration
 - boundary relation: in-bounds and RFC-sensitive (`T`, `P`)
 - summary: a live runtime integration test expects one deferred outbound datagram, but the observed queue length is zero.
@@ -140,6 +156,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: compatibility behavior / test expectation drift
+- claim posture affected: implementation claim
 - subsystem: security compatibility helpers
 - boundary relation: in-bounds maintenance on the transport/security edge
 - summary: the test expects `normalize_alpn('')` to return `None`, but the implementation returns the empty string.
@@ -150,6 +167,7 @@ This register is a mutable research note. It does not change the package boundar
 
 - state: open
 - class: protocol behavior vs test expectation
+- claim posture affected: implementation claim
 - subsystem: WebSocket extension negotiation
 - boundary relation: in-bounds and RFC-sensitive (`P`)
 - summary: a test expects `RuntimeError` during extension negotiation rejection, but no exception is raised.
@@ -181,3 +199,58 @@ The current researched GitHub issue set for this note is:
 
 - open: `#11`, `#13`, `#15`, `#16`, `#17`, `#18`, `#19`, `#20`, `#21`, `#22`
 - closed: `#14`
+
+## Roadmap-derived candidate work register
+
+The roadmap now adds 33 mutable planning work items. They are backlog candidates for future execution and should not be treated as opened GitHub issues until they are filed.
+
+### By band
+
+| Band | Candidate work items |
+|---|---|
+| `P1` | `RM-P1-01` through `RM-P1-06` for safe deployment profiles |
+| `P2` | `RM-P2-01` through `RM-P2-03` for default audits and flag-contract truth |
+| `P3` | `RM-P3-01` through `RM-P3-06` for proxy/public-policy closure |
+| `P4` | `RM-P4-01` through `RM-P4-05` for QUIC semantic closure |
+| `P5` | `RM-P5-01` through `RM-P5-03` for origin delivery contract closure |
+| `P6` | `RM-P6-01` through `RM-P6-03` for observability closure |
+| `P7` | `RM-P7-01` through `RM-P7-03` for negative-certification closure |
+| `P8` | `RM-P8-01` through `RM-P8-04` for governance discipline and RFC 9651 hygiene |
+
+### Candidate register
+
+| Work item | Summary | Recommended disposition |
+|---|---|---|
+| `RM-P1-01` | Freeze the zero-config safe baseline profile and prove safe defaults by default | open first if profile work begins |
+| `RM-P1-02` | Freeze conservative HTTP/1.1 origin semantics, proxy normalization, and pathsend posture | open after baseline profile scaffolding exists |
+| `RM-P1-03` | Freeze auditable HTTP/2 origin posture with TLS, ALPN, and SETTINGS bounds | open with H2 profile bundle and cap tests |
+| `RM-P1-04` | Freeze QUIC/H3 edge posture with Retry, migration, resumption, and default 0-RTT denial | open as the first H3 operating-mode issue |
+| `RM-P1-05` | Freeze repeatable mTLS origin posture with SAN/EKU and revocation policy | open beside TLS/X.509 operator docs work |
+| `RM-P1-06` | Freeze static-origin profile rules for roots, validators, ranges, and traversal denial | open with origin contract planning |
+| `RM-P2-01` | Audit all post-normalization zero-config defaults across the public surface | treat as umbrella execution issue for defaults |
+| `RM-P2-02` | Audit effective defaults after each blessed profile overlay | open after P1 profile definitions stabilize |
+| `RM-P2-03` | Review every public flag/default row and link risks, claims, and tests | open as the public control registry issue |
+| `RM-P3-01` | Freeze trusted proxy-source semantics and fail-closed behavior | open before any precedence work |
+| `RM-P3-02` | Freeze `Forwarded` versus `X-Forwarded-*` precedence and conflict handling | open after trust model decisions are written |
+| `RM-P3-03` | Make CONNECT relay posture explicit and preserve negative anti-abuse evidence | open as a high-risk policy issue |
+| `RM-P3-04` | Freeze trailer semantics across H1/H2/H3 | open as a cross-carrier contract issue |
+| `RM-P3-05` | Freeze content-coding negotiation and compressed-range behavior | open with origin/static interaction coverage |
+| `RM-P3-06` | Promote ALPN, revocation, H2C, WS compression, limits, and drain controls into reviewed public controls | open once default and flag audits exist |
+| `RM-P4-01` | Freeze 0-RTT admission policy variants and unsafe-method rejection | open after strict-h3-edge posture work |
+| `RM-P4-02` | Freeze replay handling semantics including downgrade and `425` behavior | open beside 0-RTT admission policy |
+| `RM-P4-03` | Define multi-instance anti-replay behavior and LB-specific honesty rules | open only with explicit topology notes |
+| `RM-P4-04` | Freeze Retry interaction and application-visible semantics | open after Retry/runtime semantics are reviewed |
+| `RM-P4-05` | Split QUIC claims into Retry, resumption, 0-RTT, migration, and GOAWAY/QPACK rows | open after P4 behavior rows exist |
+| `RM-P5-01` | Freeze path decoding and normalization rules for static delivery and pathsend | open first in the origin contract wave |
+| `RM-P5-02` | Freeze file selection, validators, range outcomes, and compression interaction | open after path resolution decisions are fixed |
+| `RM-P5-03` | Make the ASGI `pathsend` runtime contract explicit | open with origin docs and race-condition tests |
+| `RM-P6-01` | Freeze stable QUIC/H3 counter families for operators | open after QUIC semantics are explicit |
+| `RM-P6-02` | Make StatsD/DogStatsD and OTEL export surfaces explicit supported controls | open after counter schema work |
+| `RM-P6-03` | Bound qlog as unstable, versioned, and redacted experimental export | open only with explicit non-claim language |
+| `RM-P7-01` | Freeze fail-state behavior by risky surface | open before or alongside negative corpora preservation |
+| `RM-P7-02` | Preserve proxy/early-data/QUIC adversarial suites | open after policy rows in P3/P4 are written |
+| `RM-P7-03` | Preserve origin/CONNECT/TLS/topology adversarial suites | open after origin and CONNECT policy rows are written |
+| `RM-P8-01` | Make risks machine-readable and traceable to claims/tests/evidence | open in parallel with P2-P7 work |
+| `RM-P8-02` | Move forward motion to pytest-only and inventory legacy unittest | open with test-style governance work |
+| `RM-P8-03` | Make evidence, interop, and perf bundles release-gated inputs | open before stronger promotion claims |
+| `RM-P8-04` | Replace RFC 8941 baseline references with RFC 9651 and add conformance checks | open in parallel with governance and field work |

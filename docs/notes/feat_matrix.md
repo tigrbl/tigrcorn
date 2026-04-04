@@ -18,6 +18,14 @@ This note does not widen the current package boundary. The authoritative in-boun
 - `docs/review/conformance/certification_boundary.json`
 - `docs/review/conformance/BOUNDARY_NON_GOALS.md`
 
+## Claim posture legend
+
+Use these labels when reading or extending this matrix:
+
+- `implementation claim` — implemented and shipped package surface
+- `architectural claim` — architecture-level naming or role used to describe the package design
+- `design claim` — selected future design target that is not yet a shipped implementation claim
+
 ## Current target posture
 
 The current `0.3.9` repository line is already green for:
@@ -59,14 +67,14 @@ That means the current targets are limited to:
 
 These are the current support families that should be treated as active inventory, not future expansion:
 
-| family | current supported targets | canonical sources |
-|---|---|---|
-| RFC / IETF targets | RFC 9112, RFC 9113, RFC 9114, RFC 9000, RFC 9001, RFC 9002, RFC 7541, RFC 9204, RFC 6455, RFC 7692, RFC 8441, RFC 9220, RFC 8446, RFC 9110 Section 9.3.6, RFC 9110 Section 6.5, RFC 9110 Section 8, RFC 7232, RFC 7233, RFC 8297, RFC 7838 Section 3, RFC 5280, RFC 6960, RFC 7301 | `docs/review/conformance/certification_boundary.json` |
-| protocol targets | HTTP/1.1, HTTP/2, HTTP/3, QUIC, TLS 1.3, WebSocket over HTTP/1.1, WebSocket over HTTP/2, WebSocket over HTTP/3, CONNECT relay, trailers, content coding, Alt-Svc advertisement, conditional requests, byte ranges, early hints | `README.md`; `docs/protocols/*.md`; `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
-| CLI targets | `tigrcorn`, `python -m tigrcorn`, `tigrcorn-interop`; public command families for app/process, listeners, static delivery, TLS/security, logging/observability, resources/timeouts/concurrency, protocol/transport | `docs/ops/cli.md`; `docs/review/conformance/CLI_FLAG_SURFACE.md` |
-| public operator surface targets | `run`, `serve`, `serve_import_string`, `EmbeddedServer`, `StaticFilesApp`, `mount_static_app`, `normalize_static_route`, config builders/loaders, release/promotion evaluators, `TigrCornServer` | `docs/ops/public.md` |
-| extension surface targets | `config-yaml`, `compression`, `runtime-uvloop`, `full-featured`, `certification`, `dev`; public custom transport/operator surfaces `pipe`, `inproc`, `rawframed`, `custom` where already documented | `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`; `docs/ops/cli.md` |
-| W3C targets | no current certified W3C standards claims; only explicit posture work for `traceparent`, `tracestate`, `Server-Timing`, `NEL`, and `Reporting-Endpoints` as candidate field-behavior inventory items | `docs/notes/feat_matrix.md`; `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
+| family | current supported targets | claim posture | canonical sources |
+|---|---|---|---|
+| RFC / IETF targets | RFC 9112, RFC 9113, RFC 9114, RFC 9000, RFC 9001, RFC 9002, RFC 7541, RFC 9204, RFC 6455, RFC 7692, RFC 8441, RFC 9220, RFC 8446, RFC 9110 Section 9.3.6, RFC 9110 Section 6.5, RFC 9110 Section 8, RFC 7232, RFC 7233, RFC 8297, RFC 7838 Section 3, RFC 5280, RFC 6960, RFC 7301 | implementation claim | `docs/review/conformance/certification_boundary.json` |
+| protocol targets | HTTP/1.1, HTTP/2, HTTP/3, QUIC, TLS 1.3, WebSocket over HTTP/1.1, WebSocket over HTTP/2, WebSocket over HTTP/3, CONNECT relay, trailers, content coding, Alt-Svc advertisement, conditional requests, byte ranges, early hints | implementation claim | `README.md`; `docs/protocols/*.md`; `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
+| CLI targets | `tigrcorn`, `python -m tigrcorn`, `tigrcorn-interop`; public command families for app/process, listeners, static delivery, TLS/security, logging/observability, resources/timeouts/concurrency, protocol/transport | implementation claim | `docs/ops/cli.md`; `docs/review/conformance/CLI_FLAG_SURFACE.md` |
+| public operator surface targets | `run`, `serve`, `serve_import_string`, `EmbeddedServer`, `StaticFilesApp`, `mount_static_app`, `normalize_static_route`, config builders/loaders, release/promotion evaluators, architectural server object `TigrcornServer` implemented today by `tigrcorn.server.TigrCornServer` | implementation claim plus architectural claim | `docs/ops/public.md` |
+| extension surface targets | `config-yaml`, `compression`, `runtime-uvloop`, `full-featured`, `certification`, `dev`; public custom transport/operator surfaces `pipe`, `inproc`, `rawframed`, `custom` where already documented | implementation claim | `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`; `docs/ops/cli.md` |
+| W3C targets | no current certified W3C standards claims; only explicit posture work for `traceparent`, `tracestate`, `Server-Timing`, `NEL`, and `Reporting-Endpoints` as candidate field-behavior inventory items | design claim only | `docs/notes/feat_matrix.md`; `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
 
 ## Future target waves
 

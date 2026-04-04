@@ -4,6 +4,12 @@ Date: 2026-04-04
 
 This is the mutable working register of current Tigrcorn feature targets and candidate target waves. It inventories what the package supports now without widening the authoritative boundary.
 
+Claim posture used in this register:
+
+- `implementation claim` — implemented and shipped package surface
+- `architectural claim` — architecture-level naming or role used to describe the package design
+- `design claim` — selected future design target that is not yet a shipped implementation claim
+
 Canonical boundary and support sources:
 
 - `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
@@ -56,23 +62,23 @@ Canonical boundary and support sources:
 
 ## Current public operator surface targets
 
-| target family | current supported targets | notes |
-|---|---|---|
-| entrypoints | `tigrcorn.run`, `tigrcorn.serve`, `tigrcorn.serve_import_string` | public runtime startup APIs |
-| embedder and server objects | `tigrcorn.EmbeddedServer`, `tigrcorn.server.TigrCornServer` | explicit lifecycle control |
-| static delivery APIs | `tigrcorn.StaticFilesApp`, `tigrcorn.static.mount_static_app`, `tigrcorn.static.normalize_static_route` | package-owned delivery helpers |
-| config surfaces | `build_config`, `build_config_from_namespace`, `build_config_from_sources`, `config_to_dict`, `load_env_config`, `load_config_file` | public configuration contract |
-| release and promotion evaluators | `evaluate_release_gates`, `evaluate_promotion_target`, `assert_release_ready`, `assert_promotion_target_ready` | public maintainer/operator evaluator surface |
-| runtime modes | `auto`, `asyncio`, `uvloop` | current publicly supported runtime contract |
+| target family | current supported targets | claim posture | notes |
+|---|---|---|---|
+| entrypoints | `tigrcorn.run`, `tigrcorn.serve`, `tigrcorn.serve_import_string` | implementation claim | public runtime startup APIs |
+| embedder and server objects | `tigrcorn.EmbeddedServer`, architectural server object `TigrcornServer` implemented today by `tigrcorn.server.TigrCornServer` | implementation claim plus architectural claim | explicit lifecycle control |
+| static delivery APIs | `tigrcorn.StaticFilesApp`, `tigrcorn.static.mount_static_app`, `tigrcorn.static.normalize_static_route` | implementation claim | package-owned delivery helpers |
+| config surfaces | `build_config`, `build_config_from_namespace`, `build_config_from_sources`, `config_to_dict`, `load_env_config`, `load_config_file` | implementation claim | public configuration contract |
+| release and promotion evaluators | `evaluate_release_gates`, `evaluate_promotion_target`, `assert_release_ready`, `assert_promotion_target_ready` | implementation claim | public maintainer/operator evaluator surface |
+| runtime modes | `auto`, `asyncio`, `uvloop` | implementation claim | current publicly supported runtime contract |
 
 ## Current extension surface targets
 
-| target family | current supported targets | notes |
-|---|---|---|
-| optional dependency extras | `config-yaml`, `compression`, `runtime-uvloop`, `full-featured`, `certification`, `dev` | publicly supported extras |
-| declared but not supported | `runtime-trio` | declared dependency path only; not current public runtime support |
-| custom operator transports | `pipe`, `inproc`, `rawframed`, `custom` | public operator surface, but outside the strict RFC-certified surface where boundary docs say so |
-| peer-certification tooling | `aioquic`, `h2`, `websockets`, `wsproto`, planned `sf-http` dev dependency for structured-fields comparison | tooling and evidence surface, not an implicit boundary expansion |
+| target family | current supported targets | claim posture | notes |
+|---|---|---|---|
+| optional dependency extras | `config-yaml`, `compression`, `runtime-uvloop`, `full-featured`, `certification`, `dev` | implementation claim | publicly supported extras |
+| declared but not supported | `runtime-trio` | design claim only | declared dependency path only; not current public runtime support |
+| custom operator transports | `pipe`, `inproc`, `rawframed`, `custom` | implementation claim | public operator surface, but outside the strict RFC-certified surface where boundary docs say so |
+| peer-certification tooling | `aioquic`, `h2`, `websockets`, `wsproto`, planned `sf-http` dev dependency for structured-fields comparison | design claim plus tooling inventory | tooling and evidence surface, not an implicit boundary expansion |
 
 ## Ordered candidate target queue
 
@@ -88,13 +94,13 @@ Canonical boundary and support sources:
 
 ## Current in-bound candidate hardening slices
 
-| slice | current scope posture | current target summary |
-|---|---|---|
-| TLS peer closure | in-bounds candidate | RFC 8446 hardening, OpenSSL 3.5+ peer interop, bounded stdlib fallback control, independent-certification evidence |
-| structured fields | in-bounds candidate | RFC 9651 baseline, RFC 8941 obsoletion hygiene, `sf-http` comparison |
-| field behavior | in-bounds candidate | package-owned default field presence, obsoleted-field absence, termination and forwarding behavior |
-| defaults and profiles | in-bounds candidate | reviewed defaults, profile-effective defaults, flag truth, deployment profiles |
-| observability | in-bounds candidate | QUIC/H3 counters, export surfaces, negative corpora, preserved evidence bundles |
+| slice | current scope posture | claim posture | current target summary |
+|---|---|---|---|
+| TLS peer closure | in-bounds candidate | design claim | RFC 8446 hardening, OpenSSL 3.5+ peer interop, bounded stdlib fallback control, independent-certification evidence |
+| structured fields | in-bounds candidate | design claim | RFC 9651 baseline, RFC 8941 obsoletion hygiene, `sf-http` comparison |
+| field behavior | in-bounds candidate | design claim | package-owned default field presence, obsoleted-field absence, termination and forwarding behavior |
+| defaults and profiles | in-bounds candidate | design claim | reviewed defaults, profile-effective defaults, flag truth, deployment profiles |
+| observability | in-bounds candidate | design claim | QUIC/H3 counters, export surfaces, negative corpora, preserved evidence bundles |
 
 ## Roadmap-derived candidate feature register
 
