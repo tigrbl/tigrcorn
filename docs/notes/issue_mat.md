@@ -1,6 +1,6 @@
 # GitHub issue register matrix
 
-Matrix date: 2026-04-03
+Matrix date: 2026-04-04
 
 The table below summarizes the researched `Tigrbl/tigrcorn` GitHub issue set for quick triage. Classification fields are repository assessments inferred from issue bodies and current boundary/governance docs.
 
@@ -9,7 +9,7 @@ The table below summarizes the researched `Tigrbl/tigrcorn` GitHub issue set for
 | `#11` | Open | App-load correctness | App loader / CLI | `A,R` | Medium | Narrow | Follow-up after PR `#12` | Verify fix on current `main`, confirm regression test, close if resolved |
 | `#13` | Open | Governance audit | Config defaults / CLI / normalize | `R` | High | Broad | Umbrella for defaults/backfill work | Create audit artifact and explicit default-review plan |
 | `#14` | Closed | TLS interoperability | TCP/TLS listener | `T` | High | Narrow | Likely duplicate of `#15` | Keep closed as superseded context |
-| `#15` | Open | TLS interoperability | TCP/TLS listener / CLI | `T` | Critical | Medium | Successor to `#14`; anchor for OpenSSL 3.5+ peer plan | Investigate RFC 8446 record-layer failure, add OpenSSL 3.5+ peer harness, and keep stdlib backend as bounded control only |
+| `#15` | Open | TLS interoperability | TCP/TLS listener / CLI | `T` | Critical | Medium | Successor to `#14`; anchor for atomic RFC 8446/5280/7301 claim rows and OpenSSL 3.5+ peer plan | Execute the atomic TLS matrix starting with RFC 8446 outer framing, inner type, AEAD AAD, padding, and handshake-to-app-data boundary; keep stdlib backend bounded as a differential control only |
 | `#16` | Open | Test infrastructure | Pytest mirror / CI | Maintenance | Medium | Large | Independent, but blocked by drift risk | Sequence after correctness fixes |
 | `#17` | Open | Test correctness | Config validation / pytest mirror | `R` | High | Medium | Related to `#13` | Decide partial-config validation policy and align tests/code |
 | `#18` | Open | Protocol correctness | HTTP/2 handler state | `P` | High | Medium | Possibly related to `#13` backfills | Restore concrete HTTP/2 invariants before handler comparisons |
@@ -55,7 +55,7 @@ The table below summarizes the researched `Tigrbl/tigrcorn` GitHub issue set for
 
 | Group | Issues |
 |---|---|
-| Primary TLS peer-program anchor | `#15` |
+| Primary TLS peer-program anchor | `#15` for atomic RFC 8446, RFC 5280, RFC 7301, RFC 6066, RFC 9525, and HTTPS-over-TLS execution rows |
 | Adjacent TLS/ALPN cleanup | `#21` |
 | Historical duplicate context | `#14` |
 

@@ -1,6 +1,6 @@
 # Tigrcorn master feature target matrix
 
-Date: 2026-04-03
+Date: 2026-04-04
 
 This note consolidates the current Tigrcorn target posture with the future target waves proposed across the external planning inputs:
 
@@ -124,6 +124,45 @@ This slice keeps the custom pure-Python TLS 1.3 stack as the primary certified i
 | OCSP and revocation | RFC 6960 | keep peer validation scoped to claimed OCSP/revocation surfaces only |
 | Independent peer harness | OpenSSL 3.5+ `s_client`; curl with OpenSSL backend 3.5+ | add preserved external peer evidence for TCP/TLS handshake and HTTPS response success under `independent_certification` |
 | Tier mapping discipline | current certification evidence tiers | keep the canonical evidence tiers as `local_conformance`, `same_stack_replay`, and `independent_certification`; do not invent a fourth tier |
+
+#### Atomic RFC target matrix for the current TLS / HTTPS interop lane
+
+Use this matrix when decomposing the Wave 1A TLS slice into claim-registration rows. One row equals one RFC target plus one concrete subfeature requirement so promotion-facing statements stay atomic and evidenceable.
+
+| RFC target | subfeature requirement | Tigrcorn implementation target | required evidence / tests | priority |
+|---|---|---|---|---|
+| RFC 8446 | TLS 1.3 protected record outer framing | `TLSCiphertext` records emitted with correct outer content type, legacy record version handling, and length accounting | OpenSSL 3.5+ `s_client` read-path probe; byte-level record fixture tests; negative malformed-length tests | `P0` |
+| RFC 8446 | TLS 1.3 inner content type recovery | `TLSInnerPlaintext` encodes the correct inner content type and permits correct post-decrypt recovery by strict peers | OpenSSL 3.5+ interop; custom decrypt/reparse fixtures; negative wrong-inner-type tests | `P0` |
+| RFC 8446 | TLS 1.3 padding semantics | zero-padding handling for protected records is correct and non-ambiguous to external peers | OpenSSL 3.5+ probe with padded application records; padding edge-case corpus | `P0` |
+| RFC 8446 | TLS 1.3 AEAD additional data construction | additional authenticated data matches the protected record header semantics expected by peers exactly | cross-check against stdlib and OpenSSL transcript behavior; tamper/failure negative corpus | `P0` |
+| RFC 8446 | handshake-to-application-data boundary | key change timing after `Finished` is exact; first encrypted application record is emitted under the correct traffic keys | `curl` and `s_client` handshake-then-read tests; transcript/state-transition assertions | `P0` |
+| RFC 8446 | alert emission and close semantics | fatal alerts, `close_notify` behavior, and post-failure shutdown are spec-correct and externally intelligible | OpenSSL alert-path tests; negative cert/path tests; preserved stderr/stdout artifacts | `P1` |
+| RFC 8446 | Certificate and CertificateVerify processing | certificate message flow, signature algorithm negotiation, and certificate verify behavior interoperate with external peers | OpenSSL 3.5+ success/failure handshakes; cert-chain variant corpus | `P1` |
+| RFC 7301 | ALPN negotiation policy | ALPN offer, selection, and denial are explicit and externally testable for H1/H2 lanes | `s_client -alpn`; `curl --http1.1`; H2 negotiation tests | `P1` |
+| RFC 6066 | SNI handling | Server Name Indication handling is correct for hostname-based TLS identity and certificate selection | `s_client -servername`; hostname/cert-switch tests | `P1` |
+| RFC 6066 | OCSP stapling request handling | `status_request` behavior is explicitly supported, denied, or policy-gated rather than ambiguous | `s_client -status`; stapled vs unstapled evidence bundles | `P2` |
+| RFC 5280 | Authority Key Identifier / Subject Key Identifier handling | demo and certification cert chains include extension material needed for modern verifier acceptance | OpenSSL path-validation corpus; clean-room cert-generation tests | `P0` |
+| RFC 5280 | KeyUsage / ExtendedKeyUsage correctness | leaf and intermediate certificates carry usages suitable for server auth and mTLS where claimed | negative wrong-EKU / wrong-KeyUsage tests; stdlib and OpenSSL validation evidence | `P0` |
+| RFC 5280 | path validation correctness | chain building, validity interval checks, basic constraints, and issuer linkage pass strict peer validation | OpenSSL verify-path runs; preserved chain-validation bundles | `P0` |
+| RFC 6960 | OCSP policy | hard-fail, soft-fail, and responder-unavailable policy is explicit and testable | stale-OCSP, unavailable-responder, hard/soft-fail corpus | `P2` |
+| RFC 9525 | service identity / hostname verification compatibility | certificates used for public HTTPS interop satisfy modern DNS-ID and SAN-based identity expectations | `curl --cacert` hostname validation; mismatch negative tests | `P1` |
+| RFC 9112 | HTTPS over HTTP/1.1 interoperability | once TLS succeeds, HTTPS/H1 response semantics remain stable for external clients | `curl --http1.1` success matrix; response/read-body smoke tests | `P1` |
+| RFC 9113 | HTTP/2 over TLS posture | if H2 is claimed, TLS plus ALPN setup supports correct H2 negotiation and rejects invalid H2C/TLS ambiguity | `curl --http2`; ALPN/H2 interop tests; SETTINGS/resource-cap tests | `P2` |
+| RFC 9001 | QUIC-TLS mapping parity | custom TLS implementation used for QUIC preserves correct TLS 1.3 semantics where mapped into QUIC | QUIC handshake corpus; driver-vs-external transcript comparisons | `P2` |
+| RFC 9000 | Retry/token integrity dependencies on TLS-derived state | Retry and token validation remain correct if TLS transcript/key behavior changes | malformed-token and Retry-integrity tests | `P2` |
+| RFC 9114 | HTTP/3 control-plane correctness dependent on TLS success | H3 claims promote only after TLS-backed QUIC handshakes are externally reproducible | H3 peer harness; GOAWAY / decode-failure tests | `P3` |
+| RFC 9204 | QPACK pressure/error handling after H3 establishment | QPACK behavior is tested only after external-peer H3 handshake stability exists | blocked-stream / decode-failure corpus | `P3` |
+
+#### Non-RFC certification peers for the TLS / HTTPS interop lane
+
+These peer rows sit beside the RFC matrix but are not themselves RFC claims.
+
+| peer target | requirement | purpose |
+|---|---|---|
+| OpenSSL 3.5+ | treat as an `independent_certification` peer for TCP/TLS lanes | independent strict parser and verifier for custom TLS record-layer correctness |
+| curl linked against OpenSSL 3.5+ | treat as an `independent_certification` application-facing peer for HTTPS H1/H2 lanes | confirms not just handshake success, but successful external client reads |
+| Python stdlib `ssl` | treat as a differential oracle, not an independent-certification peer | fast local comparator to isolate custom-code divergence |
+| Tigrcorn internal TLS driver | treat as a same-stack replay lane, not an independent peer | useful for development, insufficient for promotion |
 
 ### Wave 2A: RFC 9651 structured-fields targets
 
@@ -256,3 +295,43 @@ If the field-target waves are opened, the minimum acceptance gates should be:
 3. package-owned connection-specific and hop-by-hop field handling is frozen across HTTP/1.1, HTTP/2, HTTP/3, and WebSocket carrier paths as applicable
 4. W3C trace fields have an explicit default posture stating whether Tigrcorn terminates, forwards, regenerates, or leaves them to the hosted application
 5. RFC 9651 structured-field handling is deterministic and peer-checked against `sf-http`
+
+## Roadmap band alignment
+
+The following roadmap rows are the explicit candidate feature matrix for future in-bounds work selection. These rows do not widen the current package boundary and do not imply that implementation has already started.
+
+| band | roadmap theme | feature row | scope posture | what gets implemented or frozen | why it is next | primary deliverables | required conformance or evidence | roadmap status |
+|---|---|---|---|---|---|---|---|---|
+| `P1` | Safe deployment products | `default` safe baseline | in-bounds candidate | freeze boring safe zero-config posture for TCP plus HTTP/1.1, no proxy trust unless configured, no H2/H3/QUIC unless explicit, CONNECT denied, server header off, early data denied or N/A | reduces operator state space first | `profiles/default.profile.json`, operator docs, default audit rows | import-from-CWD, proxy spoof denial, no CONNECT relay, no early data, docs equal runtime | implement first |
+| `P1` | Safe deployment products | `strict-h1-origin` | in-bounds candidate | freeze H1 origin semantics, trusted-proxy normalization, explicit static/pathsend posture | gives a reproducible conservative origin mode | profile spec, operator page, cert bundle | keepalive semantics, forwarded rejection, redirect-host safety | implement first |
+| `P1` | Safe deployment products | `strict-h2-origin` | in-bounds candidate | freeze TLS plus ALPN plus H2 defaults, frame/header/window bounds, trailer/static semantics | moves H2 from ad hoc to auditable | profile spec, operator page, cert bundle | H2 parity, SETTINGS bounds, frame/header resource cap tests | implement first |
+| `P1` | Safe deployment products | `strict-h3-edge` | in-bounds candidate | freeze QUIC/H3 listener policy, Retry, migration, resumption, Alt-Svc posture, deny-by-default 0-RTT | turns H3 from flag soup into an operating mode | profile spec, operator page, cert bundle | token integrity, Retry path, 0-RTT rejected by default, H3/QPACK stress | implement first |
+| `P1` | Safe deployment products | `strict-mtls-origin` | in-bounds candidate | freeze client-cert requirement, SAN/EKU policy, revocation mode, hard/soft fail behavior | converts mTLS support into a repeatable posture | profile spec, operator page, cert bundle | cert-path validation, SAN/EKU rejection, CRL/OCSP behavior | implement first |
+| `P1` | Safe deployment products | `static-origin` | in-bounds candidate | freeze static roots, index rules, validators, range behavior, compression interaction, traversal/symlink policy | makes origin delivery auditable as a first-class profile | profile spec, operator page, cert bundle | traversal denial, HEAD/GET parity, Range/If-Range correctness | implement first |
+| `P2` | Default truth | Base default audit | in-bounds candidate | audit zero-config defaults after normalization across all public flags and internal runtime defaults | defaults must stop being split across model/constants/CLI/normalize | `DEFAULT_AUDIT.json`, `DEFAULT_AUDIT.md` | post-normalization parity, three-state default tests | immediately after `P1` |
+| `P2` | Default truth | Profile-effective default audit | in-bounds candidate | audit effective defaults after profile overlay for every blessed profile | profile docs cannot drift from runtime | `PROFILE_DEFAULTS/*.json`, `PROFILE_DEFAULTS/*.md`, inheritance manifest | overlay parity, unsafe-default denial, profile doc/runtime sync | immediately after `P1` |
+| `P2` | Default truth | Reviewed flag contract registry | in-bounds candidate | every public flag/default row gets reviewed status, linked risks, claims, and tests | makes CLI/help/docs/runtime one truth surface | reviewed `flag_contracts.json` | flag review coverage, doc/runtime/help sync tests | immediately after `P1` |
+| `P3` | Public policy closure | Proxy trust model | in-bounds candidate | freeze canonical trust sources, hop/listener trust, fail-closed behavior | request identity must stop being ambiguous | normative proxy contract | spoofed chain rejection, mixed-trust rejection | wave 2 |
+| `P3` | Public policy closure | Proxy precedence plus normalization | in-bounds candidate | freeze precedence for `Forwarded` and `X-Forwarded-*`, host/proto/port conflicts, normalized outputs | prevents redirect and host reconstruction drift | precedence tables, normalization contract | duplicate/conflicting host/proto/port tests, root-path injection tests | wave 2 |
+| `P3` | Public policy closure | CONNECT relay policy | in-bounds candidate | make CONNECT allow/deny, target normalization, anti-abuse posture explicit | one of the highest-risk hidden surfaces | policy docs, attack corpus slice | open-proxy denial, loopback/private-IP denial, DNS rebinding tests | wave 2 |
+| `P3` | Public policy closure | Trailer policy | in-bounds candidate | freeze trailer acceptance/emission across H1/H2/H3 | stops transport-specific drift | policy docs, flag metadata | trailer correctness and malformed-trailer negatives | wave 2 |
+| `P3` | Public policy closure | Content-coding policy | in-bounds candidate | freeze compression/content-coding negotiation behavior | must align static/origin/proxy behavior | policy docs, origin hooks | coding negotiation tests, compressed-range tests | wave 2 |
+| `P3` | Public policy closure | ALPN/revocation/H2C/WS compression/limits/drain | in-bounds candidate | promote internal or partial controls into certified public controls | carries forward missing public surfaces from prior support matrices | CLI/help/docs, policy metadata, operator pages | ALPN tests, OCSP/CRL tests, H2C tests, WS compression tests, idle/limit/drain tests | wave 2 |
+| `P4` | QUIC semantic closure | Early-data admission policy | in-bounds candidate | freeze deny-all, safe-only, allowlist, and app-mark 0-RTT policy | largest remaining QUIC semantic gap | early-data contract | admission matrix, unsafe-method rejection | wave 3 |
+| `P4` | QUIC semantic closure | Replay policy | in-bounds candidate | freeze immediate forward vs buffer vs downgrade vs `425` | replay behavior must be explicit | replay policy spec | replay tests, `425` retry tests, intermediary propagation tests | wave 3 |
+| `P4` | QUIC semantic closure | Multi-instance early-data policy | in-bounds candidate | define anti-replay coordination and load-balancer-specific behavior | prevents single-node-only claims | topology policy, deployment notes | multi-node replay, shared-ticket edge cases | wave 3 |
+| `P4` | QUIC semantic closure | Retry plus app-visible semantics | in-bounds candidate | freeze Retry/0-RTT interaction and what ASGI apps can observe | runtime semantics must be honest | Retry/0-RTT interaction spec, runtime contract | invalid Retry, duplicate Retry, app-visibility consistency tests | wave 3 |
+| `P4` | QUIC semantic closure | Independent QUIC state claims | in-bounds candidate | separate claims for Retry, resumption, 0-RTT, migration, and GOAWAY/QPACK pressure | avoids vague H3 supported language | profile bindings, operator docs | token integrity, migration spoofing, GOAWAY/QPACK stress | wave 3 |
+| `P5` | Origin delivery contract | Path resolution | in-bounds candidate | freeze percent-decoding order, dot-segment normalization, separator/symlink/mount-root rules | static/pathsend semantics must be auditable | normative origin contract | traversal, encoded traversal, symlink escape tests | wave 4 |
+| `P5` | Origin delivery contract | File selection plus HTTP semantics | in-bounds candidate | freeze index/slash/MIME behavior, validators, range, `206`/`304`/`416`, compression interaction | prevents platform-specific origin drift | origin contract, conformance corpus | HEAD parity, conditional conflicts, range-past-EOF tests | wave 4 |
+| `P5` | Origin delivery contract | ASGI `pathsend` contract | in-bounds candidate | freeze stat timing, zero-copy expectations, mid-send mutation/error mapping, disconnect behavior | pathsend is package-owned and must be explicit | origin contract, operator docs | file-replaced-mid-send, partial-send, disconnect-race tests | wave 4 |
+| `P6` | Observability | QUIC/H3 counter families | in-bounds candidate | freeze transport, security, loss, and H3 counters as a stable operator surface | diagnosability comes after semantic closure | metrics schema, operator docs | counter correctness under retry/migration/loss | wave 5 |
+| `P6` | Observability | Export surfaces | in-bounds candidate | add StatsD/DogStatsD and OpenTelemetry export as explicit supported surfaces | exposes metrics/tracing beyond local plumbing | export config/docs | export smoke, schema compatibility checks | wave 5 |
+| `P6` | Observability | qlog experimental stance | in-bounds candidate | keep qlog export explicit, unstable, versioned, and redacted | useful, but must not be overclaimed | experimental export spec, schema marker/versioning | redaction, schema-version, trace-integrity tests | wave 5 |
+| `P7` | Negative certification | Fail-state registry | in-bounds candidate | freeze expected reject/close/abort/log/metric behavior per risky surface | safe failure must become claimable | negative-cert registry | assertion coverage tests | wave 6 |
+| `P7` | Negative certification | Proxy/early-data/QUIC corpora | in-bounds candidate | preserve adversarial suites for spoofing, replay, Retry, migration, malformed tokens, amplification pressure | proves security behavior, not just happy paths | attack corpora, expected outcomes | negative suites with preserved evidence | wave 6 |
+| `P7` | Negative certification | Origin/CONNECT/TLS/topology corpora | in-bounds candidate | preserve traversal, relay abuse, X.509 failure, and mixed-topology negative suites | closes the works-locally-only gap | corpora, expected outcomes, evidence bundles | traversal, open relay, wrong EKU/SAN, mixed-topology tests | wave 6 |
+| `P8` | Governance plus promotion discipline | Risk register plus traceability | in-bounds candidate | make risk objects machine-readable and linked to claims/tests/evidence | governance must become auditable, not prose | `RISK_REGISTER*`, `RISK_TRACEABILITY.json`, schema/docs | schema, ID uniqueness, referential integrity, blocking-risk tests | parallel with `P2`-`P7`, required before promotion |
+| `P8` | Governance plus promotion discipline | Pytest-only forward motion | in-bounds candidate | make `pytest` the sole forward runner and contain legacy `unittest` under inventory | stops test-style drift | `TEST_STYLE_POLICY.md`, `LEGACY_UNITTEST_INVENTORY.json` | no new unittest imports/classes, mirror-exists tests | parallel with `P2`-`P7` |
+| `P8` | Governance plus promotion discipline | Release-gated evidence plus interop plus perf | in-bounds candidate | preserve evidence bundles, interop bundles, and performance artifacts as release inputs | claims must be replayable and durable | boundary manifests, interop bundles, perf bundles | release-gate suite, artifact retention checks | before any strong promotion language |
+| `P8` | Spec hygiene | RFC 9651 structured-fields baseline | in-bounds candidate | move structured-fields behavior and claims to RFC 9651 rather than RFC 8941 | standards baseline already changed | SFV conformance tests, dependency review, claim sync | round-trip/canonical serialization tests, stale-reference lint | parallel, but must finish before promotion |

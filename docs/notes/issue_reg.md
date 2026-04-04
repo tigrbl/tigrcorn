@@ -1,6 +1,6 @@
 # GitHub issue register
 
-As of 2026-04-03, the `Tigrbl/tigrcorn` GitHub issue set contains 11 researched issues: 10 open issues and 1 closed issue.
+As of 2026-04-04, the `Tigrbl/tigrcorn` GitHub issue set contains 11 researched issues: 10 open issues and 1 closed issue.
 
 Sources used for this note:
 
@@ -59,8 +59,32 @@ This register is a mutable research note. It does not change the package boundar
 - subsystem: TCP/TLS listener path, CLI/config
 - boundary relation: in-bounds and certification-sensitive (`T`)
 - summary: active TLS interoperability issue for external OpenSSL clients, with a proposed explicit backend switch between the custom TLS stack and stdlib `ssl`.
-- assessment: this is the highest-risk open issue because it touches the package-owned TCP/TLS path called out in the certification boundary. The proposed workaround is practical, but any permanent fix must stay aligned with the published boundary claim.
-- recommended disposition: investigate first through the RFC 8446 record-layer path, add OpenSSL 3.5+ `s_client` and curl/OpenSSL peer evidence, and introduce a clearly-scoped stdlib fallback only as an operator control rather than as a replacement certification path.
+- assessment: this is the highest-risk open issue because it touches the package-owned TCP/TLS path called out in the certification boundary. The proposed workaround is practical, but any permanent fix must stay aligned with the published boundary claim. The current execution model should be atomic: one RFC target plus one concrete subfeature requirement per claim row.
+- recommended disposition: execute `#15` through atomic rows rather than a single broad TLS item. Start with RFC 8446 protected record outer framing, inner content type recovery, AEAD additional data construction, padding semantics, and handshake-to-application-data boundary; then close RFC 5280 cert-profile/path-validation rows and RFC 7301 ALPN rows with preserved OpenSSL 3.5+ and curl/OpenSSL evidence. Keep the stdlib backend as a clearly-scoped differential control, not a replacement certification path.
+
+#### `#15` atomic execution rows
+
+- RFC 8446 protected record outer framing
+- RFC 8446 inner content type recovery
+- RFC 8446 AEAD additional data construction
+- RFC 8446 padding semantics
+- RFC 8446 handshake-to-application-data boundary
+- RFC 8446 alert emission and close semantics
+- RFC 8446 Certificate and CertificateVerify processing
+- RFC 7301 ALPN negotiation policy
+- RFC 6066 SNI handling
+- RFC 6066 OCSP stapling request handling
+- RFC 5280 AKI/SKI handling
+- RFC 5280 KeyUsage and ExtendedKeyUsage correctness
+- RFC 5280 path validation correctness
+- RFC 6960 hard-fail/soft-fail OCSP policy
+- RFC 9525 service identity and hostname verification compatibility
+- RFC 9112 HTTPS over HTTP/1.1 interoperability
+- RFC 9113 HTTP/2 over TLS posture
+- RFC 9001 QUIC-TLS mapping parity
+- RFC 9000 Retry and token-integrity dependence on TLS-derived state
+- RFC 9114 HTTP/3 control-plane correctness after external TLS-backed QUIC handshakes
+- RFC 9204 QPACK pressure and decode-failure handling after stable H3 establishment
 
 ### `#16` Mirror unittest suite with pytest equivalents and add CI target
 
