@@ -304,6 +304,17 @@ If the field-target waves are opened, the minimum acceptance gates should be:
 4. W3C trace fields have an explicit default posture stating whether Tigrcorn terminates, forwards, regenerates, or leaves them to the hosted application
 5. RFC 9651 structured-field handling is deterministic and peer-checked against `sf-http`
 
+## Registry linkage
+
+The roadmap rows in this matrix are synchronized across the mutable working registries:
+
+- `F-*` feature identities live in `docs/notes/feature_reg.md`
+- `RM-*` planning work items live in `docs/notes/issue_mat.md` and `docs/notes/issue_reg.md`
+- grouped `R-*` risks live in `docs/notes/risk_reg.md`
+- machine-readable `TC-ROADMAP-*` candidate claims live in `docs/review/conformance/claims_registry.json`
+
+This linkage is planning-only and does not widen the active certified boundary.
+
 ## Roadmap band alignment
 
 The following roadmap rows are the explicit candidate feature matrix for future in-bounds work selection. These rows do not widen the current package boundary and do not imply that implementation has already started.

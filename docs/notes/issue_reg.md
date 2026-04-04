@@ -254,3 +254,7 @@ The roadmap now adds 33 mutable planning work items. They are backlog candidates
 | `RM-P8-02` | Move forward motion to pytest-only and inventory legacy unittest | open with test-style governance work |
 | `RM-P8-03` | Make evidence, interop, and perf bundles release-gated inputs | open before stronger promotion claims |
 | `RM-P8-04` | Replace RFC 8941 baseline references with RFC 9651 and add conformance checks | open in parallel with governance and field work |
+
+## Roadmap synchronization note
+
+The roadmap-derived `RM-*` planning rows in this register are synchronized with `F-*` feature rows in `docs/notes/feature_reg.md`, grouped `R-*` risk rows in `docs/notes/risk_reg.md`, and machine-readable `TC-ROADMAP-*` candidate claims in `docs/review/conformance/claims_registry.json`.

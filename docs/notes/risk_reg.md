@@ -57,3 +57,7 @@ These risks are added so the new roadmap rows remain traceable before implementa
 | `R-TRACEABILITY-GOVERNANCE-GAP` | Risks, claims, tests, and evidence are not yet machine-linked | high | `F-P8-RISK-TRACEABILITY`, `F-P8-RELEASE-GATED-EVIDENCE` | governance and promotion policy | roadmap expansion will become hard to audit if linkage stays prose-only | create machine-readable risk and traceability registries with referential-integrity checks |
 | `R-TEST-STYLE-DRIFT` | Mixed `unittest` and `pytest` forward motion can increase coverage drift | medium | `F-P8-PYTEST-FORWARD` | test-style governance policy | duplicate styles make new coverage harder to review and preserve | make pytest the only forward runner and inventory grandfathered unittest coverage |
 | `R-RFC9651-REFERENCE-DRIFT` | Structured-fields references can remain anchored to obsolete RFC 8941 language | high | `F-P8-RFC9651-BASELINE` | RFC 9651; IANA Structured Type metadata | stale references can weaken claim language and conformance expectations | replace active baseline references, add linting, and peer-check serialization behavior |
+
+## Registry linkage note
+
+The grouped roadmap risks above map to the `F-*` feature rows, the `RM-*` planning work items, and the `TC-ROADMAP-*` machine-readable candidate claim rows. Grouped risks are preferred when several roadmap rows share one failure mode.

@@ -178,3 +178,9 @@ If the TLS peer-closure slice is opened, register and execute it as atomic RFC r
 | curl linked against OpenSSL 3.5+ | external HTTPS application peer | `independent_certification` |
 | Python stdlib `ssl` | bounded differential oracle | not an evidence-tier upgrade |
 | Tigrcorn internal TLS driver | same-stack replay peer | `same_stack_replay` only |
+
+## Claim registry linkage
+
+Each roadmap-derived `F-*` feature row above maps to a machine-readable `TC-ROADMAP-*` candidate claim row in `docs/review/conformance/claims_registry.json`.
+
+That linkage keeps feature planning, issue-style backlog rows, grouped risk rows, and claim tracking synchronized without turning candidate roadmap work into implemented or certified package claims.

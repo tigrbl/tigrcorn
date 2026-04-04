@@ -111,3 +111,11 @@ These are mutable planning work items derived from the roadmap bands. They are n
 | `RM-P8-02` Pytest-only forward motion | `P8` | Governance discipline | Test style policy | Governance | Medium | Medium | Related to `#16` | Make pytest the only forward runner and inventory legacy unittest usage |
 | `RM-P8-03` Release-gated evidence plus interop plus perf | `P8` | Governance discipline | Release evidence | Governance | High | Medium | Required before stronger promotion language | Preserve interop, evidence, and perf bundles as release inputs |
 | `RM-P8-04` RFC 9651 structured-fields baseline | `P8` | Spec hygiene | Structured fields | `P,R` | High | Medium | Extends current structured-fields candidate work | Replace RFC 8941 baseline references and add round-trip/canonical serialization checks |
+
+### Registry linkage
+
+Each `RM-*` planning row above maps one-to-one to:
+
+- an `F-*` roadmap feature row in `docs/notes/feature_reg.md`
+- one or more grouped `R-*` rows in `docs/notes/risk_reg.md`
+- a `TC-ROADMAP-*` candidate claim row in `docs/review/conformance/claims_registry.json`
