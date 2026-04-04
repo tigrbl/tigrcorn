@@ -108,6 +108,87 @@
       "source_files": ["docs/review/conformance/app_load_claims.json"]
     },
     {
+      "id": "TC-OPERATOR-CWD-IMPORT-RESOLUTION",
+      "class": "operator_surface",
+      "surface": "app_import_resolution",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Package-owned app loading resolves module and factory targets from the current working directory when app.app_dir is unset.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "issue_refs": ["#11"],
+      "source_files": [
+        "src/tigrcorn/server/app_loader.py",
+        "tests/test_app_loader.py"
+      ]
+    },
+    {
+      "id": "TC-RFC9113-HTTP2-DEFAULT-INITIALIZATION",
+      "class": "certification_support",
+      "surface": "http2_runtime_defaults",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "HTTP/2 handler and config validation normalize concrete frame-size, header-size, stream-limit, and flow-control defaults before protocol processing.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "issue_refs": ["#17", "#18"],
+      "spec_refs": ["RFC 9113"],
+      "source_files": [
+        "src/tigrcorn/config/defaults.py",
+        "src/tigrcorn/config/validate.py",
+        "tests/test_http2_state_machine_completion.py",
+        "tests/test_config_matrix_pytest.py"
+      ]
+    },
+    {
+      "id": "TC-RFC7301-ALPN-NORMALIZATION-EMPTY-INPUT",
+      "class": "operator_surface",
+      "surface": "tls_alpn_policy",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Empty ALPN inputs normalize to no negotiated protocol rather than an empty-string protocol identifier.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "issue_refs": ["#21"],
+      "spec_refs": ["RFC 7301"],
+      "source_files": [
+        "src/tigrcorn/security/alpn.py",
+        "tests/test_security_compat_utils.py"
+      ]
+    },
+    {
+      "id": "TC-RFC6455-WS-ACCEPT-EXTENSION-NEGOTIATION-DISCIPLINE",
+      "class": "protocol_surface",
+      "surface": "websocket_accept_contract",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "WebSocket accept handling rejects direct application override of extension-negotiation headers and keeps extension negotiation package-owned.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "issue_refs": ["#22"],
+      "spec_refs": ["RFC 6455"],
+      "source_files": [
+        "src/tigrcorn/protocols/websocket/handler.py",
+        "tests/test_websocket_additional_rfc6455.py"
+      ]
+    },
+    {
+      "id": "TC-RFC9002-QUIC-DEFERRED-SEND-PATH",
+      "class": "protocol_surface",
+      "surface": "quic_recovery_send_path",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "HTTP/3 send-path logic defers congestion- or validation-blocked QUIC datagrams into pending outbound state and flushes them when transmission becomes allowed.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "issue_refs": ["#20"],
+      "spec_refs": ["RFC 9002", "RFC 9114"],
+      "source_files": [
+        "src/tigrcorn/protocols/http3/handler.py",
+        "tests/test_quic_recovery_live_runtime_integration.py"
+      ]
+    },
+    {
       "id": "TC-INTEROP-TLS13-OPENSSL35-SCLIENT",
       "class": "certification",
       "surface": "tcp_tls13_external_peer_interop",
