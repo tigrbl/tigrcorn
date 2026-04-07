@@ -50,19 +50,19 @@ Read alongside:
 ### `run`
 
 ```python
-run(app: 'ASGIApp | str', *, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool' = False, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool' = True, enable_h2c: 'bool' = True, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool' = False, pipe_mode: 'str' = 'rawframed', factory: 'bool' = False, config: 'ServerConfig | None' = None) -> 'None'
+run(app: 'ASGIApp | str', *, profile: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', factory: 'bool' = False, config: 'ServerConfig | None' = None) -> 'None'
 ```
 
 ### `serve`
 
 ```python
-serve(app: 'ASGIApp', *, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool' = False, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool' = True, enable_h2c: 'bool' = True, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool' = False, pipe_mode: 'str' = 'rawframed', config: 'ServerConfig | None' = None) -> 'None'
+serve(app: 'ASGIApp', *, profile: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', config: 'ServerConfig | None' = None) -> 'None'
 ```
 
 ### `serve_import_string`
 
 ```python
-serve_import_string(app_target: 'str | None' = None, *, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool' = False, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool' = True, enable_h2c: 'bool' = True, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool' = False, pipe_mode: 'str' = 'rawframed', factory: 'bool' = False, config: 'ServerConfig | None' = None) -> 'None'
+serve_import_string(app_target: 'str | None' = None, *, profile: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', factory: 'bool' = False, config: 'ServerConfig | None' = None) -> 'None'
 ```
 
 ### `EmbeddedServer`
@@ -92,7 +92,7 @@ normalize_static_route(route: 'str | None') -> 'str'
 ### `build_config`
 
 ```python
-build_config(*, app: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool' = False, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool' = True, static_path_route: 'str | None' = None, static_path_mount: 'str | None' = None, static_path_dir_to_file: 'bool' = True, static_path_index_file: 'str | None' = 'index.html', static_path_expires: 'int | None' = None, enable_h2c: 'bool' = True, max_body_size: 'int | None' = None, max_header_size: 'int | None' = None, http1_max_incomplete_event_size: 'int | None' = None, http1_buffer_size: 'int | None' = None, http1_header_read_timeout: 'float | None' = None, http1_keep_alive: 'bool | None' = None, http2_max_concurrent_streams: 'int | None' = None, http2_max_headers_size: 'int | None' = None, http2_max_frame_size: 'int | None' = None, http2_adaptive_window: 'bool | None' = None, http2_initial_connection_window_size: 'int | None' = None, http2_initial_stream_window_size: 'int | None' = None, http2_keep_alive_interval: 'float | None' = None, http2_keep_alive_timeout: 'float | None' = None, websocket_max_queue: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool' = False, pipe_mode: 'str' = 'rawframed', config: 'Mapping[str, Any] | None' = None, default_headers: 'list[str] | list[tuple[str, str]] | None' = None, include_date_header: 'bool' = True, include_server_header: 'bool' = True, server_header: 'str | bytes | None' = None, env_file: 'str | None' = None, server_names: 'list[str] | None' = None, alt_svc: 'list[str] | list[tuple[str, str]] | None' = None, alt_svc_auto: 'bool' = False, alt_svc_max_age: 'int | None' = None, alt_svc_persist: 'bool' = False, runtime: 'str' = 'auto', worker_healthcheck_timeout: 'float | None' = None, use_colors: 'bool | None' = None) -> 'ServerConfig'
+build_config(*, profile: 'str | None' = None, app: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, static_path_route: 'str | None' = None, static_path_mount: 'str | None' = None, static_path_dir_to_file: 'bool' = True, static_path_index_file: 'str | None' = 'index.html', static_path_expires: 'int | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, max_header_size: 'int | None' = None, http1_max_incomplete_event_size: 'int | None' = None, http1_buffer_size: 'int | None' = None, http1_header_read_timeout: 'float | None' = None, http1_keep_alive: 'bool | None' = None, http2_max_concurrent_streams: 'int | None' = None, http2_max_headers_size: 'int | None' = None, http2_max_frame_size: 'int | None' = None, http2_adaptive_window: 'bool | None' = None, http2_initial_connection_window_size: 'int | None' = None, http2_initial_stream_window_size: 'int | None' = None, http2_keep_alive_interval: 'float | None' = None, http2_keep_alive_timeout: 'float | None' = None, websocket_max_queue: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', config: 'Mapping[str, Any] | None' = None, default_headers: 'list[str] | list[tuple[str, str]] | None' = None, include_date_header: 'bool' = True, include_server_header: 'bool' = False, server_header: 'str | bytes | None' = None, env_file: 'str | None' = None, server_names: 'list[str] | None' = None, alt_svc: 'list[str] | list[tuple[str, str]] | None' = None, alt_svc_auto: 'bool | None' = None, alt_svc_max_age: 'int | None' = None, alt_svc_persist: 'bool' = False, runtime: 'str' = 'auto', worker_healthcheck_timeout: 'float | None' = None, use_colors: 'bool | None' = None) -> 'ServerConfig'
 ```
 
 ### `build_config_from_namespace`
@@ -104,7 +104,7 @@ build_config_from_namespace(ns: 'Namespace') -> 'ServerConfig'
 ### `build_config_from_sources`
 
 ```python
-build_config_from_sources(*, cli_overrides: 'Mapping[str, Any] | None' = None, config_source: 'str | Path | Mapping[str, Any] | Any | None' = None, config_path: 'str | Path | None' = None, env_prefix: 'str | None' = None, env_file: 'str | Path | None' = None) -> 'ServerConfig'
+build_config_from_sources(*, cli_overrides: 'Mapping[str, Any] | None' = None, config_source: 'str | Path | Mapping[str, Any] | Any | None' = None, config_path: 'str | Path | None' = None, env_prefix: 'str | None' = None, env_file: 'str | Path | None' = None, profile: 'str | None' = None) -> 'ServerConfig'
 ```
 
 ### `config_to_dict`
@@ -328,7 +328,7 @@ Publicly exported config dataclasses:
 
 | Dataclass | Exported from | Key fields |
 |---|---|---|
-| `AppConfig` | `tigrcorn.config` | `target`, `factory`, `app_dir`, `config_file`, `env_prefix`, `env_file`, `lifespan`, `reload`, `reload_dirs`, `reload_include`, … |
+| `AppConfig` | `tigrcorn.config` | `target`, `factory`, `profile`, `app_dir`, `config_file`, `env_prefix`, `env_file`, `lifespan`, `reload`, `reload_dirs`, `reload_include`, … |
 | `ProcessConfig` | `tigrcorn.config` | `workers`, `worker_class`, `runtime`, `pid_file`, `worker_healthcheck_timeout`, `limit_max_requests`, `max_requests_jitter` |
 | `TLSConfig` | `tigrcorn.config` | `certfile`, `keyfile`, `keyfile_password`, `ca_certs`, `require_client_cert`, `ciphers`, `resolved_cipher_suites`, `alpn_protocols`, `ocsp_mode`, `ocsp_soft_fail`, … |
 | `ProxyConfig` | `tigrcorn.config` | `proxy_headers`, `forwarded_allow_ips`, `root_path`, `server_header`, `include_server_header`, `include_date_header`, `default_headers`, `server_names` |
@@ -358,6 +358,7 @@ Nested config dataclasses that are still relevant at runtime even though they ar
 |---|---|
 | `target` | `None` |
 | `factory` | `False` |
+| `profile` | `None` |
 | `app_dir` | `None` |
 | `config_file` | `None` |
 | `env_prefix` | `'TIGRCORN'` |
@@ -417,7 +418,7 @@ Nested config dataclasses that are still relevant at runtime even though they ar
 | `forwarded_allow_ips` | `list()` |
 | `root_path` | `''` |
 | `server_header` | `b'tigrcorn'` |
-| `include_server_header` | `True` |
+| `include_server_header` | `False` |
 | `include_date_header` | `True` |
 | `default_headers` | `list()` |
 | `server_names` | `list()` |
@@ -430,7 +431,7 @@ Nested config dataclasses that are still relevant at runtime even though they ar
 | Field | Default |
 |---|---|
 | `http_versions` | `<lambda>()` |
-| `enable_h2c` | `True` |
+| `enable_h2c` | `False` |
 | `keep_alive_timeout` | `5.0` |
 | `read_timeout` | `30.0` |
 | `write_timeout` | `30.0` |
@@ -450,7 +451,7 @@ Nested config dataclasses that are still relevant at runtime even though they ar
 | `http2_initial_stream_window_size` | `65535` |
 | `http2_keep_alive_interval` | `None` |
 | `http2_keep_alive_timeout` | `None` |
-| `connect_policy` | `'relay'` |
+| `connect_policy` | `'deny'` |
 | `connect_allow` | `list()` |
 | `trailer_policy` | `'pass'` |
 | `content_coding_policy` | `'allowlist'` |
@@ -512,7 +513,7 @@ Nested config dataclasses that are still relevant at runtime even though they ar
 | `reuse_address` | `True` |
 | `nodelay` | `True` |
 | `protocols` | `list()` |
-| `quic_secret` | `b'tigrcorn-quic-shared-secret'` |
+| `quic_secret` | `None` |
 | `quic_require_retry` | `False` |
 | `max_datagram_size` | `1200` |
 | `pipe_mode` | `'rawframed'` |
@@ -528,11 +529,11 @@ Nested config dataclasses that are still relevant at runtime even though they ar
 
 | Field | Default |
 |---|---|
-| `quic_secret` | `b'tigrcorn-quic-shared-secret'` |
+| `quic_secret` | `None` |
 | `require_retry` | `False` |
 | `max_datagram_size` | `1200` |
 | `idle_timeout` | `30.0` |
-| `early_data_policy` | `'allow'` |
+| `early_data_policy` | `'deny'` |
 
 </details>
 

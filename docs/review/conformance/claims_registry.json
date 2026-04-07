@@ -565,86 +565,116 @@
       "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
     },
     {
-      "id": "TC-ROADMAP-P1-DEFAULT-BASELINE",
+      "id": "TC-PROFILE-DEFAULT-BASELINE",
       "class": "operator_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "deployment_profiles",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "boundary_status": "in_bounds_current_surface",
       "text": "A default safe baseline profile freezes boring zero-config posture for TCP plus HTTP/1.1, no proxy trust unless configured, no H2/H3/QUIC unless explicit, CONNECT denied, server header off, and early data denied or not applicable.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
       "feature_refs": ["F-P1-DEFAULT-BASELINE"],
       "work_item_refs": ["RM-P1-01"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT"]
+      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT"],
+      "source_files": [
+        "src/tigrcorn/config/profiles.py",
+        "profiles/default.profile.json",
+        "tests/test_profile_resolution.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P1-STRICT-H1-ORIGIN",
+      "id": "TC-PROFILE-STRICT-H1-ORIGIN",
       "class": "delivery_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "deployment_profiles",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "boundary_status": "in_bounds_current_surface",
       "text": "A strict HTTP/1.1 origin profile freezes conservative origin semantics, trusted-proxy normalization, and explicit static/pathsend posture.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
       "feature_refs": ["F-P1-STRICT-H1-ORIGIN"],
       "work_item_refs": ["RM-P1-02"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT", "R-ORIGIN-PATH-CONTRACT-GAP"]
+      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT", "R-ORIGIN-PATH-CONTRACT-GAP"],
+      "source_files": [
+        "src/tigrcorn/config/profiles.py",
+        "profiles/strict-h1-origin.profile.json",
+        "tests/test_profile_resolution.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P1-STRICT-H2-ORIGIN",
+      "id": "TC-PROFILE-STRICT-H2-ORIGIN",
       "class": "protocol_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "deployment_profiles",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "boundary_status": "in_bounds_current_surface",
       "text": "A strict HTTP/2 origin profile freezes TLS plus ALPN plus H2 defaults and explicit frame, header, stream, and window bounds.",
-      "required_evidence_tier": "independent_certification",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
       "feature_refs": ["F-P1-STRICT-H2-ORIGIN"],
-      "work_item_refs": ["RM-P1-03"]
+      "work_item_refs": ["RM-P1-03"],
+      "source_files": [
+        "src/tigrcorn/config/profiles.py",
+        "profiles/strict-h2-origin.profile.json",
+        "tests/test_profile_resolution.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P1-STRICT-H3-EDGE",
+      "id": "TC-PROFILE-STRICT-H3-EDGE",
       "class": "protocol_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "deployment_profiles",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "boundary_status": "in_bounds_current_surface",
       "text": "A strict HTTP/3 edge profile freezes QUIC listener posture, Retry, migration, resumption, Alt-Svc posture, and default 0-RTT denial.",
-      "required_evidence_tier": "independent_certification",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
       "feature_refs": ["F-P1-STRICT-H3-EDGE"],
       "work_item_refs": ["RM-P1-04"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"]
+      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"],
+      "source_files": [
+        "src/tigrcorn/config/profiles.py",
+        "profiles/strict-h3-edge.profile.json",
+        "tests/test_profile_resolution.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P1-STRICT-MTLS-ORIGIN",
+      "id": "TC-PROFILE-STRICT-MTLS-ORIGIN",
       "class": "operator_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "deployment_profiles",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "boundary_status": "in_bounds_current_surface",
       "text": "A strict mTLS origin profile freezes client-certificate requirement, SAN/EKU policy, revocation mode, and hard-fail versus soft-fail behavior.",
-      "required_evidence_tier": "independent_certification",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
       "feature_refs": ["F-P1-STRICT-MTLS-ORIGIN"],
-      "work_item_refs": ["RM-P1-05"]
+      "work_item_refs": ["RM-P1-05"],
+      "source_files": [
+        "src/tigrcorn/config/profiles.py",
+        "profiles/strict-mtls-origin.profile.json",
+        "tests/test_profile_resolution.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P1-STATIC-ORIGIN",
+      "id": "TC-PROFILE-STATIC-ORIGIN",
       "class": "delivery_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "deployment_profiles",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
+      "boundary_status": "in_bounds_current_surface",
       "text": "A static-origin profile freezes static roots, index rules, validators, range behavior, compression interaction, and traversal or symlink posture.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
       "feature_refs": ["F-P1-STATIC-ORIGIN"],
       "work_item_refs": ["RM-P1-06"],
-      "risk_refs": ["R-ORIGIN-PATH-CONTRACT-GAP"]
+      "risk_refs": ["R-ORIGIN-PATH-CONTRACT-GAP"],
+      "source_files": [
+        "src/tigrcorn/config/profiles.py",
+        "profiles/static-origin.profile.json",
+        "tests/test_profile_resolution.py"
+      ]
     },
     {
       "id": "TC-ROADMAP-P2-BASE-DEFAULT-AUDIT",

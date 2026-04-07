@@ -20,6 +20,7 @@
     "examples/PHASE4_PROTOCOL_PAIRING.md",
     "tests/",
     "tools/",
+    "profiles/",
     "docs/review/performance/",
     "examples/http_entity_static",
     "examples/advanced_protocol_delivery",

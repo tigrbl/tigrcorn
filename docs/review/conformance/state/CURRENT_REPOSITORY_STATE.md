@@ -104,3 +104,57 @@ The broader strict-promotion execution plan remains documented in:
 
 - `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`
 - `docs/review/conformance/phase9_implementation_plan.current.json`
+
+## Phase 0 control-plane stabilization checkpoint
+
+The current working tree now also carries a Phase 0 control-plane stabilization checkpoint for the mutable repository surface.
+
+What changed in this working tree:
+
+- runtime defaults now fail closed for `connect_policy`, `early_data_policy`, `include_server_header`, and `enable_h2c`
+- QUIC-enabled listeners no longer rely on a static shared default secret; they require an explicit secret or receive runtime randomization during normalization
+- release-gate evaluation now fails closed when matrix metadata still declares blocked or pending scenarios
+- GitHub control-plane scaffolding now exists under `.github/workflows/`, `.github/actions/`, `scripts/ci/`, `tools/cert/`, `docs/governance/`, and `docs/conformance/`
+- targeted local validation currently remains green for release gates, the strict target, and the promotion target
+
+What is not yet proven by this working tree alone:
+
+- GitHub rulesets for `main`, `release/*`, and protected tags are not activated by editing files in this repository
+- environment protections for `ci`, `staging`, `testpypi`, `pypi`, and `docs` require remote GitHub configuration
+- enabling Dependabot alerts, CodeQL policy, and artifact-attestation enforcement still requires GitHub-side activation
+
+The package claim remains:
+
+- **certifiably fully RFC compliant under the authoritative certification boundary**
+- **strict-target certifiably fully RFC compliant** under the canonical `0.3.9` release root
+- **certifiably fully featured** under the canonical `0.3.9` release root
+
+The repository-governance claim is narrower:
+
+- the repository now contains the control-plane files needed for GitHub enforcement
+- remote GitHub enforcement is only honest to claim after the repository settings are activated outside this working tree
+
+## Phase 1 safe-baseline and blessed-profile checkpoint
+
+The current working tree now also carries the Phase 1 blessed deployment-profile surface.
+
+What changed in this working tree:
+
+- a central runtime profile registry now defines `default`, `strict-h1-origin`, `strict-h2-origin`, `strict-h3-edge`, `strict-mtls-origin`, and `static-origin`
+- profile inheritance and effective-default resolution now happen through the config-loading path before validation
+- generated profile artifacts now exist under `profiles/`
+- generated operator and conformance profile docs now exist at `docs/ops/profiles.md`, `docs/conformance/profile_bundles.md`, and `docs/conformance/profile_bundles.json`
+- local CI now regenerates profile bundles before validation so runtime/profile/doc drift fails in the canonical GitHub Actions path
+- `claims_registry.json` now promotes the Phase 1 deployment-profile claims as implemented `TC-PROFILE-*` rows
+
+What is honestly true after this checkpoint:
+
+- the zero-config/default profile is now intentionally boring and safe in the config-constructor path
+- QUIC/H3, CONNECT, static serving, trusted proxy behavior, and early-data posture are explicit in the blessed profile registry
+- the package claim remains **certifiably fully RFC compliant under the authoritative certification boundary**
+- the canonical `0.3.9` release root remains **strict-target certifiably fully RFC compliant** and **certifiably fully featured**
+
+What is not yet elevated by this checkpoint:
+
+- the canonical frozen `0.3.9` release root has not been regenerated or superseded with Phase 1 profile bundles
+- the stronger profile ambitions around SAN/EKU-specific mTLS policy, broader proxy-trust semantics, and deeper origin path contract closure still remain separate follow-on work inside the repository backlog

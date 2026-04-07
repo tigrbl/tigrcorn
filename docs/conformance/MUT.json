@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs_conformance_alias",
+  "reason": "Short-path pointer docs for the current conformance surface live here."
+}

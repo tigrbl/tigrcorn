@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import secrets
+
 from tigrcorn.config.model import ListenerConfig, ServerConfig
 from tigrcorn.constants import (
     DEFAULT_HTTP2_INITIAL_CONNECTION_WINDOW_SIZE,
@@ -196,7 +198,7 @@ def normalize_config(config: ServerConfig) -> None:
                 listener.protocols.insert(0, "quic")
             listener.max_datagram_size = int(config.quic.max_datagram_size or listener.max_datagram_size)
             listener.quic_require_retry = bool(config.quic.require_retry or listener.quic_require_retry)
-            listener.quic_secret = config.quic.quic_secret or listener.quic_secret
+            listener.quic_secret = listener.quic_secret or config.quic.quic_secret or secrets.token_bytes(32)
         if not listener.scheme:
             if listener.kind == "udp":
                 listener.scheme = "https" if "http3" in listener.enabled_protocols else "quic"

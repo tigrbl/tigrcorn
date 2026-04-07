@@ -3,6 +3,28 @@ from tigrcorn.config.validate import validate_config
 from tigrcorn.errors import ConfigError
 
 
+def test_secure_defaults_fail_closed_for_operator_posture():
+    config = ServerConfig()
+    validate_config(config)
+    assert config.http.connect_policy == 'deny'
+    assert config.quic.early_data_policy == 'deny'
+    assert config.http.enable_h2c is False
+    assert config.proxy.include_server_header is False
+    assert config.server_header_value is None
+
+
+def test_udp_listener_randomizes_quic_secret_when_not_explicit():
+    first = ServerConfig(listeners=[ListenerConfig(kind='udp', host='127.0.0.1', port=1, http_versions=['3'])])
+    second = ServerConfig(listeners=[ListenerConfig(kind='udp', host='127.0.0.1', port=2, http_versions=['3'])])
+    validate_config(first)
+    validate_config(second)
+    assert first.listeners[0].quic_secret is not None
+    assert second.listeners[0].quic_secret is not None
+    assert len(first.listeners[0].quic_secret) == 32
+    assert len(second.listeners[0].quic_secret) == 32
+    assert first.listeners[0].quic_secret != second.listeners[0].quic_secret
+
+
 def test_partial_server_config_normalizes_http2_defaults():
     config = ServerConfig()
     validate_config(config)

@@ -21,7 +21,6 @@ from tigrcorn.constants import (
     DEFAULT_HTTP2_INITIAL_STREAM_WINDOW_SIZE,
     DEFAULT_PIPE_MODE,
     DEFAULT_PORT,
-    DEFAULT_QUIC_SECRET,
     DEFAULT_READ_TIMEOUT,
     DEFAULT_SERVER_HEADER,
     DEFAULT_SHUTDOWN_TIMEOUT,
@@ -43,6 +42,7 @@ ClaimClass = Literal["rfc_scoped", "hybrid", "pure_operator", "non_rfc_custom"]
 class AppConfig:
     target: str | None = None
     factory: bool = False
+    profile: str | None = None
     app_dir: str | None = None
     config_file: str | None = None
     env_prefix: str = DEFAULT_ENV_PREFIX
@@ -90,7 +90,7 @@ class ProxyConfig:
     forwarded_allow_ips: list[str] = field(default_factory=list)
     root_path: str = ""
     server_header: bytes | str = DEFAULT_SERVER_HEADER
-    include_server_header: bool = True
+    include_server_header: bool = False
     include_date_header: bool = True
     default_headers: list[tuple[bytes | str, bytes | str] | list[bytes | str] | dict[str, bytes | str]] = field(default_factory=list)
     server_names: list[str] = field(default_factory=list)
@@ -99,7 +99,7 @@ class ProxyConfig:
 @dataclass(slots=True)
 class HTTPConfig:
     http_versions: list[str] = field(default_factory=lambda: ["1.1", "2"])
-    enable_h2c: bool = True
+    enable_h2c: bool = False
     keep_alive_timeout: float = DEFAULT_KEEPALIVE_TIMEOUT
     read_timeout: float = DEFAULT_READ_TIMEOUT
     write_timeout: float = DEFAULT_WRITE_TIMEOUT
@@ -119,7 +119,7 @@ class HTTPConfig:
     http2_initial_stream_window_size: int | None = DEFAULT_HTTP2_INITIAL_STREAM_WINDOW_SIZE
     http2_keep_alive_interval: float | None = None
     http2_keep_alive_timeout: float | None = None
-    connect_policy: Literal["relay", "deny", "allowlist"] = "relay"
+    connect_policy: Literal["relay", "deny", "allowlist"] = "deny"
     connect_allow: list[str] = field(default_factory=list)
     trailer_policy: Literal["pass", "drop", "strict"] = "pass"
     content_coding_policy: Literal["allowlist", "identity-only", "strict"] = "allowlist"
@@ -151,11 +151,11 @@ class StaticConfig:
 
 @dataclass(slots=True)
 class QUICConfig:
-    quic_secret: bytes = DEFAULT_QUIC_SECRET
+    quic_secret: bytes | None = None
     require_retry: bool = False
     max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
     idle_timeout: float = DEFAULT_IDLE_TIMEOUT
-    early_data_policy: Literal["allow", "deny", "require"] = "allow"
+    early_data_policy: Literal["allow", "deny", "require"] = "deny"
 
 
 @dataclass(slots=True)
@@ -220,7 +220,7 @@ class ListenerConfig:
     reuse_address: bool = True
     nodelay: bool = True
     protocols: list[str] = field(default_factory=list)
-    quic_secret: bytes = DEFAULT_QUIC_SECRET
+    quic_secret: bytes | None = None
     quic_require_retry: bool = False
     max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
     pipe_mode: Literal["rawframed", "stream"] = DEFAULT_PIPE_MODE

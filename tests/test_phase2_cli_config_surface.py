@@ -150,7 +150,7 @@ class Phase2CLIConfigSurfaceTests(unittest.TestCase):
 
     def test_config_source_precedence_cli_over_env_over_file(self):
         parser = build_parser()
-        with tempfile.TemporaryDirectory() as tmp:
+        with tempfile.TemporaryDirectory(dir=os.getcwd()) as tmp:
             config_path = Path(tmp) / 'tigrcorn.json'
             config_path.write_text(json.dumps({
                 'app': {'target': 'tests.fixtures_pkg.appmod:app'},

@@ -108,6 +108,7 @@ def evaluate_release_gates(
             failures.append(f'missing independent certification matrix: {independent_file}')
         else:
             independent_matrix = load_external_matrix(independent_file)
+            failures.extend(_fail_closed_for_matrix_metadata(independent_matrix, matrix_name='independent certification matrix'))
             if not independent_matrix.scenarios:
                 failures.append('independent certification matrix does not include any declared scenarios')
     elif independent_file.exists():
@@ -116,6 +117,7 @@ def evaluate_release_gates(
     same_stack_matrix = None
     if same_stack_file.exists():
         same_stack_matrix = load_external_matrix(same_stack_file)
+        failures.extend(_fail_closed_for_matrix_metadata(same_stack_matrix, matrix_name='same-stack replay matrix'))
         if any(scenario.evidence_tier != 'same_stack_replay' for scenario in same_stack_matrix.scenarios):
             failures.append('same-stack replay matrix contains a scenario outside the same_stack_replay tier')
     elif gates.get('require_docs_reference_canonical_boundary', False):
@@ -193,6 +195,7 @@ def _evaluate_independent_matrix(scenarios: list[InteropScenario], *, gates: dic
         return failures
 
     for scenario in independent_scenarios:
+        failures.extend(_fail_closed_for_scenario_metadata(scenario))
         peer_kind = scenario.peer_process.provenance_kind
         if peer_kind == 'same_stack_fixture':
             failures.append(f'independent scenario {scenario.id} incorrectly uses a same_stack_fixture peer')
@@ -205,6 +208,49 @@ def _evaluate_independent_matrix(scenarios: list[InteropScenario], *, gates: dic
     if gates.get('require_third_party_http3_websocket', False) and not _has_third_party_http3_websocket(independent_scenarios):
         failures.append('independent certification matrix does not declare a true third-party RFC 9220 WebSocket-over-HTTP/3 scenario')
 
+    return failures
+
+
+def _fail_closed_for_matrix_metadata(matrix: Any, *, matrix_name: str) -> list[str]:
+    failures: list[str] = []
+    metadata = dict(getattr(matrix, 'metadata', {}) or {})
+    pending_ids = metadata.get('pending_third_party_http3_scenarios', [])
+    if isinstance(pending_ids, list) and pending_ids:
+        failures.append(
+            f'{matrix_name} declares blocked pending_third_party_http3_scenarios and therefore is not release-gate eligible: {sorted(str(item) for item in pending_ids)}'
+        )
+    blocked_ids = metadata.get('blocked_scenarios', [])
+    if isinstance(blocked_ids, list) and blocked_ids:
+        failures.append(
+            f'{matrix_name} declares blocked_scenarios and therefore is not release-gate eligible: {sorted(str(item) for item in blocked_ids)}'
+        )
+    return failures
+
+
+def _fail_closed_for_scenario_metadata(scenario: InteropScenario) -> list[str]:
+    failures: list[str] = []
+    metadata = dict(scenario.metadata or {})
+    certification_status = str(metadata.get('certification_status', '')).strip().lower()
+    blocked_statuses = {
+        'blocked',
+        'failed',
+        'incomplete',
+        'not_ready',
+        'not_release_ready',
+        'pending',
+        'provisional',
+    }
+    if certification_status in blocked_statuses:
+        failures.append(
+            f'independent scenario {scenario.id} is blocked by certification_status={metadata.get("certification_status")!r}'
+        )
+    for key in ('blocked', 'pending'):
+        if metadata.get(key) is True:
+            failures.append(f'independent scenario {scenario.id} is blocked by metadata flag {key}=true')
+    for key in ('blocked_reason', 'pending_reason', 'blocker'):
+        value = metadata.get(key)
+        if isinstance(value, str) and value.strip():
+            failures.append(f'independent scenario {scenario.id} is blocked by metadata {key}={value!r}')
     return failures
 
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,7 +21,7 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertEqual(report.rfc_status['RFC 9002']['highest_observed_evidence_tier'], 'independent_certification')
 
     def test_synthetic_release_tree_passes_when_boundary_evidence_and_artifacts_align(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory(dir=os.getcwd()) as tmpdir:
             root = Path(tmpdir)
             (root / 'docs/review/conformance').mkdir(parents=True)
             (root / 'src/tigrcorn/security').mkdir(parents=True)
@@ -228,6 +229,81 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertTrue(report.performance.passed, msg='\n'.join(report.performance.failures))
         self.assertTrue(report.documentation.passed, msg='\n'.join(report.documentation.failures))
         self.assertTrue(report.passed)
+
+    def test_release_gates_fail_closed_when_independent_matrix_declares_pending_scenarios(self):
+        with tempfile.TemporaryDirectory(dir=os.getcwd()) as tmpdir:
+            root = Path(tmpdir)
+            (root / 'docs/review/conformance').mkdir(parents=True)
+            (root / 'docs/review/conformance/releases/current/independent').mkdir(parents=True)
+            (root / 'docs/review/conformance/releases/current/same-stack').mkdir(parents=True)
+            (root / 'src/tigrcorn/security').mkdir(parents=True)
+            for relative in [
+                'README.md',
+                'docs/protocols/http3.md',
+                'docs/protocols/quic.md',
+                'docs/protocols/websocket.md',
+                'docs/review/conformance/README.md',
+                'docs/review/rfc_compliance_review.md',
+                'docs/review/conformance/reports/RFC_HARDENING_REPORT.md',
+                'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+                'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
+            ]:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('See docs/review/conformance/CERTIFICATION_BOUNDARY.md\n', encoding='utf-8')
+            (root / 'docs/review/conformance/CERTIFICATION_BOUNDARY.md').write_text('# boundary\n', encoding='utf-8')
+            (root / 'src/tigrcorn/security/tls.py').write_text('def build_server_tls_context():\n    return None\n', encoding='utf-8')
+            (root / 'docs/review/conformance/corpus.json').write_text(json.dumps({'vectors': []}), encoding='utf-8')
+            (root / 'docs/review/conformance/releases/current/independent/index.json').write_text(json.dumps({'scenarios': []}), encoding='utf-8')
+            (root / 'docs/review/conformance/releases/current/independent/manifest.json').write_text(json.dumps({}), encoding='utf-8')
+            (root / 'docs/review/conformance/releases/current/same-stack/index.json').write_text(json.dumps({'scenarios': []}), encoding='utf-8')
+            (root / 'docs/review/conformance/releases/current/same-stack/manifest.json').write_text(json.dumps({}), encoding='utf-8')
+            (root / 'docs/review/conformance/external_matrix.same_stack_replay.json').write_text(
+                json.dumps({'name': 'same-stack', 'metadata': {'evidence_tier': 'same_stack_replay'}, 'scenarios': []}),
+                encoding='utf-8',
+            )
+            (root / 'docs/review/conformance/external_matrix.release.json').write_text(
+                json.dumps(
+                    {
+                        'name': 'independent',
+                        'metadata': {
+                            'evidence_tier': 'independent_certification',
+                            'pending_third_party_http3_scenarios': ['http3-pending'],
+                        },
+                        'scenarios': [],
+                    }
+                ),
+                encoding='utf-8',
+            )
+            boundary = {
+                'canonical_doc': 'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
+                'artifact_bundles': {
+                    'independent_certification': 'docs/review/conformance/releases/current/independent',
+                    'same_stack_replay': 'docs/review/conformance/releases/current/same-stack',
+                },
+                'required_rfcs': [],
+                'required_rfc_evidence': {},
+                'gates': {
+                    'require_independent_matrix': True,
+                    'require_docs_reference_canonical_boundary': True,
+                    'require_conformance_corpus': True,
+                },
+                'docs_that_must_reference_boundary': [
+                    'README.md',
+                    'docs/protocols/http3.md',
+                    'docs/protocols/quic.md',
+                    'docs/protocols/websocket.md',
+                    'docs/review/conformance/README.md',
+                    'docs/review/rfc_compliance_review.md',
+                    'docs/review/conformance/reports/RFC_HARDENING_REPORT.md',
+                    'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+                    'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
+                ],
+            }
+            (root / 'docs/review/conformance/certification_boundary.json').write_text(json.dumps(boundary), encoding='utf-8')
+            report = evaluate_release_gates(root)
+            self.assertFalse(report.passed)
+            self.assertIn('pending_third_party_http3_scenarios', '\n'.join(report.failures))
 
 if __name__ == '__main__':
     unittest.main()

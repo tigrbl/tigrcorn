@@ -1,0 +1,223 @@
+{
+  "claim_ids": [
+    "TC-PROFILE-DEFAULT-BASELINE",
+    "TC-PROFILE-STRICT-H1-ORIGIN",
+    "TC-PROFILE-STRICT-H2-ORIGIN",
+    "TC-PROFILE-STRICT-H3-EDGE"
+  ],
+  "description": "Dual TCP+UDP edge posture with explicit HTTP/3 and QUIC listeners, automatic Alt-Svc, Retry, and default 0-RTT denial.",
+  "effective_config": {
+    "app": {
+      "app_dir": null,
+      "config_file": null,
+      "env_file": null,
+      "env_prefix": "TIGRCORN",
+      "factory": false,
+      "lifespan": "auto",
+      "profile": "strict-h3-edge",
+      "reload": false,
+      "reload_dirs": [],
+      "reload_exclude": [],
+      "reload_include": [],
+      "target": null
+    },
+    "debug": false,
+    "hooks": {
+      "on_reload": [],
+      "on_shutdown": [],
+      "on_startup": []
+    },
+    "http": {
+      "alt_svc_auto": true,
+      "alt_svc_headers": [],
+      "alt_svc_max_age": 86400,
+      "alt_svc_persist": false,
+      "connect_allow": [],
+      "connect_policy": "deny",
+      "content_coding_policy": "allowlist",
+      "content_codings": [
+        "gzip",
+        "deflate",
+        "br"
+      ],
+      "enable_h2c": false,
+      "http1_buffer_size": 65536,
+      "http1_header_read_timeout": null,
+      "http1_keep_alive": true,
+      "http1_max_incomplete_event_size": 65536,
+      "http2_adaptive_window": false,
+      "http2_initial_connection_window_size": 65535,
+      "http2_initial_stream_window_size": 65535,
+      "http2_keep_alive_interval": null,
+      "http2_keep_alive_timeout": null,
+      "http2_max_concurrent_streams": 128,
+      "http2_max_frame_size": 16384,
+      "http2_max_headers_size": 65536,
+      "http_versions": [
+        "1.1",
+        "2"
+      ],
+      "idle_timeout": 30.0,
+      "keep_alive_timeout": 5.0,
+      "max_body_size": 16777216,
+      "max_header_size": 65536,
+      "read_timeout": 30.0,
+      "shutdown_timeout": 30.0,
+      "trailer_policy": "pass",
+      "write_timeout": 30.0
+    },
+    "listeners": [
+      {
+        "alpn_protocols": [
+          "h2",
+          "http/1.1"
+        ],
+        "host": "127.0.0.1",
+        "http_versions": [
+          "1.1",
+          "2"
+        ],
+        "kind": "tcp",
+        "port": 8443,
+        "protocols": [
+          "http1",
+          "http2"
+        ],
+        "websocket": false
+      },
+      {
+        "alpn_protocols": [
+          "h3"
+        ],
+        "host": "127.0.0.1",
+        "http_versions": [
+          "3"
+        ],
+        "kind": "udp",
+        "port": 8443,
+        "protocols": [
+          "quic",
+          "http3"
+        ],
+        "quic_require_retry": true,
+        "quic_secret": null,
+        "websocket": false
+      }
+    ],
+    "logging": {
+      "access_log": true,
+      "access_log_file": null,
+      "access_log_format": null,
+      "error_log_file": null,
+      "explicit_fields": [],
+      "level": "info",
+      "log_config": null,
+      "structured": false,
+      "use_colors": null
+    },
+    "metrics": {
+      "bind": null,
+      "enabled": false,
+      "otel_endpoint": null,
+      "statsd_host": null
+    },
+    "process": {
+      "limit_max_requests": null,
+      "max_requests_jitter": 0,
+      "pid_file": null,
+      "runtime": "auto",
+      "worker_class": "local",
+      "worker_healthcheck_timeout": 30.0,
+      "workers": 1
+    },
+    "proxy": {
+      "default_headers": [],
+      "forwarded_allow_ips": [],
+      "include_date_header": true,
+      "include_server_header": false,
+      "proxy_headers": false,
+      "root_path": "",
+      "server_header": "",
+      "server_names": [
+        "localhost"
+      ]
+    },
+    "quic": {
+      "early_data_policy": "deny",
+      "idle_timeout": 30.0,
+      "max_datagram_size": 1200,
+      "quic_secret": null,
+      "require_retry": true
+    },
+    "scheduler": {
+      "limit_concurrency": null,
+      "max_connections": null,
+      "max_streams": null,
+      "max_tasks": null
+    },
+    "static": {
+      "dir_to_file": true,
+      "expires": null,
+      "index_file": "index.html",
+      "mount": null,
+      "route": null
+    },
+    "tls": {
+      "alpn_protocols": [
+        "h2",
+        "http/1.1"
+      ],
+      "ca_certs": null,
+      "certfile": null,
+      "ciphers": null,
+      "crl": null,
+      "crl_mode": "off",
+      "keyfile": null,
+      "keyfile_password": null,
+      "ocsp_cache_size": 128,
+      "ocsp_max_age": 43200.0,
+      "ocsp_mode": "off",
+      "ocsp_soft_fail": false,
+      "require_client_cert": false,
+      "resolved_cipher_suites": [],
+      "revocation_fetch": true
+    },
+    "websocket": {
+      "compression": "off",
+      "enabled": false,
+      "max_message_size": 16777216,
+      "max_queue": 32,
+      "ping_interval": null,
+      "ping_timeout": null
+    }
+  },
+  "explicit_posture": {
+    "connect": "deny",
+    "early_data": "deny",
+    "http3_quic": "enabled",
+    "protocol_family": "h2-h3-edge",
+    "proxy_trust": "disabled",
+    "static_serving": "disabled_until_mount_configured",
+    "trusted_proxy_behavior": "deny_untrusted_forwarded_headers"
+  },
+  "extends": "strict-h2-origin",
+  "profile_bundle_version": 1,
+  "profile_id": "strict-h3-edge",
+  "required_overrides": [
+    "tls.certfile",
+    "tls.keyfile"
+  ],
+  "rfc_targets": [
+    "RFC 9112",
+    "RFC 7232",
+    "RFC 7233",
+    "RFC 9113",
+    "RFC 8446",
+    "RFC 7301",
+    "RFC 9114",
+    "RFC 9000",
+    "RFC 9001",
+    "RFC 9002",
+    "RFC 7838 Section 3"
+  ]
+}

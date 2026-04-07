@@ -10,6 +10,7 @@ from tigrcorn.observability.logging import validate_logging_contract
 from tigrcorn.observability.metrics import parse_statsd_host
 from tigrcorn.observability.tracing import validate_otel_endpoint
 from tigrcorn.errors import ConfigError
+from tigrcorn.config.profiles import list_blessed_profiles
 
 _ALLOWED_PROTOCOLS = {"http1", "http2", "http3", "quic", "websocket", "rawframed", "custom"}
 _ALLOWED_WORKER_CLASSES = {"local", "process", *SUPPORTED_WORKER_CLASS_ALIASES}
@@ -23,6 +24,8 @@ def _require_positive(name: str, value: int | float | None) -> None:
 
 def validate_config(config: ServerConfig) -> None:
     normalize_config(config)
+    if config.app.profile is not None and config.app.profile not in set(list_blessed_profiles()):
+        raise ConfigError(f"unsupported app.profile: {config.app.profile!r}")
     if config.app.lifespan not in {"auto", "on", "off"}:
         raise ConfigError(f"invalid lifespan mode: {config.app.lifespan!r}")
     if config.process.workers <= 0:
@@ -111,6 +114,8 @@ def validate_config(config: ServerConfig) -> None:
         raise ConfigError(f"unsupported websocket compression mode: {config.websocket.compression!r}")
     if config.quic.early_data_policy not in {"allow", "deny", "require"}:
         raise ConfigError(f"unsupported quic early data policy: {config.quic.early_data_policy!r}")
+    if config.quic.quic_secret is not None and len(config.quic.quic_secret) == 0:
+        raise ConfigError('quic.quic_secret must not be empty when provided')
     if config.tls.ocsp_mode not in {"off", "soft-fail", "require"}:
         raise ConfigError(f"unsupported ocsp_mode: {config.tls.ocsp_mode!r}")
     if config.tls.crl_mode not in {"off", "soft-fail", "require"}:
@@ -199,6 +204,8 @@ def validate_config(config: ServerConfig) -> None:
         if listener.kind == "udp":
             if listener.max_datagram_size <= 0:
                 raise ConfigError("max_datagram_size must be positive for udp listeners")
+            if listener.quic_secret is not None and len(listener.quic_secret) == 0:
+                raise ConfigError('udp listener quic_secret must not be empty when provided')
             if "http3" in listener.enabled_protocols and "quic" not in listener.enabled_protocols:
                 raise ConfigError("http3 requires quic on udp listeners")
             if listener.ssl_ca_certs and not listener.ssl_enabled:
@@ -210,3 +217,36 @@ def validate_config(config: ServerConfig) -> None:
                     raise ConfigError("ssl_ca_certs is required when ssl_require_client_cert is enabled for udp listeners")
         if listener.kind == "pipe" and listener.pipe_mode not in {"rawframed", "stream"}:
             raise ConfigError(f"unsupported pipe mode: {listener.pipe_mode!r}")
+
+    profile_name = config.app.profile or 'default'
+    if profile_name == 'strict-h1-origin':
+        if any(listener.kind == 'udp' for listener in config.listeners):
+            raise ConfigError('strict-h1-origin does not permit udp/quic listeners')
+        if any(protocol in {'http2', 'http3', 'quic', 'websocket'} for listener in config.listeners for protocol in listener.enabled_protocols):
+            raise ConfigError('strict-h1-origin only permits http1 listener protocols')
+    elif profile_name == 'strict-h2-origin':
+        if any(listener.kind == 'udp' for listener in config.listeners):
+            raise ConfigError('strict-h2-origin does not permit udp/quic listeners')
+        if not any(listener.ssl_enabled and 'http2' in listener.enabled_protocols for listener in config.listeners if listener.kind in {'tcp', 'unix'}):
+            raise ConfigError('strict-h2-origin requires a tls-enabled http2 listener')
+    elif profile_name == 'strict-h3-edge':
+        if not any(listener.kind == 'udp' and 'http3' in listener.enabled_protocols for listener in config.listeners):
+            raise ConfigError('strict-h3-edge requires an explicit udp http3 listener')
+        if not any(listener.kind in {'tcp', 'unix'} and listener.ssl_enabled for listener in config.listeners):
+            raise ConfigError('strict-h3-edge requires a tls-enabled tcp or unix listener for fallback traffic')
+        if not config.http.alt_svc_auto:
+            raise ConfigError('strict-h3-edge requires http.alt_svc_auto')
+        if not config.quic.require_retry:
+            raise ConfigError('strict-h3-edge requires quic.require_retry')
+        if config.quic.early_data_policy != 'deny':
+            raise ConfigError('strict-h3-edge requires quic.early_data_policy == deny')
+    elif profile_name == 'strict-mtls-origin':
+        if not config.tls.require_client_cert:
+            raise ConfigError('strict-mtls-origin requires tls.require_client_cert')
+        if not config.tls.ca_certs and not any(listener.ssl_ca_certs for listener in config.listeners):
+            raise ConfigError('strict-mtls-origin requires tls.ca_certs or listener ssl_ca_certs')
+        if not any(listener.ssl_enabled and listener.ssl_require_client_cert for listener in config.listeners if listener.kind in {'tcp', 'unix'}):
+            raise ConfigError('strict-mtls-origin requires a tls listener with client-certificate validation enabled')
+    elif profile_name == 'static-origin':
+        if not config.static.mount:
+            raise ConfigError('static-origin requires static.mount')

@@ -1,0 +1,42 @@
+name: _reusable-ci
+
+on:
+  workflow_call:
+
+jobs:
+  validate:
+    name: validate-py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      - name: Install project
+        run: python -m pip install -e ".[certification,dev]"
+      - name: Validate tree
+        uses: ./.github/actions/ci-shell
+        with:
+          command: ./scripts/ci/validate.sh
+      - name: Upload validation artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: validation-py${{ matrix.python-version }}
+          path: |
+            profiles/
+            docs/conformance/profile_bundles.json
+            docs/conformance/profile_bundles.md
+            docs/ops/profiles.md
+            docs/review/conformance/release_gate_status.current.json
+            docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md

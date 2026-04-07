@@ -1,0 +1,31 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "README.md"
+      - "docs/**"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    environment: docs
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Package docs artifact
+        run: |
+          mkdir -p .artifacts/docs
+          cp README.md .artifacts/docs/
+          cp -R docs .artifacts/docs/docs
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: docs-bundle
+          path: .artifacts/docs

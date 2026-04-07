@@ -13,6 +13,7 @@ from .files import load_config_source
 from .merge import merge_config_dicts
 from .model import ListenerConfig, ServerConfig
 from .normalize import normalize_config
+from .profiles import resolve_effective_profile_mapping, resolve_requested_profile
 from .validate import validate_config
 
 
@@ -50,8 +51,10 @@ def _apply_mapping(target: Any, data: Mapping[str, Any]) -> None:
 
 
 def config_from_mapping(data: Mapping[str, Any]) -> ServerConfig:
+    profile_name = resolve_requested_profile(data)
+    effective_mapping = merge_config_dicts(resolve_effective_profile_mapping(profile_name), data)
     config = default_config()
-    _apply_mapping(config, data)
+    _apply_mapping(config, effective_mapping)
     normalize_config(config)
     validate_config(config)
     return config
@@ -384,8 +387,8 @@ def build_config_from_sources(
     config_path: str | Path | None = None,
     env_prefix: str | None = None,
     env_file: str | Path | None = None,
+    profile: str | None = None,
 ) -> ServerConfig:
-    defaults_dict = config_to_dict(default_config())
     source = config_source if config_source is not None else config_path
     file_dict = load_config_source(source)
     prefix = env_prefix or _mapping_get(file_dict, 'app', 'env_prefix') or DEFAULT_ENV_PREFIX
@@ -393,7 +396,10 @@ def build_config_from_sources(
     env_file_vars = load_env_file(resolved_env_file)
     env_file_dict = load_env_config(prefix, environ=env_file_vars) if env_file_vars else {}
     env_dict = load_env_config(prefix)
-    merged = merge_config_dicts(defaults_dict, file_dict, env_file_dict, env_dict, cli_overrides)
+    profile_name = resolve_requested_profile(file_dict, env_file_dict, env_dict, cli_overrides, explicit_profile=profile)
+    merged = merge_config_dicts(resolve_effective_profile_mapping(profile_name), file_dict, env_file_dict, env_dict, cli_overrides)
+    merged.setdefault('app', {})
+    merged['app']['profile'] = profile_name
     return config_from_mapping(merged)
 
 
@@ -407,6 +413,7 @@ def build_config_from_namespace(ns: Namespace) -> ServerConfig:
 
 def build_config(
     *,
+    profile: str | None = None,
     app: str | None = None,
     host: str = DEFAULT_HOST,
     port: int = DEFAULT_PORT,
@@ -419,17 +426,17 @@ def build_config(
     ssl_keyfile: str | None = None,
     ssl_keyfile_password: str | bytes | None = None,
     ssl_ca_certs: str | None = None,
-    ssl_require_client_cert: bool = False,
+    ssl_require_client_cert: bool | None = None,
     ssl_ciphers: str | None = None,
     ssl_crl: str | None = None,
     http_versions: list[str] | None = None,
-    websocket: bool = True,
+    websocket: bool | None = None,
     static_path_route: str | None = None,
     static_path_mount: str | None = None,
     static_path_dir_to_file: bool = True,
     static_path_index_file: str | None = 'index.html',
     static_path_expires: int | None = None,
-    enable_h2c: bool = True,
+    enable_h2c: bool = False,
     max_body_size: int | None = None,
     max_header_size: int | None = None,
     http1_max_incomplete_event_size: int | None = None,
@@ -447,34 +454,33 @@ def build_config(
     websocket_max_queue: int | None = None,
     protocols: list[str] | None = None,
     quic_secret: bytes | None = None,
-    quic_require_retry: bool = False,
+    quic_require_retry: bool | None = None,
     pipe_mode: str = 'rawframed',
     config: Mapping[str, Any] | None = None,
     default_headers: list[str] | list[tuple[str, str]] | None = None,
     include_date_header: bool = True,
-    include_server_header: bool = True,
+    include_server_header: bool = False,
     server_header: str | bytes | None = None,
     env_file: str | None = None,
     server_names: list[str] | None = None,
     alt_svc: list[str] | list[tuple[str, str]] | None = None,
-    alt_svc_auto: bool = False,
+    alt_svc_auto: bool | None = None,
     alt_svc_max_age: int | None = None,
     alt_svc_persist: bool = False,
     runtime: str = 'auto',
     worker_healthcheck_timeout: float | None = None,
     use_colors: bool | None = None,
 ) -> ServerConfig:
+    profile_selected = profile is not None
     overrides: dict[str, Any] = {
-        'app': {'target': app, 'lifespan': lifespan, 'env_file': env_file},
+        'app': {'target': app, 'lifespan': lifespan, 'env_file': env_file, 'profile': profile},
         'logging': {'level': log_level, 'access_log': access_log, 'use_colors': use_colors},
         'http': {
             'enable_h2c': enable_h2c,
             'alt_svc_headers': alt_svc or [],
-            'alt_svc_auto': alt_svc_auto,
             'alt_svc_persist': alt_svc_persist,
             'http1_keep_alive': http1_keep_alive,
         },
-        'websocket': {'enabled': websocket, 'max_queue': websocket_max_queue},
         'static': {
             'route': static_path_route,
             'mount': static_path_mount,
@@ -482,7 +488,6 @@ def build_config(
             'index_file': static_path_index_file,
             'expires': static_path_expires,
         },
-        'quic': {'require_retry': quic_require_retry},
         'process': {'runtime': runtime},
         'proxy': {
             'include_date_header': include_date_header,
@@ -496,11 +501,36 @@ def build_config(
             'keyfile': ssl_keyfile,
             'keyfile_password': ssl_keyfile_password,
             'ca_certs': ssl_ca_certs,
-            'require_client_cert': ssl_require_client_cert,
             'ciphers': ssl_ciphers,
             'crl': ssl_crl,
         },
-        'listeners': [
+    }
+    if alt_svc_auto is not None or not profile_selected:
+        overrides['http']['alt_svc_auto'] = False if alt_svc_auto is None else alt_svc_auto
+    if websocket is not None or not profile_selected:
+        overrides['websocket'] = {'enabled': False if websocket is None else websocket, 'max_queue': websocket_max_queue}
+    elif websocket_max_queue is not None:
+        overrides['websocket'] = {'max_queue': websocket_max_queue}
+    if quic_require_retry is not None or not profile_selected:
+        overrides['quic'] = {'require_retry': False if quic_require_retry is None else quic_require_retry}
+    if ssl_require_client_cert is not None or not profile_selected:
+        overrides['tls']['require_client_cert'] = False if ssl_require_client_cert is None else ssl_require_client_cert
+
+    listener_customized = (
+        not profile_selected
+        or uds is not None
+        or transport != 'tcp'
+        or host != DEFAULT_HOST
+        or port != DEFAULT_PORT
+        or http_versions is not None
+        or protocols is not None
+        or quic_secret is not None
+        or pipe_mode != 'rawframed'
+        or websocket is not None
+        or quic_require_retry is not None
+    )
+    if listener_customized:
+        overrides['listeners'] = [
             {
                 'kind': 'unix' if uds and transport == 'tcp' else transport.lower(),
                 'host': host,
@@ -510,18 +540,17 @@ def build_config(
                 'ssl_keyfile': ssl_keyfile,
                 'ssl_keyfile_password': ssl_keyfile_password,
                 'ssl_ca_certs': ssl_ca_certs,
-                'ssl_require_client_cert': ssl_require_client_cert,
+                'ssl_require_client_cert': False if ssl_require_client_cert is None else ssl_require_client_cert,
                 'ssl_ciphers': ssl_ciphers,
                 'ssl_crl': ssl_crl,
                 'http_versions': list(http_versions) if http_versions is not None else None,
-                'websocket': websocket,
+                'websocket': False if websocket is None else websocket,
                 'protocols': list(protocols) if protocols is not None else None,
                 'quic_secret': quic_secret,
-                'quic_require_retry': quic_require_retry,
+                'quic_require_retry': False if quic_require_retry is None else quic_require_retry,
                 'pipe_mode': pipe_mode,
             }
-        ],
-    }
+        ]
     if max_body_size is not None:
         overrides.setdefault('http', {})['max_body_size'] = max_body_size
     if max_header_size is not None:
@@ -554,5 +583,4 @@ def build_config(
         overrides.setdefault('quic', {})['quic_secret'] = quic_secret
     if worker_healthcheck_timeout is not None:
         overrides.setdefault('process', {})['worker_healthcheck_timeout'] = worker_healthcheck_timeout
-    merged = merge_config_dicts(config or {}, overrides)
-    return config_from_mapping(merged)
+    return build_config_from_sources(cli_overrides=overrides, config_source=config, profile=profile)

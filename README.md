@@ -128,6 +128,7 @@ run("examples.echo_http.app:app", host="127.0.0.1", port=8000)
 ```
 
 For complete operator recipes, use `docs/ops/cli.md`. For public imports and lifecycle details, use `docs/ops/public.md` and `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+For the blessed safe deployment profiles, use `docs/ops/profiles.md` and the generated `profiles/*.profile.json` artifacts.
 
 ## Why teams pick Tigrcorn
 
@@ -147,6 +148,7 @@ For complete operator recipes, use `docs/ops/cli.md`. For public imports and lif
 | Operations | listeners, workers, reload, metrics, logging, proxy normalization, timeouts and resource controls | `docs/ops/cli.md` |
 | Embedding | `run`, `serve`, `serve_import_string`, `EmbeddedServer`, lifecycle hooks | `docs/ops/public.md`, `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
 | Config | typed config model, config-file loading, env loading, merge from CLI/env/file/defaults | `docs/ops/public.md`, `docs/ops/cli.md` |
+| Blessed profiles | generated safe deployment profiles plus profile conformance bundles | `docs/ops/profiles.md`, `docs/conformance/profile_bundles.json` |
 | Release checks | release-gate and promotion-target evaluators | `docs/gov/release.md`, `docs/ops/public.md` |
 | Current-state and release records | canonical current-state docs plus frozen promoted roots | `docs/review/conformance/state/`, `docs/review/conformance/releases/` |
 
