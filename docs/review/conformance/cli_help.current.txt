@@ -168,21 +168,32 @@ TLS / security:
   --ssl-require-client-cert
                         Require peer client certificates
   --ssl-ciphers SSL_CIPHERS
-  --ssl-alpn SSL_ALPN   ALPN protocol(s); repeat or use comma-separated values
+  --ssl-alpn SSL_ALPN   ALPN offer list; repeat or use comma-separated values
   --ssl-ocsp-mode {off,soft-fail,require}
-  --ssl-ocsp-soft-fail
+                        OCSP revocation mode for peer-certificate validation
+  --ssl-ocsp-soft-fail  Allow OCSP-unavailable validation to continue when
+                        strict mode is not required
   --ssl-ocsp-cache-size SSL_OCSP_CACHE_SIZE
+                        Maximum cached OCSP responses kept in the revocation
+                        cache
   --ssl-ocsp-max-age SSL_OCSP_MAX_AGE
+                        Maximum acceptable OCSP response age in seconds
   --ssl-crl-mode {off,soft-fail,require}
-  --ssl-crl SSL_CRL     Local CRL file (PEM or DER) loaded into the package-
-                        owned revocation material set
+                        CRL validation mode for peer-certificate revocation
+                        checks
+  --ssl-crl SSL_CRL     Local CRL file loaded into the package-owned
+                        revocation material set
   --ssl-revocation-fetch {off,on}
-  --proxy-headers
+                        Enable or disable online revocation fetching for
+                        OCSP/CRL validation
+  --proxy-headers       Trust Forwarded and X-Forwarded-* identity headers
+                        from allowed peers
   --forwarded-allow-ips FORWARDED_ALLOW_IPS
-                        Trusted forwarded-header peers; repeat or use comma-
-                        separated values
+                        Trusted proxy peers for Forwarded and X-Forwarded-*
+                        processing; repeat or use comma-separated values
   --root-path ROOT_PATH
-                        ASGI root_path mount prefix
+                        Base ASGI root_path applied before trusted proxy
+                        prefix normalization
   --server-header [SERVER_HEADER]
                         Enable or override the Server header value
   --no-server-header    Disable the Server header
@@ -212,75 +223,100 @@ Logging / observability:
 
 Resource / timeouts / concurrency:
   --timeout-keep-alive TIMEOUT_KEEP_ALIVE
+                        Idle keep-alive timeout in seconds before an inactive
+                        connection is closed
   --read-timeout READ_TIMEOUT
+                        Maximum request read time in seconds for package-owned
+                        transports
   --write-timeout WRITE_TIMEOUT
+                        Maximum response write time in seconds for package-
+                        owned transports
   --timeout-graceful-shutdown TIMEOUT_GRACEFUL_SHUTDOWN
+                        Graceful-drain timeout in seconds before shutdown
+                        stops waiting on active work
   --limit-concurrency LIMIT_CONCURRENCY
+                        Maximum concurrently admitted request/stream work
+                        across the production scheduler
   --max-connections MAX_CONNECTIONS
+                        Maximum simultaneously open client connections
   --max-tasks MAX_TASKS
+                        Maximum concurrently scheduled background work tasks
   --max-streams MAX_STREAMS
+                        Maximum concurrently admitted logical streams or units
+                        of work per session policy
   --max-body-size MAX_BODY_SIZE
+                        Maximum accepted request body size in bytes
   --max-header-size MAX_HEADER_SIZE
+                        Maximum accepted request-header bytes before rejection
   --http1-max-incomplete-event-size HTTP1_MAX_INCOMPLETE_EVENT_SIZE
-                        Cap buffered incomplete HTTP/1.1 request-head bytes
-                        before the parser rejects the request
+                        Maximum buffered incomplete HTTP/1.1 request-head
+                        bytes before rejection
   --http1-buffer-size HTTP1_BUFFER_SIZE
-                        Read-buffer size used for HTTP/1.1 request-head/body
-                        incremental reads
+                        HTTP/1.1 incremental read buffer size in bytes
   --http1-header-read-timeout HTTP1_HEADER_READ_TIMEOUT
-                        HTTP/1.1 request-head read timeout in seconds; when
-                        set it tightens the generic read/keep-alive timeout
-  --http1-keep-alive    HTTP/1.1 connection persistence
+                        HTTP/1.1 request-head read timeout in seconds
+  --http1-keep-alive    Enable HTTP/1.1 connection persistence
   --no-http1-keep-alive
-                        Disable http/1.1 connection persistence
+                        Disable enable http/1.1 connection persistence
   --http2-max-concurrent-streams HTTP2_MAX_CONCURRENT_STREAMS
                         Advertised HTTP/2 MAX_CONCURRENT_STREAMS value for
-                        inbound peer-created streams
+                        peer-created streams
   --http2-max-headers-size HTTP2_MAX_HEADERS_SIZE
-                        HTTP/2-specific request-header and decoded header-list
-                        size cap
+                        HTTP/2-specific decoded header-list size cap
   --http2-max-frame-size HTTP2_MAX_FRAME_SIZE
                         Advertised HTTP/2 MAX_FRAME_SIZE for inbound peer
                         frames
   --http2-adaptive-window
-                        HTTP/2 adaptive receive-window growth
+                        Enable adaptive HTTP/2 receive-window growth
   --no-http2-adaptive-window
-                        Disable http/2 adaptive receive-window growth
+                        Disable enable adaptive http/2 receive-window growth
   --http2-initial-connection-window-size HTTP2_INITIAL_CONNECTION_WINDOW_SIZE
-                        HTTP/2 connection-level receive window target; values
-                        below 65535 are clamped to the protocol default
+                        HTTP/2 connection-level receive window target
   --http2-initial-stream-window-size HTTP2_INITIAL_STREAM_WINDOW_SIZE
                         Advertised HTTP/2 INITIAL_WINDOW_SIZE for peer-created
                         streams
   --http2-keep-alive-interval HTTP2_KEEP_ALIVE_INTERVAL
-                        Idle interval before the server sends an HTTP/2
-                        connection-level PING
+                        Idle interval before sending an HTTP/2 connection-
+                        level PING
   --http2-keep-alive-timeout HTTP2_KEEP_ALIVE_TIMEOUT
-                        HTTP/2 keep-alive PING acknowledgement timeout in
-                        seconds
+                        Timeout in seconds for an HTTP/2 keep-alive PING
+                        acknowledgement
   --websocket-max-message-size WEBSOCKET_MAX_MESSAGE_SIZE
+                        Maximum accepted WebSocket message size in bytes
   --websocket-max-queue WEBSOCKET_MAX_QUEUE
                         Maximum queued inbound WebSocket messages before
-                        transport backpressure is applied
+                        transport backpressure applies
   --websocket-ping-interval WEBSOCKET_PING_INTERVAL
+                        Outbound WebSocket heartbeat interval in seconds
   --websocket-ping-timeout WEBSOCKET_PING_TIMEOUT
+                        WebSocket heartbeat acknowledgement timeout in seconds
   --idle-timeout IDLE_TIMEOUT
+                        Idle application/session timeout in seconds
 
 Protocol / transport:
   --http {1.1,2,3}      Enable an HTTP version
   --protocol {http1,http2,http3,quic,websocket,rawframed,custom}
                         Enable a listener protocol
   --disable-websocket
-  --disable-h2c
+  --disable-h2c         Disable cleartext HTTP/2 upgrade and direct-preface
+                        detection on eligible listeners
   --websocket-compression {off,permessage-deflate}
+                        WebSocket compression policy across the supported H1,
+                        H2, and H3 carriers
   --connect-policy {relay,deny,allowlist}
+                        CONNECT relay policy: deny, relay, or allowlist
   --connect-allow CONNECT_ALLOW
-                        Repeat or use comma-separated host:port, host, or CIDR
-                        entries
+                        Allowed CONNECT authorities or CIDR targets when
+                        CONNECT policy is allowlist
   --trailer-policy {pass,drop,strict}
+                        Trailer handling policy across supported HTTP/1.1,
+                        HTTP/2, and HTTP/3 carriers
   --content-coding-policy {allowlist,identity-only,strict}
+                        Response content-coding policy: allowlist, identity-
+                        only, or strict
   --content-codings CONTENT_CODINGS
-                        Repeat or use comma-separated values
+                        Supported response codings for allowlist/strict
+                        policy; repeat or use comma-separated values
   --alt-svc ALT_SVC     Advertise Alt-Svc values; repeat or use comma-
                         separated values
   --alt-svc-auto        automatic Alt-Svc advertisement for HTTP/3-capable UDP
@@ -291,8 +327,14 @@ Protocol / transport:
                         Alt-Svc max-age for automatic advertisement
   --alt-svc-persist     Set persist=1 on automatic Alt-Svc advertisements
   --quic-require-retry  Require a QUIC Retry before completing the initial
-                        handshake
+                        handshake on UDP listeners
   --quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE
+                        Maximum QUIC UDP payload size advertised and accepted
+                        by package-owned QUIC listeners
   --quic-idle-timeout QUIC_IDLE_TIMEOUT
+                        QUIC idle timeout in seconds for package-owned UDP
+                        listeners
   --quic-early-data-policy {allow,deny,require}
+                        QUIC early-data policy: deny, allow, or require with
+                        425 downgrade handling
   --pipe-mode {rawframed,stream}

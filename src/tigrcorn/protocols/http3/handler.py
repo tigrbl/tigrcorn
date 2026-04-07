@@ -184,6 +184,8 @@ class _HTTP3ConnectTunnel:
 
 
 class HTTP3DatagramHandler:
+    _EARLY_DATA_TICKET_SIZE = 4096
+
     def __init__(self, *, app: ASGIApp, config: ServerConfig, listener: ListenerConfig, access_logger: AccessLogger, scheduler: ProductionScheduler | None = None, metrics: Metrics | None = None) -> None:
         self.app = app
         self.config = config
@@ -194,6 +196,21 @@ class HTTP3DatagramHandler:
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._lock = asyncio.Lock()
+
+    def _session_ticket_early_data_size(self, session: HTTP3Session) -> int:
+        if session.quic.handshake_driver is None:
+            return 0
+        if self.config.quic.early_data_policy == 'deny':
+            return 0
+        return self._EARLY_DATA_TICKET_SIZE
+
+    def _should_send_too_early(self, session: HTTP3Session) -> bool:
+        handshake = session.quic.handshake_driver
+        if handshake is None:
+            return False
+        if self.config.quic.early_data_policy != 'require':
+            return False
+        return bool(getattr(handshake, '_using_psk', False)) and not bool(getattr(handshake, 'early_data_accepted', False))
 
     def _configure_session_handshake(self, session: HTTP3Session) -> None:
         if not self.listener.ssl_enabled or session.quic.handshake_driver is not None:
@@ -425,7 +442,9 @@ class HTTP3DatagramHandler:
                         and not session.session_ticket_issued
                     ):
                         try:
-                            ticket = session.quic.handshake_driver.issue_session_ticket(max_early_data_size=4096)
+                            ticket = session.quic.handshake_driver.issue_session_ticket(
+                                max_early_data_size=self._session_ticket_early_data_size(session)
+                            )
                         except Exception:
                             ticket = b''
                         if ticket:
@@ -1195,6 +1214,17 @@ class HTTP3DatagramHandler:
                 421,
                 [(b'content-type', b'text/plain')],
                 b'misdirected request',
+                end_stream=True,
+            )
+        if self._should_send_too_early(session):
+            self._release_stream_work_lease(session, stream_id)
+            self.access_logger.log_http(client, request.method, request.path, 425, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                425,
+                [(b'content-type', b'text/plain')],
+                b'too early',
                 end_stream=True,
             )
         scope = build_http_scope(request, client=client, server=server, scheme=scheme, extensions=extensions, root_path=self.config.proxy.root_path, proxy=self.config.proxy)

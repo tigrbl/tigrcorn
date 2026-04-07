@@ -78,6 +78,8 @@ class Phase3StrictRFCSurfaceTests(unittest.IsolatedAsyncioTestCase):
             await send({'type': 'websocket.close', 'code': 1000})
 
         def _mutate(config):
+            config.websocket.enabled = True
+            config.listeners[0].websocket = True
             config.websocket.compression = 'permessage-deflate'
 
         server, port = await _start_http11_server(app, config_mutator=_mutate)
@@ -115,6 +117,8 @@ class Phase3StrictRFCSurfaceTests(unittest.IsolatedAsyncioTestCase):
             await send({'type': 'websocket.close', 'code': 1000})
 
         def _mutate(config):
+            config.websocket.enabled = True
+            config.listeners[0].websocket = True
             config.websocket.compression = 'off'
 
         server, port = await _start_http11_server(app, config_mutator=_mutate)
@@ -256,7 +260,10 @@ class Phase3StrictRFCSurfaceTests(unittest.IsolatedAsyncioTestCase):
             await server.close()
 
     def test_build_server_ssl_context_uses_public_alpn_and_revocation_policy(self):
-        cert_pem, key_pem = generate_self_signed_certificate('server.example')
+        try:
+            cert_pem, key_pem = generate_self_signed_certificate('server.example')
+        except ModuleNotFoundError as exc:
+            self.skipTest(str(exc))
         with tempfile.TemporaryDirectory() as tmp:
             cert_path = Path(tmp) / 'cert.pem'
             key_path = Path(tmp) / 'key.pem'

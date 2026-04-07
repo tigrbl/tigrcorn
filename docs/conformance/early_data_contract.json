@@ -1,0 +1,71 @@
+{
+  "admission": {
+    "allow": "Advertise early-data-capable session tickets and accept 0-RTT only when QUIC/TLS ticket compatibility and the package replay gate permit it.",
+    "deny": "Do not advertise early-data-capable session tickets and do not accept 0-RTT application data.",
+    "require": "Advertise early-data-capable session tickets and reject resumed requests with 425 Too Early when resumption succeeds but early data is not accepted."
+  },
+  "canonical_release_root": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9",
+  "config_path": "quic.early_data_policy",
+  "contract_version": 1,
+  "default_policy": "deny",
+  "evidence": [
+    {
+      "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-retry",
+      "claim_id": "TC-STATE-QUIC-RETRY",
+      "feature": "post-echo-retry",
+      "scenario_id": "http3-server-aioquic-client-post-retry"
+    },
+    {
+      "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-resumption",
+      "claim_id": "TC-STATE-QUIC-RESUMPTION",
+      "feature": "post-echo-resumption",
+      "scenario_id": "http3-server-aioquic-client-post-resumption"
+    },
+    {
+      "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-zero-rtt",
+      "claim_id": "TC-STATE-QUIC-0RTT",
+      "feature": "post-echo-zero-rtt",
+      "scenario_id": "http3-server-aioquic-client-post-zero-rtt"
+    },
+    {
+      "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-migration",
+      "claim_id": "TC-STATE-QUIC-MIGRATION",
+      "feature": "post-echo-migration",
+      "scenario_id": "http3-server-aioquic-client-post-migration"
+    },
+    {
+      "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack",
+      "claim_id": "TC-STATE-QUIC-GOAWAY",
+      "feature": "post-echo-goaway-qpack",
+      "scenario_id": "http3-server-aioquic-client-post-goaway-qpack"
+    },
+    {
+      "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack",
+      "claim_id": "TC-STATE-QUIC-QPACK",
+      "feature": "post-echo-goaway-qpack",
+      "scenario_id": "http3-server-aioquic-client-post-goaway-qpack"
+    }
+  ],
+  "flag": "--quic-early-data-policy",
+  "release_matrix": "docs\\review\\conformance\\external_matrix.release.json",
+  "replay_policy": {
+    "allow_downgrade": "When early data is not accepted, resumed requests continue after handshake under the ordinary HTTP/3 path.",
+    "deny_downgrade": "0-RTT is not advertised; resumed requests are processed only after handshake.",
+    "gate": "The package replay gate claims each early-data ticket identity once and rejects replayed 0-RTT reuse.",
+    "require_downgrade": "Resumed requests that downgrade out of 0-RTT receive 425 Too Early before the ASGI app is invoked."
+  },
+  "retry_zero_rtt_interaction": {
+    "application_visibility": "ASGI applications do not receive direct Retry or 0-RTT transport-state fields; they observe only admitted requests or a package-generated 425 response.",
+    "retry_scope": "Retry remains transport-owned token validation and is resolved before HTTP/3 request dispatch."
+  },
+  "topology": {
+    "load_balancer": "Without shared anti-replay coordination, the honest edge posture remains deny, which is the default and the strict-h3-edge requirement.",
+    "multi_instance": "Multi-instance deployments need shared anti-replay coordination to make allow/require honest across nodes.",
+    "single_instance": "Single-process replay gating is package-owned and local to the running server instance."
+  },
+  "value_space": [
+    "allow",
+    "deny",
+    "require"
+  ]
+}

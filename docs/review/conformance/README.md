@@ -114,6 +114,24 @@ The Phase 2 config / CLI surface is documented in:
 - `claims_registry.json`
 - `NEXT_DEVELOPMENT_TARGETS.md`
 
+The Phase 3 proxy / policy closure surface is documented in:
+
+- `docs/conformance/proxy_contract.md`
+- `docs/conformance/proxy_contract.json`
+- `docs/conformance/policy_surface.json`
+- `docs/ops/policies.md`
+- `cli_help.current.txt`
+- `flag_contracts.json`
+
+The Phase 4 QUIC semantic closure surface is documented in:
+
+- `docs/conformance/early_data_contract.md`
+- `docs/conformance/early_data_contract.json`
+- `docs/conformance/quic_state.md`
+- `docs/conformance/quic_state.json`
+- `external_matrix.release.json`
+- `flag_contracts.json`
+
 
 ## Operator-surface tracking
 

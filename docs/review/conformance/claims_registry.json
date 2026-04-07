@@ -20,77 +20,499 @@
   ],
   "current_supported_targets": {
     "rfc_targets": [
-      { "id": "RFC-9112", "standards_body": "IETF", "family": "http", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9113", "standards_body": "IETF", "family": "http2", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9114", "standards_body": "IETF", "family": "http3", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9000", "standards_body": "IETF", "family": "quic", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9001", "standards_body": "IETF", "family": "quic_tls", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9002", "standards_body": "IETF", "family": "quic_recovery", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-7541", "standards_body": "IETF", "family": "hpack", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9204", "standards_body": "IETF", "family": "qpack", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-6455", "standards_body": "IETF", "family": "websocket_http11", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-7692", "standards_body": "IETF", "family": "websocket_compression", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-8441", "standards_body": "IETF", "family": "websocket_http2", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9220", "standards_body": "IETF", "family": "websocket_http3", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-8446", "standards_body": "IETF", "family": "tls13", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-9110-S9.3.6", "standards_body": "IETF", "family": "connect", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-9110-S6.5", "standards_body": "IETF", "family": "trailers", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-9110-S8", "standards_body": "IETF", "family": "content_coding", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-7232", "standards_body": "IETF", "family": "conditional_requests", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-7233", "standards_body": "IETF", "family": "byte_ranges", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-8297", "standards_body": "IETF", "family": "early_hints", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-7838-S3", "standards_body": "IETF", "family": "alt_svc", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-5280", "standards_body": "IETF", "family": "x509_validation", "highest_required_evidence_tier": "independent_certification" },
-      { "id": "RFC-6960", "standards_body": "IETF", "family": "ocsp", "highest_required_evidence_tier": "local_conformance" },
-      { "id": "RFC-7301", "standards_body": "IETF", "family": "alpn", "highest_required_evidence_tier": "independent_certification" }
+      {
+        "id": "RFC-9112",
+        "standards_body": "IETF",
+        "family": "http",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9113",
+        "standards_body": "IETF",
+        "family": "http2",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9114",
+        "standards_body": "IETF",
+        "family": "http3",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9000",
+        "standards_body": "IETF",
+        "family": "quic",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9001",
+        "standards_body": "IETF",
+        "family": "quic_tls",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9002",
+        "standards_body": "IETF",
+        "family": "quic_recovery",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-7541",
+        "standards_body": "IETF",
+        "family": "hpack",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9204",
+        "standards_body": "IETF",
+        "family": "qpack",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-6455",
+        "standards_body": "IETF",
+        "family": "websocket_http11",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-7692",
+        "standards_body": "IETF",
+        "family": "websocket_compression",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-8441",
+        "standards_body": "IETF",
+        "family": "websocket_http2",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9220",
+        "standards_body": "IETF",
+        "family": "websocket_http3",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-8446",
+        "standards_body": "IETF",
+        "family": "tls13",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-9110-S9.3.6",
+        "standards_body": "IETF",
+        "family": "connect",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-9110-S6.5",
+        "standards_body": "IETF",
+        "family": "trailers",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-9110-S8",
+        "standards_body": "IETF",
+        "family": "content_coding",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-7232",
+        "standards_body": "IETF",
+        "family": "conditional_requests",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-7233",
+        "standards_body": "IETF",
+        "family": "byte_ranges",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-8297",
+        "standards_body": "IETF",
+        "family": "early_hints",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-7838-S3",
+        "standards_body": "IETF",
+        "family": "alt_svc",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-5280",
+        "standards_body": "IETF",
+        "family": "x509_validation",
+        "highest_required_evidence_tier": "independent_certification"
+      },
+      {
+        "id": "RFC-6960",
+        "standards_body": "IETF",
+        "family": "ocsp",
+        "highest_required_evidence_tier": "local_conformance"
+      },
+      {
+        "id": "RFC-7301",
+        "standards_body": "IETF",
+        "family": "alpn",
+        "highest_required_evidence_tier": "independent_certification"
+      }
     ],
     "protocol_targets": [
-      { "id": "http11", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9112"] },
-      { "id": "http2", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9113", "RFC 7541"] },
-      { "id": "http3", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9114", "RFC 9204"] },
-      { "id": "quic", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9000", "RFC 9001", "RFC 9002"] },
-      { "id": "tls13", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 8446", "RFC 5280", "RFC 6960", "RFC 7301"] },
-      { "id": "websocket_http11", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 6455", "RFC 7692"] },
-      { "id": "websocket_http2", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 8441", "RFC 7692"] },
-      { "id": "websocket_http3", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9220", "RFC 7692"] },
-      { "id": "connect", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9110 Section 9.3.6"] },
-      { "id": "trailers", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9110 Section 6.5"] },
-      { "id": "content_coding", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 9110 Section 8"] },
-      { "id": "conditional_requests", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 7232"] },
-      { "id": "byte_ranges", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 7233"] },
-      { "id": "early_hints", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 8297"] },
-      { "id": "alt_svc", "boundary_status": "in_bounds_current_surface", "spec_refs": ["RFC 7838 Section 3"] }
+      {
+        "id": "http11",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9112"
+        ]
+      },
+      {
+        "id": "http2",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9113",
+          "RFC 7541"
+        ]
+      },
+      {
+        "id": "http3",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9114",
+          "RFC 9204"
+        ]
+      },
+      {
+        "id": "quic",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9000",
+          "RFC 9001",
+          "RFC 9002"
+        ]
+      },
+      {
+        "id": "tls13",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 8446",
+          "RFC 5280",
+          "RFC 6960",
+          "RFC 7301"
+        ]
+      },
+      {
+        "id": "websocket_http11",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 6455",
+          "RFC 7692"
+        ]
+      },
+      {
+        "id": "websocket_http2",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 8441",
+          "RFC 7692"
+        ]
+      },
+      {
+        "id": "websocket_http3",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9220",
+          "RFC 7692"
+        ]
+      },
+      {
+        "id": "connect",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9110 Section 9.3.6"
+        ]
+      },
+      {
+        "id": "trailers",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9110 Section 6.5"
+        ]
+      },
+      {
+        "id": "content_coding",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 9110 Section 8"
+        ]
+      },
+      {
+        "id": "conditional_requests",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 7232"
+        ]
+      },
+      {
+        "id": "byte_ranges",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 7233"
+        ]
+      },
+      {
+        "id": "early_hints",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 8297"
+        ]
+      },
+      {
+        "id": "alt_svc",
+        "boundary_status": "in_bounds_current_surface",
+        "spec_refs": [
+          "RFC 7838 Section 3"
+        ]
+      }
     ],
     "cli_targets": [
-      { "id": "cli-main", "surface": "command", "targets": ["tigrcorn", "python -m tigrcorn"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-interop", "surface": "command", "targets": ["tigrcorn-interop"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-app-process", "surface": "flag_family", "targets": ["factory", "app_dir", "reload", "workers", "config_source", "lifespan"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-listeners", "surface": "flag_family", "targets": ["binds"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-static", "surface": "flag_family", "targets": ["static_path"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-tls-security", "surface": "flag_family", "targets": ["tls", "proxy_security"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-logging-observability", "surface": "flag_family", "targets": ["logging", "metrics"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-resources", "surface": "flag_family", "targets": ["resource_limits", "http1_controls", "http2_controls", "websocket_controls"], "boundary_status": "in_bounds_current_surface" },
-      { "id": "cli-protocols", "surface": "flag_family", "targets": ["protocols"], "boundary_status": "in_bounds_current_surface" }
+      {
+        "id": "cli-main",
+        "surface": "command",
+        "targets": [
+          "tigrcorn",
+          "python -m tigrcorn"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-interop",
+        "surface": "command",
+        "targets": [
+          "tigrcorn-interop"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-app-process",
+        "surface": "flag_family",
+        "targets": [
+          "factory",
+          "app_dir",
+          "reload",
+          "workers",
+          "config_source",
+          "lifespan"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-listeners",
+        "surface": "flag_family",
+        "targets": [
+          "binds"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-static",
+        "surface": "flag_family",
+        "targets": [
+          "static_path"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-tls-security",
+        "surface": "flag_family",
+        "targets": [
+          "tls",
+          "proxy_security"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-logging-observability",
+        "surface": "flag_family",
+        "targets": [
+          "logging",
+          "metrics"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-resources",
+        "surface": "flag_family",
+        "targets": [
+          "resource_limits",
+          "http1_controls",
+          "http2_controls",
+          "websocket_controls"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      },
+      {
+        "id": "cli-protocols",
+        "surface": "flag_family",
+        "targets": [
+          "protocols"
+        ],
+        "boundary_status": "in_bounds_current_surface"
+      }
     ],
     "public_operator_surface_targets": [
-      { "id": "entrypoints", "targets": ["tigrcorn.run", "tigrcorn.serve", "tigrcorn.serve_import_string"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
-      { "id": "embedder_server", "targets": ["tigrcorn.EmbeddedServer", "architectural TigrcornServer implemented today by tigrcorn.server.TigrCornServer"], "boundary_status": "in_bounds_current_surface", "claim_kind": "architectural_claim" },
-      { "id": "static_delivery", "targets": ["tigrcorn.StaticFilesApp", "tigrcorn.static.mount_static_app", "tigrcorn.static.normalize_static_route"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
-      { "id": "config_surface", "targets": ["tigrcorn.config.build_config", "tigrcorn.config.build_config_from_namespace", "tigrcorn.config.build_config_from_sources", "tigrcorn.config.config_to_dict", "tigrcorn.config.load_env_config", "tigrcorn.config.load_config_file"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
-      { "id": "release_evaluators", "targets": ["tigrcorn.compat.release_gates.evaluate_release_gates", "tigrcorn.compat.release_gates.evaluate_promotion_target", "tigrcorn.compat.release_gates.assert_release_ready", "tigrcorn.compat.release_gates.assert_promotion_target_ready"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
-      { "id": "runtime_modes", "targets": ["auto", "asyncio", "uvloop"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" }
+      {
+        "id": "entrypoints",
+        "targets": [
+          "tigrcorn.run",
+          "tigrcorn.serve",
+          "tigrcorn.serve_import_string"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "implementation_claim"
+      },
+      {
+        "id": "embedder_server",
+        "targets": [
+          "tigrcorn.EmbeddedServer",
+          "architectural TigrcornServer implemented today by tigrcorn.server.TigrCornServer"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "architectural_claim"
+      },
+      {
+        "id": "static_delivery",
+        "targets": [
+          "tigrcorn.StaticFilesApp",
+          "tigrcorn.static.mount_static_app",
+          "tigrcorn.static.normalize_static_route"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "implementation_claim"
+      },
+      {
+        "id": "config_surface",
+        "targets": [
+          "tigrcorn.config.build_config",
+          "tigrcorn.config.build_config_from_namespace",
+          "tigrcorn.config.build_config_from_sources",
+          "tigrcorn.config.config_to_dict",
+          "tigrcorn.config.load_env_config",
+          "tigrcorn.config.load_config_file"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "implementation_claim"
+      },
+      {
+        "id": "release_evaluators",
+        "targets": [
+          "tigrcorn.compat.release_gates.evaluate_release_gates",
+          "tigrcorn.compat.release_gates.evaluate_promotion_target",
+          "tigrcorn.compat.release_gates.assert_release_ready",
+          "tigrcorn.compat.release_gates.assert_promotion_target_ready"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "implementation_claim"
+      },
+      {
+        "id": "runtime_modes",
+        "targets": [
+          "auto",
+          "asyncio",
+          "uvloop"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "implementation_claim"
+      }
     ],
     "extension_surface_targets": [
-      { "id": "extras_supported", "targets": ["config-yaml", "compression", "runtime-uvloop", "full-featured", "certification", "dev"], "boundary_status": "in_bounds_current_surface", "claim_kind": "implementation_claim" },
-      { "id": "extras_declared_not_supported", "targets": ["runtime-trio"], "boundary_status": "out_of_bounds_now", "claim_kind": "design_claim" },
-      { "id": "custom_operator_transports", "targets": ["pipe", "inproc", "rawframed", "custom"], "boundary_status": "public_operator_surface_outside_strict_rfc_claim", "claim_kind": "implementation_claim" },
-      { "id": "peer_certification_tools", "targets": ["aioquic", "h2", "websockets", "wsproto", "sf-http"], "boundary_status": "tooling_surface_only", "claim_kind": "design_claim" }
+      {
+        "id": "extras_supported",
+        "targets": [
+          "config-yaml",
+          "compression",
+          "runtime-uvloop",
+          "full-featured",
+          "certification",
+          "dev"
+        ],
+        "boundary_status": "in_bounds_current_surface",
+        "claim_kind": "implementation_claim"
+      },
+      {
+        "id": "extras_declared_not_supported",
+        "targets": [
+          "runtime-trio"
+        ],
+        "boundary_status": "out_of_bounds_now",
+        "claim_kind": "design_claim"
+      },
+      {
+        "id": "custom_operator_transports",
+        "targets": [
+          "pipe",
+          "inproc",
+          "rawframed",
+          "custom"
+        ],
+        "boundary_status": "public_operator_surface_outside_strict_rfc_claim",
+        "claim_kind": "implementation_claim"
+      },
+      {
+        "id": "peer_certification_tools",
+        "targets": [
+          "aioquic",
+          "h2",
+          "websockets",
+          "wsproto",
+          "sf-http"
+        ],
+        "boundary_status": "tooling_surface_only",
+        "claim_kind": "design_claim"
+      }
     ],
     "w3c_targets": [
-      { "id": "trace_context_fields", "standards_body": "W3C", "spec_refs": ["W3C Trace Context"], "boundary_status": "candidate_not_current_claim", "default_posture": "to_be_classified_as_forwarded_terminated_regenerated_or_suppressed", "claim_kind": "design_claim" },
-      { "id": "server_timing_fields", "standards_body": "W3C", "spec_refs": ["Server Timing"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified", "claim_kind": "design_claim" },
-      { "id": "nel_fields", "standards_body": "W3C", "spec_refs": ["NEL"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified", "claim_kind": "design_claim" },
-      { "id": "reporting_fields", "standards_body": "W3C", "spec_refs": ["Reporting API"], "boundary_status": "candidate_not_current_claim", "default_posture": "not_currently_certified", "claim_kind": "design_claim" }
+      {
+        "id": "trace_context_fields",
+        "standards_body": "W3C",
+        "spec_refs": [
+          "W3C Trace Context"
+        ],
+        "boundary_status": "candidate_not_current_claim",
+        "default_posture": "to_be_classified_as_forwarded_terminated_regenerated_or_suppressed",
+        "claim_kind": "design_claim"
+      },
+      {
+        "id": "server_timing_fields",
+        "standards_body": "W3C",
+        "spec_refs": [
+          "Server Timing"
+        ],
+        "boundary_status": "candidate_not_current_claim",
+        "default_posture": "not_currently_certified",
+        "claim_kind": "design_claim"
+      },
+      {
+        "id": "nel_fields",
+        "standards_body": "W3C",
+        "spec_refs": [
+          "NEL"
+        ],
+        "boundary_status": "candidate_not_current_claim",
+        "default_posture": "not_currently_certified",
+        "claim_kind": "design_claim"
+      },
+      {
+        "id": "reporting_fields",
+        "standards_body": "W3C",
+        "spec_refs": [
+          "Reporting API"
+        ],
+        "boundary_status": "candidate_not_current_claim",
+        "default_posture": "not_currently_certified",
+        "claim_kind": "design_claim"
+      }
     ]
   },
   "current_and_candidate_claims": [
@@ -104,7 +526,9 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "local_conformance",
       "status": "planned_for_independent_certification",
-      "source_files": ["docs/review/conformance/app_load_claims.json"]
+      "source_files": [
+        "docs/review/conformance/app_load_claims.json"
+      ]
     },
     {
       "id": "claim-cwd-factory-import",
@@ -116,7 +540,9 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "local_conformance",
       "status": "planned_for_independent_certification",
-      "source_files": ["docs/review/conformance/app_load_claims.json"]
+      "source_files": [
+        "docs/review/conformance/app_load_claims.json"
+      ]
     },
     {
       "id": "TC-OPERATOR-CWD-IMPORT-RESOLUTION",
@@ -128,7 +554,9 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "issue_refs": ["#11"],
+      "issue_refs": [
+        "#11"
+      ],
       "source_files": [
         "src/tigrcorn/server/app_loader.py",
         "tests/test_app_loader.py"
@@ -144,8 +572,13 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "issue_refs": ["#17", "#18"],
-      "spec_refs": ["RFC 9113"],
+      "issue_refs": [
+        "#17",
+        "#18"
+      ],
+      "spec_refs": [
+        "RFC 9113"
+      ],
       "source_files": [
         "src/tigrcorn/config/defaults.py",
         "src/tigrcorn/config/validate.py",
@@ -163,8 +596,12 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "issue_refs": ["#21"],
-      "spec_refs": ["RFC 7301"],
+      "issue_refs": [
+        "#21"
+      ],
+      "spec_refs": [
+        "RFC 7301"
+      ],
       "source_files": [
         "src/tigrcorn/security/alpn.py",
         "tests/test_security_compat_utils.py"
@@ -180,8 +617,12 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "issue_refs": ["#22"],
-      "spec_refs": ["RFC 6455"],
+      "issue_refs": [
+        "#22"
+      ],
+      "spec_refs": [
+        "RFC 6455"
+      ],
       "source_files": [
         "src/tigrcorn/protocols/websocket/handler.py",
         "tests/test_websocket_additional_rfc6455.py"
@@ -197,8 +638,13 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "issue_refs": ["#20"],
-      "spec_refs": ["RFC 9002", "RFC 9114"],
+      "issue_refs": [
+        "#20"
+      ],
+      "spec_refs": [
+        "RFC 9002",
+        "RFC 9114"
+      ],
       "source_files": [
         "src/tigrcorn/protocols/http3/handler.py",
         "tests/test_quic_recovery_live_runtime_integration.py"
@@ -214,8 +660,13 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "local_conformance",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35", "R-TLS-TIER-MAPPING-DRIFT"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35",
+        "R-TLS-TIER-MAPPING-DRIFT"
+      ]
     },
     {
       "id": "TC-INTEROP-TLS13-CURL-OPENSSL35",
@@ -227,8 +678,13 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "local_conformance",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35", "R-TLS-TIER-MAPPING-DRIFT"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35",
+        "R-TLS-TIER-MAPPING-DRIFT"
+      ]
     },
     {
       "id": "TC-DIFF-TLS13-STDLIB-CONTROL",
@@ -240,8 +696,12 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-TIER-MAPPING-DRIFT"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-TIER-MAPPING-DRIFT"
+      ]
     },
     {
       "id": "TC-RFC8446-TLS13-PROTECTED-RECORD-OUTER-FRAMING",
@@ -252,9 +712,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35", "R-TLS-8446-OUTER-FRAMING"],
-      "spec_refs": ["RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35",
+        "R-TLS-8446-OUTER-FRAMING"
+      ],
+      "spec_refs": [
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC8446-TLS13-INNER-CONTENT-TYPE-RECOVERY",
@@ -265,9 +732,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-INNER-TYPE"],
-      "spec_refs": ["RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-INNER-TYPE"
+      ],
+      "spec_refs": [
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC8446-TLS13-PADDING-SEMANTICS",
@@ -278,9 +751,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-PADDING"],
-      "spec_refs": ["RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-PADDING"
+      ],
+      "spec_refs": [
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC8446-TLS13-AEAD-ADDITIONAL-DATA",
@@ -291,9 +770,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-AAD"],
-      "spec_refs": ["RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-AAD"
+      ],
+      "spec_refs": [
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC8446-TLS13-HANDSHAKE-TO-APPDATA-BOUNDARY",
@@ -304,9 +789,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-KEY-BOUNDARY"],
-      "spec_refs": ["RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-KEY-BOUNDARY"
+      ],
+      "spec_refs": [
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC8446-TLS13-ALERT-AND-CLOSE-SEMANTICS",
@@ -317,9 +808,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35"],
-      "spec_refs": ["RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35"
+      ],
+      "spec_refs": [
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC8446-CERTIFICATE-AND-CERTIFICATEVERIFY-PROCESSING",
@@ -330,9 +827,17 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35", "R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 8446", "RFC 5280"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35",
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 8446",
+        "RFC 5280"
+      ]
     },
     {
       "id": "TC-RFC7301-ALPN-NEGOTIATION-POLICY",
@@ -343,9 +848,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15", "#21"],
-      "risk_refs": ["R-TLS-ALPN-CONTRACT"],
-      "spec_refs": ["RFC 7301"]
+      "issue_refs": [
+        "#15",
+        "#21"
+      ],
+      "risk_refs": [
+        "R-TLS-ALPN-CONTRACT"
+      ],
+      "spec_refs": [
+        "RFC 7301"
+      ]
     },
     {
       "id": "TC-RFC6066-SNI-HANDLING",
@@ -356,9 +868,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 6066", "RFC 9525"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 6066",
+        "RFC 9525"
+      ]
     },
     {
       "id": "TC-RFC6066-STATUS-REQUEST-POLICY",
@@ -369,9 +888,16 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 6066", "RFC 6960"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 6066",
+        "RFC 6960"
+      ]
     },
     {
       "id": "TC-RFC5280-AKI-SKI-CERT-CHAIN-MATERIAL",
@@ -382,9 +908,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 5280"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 5280"
+      ]
     },
     {
       "id": "TC-RFC5280-KEYUSAGE-EKU-CORRECTNESS",
@@ -395,9 +927,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 5280"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 5280"
+      ]
     },
     {
       "id": "TC-RFC5280-PATH-VALIDATION-CORRECTNESS",
@@ -408,9 +946,15 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 5280"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 5280"
+      ]
     },
     {
       "id": "TC-RFC6960-OCSP-POLICY-EXPLICITNESS",
@@ -421,9 +965,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 6960"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 6960"
+      ]
     },
     {
       "id": "TC-RFC9525-SERVICE-IDENTITY-HOSTNAME-COMPATIBILITY",
@@ -434,9 +984,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-X509-CERT-PROFILE-DRIFT"],
-      "spec_refs": ["RFC 9525", "RFC 5280"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-X509-CERT-PROFILE-DRIFT"
+      ],
+      "spec_refs": [
+        "RFC 9525",
+        "RFC 5280"
+      ]
     },
     {
       "id": "TC-RFC9112-HTTPS-HTTP11-INTEROPERABILITY",
@@ -447,9 +1004,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35"],
-      "spec_refs": ["RFC 9112", "RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35"
+      ],
+      "spec_refs": [
+        "RFC 9112",
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC9113-HTTP2-OVER-TLS-POSTURE",
@@ -460,9 +1024,18 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15", "#21"],
-      "risk_refs": ["R-TLS-ALPN-CONTRACT"],
-      "spec_refs": ["RFC 9113", "RFC 7301", "RFC 8446"]
+      "issue_refs": [
+        "#15",
+        "#21"
+      ],
+      "risk_refs": [
+        "R-TLS-ALPN-CONTRACT"
+      ],
+      "spec_refs": [
+        "RFC 9113",
+        "RFC 7301",
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC9001-QUIC-TLS-MAPPING-PARITY",
@@ -473,9 +1046,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-KEY-BOUNDARY"],
-      "spec_refs": ["RFC 9001", "RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-KEY-BOUNDARY"
+      ],
+      "spec_refs": [
+        "RFC 9001",
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC9000-RETRY-TOKEN-INTEGRITY-TLS-DEPENDENCY",
@@ -486,9 +1066,17 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "none",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-KEY-BOUNDARY"],
-      "spec_refs": ["RFC 9000", "RFC 9001", "RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-KEY-BOUNDARY"
+      ],
+      "spec_refs": [
+        "RFC 9000",
+        "RFC 9001",
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC9114-H3-CONTROL-PLANE-AFTER-TLS-SUCCESS",
@@ -499,9 +1087,17 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "local_conformance",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35"],
-      "spec_refs": ["RFC 9114", "RFC 9001", "RFC 8446"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35"
+      ],
+      "spec_refs": [
+        "RFC 9114",
+        "RFC 9001",
+        "RFC 8446"
+      ]
     },
     {
       "id": "TC-RFC9204-QPACK-AFTER-STABLE-H3-HANDSHAKE",
@@ -512,9 +1108,16 @@
       "required_evidence_tier": "independent_certification",
       "current_evidence": "local_conformance",
       "status": "candidate_not_yet_evidenced",
-      "issue_refs": ["#15"],
-      "risk_refs": ["R-TLS-8446-OPENSSL35"],
-      "spec_refs": ["RFC 9204", "RFC 9114"]
+      "issue_refs": [
+        "#15"
+      ],
+      "risk_refs": [
+        "R-TLS-8446-OPENSSL35"
+      ],
+      "spec_refs": [
+        "RFC 9204",
+        "RFC 9114"
+      ]
     },
     {
       "id": "TC-SPEC-STRUCTURED-FIELDS-RFC9651",
@@ -526,7 +1129,9 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "risk_refs": ["R-SFV-BASELINE-DRIFT"]
+      "risk_refs": [
+        "R-SFV-BASELINE-DRIFT"
+      ]
     },
     {
       "id": "TC-FIELD-DEFAULT-PRESENCE-PACKAGE-OWNED",
@@ -538,7 +1143,9 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
+      "risk_refs": [
+        "R-FIELD-TERMINATION-DRIFT"
+      ]
     },
     {
       "id": "TC-FIELD-OBSOLETED-ABSENCE-DEFAULT",
@@ -550,7 +1157,9 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
+      "risk_refs": [
+        "R-FIELD-TERMINATION-DRIFT"
+      ]
     },
     {
       "id": "TC-FIELD-DEFAULT-TERMINATION-PACKAGE-OWNED",
@@ -562,7 +1171,9 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "risk_refs": ["R-FIELD-TERMINATION-DRIFT"]
+      "risk_refs": [
+        "R-FIELD-TERMINATION-DRIFT"
+      ]
     },
     {
       "id": "TC-PROFILE-DEFAULT-BASELINE",
@@ -574,9 +1185,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "feature_refs": ["F-P1-DEFAULT-BASELINE"],
-      "work_item_refs": ["RM-P1-01"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT"],
+      "feature_refs": [
+        "F-P1-DEFAULT-BASELINE"
+      ],
+      "work_item_refs": [
+        "RM-P1-01"
+      ],
+      "risk_refs": [
+        "R-PROFILE-DEFAULT-DRIFT"
+      ],
       "source_files": [
         "src/tigrcorn/config/profiles.py",
         "profiles/default.profile.json",
@@ -593,9 +1210,16 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "feature_refs": ["F-P1-STRICT-H1-ORIGIN"],
-      "work_item_refs": ["RM-P1-02"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT", "R-ORIGIN-PATH-CONTRACT-GAP"],
+      "feature_refs": [
+        "F-P1-STRICT-H1-ORIGIN"
+      ],
+      "work_item_refs": [
+        "RM-P1-02"
+      ],
+      "risk_refs": [
+        "R-PROFILE-DEFAULT-DRIFT",
+        "R-ORIGIN-PATH-CONTRACT-GAP"
+      ],
       "source_files": [
         "src/tigrcorn/config/profiles.py",
         "profiles/strict-h1-origin.profile.json",
@@ -612,8 +1236,12 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "feature_refs": ["F-P1-STRICT-H2-ORIGIN"],
-      "work_item_refs": ["RM-P1-03"],
+      "feature_refs": [
+        "F-P1-STRICT-H2-ORIGIN"
+      ],
+      "work_item_refs": [
+        "RM-P1-03"
+      ],
       "source_files": [
         "src/tigrcorn/config/profiles.py",
         "profiles/strict-h2-origin.profile.json",
@@ -630,9 +1258,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "feature_refs": ["F-P1-STRICT-H3-EDGE"],
-      "work_item_refs": ["RM-P1-04"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"],
+      "feature_refs": [
+        "F-P1-STRICT-H3-EDGE"
+      ],
+      "work_item_refs": [
+        "RM-P1-04"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
       "source_files": [
         "src/tigrcorn/config/profiles.py",
         "profiles/strict-h3-edge.profile.json",
@@ -649,8 +1283,12 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "feature_refs": ["F-P1-STRICT-MTLS-ORIGIN"],
-      "work_item_refs": ["RM-P1-05"],
+      "feature_refs": [
+        "F-P1-STRICT-MTLS-ORIGIN"
+      ],
+      "work_item_refs": [
+        "RM-P1-05"
+      ],
       "source_files": [
         "src/tigrcorn/config/profiles.py",
         "profiles/strict-mtls-origin.profile.json",
@@ -667,9 +1305,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "local_conformance",
       "status": "implemented_in_tree",
-      "feature_refs": ["F-P1-STATIC-ORIGIN"],
-      "work_item_refs": ["RM-P1-06"],
-      "risk_refs": ["R-ORIGIN-PATH-CONTRACT-GAP"],
+      "feature_refs": [
+        "F-P1-STATIC-ORIGIN"
+      ],
+      "work_item_refs": [
+        "RM-P1-06"
+      ],
+      "risk_refs": [
+        "R-ORIGIN-PATH-CONTRACT-GAP"
+      ],
       "source_files": [
         "src/tigrcorn/config/profiles.py",
         "profiles/static-origin.profile.json",
@@ -677,199 +1321,355 @@
       ]
     },
     {
-      "id": "TC-ROADMAP-P2-BASE-DEFAULT-AUDIT",
+      "id": "TC-AUDIT-DEFAULT-BASE",
       "class": "governance_support",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "runtime_defaults",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "A canonical base default audit records zero-config defaults after normalization across the public flag surface and internal runtime defaults.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "A canonical base default audit now records zero-config defaults after normalization across the public flag surface and internal runtime defaults.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P2-BASE-DEFAULT-AUDIT"],
-      "work_item_refs": ["RM-P2-01"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P2-BASE-DEFAULT-AUDIT"
+      ],
+      "work_item_refs": [
+        "RM-P2-01"
+      ],
+      "risk_refs": [
+        "R-PROFILE-DEFAULT-DRIFT"
+      ],
+      "source_files": [
+        "src/tigrcorn/config/audit.py",
+        "tools/cert/default_audits.py",
+        "DEFAULT_AUDIT.json",
+        "DEFAULT_AUDIT.md",
+        "tests/test_default_audits.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P2-PROFILE-DEFAULT-AUDIT",
+      "id": "TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS",
       "class": "governance_support",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "runtime_defaults",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Profile-effective defaults are audited after overlay for each blessed deployment profile so operator docs remain runtime-accurate.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Profile-effective defaults are now audited after overlay for each blessed deployment profile so operator docs remain runtime-accurate.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P2-PROFILE-DEFAULT-AUDIT"],
-      "work_item_refs": ["RM-P2-02"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P2-PROFILE-DEFAULT-AUDIT"
+      ],
+      "work_item_refs": [
+        "RM-P2-02"
+      ],
+      "risk_refs": [
+        "R-PROFILE-DEFAULT-DRIFT"
+      ],
+      "source_files": [
+        "src/tigrcorn/config/audit.py",
+        "tools/cert/default_audits.py",
+        "PROFILE_DEFAULTS/default.json",
+        "PROFILE_DEFAULTS/strict-h3-edge.json",
+        "tests/test_default_audits.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P2-FLAG-CONTRACT-REGISTRY",
+      "id": "TC-AUDIT-FLAG-CONTRACT-REVIEWED",
       "class": "governance_support",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "public_flag_contract",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Every public flag and default row has reviewed status, linked risks, linked claims, linked tests, and synchronized help or docs posture.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Every public flag and default row now has reviewed status, machine-readable defaults, linked generated audits, and synchronized help/runtime posture.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P2-FLAG-CONTRACT-REGISTRY"],
-      "work_item_refs": ["RM-P2-03"],
-      "risk_refs": ["R-PROFILE-DEFAULT-DRIFT", "R-TRACEABILITY-GOVERNANCE-GAP"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P2-FLAG-CONTRACT-REGISTRY"
+      ],
+      "work_item_refs": [
+        "RM-P2-03"
+      ],
+      "risk_refs": [
+        "R-PROFILE-DEFAULT-DRIFT",
+        "R-TRACEABILITY-GOVERNANCE-GAP"
+      ],
+      "source_files": [
+        "docs/review/conformance/flag_contracts.json",
+        "docs/ops/defaults.md",
+        "DEFAULT_AUDIT.json",
+        "tests/test_default_audits.py",
+        "tests/test_phase2_cli_config_surface.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P3-PROXY-TRUST",
-      "class": "operator_surface",
-      "claim_kind": "design_claim",
-      "surface": "proxy_normalization",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Trusted proxy-source semantics, hop and listener trust, and fail-closed request-identity behavior are explicit and frozen.",
-      "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P3-PROXY-TRUST"],
-      "work_item_refs": ["RM-P3-01"],
-      "risk_refs": ["R-PROXY-IDENTITY-AMBIGUITY"]
-    },
-    {
-      "id": "TC-ROADMAP-P3-PROXY-PRECEDENCE",
-      "class": "operator_surface",
-      "claim_kind": "design_claim",
-      "surface": "proxy_normalization",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Precedence for Forwarded and X-Forwarded-* handling, including host, proto, port, and root-path conflicts, is explicit and normalized.",
-      "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P3-PROXY-PRECEDENCE"],
-      "work_item_refs": ["RM-P3-02"],
-      "risk_refs": ["R-PROXY-IDENTITY-AMBIGUITY"]
-    },
-    {
-      "id": "TC-ROADMAP-P3-CONNECT-POLICY",
+      "id": "TC-CONTRACT-EARLYDATA-ADMISSION",
       "class": "protocol_surface",
-      "claim_kind": "design_claim",
-      "surface": "connect_relay",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "CONNECT allow or deny posture, target normalization, and anti-abuse behavior are explicit rather than hidden or implicit.",
-      "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P3-CONNECT-POLICY"],
-      "work_item_refs": ["RM-P3-03"],
-      "risk_refs": ["R-CONNECT-RELAY-ABUSE"]
-    },
-    {
-      "id": "TC-ROADMAP-P3-TRAILER-POLICY",
-      "class": "protocol_surface",
-      "claim_kind": "design_claim",
-      "surface": "trailers",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Trailer acceptance and emission semantics are frozen across the supported HTTP/1.1, HTTP/2, and HTTP/3 carriers.",
-      "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P3-TRAILER-POLICY"],
-      "work_item_refs": ["RM-P3-04"],
-      "risk_refs": ["R-TRAILER-CODING-CARRIER-DRIFT"]
-    },
-    {
-      "id": "TC-ROADMAP-P3-CODING-POLICY",
-      "class": "delivery_surface",
-      "claim_kind": "design_claim",
-      "surface": "content_coding",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Compression and content-coding negotiation semantics are frozen across static, origin, and proxy-owned behavior.",
-      "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P3-CODING-POLICY"],
-      "work_item_refs": ["RM-P3-05"],
-      "risk_refs": ["R-TRAILER-CODING-CARRIER-DRIFT"]
-    },
-    {
-      "id": "TC-ROADMAP-P3-PUBLIC-CONTROLS",
-      "class": "operator_surface",
-      "claim_kind": "design_claim",
-      "surface": "public_flag_contract",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "ALPN, revocation, H2C, WebSocket compression, idle and resource limits, and drain controls are promoted into reviewed public controls with aligned docs and help surfaces.",
-      "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P3-PUBLIC-CONTROLS"],
-      "work_item_refs": ["RM-P3-06"]
-    },
-    {
-      "id": "TC-ROADMAP-P4-EARLY-DATA-ADMISSION",
-      "class": "protocol_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "quic_early_data",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Early-data admission policy is explicit for deny-all, safe-only, allowlist, and app-mark modes, including unsafe-method rejection.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "QUIC early-data admission is now explicit as deny, allow, or require, with deny as the default and explicit session-ticket advertisement behavior.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P4-EARLY-DATA-ADMISSION"],
-      "work_item_refs": ["RM-P4-01"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-EARLY-DATA-ADMISSION"
+      ],
+      "work_item_refs": [
+        "RM-P4-01"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/env.py",
+        "src/tigrcorn/config/quic_surface.py",
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "docs/conformance/early_data_contract.json",
+        "docs/conformance/early_data_contract.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P4-REPLAY-POLICY",
+      "id": "TC-CONTRACT-EARLYDATA-REPLAY",
       "class": "protocol_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "quic_early_data",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Replay handling is explicit for immediate forward, buffer, downgrade, and 425 response paths.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Replay handling is explicit through the package-owned 0-RTT ticket replay gate, allow-mode post-handshake downgrade, and require-mode 425 Too Early rejection.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P4-REPLAY-POLICY"],
-      "work_item_refs": ["RM-P4-02"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-REPLAY-POLICY"
+      ],
+      "work_item_refs": [
+        "RM-P4-02"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "src/tigrcorn/security/tls13/handshake.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "src/tigrcorn/config/quic_surface.py",
+        "docs/conformance/early_data_contract.json",
+        "docs/conformance/early_data_contract.md",
+        "tests/test_tls13_engine_upgrade.py",
+        "tests/test_phase4_quic_surface.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P4-MULTI-INSTANCE-EARLY-DATA",
+      "id": "TC-CONTRACT-EARLYDATA-TOPOLOGY",
       "class": "operator_surface",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "quic_early_data",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Multi-instance anti-replay coordination and load-balancer-specific early-data behavior are explicit before stronger topology claims are made.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "The multi-instance and load-balancer contract now states the honest package boundary: anti-replay is package-owned only per instance unless operators add shared coordination, so deny remains the honest default edge posture.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P4-MULTI-INSTANCE-EARLY-DATA"],
-      "work_item_refs": ["RM-P4-03"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-MULTI-INSTANCE-EARLY-DATA"
+      ],
+      "work_item_refs": [
+        "RM-P4-03"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "src/tigrcorn/config/quic_surface.py",
+        "docs/conformance/early_data_contract.json",
+        "docs/conformance/early_data_contract.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P4-RETRY-APP-VISIBILITY",
+      "id": "TC-CONTRACT-EARLYDATA-APP-VISIBILITY",
       "class": "application_hosting",
-      "claim_kind": "design_claim",
+      "claim_kind": "implementation_claim",
       "surface": "quic_retry_behavior",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Retry and 0-RTT interaction, including what ASGI applications can observe, are frozen as an honest runtime contract.",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Retry and 0-RTT interaction now has an explicit app/runtime visibility contract: transport state remains package-owned, ASGI apps see ordinary request scopes, and require-mode downgrade is surfaced as a package-generated 425 response before app invocation.",
       "required_evidence_tier": "local_conformance",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P4-RETRY-APP-VISIBILITY"],
-      "work_item_refs": ["RM-P4-04"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"]
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-RETRY-APP-VISIBILITY"
+      ],
+      "work_item_refs": [
+        "RM-P4-04"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "src/tigrcorn/asgi/scopes/http.py",
+        "src/tigrcorn/protocols/http3/handler.py",
+        "src/tigrcorn/config/quic_surface.py",
+        "docs/conformance/early_data_contract.json",
+        "docs/conformance/early_data_contract.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
     },
     {
-      "id": "TC-ROADMAP-P4-INDEPENDENT-QUIC-CLAIMS",
+      "id": "TC-STATE-QUIC-RETRY",
       "class": "certification_support",
-      "claim_kind": "design_claim",
-      "surface": "quic_claim_granularity",
-      "boundary_status": "in_bounds_candidate_not_current_claim",
-      "text": "Retry, resumption, 0-RTT, migration, and GOAWAY or QPACK pressure are tracked as separate QUIC or H3 claim rows rather than vague HTTP/3 support language.",
+      "claim_kind": "implementation_claim",
+      "surface": "quic_state",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "QUIC Retry is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
       "required_evidence_tier": "independent_certification",
-      "current_evidence": "none",
-      "status": "candidate_not_opened",
-      "feature_refs": ["F-P4-INDEPENDENT-QUIC-CLAIMS"],
-      "work_item_refs": ["RM-P4-05"],
-      "risk_refs": ["R-QUIC-SEMANTIC-OVERCLAIM"]
+      "current_evidence": "independent_certification",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+      ],
+      "work_item_refs": [
+        "RM-P4-05"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/conformance/quic_state.json",
+        "docs/conformance/quic_state.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
+    },
+    {
+      "id": "TC-STATE-QUIC-RESUMPTION",
+      "class": "certification_support",
+      "claim_kind": "implementation_claim",
+      "surface": "quic_state",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "QUIC resumption is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "independent_certification",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+      ],
+      "work_item_refs": [
+        "RM-P4-05"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/conformance/quic_state.json",
+        "docs/conformance/quic_state.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
+    },
+    {
+      "id": "TC-STATE-QUIC-0RTT",
+      "class": "certification_support",
+      "claim_kind": "implementation_claim",
+      "surface": "quic_state",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "QUIC 0-RTT is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "independent_certification",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+      ],
+      "work_item_refs": [
+        "RM-P4-05"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/conformance/quic_state.json",
+        "docs/conformance/quic_state.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
+    },
+    {
+      "id": "TC-STATE-QUIC-MIGRATION",
+      "class": "certification_support",
+      "claim_kind": "implementation_claim",
+      "surface": "quic_state",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "QUIC migration is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "independent_certification",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+      ],
+      "work_item_refs": [
+        "RM-P4-05"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/conformance/quic_state.json",
+        "docs/conformance/quic_state.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
+    },
+    {
+      "id": "TC-STATE-QUIC-GOAWAY",
+      "class": "certification_support",
+      "claim_kind": "implementation_claim",
+      "surface": "quic_state",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "HTTP/3 GOAWAY is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "independent_certification",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+      ],
+      "work_item_refs": [
+        "RM-P4-05"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/conformance/quic_state.json",
+        "docs/conformance/quic_state.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
+    },
+    {
+      "id": "TC-STATE-QUIC-QPACK",
+      "class": "certification_support",
+      "claim_kind": "implementation_claim",
+      "surface": "quic_state",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "HTTP/3 QPACK pressure is tracked as a discrete promoted state claim with preserved third-party aioquic GOAWAY/QPACK evidence in the canonical independent release matrix.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "independent_certification",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+      ],
+      "work_item_refs": [
+        "RM-P4-05"
+      ],
+      "risk_refs": [
+        "R-QUIC-SEMANTIC-OVERCLAIM"
+      ],
+      "source_files": [
+        "docs/review/conformance/external_matrix.release.json",
+        "docs/conformance/quic_state.json",
+        "docs/conformance/quic_state.md",
+        "tests/test_phase4_quic_surface.py"
+      ]
     },
     {
       "id": "TC-ROADMAP-P5-PATH-RESOLUTION",
@@ -881,9 +1681,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P5-PATH-RESOLUTION"],
-      "work_item_refs": ["RM-P5-01"],
-      "risk_refs": ["R-ORIGIN-PATH-CONTRACT-GAP"]
+      "feature_refs": [
+        "F-P5-PATH-RESOLUTION"
+      ],
+      "work_item_refs": [
+        "RM-P5-01"
+      ],
+      "risk_refs": [
+        "R-ORIGIN-PATH-CONTRACT-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P5-FILE-SELECTION-HTTP",
@@ -895,9 +1701,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P5-FILE-SELECTION-HTTP"],
-      "work_item_refs": ["RM-P5-02"],
-      "risk_refs": ["R-ORIGIN-PATH-CONTRACT-GAP"]
+      "feature_refs": [
+        "F-P5-FILE-SELECTION-HTTP"
+      ],
+      "work_item_refs": [
+        "RM-P5-02"
+      ],
+      "risk_refs": [
+        "R-ORIGIN-PATH-CONTRACT-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P5-PATHSEND-CONTRACT",
@@ -909,9 +1721,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P5-PATHSEND-CONTRACT"],
-      "work_item_refs": ["RM-P5-03"],
-      "risk_refs": ["R-ORIGIN-PATH-CONTRACT-GAP"]
+      "feature_refs": [
+        "F-P5-PATHSEND-CONTRACT"
+      ],
+      "work_item_refs": [
+        "RM-P5-03"
+      ],
+      "risk_refs": [
+        "R-ORIGIN-PATH-CONTRACT-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P6-QUIC-H3-COUNTERS",
@@ -923,9 +1741,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P6-QUIC-H3-COUNTERS"],
-      "work_item_refs": ["RM-P6-01"],
-      "risk_refs": ["R-OBSERVABILITY-SURFACE-DRIFT"]
+      "feature_refs": [
+        "F-P6-QUIC-H3-COUNTERS"
+      ],
+      "work_item_refs": [
+        "RM-P6-01"
+      ],
+      "risk_refs": [
+        "R-OBSERVABILITY-SURFACE-DRIFT"
+      ]
     },
     {
       "id": "TC-ROADMAP-P6-EXPORT-SURFACES",
@@ -937,9 +1761,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P6-EXPORT-SURFACES"],
-      "work_item_refs": ["RM-P6-02"],
-      "risk_refs": ["R-OBSERVABILITY-SURFACE-DRIFT"]
+      "feature_refs": [
+        "F-P6-EXPORT-SURFACES"
+      ],
+      "work_item_refs": [
+        "RM-P6-02"
+      ],
+      "risk_refs": [
+        "R-OBSERVABILITY-SURFACE-DRIFT"
+      ]
     },
     {
       "id": "TC-ROADMAP-P6-QLOG-STANCE",
@@ -951,9 +1781,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P6-QLOG-STANCE"],
-      "work_item_refs": ["RM-P6-03"],
-      "risk_refs": ["R-OBSERVABILITY-SURFACE-DRIFT"]
+      "feature_refs": [
+        "F-P6-QLOG-STANCE"
+      ],
+      "work_item_refs": [
+        "RM-P6-03"
+      ],
+      "risk_refs": [
+        "R-OBSERVABILITY-SURFACE-DRIFT"
+      ]
     },
     {
       "id": "TC-ROADMAP-P7-FAIL-STATE-REGISTRY",
@@ -965,9 +1801,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P7-FAIL-STATE-REGISTRY"],
-      "work_item_refs": ["RM-P7-01"],
-      "risk_refs": ["R-NEGATIVE-CERT-GAP"]
+      "feature_refs": [
+        "F-P7-FAIL-STATE-REGISTRY"
+      ],
+      "work_item_refs": [
+        "RM-P7-01"
+      ],
+      "risk_refs": [
+        "R-NEGATIVE-CERT-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P7-NEGATIVE-CORPORA-QUIC",
@@ -979,9 +1821,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P7-NEGATIVE-CORPORA-QUIC"],
-      "work_item_refs": ["RM-P7-02"],
-      "risk_refs": ["R-NEGATIVE-CERT-GAP"]
+      "feature_refs": [
+        "F-P7-NEGATIVE-CORPORA-QUIC"
+      ],
+      "work_item_refs": [
+        "RM-P7-02"
+      ],
+      "risk_refs": [
+        "R-NEGATIVE-CERT-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P7-NEGATIVE-CORPORA-ORIGIN",
@@ -993,9 +1841,17 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P7-NEGATIVE-CORPORA-ORIGIN"],
-      "work_item_refs": ["RM-P7-03"],
-      "risk_refs": ["R-NEGATIVE-CERT-GAP", "R-ORIGIN-PATH-CONTRACT-GAP", "R-CONNECT-RELAY-ABUSE"]
+      "feature_refs": [
+        "F-P7-NEGATIVE-CORPORA-ORIGIN"
+      ],
+      "work_item_refs": [
+        "RM-P7-03"
+      ],
+      "risk_refs": [
+        "R-NEGATIVE-CERT-GAP",
+        "R-ORIGIN-PATH-CONTRACT-GAP",
+        "R-CONNECT-RELAY-ABUSE"
+      ]
     },
     {
       "id": "TC-ROADMAP-P8-RISK-TRACEABILITY",
@@ -1007,9 +1863,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P8-RISK-TRACEABILITY"],
-      "work_item_refs": ["RM-P8-01"],
-      "risk_refs": ["R-TRACEABILITY-GOVERNANCE-GAP"]
+      "feature_refs": [
+        "F-P8-RISK-TRACEABILITY"
+      ],
+      "work_item_refs": [
+        "RM-P8-01"
+      ],
+      "risk_refs": [
+        "R-TRACEABILITY-GOVERNANCE-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P8-PYTEST-FORWARD",
@@ -1021,9 +1883,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P8-PYTEST-FORWARD"],
-      "work_item_refs": ["RM-P8-02"],
-      "risk_refs": ["R-TEST-STYLE-DRIFT"]
+      "feature_refs": [
+        "F-P8-PYTEST-FORWARD"
+      ],
+      "work_item_refs": [
+        "RM-P8-02"
+      ],
+      "risk_refs": [
+        "R-TEST-STYLE-DRIFT"
+      ]
     },
     {
       "id": "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
@@ -1035,9 +1903,15 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P8-RELEASE-GATED-EVIDENCE"],
-      "work_item_refs": ["RM-P8-03"],
-      "risk_refs": ["R-TRACEABILITY-GOVERNANCE-GAP"]
+      "feature_refs": [
+        "F-P8-RELEASE-GATED-EVIDENCE"
+      ],
+      "work_item_refs": [
+        "RM-P8-03"
+      ],
+      "risk_refs": [
+        "R-TRACEABILITY-GOVERNANCE-GAP"
+      ]
     },
     {
       "id": "TC-ROADMAP-P8-RFC9651-BASELINE",
@@ -1049,28 +1923,450 @@
       "required_evidence_tier": "local_conformance",
       "current_evidence": "none",
       "status": "candidate_not_opened",
-      "feature_refs": ["F-P8-RFC9651-BASELINE"],
-      "work_item_refs": ["RM-P8-04"],
-      "risk_refs": ["R-RFC9651-REFERENCE-DRIFT"]
+      "feature_refs": [
+        "F-P8-RFC9651-BASELINE"
+      ],
+      "work_item_refs": [
+        "RM-P8-04"
+      ],
+      "risk_refs": [
+        "R-RFC9651-REFERENCE-DRIFT"
+      ]
+    },
+    {
+      "id": "TC-CONTRACT-PROXY-TRUST",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "proxy_normalization",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Trusted proxy admission is explicit and fail-closed; proxy identity headers are ignored unless proxy handling is enabled and the immediate peer is trusted.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PROXY-TRUST"
+      ],
+      "work_item_refs": [
+        "RM-P3-01"
+      ],
+      "risk_refs": [
+        "R-PROXY-IDENTITY-AMBIGUITY"
+      ],
+      "source_files": [
+        "src/tigrcorn/utils/proxy.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "tools/cert/policy_surface.py",
+        "docs/conformance/proxy_contract.json",
+        "docs/conformance/proxy_contract.md",
+        "tests/test_phase3_policy_surface.py"
+      ]
+    },
+    {
+      "id": "TC-CONTRACT-PROXY-PRECEDENCE",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "proxy_normalization",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Forwarded and X-Forwarded-* precedence is explicit for client, scheme, host, and root_path resolution across the package-owned HTTP and WebSocket scope builders.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PROXY-PRECEDENCE"
+      ],
+      "work_item_refs": [
+        "RM-P3-02"
+      ],
+      "risk_refs": [
+        "R-PROXY-IDENTITY-AMBIGUITY"
+      ],
+      "source_files": [
+        "src/tigrcorn/utils/proxy.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "tools/cert/policy_surface.py",
+        "docs/conformance/proxy_contract.json",
+        "docs/conformance/proxy_contract.md",
+        "tests/test_phase3_policy_surface.py"
+      ]
+    },
+    {
+      "id": "TC-CONTRACT-PROXY-NORMALIZATION",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "proxy_normalization",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Forwarded-header parsing, root_path composition, and scope stripping now use one shared normalization contract across HTTP/1.1, HTTP/2, HTTP/3, and WebSocket carriers.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PROXY-PRECEDENCE"
+      ],
+      "work_item_refs": [
+        "RM-P3-02"
+      ],
+      "risk_refs": [
+        "R-PROXY-IDENTITY-AMBIGUITY"
+      ],
+      "source_files": [
+        "src/tigrcorn/utils/proxy.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "tools/cert/policy_surface.py",
+        "docs/conformance/proxy_contract.json",
+        "docs/conformance/proxy_contract.md",
+        "tests/test_phase3_policy_surface.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-CONNECT",
+      "class": "protocol_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "connect_relay",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "CONNECT relay admission is a reviewed public contract with explicit deny, relay, and allowlist posture across the package-owned protocol carriers.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-CONNECT-POLICY"
+      ],
+      "work_item_refs": [
+        "RM-P3-03"
+      ],
+      "risk_refs": [
+        "R-CONNECT-RELAY-ABUSE"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-TRAILERS",
+      "class": "protocol_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "trailers",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Trailer handling posture is explicit and documented as a stable policy surface across HTTP/1.1, HTTP/2, and HTTP/3.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-TRAILER-POLICY"
+      ],
+      "work_item_refs": [
+        "RM-P3-04"
+      ],
+      "risk_refs": [
+        "R-TRAILER-CODING-CARRIER-DRIFT"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-CONTENT-CODING",
+      "class": "delivery_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "content_coding",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Content-coding policy and coding allowlists are explicit public controls rather than hidden normalization behavior.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-CODING-POLICY"
+      ],
+      "work_item_refs": [
+        "RM-P3-05"
+      ],
+      "risk_refs": [
+        "R-TRAILER-CODING-CARRIER-DRIFT"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-H2C",
+      "class": "protocol_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "http2_h2c",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "H2C upgrade and direct-preface behavior is exposed as an explicit reviewed policy surface instead of an implicit transport default.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "src/tigrcorn/config/env.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase3_policy_surface.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-ALPN",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "tls_alpn_policy",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "ALPN offer ordering and negotiation posture is a reviewed public TLS policy surface with synchronized CLI, defaults, and generated docs.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-REVOCATION",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "tls_revocation_policy",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "OCSP, CRL, and online revocation-fetch controls are explicit public policy flags with generated operator documentation.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-WEBSOCKET-COMPRESSION",
+      "class": "protocol_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "websocket_compression",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "WebSocket compression posture is a stable public policy surface shared across the supported HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/env.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase3_strict_rfc_surface.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-LIMITS-TIMEOUTS",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "runtime_limits_timeouts",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Runtime resource, buffering, and timeout controls are promoted as reviewed public policy surface rather than hidden scheduler or transport internals.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/env.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-WEBSOCKET-HEARTBEAT",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "websocket_keepalive",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "WebSocket heartbeat interval and timeout are explicit public controls with carrier-parity documentation and tests.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/env.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase3_policy_surface.py",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
+    },
+    {
+      "id": "TC-POLICY-DRAIN-ADMISSION",
+      "class": "operator_surface",
+      "claim_kind": "implementation_claim",
+      "surface": "runtime_admission_control",
+      "boundary_status": "in_bounds_current_surface",
+      "text": "Concurrency limits, stream admission, and graceful drain timing are explicit public operator controls rather than implicit scheduler behavior.",
+      "required_evidence_tier": "local_conformance",
+      "current_evidence": "local_conformance",
+      "status": "implemented_in_tree",
+      "feature_refs": [
+        "F-P3-PUBLIC-CONTROLS"
+      ],
+      "work_item_refs": [
+        "RM-P3-06"
+      ],
+      "source_files": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/env.py",
+        "src/tigrcorn/config/policy_surface.py",
+        "docs/ops/policies.md",
+        "docs/conformance/policy_surface.json",
+        "tests/test_phase3_policy_surface.py",
+        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+      ]
     }
   ],
   "ordered_candidate_target_queue": [
-    { "order": 1, "target_family": "WS/H1 plus WSS closure", "scope_posture": "in_bounds_hardening_candidate" },
-    { "order": 2, "target_family": "WS/H2 plus WS/H3 closure", "scope_posture": "in_bounds_hardening_candidate" },
-    { "order": 3, "target_family": "SSE hardening", "scope_posture": "cross_repo_or_boundary_review_candidate" },
-    { "order": 4, "target_family": "QUIC/H3 state plus observability closure", "scope_posture": "in_bounds_hardening_candidate" },
-    { "order": 5, "target_family": "WebTransport-H3 session plus streams plus datagrams", "scope_posture": "boundary_expansion_candidate" },
-    { "order": 6, "target_family": "WT protocol negotiation plus RFC 9651 synchronization", "scope_posture": "boundary_expansion_candidate" },
-    { "order": 7, "target_family": "WT/H2 fallback", "scope_posture": "boundary_expansion_candidate" }
+    {
+      "order": 1,
+      "target_family": "WS/H1 plus WSS closure",
+      "scope_posture": "in_bounds_hardening_candidate"
+    },
+    {
+      "order": 2,
+      "target_family": "WS/H2 plus WS/H3 closure",
+      "scope_posture": "in_bounds_hardening_candidate"
+    },
+    {
+      "order": 3,
+      "target_family": "SSE hardening",
+      "scope_posture": "cross_repo_or_boundary_review_candidate"
+    },
+    {
+      "order": 4,
+      "target_family": "QUIC/H3 state plus observability closure",
+      "scope_posture": "in_bounds_hardening_candidate"
+    },
+    {
+      "order": 5,
+      "target_family": "WebTransport-H3 session plus streams plus datagrams",
+      "scope_posture": "boundary_expansion_candidate"
+    },
+    {
+      "order": 6,
+      "target_family": "WT protocol negotiation plus RFC 9651 synchronization",
+      "scope_posture": "boundary_expansion_candidate"
+    },
+    {
+      "order": 7,
+      "target_family": "WT/H2 fallback",
+      "scope_posture": "boundary_expansion_candidate"
+    }
   ],
   "roadmap_candidate_band_queue": [
-    { "order": 1, "band": "P1", "theme": "Safe deployment products", "scope_posture": "in_bounds_candidate", "status": "implement_first" },
-    { "order": 2, "band": "P2", "theme": "Default truth", "scope_posture": "in_bounds_candidate", "status": "immediately_after_p1" },
-    { "order": 3, "band": "P3", "theme": "Public policy closure", "scope_posture": "in_bounds_candidate", "status": "wave_2" },
-    { "order": 4, "band": "P4", "theme": "QUIC semantic closure", "scope_posture": "in_bounds_candidate", "status": "wave_3" },
-    { "order": 5, "band": "P5", "theme": "Origin delivery contract", "scope_posture": "in_bounds_candidate", "status": "wave_4" },
-    { "order": 6, "band": "P6", "theme": "Observability", "scope_posture": "in_bounds_candidate", "status": "wave_5" },
-    { "order": 7, "band": "P7", "theme": "Negative certification", "scope_posture": "in_bounds_candidate", "status": "wave_6" },
-    { "order": 8, "band": "P8", "theme": "Governance plus promotion discipline", "scope_posture": "in_bounds_candidate", "status": "parallel_required_for_promotion" }
+    {
+      "order": 1,
+      "band": "P1",
+      "theme": "Safe deployment products",
+      "scope_posture": "in_bounds_candidate",
+      "status": "implement_first"
+    },
+    {
+      "order": 2,
+      "band": "P2",
+      "theme": "Default truth",
+      "scope_posture": "in_bounds_candidate",
+      "status": "immediately_after_p1"
+    },
+    {
+      "order": 3,
+      "band": "P3",
+      "theme": "Public policy closure",
+      "scope_posture": "in_bounds_candidate",
+      "status": "wave_2"
+    },
+    {
+      "order": 4,
+      "band": "P4",
+      "theme": "QUIC semantic closure",
+      "scope_posture": "in_bounds_candidate",
+      "status": "wave_3"
+    },
+    {
+      "order": 5,
+      "band": "P5",
+      "theme": "Origin delivery contract",
+      "scope_posture": "in_bounds_candidate",
+      "status": "wave_4"
+    },
+    {
+      "order": 6,
+      "band": "P6",
+      "theme": "Observability",
+      "scope_posture": "in_bounds_candidate",
+      "status": "wave_5"
+    },
+    {
+      "order": 7,
+      "band": "P7",
+      "theme": "Negative certification",
+      "scope_posture": "in_bounds_candidate",
+      "status": "wave_6"
+    },
+    {
+      "order": 8,
+      "band": "P8",
+      "theme": "Governance plus promotion discipline",
+      "scope_posture": "in_bounds_candidate",
+      "status": "parallel_required_for_promotion"
+    }
   ]
 }

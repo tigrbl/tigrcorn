@@ -34,9 +34,22 @@ jobs:
         with:
           name: validation-py${{ matrix.python-version }}
           path: |
+            DEFAULT_AUDIT.json
+            DEFAULT_AUDIT.md
+            PROFILE_DEFAULTS/
             profiles/
             docs/conformance/profile_bundles.json
             docs/conformance/profile_bundles.md
+            docs/conformance/proxy_contract.json
+            docs/conformance/proxy_contract.md
+            docs/conformance/policy_surface.json
+            docs/conformance/early_data_contract.json
+            docs/conformance/early_data_contract.md
+            docs/conformance/quic_state.json
+            docs/conformance/quic_state.md
             docs/ops/profiles.md
+            docs/ops/defaults.md
+            docs/ops/policies.md
+            docs/review/conformance/cli_help.current.txt
             docs/review/conformance/release_gate_status.current.json
             docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md

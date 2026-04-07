@@ -1,3 +1,4 @@
+from .audit import parser_public_defaults, resolve_effective_defaults
 from .env import load_env_config
 from .files import load_config_file
 from .load import build_config, build_config_from_namespace, build_config_from_sources, config_to_dict
@@ -34,6 +35,8 @@ __all__ = [
     "ProcessConfig",
     "ProxyConfig",
     "QUICConfig",
+    "parser_public_defaults",
+    "resolve_effective_defaults",
     "SchedulerConfig",
     "ServerConfig",
     "TLSConfig",
