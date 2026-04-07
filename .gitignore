@@ -1,2 +1,3 @@
 *.pyc
 /src/tigrcorn.egg-info
+.perf-artifacts/
