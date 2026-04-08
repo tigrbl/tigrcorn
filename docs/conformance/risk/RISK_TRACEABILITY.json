@@ -1,0 +1,111 @@
+{
+  "claim_graph_source": "docs/review/conformance/claims_registry.json",
+  "default_audit_policy_doc": "docs/governance/DEFAULT_AUDIT_POLICY.md",
+  "interop_retention_bundles": [
+    {
+      "bundle_id": "independent_release_matrix",
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+      "role": "independent_certification"
+    },
+    {
+      "bundle_id": "same_stack_replay_matrix",
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+      "role": "same_stack_replay"
+    },
+    {
+      "bundle_id": "mixed_compatibility_matrix",
+      "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix",
+      "role": "mixed_compatibility"
+    }
+  ],
+  "legacy_unittest_inventory": "LEGACY_UNITTEST_INVENTORY.json",
+  "performance_retention_bundles": [
+    {
+      "bundle_id": "phase6_current_release",
+      "path": "docs/review/performance/artifacts/phase6_current_release",
+      "role": "current_release_performance_input"
+    },
+    {
+      "bundle_id": "phase6_reference_baseline",
+      "path": "docs/review/performance/artifacts/phase6_reference_baseline",
+      "role": "baseline_regression_input"
+    },
+    {
+      "bundle_id": "phase6_matrix",
+      "path": "docs/review/performance/performance_matrix.json",
+      "role": "declared_profile_matrix"
+    }
+  ],
+  "risk_register_source": "docs/conformance/risk/RISK_REGISTER.json",
+  "risks": [
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-RISK-TRACEABILITY",
+        "TC-GOV-RISK-REGISTER-TRACEABILITY",
+        "TC-CERT-RELEASE-GATE-GRAPH"
+      ],
+      "evidence_refs": [
+        "docs/conformance/risk/RISK_REGISTER.json",
+        "docs/conformance/risk/RISK_TRACEABILITY.json"
+      ],
+      "release_gate_blocking": false,
+      "risk_id": "R-TRACEABILITY-GOVERNANCE-GAP",
+      "status": "mitigated_in_tree",
+      "test_refs": [
+        "tests/test_p8_gov.py::test_risk_traceability_graph_is_resolved_and_green"
+      ]
+    },
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-PYTEST-FORWARD",
+        "TC-GOV-TEST-STYLE-POLICY"
+      ],
+      "evidence_refs": [
+        "LEGACY_UNITTEST_INVENTORY.json",
+        "docs/governance/TEST_STYLE_POLICY.md"
+      ],
+      "release_gate_blocking": false,
+      "risk_id": "R-TEST-STYLE-DRIFT",
+      "status": "controlled_with_inventory",
+      "test_refs": [
+        "tests/test_p8_gov.py::test_legacy_unittest_inventory_is_explicit_and_no_unexpected_files_exist"
+      ]
+    },
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-RFC9651-BASELINE",
+        "TC-SPEC-STRUCTURED-FIELDS-RFC9651"
+      ],
+      "evidence_refs": [
+        "docs/conformance/sf9651.json",
+        "docs/conformance/sf9651.md"
+      ],
+      "release_gate_blocking": false,
+      "risk_id": "R-RFC9651-REFERENCE-DRIFT",
+      "status": "mitigated_in_tree",
+      "test_refs": [
+        "tests/test_p8_sf.py::test_stale_predecessor_references_are_linted_outside_allowlist"
+      ]
+    },
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
+        "TC-CERT-INTEROP-RETENTION-BUNDLES",
+        "TC-CERT-PERFORMANCE-RETENTION-BUNDLES"
+      ],
+      "evidence_refs": [
+        "docs/conformance/interop_retention.json",
+        "docs/conformance/perf_retention.json"
+      ],
+      "release_gate_blocking": false,
+      "risk_id": "R-RELEASE-EVIDENCE-RETENTION",
+      "status": "mitigated_in_tree",
+      "test_refs": [
+        "tests/test_p8_gov.py::test_retention_bundles_point_to_existing_release_inputs"
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "structured_fields_bundle": "docs/conformance/sf9651.json",
+  "test_policy_doc": "docs/governance/TEST_STYLE_POLICY.md"
+}

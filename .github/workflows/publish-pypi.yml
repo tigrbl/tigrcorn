@@ -1,52 +1,157 @@
 name: publish-package
 
 on:
+  push:
+    tags:
+      - "v*"
   release:
-    types: [published]
+    types: [prereleased, published]
   workflow_dispatch:
 
 jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: write
+      attestations: write
+      id-token: write
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: "3.12"
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      - name: Install project
+        run: python -m pip install -e ".[certification,dev]" build
+      - name: Build certification and release metadata
+        run: |
+          ./scripts/ci/validate.sh
+          python -m build
+          mkdir -p .artifacts/release-assets
+          mkdir -p .artifacts/pages
+          cp RELEASE_NOTES_*.md .artifacts/release-assets/
+          cp docs/conformance/claim_rep.json .artifacts/release-assets/
+          cp docs/conformance/claim_rep.md .artifacts/release-assets/
+          cp docs/conformance/risk_stat.json .artifacts/release-assets/
+          cp docs/conformance/risk_stat.md .artifacts/release-assets/
+          cp docs/conformance/evidence_ix.json .artifacts/release-assets/
+          cp docs/conformance/evidence_ix.md .artifacts/release-assets/
+          cp docs/conformance/release_auto.json .artifacts/release-assets/
+          cp docs/conformance/relnotes.json .artifacts/release-assets/
+          cp docs/conformance/relnotes.md .artifacts/release-assets/
+          cp docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md .artifacts/release-assets/
+          cp README.md .artifacts/pages/
+          cp RELEASE_NOTES_*.md .artifacts/pages/
+          cp -R docs .artifacts/pages/docs
+      - name: Capture version
+        id: meta
+        shell: bash
+        run: |
+          python - <<'PY' > .artifacts/version.txt
+          import pathlib
+          root = pathlib.Path('.')
+          for line in (root / 'pyproject.toml').read_text(encoding='utf-8').splitlines():
+              if line.startswith('version = '):
+                  print(line.split('"')[1])
+                  break
+          else:
+              raise SystemExit('version not found')
+          PY
+          echo "version=$(cat .artifacts/version.txt)" >> "$GITHUB_OUTPUT"
+      - name: Upload distributions
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+      - name: Upload release assets
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-assets-${{ github.sha }}
+          path: .artifacts/release-assets/
+      - name: Attest distributions
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        with:
+          subject-path: dist/*
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          path: .artifacts/pages
+
   publish-testpypi:
+    needs: build-release
     runs-on: ubuntu-latest
     environment: testpypi
     permissions:
       contents: read
       id-token: write
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+      - name: Download distributions
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          python-version: "3.12"
-
-      - name: Build distributions
-        run: |
-          python -m pip install --upgrade pip build twine
-          python -m build
-
+          name: dist-${{ github.sha }}
+          path: dist
       - name: Publish distributions to TestPyPI
-        run: python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+        if: github.event_name != 'release' || github.event.release.prerelease || github.event.action == 'published'
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: dist
 
   publish-pypi:
     needs: publish-testpypi
+    if: github.event_name != 'release' || github.event.release.prerelease == false
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       contents: read
       id-token: write
     steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+      - name: Download distributions
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          python-version: "3.12"
-      - name: Build distributions
-        run: |
-          python -m pip install --upgrade pip build twine
-          python -m build
+          name: dist-${{ github.sha }}
+          path: dist
       - name: Publish distributions to PyPI
-        run: python -m twine upload dist/*
+        if: github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == false
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
+        with:
+          packages-dir: dist
+
+  publish-release-assets:
+    needs: publish-pypi
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download release assets
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: release-assets-${{ github.sha }}
+          path: .artifacts/release-assets
+      - name: Attach release assets
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
+        with:
+          files: .artifacts/release-assets/*
+          draft: false
+          prerelease: ${{ github.event.release.prerelease }}
+
+  deploy-release-pages:
+    needs: build-release
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128

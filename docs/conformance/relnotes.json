@@ -1,0 +1,20 @@
+{
+  "generated_summary": {
+    "authoritative_boundary_passed": true,
+    "claim_report": "docs/conformance/claim_rep.json",
+    "documentation_passed": true,
+    "evidence_index": "docs/conformance/evidence_ix.json",
+    "operator_surface_passed": true,
+    "performance_passed": true,
+    "promotion_target_passed": true,
+    "release_notes": "RELEASE_NOTES_0.3.9.md",
+    "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "risk_status": "docs/conformance/risk_stat.json",
+    "schema_version": 1,
+    "strict_target_passed": true,
+    "version": "0.3.9"
+  },
+  "release_notes": "RELEASE_NOTES_0.3.9.md",
+  "schema_version": 1,
+  "version": "0.3.9"
+}

@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tigrcorn.local/docs/reference/risk_register.schema.json",
+  "title": "tigrcorn risk register",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "register_owner",
+    "policy_doc",
+    "release_gate_policy",
+    "register"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "register_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_doc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_gate_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "register": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "risk_id",
+          "title",
+          "severity",
+          "status",
+          "release_gate_blocking",
+          "owner",
+          "policy_doc",
+          "claim_refs",
+          "test_refs",
+          "evidence_refs"
+        ],
+        "properties": {
+          "risk_id": {
+            "type": "string",
+            "pattern": "^R-"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "release_gate_blocking": {
+            "type": "boolean"
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "policy_doc": {
+            "type": "string",
+            "minLength": 1
+          },
+          "feature_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "claim_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "test_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

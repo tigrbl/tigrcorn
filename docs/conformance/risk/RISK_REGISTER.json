@@ -1,0 +1,106 @@
+{
+  "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",
+  "register": [
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-RISK-TRACEABILITY",
+        "TC-GOV-RISK-REGISTER-TRACEABILITY",
+        "TC-CERT-RELEASE-GATE-GRAPH"
+      ],
+      "evidence_refs": [
+        "docs/conformance/risk/RISK_REGISTER.json",
+        "docs/conformance/risk/RISK_TRACEABILITY.json"
+      ],
+      "feature_refs": [
+        "F-P8-RISK-TRACEABILITY"
+      ],
+      "owner": "tigrcorn-maintainers",
+      "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",
+      "release_gate_blocking": false,
+      "risk_id": "R-TRACEABILITY-GOVERNANCE-GAP",
+      "severity": "high",
+      "status": "mitigated_in_tree",
+      "summary": "Phase 8 closes this by generating risk and traceability graphs and making release gates validate them.",
+      "test_refs": [
+        "tests/test_p8_gov.py::test_risk_traceability_graph_is_resolved_and_green"
+      ],
+      "title": "Risk, claim, test, and evidence linkage can drift without machine-readable ownership."
+    },
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-PYTEST-FORWARD",
+        "TC-GOV-TEST-STYLE-POLICY"
+      ],
+      "evidence_refs": [
+        "LEGACY_UNITTEST_INVENTORY.json",
+        "docs/governance/TEST_STYLE_POLICY.md"
+      ],
+      "feature_refs": [
+        "F-P8-PYTEST-FORWARD"
+      ],
+      "owner": "tigrcorn-maintainers",
+      "policy_doc": "docs/governance/TEST_STYLE_POLICY.md",
+      "release_gate_blocking": false,
+      "risk_id": "R-TEST-STYLE-DRIFT",
+      "severity": "medium",
+      "status": "controlled_with_inventory",
+      "summary": "Pytest is the only forward runner in CI, while legacy unittest files are frozen behind an approved inventory.",
+      "test_refs": [
+        "tests/test_p8_gov.py::test_legacy_unittest_inventory_is_explicit_and_no_unexpected_files_exist"
+      ],
+      "title": "New forward tests could continue to enter as unittest instead of pytest."
+    },
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-RFC9651-BASELINE",
+        "TC-SPEC-STRUCTURED-FIELDS-RFC9651"
+      ],
+      "evidence_refs": [
+        "docs/conformance/sf9651.json",
+        "docs/conformance/sf9651.md"
+      ],
+      "feature_refs": [
+        "F-P8-RFC9651-BASELINE"
+      ],
+      "owner": "tigrcorn-maintainers",
+      "policy_doc": "docs/governance/DEFAULT_AUDIT_POLICY.md",
+      "release_gate_blocking": false,
+      "risk_id": "R-RFC9651-REFERENCE-DRIFT",
+      "severity": "high",
+      "status": "mitigated_in_tree",
+      "summary": "Phase 8 replaces active predecessor-baseline language with RFC 9651 and lints for stale active references.",
+      "test_refs": [
+        "tests/test_p8_sf.py::test_stale_predecessor_references_are_linted_outside_allowlist"
+      ],
+      "title": "Structured-fields references can drift back to obsolete predecessor wording."
+    },
+    {
+      "claim_refs": [
+        "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
+        "TC-CERT-INTEROP-RETENTION-BUNDLES",
+        "TC-CERT-PERFORMANCE-RETENTION-BUNDLES"
+      ],
+      "evidence_refs": [
+        "docs/conformance/interop_retention.json",
+        "docs/conformance/perf_retention.json"
+      ],
+      "feature_refs": [
+        "F-P8-RELEASE-GATED-EVIDENCE"
+      ],
+      "owner": "tigrcorn-maintainers",
+      "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",
+      "release_gate_blocking": false,
+      "risk_id": "R-RELEASE-EVIDENCE-RETENTION",
+      "severity": "high",
+      "status": "mitigated_in_tree",
+      "summary": "The mutable tree now carries explicit retained-bundle manifests that point at canonical release-root evidence and performance inputs.",
+      "test_refs": [
+        "tests/test_p8_gov.py::test_retention_bundles_point_to_existing_release_inputs"
+      ],
+      "title": "Interop and performance bundles could drift out of the release gate if they are treated as informal side artifacts."
+    }
+  ],
+  "register_owner": "tigrcorn-maintainers",
+  "release_gate_policy": "open blocking risks fail closed",
+  "schema_version": 1
+}

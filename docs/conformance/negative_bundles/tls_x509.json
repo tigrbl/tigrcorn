@@ -1,0 +1,29 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "cases": [
+    {
+      "expected_action": "abort_validation",
+      "expected_outcome": "ProtocolError for revoked leaf when CRL is present",
+      "id": "revoked-leaf-rejected",
+      "preserved_artifacts": [
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts"
+      ],
+      "tests": [
+        "tests/test_x509_webpki_validation.py::test_rejects_revoked_leaf_when_crl_is_present"
+      ]
+    },
+    {
+      "expected_action": "abort_validation",
+      "expected_outcome": "ProtocolError for stale OCSP response in require mode",
+      "id": "stale-ocsp-require-fails",
+      "preserved_artifacts": [
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-ocsp-local-validation-artifacts"
+      ],
+      "tests": [
+        "tests/test_x509_webpki_validation.py::test_require_mode_rejects_stale_ocsp_response"
+      ]
+    }
+  ],
+  "contract_version": 1,
+  "surface": "tls_x509"
+}

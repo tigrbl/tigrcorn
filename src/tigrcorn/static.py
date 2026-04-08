@@ -79,7 +79,17 @@ class StaticFilesApp:
 
     def _resolve_candidate(self, path: str) -> Path | None:
         decoded = unquote(path or '/')
-        parts = [part for part in PurePosixPath(decoded).parts if part not in {'', '/', '.', '..'}]
+        if '\x00' in decoded:
+            return None
+        parts: list[str] = []
+        for part in PurePosixPath(decoded).parts:
+            if part in {'', '/', '.'}:
+                continue
+            if part == '..':
+                return None
+            if '\\' in part:
+                return None
+            parts.append(part)
         candidate = self.directory.joinpath(*parts).resolve()
         try:
             candidate.relative_to(self.directory)

@@ -1,0 +1,108 @@
+{
+  "baseline_rfc": "RFC 9651",
+  "obsolete_rfc": "RFC 8941",
+  "registry": {
+    "priority": "dictionary",
+    "signature": "dictionary",
+    "signature-input": "dictionary"
+  },
+  "schema_version": 1,
+  "stale_reference_lint": {
+    "allowed_paths": [
+      "docs/conformance/risk/RISK_REGISTER.json",
+      "docs/conformance/risk/RISK_TRACEABILITY.json",
+      "docs/conformance/sf9651.json",
+      "docs/conformance/sf9651.md",
+      "docs/notes/feat_matrix.md",
+      "docs/notes/feature_reg.md",
+      "docs/notes/issue_mat.md",
+      "docs/notes/issue_reg.md",
+      "docs/notes/risk_reg.md",
+      "src/tigrcorn/config/governance_surface.py",
+      "tests/test_p8_sf.py",
+      "tools/cert/governance_surface.py"
+    ],
+    "checked_matches": [
+      "docs/conformance/sf9651.json",
+      "docs/conformance/sf9651.md",
+      "docs/notes/feat_matrix.md",
+      "docs/notes/feature_reg.md",
+      "docs/notes/issue_mat.md",
+      "docs/notes/issue_reg.md",
+      "docs/notes/risk_reg.md",
+      "src/tigrcorn/config/governance_surface.py",
+      "tools/cert/governance_surface.py"
+    ],
+    "forbidden_reference": "RFC 8941",
+    "violations": []
+  },
+  "vectors": [
+    {
+      "canonical": "u=3, i",
+      "expected_type": "dictionary",
+      "field_name": "priority",
+      "parsed": {
+        "i": {
+          "params": {},
+          "type": "item",
+          "value": true
+        },
+        "u": {
+          "params": {},
+          "type": "item",
+          "value": 3
+        }
+      },
+      "round_trip_equal": true,
+      "wire_value": "u=3, i"
+    },
+    {
+      "canonical": "sig1=:AQIDBA==:",
+      "expected_type": "dictionary",
+      "field_name": "signature",
+      "parsed": {
+        "sig1": {
+          "params": {},
+          "type": "item",
+          "value": {
+            "type": "bytes",
+            "value": "AQIDBA=="
+          }
+        }
+      },
+      "round_trip_equal": true,
+      "wire_value": "sig1=:AQIDBA==:"
+    },
+    {
+      "canonical": "sig1=(\"date\" \"content-digest\");created=@1700000000;keyid=\"test-key\"",
+      "expected_type": "dictionary",
+      "field_name": "signature-input",
+      "parsed": {
+        "sig1": {
+          "items": [
+            {
+              "params": {},
+              "type": "item",
+              "value": "date"
+            },
+            {
+              "params": {},
+              "type": "item",
+              "value": "content-digest"
+            }
+          ],
+          "params": {
+            "created": {
+              "type": "date",
+              "value": 1700000000
+            },
+            "keyid": "test-key"
+          },
+          "type": "inner_list"
+        }
+      },
+      "round_trip_equal": true,
+      "wire_value": "sig1=(\"date\" \"content-digest\");created=@1700000000;keyid=\"test-key\""
+    }
+  ]
+}

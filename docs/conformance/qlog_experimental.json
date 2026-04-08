@@ -1,0 +1,20 @@
+{
+  "compatibility": "best_effort_internal_artifact_only",
+  "markers": {
+    "experimental_marker": "trace.common_fields.tigrcorn_qlog.experimental",
+    "redaction_marker": "trace.common_fields.tigrcorn_qlog.redaction"
+  },
+  "producer": "tigrcorn.compat.interop_runner.generate_observer_qlog",
+  "redaction_rules": {
+    "connection_ids": "dcid/scid values are redacted in emitted packet summaries",
+    "network_endpoints": "remote endpoint addresses are redacted from qlog output",
+    "payload_bytes": "raw packet payload bytes are not copied into qlog output"
+  },
+  "schema_version": "tigrcorn.qlog.experimental.v1",
+  "stability": "experimental",
+  "versioning": {
+    "package_schema": "tigrcorn.qlog.experimental.v1",
+    "qlog_version": "0.3",
+    "upgrade_rule": "schema_version changes when redaction fields, event envelopes, or emitted packet summary fields change incompatibly"
+  }
+}

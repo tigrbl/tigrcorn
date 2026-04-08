@@ -27,6 +27,22 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
 
 
+@contextlib.contextmanager
+def _workspace_tempdir():
+    with tempfile.TemporaryDirectory(dir='.') as tmp:
+        yield Path(tmp).resolve()
+
+
+def _close_logger_handlers(logger) -> None:
+    for handler in list(logger.handlers):
+        with contextlib.suppress(Exception):
+            handler.flush()
+        with contextlib.suppress(Exception):
+            handler.close()
+        with contextlib.suppress(Exception):
+            logger.removeHandler(handler)
+
+
 async def _noop_app(scope, receive, send):
     if scope['type'] == 'lifespan':
         return
@@ -58,8 +74,7 @@ class _CaptureHandler(BaseHTTPRequestHandler):
 class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
     def test_log_config_file_is_real_runtime_input_and_cli_flags_override_it(self):
         parser = build_parser()
-        with tempfile.TemporaryDirectory() as tmp:
-            tmpdir = Path(tmp)
+        with _workspace_tempdir() as tmpdir:
             profile_path = tmpdir / 'logging.json'
             access_from_file = tmpdir / 'access-from-file.log'
             error_from_file = tmpdir / 'error-from-file.log'
@@ -103,19 +118,21 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(resolved.error_log_file, str(error_from_cli))
 
             logger = configure_logging(config.log_level, config=config.logging)
-            logger.debug('phase9f2-log-config-debug')
-            for handler in logger.handlers:
-                handler.flush()
-            self.assertTrue(access_from_cli.exists())
-            self.assertTrue(error_from_cli.exists())
-            self.assertFalse(access_from_file.exists())
-            payload = access_from_cli.read_text(encoding='utf-8')
-            self.assertIn('phase9f2-log-config-debug', payload)
-            self.assertIn('"message": "phase9f2-log-config-debug"', payload)
+            try:
+                logger.debug('phase9f2-log-config-debug')
+                for handler in logger.handlers:
+                    handler.flush()
+                self.assertTrue(access_from_cli.exists())
+                self.assertTrue(error_from_cli.exists())
+                self.assertFalse(access_from_file.exists())
+                payload = access_from_cli.read_text(encoding='utf-8')
+                self.assertIn('phase9f2-log-config-debug', payload)
+                self.assertIn('"message": "phase9f2-log-config-debug"', payload)
+            finally:
+                _close_logger_handlers(logger)
 
     def test_log_config_file_wins_when_no_explicit_cli_logging_overrides_exist(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            tmpdir = Path(tmp)
+        with _workspace_tempdir() as tmpdir:
             profile_path = tmpdir / 'logging.json'
             error_path = tmpdir / 'errors.log'
             profile_path.write_text(
@@ -127,18 +144,21 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(resolved.level, 'error')
             self.assertTrue(resolved.structured)
             logger = configure_logging(config.log_level, config=config.logging)
-            logger.debug('debug-not-emitted')
-            logger.error('error-emitted')
-            for handler in logger.handlers:
-                handler.flush()
-            data = error_path.read_text(encoding='utf-8')
-            self.assertIn('error-emitted', data)
-            self.assertNotIn('debug-not-emitted', data)
+            try:
+                logger.debug('debug-not-emitted')
+                logger.error('error-emitted')
+                for handler in logger.handlers:
+                    handler.flush()
+                data = error_path.read_text(encoding='utf-8')
+                self.assertIn('error-emitted', data)
+                self.assertNotIn('debug-not-emitted', data)
+            finally:
+                _close_logger_handlers(logger)
 
     def test_invalid_log_config_fails_fast(self):
         parser = build_parser()
-        with tempfile.TemporaryDirectory() as tmp:
-            bad_path = Path(tmp) / 'bad.json'
+        with _workspace_tempdir() as tmpdir:
+            bad_path = tmpdir / 'bad.json'
             bad_path.write_text(json.dumps({'logging': {'unsupported': True}}), encoding='utf-8')
             ns = parser.parse_args(['tests.fixtures_pkg.appmod:app', '--log-config', str(bad_path)])
             with self.assertRaises(ConfigError):

@@ -372,6 +372,8 @@ class QuicConnection:
         self._peer_preferred_address: bytes | None = None
         self._path_addr: tuple[str, int] | None = None
         self._ack_delay_exponent = 3
+        self.packets_lost_total = 0
+        self.pto_expirations_total = 0
         self._sync_packet_number_snapshot()
 
     @property
@@ -853,7 +855,9 @@ class QuicConnection:
         return raw
 
     def _on_packets_lost(self, *, path_key: Any, packet_space: str, lost_numbers: Iterable[int]) -> None:
-        for packet_number in sorted(set(lost_numbers)):
+        unique_lost = sorted(set(lost_numbers))
+        self.packets_lost_total += len(unique_lost)
+        for packet_number in unique_lost:
             meta = self._sent_packets.pop((packet_space, packet_number), None)
             if meta is None:
                 continue
@@ -924,6 +928,7 @@ class QuicConnection:
                 return
             earliest_deadline = min(deadline for _space, deadline in candidates)
             due_spaces = [space for space, deadline in candidates if abs(deadline - earliest_deadline) <= 0.001]
+        self.pto_expirations_total += 1
         path_state.recovery.on_pto_expired()
         probes_sent = 0
         for space in due_spaces:

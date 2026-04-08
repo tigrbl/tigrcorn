@@ -1,0 +1,29 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "cases": [
+    {
+      "expected_action": "reject_response",
+      "expected_outcome": "404 Not Found",
+      "id": "encoded-parent-segment",
+      "preserved_artifacts": [
+        "docs/conformance/origin_negatives.json"
+      ],
+      "tests": [
+        "tests/test_phase5_origin_contract.py::Phase5OriginContractTests::test_parent_segments_and_backslash_segments_are_denied"
+      ]
+    },
+    {
+      "expected_action": "abort_asgi_protocol",
+      "expected_outcome": "ASGIProtocolError",
+      "id": "pathsend-relative-path",
+      "preserved_artifacts": [
+        "docs/conformance/origin_negatives.json"
+      ],
+      "tests": [
+        "tests/test_phase5_origin_contract.py::Phase5OriginContractTests::test_pathsend_rejects_relative_and_missing_paths"
+      ]
+    }
+  ],
+  "contract_version": 1,
+  "surface": "origin"
+}

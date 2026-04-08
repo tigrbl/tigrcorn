@@ -1,0 +1,14 @@
+{
+  "blocking_open_count": 0,
+  "risk_count": 4,
+  "schema_version": 1,
+  "severity_counts": {
+    "high": 3,
+    "medium": 1
+  },
+  "status_counts": {
+    "controlled_with_inventory": 1,
+    "mitigated_in_tree": 3
+  },
+  "version": "0.3.9"
+}

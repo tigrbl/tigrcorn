@@ -78,7 +78,14 @@ def normalize_response_pathsend_segment(raw_path: object) -> FileBodySegment:
     path = os.fspath(raw_path)
     if not os.path.isabs(path):
         raise ASGIProtocolError('http.response.pathsend requires an absolute file path')
-    return FileBodySegment(path, 0, None)
+    candidate = Path(path)
+    try:
+        size = candidate.stat().st_size
+    except FileNotFoundError as exc:
+        raise ASGIProtocolError('http.response.pathsend requires an existing file path') from exc
+    if not candidate.is_file():
+        raise ASGIProtocolError('http.response.pathsend requires a regular file path')
+    return FileBodySegment(path, 0, size)
 
 
 async def _iter_file_segment_bytes(segment: FileBodySegment, *, chunk_size: int = 64 * 1024):

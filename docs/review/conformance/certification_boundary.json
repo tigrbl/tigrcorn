@@ -340,7 +340,8 @@
     "require_docs_reference_canonical_boundary": true,
     "require_conformance_corpus": true,
     "require_rfc_evidence_map": true,
-    "require_preserved_artifacts_for_independent_scenarios": true
+    "require_preserved_artifacts_for_independent_scenarios": true,
+    "require_governance_graph": true
   },
   "docs_that_must_reference_boundary": [
     "README.md",

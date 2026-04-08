@@ -67,6 +67,10 @@ class HTTP3Session:
     connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
     websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
     stream_work_leases: dict[int, object] = field(default_factory=dict)
+    early_data_accounted: bool = False
+    peer_goaway_observed: bool = False
+    last_quic_packets_lost_total: int = 0
+    last_quic_pto_expirations_total: int = 0
 
 
 class _HTTP3ConnectTunnel:
@@ -242,9 +246,23 @@ class HTTP3DatagramHandler:
         if self._can_send_now(session, raw):
             endpoint.send(raw, addr)
             session.bytes_sent += len(raw)
+            if self.metrics is not None:
+                self.metrics.quic_datagram_sent(len(raw))
             return
         session.quic.defer_datagram(raw)
         session.pending_outbound.append(raw)
+
+    def _sync_quic_loss_metrics(self, session: HTTP3Session) -> None:
+        if self.metrics is None:
+            return
+        lost_total = int(getattr(session.quic, 'packets_lost_total', 0))
+        if lost_total > session.last_quic_packets_lost_total:
+            self.metrics.quic_packets_lost_observed(lost_total - session.last_quic_packets_lost_total)
+        session.last_quic_packets_lost_total = lost_total
+        pto_total = int(getattr(session.quic, 'pto_expirations_total', 0))
+        while pto_total > session.last_quic_pto_expirations_total:
+            self.metrics.quic_pto_expired()
+            session.last_quic_pto_expirations_total += 1
 
     def _flush_pending_outbound(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
         if not session.pending_outbound:
@@ -258,6 +276,8 @@ class HTTP3DatagramHandler:
                 session.quic.confirm_datagram_sent(raw)
                 endpoint.send(raw, session.addr)
                 session.bytes_sent += len(raw)
+                if self.metrics is not None:
+                    self.metrics.quic_datagram_sent(len(raw))
             else:
                 remaining.append(raw)
         session.pending_outbound = remaining
@@ -291,6 +311,13 @@ class HTTP3DatagramHandler:
             return
         loop = asyncio.get_running_loop()
         session.timer_handle = loop.call_later(delay, self._fire_session_timer, session, endpoint)
+
+    def _close_session(self, session: HTTP3Session) -> None:
+        removed = self.sessions.pop(session.addr, None)
+        if removed is session:
+            self.sessions_by_local_cid.pop(session.quic.local_cid, None)
+            if self.metrics is not None:
+                self.metrics.quic_session_closed()
 
     def _fire_session_timer(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
         transport = getattr(endpoint, 'transport', None)
@@ -407,12 +434,16 @@ class HTTP3DatagramHandler:
                 self.sessions[packet.addr] = session
                 if session.quic.local_cid:
                     self.sessions_by_local_cid[session.quic.local_cid] = session
+                if self.metrics is not None:
+                    self.metrics.quic_session_opened()
             else:
                 session.quic.remote_cid = scid or session.quic.remote_cid
 
             outbound: list[bytes] = []
 
             session.bytes_received += len(packet.data)
+            if self.metrics is not None:
+                self.metrics.quic_datagram_received(len(packet.data))
             if predecoded_events is None:
                 try:
                     events = session.quic.receive_datagram(packet.data, addr=packet.addr)
@@ -431,9 +462,28 @@ class HTTP3DatagramHandler:
             session.request_packets += 1
             outbound.extend(self._ensure_server_control_stream_locked(session))
             for event in events:
+                if self.metrics is not None:
+                    if event.kind == 'retry':
+                        self.metrics.quic_retry_emitted()
+                    elif event.kind == 'path_challenge':
+                        self.metrics.quic_path_challenge_observed()
+                    elif event.kind == 'path_response':
+                        self.metrics.quic_path_response_observed()
+                    elif event.kind == 'path_migrated':
+                        self.metrics.quic_path_migrated()
+                    elif event.kind == 'reset_stream':
+                        self.metrics.http3_stream_reset()
                 if event.kind == 'handshake_complete':
                     session.address_validated = True
                     session.quic.address_validated = True
+                    if self.metrics is not None:
+                        self.metrics.tls_handshake_completed()
+                        if not session.early_data_accounted and session.quic.handshake_driver is not None:
+                            using_psk = bool(getattr(session.quic.handshake_driver, '_using_psk', False))
+                            if using_psk:
+                                accepted = bool(getattr(session.quic.handshake_driver, 'early_data_accepted', False))
+                                self.metrics.quic_early_data_observed(accepted=accepted)
+                                session.early_data_accounted = True
                     outbound.extend(session.quic.take_handshake_datagrams())
                     outbound.extend(self._ensure_server_control_stream_locked(session))
                     if (
@@ -457,7 +507,14 @@ class HTTP3DatagramHandler:
                 elif event.kind == 'stream' and event.stream_id is not None:
                     if 'http3' in self.listener.enabled_protocols:
                         try:
+                            peer_goaway_before = session.h3.state.peer_goaway_id
                             request_state = session.h3.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+                            if (
+                                self.metrics is not None
+                                and session.h3.state.peer_goaway_id is not None
+                                and session.h3.state.peer_goaway_id != peer_goaway_before
+                            ):
+                                self.metrics.http3_goaway_observed()
                         except HTTP3StreamError as exc:
                             if exc.stream_id is not None:
                                 session.h3.abandon_stream(exc.stream_id)
@@ -471,8 +528,7 @@ class HTTP3DatagramHandler:
                             await self._abort_session_tunnels(session)
                             await self._abort_session_websockets(session)
                             self._cancel_session_timer(session)
-                            self.sessions.pop(session.addr, None)
-                            self.sessions_by_local_cid.pop(session.quic.local_cid, None)
+                            self._close_session(session)
                             break
                         except ProtocolError as exc:
                             outbound.extend(self._flush_qpack_streams(session))
@@ -480,8 +536,7 @@ class HTTP3DatagramHandler:
                             await self._abort_session_tunnels(session)
                             await self._abort_session_websockets(session)
                             self._cancel_session_timer(session)
-                            self.sessions.pop(session.addr, None)
-                            self.sessions_by_local_cid.pop(session.quic.local_cid, None)
+                            self._close_session(session)
                             break
                         outbound.extend(self._flush_qpack_streams(session))
                         if request_state is not None:
@@ -568,8 +623,8 @@ class HTTP3DatagramHandler:
                     await self._abort_session_tunnels(session)
                     await self._abort_session_websockets(session)
                     self._cancel_session_timer(session)
-                    self.sessions.pop(session.addr, None)
-                    self.sessions_by_local_cid.pop(session.quic.local_cid, None)
+                    self._close_session(session)
+            self._sync_quic_loss_metrics(session)
             outbound.extend(session.quic.take_handshake_datagrams())
             outbound.extend(session.quic.drain_scheduled_datagrams())
             for raw in outbound:
@@ -601,12 +656,16 @@ class HTTP3DatagramHandler:
             if session.server_qpack_encoder_stream_id is None:
                 session.server_qpack_encoder_stream_id = session.quic.streams.next_stream_id(client=False, unidirectional=True)
                 encoder_data = encode_quic_varint(STREAM_TYPE_QPACK_ENCODER) + encoder_data
+                if self.metrics is not None:
+                    self.metrics.http3_qpack_encoder_stream_opened()
             outbound.append(session.quic.send_stream_data(session.server_qpack_encoder_stream_id, encoder_data, fin=False))
         decoder_data = session.h3.take_decoder_stream_data()
         if decoder_data:
             if session.server_qpack_decoder_stream_id is None:
                 session.server_qpack_decoder_stream_id = session.quic.streams.next_stream_id(client=False, unidirectional=True)
                 decoder_data = encode_quic_varint(STREAM_TYPE_QPACK_DECODER) + decoder_data
+                if self.metrics is not None:
+                    self.metrics.http3_qpack_decoder_stream_opened()
             outbound.append(session.quic.send_stream_data(session.server_qpack_decoder_stream_id, decoder_data, fin=False))
         return outbound
 
@@ -1320,6 +1379,8 @@ class HTTP3DatagramHandler:
                     informational,
                     endpoint,
                 )
+                if self.metrics is not None:
+                    self.metrics.http3_request_served()
                 self.access_logger.log_http(client, request.method, request.path, status, 'HTTP/3')
                 self.sessions[session.addr] = session
                 return []
@@ -1348,6 +1409,8 @@ class HTTP3DatagramHandler:
                 frame_payload.extend(encode_frame(FRAME_HEADERS, trailer_block))
             self.access_logger.log_http(client, request.method, request.path, status, 'HTTP/3')
             self.sessions[session.addr] = session
+            if self.metrics is not None:
+                self.metrics.http3_request_served()
             return [*qpack_outbound, session.quic.send_stream_data(stream_id, bytes(frame_payload), fin=True)]
         finally:
             send.cleanup()

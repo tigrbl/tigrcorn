@@ -1,0 +1,29 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "cases": [
+    {
+      "expected_action": "reject_response",
+      "expected_outcome": "403 connect denied and end stream",
+      "id": "http2-connect-policy-deny",
+      "preserved_artifacts": [
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts"
+      ],
+      "tests": [
+        "tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream"
+      ]
+    },
+    {
+      "expected_action": "reject_response",
+      "expected_outcome": "403 connect denied and end stream",
+      "id": "http3-connect-allowlist-rejection",
+      "preserved_artifacts": [
+        "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts"
+      ],
+      "tests": [
+        "tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream"
+      ]
+    }
+  ],
+  "contract_version": 1,
+  "surface": "connect_relay"
+}

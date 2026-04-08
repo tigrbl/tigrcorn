@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
+from tigrcorn.config.observability_surface import QLOG_EXPERIMENTAL_SCHEMA_VERSION
 from tigrcorn.transports.quic.packets import (
     QuicLongHeaderPacket,
     QuicRetryPacket,
@@ -36,6 +37,7 @@ VALID_PROVENANCE_KINDS = {
 }
 VALID_EVIDENCE_TIERS = {'local_conformance', 'same_stack_replay', 'independent_certification', 'mixed'}
 INTEROP_ARTIFACT_SCHEMA_VERSION = 1
+QLOG_VERSION = '0.3'
 INTEROP_BUNDLE_REQUIRED_FILES = (
     'manifest.json',
     'summary.json',
@@ -1355,7 +1357,14 @@ def generate_observer_qlog(
                 continue
             records.append(json.loads(line))
     if not records:
-        _write_json(Path(qlog_path), {'qlog_version': '0.3', 'traces': []})
+        _write_json(
+            Path(qlog_path),
+            {
+                'qlog_version': QLOG_VERSION,
+                'schema_version': QLOG_EXPERIMENTAL_SCHEMA_VERSION,
+                'traces': [],
+            },
+        )
         return
     base_time = float(records[0]['timestamp'])
     events: list[list[Any]] = [
@@ -1366,7 +1375,7 @@ def generate_observer_qlog(
             {
                 'ip_version': 'ipv6' if ip_family == 'ipv6' else 'ipv4',
                 'protocol': protocol,
-                'server': records[0]['remote'],
+                'server': {'host': 'redacted', 'port': 'redacted'},
             },
         ]
     ]
@@ -1378,6 +1387,8 @@ def generate_observer_qlog(
         packets = [item for item in packets if item is not None]
         if not packets:
             packets = [{'packet_type': 'unknown', 'length': len(payload)}]
+        else:
+            packets = [_redact_qlog_packet(item) for item in packets]
         events.append([
             round((float(record['timestamp']) - base_time) * 1000.0, 3),
             'transport',
@@ -1393,12 +1404,24 @@ def generate_observer_qlog(
     _write_json(
         Path(qlog_path),
         {
-            'qlog_version': '0.3',
+            'qlog_version': QLOG_VERSION,
+            'schema_version': QLOG_EXPERIMENTAL_SCHEMA_VERSION,
             'traces': [
                 {
                     'vantage_point': {'type': 'network', 'name': 'tigrcorn-interop-runner'},
                     'title': title,
-                    'common_fields': {'protocol_type': 'QUIC'},
+                    'common_fields': {
+                        'protocol_type': 'QUIC',
+                        'tigrcorn_qlog': {
+                            'experimental': True,
+                            'schema_version': QLOG_EXPERIMENTAL_SCHEMA_VERSION,
+                            'redaction': {
+                                'network_endpoints': 'redacted',
+                                'connection_ids': 'redacted',
+                                'payload_bytes': 'omitted',
+                            },
+                        },
+                    },
                     'events': events,
                 }
             ],
@@ -1923,6 +1946,14 @@ def _describe_quic_packet(payload: bytes) -> dict[str, Any] | None:
     else:
         return None
     return description
+
+
+def _redact_qlog_packet(payload: dict[str, Any]) -> dict[str, Any]:
+    redacted = dict(payload)
+    for key in ('dcid', 'scid'):
+        if key in redacted:
+            redacted[key] = 'redacted'
+    return redacted
 
 
 

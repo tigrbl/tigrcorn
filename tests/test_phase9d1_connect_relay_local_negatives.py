@@ -22,6 +22,8 @@ async def _start_server(*, http_versions: list[str], transport: str = 'tcp', con
     if transport == 'udp':
         kwargs.update({'transport': 'udp', 'protocols': ['http3'], 'quic_secret': b'shared'})
     config = build_config(**kwargs)
+    if transport == 'tcp' and '2' in http_versions:
+        config.enable_h2c = True
     if config_mutator is not None:
         config_mutator(config)
     server = TigrCornServer(app, config)

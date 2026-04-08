@@ -4,6 +4,7 @@ import asyncio
 import socket
 import tempfile
 import unittest
+from contextlib import contextmanager
 from email.utils import formatdate
 from pathlib import Path
 
@@ -22,8 +23,16 @@ from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.utils.headers import get_header
 
 
+@contextmanager
+def _workspace_tempdir():
+    with tempfile.TemporaryDirectory(dir='.') as tmp:
+        yield Path(tmp).resolve()
+
+
 async def _start_server(app, *, http_versions: list[str], transport: str = 'tcp'):
     kwargs = {'host': '127.0.0.1', 'port': 0, 'lifespan': 'off', 'http_versions': http_versions}
+    if transport == 'tcp' and '2' in http_versions:
+        kwargs['enable_h2c'] = True
     if transport == 'udp':
         kwargs.update({'transport': 'udp', 'protocols': ['http3'], 'quic_secret': b'shared'})
     config = build_config(**kwargs)
@@ -208,8 +217,7 @@ class StaticFilesPhase2Tests(unittest.IsolatedAsyncioTestCase):
         async def send(message: dict) -> None:
             sent.append(message)
 
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             (root / 'hello.txt').write_text('hello world', encoding='utf-8')
             app = StaticFilesApp(root)
 
@@ -285,8 +293,7 @@ class Phase2EntitySemanticsIntegrationTests(unittest.IsolatedAsyncioTestCase):
             await server.close()
 
     async def test_http3_range_request_returns_partial_response(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             (root / 'hello.txt').write_text('hello world', encoding='utf-8')
             app = StaticFilesApp(root)
             server, port = await _start_server(app, http_versions=['3'], transport='udp')

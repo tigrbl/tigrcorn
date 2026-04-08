@@ -21,6 +21,8 @@ The repository now contains:
 - a composite local action under `.github/actions/ci-shell/`
 - repo-local CI entrypoints under `scripts/ci/`
 - repo-local certification status tooling under `tools/cert/`
+- a package-owned release automation generator under `tools/cert/release_auto.py`
+- OIDC-oriented release workflow scaffolding for `staging`, `testpypi`, `pypi`, and `docs`
 
 ## Manual GitHub activation still required
 
@@ -30,5 +32,7 @@ The following settings cannot be enforced from this working tree alone and must 
 - required-status-check lists bound to those rulesets
 - environment protection rules and secrets for `ci`, `staging`, `testpypi`, `pypi`, and `docs`
 - organization or repository toggles for Dependabot alerts, CodeQL workflow execution, and artifact attestations
+- trusted publisher bindings on TestPyPI and PyPI for this repository and workflow identity
+- GitHub Pages activation and environment approval for release-evidence publication
 
 Until those settings are active on GitHub itself, the repository is not honest to claim that branch protection or environment policy is enforced remotely.

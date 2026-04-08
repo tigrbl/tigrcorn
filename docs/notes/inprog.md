@@ -63,3 +63,47 @@ The new short-path governance tree is now in place. The previous root current-st
 - `docs/review/conformance/flag_contracts.json` now carries the Phase 4 review overlay for `--quic-early-data-policy` and the Retry-facing QUIC contract rows
 - future work on QUIC topology or 0-RTT behavior should extend the shared Phase 4 metadata and preserved evidence mapping instead of reintroducing vague HTTP/3 support language
 - GitHub-side required-check enforcement for the Phase 4 parity tests still depends on the remote ruleset activation noted in the Phase 0 checkpoint
+
+## Phase 5 follow-on
+
+- generated origin/static truth now lives in `docs/conformance/origin_contract.json`, `docs/conformance/origin_contract.md`, `docs/conformance/origin_negatives.json`, `docs/conformance/origin_negatives.md`, and `docs/ops/origin.md`
+- `src/tigrcorn/config/origin_surface.py` is now the canonical metadata source for the Phase 5 path-resolution, static-file-selection, HTTP-semantics, and `http.response.pathsend` contract
+- `docs/review/conformance/flag_contracts.json` now carries the Phase 5 review overlay for the public static mount controls
+- the runtime now rejects decoded parent-reference segments and Windows-style backslash separator segments in mounted static paths so origin traversal behavior stays platform-neutral
+- `http.response.pathsend` now snapshots file length at dispatch, which freezes the growth-race contract even when later writes append bytes to the same path
+- GitHub-side required-check enforcement for the Phase 5 parity tests still depends on the remote ruleset activation noted in the Phase 0 checkpoint
+
+## Phase 6 follow-on
+
+- generated observability truth now lives in `docs/conformance/metrics_schema.json`, `docs/conformance/metrics_schema.md`, `docs/conformance/qlog_experimental.json`, `docs/conformance/qlog_experimental.md`, and `docs/ops/observability.md`
+- `src/tigrcorn/config/observability_surface.py` is now the canonical metadata source for the Phase 6 metric-family, exporter-adapter, and qlog experimental contract
+- `docs/review/conformance/flag_contracts.json` now carries the Phase 6 review overlay for `--statsd-host` and `--otel-endpoint`
+- StatsD/DogStatsD and OTEL exporter behavior is now versioned and generated as package-owned operator surface documentation instead of remaining implicit in the runtime modules
+- qlog output is now explicitly marked experimental and redacted for endpoint and connection-id data in the package-owned observer generator
+- GitHub-side required-check enforcement for the Phase 6 parity tests still depends on the remote ruleset activation noted in the Phase 0 checkpoint
+
+## Phase 7 follow-on
+
+- generated negative-certification truth now lives in `docs/conformance/fail_state_registry.json`, `docs/conformance/fail_state_registry.md`, `docs/conformance/negative_corpora.json`, `docs/conformance/negative_corpora.md`, `docs/conformance/negative_bundles.json`, `docs/conformance/negative_bundles.md`, and `docs/conformance/negative_bundles/`
+- `src/tigrcorn/config/negative_surface.py` is now the canonical metadata source for fail-state actions, adversarial corpora, and expected-outcome bundle preservation
+- fail-state behavior for proxy, early-data, QUIC, origin, CONNECT relay, TLS/X.509, and mixed-topology gate failures is now frozen as explicit package-owned registry rows instead of being inferred from scattered tests
+- generated negative bundles now link current-tree expected outcomes to preserved historical release-root negative artifacts where those artifacts already exist
+- local CI now regenerates the Phase 7 artifacts and runs `tests/test_phase7_negative_certification.py` as part of the canonical repository validation path
+- GitHub-side required-check enforcement for the Phase 7 parity tests still depends on the remote ruleset activation noted in the Phase 0 checkpoint
+
+## Phase 8 follow-on
+
+- generated governance truth now lives in `docs/conformance/risk/RISK_REGISTER.json`, `docs/conformance/risk/RISK_TRACEABILITY.json`, `LEGACY_UNITTEST_INVENTORY.json`, `docs/conformance/sf9651.json`, `docs/conformance/interop_retention.json`, and `docs/conformance/perf_retention.json`
+- `src/tigrcorn/config/governance_surface.py` is now the canonical metadata source for the release-gated risk graph, retained evidence inputs, stale structured-fields reference lint, and approved legacy unittest inventory
+- `src/tigrcorn/http/structured_fields.py` is now the package-owned RFC 9651 helper surface for deterministic structured-field parsing and serialization used by the Phase 8 conformance bundle
+- `src/tigrcorn/compat/release_gates.py` now fails closed when the governance graph is missing, when open blocking risk rows remain, or when new unittest-bearing files appear outside the approved legacy inventory
+- `scripts/ci/validate.sh` now runs the canonical validation slice through `python -m pytest` so pytest is the only forward runner in CI even while legacy unittest files remain grandfathered
+- GitHub-side required-check enforcement for the Phase 8 governance and RFC 9651 checks still depends on the remote ruleset activation noted in the Phase 0 checkpoint
+
+## Phase 9 follow-on
+
+- generated release-automation truth now lives in `docs/conformance/claim_rep.json`, `docs/conformance/risk_stat.json`, `docs/conformance/evidence_ix.json`, `docs/conformance/release_auto.json`, `docs/conformance/relnotes.json`, and `.artifacts/pages/`
+- `tools/cert/release_auto.py` is now the canonical generator for release claim/risk/evidence summaries, generated release-note metadata, and the release-evidence Pages bundle
+- `.github/workflows/publish-pypi.yml` now builds distributions once in `staging`, reuses the same artifact for TestPyPI and PyPI publishing through OIDC trusted publishing, attests the built distributions, attaches release evidence assets, and deploys the release-evidence Pages bundle
+- `.github/workflows/docs.yml` now also regenerates and deploys the release-evidence Pages site for the mutable docs surface
+- the mutable working tree now contains the automated release pipeline contract, but remote GitHub environment approval, trusted publisher registration on TestPyPI/PyPI, GitHub Pages activation, and observed successful tagged runs still remain external facts that must be verified on those systems before they can be claimed as completed publication

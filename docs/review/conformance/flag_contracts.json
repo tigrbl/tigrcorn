@@ -4400,7 +4400,7 @@
       "flag_strings": [
         "--metrics"
       ],
-      "help_text": null,
+      "help_text": "Enable the package-owned metrics endpoint/export pipeline",
       "interop_scenarios": [],
       "parser_default": null,
       "performance_profiles": [],
@@ -4455,7 +4455,7 @@
       "flag_strings": [
         "--metrics-bind"
       ],
-      "help_text": null,
+      "help_text": "Bind the in-process Prometheus-style metrics endpoint as host:port",
       "interop_scenarios": [],
       "parser_default": null,
       "performance_profiles": [],
@@ -5030,7 +5030,7 @@
       "flag_strings": [
         "--otel-endpoint"
       ],
-      "help_text": null,
+      "help_text": "Export metrics and spans to the package-owned OTLP-style HTTP collector endpoint",
       "interop_scenarios": [],
       "parser_default": null,
       "performance_profiles": [],
@@ -5041,6 +5041,20 @@
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
+        "runtime_parity": true
+      },
+      "phase6_contract": {
+        "claim_ids": [
+          "TC-OBS-METRICS-SCHEMA",
+          "TC-OBS-EXPORT-ADAPTERS",
+          "TC-OBS-QLOG-EXPERIMENTAL"
+        ],
+        "docs": [
+          "docs/conformance/metrics_schema.md",
+          "docs/conformance/qlog_experimental.md",
+          "docs/ops/observability.md"
+        ],
+        "help_parity": true,
         "runtime_parity": true
       },
       "phase9a_delivery": {
@@ -8149,6 +8163,20 @@
         "reviewed": true,
         "runtime_parity": true
       },
+      "phase5_contract": {
+        "claim_ids": [
+          "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
+          "TC-CONTRACT-ORIGIN-FILE-SELECTION",
+          "TC-CONTRACT-ORIGIN-PATHSEND"
+        ],
+        "docs": [
+          "docs/conformance/origin_contract.md",
+          "docs/conformance/origin_negatives.md",
+          "docs/ops/origin.md"
+        ],
+        "help_parity": true,
+        "runtime_parity": true
+      },
       "rfc_targets": [],
       "runtime_modules": [
         "src/tigrcorn/cli.py",
@@ -8208,6 +8236,20 @@
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
+        "runtime_parity": true
+      },
+      "phase5_contract": {
+        "claim_ids": [
+          "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
+          "TC-CONTRACT-ORIGIN-FILE-SELECTION",
+          "TC-CONTRACT-ORIGIN-PATHSEND"
+        ],
+        "docs": [
+          "docs/conformance/origin_contract.md",
+          "docs/conformance/origin_negatives.md",
+          "docs/ops/origin.md"
+        ],
+        "help_parity": true,
         "runtime_parity": true
       },
       "rfc_targets": [],
@@ -8272,6 +8314,20 @@
         "reviewed": true,
         "runtime_parity": true
       },
+      "phase5_contract": {
+        "claim_ids": [
+          "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
+          "TC-CONTRACT-ORIGIN-FILE-SELECTION",
+          "TC-CONTRACT-ORIGIN-PATHSEND"
+        ],
+        "docs": [
+          "docs/conformance/origin_contract.md",
+          "docs/conformance/origin_negatives.md",
+          "docs/ops/origin.md"
+        ],
+        "help_parity": true,
+        "runtime_parity": true
+      },
       "rfc_targets": [],
       "runtime_modules": [
         "src/tigrcorn/cli.py",
@@ -8333,6 +8389,20 @@
         },
         "review_status": "reviewed_phase2",
         "reviewed": true,
+        "runtime_parity": true
+      },
+      "phase5_contract": {
+        "claim_ids": [
+          "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
+          "TC-CONTRACT-ORIGIN-FILE-SELECTION",
+          "TC-CONTRACT-ORIGIN-PATHSEND"
+        ],
+        "docs": [
+          "docs/conformance/origin_contract.md",
+          "docs/conformance/origin_negatives.md",
+          "docs/ops/origin.md"
+        ],
+        "help_parity": true,
         "runtime_parity": true
       },
       "rfc_targets": [],
@@ -8399,6 +8469,20 @@
         "reviewed": true,
         "runtime_parity": true
       },
+      "phase5_contract": {
+        "claim_ids": [
+          "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
+          "TC-CONTRACT-ORIGIN-FILE-SELECTION",
+          "TC-CONTRACT-ORIGIN-PATHSEND"
+        ],
+        "docs": [
+          "docs/conformance/origin_contract.md",
+          "docs/conformance/origin_negatives.md",
+          "docs/ops/origin.md"
+        ],
+        "help_parity": true,
+        "runtime_parity": true
+      },
       "rfc_targets": [],
       "runtime_modules": [
         "src/tigrcorn/cli.py",
@@ -8446,7 +8530,7 @@
       "flag_strings": [
         "--statsd-host"
       ],
-      "help_text": null,
+      "help_text": "Export metrics to StatsD or DogStatsD using host:port, statsd://host:port, or dogstatsd://host:port",
       "interop_scenarios": [],
       "parser_default": null,
       "performance_profiles": [],
@@ -8457,6 +8541,20 @@
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
+        "runtime_parity": true
+      },
+      "phase6_contract": {
+        "claim_ids": [
+          "TC-OBS-METRICS-SCHEMA",
+          "TC-OBS-EXPORT-ADAPTERS",
+          "TC-OBS-QLOG-EXPERIMENTAL"
+        ],
+        "docs": [
+          "docs/conformance/metrics_schema.md",
+          "docs/conformance/qlog_experimental.md",
+          "docs/ops/observability.md"
+        ],
+        "help_parity": true,
         "runtime_parity": true
       },
       "phase9a_delivery": {
@@ -10144,6 +10242,24 @@
     "early_data_json": "docs/conformance/early_data_contract.json",
     "quic_state_doc": "docs/conformance/quic_state.md",
     "quic_state_json": "docs/conformance/quic_state.json",
+    "reviewed": true
+  },
+  "phase5_review": {
+    "claim_count": 3,
+    "operator_doc": "docs/ops/origin.md",
+    "origin_contract_doc": "docs/conformance/origin_contract.md",
+    "origin_contract_json": "docs/conformance/origin_contract.json",
+    "origin_negative_doc": "docs/conformance/origin_negatives.md",
+    "origin_negative_json": "docs/conformance/origin_negatives.json",
+    "reviewed": true
+  },
+  "phase6_review": {
+    "claim_count": 3,
+    "metrics_schema_doc": "docs/conformance/metrics_schema.md",
+    "metrics_schema_json": "docs/conformance/metrics_schema.json",
+    "operator_doc": "docs/ops/observability.md",
+    "qlog_doc": "docs/conformance/qlog_experimental.md",
+    "qlog_json": "docs/conformance/qlog_experimental.json",
     "reviewed": true
   },
   "phase9a_contract_freeze": {

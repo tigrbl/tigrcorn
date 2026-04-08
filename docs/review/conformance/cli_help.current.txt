@@ -216,10 +216,17 @@ Logging / observability:
   --structured-log
   --use-colors          Colorized logging
   --no-use-colors       Disable colorized logging
-  --metrics
+  --metrics             Enable the package-owned metrics endpoint/export
+                        pipeline
   --metrics-bind METRICS_BIND
+                        Bind the in-process Prometheus-style metrics endpoint
+                        as host:port
   --statsd-host STATSD_HOST
+                        Export metrics to StatsD or DogStatsD using host:port,
+                        statsd://host:port, or dogstatsd://host:port
   --otel-endpoint OTEL_ENDPOINT
+                        Export metrics and spans to the package-owned OTLP-
+                        style HTTP collector endpoint
 
 Resource / timeouts / concurrency:
   --timeout-keep-alive TIMEOUT_KEEP_ALIVE

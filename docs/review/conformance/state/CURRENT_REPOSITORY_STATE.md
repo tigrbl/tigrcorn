@@ -233,3 +233,131 @@ What is not yet elevated by this checkpoint:
 
 - the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 4 semantic-contract artifacts
 - GitHub-side required-check enforcement for the Phase 4 parity tests still depends on the remote ruleset and environment activation noted in the Phase 0 checkpoint
+
+## Phase 5 origin delivery contract checkpoint
+
+The current working tree now also carries the Phase 5 origin/static/pathsend contract surface.
+
+What changed in this working tree:
+
+- `src/tigrcorn/config/origin_surface.py` now defines the shared path-resolution, file-selection, HTTP-semantics, and `http.response.pathsend` metadata for the Phase 5 origin contract
+- generated Phase 5 artifacts now exist at `docs/conformance/origin_contract.json`, `docs/conformance/origin_contract.md`, `docs/conformance/origin_negatives.json`, `docs/conformance/origin_negatives.md`, and `docs/ops/origin.md`
+- mounted static path resolution now rejects decoded parent-reference segments and backslash-separated segments instead of silently normalizing them into platform-shaped traversal behavior
+- `http.response.pathsend` now requires an absolute existing regular file and snapshots file length at dispatch so growth races do not leak bytes appended after the response contract has already been fixed
+- `claims_registry.json` now promotes the required `TC-CONTRACT-ORIGIN-*` rows as implemented in-tree claims backed by local conformance tests and generated contract artifacts
+
+What is honestly true after this checkpoint:
+
+- the package still evaluates as **certifiably fully RFC compliant under the authoritative certification boundary**
+- the canonical `0.3.9` release root still evaluates as **strict-target certifiably fully RFC compliant** and **certifiably fully featured**
+- static/origin/pathsend semantics are now explicit about percent-decoding order, dot-segment and separator denial, symlink containment, hidden-file posture, MIME derivation, directory-index behavior, HEAD parity, validator and range mapping, and `pathsend` race behavior
+- the package-owned origin contract is now generated from code instead of being left as scattered implicit behavior across static serving, entity semantics, and protocol writers
+
+What is not yet elevated by this checkpoint:
+
+- the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 5 origin-contract artifacts
+- GitHub-side required-check enforcement for the Phase 5 parity tests still depends on the remote ruleset and environment activation noted in the Phase 0 checkpoint
+
+## Phase 6 observability and export-surface checkpoint
+
+The current working tree now also carries the Phase 6 observability and export-surface contract.
+
+What changed in this working tree:
+
+- `src/tigrcorn/config/observability_surface.py` now defines the shared metric-family schema, exporter-adapter versions, and qlog experimental/redaction contract
+- generated Phase 6 artifacts now exist at `docs/conformance/metrics_schema.json`, `docs/conformance/metrics_schema.md`, `docs/conformance/qlog_experimental.json`, `docs/conformance/qlog_experimental.md`, and `docs/ops/observability.md`
+- the runtime metrics model now exposes stable transport, security, loss, and HTTP/3 counter families, and the HTTP/3 runtime now feeds those counters for session, handshake, retry, migration, QPACK, and request-serving state
+- the StatsD exporter now explicitly accepts `host:port`, `statsd://host:port`, and `dogstatsd://host:port`, while the OTEL exporter now emits a stable declared package schema version in its metric/span scope payloads
+- observer qlog output now carries explicit experimental/version markers and redacts endpoint and connection-id data instead of implying a stable compatibility surface
+- local CI now regenerates the Phase 6 artifacts and runs counter-correctness, exporter smoke, and qlog redaction/schema tests as part of the canonical repository validation path
+- `claims_registry.json` now promotes the required `TC-OBS-*` rows as implemented in-tree claims backed by generated artifacts and runtime tests
+
+What is honestly true after this checkpoint:
+
+- the package still evaluates as **certifiably fully RFC compliant under the authoritative certification boundary**
+- the canonical `0.3.9` release root still evaluates as **strict-target certifiably fully RFC compliant** and **certifiably fully featured**
+- operator observability is now a generated package-owned public surface rather than a partly implicit runtime sidecar
+- qlog remains explicitly experimental and non-certifying even though the surrounding metrics/export controls are now frozen as operator-surface claims
+
+What is not yet elevated by this checkpoint:
+
+- the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 6 observability artifacts
+- GitHub-side required-check enforcement for the Phase 6 parity tests still depends on the remote ruleset and environment activation noted in the Phase 0 checkpoint
+
+## Phase 7 negative-certification checkpoint
+
+The current working tree now also carries the Phase 7 negative-certification surface.
+
+What changed in this working tree:
+
+- `src/tigrcorn/config/negative_surface.py` now defines the package-owned fail-state registry, per-surface adversarial corpora, and expected-outcome bundle metadata
+- generated Phase 7 artifacts now exist at `docs/conformance/fail_state_registry.json`, `docs/conformance/fail_state_registry.md`, `docs/conformance/negative_corpora.json`, `docs/conformance/negative_corpora.md`, `docs/conformance/negative_bundles.json`, `docs/conformance/negative_bundles.md`, and `docs/conformance/negative_bundles/`
+- risky surfaces for proxy, early-data, QUIC, origin, CONNECT relay, TLS/X.509, and mixed-topology gate behavior now carry explicit failure-action and expected-outcome rows instead of relying on scattered test interpretation
+- the generated bundles now link the mutable-tree expected outcomes to preserved historical release-root negative bundles such as the canonical CONNECT relay and OCSP local-validation artifact roots where those roots already exist
+- local CI now regenerates the Phase 7 artifacts and runs the Phase 7 bundle/registry parity test as part of the canonical repository validation path
+- `claims_registry.json` now promotes the required `TC-NEG-*` rows as implemented in-tree claims backed by generated artifacts and preserved evidence references
+
+What is honestly true after this checkpoint:
+
+- the package still evaluates as **certifiably fully RFC compliant under the authoritative certification boundary**
+- the canonical `0.3.9` release root still evaluates as **strict-target certifiably fully RFC compliant** and **certifiably fully featured**
+- safe failure behavior is now package-owned and machine-readable for the targeted risky surfaces rather than being left implicit in test names and historical bundles
+- the negative-certification surface remains local-conformance and preserved-bundle evidence; it does not by itself promote a new frozen release root
+
+What is not yet elevated by this checkpoint:
+
+- the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 7 negative-certification artifacts
+- GitHub-side required-check enforcement for the Phase 7 parity tests still depends on the remote ruleset and environment activation noted in the Phase 0 checkpoint
+
+## Phase 8 governance, release-gating, spec-hygiene, perf-retention, and runner-migration checkpoint
+
+The current working tree now also carries the Phase 8 certification control-plane closure surface.
+
+What changed in this working tree:
+
+- `docs/governance/DEFAULT_AUDIT_POLICY.md`, `docs/governance/RISK_REGISTER_POLICY.md`, and `docs/governance/TEST_STYLE_POLICY.md` now define package-owned governance authority for generated defaults, risk ownership, and pytest-forward validation
+- `docs/reference/risk_register.schema.json` now defines the machine-readable schema for the release-gated risk register
+- generated Phase 8 artifacts now exist at `docs/conformance/risk/RISK_REGISTER.json`, `docs/conformance/risk/RISK_TRACEABILITY.json`, `LEGACY_UNITTEST_INVENTORY.json`, `docs/conformance/sf9651.json`, `docs/conformance/sf9651.md`, `docs/conformance/interop_retention.json`, `docs/conformance/interop_retention.md`, `docs/conformance/perf_retention.json`, and `docs/conformance/perf_retention.md`
+- `src/tigrcorn/http/structured_fields.py` now provides package-owned RFC 9651 parsing and serialization helpers with explicit registry-aware top-level dispatch for the tracked structured field families
+- `src/tigrcorn/compat/release_gates.py` now consumes the claim/risk/test/evidence graph and fails closed on open blocking risks, missing retained evidence inputs, or unexpected new unittest-bearing files outside the approved legacy inventory
+- `scripts/ci/validate.sh` now uses `python -m pytest` as the canonical forward runner, while legacy unittest-bearing modules remain contained by the generated inventory instead of being treated as the forward style
+- active predecessor-baseline wording has been replaced with RFC 9651 in the current package-facing structured-fields references, while historical planning notes remain explicitly grandfathered in the stale-reference allowlist
+- `claims_registry.json` now promotes the required Phase 8 governance and certification-support rows together with `TC-SPEC-STRUCTURED-FIELDS-RFC9651`
+
+What is honestly true after this checkpoint:
+
+- the package still evaluates as **certifiably fully RFC compliant under the authoritative certification boundary**
+- the canonical `0.3.9` release root still evaluates as **strict-target certifiably fully RFC compliant** and **certifiably fully featured**
+- the mutable working tree now has a package-owned governance graph for risks, tests, claims, retained interop inputs, retained performance inputs, and the legacy unittest boundary
+- RFC 9651 is now the active structured-fields baseline in the current package-facing implementation and generated conformance bundle
+- CI now has a canonical pytest-forward validation path for the promoted mutable-tree checks even though legacy unittest coverage remains inventoried rather than fully migrated
+
+What is not yet elevated by this checkpoint:
+
+- the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 8 governance and RFC 9651 artifacts
+- the repository still honestly depends on remote GitHub ruleset and environment activation for enforced required checks, branch protections, and artifact-attestation policy outside this working tree
+
+## Phase 9 final-promotion and automated-release checkpoint
+
+The current working tree now also carries the Phase 9 automated-release control-plane surface.
+
+What changed in this working tree:
+
+- `tools/cert/release_auto.py` now generates package-owned release automation artifacts at `docs/conformance/claim_rep.json`, `docs/conformance/claim_rep.md`, `docs/conformance/risk_stat.json`, `docs/conformance/risk_stat.md`, `docs/conformance/evidence_ix.json`, `docs/conformance/evidence_ix.md`, `docs/conformance/release_auto.json`, `docs/conformance/relnotes.json`, `docs/conformance/relnotes.md`, and `.artifacts/pages/`
+- `.github/workflows/publish-pypi.yml` now builds distributions once in `staging`, reuses the same built `dist/` artifact for TestPyPI and PyPI publication jobs, attests the built distributions, attaches generated release evidence assets to GitHub releases, and deploys a release-evidence Pages bundle
+- `.github/workflows/docs.yml` now regenerates and deploys the release-evidence Pages site for the mutable documentation surface
+- `scripts/ci/validate.sh` and the reusable CI workflow now regenerate and retain the Phase 9 release-automation artifacts as part of the canonical mutable-tree validation path
+- `docs/governance/release_auto.md` now documents the package-owned release automation contract, OIDC/trusted-publishing posture, artifact promotion path, and honesty boundary for remote publication claims
+
+What is honestly true after this checkpoint:
+
+- the package still evaluates as **certifiably fully RFC compliant under the authoritative certification boundary**
+- the canonical `0.3.9` release root still evaluates as **strict-target certifiably fully RFC compliant** and **certifiably fully featured**
+- the mutable tree now contains a reproducible release pipeline definition that is designed to build distributions once, promote the same artifacts through prerelease/release flows, and attach generated claim, risk, evidence, and release-note assets automatically
+- the release-evidence bundle is now generated from package-owned metadata rather than handwritten summaries
+
+What is not yet proven by this working tree alone:
+
+- no local repository edit can truthfully prove that TestPyPI or PyPI trusted publishers are already registered and accepted remotely
+- no local repository edit can truthfully prove that a tagged GitHub Actions run has already published packages, deployed Pages, emitted attestations, or attached release assets on GitHub
+- the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 9 release-automation artifacts

@@ -132,6 +132,63 @@ The Phase 4 QUIC semantic closure surface is documented in:
 - `external_matrix.release.json`
 - `flag_contracts.json`
 
+The Phase 5 origin delivery closure surface is documented in:
+
+- `docs/conformance/origin_contract.md`
+- `docs/conformance/origin_contract.json`
+- `docs/conformance/origin_negatives.md`
+- `docs/conformance/origin_negatives.json`
+- `docs/ops/origin.md`
+- `flag_contracts.json`
+
+The Phase 6 observability closure surface is documented in:
+
+- `docs/conformance/metrics_schema.md`
+- `docs/conformance/metrics_schema.json`
+- `docs/conformance/qlog_experimental.md`
+- `docs/conformance/qlog_experimental.json`
+- `docs/ops/observability.md`
+- `flag_contracts.json`
+
+The Phase 7 negative-certification surface is documented in:
+
+- `docs/conformance/fail_state_registry.md`
+- `docs/conformance/fail_state_registry.json`
+- `docs/conformance/negative_corpora.md`
+- `docs/conformance/negative_corpora.json`
+- `docs/conformance/negative_bundles.md`
+- `docs/conformance/negative_bundles.json`
+- `docs/conformance/negative_bundles/`
+
+The Phase 8 governance and spec-hygiene surface is documented in:
+
+- `docs/governance/DEFAULT_AUDIT_POLICY.md`
+- `docs/governance/RISK_REGISTER_POLICY.md`
+- `docs/governance/TEST_STYLE_POLICY.md`
+- `docs/reference/risk_register.schema.json`
+- `docs/conformance/risk/RISK_REGISTER.json`
+- `docs/conformance/risk/RISK_TRACEABILITY.json`
+- `LEGACY_UNITTEST_INVENTORY.json`
+- `docs/conformance/sf9651.md`
+- `docs/conformance/sf9651.json`
+- `docs/conformance/interop_retention.md`
+- `docs/conformance/interop_retention.json`
+- `docs/conformance/perf_retention.md`
+- `docs/conformance/perf_retention.json`
+
+The Phase 9 automated-release surface is documented in:
+
+- `docs/governance/release_auto.md`
+- `docs/conformance/claim_rep.md`
+- `docs/conformance/claim_rep.json`
+- `docs/conformance/risk_stat.md`
+- `docs/conformance/risk_stat.json`
+- `docs/conformance/evidence_ix.md`
+- `docs/conformance/evidence_ix.json`
+- `docs/conformance/release_auto.json`
+- `docs/conformance/relnotes.md`
+- `docs/conformance/relnotes.json`
+
 
 ## Operator-surface tracking
 

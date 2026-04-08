@@ -11,3 +11,5 @@ New ADRs:
 
 - `0005-doc-gov.md`
 - `0006-mutable.md`
+- `0007-gov-auth.md`
+- `0008-gate-graph.md`

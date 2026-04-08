@@ -6,7 +6,11 @@ import socket
 from dataclasses import dataclass, field
 from time import monotonic, time
 from typing import Any, Mapping
+from urllib.parse import urlparse
 
+STATSD_EXPORT_SCHEMA_VERSION = 'statsd-dogstatsd-v1'
+OTEL_EXPORT_SCHEMA_VERSION = 'otlp-http-json-v1'
+STATSD_EXPORT_MODES = ('statsd', 'dogstatsd')
 
 @dataclass(slots=True)
 class Metrics:
@@ -28,6 +32,26 @@ class Metrics:
     protocol_errors: int = 0
     bytes_received: int = 0
     bytes_sent: int = 0
+    quic_datagrams_received: int = 0
+    quic_datagrams_sent: int = 0
+    quic_sessions_opened: int = 0
+    quic_sessions_closed: int = 0
+    active_quic_sessions: int = 0
+    tls_handshakes_completed: int = 0
+    quic_retry_sent: int = 0
+    quic_early_data_attempted: int = 0
+    quic_early_data_accepted: int = 0
+    quic_early_data_rejected: int = 0
+    quic_path_challenges: int = 0
+    quic_path_responses: int = 0
+    quic_path_migrations: int = 0
+    quic_packets_lost: int = 0
+    quic_pto_expirations: int = 0
+    http3_requests_served: int = 0
+    http3_stream_resets: int = 0
+    http3_goaway_received: int = 0
+    http3_qpack_encoder_streams: int = 0
+    http3_qpack_decoder_streams: int = 0
 
     def connection_opened(self) -> None:
         self.connections_opened += 1
@@ -58,6 +82,67 @@ class Metrics:
     def websocket_ping_timeout(self) -> None:
         self.websocket_ping_timeouts += 1
 
+    def quic_session_opened(self) -> None:
+        self.quic_sessions_opened += 1
+        self.active_quic_sessions += 1
+
+    def quic_session_closed(self) -> None:
+        self.quic_sessions_closed += 1
+        self.active_quic_sessions = max(0, self.active_quic_sessions - 1)
+
+    def quic_datagram_received(self, length: int = 0) -> None:
+        self.quic_datagrams_received += 1
+        if length > 0:
+            self.bytes_received += int(length)
+
+    def quic_datagram_sent(self, length: int = 0) -> None:
+        self.quic_datagrams_sent += 1
+        if length > 0:
+            self.bytes_sent += int(length)
+
+    def tls_handshake_completed(self) -> None:
+        self.tls_handshakes_completed += 1
+
+    def quic_retry_emitted(self) -> None:
+        self.quic_retry_sent += 1
+
+    def quic_early_data_observed(self, *, accepted: bool) -> None:
+        self.quic_early_data_attempted += 1
+        if accepted:
+            self.quic_early_data_accepted += 1
+        else:
+            self.quic_early_data_rejected += 1
+
+    def quic_path_challenge_observed(self) -> None:
+        self.quic_path_challenges += 1
+
+    def quic_path_response_observed(self) -> None:
+        self.quic_path_responses += 1
+
+    def quic_path_migrated(self) -> None:
+        self.quic_path_migrations += 1
+
+    def quic_packets_lost_observed(self, count: int) -> None:
+        self.quic_packets_lost += max(0, int(count))
+
+    def quic_pto_expired(self) -> None:
+        self.quic_pto_expirations += 1
+
+    def http3_request_served(self) -> None:
+        self.http3_requests_served += 1
+
+    def http3_stream_reset(self) -> None:
+        self.http3_stream_resets += 1
+
+    def http3_goaway_observed(self) -> None:
+        self.http3_goaway_received += 1
+
+    def http3_qpack_encoder_stream_opened(self) -> None:
+        self.http3_qpack_encoder_streams += 1
+
+    def http3_qpack_decoder_stream_opened(self) -> None:
+        self.http3_qpack_decoder_streams += 1
+
     @property
     def uptime_seconds(self) -> float:
         return max(0.0, monotonic() - self.started_at)
@@ -82,6 +167,26 @@ class Metrics:
             'protocol_errors': self.protocol_errors,
             'bytes_received': self.bytes_received,
             'bytes_sent': self.bytes_sent,
+            'quic_datagrams_received': self.quic_datagrams_received,
+            'quic_datagrams_sent': self.quic_datagrams_sent,
+            'quic_sessions_opened': self.quic_sessions_opened,
+            'quic_sessions_closed': self.quic_sessions_closed,
+            'active_quic_sessions': self.active_quic_sessions,
+            'tls_handshakes_completed': self.tls_handshakes_completed,
+            'quic_retry_sent': self.quic_retry_sent,
+            'quic_early_data_attempted': self.quic_early_data_attempted,
+            'quic_early_data_accepted': self.quic_early_data_accepted,
+            'quic_early_data_rejected': self.quic_early_data_rejected,
+            'quic_path_challenges': self.quic_path_challenges,
+            'quic_path_responses': self.quic_path_responses,
+            'quic_path_migrations': self.quic_path_migrations,
+            'quic_packets_lost': self.quic_packets_lost,
+            'quic_pto_expirations': self.quic_pto_expirations,
+            'http3_requests_served': self.http3_requests_served,
+            'http3_stream_resets': self.http3_stream_resets,
+            'http3_goaway_received': self.http3_goaway_received,
+            'http3_qpack_encoder_streams': self.http3_qpack_encoder_streams,
+            'http3_qpack_decoder_streams': self.http3_qpack_decoder_streams,
         }
 
     def render_prometheus(self, *, prefix: str = 'tigrcorn') -> str:
@@ -118,10 +223,23 @@ def iter_statsd_lines(snapshot: Mapping[str, Any], *, previous: Mapping[str, Any
     return lines
 
 
-def parse_statsd_host(target: str) -> tuple[str, int]:
+def parse_statsd_target(target: str) -> tuple[str, int, str]:
     target = str(target).strip()
     if not target:
         raise ValueError('statsd_host cannot be empty')
+    mode = 'statsd'
+    if '://' in target:
+        parsed = urlparse(target)
+        if parsed.scheme not in STATSD_EXPORT_MODES:
+            raise ValueError('statsd_host scheme must be statsd:// or dogstatsd://')
+        if not parsed.hostname or parsed.port is None:
+            raise ValueError('statsd_host URL must include host and port')
+        host = parsed.hostname
+        port_value = int(parsed.port)
+        mode = parsed.scheme
+        if port_value <= 0 or port_value > 65535:
+            raise ValueError('statsd_host port must be between 1 and 65535')
+        return host, port_value, mode
     if target.startswith('[') and ']:' in target:
         host, port = target.rsplit(':', 1)
         host = host[1:-1]
@@ -134,12 +252,17 @@ def parse_statsd_host(target: str) -> tuple[str, int]:
         raise ValueError('statsd_host port must be between 1 and 65535')
     if not host:
         raise ValueError('statsd_host host cannot be empty')
-    return host, port_value
+    return host, port_value, mode
+
+
+def parse_statsd_host(target: str) -> tuple[str, int]:
+    host, port, _mode = parse_statsd_target(target)
+    return host, port
 
 
 class StatsdExporter:
     def __init__(self, target: str, *, prefix: str = 'tigrcorn', interval: float = 1.0, logger: logging.Logger | None = None) -> None:
-        self.host, self.port = parse_statsd_host(target)
+        self.host, self.port, self.mode = parse_statsd_target(target)
         self.prefix = prefix
         self.interval = max(0.1, float(interval))
         self.logger = logger

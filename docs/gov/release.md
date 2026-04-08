@@ -67,4 +67,6 @@ A release is closed only when:
 
 ## Publishing note
 
-External publication (for example PyPI) is an operator action outside the repository. Repository promotion must not claim an external publish has happened until the external system shows it.
+The mutable tree now carries an automated release pipeline that builds distributions once, promotes the same artifacts through TestPyPI and PyPI via OIDC trusted publishing, attaches generated release evidence, and deploys a release-evidence Pages bundle.
+
+External publication and deployment are still operator-observed facts rather than repository-local assumptions. Repository promotion must not claim that TestPyPI, PyPI, GitHub Releases, artifact attestations, or GitHub Pages publication actually happened until those external systems show the successful run and published outputs.

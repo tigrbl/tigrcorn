@@ -1,0 +1,110 @@
+{
+  "contract_version": 1,
+  "export_adapters": [
+    {
+      "accepted_values": [
+        "host:port",
+        "statsd://host:port",
+        "dogstatsd://host:port"
+      ],
+      "config_path": "metrics.statsd_host",
+      "failure_behavior": "Send failures are bounded, counted, and do not abort server startup or shutdown.",
+      "flag": "--statsd-host",
+      "help_text": "Export metrics to StatsD or DogStatsD using host:port, statsd://host:port, or dogstatsd://host:port",
+      "id": "statsd",
+      "protocols": [
+        "statsd",
+        "dogstatsd"
+      ],
+      "schema_version": "statsd-dogstatsd-v1",
+      "startup_behavior": "Exporter starts after server startup and performs an immediate best-effort flush.",
+      "wire_format": "StatsD line protocol over UDP; DogStatsD compatibility is the same line format without tags."
+    },
+    {
+      "accepted_values": [
+        "http://collector/v1/telemetry",
+        "https://collector/v1/telemetry"
+      ],
+      "config_path": "metrics.otel_endpoint",
+      "failure_behavior": "POST failures are bounded, counted, and preserve buffered spans for retry on the next cycle.",
+      "flag": "--otel-endpoint",
+      "help_text": "Export metrics and spans to the package-owned OTLP-style HTTP collector endpoint",
+      "id": "otlp_http_json",
+      "protocols": [
+        "http",
+        "https"
+      ],
+      "schema_version": "otlp-http-json-v1",
+      "startup_behavior": "Exporter starts after server startup and emits metrics/spans in periodic batches.",
+      "wire_format": "Package-owned OTLP-style JSON envelope over HTTP POST."
+    }
+  ],
+  "metrics_schema": {
+    "families": {
+      "http3": [
+        "http3_requests_served",
+        "http3_stream_resets",
+        "http3_goaway_received",
+        "http3_qpack_encoder_streams",
+        "http3_qpack_decoder_streams"
+      ],
+      "loss": [
+        "quic_packets_lost",
+        "quic_pto_expirations",
+        "quic_path_challenges",
+        "quic_path_responses",
+        "quic_path_migrations"
+      ],
+      "security": [
+        "tls_handshakes_completed",
+        "quic_retry_sent",
+        "quic_early_data_attempted",
+        "quic_early_data_accepted",
+        "quic_early_data_rejected"
+      ],
+      "transport": [
+        "connections_opened",
+        "connections_closed",
+        "active_connections",
+        "bytes_received",
+        "bytes_sent",
+        "quic_datagrams_received",
+        "quic_datagrams_sent",
+        "quic_sessions_opened",
+        "quic_sessions_closed",
+        "active_quic_sessions"
+      ]
+    },
+    "gauge_metrics": [
+      "uptime_seconds",
+      "active_connections",
+      "active_websocket_connections",
+      "active_quic_sessions"
+    ],
+    "notes": {
+      "aggregation": "Counters are monotonic totals; gauges report current in-process state.",
+      "http3_scope": "HTTP/3 metrics reflect the package-owned QUIC/HTTP/3 runtime only; they do not claim cross-vendor collector compatibility beyond the declared exporter adapters.",
+      "stability": "Metric names are package-owned public operator surface claims and are generated into docs/conformance/metrics_schema.*."
+    }
+  },
+  "qlog": {
+    "compatibility": "best_effort_internal_artifact_only",
+    "markers": {
+      "experimental_marker": "trace.common_fields.tigrcorn_qlog.experimental",
+      "redaction_marker": "trace.common_fields.tigrcorn_qlog.redaction"
+    },
+    "producer": "tigrcorn.compat.interop_runner.generate_observer_qlog",
+    "redaction_rules": {
+      "connection_ids": "dcid/scid values are redacted in emitted packet summaries",
+      "network_endpoints": "remote endpoint addresses are redacted from qlog output",
+      "payload_bytes": "raw packet payload bytes are not copied into qlog output"
+    },
+    "schema_version": "tigrcorn.qlog.experimental.v1",
+    "stability": "experimental",
+    "versioning": {
+      "package_schema": "tigrcorn.qlog.experimental.v1",
+      "qlog_version": "0.3",
+      "upgrade_rule": "schema_version changes when redaction fields, event envelopes, or emitted packet summary fields change incompatibly"
+    }
+  }
+}

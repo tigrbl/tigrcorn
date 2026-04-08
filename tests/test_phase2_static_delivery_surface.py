@@ -15,7 +15,7 @@ from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.static import StaticFilesApp, mount_static_app
 from tigrcorn.transports.quic import QuicConnection
 
-from tests.test_phase2_entity_semantics_checkpoint import _read_h2_response, _read_http1_response, _start_server
+from tests.test_phase2_entity_semantics_checkpoint import _read_h2_response, _read_http1_response, _start_server, _workspace_tempdir
 from tests.test_static_delivery_productionization_checkpoint import _read_h3_response_with_client_progress
 
 
@@ -29,8 +29,7 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
         async def send(message: dict) -> None:
             sent.append(message)
 
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = b'pathsend-static-payload'
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -57,8 +56,7 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
         async def receive() -> dict:
             return {'type': 'http.request', 'body': b'', 'more_body': False}
 
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             (root / 'hello.txt').write_text('static hello', encoding='utf-8')
             app = mount_static_app(fallback, route='/assets', directory=root)
 
@@ -83,9 +81,9 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(fallback_events[-1]['path'], '/api')
 
     async def test_http11_pathsend_round_trip(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with _workspace_tempdir() as root:
             payload = b'http11-pathsend-payload' * 1024
-            payload_path = Path(tmp) / 'payload.bin'
+            payload_path = root / 'payload.bin'
             payload_path.write_bytes(payload)
 
             async def app(scope, receive, send):
@@ -108,9 +106,9 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_http2_pathsend_round_trip(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with _workspace_tempdir() as root:
             payload = b'http2-pathsend-payload' * 2048
-            payload_path = Path(tmp) / 'payload.bin'
+            payload_path = root / 'payload.bin'
             payload_path.write_bytes(payload)
 
             async def app(scope, receive, send):
@@ -142,9 +140,9 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_http3_pathsend_round_trip(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        with _workspace_tempdir() as root:
             payload = b'http3-pathsend-payload' * 2048
-            payload_path = Path(tmp) / 'payload.bin'
+            payload_path = root / 'payload.bin'
             payload_path.write_bytes(payload)
 
             async def app(scope, receive, send):
@@ -182,8 +180,7 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_cli_main_allows_static_only_mount_without_app_import_string(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             (root / 'index.html').write_text('ok', encoding='utf-8')
             with patch('tigrcorn.cli.run_config') as run_config:
                 rc = cli_main(['--static-path-route', '/assets', '--static-path-mount', str(root), '--static-path-expires', '60'])

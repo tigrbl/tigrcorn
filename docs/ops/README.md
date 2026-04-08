@@ -8,17 +8,20 @@ Read in this order:
 2. `profiles.md`
 3. `defaults.md`
 4. `policies.md`
-5. `cli.md`
-6. `public.md`
-7. `../LIFECYCLE_AND_EMBEDDED_SERVER.md`
-8. `../review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+5. `origin.md`
+6. `observability.md`
+7. `cli.md`
+8. `public.md`
+9. `../LIFECYCLE_AND_EMBEDDED_SERVER.md`
+10. `../review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 
 What belongs here:
 
 - CLI usage and flag-family guidance
 - blessed deployment profile guidance
 - generated default/help parity tables and profile-effective default audits
-- generated proxy-contract, precedence, policy-surface, and QUIC semantic contract tables
+- generated proxy-contract, precedence, policy-surface, QUIC semantic contract tables, and the origin/static/pathsend contract
+- generated observability/export-adapter/qlog contract tables
 - public operator/programmatic surface docs
 - operator-focused examples and pointers into conformance materials
 

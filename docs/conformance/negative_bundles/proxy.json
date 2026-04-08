@@ -1,0 +1,16 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "cases": [
+    {
+      "expected_action": "strip_and_continue",
+      "expected_outcome": "proxy view remains transport-derived",
+      "id": "untrusted-forwarded-headers-ignored",
+      "preserved_artifacts": [],
+      "tests": [
+        "tests/test_phase3_policy_surface.py::Phase3PolicySurfaceTests::test_untrusted_proxy_headers_are_ignored"
+      ]
+    }
+  ],
+  "contract_version": 1,
+  "surface": "proxy"
+}

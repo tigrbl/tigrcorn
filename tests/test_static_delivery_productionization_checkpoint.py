@@ -18,6 +18,7 @@ from tests.test_phase2_entity_semantics_checkpoint import (
     _read_h2_response,
     _read_http1_response,
     _start_server,
+    _workspace_tempdir,
 )
 
 
@@ -58,8 +59,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
         async def send(message: dict) -> None:
             sent.append(message)
 
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'0123456789abcdef' * 65536)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -81,8 +81,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(sent[1]['segments'][0]['count'], len(payload))
 
     async def test_http11_large_static_file_serves_without_read_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'http11-static-' * 131072)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -101,8 +100,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_http2_large_static_range_serves_without_read_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'http2-static-range-' * 131072)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -133,8 +131,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_http3_large_static_range_serves_without_read_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'http3-static-range-' * 131072)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)

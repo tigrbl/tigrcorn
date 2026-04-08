@@ -47,9 +47,44 @@ jobs:
             docs/conformance/early_data_contract.md
             docs/conformance/quic_state.json
             docs/conformance/quic_state.md
+            docs/conformance/origin_contract.json
+            docs/conformance/origin_contract.md
+            docs/conformance/origin_negatives.json
+            docs/conformance/origin_negatives.md
+            docs/conformance/metrics_schema.json
+            docs/conformance/metrics_schema.md
+            docs/conformance/qlog_experimental.json
+            docs/conformance/qlog_experimental.md
+            docs/conformance/fail_state_registry.json
+            docs/conformance/fail_state_registry.md
+            docs/conformance/negative_corpora.json
+            docs/conformance/negative_corpora.md
+            docs/conformance/negative_bundles.json
+            docs/conformance/negative_bundles.md
+            docs/conformance/negative_bundles/
+            docs/conformance/sf9651.json
+            docs/conformance/sf9651.md
+            docs/conformance/interop_retention.json
+            docs/conformance/interop_retention.md
+            docs/conformance/perf_retention.json
+            docs/conformance/perf_retention.md
+            docs/conformance/claim_rep.json
+            docs/conformance/claim_rep.md
+            docs/conformance/risk_stat.json
+            docs/conformance/risk_stat.md
+            docs/conformance/evidence_ix.json
+            docs/conformance/evidence_ix.md
+            docs/conformance/release_auto.json
+            docs/conformance/relnotes.json
+            docs/conformance/relnotes.md
+            docs/conformance/risk/
             docs/ops/profiles.md
             docs/ops/defaults.md
             docs/ops/policies.md
+            docs/ops/origin.md
+            docs/ops/observability.md
+            LEGACY_UNITTEST_INVENTORY.json
+            .artifacts/pages/
             docs/review/conformance/cli_help.current.txt
             docs/review/conformance/release_gate_status.current.json
             docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md

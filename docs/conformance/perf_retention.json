@@ -1,0 +1,17 @@
+[
+  {
+    "bundle_id": "phase6_current_release",
+    "path": "docs/review/performance/artifacts/phase6_current_release",
+    "role": "current_release_performance_input"
+  },
+  {
+    "bundle_id": "phase6_reference_baseline",
+    "path": "docs/review/performance/artifacts/phase6_reference_baseline",
+    "role": "baseline_regression_input"
+  },
+  {
+    "bundle_id": "phase6_matrix",
+    "path": "docs/review/performance/performance_matrix.json",
+    "role": "declared_profile_matrix"
+  }
+]
