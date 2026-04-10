@@ -1,10 +1,16 @@
 from __future__ import annotations
 
 import asyncio
-import resource
+import ctypes
+import os
 import time
 from dataclasses import dataclass, field
 from typing import Any, Awaitable, Callable, Mapping
+
+try:
+    import resource
+except ModuleNotFoundError:  # pragma: no cover - Windows fallback
+    resource = None  # type: ignore[assignment]
 
 
 @dataclass(slots=True)
@@ -78,8 +84,36 @@ class MemoryStreamReader:
 
 
 def _rss_kib() -> float:
-    usage = resource.getrusage(resource.RUSAGE_SELF)
-    return float(usage.ru_maxrss)
+    if resource is not None:
+        usage = resource.getrusage(resource.RUSAGE_SELF)
+        return float(usage.ru_maxrss)
+    if os.name == 'nt':
+        counters = _PROCESS_MEMORY_COUNTERS()
+        counters.cb = ctypes.sizeof(_PROCESS_MEMORY_COUNTERS)
+        process = ctypes.windll.kernel32.GetCurrentProcess()
+        ok = ctypes.windll.psapi.GetProcessMemoryInfo(
+            process,
+            ctypes.byref(counters),
+            counters.cb,
+        )
+        if ok:
+            return float(counters.WorkingSetSize) / 1024.0
+    return 0.0
+
+
+class _PROCESS_MEMORY_COUNTERS(ctypes.Structure):
+    _fields_ = [
+        ('cb', ctypes.c_ulong),
+        ('PageFaultCount', ctypes.c_ulong),
+        ('PeakWorkingSetSize', ctypes.c_size_t),
+        ('WorkingSetSize', ctypes.c_size_t),
+        ('QuotaPeakPagedPoolUsage', ctypes.c_size_t),
+        ('QuotaPagedPoolUsage', ctypes.c_size_t),
+        ('QuotaPeakNonPagedPoolUsage', ctypes.c_size_t),
+        ('QuotaNonPagedPoolUsage', ctypes.c_size_t),
+        ('PagefileUsage', ctypes.c_size_t),
+        ('PeakPagefileUsage', ctypes.c_size_t),
+    ]
 
 
 def _accumulate_optional_latency(info: Mapping[str, Any], *, totals: dict[str, float], counts: dict[str, int], key: str) -> None:

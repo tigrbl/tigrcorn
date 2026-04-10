@@ -19,7 +19,9 @@ class _MissingDependencyProxy:
         self._package = package
 
     def __getattr__(self, name: str):
-        raise ModuleNotFoundError(f"{self._package} is required for this X.509 validation operation")
+        raise ModuleNotFoundError(
+            f"{self._package} is required for this X.509 validation operation; install tigrcorn[tls-x509]"
+        )
 
 
 try:

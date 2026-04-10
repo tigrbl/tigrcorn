@@ -1,0 +1,56 @@
+{
+  "checkpoint": "phase10_next_target_program",
+  "document_role": "mutable_execution_program_checkpoint",
+  "current_truth_source": false,
+  "status": "program_frozen_for_wave1_wave2_and_remote_automation_closure",
+  "program_scope": {
+    "boundary_mode": "in_bounds_only",
+    "required_work_bands": [
+      "phase0_program_freeze_and_governance_cleanliness",
+      "phase1_wave1_in_bounds_hardening",
+      "phase2_wave2_in_bounds_evidence_and_governance",
+      "phase3_remote_automation_activation_and_verification",
+      "phase4_new_release_root_promotion"
+    ],
+    "out_of_scope_until_boundary_change": [
+      "RFC 9218",
+      "RFC 9111",
+      "RFC 9530",
+      "RFC 9421",
+      "JOSE",
+      "COSE",
+      "trio runtime support",
+      "parser/backend pluggability",
+      "WebSocket engine pluggability",
+      "alternate app-interface families"
+    ]
+  },
+  "governance_cleanliness": {
+    "govchk_scan_required_in_ci": true,
+    "legacy_exempt_prefixes_added": [
+      "LEGACY_UNITTEST_INVENTORY.json",
+      "docs/reference/risk_register.schema.json",
+      "assets/tigrcorn_brand_frag_light.png",
+      "assets/tigrcorn_brand_frag_dark.png"
+    ]
+  },
+  "remote_activation_required": {
+    "github_rulesets": true,
+    "protected_environments": true,
+    "github_pages": true,
+    "testpypi_trusted_publisher": true,
+    "pypi_trusted_publisher": true,
+    "release_assets": true,
+    "artifact_attestations": true,
+    "codeql_policy": true,
+    "dependabot_policy": true
+  },
+  "canonical_inputs": [
+    "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+    "docs/review/conformance/certification_boundary.json",
+    "docs/review/conformance/BOUNDARY_NON_GOALS.md",
+    "docs/review/conformance/NEXT_DEVELOPMENT_TARGETS.md",
+    "docs/notes/feat_matrix.md",
+    "docs/notes/feature_reg.md"
+  ]
+}

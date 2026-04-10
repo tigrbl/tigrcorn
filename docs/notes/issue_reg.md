@@ -37,8 +37,8 @@ Claim posture used in this register:
 - subsystem: app loading
 - boundary relation: in-bounds (`A`, `R`)
 - summary: basic `tigrcorn app:app` startup from the current working directory failed because the loader did not place the CWD on `sys.path` unless `--app-dir` was supplied.
-- assessment: the issue body states the defect was fixed by PR `#12`, but the issue remains open and should be reconciled against the merged behavior and current tests.
-- recommended disposition: verify the fix in current `main`, add or confirm regression coverage, then close if no remaining gap exists.
+- assessment: the current tree already carries the CWD import-path fallback in the app loader, so this now reads as an administrative GitHub-state mismatch rather than an active package defect.
+- recommended disposition: confirm regression coverage remains present, then close the GitHub issue unless new reproduction evidence appears.
 
 ### `#13` Audit and validate default values across all 124 CLI flags and config model
 
@@ -127,8 +127,8 @@ Claim posture used in this register:
 - subsystem: HTTP/2 handler state initialization
 - boundary relation: in-bounds and RFC-sensitive (`P`)
 - summary: HTTP/2 completion tests fail because handler comparisons encounter `None` for settings/limits that should be concrete before protocol processing.
-- assessment: this is one of the more important open defects after TLS because it lands directly in the in-bounds HTTP/2 protocol surface.
-- recommended disposition: investigate whether handler state initialization is incomplete or whether tests bypass required normalization. Fix the underlying invariant rather than sprinkling defensive `None` checks.
+- assessment: the current tree appears to have already normalized the underlying HTTP/2 state path, so this now looks more like issue hygiene or test-historical drift than a still-open local protocol defect.
+- recommended disposition: rerun the targeted coverage in the current certification environment, then close or rewrite the issue to describe only any remaining reproducible gap.
 
 ### `#19` Fix failing expectation in `tests.test_phase9g_strict_performance_closure`
 
@@ -160,8 +160,8 @@ Claim posture used in this register:
 - subsystem: security compatibility helpers
 - boundary relation: in-bounds maintenance on the transport/security edge
 - summary: the test expects `normalize_alpn('')` to return `None`, but the implementation returns the empty string.
-- assessment: smaller than the main TLS interoperability issue, but it still touches the ALPN policy surface named in the certification boundary.
-- recommended disposition: make the empty-input contract explicit in docs/tests and align it with the OpenSSL peer-program ALPN expectations before changing implementation.
+- assessment: the current tree already normalizes empty ALPN input on the compatibility path, so this is now primarily a stale issue-state problem rather than an active implementation mismatch.
+- recommended disposition: confirm the current tests and helper contract still agree, then close the issue unless a narrower remaining interop gap can be reproduced.
 
 ### `#22` Fix failing extension-negotiation expectation in `tests.test_websocket_additional_rfc6455`
 
@@ -177,21 +177,20 @@ Claim posture used in this register:
 ## Suggested working order
 
 1. `#15` because it is certification-sensitive and impacts external interoperability on the package-owned TLS path.
-2. `#18` because it lands inside the core HTTP/2 protocol surface.
-3. `#13` as the umbrella default-value audit that can prevent more `None`-driven defects.
-4. `#17` because it appears downstream of the default/normalization policy gap.
-5. `#20` and `#22` because they may be substantive protocol-contract mismatches.
-6. `#19` and `#21` because they look comparatively contained.
+2. `#13` as the umbrella default-value audit that can prevent hidden operator-surface drift.
+3. `#17` because it appears downstream of the default/normalization policy gap.
+4. `#20` and `#22` because they may still describe substantive protocol-contract mismatches.
+5. `#19` because it still looks like test expectation drift that should be reconciled honestly.
+6. `#18`, `#21`, and `#11` as administrative reconcile-and-close items unless current-tree repro evidence reopens them.
 7. `#16` once correctness and contract issues have stabilized.
-8. `#11` administrative close-out after confirming the fix remains correct.
-9. `#14` keep closed as superseded duplicate context unless evidence shows otherwise.
+8. `#14` keep closed as superseded duplicate context unless evidence shows otherwise.
 
 ## Cross-issue relationships
 
 - `#14` is likely superseded by `#15`.
-- `#13` is the umbrella issue most clearly related to `#17` and possibly part of `#18`.
+- `#13` is the umbrella issue most clearly related to `#17` and to any remaining default-audit follow-on.
 - `#19`, `#20`, `#21`, and `#22` all show a pattern of test expectation drift versus current runtime/report behavior.
-- `#15`, `#18`, `#20`, and `#22` are the most boundary-sensitive technical issues because they directly affect transport/protocol behavior.
+- `#15`, `#20`, and `#22` are the most boundary-sensitive technical issues that still appear to need substantive follow-up.
 
 ## Canonical researched issue set
 

@@ -12,6 +12,7 @@ python tools/cert/observability_surface.py
 python tools/cert/negative_surface.py
 python tools/cert/governance_surface.py
 python tools/cert/release_auto.py
+python tools/govchk.py scan
 python -m compileall -q src benchmarks tools
 python -m pytest -q \
   tests/test_default_audits.py \

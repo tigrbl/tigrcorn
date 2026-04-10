@@ -170,6 +170,7 @@ python -m pip install -e ".[certification,dev]"
 
 | Extra | Status | Use it for |
 |---|---|---|
+| `tls-x509` | supported | package-owned TLS/X.509 validation, certificate handling, and revocation helpers |
 | `config-yaml` | supported | `.yaml` / `.yml` config loading |
 | `compression` | supported | Brotli content coding and `.br` sidecars |
 | `runtime-uvloop` | supported | `--runtime uvloop` on supported platforms |
@@ -181,6 +182,9 @@ python -m pip install -e ".[certification,dev]"
 ### Practical install examples
 
 ```bash
+# TLS/X.509 validation and certificate-material helpers
+python -m pip install -e ".[tls-x509]"
+
 # YAML config support
 python -m pip install -e ".[config-yaml]"
 
@@ -194,7 +198,7 @@ python -m pip install -e ".[runtime-uvloop]"
 python -m pip install -e ".[full-featured]"
 ```
 
-The authoritative optional dependency reference is `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`.
+The authoritative optional dependency reference is `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`. TLS/X.509 operations rely on the optional `tigrcorn[tls-x509]` extra.
 
 ## Protocol and feature map
 

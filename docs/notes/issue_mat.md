@@ -12,16 +12,16 @@ Claim posture used here:
 
 | Issue | State | Class | Subsystem | Boundary | Risk | Scope | Claim posture affected | Relation | Recommended next action |
 |---|---|---|---|---|---|---|---|---|---|
-| `#11` | Open | App-load correctness | App loader / CLI | `A,R` | Medium | Narrow | implementation claim | Follow-up after PR `#12` | Verify fix on current `main`, confirm regression test, close if resolved |
+| `#11` | Open | App-load correctness | App loader / CLI | `A,R` | Low | Narrow | implementation claim | Follow-up after PR `#12`; appears resolved in current tree | Confirm regression test remains present, then close unless a fresh repro exists |
 | `#13` | Open | Governance audit | Config defaults / CLI / normalize | `R` | High | Broad | implementation claim plus design-claim hygiene | Umbrella for defaults/backfill work | Create audit artifact and explicit default-review plan |
 | `#14` | Closed | TLS interoperability | TCP/TLS listener | `T` | High | Narrow | implementation claim | Likely duplicate of `#15` | Keep closed as superseded context |
 | `#15` | Open | TLS interoperability | TCP/TLS listener / CLI | `T` | Critical | Medium | implementation claim plus design claim | Successor to `#14`; anchor for atomic RFC 8446/5280/7301 claim rows and OpenSSL 3.5+ peer plan | Execute the atomic TLS matrix starting with RFC 8446 outer framing, inner type, AEAD AAD, padding, and handshake-to-app-data boundary; keep stdlib backend bounded as a differential control only |
 | `#16` | Open | Test infrastructure | Pytest mirror / CI | Maintenance | Medium | Large | implementation claim | Independent, but blocked by drift risk | Sequence after correctness fixes |
 | `#17` | Open | Test correctness | Config validation / pytest mirror | `R` | High | Medium | implementation claim | Related to `#13` | Decide partial-config validation policy and align tests/code |
-| `#18` | Open | Protocol correctness | HTTP/2 handler state | `P` | High | Medium | implementation claim | Possibly related to `#13` backfills | Restore concrete HTTP/2 invariants before handler comparisons |
+| `#18` | Open | Protocol correctness | HTTP/2 handler state | `P` | Medium | Narrow | implementation claim | GitHub state still open, but current tree appears normalized | Reconfirm the targeted coverage in the current environment, then close or restate only any remaining repro |
 | `#19` | Open | Expectation drift | Promotion/performance tests | Maintenance | Low | Narrow | implementation claim | Independent | Confirm intended report semantics, then update test or logic |
 | `#20` | Open | Runtime/protocol mismatch | QUIC recovery integration | `T,P` | High | Medium | implementation claim | Independent | Inspect runtime semantics before changing test expectations |
-| `#21` | Open | Compatibility mismatch | ALPN normalization | `T` | Medium | Narrow | implementation claim | Independent, but adjacent to TLS peer plan | Make empty-input ALPN contract explicit and align it with RFC 7301-facing interop expectations |
+| `#21` | Open | Compatibility mismatch | ALPN normalization | `T` | Low | Narrow | implementation claim | GitHub state still open, but current helper behavior appears aligned | Confirm helper and tests still agree, then close unless a narrower interop issue remains |
 | `#22` | Open | Protocol contract mismatch | WebSocket extension negotiation | `P` | High | Narrow | implementation claim | Independent | Define rejection contract, then align test and implementation |
 
 ## Matrix views
@@ -31,9 +31,9 @@ Claim posture used here:
 | Tier | Issues |
 |---|---|
 | Critical | `#15` |
-| High | `#13`, `#17`, `#18`, `#20`, `#22` |
-| Medium | `#11`, `#14`, `#16`, `#21` |
-| Low | `#19` |
+| High | `#13`, `#17`, `#20`, `#22` |
+| Medium | `#14`, `#16`, `#18` |
+| Low | `#11`, `#19`, `#21` |
 
 ### By boundary area
 
@@ -50,10 +50,10 @@ Claim posture used here:
 
 | Disposition | Issues |
 |---|---|
-| Investigate production/runtime defect first | `#15`, `#18`, `#20`, `#22` |
-| Audit and policy alignment | `#13`, `#17`, `#21` |
+| Investigate production/runtime defect first | `#15`, `#20`, `#22` |
+| Audit and policy alignment | `#13`, `#17` |
 | Likely test expectation update | `#19` |
-| Administrative reconcile / close if already fixed | `#11` |
+| Administrative reconcile / close if already fixed | `#11`, `#18`, `#21` |
 | Historical duplicate / superseded | `#14` |
 | Scheduled infrastructure improvement | `#16` |
 

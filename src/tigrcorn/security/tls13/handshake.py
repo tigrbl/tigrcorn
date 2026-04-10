@@ -15,7 +15,9 @@ class _MissingDependencyProxy:
         self._package = package
 
     def __getattr__(self, name: str):
-        raise ModuleNotFoundError(f"{self._package} is required for this TLS 1.3 certificate operation")
+        raise ModuleNotFoundError(
+            f"{self._package} is required for this TLS 1.3 certificate operation; install tigrcorn[tls-x509]"
+        )
 
 
 try:

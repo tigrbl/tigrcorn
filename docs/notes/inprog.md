@@ -17,6 +17,8 @@ There are no open in-bounds certification blockers for the current `0.3.9` line.
 - GitHub control-plane scaffolding now exists locally under `.github/`, `scripts/ci/`, `tools/cert/`, `docs/governance/`, and `docs/conformance/`
 - remote GitHub activation still remains to be completed for rulesets, protected environments, Dependabot alerts, CodeQL policy, and artifact-attestation enforcement
 - current package conformance claims remain green locally after the Phase 0 hardening pass
+- the next-target execution contract is now frozen in `docs/review/conformance/PHASE10_NEXT_TARGET_PROGRAM.md` and `docs/review/conformance/phase10_next_target_program.current.json`
+- `python tools/govchk.py scan` is now part of the mutable-tree validation path, with explicit grandfathered exemptions recorded in `MUT.json`
 
 Future work must start by deciding whether it is:
 
@@ -107,3 +109,9 @@ The new short-path governance tree is now in place. The previous root current-st
 - `.github/workflows/publish-pypi.yml` now builds distributions once in `staging`, reuses the same artifact for TestPyPI and PyPI publishing through OIDC trusted publishing, attests the built distributions, attaches release evidence assets, and deploys the release-evidence Pages bundle
 - `.github/workflows/docs.yml` now also regenerates and deploys the release-evidence Pages site for the mutable docs surface
 - the mutable working tree now contains the automated release pipeline contract, but remote GitHub environment approval, trusted publisher registration on TestPyPI/PyPI, GitHub Pages activation, and observed successful tagged runs still remain external facts that must be verified on those systems before they can be claimed as completed publication
+
+## Phase 10 follow-on
+
+- the post-`0.3.9` program target is now explicitly frozen as Wave 1 plus Wave 2 in-bounds feature completion plus remote automation activation and verification
+- mutable issue and risk notes should treat already-landed current-tree fixes as administrative GitHub reconciliation items rather than active local implementation blockers
+- future work should extend the generated package-owned metadata surfaces and CI regeneration path instead of reintroducing prose-only contract truth

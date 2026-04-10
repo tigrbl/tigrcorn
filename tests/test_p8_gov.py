@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from tigrcorn.compat.release_gates import evaluate_release_gates
@@ -50,3 +52,14 @@ def test_retention_bundles_point_to_existing_release_inputs():
 def test_release_gates_consume_governance_graph():
     report = evaluate_release_gates(ROOT)
     assert report.passed, report.failures
+
+
+def test_governance_scan_passes_for_grandfathered_and_mutable_paths():
+    completed = subprocess.run(
+        [sys.executable, 'tools/govchk.py', 'scan'],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr

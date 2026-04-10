@@ -13,7 +13,9 @@ class _MissingDependencyProxy:
         self._package = package
 
     def __getattr__(self, name: str):
-        raise ModuleNotFoundError(f"{self._package} is required for this TLS/X.509 operation")
+        raise ModuleNotFoundError(
+            f"{self._package} is required for this TLS/X.509 operation; install tigrcorn[tls-x509]"
+        )
 
 
 try:

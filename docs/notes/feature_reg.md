@@ -75,7 +75,7 @@ Canonical boundary and support sources:
 
 | target family | current supported targets | claim posture | notes |
 |---|---|---|---|
-| optional dependency extras | `config-yaml`, `compression`, `runtime-uvloop`, `full-featured`, `certification`, `dev` | implementation claim | publicly supported extras |
+| optional dependency extras | `tls-x509`, `config-yaml`, `compression`, `runtime-uvloop`, `full-featured`, `certification`, `dev` | implementation claim | publicly supported extras |
 | declared but not supported | `runtime-trio` | design claim only | declared dependency path only; not current public runtime support |
 | custom operator transports | `pipe`, `inproc`, `rawframed`, `custom` | implementation claim | public operator surface, but outside the strict RFC-certified surface where boundary docs say so |
 | peer-certification tooling | `aioquic`, `h2`, `websockets`, `wsproto`, planned `sf-http` dev dependency for structured-fields comparison | design claim plus tooling inventory | tooling and evidence surface, not an implicit boundary expansion |
