@@ -1,4 +1,6 @@
-# ADR 0001 — preserve the ASGI boundary
+# ADR-1001: preserve the ASGI boundary
+
+# ADR 1001 — preserve the ASGI boundary
 
 Decision: TigrCorn remains an ASGI server at its public boundary.
 

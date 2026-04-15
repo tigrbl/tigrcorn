@@ -1,15 +1,16 @@
 # ADR index
 
-Existing ADRs:
+Canonical ADR documents live under `.ssot/adr/` and are prefixed `ADR-`.
 
-- `0001-preserve-asgi-boundary.md`
-- `0002-transport-protocol-separation.md`
-- `0003-scheduler-and-backpressure.md`
-- `0004-custom-scope-types.md`
+Repo-local ADR set:
 
-New ADRs:
+- `.ssot/adr/ADR-1001-preserve-asgi-boundary.md`
+- `.ssot/adr/ADR-1002-transport-protocol-separation.md`
+- `.ssot/adr/ADR-1003-scheduler-and-backpressure.md`
+- `.ssot/adr/ADR-1004-custom-scope-types.md`
+- `.ssot/adr/ADR-1005-doc-gov.md`
+- `.ssot/adr/ADR-1006-mutable.md`
+- `.ssot/adr/ADR-1007-gov-auth.md`
+- `.ssot/adr/ADR-1008-gate-graph.md`
 
-- `0005-doc-gov.md`
-- `0006-mutable.md`
-- `0007-gov-auth.md`
-- `0008-gate-graph.md`
+Core ADR set synced from `ssot-registry` also lives in `.ssot/adr/` as `ADR-0001` through `ADR-0012`.

@@ -1,4 +1,6 @@
-# ADR 0002 — separate transport and protocol
+# ADR-1002: separate transport and protocol
+
+# ADR 1002 — separate transport and protocol
 
 Decision: transport code and protocol code live in separate module trees.
 
