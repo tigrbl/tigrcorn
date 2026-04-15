@@ -1,4 +1,6 @@
-# ADR 0006 — mutable and immutable marks
+# ADR-1006: mutable and immutable marks
+
+# ADR 1006 — mutable and immutable marks
 
 ## Status
 

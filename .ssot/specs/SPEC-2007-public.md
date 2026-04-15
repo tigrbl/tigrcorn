@@ -1,0 +1,714 @@
+# Public operator and programmatic surface reference
+
+# Public operator and programmatic surface reference
+
+This page documents Tigrcorn's public import surfaces for developers, embedders, implementers, maintainers, and release tooling owners.
+
+Read alongside:
+
+- `README.md`
+- `docs/ops/cli.md`
+- `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`
+- `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
+- `docs/review/conformance/BOUNDARY_NON_GOALS.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+
+## Table of contents
+
+- [Import surface map](#import-surface-map)
+- [Entry points and helpers](#entry-points-and-helpers)
+- [Usage snippets](#usage-snippets)
+- [Config model](#config-model)
+- [Release and promotion evaluators](#release-and-promotion-evaluators)
+- [Advanced lifecycle server surface](#advanced-lifecycle-server-surface)
+- [Non-goals and exclusions](#non-goals-and-exclusions)
+
+## Import surface map
+
+| Import surface | Kind | When to use | Notes |
+|---|---|---|---|
+| `tigrcorn.run` | sync convenience entrypoint | start a server from sync code | Accepts an ASGI app or import string and chooses the configured runtime. |
+| `tigrcorn.serve` | async entrypoint | start a server inside an existing async runtime | Takes a concrete ASGI app object. |
+| `tigrcorn.serve_import_string` | async entrypoint | load and run an import-string target inside an existing runtime | Supports `factory=True`. |
+| `tigrcorn.EmbeddedServer` | embedder helper | control lifecycle explicitly inside a host process | Idempotent `start()`, no-op `close()` before start, exposes `listeners` and `bound_endpoints()`. |
+| `tigrcorn.StaticFilesApp` | ASGI app | serve static assets directly | Supports ETag, conditional/range semantics, content coding, and precompressed sidecars. |
+| `tigrcorn.static.mount_static_app` | composition helper | mount static delivery under a route | Wraps another ASGI app with mounted static delivery. |
+| `tigrcorn.static.normalize_static_route` | utility | normalize user-supplied static routes | Useful when assembling config or wrappers. |
+| `tigrcorn.config.build_config` | constructor | build a `ServerConfig` from explicit keyword arguments | Good fit for code-driven startup. |
+| `tigrcorn.config.build_config_from_namespace` | constructor | turn an argparse namespace into `ServerConfig` | Used by the CLI. |
+| `tigrcorn.config.build_config_from_sources` | constructor | merge CLI overrides, config file, and environment | Implements the public precedence contract. |
+| `tigrcorn.config.config_to_dict` | serializer | inspect/export a config object | Useful in tooling and tests. |
+| `tigrcorn.config.load_env_config` | loader | load prefixed environment variables | Default prefix is `TIGRCORN`. |
+| `tigrcorn.config.load_config_file` | loader | load TOML / JSON / optional YAML config files | YAML requires `config-yaml`. |
+| `tigrcorn.server.TigrCornServer` | advanced server class | work with the underlying server object directly | Advanced lifecycle/embedding surface; see lifecycle doc. |
+| `tigrcorn.compat.release_gates.evaluate_release_gates` | maintainer/operator evaluator | evaluate the current source tree against release-gate contracts | Returns `ReleaseGateReport`. |
+| `tigrcorn.compat.release_gates.evaluate_promotion_target` | maintainer/operator evaluator | evaluate the current source tree against the promotion target contract | Returns `PromotionTargetReport`. |
+| `tigrcorn.compat.release_gates.assert_release_ready` | maintainer/operator assertion | fail fast when release gates are not satisfied | Raises `ReleaseGateError`. |
+| `tigrcorn.compat.release_gates.assert_promotion_target_ready` | maintainer/operator assertion | fail fast when promotion target is not satisfied | Raises `PromotionTargetError`. |
+
+
+## Entry points and helpers
+
+### `run`
+
+```python
+run(app: 'ASGIApp | str', *, profile: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', factory: 'bool' = False, config: 'ServerConfig | None' = None) -> 'None'
+```
+
+### `serve`
+
+```python
+serve(app: 'ASGIApp', *, profile: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', config: 'ServerConfig | None' = None) -> 'None'
+```
+
+### `serve_import_string`
+
+```python
+serve_import_string(app_target: 'str | None' = None, *, profile: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', factory: 'bool' = False, config: 'ServerConfig | None' = None) -> 'None'
+```
+
+### `EmbeddedServer`
+
+```python
+EmbeddedServer(app: 'ASGIApp', config: 'ServerConfig') -> None
+```
+
+### `StaticFilesApp`
+
+```python
+StaticFilesApp(directory: 'str | Path', *, index_file: 'str | None' = 'index.html', dir_to_file: 'bool' = True, expires: 'int | None' = None, default_headers: 'Iterable[tuple[bytes, bytes] | tuple[str, str]]' = (), apply_content_coding: 'bool' = True, content_coding_policy: 'str' = 'allowlist', content_codings: 'Iterable[str]' = ('br', 'gzip', 'deflate'), use_precompressed_sidecars: 'bool' = True, precompressed_codings: 'Iterable[str]' = ('br', 'gzip')) -> 'None'
+```
+
+### `mount_static_app`
+
+```python
+mount_static_app(app: 'ASGIApp | None', *, route: 'str', directory: 'str | Path', dir_to_file: 'bool' = True, index_file: 'str | None' = 'index.html', expires: 'int | None' = None, apply_content_coding: 'bool' = True, content_coding_policy: 'str' = 'allowlist', content_codings: 'Iterable[str]' = ('br', 'gzip', 'deflate'), use_precompressed_sidecars: 'bool' = True, precompressed_codings: 'Iterable[str]' = ('br', 'gzip')) -> 'ASGIApp'
+```
+
+### `normalize_static_route`
+
+```python
+normalize_static_route(route: 'str | None') -> 'str'
+```
+
+### `build_config`
+
+```python
+build_config(*, profile: 'str | None' = None, app: 'str | None' = None, host: 'str' = '127.0.0.1', port: 'int' = 8000, uds: 'str | None' = None, transport: 'str' = 'tcp', lifespan: 'str' = 'auto', log_level: 'str' = 'info', access_log: 'bool' = True, ssl_certfile: 'str | None' = None, ssl_keyfile: 'str | None' = None, ssl_keyfile_password: 'str | bytes | None' = None, ssl_ca_certs: 'str | None' = None, ssl_require_client_cert: 'bool | None' = None, ssl_ciphers: 'str | None' = None, ssl_crl: 'str | None' = None, http_versions: 'list[str] | None' = None, websocket: 'bool | None' = None, static_path_route: 'str | None' = None, static_path_mount: 'str | None' = None, static_path_dir_to_file: 'bool' = True, static_path_index_file: 'str | None' = 'index.html', static_path_expires: 'int | None' = None, enable_h2c: 'bool' = False, max_body_size: 'int | None' = None, max_header_size: 'int | None' = None, http1_max_incomplete_event_size: 'int | None' = None, http1_buffer_size: 'int | None' = None, http1_header_read_timeout: 'float | None' = None, http1_keep_alive: 'bool | None' = None, http2_max_concurrent_streams: 'int | None' = None, http2_max_headers_size: 'int | None' = None, http2_max_frame_size: 'int | None' = None, http2_adaptive_window: 'bool | None' = None, http2_initial_connection_window_size: 'int | None' = None, http2_initial_stream_window_size: 'int | None' = None, http2_keep_alive_interval: 'float | None' = None, http2_keep_alive_timeout: 'float | None' = None, websocket_max_queue: 'int | None' = None, protocols: 'list[str] | None' = None, quic_secret: 'bytes | None' = None, quic_require_retry: 'bool | None' = None, pipe_mode: 'str' = 'rawframed', config: 'Mapping[str, Any] | None' = None, default_headers: 'list[str] | list[tuple[str, str]] | None' = None, include_date_header: 'bool' = True, include_server_header: 'bool' = False, server_header: 'str | bytes | None' = None, env_file: 'str | None' = None, server_names: 'list[str] | None' = None, alt_svc: 'list[str] | list[tuple[str, str]] | None' = None, alt_svc_auto: 'bool | None' = None, alt_svc_max_age: 'int | None' = None, alt_svc_persist: 'bool' = False, runtime: 'str' = 'auto', worker_healthcheck_timeout: 'float | None' = None, use_colors: 'bool | None' = None) -> 'ServerConfig'
+```
+
+### `build_config_from_namespace`
+
+```python
+build_config_from_namespace(ns: 'Namespace') -> 'ServerConfig'
+```
+
+### `build_config_from_sources`
+
+```python
+build_config_from_sources(*, cli_overrides: 'Mapping[str, Any] | None' = None, config_source: 'str | Path | Mapping[str, Any] | Any | None' = None, config_path: 'str | Path | None' = None, env_prefix: 'str | None' = None, env_file: 'str | Path | None' = None, profile: 'str | None' = None) -> 'ServerConfig'
+```
+
+### `config_to_dict`
+
+```python
+config_to_dict(config: 'ServerConfig') -> 'dict[str, Any]'
+```
+
+### `load_env_config`
+
+```python
+load_env_config(prefix: 'str' = 'TIGRCORN', *, environ: 'Mapping[str, str] | None' = None) -> 'dict[str, Any]'
+```
+
+### `load_config_file`
+
+```python
+load_config_file(path: 'str | Path | None') -> 'dict[str, Any]'
+```
+
+### `evaluate_release_gates`
+
+```python
+evaluate_release_gates(source_root: 'str | Path', *, boundary_path: 'str | Path | None' = None, corpus_path: 'str | Path | None' = None, independent_matrix_path: 'str | Path | None' = None, same_stack_matrix_path: 'str | Path | None' = None) -> 'ReleaseGateReport'
+```
+
+### `evaluate_promotion_target`
+
+```python
+evaluate_promotion_target(source_root: 'str | Path', *, target_path: 'str | Path | None' = None) -> 'PromotionTargetReport'
+```
+
+### `assert_release_ready`
+
+```python
+assert_release_ready(source_root: 'str | Path', *, boundary_path: 'str | Path | None' = None, corpus_path: 'str | Path | None' = None, independent_matrix_path: 'str | Path | None' = None, same_stack_matrix_path: 'str | Path | None' = None) -> 'None'
+```
+
+### `assert_promotion_target_ready`
+
+```python
+assert_promotion_target_ready(source_root: 'str | Path', *, target_path: 'str | Path | None' = None) -> 'None'
+```
+
+
+### `TigrCornServer`
+
+```python
+TigrCornServer(app: 'ASGIApp', config: 'ServerConfig') -> 'None'
+```
+
+Public instance methods:
+
+- `await start()`
+- `await serve_forever()`
+- `request_shutdown()`
+- `await close()`
+
+This is the advanced underlying server surface used by `EmbeddedServer` and by the lifecycle contract documented in `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+
+## Usage snippets
+
+### Sync entrypoint from application code
+
+```python
+from tigrcorn import run
+
+run(
+    "examples.echo_http.app:app",
+    host="127.0.0.1",
+    port=8000,
+    http_versions=["1.1", "2"],
+    log_level="info",
+)
+```
+
+### Async entrypoint from an existing event loop
+
+```python
+from tigrcorn import serve
+
+async def app(scope, receive, send):
+    if scope["type"] == "lifespan":
+        message = await receive()
+        if message["type"] == "lifespan.startup":
+            await send({"type": "lifespan.startup.complete"})
+            message = await receive()
+        await send({"type": "lifespan.shutdown.complete"})
+        return
+
+    await receive()
+    await send({
+        "type": "http.response.start",
+        "status": 200,
+        "headers": [(b"content-type", b"text/plain")],
+    })
+    await send({"type": "http.response.body", "body": b"ok", "more_body": False})
+
+await serve(app, host="127.0.0.1", port=8000)
+```
+
+### Import-string loading inside async code
+
+```python
+from tigrcorn import serve_import_string
+
+await serve_import_string(
+    "examples.echo_http.app:app",
+    host="127.0.0.1",
+    port=8000,
+    factory=False,
+)
+```
+
+### Embedded server inside a host process
+
+```python
+from tigrcorn import EmbeddedServer
+from tigrcorn.config import build_config
+
+config = build_config(host="127.0.0.1", port=0, lifespan="on")
+
+async with EmbeddedServer(app, config) as embedded:
+    print(embedded.listeners)
+    print(embedded.bound_endpoints())
+```
+
+Contract summary:
+
+- `start()` is idempotent and returns the underlying `TigrCornServer`
+- `close()` is a no-op before startup
+- the async context manager calls `start()` on entry and `close()` on exit
+- `listeners` and `bound_endpoints()` expose the current runtime/listener bindings
+
+### Static delivery as a first-class ASGI app
+
+```python
+from tigrcorn import StaticFilesApp
+
+static = StaticFilesApp(
+    "./public",
+    expires=3600,
+    apply_content_coding=True,
+    content_coding_policy="allowlist",
+    use_precompressed_sidecars=True,
+)
+```
+
+### Static mounting around another ASGI app
+
+```python
+from tigrcorn.static import mount_static_app
+
+app = mount_static_app(
+    app,
+    route="/assets",
+    directory="./public",
+    dir_to_file=True,
+    index_file="index.html",
+    expires=3600,
+    apply_content_coding=True,
+    content_codings=("br", "gzip", "deflate"),
+)
+```
+
+### Config building from explicit kwargs
+
+```python
+from tigrcorn.config import build_config
+
+config = build_config(
+    app="examples.echo_http.app:app",
+    host="127.0.0.1",
+    port=8000,
+    http_versions=["1.1", "2"],
+    runtime="auto",
+    alt_svc_auto=False,
+)
+```
+
+### Config building from file + environment + CLI overrides
+
+```python
+from tigrcorn.config import build_config_from_sources
+
+config = build_config_from_sources(
+    config_path="./tigrcorn.toml",
+    env_prefix="TIGRCORN",
+    env_file=".env",
+    cli_overrides={
+        "app": {"target": "examples.echo_http.app:app"},
+        "logging": {"level": "debug"},
+        "metrics": {"enabled": True},
+    },
+)
+```
+
+### Release/promotion evaluation from tooling
+
+```python
+from tigrcorn.compat.release_gates import (
+    assert_promotion_target_ready,
+    assert_release_ready,
+    evaluate_promotion_target,
+    evaluate_release_gates,
+)
+
+release_report = evaluate_release_gates(".")
+promotion_report = evaluate_promotion_target(".")
+
+if release_report.passed:
+    assert_release_ready(".")
+
+if promotion_report.passed:
+    assert_promotion_target_ready(".")
+```
+
+## Config model
+
+Publicly exported config dataclasses:
+
+| Dataclass | Exported from | Key fields |
+|---|---|---|
+| `AppConfig` | `tigrcorn.config` | `target`, `factory`, `profile`, `app_dir`, `config_file`, `env_prefix`, `env_file`, `lifespan`, `reload`, `reload_dirs`, `reload_include`, … |
+| `ProcessConfig` | `tigrcorn.config` | `workers`, `worker_class`, `runtime`, `pid_file`, `worker_healthcheck_timeout`, `limit_max_requests`, `max_requests_jitter` |
+| `TLSConfig` | `tigrcorn.config` | `certfile`, `keyfile`, `keyfile_password`, `ca_certs`, `require_client_cert`, `ciphers`, `resolved_cipher_suites`, `alpn_protocols`, `ocsp_mode`, `ocsp_soft_fail`, … |
+| `ProxyConfig` | `tigrcorn.config` | `proxy_headers`, `forwarded_allow_ips`, `root_path`, `server_header`, `include_server_header`, `include_date_header`, `default_headers`, `server_names` |
+| `HTTPConfig` | `tigrcorn.config` | `http_versions`, `enable_h2c`, `keep_alive_timeout`, `read_timeout`, `write_timeout`, `shutdown_timeout`, `idle_timeout`, `max_body_size`, `max_header_size`, `http1_max_incomplete_event_size`, … |
+| `WebSocketConfig` | `tigrcorn.config` | `enabled`, `max_message_size`, `max_queue`, `ping_interval`, `ping_timeout`, `compression` |
+| `ListenerConfig` | `tigrcorn.config` | `kind`, `bind`, `host`, `port`, `path`, `fd`, `endpoint`, `insecure_bind`, `quic_bind`, `backlog`, … |
+| `QUICConfig` | `tigrcorn.config` | `quic_secret`, `require_retry`, `max_datagram_size`, `idle_timeout`, `early_data_policy` |
+| `LoggingConfig` | `tigrcorn.config` | `level`, `access_log`, `access_log_file`, `access_log_format`, `error_log_file`, `log_config`, `structured`, `use_colors`, `explicit_fields` |
+| `MetricsConfig` | `tigrcorn.config` | `enabled`, `bind`, `statsd_host`, `otel_endpoint` |
+| `SchedulerConfig` | `tigrcorn.config` | `limit_concurrency`, `max_connections`, `max_tasks`, `max_streams` |
+| `ServerConfig` | `tigrcorn.config` | `app`, `process`, `listeners`, `tls`, `proxy`, `http`, `websocket`, `static`, `quic`, `logging`, … |
+
+
+Nested config dataclasses that are still relevant at runtime even though they are not top-level exports:
+
+| Dataclass | Reachable from | Key fields |
+|---|---|---|
+| `StaticConfig` | `ServerConfig.static` | `route`, `mount`, `dir_to_file`, `index_file`, `expires` |
+| `HooksConfig` | `ServerConfig.hooks` | `on_startup`, `on_shutdown`, `on_reload` |
+
+### Exported config dataclass field reference
+
+<details>
+<summary><strong>AppConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `target` | `None` |
+| `factory` | `False` |
+| `profile` | `None` |
+| `app_dir` | `None` |
+| `config_file` | `None` |
+| `env_prefix` | `'TIGRCORN'` |
+| `env_file` | `None` |
+| `lifespan` | `'auto'` |
+| `reload` | `False` |
+| `reload_dirs` | `list()` |
+| `reload_include` | `list()` |
+| `reload_exclude` | `list()` |
+
+</details>
+
+<details>
+<summary><strong>ProcessConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `workers` | `1` |
+| `worker_class` | `'local'` |
+| `runtime` | `'auto'` |
+| `pid_file` | `None` |
+| `worker_healthcheck_timeout` | `30.0` |
+| `limit_max_requests` | `None` |
+| `max_requests_jitter` | `0` |
+
+</details>
+
+<details>
+<summary><strong>TLSConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `certfile` | `None` |
+| `keyfile` | `None` |
+| `keyfile_password` | `None` |
+| `ca_certs` | `None` |
+| `require_client_cert` | `False` |
+| `ciphers` | `None` |
+| `resolved_cipher_suites` | `()` |
+| `alpn_protocols` | `<lambda>()` |
+| `ocsp_mode` | `'off'` |
+| `ocsp_soft_fail` | `False` |
+| `ocsp_cache_size` | `128` |
+| `ocsp_max_age` | `43200.0` |
+| `crl_mode` | `'off'` |
+| `crl` | `None` |
+| `revocation_fetch` | `True` |
+
+</details>
+
+<details>
+<summary><strong>ProxyConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `proxy_headers` | `False` |
+| `forwarded_allow_ips` | `list()` |
+| `root_path` | `''` |
+| `server_header` | `b'tigrcorn'` |
+| `include_server_header` | `False` |
+| `include_date_header` | `True` |
+| `default_headers` | `list()` |
+| `server_names` | `list()` |
+
+</details>
+
+<details>
+<summary><strong>HTTPConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `http_versions` | `<lambda>()` |
+| `enable_h2c` | `False` |
+| `keep_alive_timeout` | `5.0` |
+| `read_timeout` | `30.0` |
+| `write_timeout` | `30.0` |
+| `shutdown_timeout` | `30.0` |
+| `idle_timeout` | `30.0` |
+| `max_body_size` | `16777216` |
+| `max_header_size` | `65536` |
+| `http1_max_incomplete_event_size` | `65536` |
+| `http1_buffer_size` | `65536` |
+| `http1_header_read_timeout` | `None` |
+| `http1_keep_alive` | `True` |
+| `http2_max_concurrent_streams` | `None` |
+| `http2_max_headers_size` | `None` |
+| `http2_max_frame_size` | `None` |
+| `http2_adaptive_window` | `False` |
+| `http2_initial_connection_window_size` | `65535` |
+| `http2_initial_stream_window_size` | `65535` |
+| `http2_keep_alive_interval` | `None` |
+| `http2_keep_alive_timeout` | `None` |
+| `connect_policy` | `'deny'` |
+| `connect_allow` | `list()` |
+| `trailer_policy` | `'pass'` |
+| `content_coding_policy` | `'allowlist'` |
+| `content_codings` | `<lambda>()` |
+| `alt_svc_headers` | `list()` |
+| `alt_svc_auto` | `False` |
+| `alt_svc_max_age` | `86400` |
+| `alt_svc_persist` | `False` |
+
+</details>
+
+<details>
+<summary><strong>WebSocketConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `enabled` | `True` |
+| `max_message_size` | `16777216` |
+| `max_queue` | `32` |
+| `ping_interval` | `None` |
+| `ping_timeout` | `None` |
+| `compression` | `'off'` |
+
+</details>
+
+<details>
+<summary><strong>ListenerConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `kind` | `'tcp'` |
+| `bind` | `None` |
+| `host` | `'127.0.0.1'` |
+| `port` | `8000` |
+| `path` | `None` |
+| `fd` | `None` |
+| `endpoint` | `None` |
+| `insecure_bind` | `None` |
+| `quic_bind` | `None` |
+| `backlog` | `2048` |
+| `ssl_certfile` | `None` |
+| `ssl_keyfile` | `None` |
+| `ssl_keyfile_password` | `None` |
+| `ssl_ca_certs` | `None` |
+| `ssl_require_client_cert` | `False` |
+| `ssl_ciphers` | `None` |
+| `resolved_cipher_suites` | `()` |
+| `alpn_protocols` | `list()` |
+| `ocsp_mode` | `'off'` |
+| `ocsp_soft_fail` | `False` |
+| `ocsp_cache_size` | `128` |
+| `ocsp_max_age` | `43200.0` |
+| `crl_mode` | `'off'` |
+| `ssl_crl` | `None` |
+| `revocation_fetch` | `True` |
+| `http_versions` | `<lambda>()` |
+| `websocket` | `True` |
+| `reuse_port` | `False` |
+| `reuse_address` | `True` |
+| `nodelay` | `True` |
+| `protocols` | `list()` |
+| `quic_secret` | `None` |
+| `quic_require_retry` | `False` |
+| `max_datagram_size` | `1200` |
+| `pipe_mode` | `'rawframed'` |
+| `user` | `None` |
+| `group` | `None` |
+| `umask` | `None` |
+| `scheme` | `None` |
+
+</details>
+
+<details>
+<summary><strong>QUICConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `quic_secret` | `None` |
+| `require_retry` | `False` |
+| `max_datagram_size` | `1200` |
+| `idle_timeout` | `30.0` |
+| `early_data_policy` | `'deny'` |
+
+</details>
+
+<details>
+<summary><strong>LoggingConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `level` | `'info'` |
+| `access_log` | `True` |
+| `access_log_file` | `None` |
+| `access_log_format` | `None` |
+| `error_log_file` | `None` |
+| `log_config` | `None` |
+| `structured` | `False` |
+| `use_colors` | `None` |
+| `explicit_fields` | `list()` |
+
+</details>
+
+<details>
+<summary><strong>MetricsConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `enabled` | `False` |
+| `bind` | `None` |
+| `statsd_host` | `None` |
+| `otel_endpoint` | `None` |
+
+</details>
+
+<details>
+<summary><strong>SchedulerConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `limit_concurrency` | `None` |
+| `max_connections` | `None` |
+| `max_tasks` | `None` |
+| `max_streams` | `None` |
+
+</details>
+
+<details>
+<summary><strong>ServerConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `app` | `AppConfig()` |
+| `process` | `ProcessConfig()` |
+| `listeners` | `<lambda>()` |
+| `tls` | `TLSConfig()` |
+| `proxy` | `ProxyConfig()` |
+| `http` | `HTTPConfig()` |
+| `websocket` | `WebSocketConfig()` |
+| `static` | `StaticConfig()` |
+| `quic` | `QUICConfig()` |
+| `logging` | `LoggingConfig()` |
+| `metrics` | `MetricsConfig()` |
+| `scheduler` | `SchedulerConfig()` |
+| `hooks` | `HooksConfig()` |
+| `debug` | `False` |
+
+</details>
+
+### Nested config dataclass field reference
+
+<details>
+<summary><strong>StaticConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `route` | `None` |
+| `mount` | `None` |
+| `dir_to_file` | `True` |
+| `index_file` | `'index.html'` |
+| `expires` | `None` |
+
+</details>
+
+<details>
+<summary><strong>HooksConfig</strong></summary>
+
+| Field | Default |
+|---|---|
+| `on_startup` | `list()` |
+| `on_shutdown` | `list()` |
+| `on_reload` | `list()` |
+
+</details>
+
+### Useful computed properties
+
+- `ListenerConfig.ssl_enabled`
+- `ListenerConfig.label`
+- `ListenerConfig.enabled_protocols`
+- `ServerConfig.lifespan`
+- `ServerConfig.log_level`
+- `ServerConfig.access_log`
+- `ServerConfig.read_timeout`
+- `ServerConfig.write_timeout`
+- `ServerConfig.shutdown_timeout`
+- `ServerConfig.max_body_size`
+- `ServerConfig.max_header_size`
+- `ServerConfig.websocket_max_message_size`
+- `ServerConfig.websocket_max_queue`
+- `ServerConfig.server_header`
+- `ServerConfig.server_header_value`
+- `ServerConfig.include_date_header`
+- `ServerConfig.default_response_headers`
+- `ServerConfig.allowed_server_names`
+- `ServerConfig.alt_svc_values`
+- `ServerConfig.enable_h2c`
+- `ServerConfig.static_mount_enabled`
+
+These convenience properties are useful when inspecting a merged configuration from tooling or lifecycle hooks.
+
+## Release and promotion evaluators
+
+Primary public evaluator functions:
+
+- `evaluate_release_gates`
+- `evaluate_promotion_target`
+- `assert_release_ready`
+- `assert_promotion_target_ready`
+
+Report dataclasses:
+
+| Report type | Fields |
+|---|---|
+| `ReleaseGateReport` | `passed`, `failures`, `checked_files`, `rfc_status`, `artifact_status` |
+| `PromotionTargetReport` | `passed`, `failures`, `checked_files`, `authoritative_boundary`, `strict_target_boundary`, `flag_surface`, `operator_surface`, `performance`, `documentation` |
+| `IndependentBundleReport` | `passed`, `failures`, `checked_files`, `scenario_status` |
+| `PromotionSectionReport` | `name`, `passed`, `failures`, `checked_files`, `details` |
+
+
+Default contract paths exposed by the module:
+
+- `DEFAULT_BOUNDARY_PATH`
+- `DEFAULT_CORPUS_PATH`
+- `DEFAULT_INDEPENDENT_MATRIX_PATH`
+- `DEFAULT_SAME_STACK_MATRIX_PATH`
+- `DEFAULT_STRICT_TARGET_BOUNDARY_PATH`
+- `DEFAULT_PROMOTION_TARGET_PATH`
+
+Use the evaluator functions when you need a **supported, package-owned** answer to whether the current tree is ready for release or promotion.
+
+## Advanced lifecycle server surface
+
+`TigrCornServer` is the advanced package-owned server object. `EmbeddedServer` wraps it for embedder-friendly lifecycle control. Prefer:
+
+- `run` for sync process entry
+- `serve` or `serve_import_string` inside an existing async runtime
+- `EmbeddedServer` when you need explicit startup/shutdown control plus endpoint introspection
+- `TigrCornServer` only when you need the underlying advanced lifecycle object directly
+
+Lifecycle hooks and ordering rules are defined in `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+
+## Non-goals and exclusions
+
+This page documents the public surface that exists **now**. It is not a promise that every adjacent server feature family is supported.
+
+Explicit exclusions and/or outside-boundary families include:
+
+- Trio runtime as a supported public runtime
+- ASGI2, WSGI, and RSGI compatibility layers
+- parser pluggability
+- WebSocket engine pluggability
+- JOSE / COSE
+- RFC 9111 caching
+- RFC 9530
+- RFC 9421
+- broader gateway-style signature/integrity products
+
+Use `docs/review/conformance/BOUNDARY_NON_GOALS.md` when in doubt.

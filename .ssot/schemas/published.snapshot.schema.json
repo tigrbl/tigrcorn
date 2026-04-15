@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/ssot-registry/published.snapshot.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "generated_at",
+    "registry_path",
+    "registry_sha256",
+    "release",
+    "boundary",
+    "claims",
+    "evidence",
+    "summary"
+  ]
+}

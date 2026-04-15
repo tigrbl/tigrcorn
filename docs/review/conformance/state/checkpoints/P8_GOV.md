@@ -7,7 +7,7 @@ This checkpoint records the mutable-tree completion of Phase 8 governance, relea
 What was added:
 
 - governance authority docs under `docs/governance/`
-- ADRs `0007-gov-auth.md` and `0008-gate-graph.md`
+- ADRs `.ssot/adr/ADR-1007-gov-auth.md` and `.ssot/adr/ADR-1008-gate-graph.md`
 - `docs/reference/risk_register.schema.json`
 - `docs/conformance/risk/RISK_REGISTER.json`
 - `docs/conformance/risk/RISK_TRACEABILITY.json`

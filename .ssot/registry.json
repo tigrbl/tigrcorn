@@ -1,0 +1,1270 @@
+{
+  "schema_version": 4,
+  "repo": {
+    "id": "repo:tigrcorn",
+    "name": "tigrcorn",
+    "version": "0.3.9"
+  },
+  "tooling": {
+    "ssot_registry_version": "0.2.2",
+    "initialized_with_version": "0.2.2",
+    "last_upgraded_from_version": "0.2.2"
+  },
+  "paths": {
+    "ssot_root": ".ssot",
+    "schema_root": ".ssot/schemas",
+    "adr_root": ".ssot/adr",
+    "spec_root": ".ssot/specs",
+    "graph_root": ".ssot/graphs",
+    "evidence_root": ".ssot/evidence",
+    "release_root": ".ssot/releases",
+    "report_root": ".ssot/reports",
+    "cache_root": ".ssot/cache"
+  },
+  "program": {
+    "active_boundary_id": "bnd:default",
+    "active_release_id": "rel:0.3.9"
+  },
+  "guard_policies": {
+    "claim_closure": {
+      "require_implemented_features": true,
+      "require_linked_tests_passing": true,
+      "require_linked_evidence_passing": true,
+      "require_claim_evidence_tier_alignment": true,
+      "forbid_failed_or_stale_evidence": true
+    },
+    "certification": {
+      "require_release_status_draft_or_candidate": true,
+      "require_frozen_boundary": true,
+      "require_release_claim_coverage_for_boundary_features": true,
+      "require_boundary_features_current_or_explicit": true,
+      "require_feature_target_tiers_met": true,
+      "forbid_open_release_blocking_issues": true,
+      "forbid_active_release_blocking_risks": true
+    },
+    "promotion": {
+      "require_release_status_certified": true,
+      "require_release_snapshot_hashes": true
+    },
+    "publication": {
+      "require_release_status_promoted": true
+    },
+    "lifecycle": {
+      "require_replacement_or_note_for_deprecation": true,
+      "forbid_obsolete_or_removed_in_active_boundary": true,
+      "require_feature_absent_for_removed": true
+    }
+  },
+  "document_id_reservations": {
+    "adr": [
+      {
+        "owner": "ssot-core",
+        "start": 1,
+        "end": 999,
+        "immutable": true,
+        "deletable": false,
+        "assignable_by_repo": false
+      },
+      {
+        "owner": "repo-local-default",
+        "start": 1000,
+        "end": 4999,
+        "immutable": false,
+        "deletable": true,
+        "assignable_by_repo": true
+      }
+    ],
+    "spec": [
+      {
+        "owner": "ssot-core",
+        "start": 1,
+        "end": 999,
+        "immutable": true,
+        "deletable": false,
+        "assignable_by_repo": false
+      },
+      {
+        "owner": "repo-local-default",
+        "start": 1000,
+        "end": 4999,
+        "immutable": false,
+        "deletable": true,
+        "assignable_by_repo": true
+      }
+    ]
+  },
+  "features": [
+    {
+      "id": "feat:tigrcorn-http1",
+      "title": "HTTP/1.1 protocol surface",
+      "description": "RFC 9112 certification surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-http1"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http1"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-http2",
+      "title": "HTTP/2 protocol surface",
+      "description": "RFC 9113 certification surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-http2"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http2"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-http3",
+      "title": "HTTP/3 protocol surface",
+      "description": "RFC 9114 certification surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-http3"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http3"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-quic",
+      "title": "QUIC transport surface",
+      "description": "RFC 9000/9001/9002 certification surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-quic"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-quic"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-websocket",
+      "title": "WebSocket protocol surface",
+      "description": "RFC 6455/8441/9220 certification surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-websocket"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-websocket"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-custom-transports",
+      "title": "Custom transport family",
+      "description": "Custom transport conformance surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-custom-transports"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-custom-transports"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-public-api",
+      "title": "Public API surface",
+      "description": "Public API conformance surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-public-api"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-public-api"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrcorn-cli",
+      "title": "CLI operator surface",
+      "description": "CLI contract conformance surface",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrcorn-cli"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-cli"
+      ],
+      "requires": []
+    }
+  ],
+  "tests": [
+    {
+      "id": "tst:tigrcorn-http1",
+      "title": "HTTP/1.1 protocol surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_http1_rfc9112.py",
+      "feature_ids": [
+        "feat:tigrcorn-http1"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-http1"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-http1"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-http2",
+      "title": "HTTP/2 protocol surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_http2_rfc9113.py",
+      "feature_ids": [
+        "feat:tigrcorn-http2"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-http2"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-http2"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-http3",
+      "title": "HTTP/3 protocol surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_http3_rfc9114.py",
+      "feature_ids": [
+        "feat:tigrcorn-http3"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-http3"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-http3"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-quic",
+      "title": "QUIC transport surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_quic_packets_rfc9000.py",
+      "feature_ids": [
+        "feat:tigrcorn-quic"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-quic"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-quic"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-websocket",
+      "title": "WebSocket protocol surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_websocket_rfc6455.py",
+      "feature_ids": [
+        "feat:tigrcorn-websocket"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-websocket"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-websocket"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-custom-transports",
+      "title": "Custom transport family test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_pipe_and_inproc.py",
+      "feature_ids": [
+        "feat:tigrcorn-custom-transports"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-custom-transports"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-custom-transports"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-public-api",
+      "title": "Public API surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_import.py",
+      "feature_ids": [
+        "feat:tigrcorn-public-api"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-public-api"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-public-api"
+      ]
+    },
+    {
+      "id": "tst:tigrcorn-cli",
+      "title": "CLI operator surface test coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_cli_and_asgi3.py",
+      "feature_ids": [
+        "feat:tigrcorn-cli"
+      ],
+      "claim_ids": [
+        "clm:tigrcorn-cli"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-cli"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "clm:tigrcorn-http1",
+      "title": "HTTP/1.1 protocol surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "RFC 9112 certification surface",
+      "feature_ids": [
+        "feat:tigrcorn-http1"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http1"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-http1"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-http2",
+      "title": "HTTP/2 protocol surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "RFC 9113 certification surface",
+      "feature_ids": [
+        "feat:tigrcorn-http2"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http2"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-http2"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-http3",
+      "title": "HTTP/3 protocol surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "RFC 9114 certification surface",
+      "feature_ids": [
+        "feat:tigrcorn-http3"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http3"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-http3"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-quic",
+      "title": "QUIC transport surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "RFC 9000/9001/9002 certification surface",
+      "feature_ids": [
+        "feat:tigrcorn-quic"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-quic"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-quic"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-websocket",
+      "title": "WebSocket protocol surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "RFC 6455/8441/9220 certification surface",
+      "feature_ids": [
+        "feat:tigrcorn-websocket"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-websocket"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-websocket"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-custom-transports",
+      "title": "Custom transport family",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Custom transport conformance surface",
+      "feature_ids": [
+        "feat:tigrcorn-custom-transports"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-custom-transports"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-custom-transports"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-public-api",
+      "title": "Public API surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Public API conformance surface",
+      "feature_ids": [
+        "feat:tigrcorn-public-api"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-public-api"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-public-api"
+      ]
+    },
+    {
+      "id": "clm:tigrcorn-cli",
+      "title": "CLI operator surface",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "CLI contract conformance surface",
+      "feature_ids": [
+        "feat:tigrcorn-cli"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-cli"
+      ],
+      "evidence_ids": [
+        "evd:tigrcorn-cli"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:tigrcorn-http1",
+      "title": "HTTP/1.1 protocol surface evidence",
+      "status": "planned",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/external_matrix.release.json",
+      "claim_ids": [
+        "clm:tigrcorn-http1"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http1"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-http2",
+      "title": "HTTP/2 protocol surface evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/external_matrix.release.json",
+      "claim_ids": [
+        "clm:tigrcorn-http2"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http2"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-http3",
+      "title": "HTTP/3 protocol surface evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/external_matrix.release.json",
+      "claim_ids": [
+        "clm:tigrcorn-http3"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-http3"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-quic",
+      "title": "QUIC transport surface evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/external_matrix.release.json",
+      "claim_ids": [
+        "clm:tigrcorn-quic"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-quic"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-websocket",
+      "title": "WebSocket protocol surface evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/external_matrix.release.json",
+      "claim_ids": [
+        "clm:tigrcorn-websocket"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-websocket"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-custom-transports",
+      "title": "Custom transport family evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/corpus.json",
+      "claim_ids": [
+        "clm:tigrcorn-custom-transports"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-custom-transports"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-public-api",
+      "title": "Public API surface evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/claims_registry.json",
+      "claim_ids": [
+        "clm:tigrcorn-public-api"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-public-api"
+      ]
+    },
+    {
+      "id": "evd:tigrcorn-cli",
+      "title": "CLI operator surface evidence",
+      "status": "passed",
+      "kind": "conformance",
+      "tier": "T2",
+      "path": "docs/review/conformance/flag_contracts.json",
+      "claim_ids": [
+        "clm:tigrcorn-cli"
+      ],
+      "test_ids": [
+        "tst:tigrcorn-cli"
+      ]
+    }
+  ],
+  "issues": [],
+  "risks": [],
+  "boundaries": [
+    {
+      "id": "bnd:default",
+      "title": "Default boundary",
+      "status": "draft",
+      "frozen": false,
+      "feature_ids": []
+    }
+  ],
+  "releases": [
+    {
+      "id": "rel:0.3.9",
+      "version": "0.3.9",
+      "status": "draft",
+      "boundary_id": "bnd:default",
+      "claim_ids": [],
+      "evidence_ids": []
+    }
+  ],
+  "adrs": [
+    {
+      "id": "adr:0001",
+      "number": 1,
+      "slug": "canonical-json-registry",
+      "title": "Canonical registry is a single JSON document",
+      "path": ".ssot/adr/ADR-0001-canonical-json-registry.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "9f5bb7d2ee345837ed30579c9e494a239f470855776ba5dc10e1e5285ec75997",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0002",
+      "number": 2,
+      "slug": "features-are-targetable-units",
+      "title": "Features are the targetable units",
+      "path": ".ssot/adr/ADR-0002-features-are-targetable-units.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "c088e2e19d94b2751b170bff365d71361ee505e67c6467718b9dba9819fa98cb",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0003",
+      "number": 3,
+      "slug": "issues-are-plannable-work-items",
+      "title": "Issues are plannable work items",
+      "path": ".ssot/adr/ADR-0003-issues-are-plannable-work-items.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "5f9facd077de1b597cd92f881be2f24e7d2a84c53fbafadaa8d90e5a6fd43d36",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0004",
+      "number": 4,
+      "slug": "entity-centric-registry-derived-graph",
+      "title": "Entity-centric registry with a derived graph export",
+      "path": ".ssot/adr/ADR-0004-entity-centric-registry-derived-graph.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "9070a9343059aeb88c9c814eb6b09779259655b64db1c72c8dc87b67a5e0208b",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0005",
+      "number": 5,
+      "slug": "normalized-prefixed-ids",
+      "title": "Normalized prefixed IDs",
+      "path": ".ssot/adr/ADR-0005-normalized-prefixed-ids.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "1b3ac2ec39ede1aa4f393d70ba284d76e5fb8be43aaf76bed3461b5c0d8bf790",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0006",
+      "number": 6,
+      "slug": "claim-status-vs-tier",
+      "title": "Claim status and claim tier are orthogonal",
+      "path": ".ssot/adr/ADR-0006-claim-status-vs-tier.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "77b436414b489d834b4cfc3c9e73d3109253c1e69e4c5177773ba1b2e1a049b9",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0007",
+      "number": 7,
+      "slug": "feature-implementation-vs-lifecycle",
+      "title": "Feature implementation state is separate from lifecycle state",
+      "path": ".ssot/adr/ADR-0007-feature-implementation-vs-lifecycle.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "1d9827f1d9ac80e21c9eb01860525546a12414b6d4dd59f85e2d1bfe3d9386f2",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0008",
+      "number": 8,
+      "slug": "immutable-boundary-and-release-snapshots",
+      "title": "Immutable boundary and release snapshots",
+      "path": ".ssot/adr/ADR-0008-immutable-boundary-and-release-snapshots.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "05cdcfecdd0291bf70d83df6f759234a6e030bee813f9ffccc281339f1020020",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0009",
+      "number": 9,
+      "slug": "fail-closed-guards",
+      "title": "Fail-closed guards",
+      "path": ".ssot/adr/ADR-0009-fail-closed-guards.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "b3e4968a2407889f0a369cb4cd09aa6b22e25a6404d4aeda17ef9d8b39f639b8",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0010",
+      "number": 10,
+      "slug": "generated-projections-are-non-canonical",
+      "title": "Generated projections are non-canonical",
+      "path": ".ssot/adr/ADR-0010-generated-projections-are-non-canonical.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "9384cc13dad85dc2ee3d65405edf92ae0cb8c90874db52beba33fa63f1fb1aad",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0011",
+      "number": 11,
+      "slug": "explicit-schema-versioning",
+      "title": "Explicit schema versioning",
+      "path": ".ssot/adr/ADR-0011-explicit-schema-versioning.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "476d6d2c6e8bd6f6775492f11f2de3f26b77545dda62bd6e78e34ff37b53ed4e",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:0012",
+      "number": 12,
+      "slug": "portable-core-repo-specific-evidence-adapters",
+      "title": "Portable core with repo-specific evidence generation outside the core",
+      "path": ".ssot/adr/ADR-0012-portable-core-repo-specific-evidence-adapters.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "ba8ea2c1e20eda7094c2cf92c9fd63427c1ef3edf9c18d2f43357e761101ba79",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1001",
+      "number": 1001,
+      "slug": "preserve-asgi-boundary",
+      "title": "preserve the ASGI boundary",
+      "path": ".ssot/adr/ADR-1001-preserve-asgi-boundary.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "430d2f4fa5b83d61992d6a5d317ce37e0e955d7c2b777ed2bea07ba316d35482",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1002",
+      "number": 1002,
+      "slug": "transport-protocol-separation",
+      "title": "separate transport and protocol",
+      "path": ".ssot/adr/ADR-1002-transport-protocol-separation.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "9be9b9cbd18c271dfc708f41919588e68e0d143b3c7828c2119ebfac31c67cf5",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1003",
+      "number": 1003,
+      "slug": "scheduler-and-backpressure",
+      "title": "scheduler and backpressure are separate concerns",
+      "path": ".ssot/adr/ADR-1003-scheduler-and-backpressure.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "a29be99c50f621002a2af38e002ec0826253464da98178c3782985c7d23acddf",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1004",
+      "number": 1004,
+      "slug": "custom-scope-types",
+      "title": "custom scope types are allowed behind the ASGI surface",
+      "path": ".ssot/adr/ADR-1004-custom-scope-types.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "d6e94558cef990cd83442281460273f4ac6b67faf04b62ec51caee5b42f0df1b",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1005",
+      "number": 1005,
+      "slug": "doc-gov",
+      "title": "doc governance tree",
+      "path": ".ssot/adr/ADR-1005-doc-gov.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "373352003f497e5bea0482f6ee2f34e70dc115b5be5a8db2d5ac573002ec8fae",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1006",
+      "number": 1006,
+      "slug": "mutable",
+      "title": "mutable and immutable marks",
+      "path": ".ssot/adr/ADR-1006-mutable.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "8ea13e784c3a4ba92ad3f5cb5085e90bc5c13c86086d77c38031ec62cced8b60",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1007",
+      "number": 1007,
+      "slug": "gov-auth",
+      "title": ": Governance Authority",
+      "path": ".ssot/adr/ADR-1007-gov-auth.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "74e7f01728d696aed0ae9d6d0b8253cdbaa9e37c3a14fafeac2a1a5decdb6b71",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "id": "adr:1008",
+      "number": 1008,
+      "slug": "gate-graph",
+      "title": ": Release Gate Graph",
+      "path": ".ssot/adr/ADR-1008-gate-graph.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "3e145b27726e557f5b28cf1c9ee441a15a3609d0fb821b1fd4eb7cf5123747cf",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": []
+    }
+  ],
+  "specs": [
+    {
+      "id": "spc:0001",
+      "number": 1,
+      "slug": "registry-core",
+      "title": "Registry core",
+      "path": ".ssot/specs/SPEC-0001-registry-core.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "2244e964a2e98cbb8c96959e80f94fbb6684825aa41f64e34d9bc918cb229b35",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0002",
+      "number": 2,
+      "slug": "cli",
+      "title": "CLI",
+      "path": ".ssot/specs/SPEC-0002-cli.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "921aecf6cf292ef841c49c73b45ab8a38bdae817ef850097a870dc5241473c39",
+      "kind": "operational"
+    },
+    {
+      "id": "spc:0003",
+      "number": 3,
+      "slug": "graph-model",
+      "title": "Graph model",
+      "path": ".ssot/specs/SPEC-0003-graph-model.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "dbf7093288b63b1fd3a1f38d60b66147d93c27511487de992ee0d59efb43b744",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0004",
+      "number": 4,
+      "slug": "feature-lifecycle",
+      "title": "Feature lifecycle",
+      "path": ".ssot/specs/SPEC-0004-feature-lifecycle.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "93f42169b551989e38f00598f899e6bfd9fc443a15467da77ead51c5bd01d02e",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0005",
+      "number": 5,
+      "slug": "claim-statuses",
+      "title": "Claim statuses",
+      "path": ".ssot/specs/SPEC-0005-claim-statuses.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "a22501ba039e61a6f438d50685a3e33a7928fb37179f4a8da31c8c3420ed9683",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0006",
+      "number": 6,
+      "slug": "claim-tiers",
+      "title": "Claim tiers",
+      "path": ".ssot/specs/SPEC-0006-claim-tiers.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "a86608fc0ae4b045cdf59257e666f0254df9a26f2dd93897628fafc142169163",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0007",
+      "number": 7,
+      "slug": "snapshots-and-reports",
+      "title": "Snapshots and reports",
+      "path": ".ssot/specs/SPEC-0007-snapshots-and-reports.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "47d3d3298a978e525b315a779db920714946011ccda92a0caf2e2a5d72cd21cb",
+      "kind": "operational"
+    },
+    {
+      "id": "spc:0008",
+      "number": 8,
+      "slug": "repo-policy",
+      "title": "Repository policy",
+      "path": ".ssot/specs/SPEC-0008-repo-policy.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "6e80832275da7d4c3609cbef3e39c1128bd14d559cdf315f78982dcc8f91edbf",
+      "kind": "operational"
+    },
+    {
+      "id": "spc:0009",
+      "number": 9,
+      "slug": "gates-and-fences",
+      "title": "Gates and fences",
+      "path": ".ssot/specs/SPEC-0009-gates-and-fences.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "20ad0cb68eafaef7c0095136eef6ebe9b0704b5ad3d81211039ef73745bc02af",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0010",
+      "number": 10,
+      "slug": "id-normalization",
+      "title": "ID normalization",
+      "path": ".ssot/specs/SPEC-0010-id-normalization.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "a217c496f8534f78906cf589ec07f14f3babfbf900d848a94bb58202ea06044f",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0011",
+      "number": 11,
+      "slug": "file-tree",
+      "title": "File tree",
+      "path": ".ssot/specs/SPEC-0011-file-tree.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "739d774289548e1d10e9c20dd88d24e774b1ddfd68cdc16bf8424481ef4b705b",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0012",
+      "number": 12,
+      "slug": "planning-horizons",
+      "title": "Planning horizons",
+      "path": ".ssot/specs/SPEC-0012-planning-horizons.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "bd748f1d15321d770410ed04ebfe4e6e558e02a30bfbd4e4bddce327f2f7f2d0",
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0013",
+      "number": 13,
+      "slug": "python-api",
+      "title": "Python API",
+      "path": ".ssot/specs/SPEC-0013-python-api.md",
+      "origin": "ssot-core",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.2",
+      "content_sha256": "a18bcc7c72373487d8cd4a88b93b605ca6a46703dbd8d5fa5d9f8c86937348da",
+      "kind": "operational"
+    },
+    {
+      "id": "spc:2001",
+      "number": 2001,
+      "slug": "http1",
+      "title": "HTTP/1.1",
+      "path": ".ssot/specs/SPEC-2001-http1.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "974ec6d9c3fac81dcd7b9b056ce273fe19a45ecfe19d03cfba4b8bca62572c38",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2002",
+      "number": 2002,
+      "slug": "http2",
+      "title": "HTTP/2",
+      "path": ".ssot/specs/SPEC-2002-http2.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "1b0ecdae4b0e30e881eed18df6d5eb29f1f1feb84fe5e74f5bc9fca64b02e85f",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2003",
+      "number": 2003,
+      "slug": "http3",
+      "title": "HTTP/3",
+      "path": ".ssot/specs/SPEC-2003-http3.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "8740cd8f8b8164da3b8b78aef251d46a8736b9ebf3748ead902522e599bef4d4",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2004",
+      "number": 2004,
+      "slug": "quic",
+      "title": "QUIC",
+      "path": ".ssot/specs/SPEC-2004-quic.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "ea159d02a27dccccb64b7a0edb4f6cadc1e9ad80f2b7e9fc791e8e4e20ca24fb",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2005",
+      "number": 2005,
+      "slug": "websocket",
+      "title": "WebSocket",
+      "path": ".ssot/specs/SPEC-2005-websocket.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "89560f61c4c2680485b8a799e1a98b4ac54ef3baf5dff4f0220360e685659e2b",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2006",
+      "number": 2006,
+      "slug": "custom-transports",
+      "title": "Custom transports",
+      "path": ".ssot/specs/SPEC-2006-custom-transports.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "cb2d3cca84b5877a0efc3e19f8b8e0c5710024b81eb5cc701c84079fc83562b9",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2007",
+      "number": 2007,
+      "slug": "public",
+      "title": "Public operator and programmatic surface reference",
+      "path": ".ssot/specs/SPEC-2007-public.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "82ce5937517d4423b044ba960dd733986d19173079d90b4387245820c1c8f105",
+      "kind": "repo-local"
+    },
+    {
+      "id": "spc:2008",
+      "number": 2008,
+      "slug": "tigrcorn-cli",
+      "title": "CLI",
+      "path": ".ssot/specs/SPEC-2008-tigrcorn-cli.md",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "de995e4e1061844aa26a685dd71930a847932a7718a4b99858978578241e7439",
+      "kind": "repo-local"
+    }
+  ]
+}

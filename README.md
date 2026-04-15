@@ -614,7 +614,7 @@ python tools/govchk.py state docs/review/conformance/releases/0.3.9
 python tools/govchk.py scan
 ```
 
-Repository cleanliness is governed by `MUT.json`, `docs/gov/tree.md`, `docs/gov/mut.md`, `docs/gov/code.md`, and ADR `docs/adr/0005-doc-gov.md`.
+Repository cleanliness is governed by `MUT.json`, `docs/gov/tree.md`, `docs/gov/mut.md`, `docs/gov/code.md`, and ADR `.ssot/adr/ADR-1005-doc-gov.md`.
 
 ## Current-state and historical planning
 

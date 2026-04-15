@@ -11,10 +11,6 @@
     "LEGACY_UNITTEST_INVENTORY.json",
     "docs/review/conformance/",
     "docs/reference/risk_register.schema.json",
-    "docs/adr/0001-preserve-asgi-boundary.md",
-    "docs/adr/0002-transport-protocol-separation.md",
-    "docs/adr/0003-scheduler-and-backpressure.md",
-    "docs/adr/0004-custom-scope-types.md",
     "examples/advanced_protocol_delivery/",
     "docs/LIFECYCLE_AND_EMBEDDED_SERVER.md",
     "examples/http_entity_static/",
@@ -33,6 +29,7 @@
     ".github/",
     "docs/architecture/",
     "assets/tigrcorn_brand_frag_light.png",
-    "assets/tigrcorn_brand_frag_dark.png"
+    "assets/tigrcorn_brand_frag_dark.png",
+    ".ssot/"
   ]
 }

@@ -1,4 +1,6 @@
-# ADR 0005 — doc governance tree
+# ADR-1005: doc governance tree
+
+# ADR 1005 — doc governance tree
 
 ## Status
 

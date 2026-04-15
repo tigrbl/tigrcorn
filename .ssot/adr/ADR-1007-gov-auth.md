@@ -1,4 +1,6 @@
-# ADR 0007: Governance Authority
+# ADR-1007: : Governance Authority
+
+# ADR 1007: Governance Authority
 
 Status: accepted
 

@@ -1,4 +1,6 @@
-# ADR 0003 — scheduler and backpressure are separate concerns
+# ADR-1003: scheduler and backpressure are separate concerns
+
+# ADR 1003 — scheduler and backpressure are separate concerns
 
 Decision: concurrency and flow control belong in explicit scheduler and flow modules.
 

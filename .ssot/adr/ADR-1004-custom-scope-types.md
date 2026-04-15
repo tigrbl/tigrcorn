@@ -1,4 +1,6 @@
-# ADR 0004 — custom scope types are allowed behind the ASGI surface
+# ADR-1004: custom scope types are allowed behind the ASGI surface
+
+# ADR 1004 — custom scope types are allowed behind the ASGI surface
 
 Decision: custom transports may expose custom scope types in the future.
 
