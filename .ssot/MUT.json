@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "repo_ssot_root",
+  "reason": "Repo-local canonical machine-readable registry and derived validation outputs."
+}

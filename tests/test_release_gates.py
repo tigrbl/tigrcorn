@@ -305,5 +305,21 @@ class ReleaseGateTests(unittest.TestCase):
             self.assertFalse(report.passed)
             self.assertIn('pending_third_party_http3_scenarios', '\n'.join(report.failures))
 
+    def test_release_gates_fail_closed_when_ssot_registry_is_missing(self):
+        report = evaluate_release_gates(ROOT)
+        self.assertTrue(report.passed, msg='\n'.join(report.failures))
+
+        ssot_path = ROOT / '.ssot' / 'registry.json'
+        original = ssot_path.read_text(encoding='utf-8')
+        try:
+            ssot_path.unlink()
+            report = evaluate_release_gates(ROOT)
+            self.assertFalse(report.passed)
+            failures = '\n'.join(report.failures)
+            self.assertIn('registry.json', failures)
+            self.assertIn('missing governance graph input', failures)
+        finally:
+            ssot_path.write_text(original, encoding='utf-8')
+
 if __name__ == '__main__':
     unittest.main()

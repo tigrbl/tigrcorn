@@ -9,12 +9,13 @@ Read this file before changing code, docs, release artifacts, or certification e
 ## First reading order
 
 1. `README.md`
-2. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
-3. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
-4. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
-5. `docs/review/conformance/README.md`
-6. `docs/gov/README.md`
-7. `docs/notes/inprog.md`
+2. `.ssot/registry.json`
+3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+4. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
+5. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
+6. `docs/review/conformance/README.md`
+7. `docs/gov/README.md`
+8. `docs/notes/inprog.md`
 
 Then move to the subsystem you actually need:
 
@@ -41,6 +42,7 @@ Do not:
 Do:
 
 - keep code, docs, tests, and machine-readable artifacts aligned
+- treat `.ssot/registry.json` as the definitive machine-readable source of truth for boundary, release, claim, evidence, and governance linkage
 - update current-state docs when promotion-relevant truth changes
 - create a new versioned root when a promoted release needs correction
 - use `MUT.json` and `tools/govchk.py` before mutating unfamiliar folders
@@ -220,6 +222,7 @@ Use this order:
 
 If those disagree, the canonical current-state chain wins:
 
+- `.ssot/registry.json`
 - `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - `docs/review/conformance/CURRENT_STATE_CHAIN.md`
 - `docs/review/conformance/current_state_chain.current.json`
@@ -263,6 +266,8 @@ Required evidence tiers:
 3. independent certification
 
 Do not advertise a stronger claim than the current policy chain permits.
+
+The policy chain's definitive machine-readable anchor is `.ssot/registry.json`.
 
 ## How to promote conformance
 
@@ -366,6 +371,7 @@ Do not keep mutating released evidence in place.
 ## Quick path map
 
 - repo summary: `README.md`
+- definitive machine-readable truth: `.ssot/registry.json`
 - current truth: `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - mutable docs index: `docs/README.md`
 - governance: `docs/gov/README.md`

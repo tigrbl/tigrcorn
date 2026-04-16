@@ -18,6 +18,7 @@ DEFAULT_CLAIMS_REGISTRY_PATH = Path('docs/review/conformance/claims_registry.jso
 DEFAULT_RISK_REGISTER_PATH = Path('docs/conformance/risk/RISK_REGISTER.json')
 DEFAULT_RISK_TRACEABILITY_PATH = Path('docs/conformance/risk/RISK_TRACEABILITY.json')
 DEFAULT_LEGACY_UNITTEST_INVENTORY_PATH = Path('LEGACY_UNITTEST_INVENTORY.json')
+DEFAULT_SSOT_REGISTRY_PATH = Path('.ssot/registry.json')
 VALID_EVIDENCE_TIERS = ('local_conformance', 'same_stack_replay', 'independent_certification')
 EVIDENCE_TIER_ORDER = {name: index for index, name in enumerate(VALID_EVIDENCE_TIERS, start=1)}
 
@@ -1167,17 +1168,45 @@ def _evaluate_documentation_claim_consistency(source_root: Path, config: Mapping
 
 def _evaluate_governance_graph(*, source_root: Path, checked_files: list[str]) -> list[str]:
     failures: list[str] = []
+    ssot_registry_path = source_root / DEFAULT_SSOT_REGISTRY_PATH
     claims_path = source_root / DEFAULT_CLAIMS_REGISTRY_PATH
     risk_register_path = source_root / DEFAULT_RISK_REGISTER_PATH
     risk_traceability_path = source_root / DEFAULT_RISK_TRACEABILITY_PATH
     legacy_inventory_path = source_root / DEFAULT_LEGACY_UNITTEST_INVENTORY_PATH
-    checked_files.extend(str(path) for path in (claims_path, risk_register_path, risk_traceability_path, legacy_inventory_path))
+    checked_files.extend(str(path) for path in (ssot_registry_path, claims_path, risk_register_path, risk_traceability_path, legacy_inventory_path))
 
-    for path in (claims_path, risk_register_path, risk_traceability_path, legacy_inventory_path):
+    for path in (ssot_registry_path, claims_path, risk_register_path, risk_traceability_path, legacy_inventory_path):
         if not path.exists():
             failures.append(f'missing governance graph input: {path}')
     if failures:
         return failures
+
+    ssot_payload = _load_json_payload(ssot_registry_path)
+    repo = ssot_payload.get('repo', {})
+    if str(repo.get('name', '')).strip() != 'tigrcorn':
+        failures.append('ssot registry repo.name is not "tigrcorn"')
+    active_boundary_id = str(ssot_payload.get('program', {}).get('active_boundary_id', '')).strip()
+    active_release_id = str(ssot_payload.get('program', {}).get('active_release_id', '')).strip()
+    if not active_boundary_id:
+        failures.append('ssot registry is missing program.active_boundary_id')
+    if not active_release_id:
+        failures.append('ssot registry is missing program.active_release_id')
+    boundaries = {
+        str(row.get('id', '')): row
+        for row in ssot_payload.get('boundaries', [])
+        if isinstance(row, Mapping)
+    }
+    releases = {
+        str(row.get('id', '')): row
+        for row in ssot_payload.get('releases', [])
+        if isinstance(row, Mapping)
+    }
+    if active_boundary_id not in boundaries:
+        failures.append('ssot registry active boundary id does not resolve to a boundary row')
+    if active_release_id not in releases:
+        failures.append('ssot registry active release id does not resolve to a release row')
+    if active_boundary_id in boundaries and boundaries[active_boundary_id].get('canonical_registry_source') != '.ssot/registry.json':
+        failures.append('ssot registry active boundary does not self-identify .ssot/registry.json as canonical_registry_source')
 
     claims_payload = _load_json_payload(claims_path)
     claim_ids = {str(row.get('id', '')) for row in claims_payload.get('current_and_candidate_claims', []) if isinstance(row, Mapping)}
@@ -1309,6 +1338,7 @@ __all__ = [
     'DEFAULT_PROMOTION_TARGET_PATH',
     'DEFAULT_RISK_REGISTER_PATH',
     'DEFAULT_RISK_TRACEABILITY_PATH',
+    'DEFAULT_SSOT_REGISTRY_PATH',
     'PromotionSectionReport',
     'PromotionTargetError',
     'PromotionTargetReport',

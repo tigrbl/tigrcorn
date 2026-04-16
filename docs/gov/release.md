@@ -42,23 +42,25 @@ Promotion status is not a fourth evidence tier; it is the result of the release-
 ## Promotion flow
 
 1. finish code/docs/tests
-2. refresh current-state docs
-3. run compileall
-4. run targeted/full pytest as needed
-5. run `evaluate_release_gates('.')`
-6. run strict target if applicable
-7. run `evaluate_promotion_target('.')`
-8. refresh release-root `manifest.json`, `bundle_index.json`, `bundle_summary.json`
-9. update `RELEASE_NOTES_*.md`
-10. update versioned release root
-11. freeze the new versioned root with `MUT.json`
-12. leave old promoted roots immutable
+2. refresh `.ssot/registry.json`
+3. refresh current-state docs
+4. run compileall
+5. run targeted/full pytest as needed
+6. run `evaluate_release_gates('.')`
+7. run strict target if applicable
+8. run `evaluate_promotion_target('.')`
+9. refresh release-root `manifest.json`, `bundle_index.json`, `bundle_summary.json`
+10. update `RELEASE_NOTES_*.md`
+11. update versioned release root
+12. freeze the new versioned root with `MUT.json`
+13. leave old promoted roots immutable
 
 ## Closing a release
 
 A release is closed only when:
 
 - version metadata is aligned
+- `.ssot/registry.json` is aligned with the promoted state
 - the canonical release root exists
 - the current-state chain points to the right root
 - release notes are updated

@@ -6,6 +6,7 @@ This directory contains the canonical promoted-state pointer and archived histor
 
 - current promoted-state pointer: `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 - canonical human current-state chain: `docs/review/conformance/CURRENT_STATE_CHAIN.md`
+- canonical machine-readable registry: `.ssot/registry.json`
 - machine-readable current-state chain: `docs/review/conformance/current_state_chain.current.json`
 - historical checkpoint records: `docs/review/conformance/state/checkpoints/`
 

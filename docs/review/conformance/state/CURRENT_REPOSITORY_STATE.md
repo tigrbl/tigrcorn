@@ -4,6 +4,8 @@ The current authoritative package claim remains defined by `docs/review/conforma
 
 The repository continues to operate under the **dual-boundary model**:
 
+`.ssot/registry.json` is now the definitive machine-readable source of truth. The human current-state chain and the authoritative boundary docs remain the package-facing narrative truth and must stay aligned with that registry.
+
 Historical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the canonical 0.3.9 release root is now green.
 
 - `evaluate_release_gates('.')` is **green** under the authoritative boundary

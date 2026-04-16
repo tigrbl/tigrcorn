@@ -29,24 +29,28 @@ Current maintainer of record in package metadata: **Jacob Stewart** (`jacob@swar
 
 When sources disagree, use this order:
 
-1. **Canonical current-state truth**
+1. **Definitive machine-readable truth**
+   - `.ssot/registry.json`
+   - `tools/ssot_sync.py`
+   - normalized `.ssot` scaffold bootstrapped from `ssot-registry init`
+2. **Canonical current-state truth**
    - `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
    - `docs/review/conformance/current_state_chain.current.json`
-2. **Boundary and applicability policy**
+3. **Boundary and applicability policy**
    - `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
    - `docs/review/conformance/STRICT_PROFILE_TARGET.md`
    - `docs/review/conformance/BOUNDARY_NON_GOALS.md`
    - `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`
-3. **Machine-readable public surface truth**
+4. **Machine-readable public surface truth**
    - `docs/review/conformance/cli_flag_surface.json`
    - `docs/review/conformance/deployment_profiles.json`
    - current JSON checkpoints under `docs/review/conformance/`
-4. **Human operator/API docs**
+5. **Human operator/API docs**
    - `README.md`
    - `docs/ops/cli.md`
    - `docs/ops/public.md`
    - `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`
-5. **Immutable release roots**
+6. **Immutable release roots**
    - `docs/review/conformance/releases/0.3.9/release-0.3.9/`
    - older frozen roots under `docs/review/conformance/releases/`
 
@@ -95,8 +99,14 @@ It should continue to include:
   - `external_matrix.current_release.json`
 
 Use footnotes for nuanced claim language rather than hiding qualifications in prose.
+When a machine-readable statement exists in `.ssot/registry.json`, prose and derived JSON must conform to it rather than silently diverge.
 
 ## When to update which docs
+
+### If you change canonical truth
+
+Update `.ssot/registry.json` first, then regenerate or reconcile downstream docs and JSON views.
+The `.ssot` directory scaffold itself is initialized by `tools/ssot_sync.py` through `ssot-registry init`.
 
 ### If you change CLI behavior
 
@@ -135,6 +145,7 @@ Confirm path and naming rules in `docs/gov/tree.md`, add `MUT.json` where needed
 Run, at minimum:
 
 ```bash
+python tools/ssot_sync.py --check
 python tools/govchk.py scan
 PYTHONPATH=src python -m compileall -q src benchmarks tools
 PYTHONPATH=src pytest -q

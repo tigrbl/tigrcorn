@@ -526,6 +526,7 @@ print(promotion_report.passed)
 |---|---|
 | Repo line | `0.3.9` in `pyproject.toml` and `src/tigrcorn/version.py` |
 | Current state | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
+| Canonical machine-readable registry | `.ssot/registry.json` |
 | Current-state chain | `docs/review/conformance/CURRENT_STATE_CHAIN.md`, `docs/review/conformance/current_state_chain.current.json` |
 | Authoritative boundary | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
 | Strict profile | `docs/review/conformance/STRICT_PROFILE_TARGET.md` |

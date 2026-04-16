@@ -17,6 +17,10 @@ Mutable root files are limited to:
 - `RELEASE_NOTES_*.md`
 - build/config roots such as `pyproject.toml`, `Makefile`, `.gitignore`, `LICENSE`
 
+The repo also carries one allowed root metadata directory:
+
+- `.ssot/` — canonical machine-readable registry material for the package governance graph
+
 Canonical current-state, delivery-note, and root-report material lives under:
 
 - `docs/review/conformance/state/`

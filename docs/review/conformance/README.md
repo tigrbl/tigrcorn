@@ -6,6 +6,7 @@ The canonical package-wide certification target is defined in `docs/review/confo
 
 The current package policy chain is:
 
+- `.ssot/registry.json` — definitive machine-readable governance registry and source of truth
 - `CERTIFICATION_BOUNDARY.md` — authoritative in-bounds statement
 - `certification_boundary.json` — authoritative machine-readable RFC evidence policy
 - `BOUNDARY_NON_GOALS.md` — authoritative out-of-bounds statement

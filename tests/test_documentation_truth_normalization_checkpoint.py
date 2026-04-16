@@ -17,7 +17,9 @@ def test_canonical_current_state_chain_exists_and_is_explicit() -> None:
     assert payload['document_role'] == 'canonical_current_state_source'
     assert payload['current_truth_source'] is True
     assert payload['exit_criteria']['one_canonical_current_state_chain'] is True
+    assert payload['canonical_registry_source'] == '.ssot/registry.json'
     assert 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md' in payload['canonical_human_current_state_chain']
+    assert '.ssot/registry.json' in payload['canonical_machine_current_state_chain']
     assert 'docs/review/conformance/package_compliance_review_phase9i.current.json' in payload['canonical_machine_current_state_chain']
     assert payload['example_path_policy']['canonical_current_phase4_example_tree'] == 'examples/advanced_delivery/'
     assert payload['example_path_policy']['retained_archival_feature_specific_tree'] == 'examples/advanced_protocol_delivery/'
