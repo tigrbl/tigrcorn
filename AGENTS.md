@@ -44,6 +44,85 @@ Do:
 - update current-state docs when promotion-relevant truth changes
 - create a new versioned root when a promoted release needs correction
 - use `MUT.json` and `tools/govchk.py` before mutating unfamiliar folders
+- use the `ssot-registry` CLI as the canonical tracking plane for features, tests, claims, evidence, boundaries, and releases
+
+## SSOT registry contract (required)
+
+Agents are required to use the `ssot-registry` CLI command for planning and certification tracking work.
+
+Reference command surface before use:
+
+```bash
+ssot-registry -h
+```
+
+Canonical artifact:
+
+- `.ssot/registry.json` is the machine-readable source of truth
+- derived projections (reports/exports/graphs) must be treated as generated views
+
+### Feature tracking
+
+Use `feature` commands to create and maintain normalized feature records, lifecycle, and planning posture:
+
+```bash
+ssot-registry feature create . --id feat:<name> --title "<title>"
+ssot-registry feature update . --id feat:<name> ...
+ssot-registry feature plan . --ids feat:<name> --horizon current --claim-tier T1
+ssot-registry feature link . --id feat:<name> --claim-ids clm:<name> --test-ids tst:<name>
+```
+
+### Feature-testing tracking
+
+Track test intent and status with explicit links back to features/claims/evidence:
+
+```bash
+ssot-registry test create . --id tst:<name> --title "<title>" --kind <kind> --test-path <repo-path>
+ssot-registry test update . --id tst:<name> --status passing
+ssot-registry test link . --id tst:<name> --feature-ids feat:<name> --claim-ids clm:<name> --evidence-ids evd:<name>
+```
+
+### Claims and evidence tracking
+
+Claims must be linked to implementable features and verifiable tests/evidence:
+
+```bash
+ssot-registry claim create . --id clm:<name> --title "<title>" --kind <kind> --tier T1
+ssot-registry claim evaluate .
+ssot-registry evidence create . --id evd:<name> --title "<title>" --kind <kind> --evidence-path <repo-path>
+ssot-registry evidence verify .
+```
+
+### Boundary and release management
+
+Freeze scope first, then certify/promote/publish releases against that frozen scope:
+
+```bash
+ssot-registry boundary create . --id bnd:<name> --title "<title>" --feature-ids feat:<name>
+ssot-registry boundary freeze . --boundary-id bnd:<name>
+ssot-registry release create . --id rel:<version> --version <version> --boundary-id bnd:<name>
+ssot-registry release certify . --release-id rel:<version> --write-report
+ssot-registry release promote . --release-id rel:<version>
+ssot-registry release publish . --release-id rel:<version>
+```
+
+### Validation and exports
+
+Use registry validation and graph/export surfaces during review and release prep:
+
+```bash
+ssot-registry validate . --write-report
+ssot-registry graph export . --format json --output .ssot/graphs/registry.graph.json
+ssot-registry registry export . --format toml --output .ssot/exports/registry.toml
+```
+
+### PyPI package notes (current as of 2026-04-16)
+
+- Package: `ssot-registry`
+- Latest PyPI version: `0.2.2`
+- Latest release upload: `2026-04-15T22:47:41Z`
+- Project page: `https://pypi.org/project/ssot-registry/`
+- Repository: `https://github.com/groupsum/ssot-registry`
 
 ## Boundary model
 
