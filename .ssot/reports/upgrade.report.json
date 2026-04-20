@@ -1,92 +1,24 @@
 {
   "passed": true,
-  "registry_path": "E:/swarmauri_github/tigrcorn/.ssot/registry.json",
-  "from_schema_version": 8,
-  "to_schema_version": 9,
-  "from_version": "0.2.6",
-  "to_version": "0.2.6",
+  "registry_path": ".ssot/registry.json",
+  "from_schema_version": 10,
+  "to_schema_version": "0.1.0",
+  "from_version": "0.2.7",
+  "to_version": "0.2.8",
   "migrations": [
-    "0.2.1->0.2.2 (schema 4->5)",
-    "0.2.2->0.2.3 (schema 5->6)",
-    "0.2.3->0.2.4 (schema 6->7)",
-    "0.2.4->0.2.5 (schema 7->8)",
-    "0.2.5->0.2.6 (schema 8->9)"
+    "0.2.6->0.2.7 (schema 9->10)",
+    "0.2.7->0.2.7 (schema 10->0.1.0)"
   ],
   "schema_migrations": [
-    "migrate_v4_to_v5",
-    "migrate_v5_to_v6",
-    "migrate_v6_to_v7",
-    "migrate_v7_to_v8",
-    "migrate_v8_to_v9"
+    "migrate_v9_to_v10",
+    "migrate_v10_to_v0_1_0"
   ],
   "renamed_specs": [],
-  "document_migration": {
-    "adr": {
-      "converted": [],
-      "skipped": [
-        "adr:0600",
-        "adr:0601",
-        "adr:0602",
-        "adr:0603",
-        "adr:0604",
-        "adr:0605",
-        "adr:0606",
-        "adr:0607",
-        "adr:0608",
-        "adr:0609",
-        "adr:0610",
-        "adr:0611",
-        "adr:0612",
-        "adr:0613",
-        "adr:1001",
-        "adr:1002",
-        "adr:1003",
-        "adr:1004",
-        "adr:1005",
-        "adr:1006",
-        "adr:1007",
-        "adr:1008",
-        "adr:1009"
-      ],
-      "failed": []
-    },
-    "spec": {
-      "converted": [],
-      "skipped": [
-        "spc:0600",
-        "spc:0601",
-        "spc:0602",
-        "spc:0603",
-        "spc:0604",
-        "spc:0605",
-        "spc:0606",
-        "spc:0607",
-        "spc:0608",
-        "spc:0609",
-        "spc:0610",
-        "spc:0611",
-        "spc:0612",
-        "spc:0613",
-        "spc:0614",
-        "spc:1001",
-        "spc:1002",
-        "spc:2001",
-        "spc:2002",
-        "spc:2003",
-        "spc:2004",
-        "spc:2005",
-        "spc:2006",
-        "spc:2007",
-        "spc:2008"
-      ],
-      "failed": []
-    }
-  },
+  "document_migration": null,
   "sync": {
     "adr": {
       "created": [],
-      "updated": [],
-      "unchanged": [
+      "updated": [
         "adr:0600",
         "adr:0601",
         "adr:0602",
@@ -101,12 +33,12 @@
         "adr:0611",
         "adr:0612",
         "adr:0613"
-      ]
+      ],
+      "unchanged": []
     },
     "spec": {
       "created": [],
-      "updated": [],
-      "unchanged": [
+      "updated": [
         "spc:0600",
         "spc:0601",
         "spc:0602",
@@ -122,7 +54,8 @@
         "spc:0612",
         "spc:0613",
         "spc:0614"
-      ]
+      ],
+      "unchanged": []
     }
   },
   "changed": true

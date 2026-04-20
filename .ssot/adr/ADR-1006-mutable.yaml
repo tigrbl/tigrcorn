@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "adr"
 id: "adr:1006"
 number: 1006

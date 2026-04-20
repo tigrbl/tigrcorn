@@ -1,5 +1,5 @@
 {
-  "schema_version": 9,
+  "schema_version": "0.1.0",
   "repo": {
     "id": "repo:tigrcorn",
     "name": "tigrcorn",
@@ -7,9 +7,9 @@
     "kind": "repo-local"
   },
   "tooling": {
-    "ssot_registry_version": "0.2.6",
-    "initialized_with_version": "0.2.6",
-    "last_upgraded_from_version": "0.2.6"
+    "ssot_registry_version": "0.2.8",
+    "initialized_with_version": "0.2.7",
+    "last_upgraded_from_version": "0.2.7"
   },
   "paths": {
     "ssot_root": ".ssot",
@@ -171,7 +171,8 @@
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-record-normalization",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-green-after-doc-truth-normalization"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:deployment-profiles",
@@ -195,7 +196,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p1-default-baseline",
@@ -219,7 +221,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p1-static-origin",
@@ -243,7 +246,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p1-strict-h1-origin",
@@ -267,7 +271,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p1-strict-h2-origin",
@@ -291,7 +296,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p1-strict-h3-edge",
@@ -315,7 +321,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p1-strict-mtls-origin",
@@ -339,7 +346,8 @@
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p2-base-default-audit",
@@ -363,7 +371,8 @@
       "test_ids": [
         "tst:src-tests-test-default-audits-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p2-flag-contract-registry",
@@ -388,7 +397,8 @@
         "tst:src-tests-test-default-audits-py",
         "tst:src-tests-test-phase2-cli-config-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p2-profile-default-audit",
@@ -412,7 +422,8 @@
       "test_ids": [
         "tst:src-tests-test-default-audits-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p3-coding-policy",
@@ -436,7 +447,8 @@
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p3-connect-policy",
@@ -460,7 +472,8 @@
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p3-proxy-precedence",
@@ -485,7 +498,8 @@
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p3-proxy-trust",
@@ -509,7 +523,8 @@
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p3-public-controls",
@@ -541,7 +556,8 @@
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py",
         "tst:src-tests-test-phase3-strict-rfc-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p3-trailer-policy",
@@ -565,7 +581,8 @@
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p4-early-data-admission",
@@ -589,7 +606,8 @@
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p4-independent-quic-claims",
@@ -618,7 +636,8 @@
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p4-multi-instance-early-data",
@@ -642,7 +661,8 @@
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p4-replay-policy",
@@ -667,7 +687,8 @@
         "tst:src-tests-test-tls13-engine-upgrade-py",
         "tst:src-tests-test-phase4-quic-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p4-retry-app-visibility",
@@ -691,7 +712,8 @@
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p5-file-selection-http",
@@ -717,7 +739,8 @@
         "tst:src-tests-test-rfc7232-conditional-requests-py",
         "tst:src-tests-test-rfc7233-range-requests-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p5-path-resolution",
@@ -741,7 +764,8 @@
       "test_ids": [
         "tst:src-tests-test-phase5-origin-contract-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p5-pathsend-contract",
@@ -766,7 +790,8 @@
         "tst:src-tests-test-phase2-static-delivery-surface-py",
         "tst:src-tests-test-phase5-origin-contract-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p6-export-surfaces",
@@ -790,7 +815,8 @@
       "test_ids": [
         "tst:claim-tc-obs-export-adapters"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p6-qlog-stance",
@@ -814,7 +840,8 @@
       "test_ids": [
         "tst:claim-tc-obs-qlog-experimental"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p6-quic-h3-counters",
@@ -838,7 +865,8 @@
       "test_ids": [
         "tst:claim-tc-obs-metrics-schema"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p7-fail-state-registry",
@@ -862,7 +890,8 @@
       "test_ids": [
         "tst:claim-tc-neg-fail-state-registry"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p7-negative-corpora-origin",
@@ -888,7 +917,8 @@
         "tst:claim-tc-neg-adversarial-corpora",
         "tst:claim-tc-neg-bundle-preservation"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p7-negative-corpora-quic",
@@ -914,7 +944,8 @@
         "tst:claim-tc-neg-adversarial-corpora",
         "tst:claim-tc-neg-bundle-preservation"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p8-pytest-forward",
@@ -938,7 +969,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p8-release-gated-evidence",
@@ -962,7 +994,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p8-rfc9651-baseline",
@@ -987,7 +1020,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-sf-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:f-p8-risk-traceability",
@@ -1011,7 +1045,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:governance-graph",
@@ -1053,7 +1088,8 @@
         "tst:pytest-case-tests-test-p8-sf-py-test-registry-aware-field-type-dispatch-is-explicit",
         "tst:pytest-case-tests-test-p8-sf-py-test-stale-predecessor-references-are-linted-outside-allowlist"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-5280",
@@ -1079,7 +1115,8 @@
         "tst:matrix-http2-tls-server-curl-client",
         "tst:matrix-http2-tls-server-h2-client"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-6455",
@@ -1104,7 +1141,8 @@
         "tst:corpus-websocket-core",
         "tst:matrix-websocket-server-websockets-client"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-6960",
@@ -1139,7 +1177,8 @@
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-rejects-stale-ocsp-response",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-surfaces-fetch-failure-context"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-7232",
@@ -1165,7 +1204,8 @@
         "tst:pytest-case-tests-test-rfc7232-conditional-requests-py-test-rfc7232-conditional-engine-evaluates-entity-tags-and-dates",
         "tst:pytest-case-tests-test-rfc7232-conditional-requests-py-test-rfc7232-static-files-supports-not-modified-paths"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-7233",
@@ -1192,7 +1232,8 @@
         "tst:pytest-case-tests-test-rfc7233-range-requests-py-test-rfc7233-if-range-honors-matching-etag-and-rejects-stale-date",
         "tst:pytest-case-tests-test-rfc7233-range-requests-py-test-rfc7233-static-files-support-range-paths"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-7301",
@@ -1219,7 +1260,8 @@
         "tst:matrix-http2-tls-server-h2-client",
         "tst:matrix-http3-server-openssl-quic-handshake"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-7541",
@@ -1245,7 +1287,8 @@
         "tst:matrix-http2-server-h2-client",
         "tst:matrix-http2-tls-server-h2-client"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-7692",
@@ -1269,7 +1312,8 @@
       "test_ids": [
         "tst:corpus-websocket-permessage-deflate"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-7838-s3",
@@ -1293,7 +1337,8 @@
       "test_ids": [
         "tst:corpus-http-alt-svc-header-advertisement"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-8297",
@@ -1317,7 +1362,8 @@
       "test_ids": [
         "tst:corpus-http-early-hints"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-8441",
@@ -1342,7 +1388,8 @@
         "tst:corpus-http2-websocket-extended-connect",
         "tst:matrix-websocket-http2-server-h2-client"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-8446",
@@ -1369,7 +1416,8 @@
         "tst:matrix-http2-tls-server-h2-client",
         "tst:matrix-http3-server-openssl-quic-handshake"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9000",
@@ -1401,7 +1449,8 @@
         "tst:matrix-http3-server-aioquic-client-post-zero-rtt",
         "tst:matrix-http3-server-aioquic-client-post-migration"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9001",
@@ -1431,7 +1480,8 @@
         "tst:matrix-http3-server-aioquic-client-post-resumption",
         "tst:matrix-http3-server-aioquic-client-post-zero-rtt"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9002",
@@ -1463,7 +1513,8 @@
         "tst:matrix-http3-server-aioquic-client-post-zero-rtt",
         "tst:matrix-http3-server-aioquic-client-post-migration"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9110-s6-5",
@@ -1487,7 +1538,8 @@
       "test_ids": [
         "tst:corpus-http-trailer-fields"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9110-s8",
@@ -1511,7 +1563,8 @@
       "test_ids": [
         "tst:corpus-http-content-coding"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9110-s9-3-6",
@@ -1535,7 +1588,8 @@
       "test_ids": [
         "tst:corpus-http-connect-relay"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9112",
@@ -1560,7 +1614,8 @@
         "tst:corpus-http11-server-surface",
         "tst:matrix-http1-server-curl-client"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9113",
@@ -1588,7 +1643,8 @@
         "tst:matrix-http2-tls-server-curl-client",
         "tst:matrix-http2-tls-server-h2-client"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9114",
@@ -1626,7 +1682,8 @@
         "tst:matrix-http3-server-aioquic-client-post-migration",
         "tst:matrix-http3-server-aioquic-client-post-goaway-qpack"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9204",
@@ -1653,7 +1710,8 @@
         "tst:matrix-http3-server-aioquic-client-post",
         "tst:matrix-http3-server-aioquic-client-post-goaway-qpack"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:rfc-9220",
@@ -1681,7 +1739,8 @@
         "tst:matrix-websocket-http3-server-aioquic-client",
         "tst:matrix-websocket-http3-server-aioquic-client-mtls"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-app-import-resolution",
@@ -1709,7 +1768,8 @@
         "tst:claim-claim-cwd-factory-import",
         "tst:src-tests-test-app-loader-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-automated-release-pipeline",
@@ -1736,7 +1796,8 @@
         "tst:pytest-case-tests-test-p9-auto-py-test-release-workflow-uses-trusted-publishing-and-pinned-actions",
         "tst:pytest-case-tests-test-p9-auto-py-test-release-pages-and-docs-pipeline-are-declared"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-default-audit-governance",
@@ -1760,7 +1821,8 @@
       "test_ids": [
         "tst:claim-tc-gov-default-audit-policy"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-http2-runtime-defaults",
@@ -1789,7 +1851,8 @@
         "tst:pytest-case-tests-test-config-matrix-pytest-py-test-partial-server-config-normalizes-http2-defaults",
         "tst:pytest-case-tests-test-config-matrix-pytest-py-test-udp-client-auth-requires-explicit-trust-store"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-http2-tls-posture",
@@ -1813,7 +1876,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9113-http2-over-tls-posture"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-http3-control-plane",
@@ -1837,7 +1901,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9114-h3-control-plane-after-tls-success"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-https-http11",
@@ -1861,7 +1926,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9112-https-http11-interoperability"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-https-service-identity",
@@ -1885,7 +1951,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9525-service-identity-hostname-compatibility"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-interop-retention",
@@ -1909,7 +1976,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-ocsp-policy",
@@ -1933,7 +2001,8 @@
       "test_ids": [
         "tst:claim-tc-rfc6960-ocsp-policy-explicitness"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-package-owned-http-fields",
@@ -1961,7 +2030,8 @@
         "tst:claim-tc-field-obsoleted-absence-default",
         "tst:claim-tc-field-default-termination-package-owned"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-performance-retention",
@@ -1985,7 +2055,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-qpack-error-handling",
@@ -2009,7 +2080,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9204-qpack-after-stable-h3-handshake"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-quic-recovery-send-path",
@@ -2033,7 +2105,8 @@
       "test_ids": [
         "tst:src-tests-test-quic-recovery-live-runtime-integration-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-quic-retry-token-integrity",
@@ -2057,7 +2130,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9000-retry-token-integrity-tls-dependency"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-quic-tls-mapping",
@@ -2081,7 +2155,8 @@
       "test_ids": [
         "tst:claim-tc-rfc9001-quic-tls-mapping-parity"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-release-evidence-attachments",
@@ -2108,7 +2183,8 @@
         "tst:pytest-case-tests-test-p9-auto-py-test-release-workflow-uses-trusted-publishing-and-pinned-actions",
         "tst:pytest-case-tests-test-p9-auto-py-test-release-pages-and-docs-pipeline-are-declared"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-release-gate-graph",
@@ -2132,7 +2208,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-risk-register-governance",
@@ -2156,7 +2233,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tcp-tls13-backend-control",
@@ -2180,7 +2258,8 @@
       "test_ids": [
         "tst:claim-tc-diff-tls13-stdlib-control"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tcp-tls13-external-peer-interop",
@@ -2206,7 +2285,8 @@
         "tst:claim-tc-interop-tls13-openssl35-sclient",
         "tst:claim-tc-interop-tls13-curl-openssl35"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-test-style-governance",
@@ -2230,7 +2310,8 @@
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls-alpn-policy",
@@ -2256,7 +2337,8 @@
         "tst:src-tests-test-security-compat-utils-py",
         "tst:claim-tc-rfc7301-alpn-negotiation-policy"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls-server-name-indication",
@@ -2280,7 +2362,8 @@
       "test_ids": [
         "tst:claim-tc-rfc6066-sni-handling"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls-status-request-policy",
@@ -2304,7 +2387,8 @@
       "test_ids": [
         "tst:claim-tc-rfc6066-status-request-policy"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls13-handshake-messages",
@@ -2328,7 +2412,8 @@
       "test_ids": [
         "tst:claim-tc-rfc8446-certificate-and-certificateverify-processing"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls13-record-layer",
@@ -2358,7 +2443,8 @@
         "tst:claim-tc-rfc8446-tls13-padding-semantics",
         "tst:claim-tc-rfc8446-tls13-aead-additional-data"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls13-shutdown-behavior",
@@ -2382,7 +2468,8 @@
       "test_ids": [
         "tst:claim-tc-rfc8446-tls13-alert-and-close-semantics"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-tls13-state-transition",
@@ -2406,7 +2493,8 @@
       "test_ids": [
         "tst:claim-tc-rfc8446-tls13-handshake-to-appdata-boundary"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-trusted-publishing",
@@ -2433,7 +2521,8 @@
         "tst:pytest-case-tests-test-p9-auto-py-test-release-workflow-uses-trusted-publishing-and-pinned-actions",
         "tst:pytest-case-tests-test-p9-auto-py-test-release-pages-and-docs-pipeline-are-declared"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-websocket-accept-contract",
@@ -2457,7 +2546,8 @@
       "test_ids": [
         "tst:src-tests-test-websocket-additional-rfc6455-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-x509-certificate-profiles",
@@ -2483,7 +2573,8 @@
         "tst:claim-tc-rfc5280-aki-ski-cert-chain-material",
         "tst:claim-tc-rfc5280-keyusage-eku-correctness"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:surface-x509-path-validation",
@@ -2507,7 +2598,8 @@
       "test_ids": [
         "tst:claim-tc-rfc5280-path-validation-correctness"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     },
     {
       "id": "feat:test-inventory",
@@ -2711,7 +2803,8 @@
         "tst:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
         "tst:pytest-file-tests-test-websocket-frames-py"
       ],
-      "requires": []
+      "requires": [],
+      "spec_ids": []
     }
   ],
   "tests": [
@@ -18842,8 +18935,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "9d4559fee395ae732dbd6c6d7acd30f60ac2564ab634c465b9f77007b6b8ba2c",
+      "package_version": "0.2.8",
+      "content_sha256": "e7bd19665fa1a92520ee9b21da493bd5e3e026209ac31fd64e344fcb1710bba5",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18858,8 +18951,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "d0f88f8b3a56f10a1be402a12c911624bc79b5211399ec33ad6d423bb8c10904",
+      "package_version": "0.2.8",
+      "content_sha256": "29b6b133e5ecd059c90da8ab7ef931f940ac566cb955a9f4b36a8d6b5f1e2ef7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18874,8 +18967,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "2e4f2ff23d7494283df650ffb00767f67667dff875899e3d005c5805f8cd1fea",
+      "package_version": "0.2.8",
+      "content_sha256": "761ffd5988667d68d1ed70d24b1c15946c69c1143115b0230a0a6ccb5cfa4238",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18890,8 +18983,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "e8eb076466f63c19ac1f27a09fc252195b36447cf17f37607c61f262904786d9",
+      "package_version": "0.2.8",
+      "content_sha256": "f8b91bbe54942b2157744e0419b7f6c4b6bb84d02497a391ca1a088114c3c3da",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18906,8 +18999,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "14e8f2e75b05a2354e444613b10e78ba661bb025fbf70de358345e310c9025f5",
+      "package_version": "0.2.8",
+      "content_sha256": "3e8243fe57d04a67d2eb94c02f100a466b7dd20566d292fd336979a35abdc6a2",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18922,8 +19015,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "8a9b64d4250cdb1fcb9d965dba156738761d92a0e823d559e3324a274b75bd0f",
+      "package_version": "0.2.8",
+      "content_sha256": "4aef17bb539ad05e48b04b70ee69119dc973ee4e16be407bc5d2d11fba0af607",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18938,8 +19031,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "a835cb5afcbad76060e2625ebdadb420d33e373d95f108645e3fabdb58f389f9",
+      "package_version": "0.2.8",
+      "content_sha256": "a2331253dabab9dc3e407adb55b25f0febb6c16ad590a515d97ac19f33a9b962",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18954,8 +19047,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "8c9bbfdb99bdac1238ee04832e59f74633af0ff8b4dcf8589aa748d34f5d7d7c",
+      "package_version": "0.2.8",
+      "content_sha256": "2145618a72dff6597602ca96df720776b7ac13023fe8ff5462be021621446940",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18970,8 +19063,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "354247cebe6a72d3ff237ed719ef00d7e4420a96f74baaea3dd0e7b7289c9a97",
+      "package_version": "0.2.8",
+      "content_sha256": "3026817d03ed825e1435612c08557b01dfa1fcadd5d1db32172169b79c7a27b1",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18986,8 +19079,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "ae54390825b4ec7d43751c430332aeb7e66654b2f520fa4dc40dd3893bcc18c1",
+      "package_version": "0.2.8",
+      "content_sha256": "400819479d8e5036da5fd39e30b768f82785aecd3f06fc18738cd1a2b0cce079",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19002,8 +19095,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "292c74ed694752c1c030dacfda8823a6e8d560852a10d12aa7d57c6de9b7ce22",
+      "package_version": "0.2.8",
+      "content_sha256": "c138f93e130f63857a2777dd40f3856fdceba7f4768d61dd0f2d0e5a9c7fe4cc",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19018,8 +19111,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "b4b2edfc60f175e333a654bf806392a480c8625fc86aeec029b9508194feaded",
+      "package_version": "0.2.8",
+      "content_sha256": "87fd1773ace8f82b7707dda6e8b633e285da493e8b29ea17c0dc776da3b4d8b9",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19034,8 +19127,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "a6fc0a01e2743d428644a208c2b93ad35184cdac16841097868587e5a0f39052",
+      "package_version": "0.2.8",
+      "content_sha256": "c3534a8ae8a38bdd1328cc652b750530fdd8c84e00ecf8e19c81301030da822f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19050,8 +19143,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "59ef0b1bd8975e91afc6cfcf8ceebcf9944704f456538fd340c970d915e1bf49",
+      "package_version": "0.2.8",
+      "content_sha256": "52047d10ab6538e7423e6233490be2eb699cd31e374f5b81d3daeeeda8eab98d",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19066,8 +19159,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "d8efeb257dd40f481e9ca55f84a4440868a1e8683c552b8a4a39e57c938bf134",
+      "package_version": "0.2.7",
+      "content_sha256": "129a1d94e36795f988372d43e6395467743f82a09dc0ee1f1812b3e282c54f38",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19082,8 +19175,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "f85943eed65300e52a928144a4fe07621aceae65240f098cd7a62a6a52404ddb",
+      "package_version": "0.2.7",
+      "content_sha256": "e4bf4f7921165fef26c8813fb3b5c62be664efa7b435712ed8346b3614d79634",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19098,8 +19191,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "3cd3d642b19a90119862e891a84e77862f02c9faa6961a7b24a9f6201ea497d9",
+      "package_version": "0.2.7",
+      "content_sha256": "bd5f459d3bd07a0185da3e0ed9d314e75858690b83ec80f1cd2d8763c6864e05",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19114,8 +19207,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "09507149eeb5cf58f04a2be349c3c00147a2e9c18b4a4adea15d18d13289d9f7",
+      "package_version": "0.2.7",
+      "content_sha256": "a317ff62451308e38f73e67f84fad1322611f4354aae04a5249f81831236d82f",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19130,8 +19223,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "40730700313cffb373f531f361693b65ce03b202a195c94a39ea2434854ac515",
+      "package_version": "0.2.7",
+      "content_sha256": "ec07f383ea95f99efccb12d7284e72aac4462da4016271e0261c7edf62328321",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19146,8 +19239,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "514b4e853d0d63041f120287eb6f7ec4a7a58933ed33658cc5a11f1f7563ee90",
+      "package_version": "0.2.7",
+      "content_sha256": "230a75d7fe3f84639ec7845223ff4676153f777b463d175fffe539222448115f",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19162,8 +19255,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "f5cb374415bb0fb5152816d5a7fd373f9264d47c53e82954ea4b8e320b4b0198",
+      "package_version": "0.2.7",
+      "content_sha256": "9449fd48da392e7f8874b42abbaa0aeaad80f7025780a09e4497e157ec614eb1",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19178,8 +19271,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "7b88a447134756b05ad22704d6c4776d8d04f5053dd2f1b24cb675a32951cabb",
+      "package_version": "0.2.7",
+      "content_sha256": "25afd3e318f828c0b9f907d3513fe729d1ce2992e1d0412a465d4be2922caf44",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19194,8 +19287,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "140212992908d719fd01657d901f650050e7091982437e0bfc7113e537fdf97f",
+      "package_version": "0.2.7",
+      "content_sha256": "90d1bf7a2be365843ba1a0bf2a17841ef2e7c5790770771550320c6304f28e12",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19212,8 +19305,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "ad2dd542956a22663105d8effd21036990b198f911d038e77da499882e67a331",
+      "package_version": "0.2.8",
+      "content_sha256": "d03d461a32d1cbc5798cd33fbda66589010b8d082b65bf989f18f761d273b587",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19229,8 +19322,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "485ff4a815e85fa64742d7e0fcd3acb3ada655fcf0193b8687e4aa6a99c99725",
+      "package_version": "0.2.8",
+      "content_sha256": "bacd750fcaee57277115e2bd61c5fde308624798839a34bce0bc8f1320de3287",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19246,8 +19339,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "c59709574807cbee7a24932f28457d62cad23ff3f9846952b49aa32534779440",
+      "package_version": "0.2.8",
+      "content_sha256": "c2f9addf6a50ccbfc020c40327de93027ec984bebd0dc12feb1f4febfa816293",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19263,8 +19356,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "59fee673b5e996e8006ba754a9bb3011e80058530113131993cbb2eb3eaf91cc",
+      "package_version": "0.2.8",
+      "content_sha256": "fe3ff8e895162ae90359401bac69bc8e8e5c98b2b31447fea3b6e1ae76516c79",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19280,8 +19373,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "5fa31fc6765df3a28da79c2a79828569cb275ecaa2d131fd0034905c330ee7e8",
+      "package_version": "0.2.8",
+      "content_sha256": "d789748eb6dd262134c80baf77a8c44dd85f6ca0ce1ab53586d25dcb576e32a1",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19297,8 +19390,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "2dac3715f16ad5273e7090f543e6b899bf5e9ddf0a6d765c73ea8745fbf148e7",
+      "package_version": "0.2.8",
+      "content_sha256": "7b350ed11cad9d9be5fce31e10f0f4350d6a071049a01c950af8694d5f0630d7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19314,8 +19407,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "10ca43d9005ec80dc8ac0a86aa89cd58b2bf328fca97bec9157321c1d5bdc116",
+      "package_version": "0.2.8",
+      "content_sha256": "6952e1ae415375b4dbe46c92537f6c6cd3dce5709a2507d906197bf8043fd6d6",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19331,8 +19424,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "d8ad7e550a9f9398a681154a61049146e2f82e60c6db35404c1422eb2812fe70",
+      "package_version": "0.2.8",
+      "content_sha256": "63b5056e142d551afb5a7c8e119b4e02913371771bb54c56c52464b1615893c2",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19348,8 +19441,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "1d2c6efaecab6c918976cb016f9806987eb4b4b7738d397ab8264ef785c2dea9",
+      "package_version": "0.2.8",
+      "content_sha256": "ab8ef1311b825d7474f24a8b2eeff2fee19183804746cbccd7234f9f5e2166a9",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19365,8 +19458,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "201fdc85d032123c5ece91ea8bb858de869cd04c404f34075eaa2cf73aa54292",
+      "package_version": "0.2.8",
+      "content_sha256": "ce9b9a9cd22703419af6d37aaf3e7da815291deb6bf493a16689f41d9019233e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19382,8 +19475,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "8719621710b0215429ab31a3677498cc119c4494abeae19c64b95b3dd136f081",
+      "package_version": "0.2.8",
+      "content_sha256": "e821e3c072a3973300b6c91eb2f6ce504cf4f34f4c6b49ed7c742a4315b7d5fc",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19399,8 +19492,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "68d22f3df30273de1d81c096fa0d4d32b5d0fe36780e17d94a9678d64cfb6217",
+      "package_version": "0.2.8",
+      "content_sha256": "fa4fab0acc1175f202b36fe1770cbe076332bf33e7bccf5eb539c477c9215b7d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19416,8 +19509,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "e46c5a61e648cd36d7bcaec9d2be62e9ca4020d9fd44fed13b17cc6f177116b6",
+      "package_version": "0.2.8",
+      "content_sha256": "bbea37ab830073ee6309011ee7aa9b13aa490e660bdf01448cd50f1d42a32993",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19433,8 +19526,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "a87f42c91635be8d9cf1f7f0a7c684bc318ba6c92bed23003d3233d9f86ce51b",
+      "package_version": "0.2.8",
+      "content_sha256": "9e7523c7f8fe3f5cad8bd05aa42796e96794c7427cb774639ef9c5dfc4082c8a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19450,8 +19543,8 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.6",
-      "content_sha256": "c195c092aa178a076e7bcfaedbda1b047dd6bdb6c722178a7b95bf955a295e9d",
+      "package_version": "0.2.8",
+      "content_sha256": "38914181571d8d366258bc4cce8837a9857b2e480e03687db9d811555b807f77",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19467,8 +19560,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "c950c982c0226374d979f837f98f2bc16969a1679896dbdeb587687bd2abebf1",
+      "package_version": "0.2.7",
+      "content_sha256": "61c262570ee7973943bf0e64d8902162005ed7c0f9ab6551aa698b4543ffeb24",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19484,8 +19577,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "95b01025f071f52d738d1508436c05818f558ba753a103687abc86b40779271b",
+      "package_version": "0.2.7",
+      "content_sha256": "5020ef482e0b809587749c42f76c7c2d9d2de253d4cf55df572fe9dde17892f6",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19501,8 +19594,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "f74d538598eceddb258d3ad7d21ab09cf8269a77ff60d0860108f95d34f05f7d",
+      "package_version": "0.2.7",
+      "content_sha256": "ab5cb13541e38cd7a1ba79f732ee6d50c80bfe22cbd71fc596de29dc869f12ad",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19518,8 +19611,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "8cf6d3727fd28071ded2ffcc3f429b76092c2af8e663319ccf2f40862b975b1a",
+      "package_version": "0.2.7",
+      "content_sha256": "7ddf8dc6e2155616ef9f1be350a201633616db2366d8387b71bfea4d4274343a",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19535,8 +19628,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "70d3421ce819e5db6a12a41dabc98c8dfd7be18abdfcc7eb0cfabbc1f676d49c",
+      "package_version": "0.2.7",
+      "content_sha256": "be4b45f7a1a1beebb5ba3a3322860299aff459fb02463e534051971b2e870516",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19552,8 +19645,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "c3e95e2757a990e69c87aabab17813678b5efe9c646171e1ef600d048bc748f5",
+      "package_version": "0.2.7",
+      "content_sha256": "f3ad6c4e6b9d84f2df607b167b77d20329ce172bf0d0365aee2280cce0790699",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19569,8 +19662,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "581411d75bd86f034e34aacd96f324c32e592f5703f220df4171b7e10f62e716",
+      "package_version": "0.2.7",
+      "content_sha256": "c7b0cda43a52c1b146d90c166b864085d0ed2cfc2df244215b85274a0d8a1331",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19586,8 +19679,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "d2ee414b726b38bc1e4aedfab26ef98fafb9924f182b09b4b8380d8dabaca600",
+      "package_version": "0.2.7",
+      "content_sha256": "3e3aea3f649fa3281259b1fcd1948921efb7bd7fbf65c00301e27f8897f984d8",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19603,8 +19696,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "871f3a035e5d9d05816b0799935250b149275bbdf85753cc92aa3d3f50ef6ef7",
+      "package_version": "0.2.7",
+      "content_sha256": "b03404d662b2b11d681bef420d799b14f3e4aa51a72ff08317489972e8994524",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19620,8 +19713,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "d005326bbd7efc3d4ad18483edcbbba526cde5b58a139053a7f4870a3c863118",
+      "package_version": "0.2.7",
+      "content_sha256": "78ae763d63c29db11145e042d4711de406cb203403b24d45f1cc18c0705370c9",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
