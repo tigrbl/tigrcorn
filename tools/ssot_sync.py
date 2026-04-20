@@ -29,6 +29,7 @@ INIT_NORMALIZED_DIRS = (
     "reports",
     "cache",
 )
+MAX_NORMALIZED_ID_LENGTH = 128
 
 TIER_MAP = {
     "local_conformance": "T2",
@@ -63,19 +64,19 @@ def _slug(value: str) -> str:
 
 
 def _claim_id(raw: str) -> str:
-    return f"clm:{_slug(raw)}"
+    return _normalized_prefixed_id("clm", raw)
 
 
 def _test_id(prefix: str, raw: str) -> str:
-    return f"tst:{prefix}-{_slug(raw)}"
+    return _normalized_prefixed_id("tst", f"{prefix}-{raw}")
 
 
 def _evidence_id(prefix: str, raw: str) -> str:
-    return f"evd:{prefix}-{_slug(raw)}"
+    return _normalized_prefixed_id("evd", f"{prefix}-{raw}")
 
 
 def _feature_id(raw: str) -> str:
-    return f"feat:{_slug(raw)}"
+    return _normalized_prefixed_id("feat", raw)
 
 
 def _feature_title(raw: str) -> str:
@@ -137,7 +138,19 @@ def _merge_impl_status(current: str, candidate: str) -> str:
 
 
 def _issue_id(raw: str) -> str:
-    return f"iss:{_slug(raw)}"
+    return _normalized_prefixed_id("iss", raw)
+
+
+def _normalized_prefixed_id(prefix: str, raw: str) -> str:
+    slug = _slug(raw) or "x"
+    candidate = f"{prefix}:{slug}"
+    if len(candidate) <= MAX_NORMALIZED_ID_LENGTH:
+        return candidate
+
+    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
+    head_room = MAX_NORMALIZED_ID_LENGTH - len(prefix) - len(digest) - 2
+    head = slug[:head_room].rstrip("-._") or "x"
+    return f"{prefix}:{head}-{digest}"
 
 
 def _sha256(path: Path) -> str:
@@ -159,7 +172,7 @@ def _load_ssot_package_metadata() -> dict[str, Any]:
         from ssot_registry.version import __version__
     except ImportError:
         return {
-            "version": "0.2.2",
+            "version": "0.2.10",
             "guard_policies": {
                 "claim_closure": {
                     "require_implemented_features": True,
@@ -195,13 +208,21 @@ def _load_ssot_package_metadata() -> dict[str, Any]:
                     {
                         "owner": "ssot-core",
                         "start": 1,
+                        "end": 599,
+                        "immutable": True,
+                        "deletable": False,
+                        "assignable_by_repo": False,
+                    },
+                    {
+                        "owner": "ssot-origin",
+                        "start": 600,
                         "end": 999,
                         "immutable": True,
                         "deletable": False,
                         "assignable_by_repo": False,
                     },
                     {
-                        "owner": "repo-local-default",
+                        "owner": "repo-local",
                         "start": 1000,
                         "end": 4999,
                         "immutable": False,
@@ -213,13 +234,21 @@ def _load_ssot_package_metadata() -> dict[str, Any]:
                     {
                         "owner": "ssot-core",
                         "start": 1,
+                        "end": 599,
+                        "immutable": True,
+                        "deletable": False,
+                        "assignable_by_repo": False,
+                    },
+                    {
+                        "owner": "ssot-origin",
+                        "start": 600,
                         "end": 999,
                         "immutable": True,
                         "deletable": False,
                         "assignable_by_repo": False,
                     },
                     {
-                        "owner": "repo-local-default",
+                        "owner": "repo-local",
                         "start": 1000,
                         "end": 4999,
                         "immutable": False,
@@ -400,6 +429,8 @@ def build_registry() -> dict[str, Any]:
         slot: str,
         horizon: str = "current",
         implementation_status: str = "implemented",
+        spec_ids: list[str] | None = None,
+        requires: list[str] | None = None,
     ) -> None:
         row = features.setdefault(
             feature_id,
@@ -421,7 +452,8 @@ def build_registry() -> dict[str, Any]:
                 },
                 "claim_ids": [],
                 "test_ids": [],
-                "requires": [],
+                "requires": list(requires or []),
+                "spec_ids": list(spec_ids or []),
             },
         )
         row["description"] = description or row["description"]
@@ -432,6 +464,12 @@ def build_registry() -> dict[str, Any]:
             row["plan"]["horizon"] = horizon
         if slot and not row["plan"]["slot"]:
             row["plan"]["slot"] = slot
+        for required_feature_id in requires or []:
+            if required_feature_id not in row["requires"]:
+                row["requires"].append(required_feature_id)
+        for spec_id in spec_ids or []:
+            if spec_id not in row["spec_ids"]:
+                row["spec_ids"].append(spec_id)
 
     def ensure_claim(
         *,
@@ -441,12 +479,13 @@ def build_registry() -> dict[str, Any]:
         tier: str,
         kind: str,
         feature_ids: list[str],
+        status: str = "promoted",
     ) -> None:
         if claim_id not in claims:
             claims[claim_id] = {
                 "id": claim_id,
                 "title": title,
-                "status": "promoted",
+                "status": status,
                 "tier": tier,
                 "kind": kind,
                 "description": description,
@@ -454,6 +493,8 @@ def build_registry() -> dict[str, Any]:
                 "test_ids": [],
                 "evidence_ids": [],
             }
+        elif claims[claim_id]["status"] != "promoted" and status == "promoted":
+            claims[claim_id]["status"] = status
         for feature_id in feature_ids:
             if feature_id not in claims[claim_id]["feature_ids"]:
                 claims[claim_id]["feature_ids"].append(feature_id)
@@ -992,6 +1033,60 @@ def build_registry() -> dict[str, Any]:
         if evidence_id not in tests[profile_test_id]["evidence_ids"]:
             tests[profile_test_id]["evidence_ids"].append(evidence_id)
 
+    strict_validation_feature_id = _feature_id("F-P8-RFC9651-STRICT-VALIDATION")
+    strict_validation_claim_id = _claim_id("TC-SPEC-STRUCTURED-FIELDS-STRICT-VALIDATION")
+    strict_validation_test_id = _test_id("src", "tests/test_structured_fields_validation.py")
+    strict_validation_source_evidence_id = _evidence_id("src", "src/tigrcorn/http/structured_fields.py")
+    strict_validation_test_evidence_id = _evidence_id("src", "tests/test_structured_fields_validation.py")
+    ensure_feature(
+        feature_id=strict_validation_feature_id,
+        title="F-P8-RFC9651-STRICT-VALIDATION",
+        description="Tighten RFC 9651 structured-field parsing and serialization so malformed strings, invalid keys, and invalid tokens fail closed while valid colon/slash tokens continue to round-trip.",
+        tier="T2",
+        slot="roadmap-feature",
+        horizon="current",
+        implementation_status="implemented",
+        spec_ids=["spc:2009"],
+        requires=[_feature_id("F-P8-RFC9651-BASELINE")],
+    )
+    ensure_claim(
+        claim_id=strict_validation_claim_id,
+        title="TC-SPEC-STRUCTURED-FIELDS-STRICT-VALIDATION",
+        description="The structured-field helper rejects malformed string escapes, rejects invalid key and token syntax, preserves RFC 9651-valid colon/slash tokens, and refuses to serialize non-conformant key, token, or string values.",
+        tier="T2",
+        kind="implementation_claim",
+        feature_ids=[strict_validation_feature_id],
+        status="implemented",
+    )
+    ensure_evidence(
+        evidence_id=strict_validation_source_evidence_id,
+        title="Source artifact src/tigrcorn/http/structured_fields.py",
+        kind="source_artifact",
+        tier="T2",
+        path="src/tigrcorn/http/structured_fields.py",
+        claim_ids=[strict_validation_claim_id],
+        test_ids=[],
+    )
+    ensure_evidence(
+        evidence_id=strict_validation_test_evidence_id,
+        title="Source artifact tests/test_structured_fields_validation.py",
+        kind="source_artifact",
+        tier="T2",
+        path="tests/test_structured_fields_validation.py",
+        claim_ids=[strict_validation_claim_id],
+        test_ids=[],
+    )
+    ensure_test(
+        test_id=strict_validation_test_id,
+        title="Test coverage tests/test_structured_fields_validation.py",
+        status="passing",
+        kind="pytest",
+        path="tests/test_structured_fields_validation.py",
+        feature_ids=[strict_validation_feature_id],
+        claim_ids=[strict_validation_claim_id],
+        evidence_ids=[strict_validation_source_evidence_id, strict_validation_test_evidence_id],
+    )
+
     test_inventory_feature_id = _feature_id("test-inventory")
     test_inventory_claim_id = _claim_id("test-inventory")
     ensure_feature(
@@ -1090,11 +1185,12 @@ def build_registry() -> dict[str, Any]:
     )
 
     registry = {
-        "schema_version": 4,
+        "schema_version": "0.1.0",
         "repo": {
             "id": "repo:tigrcorn",
             "name": "tigrcorn",
             "version": version,
+            "kind": "repo-local",
         },
         "tooling": {
             "ssot_registry_version": package_meta["version"],
@@ -1138,6 +1234,7 @@ def build_registry() -> dict[str, Any]:
                 "status": "frozen",
                 "frozen": True,
                 "feature_ids": boundary_feature_ids,
+                "profile_ids": [],
                 "canonical_doc": _relative(ROOT / "docs" / "review" / "conformance" / "CERTIFICATION_BOUNDARY.md"),
                 "canonical_registry_source": ".ssot/registry.json",
             }
@@ -1155,6 +1252,7 @@ def build_registry() -> dict[str, Any]:
         ],
         "adrs": adrs,
         "specs": specs,
+        "profiles": [],
     }
     return registry
 
