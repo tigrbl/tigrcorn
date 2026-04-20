@@ -1,0 +1,21 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1008"
+number: 1008
+slug: "gate-graph"
+title: ": Release Gate Graph"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Status: accepted"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1008: Release Gate Graph
+  
+  Status: accepted
+  
+  Release gates consume a machine-readable graph of claims, risks, tests, and retained evidence. Blocking risks fail closed, retained inputs must exist, and legacy unittest growth is denied outside the approved inventory.

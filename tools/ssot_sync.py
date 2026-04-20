@@ -144,6 +144,14 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _normalized_content_sha(path: Path) -> str:
+    try:
+        from ssot_registry.util.fs import sha256_normalized_text_path
+    except ImportError:
+        return _sha256(path)
+    return sha256_normalized_text_path(path)
+
+
 def _load_ssot_package_metadata() -> dict[str, Any]:
     try:
         from ssot_registry.model.document import default_document_id_reservations, load_document_manifest
@@ -258,35 +266,91 @@ def _inventory_documents(
     package_version: str,
     manifest: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    manifest_by_name = {entry["filename"]: entry for entry in manifest}
     rows: list[dict[str, Any]] = []
-    for path in sorted(root.glob("*.md")):
-        name = path.name
-        match = re.match(r"^(ADR|SPEC)-(?P<number>\d{4})-(?P<slug>[a-z0-9-]+)\.md$", name)
+    manifest_paths = {entry["target_path"] for entry in manifest}
+
+    for entry in manifest:
+        row = {
+            "id": entry["id"],
+            "number": entry["number"],
+            "slug": entry["slug"],
+            "title": entry["title"],
+            "path": entry["target_path"],
+            "origin": entry["origin"],
+            "managed": True,
+            "immutable": bool(entry["immutable"]),
+            "package_version": package_version,
+            "content_sha256": entry["sha256"],
+        }
+        if kind == "adr":
+            row["status"] = entry.get("status", "draft")
+            row["supersedes"] = entry.get("supersedes", [])
+            row["superseded_by"] = entry.get("superseded_by", [])
+            row["status_notes"] = entry.get("status_notes", [])
+        else:
+            row["kind"] = entry.get("kind", "normative")
+            row["status"] = entry.get("status", "draft")
+            row["supersedes"] = entry.get("supersedes", [])
+            row["superseded_by"] = entry.get("superseded_by", [])
+            row["status_notes"] = entry.get("status_notes", [])
+        rows.append(row)
+
+    try:
+        from ssot_registry.util.document_io import load_document_yaml, normalize_document_payload
+    except ImportError:
+        load_document_yaml = None
+        normalize_document_payload = None
+
+    pattern = re.compile(rf"^({'ADR' if kind == 'adr' else 'SPEC'})-(?P<number>\d{{4}})-(?P<slug>[a-z0-9-]+)\.(?P<ext>md|yaml|json)$")
+    for path in sorted(root.iterdir()):
+        if not path.is_file():
+            continue
+        rel_path = _relative(path)
+        if rel_path in manifest_paths:
+            continue
+        match = pattern.match(path.name)
         if match is None:
             continue
+
         number = int(match.group("number"))
         slug = match.group("slug")
-        manifest_entry = manifest_by_name.get(name)
-        is_core = number < 1000
         row = {
             "id": f"{'adr' if kind == 'adr' else 'spc'}:{number:04d}",
             "number": number,
             "slug": slug,
-            "title": manifest_entry["title"] if manifest_entry else _document_title(path),
-            "path": _relative(path),
-            "origin": "ssot-core" if is_core else "repo-local",
-            "managed": bool(is_core),
-            "immutable": bool(is_core),
+            "title": _document_title(path),
+            "path": rel_path,
+            "origin": "repo-local",
+            "managed": False,
+            "immutable": False,
             "package_version": package_version,
-            "content_sha256": manifest_entry["sha256"] if manifest_entry else _sha256(path),
+            "content_sha256": _normalized_content_sha(path),
         }
-        if kind == "adr":
-            row["status"] = manifest_entry["status"] if manifest_entry else _adr_status(path)
-            row["supersedes"] = manifest_entry["supersedes"] if manifest_entry else []
-            row["superseded_by"] = manifest_entry["superseded_by"] if manifest_entry else []
+        if path.suffix.lower() in {".yaml", ".json"} and load_document_yaml is not None and normalize_document_payload is not None:
+            payload = normalize_document_payload(kind, load_document_yaml(path))
+            row["title"] = payload.get("title", row["title"])
+            if kind == "adr":
+                row["status"] = payload.get("status", "draft")
+                row["supersedes"] = payload.get("supersedes", [])
+                row["superseded_by"] = payload.get("superseded_by", [])
+                row["status_notes"] = payload.get("status_notes", [])
+            else:
+                row["kind"] = payload.get("spec_kind", "local-policy")
+                row["status"] = payload.get("status", "draft")
+                row["supersedes"] = payload.get("supersedes", [])
+                row["superseded_by"] = payload.get("superseded_by", [])
+                row["status_notes"] = payload.get("status_notes", [])
+        elif kind == "adr":
+            row["status"] = _adr_status(path)
+            row["supersedes"] = []
+            row["superseded_by"] = []
+            row["status_notes"] = []
         else:
-            row["kind"] = manifest_entry["kind"] if manifest_entry else "repo-local"
+            row["kind"] = "local-policy"
+            row["status"] = "draft"
+            row["supersedes"] = []
+            row["superseded_by"] = []
+            row["status_notes"] = []
         rows.append(row)
     return rows
 
@@ -1150,8 +1214,6 @@ def ensure_initialized_ssot_tree(version: str) -> None:
 
 def write_registry(*, check: bool) -> int:
     registry = build_registry()
-    if not check:
-        ensure_initialized_ssot_tree(str(registry["repo"]["version"]))
     REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(registry, indent=2, sort_keys=False) + "\n"
 
@@ -1160,13 +1222,25 @@ def write_registry(*, check: bool) -> int:
         if current != payload:
             print(".ssot/registry.json is out of date")
             return 1
-    else:
-        REGISTRY_PATH.write_text(payload, encoding="utf-8")
+        return 0
 
-    report = validate_registry(registry, REGISTRY_PATH)
-    if not report["passed"]:
-        for failure in report["failures"]:
-            print(failure)
+    ensure_initialized_ssot_tree(str(registry["repo"]["version"]))
+    REGISTRY_PATH.write_text(payload, encoding="utf-8")
+
+    try:
+        from ssot_registry.api.upgrade import upgrade_registry
+    except ImportError:
+        report = validate_registry(registry, REGISTRY_PATH)
+        if not report["passed"]:
+            for failure in report["failures"]:
+                print(failure)
+            return 1
+        return 0
+
+    try:
+        upgrade_registry(REGISTRY_PATH, sync_docs=True, write_report=True)
+    except Exception as exc:
+        print(str(exc))
         return 1
     return 0
 

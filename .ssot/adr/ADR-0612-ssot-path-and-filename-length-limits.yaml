@@ -1,0 +1,22 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0612"
+number: 612
+slug: "ssot-path-and-filename-length-limits"
+title: "Enforce max path and filename lengths under `.ssot`"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Files under `.ssot` MUST respect these limits:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Files under `.ssot` MUST respect these limits:
+  
+  - Maximum relative path length: **240** characters.
+  - Maximum filename length: **120** characters.
+  
+  Validation fails when either limit is exceeded.

@@ -1,0 +1,22 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1001"
+number: 1001
+slug: "preserve-asgi-boundary"
+title: "preserve the ASGI boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: TigrCorn remains an ASGI server at its public boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1001 — preserve the ASGI boundary
+  
+  Decision: TigrCorn remains an ASGI server at its public boundary.
+  
+  Reason: that keeps it interchangeable with Uvicorn and Hypercorn and lets any standard
+  ASGI app run unchanged.

@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0607"
+number: 607
+slug: "immutable-boundary-and-release-snapshots"
+title: "Immutable boundary and release snapshots"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Frozen boundaries and promoted/published releases emit immutable snapshots with hashes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Frozen boundaries and promoted/published releases emit immutable snapshots with hashes.

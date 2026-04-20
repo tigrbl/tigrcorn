@@ -1,0 +1,30 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0602"
+number: 602
+slug: "graph-model"
+title: "Graph model"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The authored registry is entity-centric JSON."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  The authored registry is entity-centric JSON.
+  The graph export is derived and consists of nodes and typed edges.
+  
+  Representative edge types:
+  - `SCOPES`
+  - `USES_BOUNDARY`
+  - `ASSERTS`
+  - `VERIFIES`
+  - `SUPPORTS`
+  - `DERIVES_FROM`
+  - `AFFECTS`
+  - `PUBLISHES`
+  - `INCLUDES`

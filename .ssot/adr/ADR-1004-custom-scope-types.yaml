@@ -1,0 +1,22 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1004"
+number: 1004
+slug: "custom-scope-types"
+title: "custom scope types are allowed behind the ASGI surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: custom transports may expose custom scope types in the future."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1004 — custom scope types are allowed behind the ASGI surface
+  
+  Decision: custom transports may expose custom scope types in the future.
+  
+  Reason: the server needs an escape hatch for non-HTTP, non-WebSocket protocols while still
+  preserving strict compatibility for the standard protocol set.

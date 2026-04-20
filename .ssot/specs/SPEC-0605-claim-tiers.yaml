@@ -1,0 +1,23 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0605"
+number: 605
+slug: "claim-tiers"
+title: "Claim tiers"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Supported tiers:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  Supported tiers:
+  - `T0` declared intent or inventory-level
+  - `T1` maintainer-asserted with local evidence
+  - `T2` reproducible project-controlled verification
+  - `T3` release-grade certified claim
+  - `T4` independently reviewed or externally attested claim

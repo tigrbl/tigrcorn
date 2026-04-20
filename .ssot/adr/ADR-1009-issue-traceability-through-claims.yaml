@@ -1,0 +1,27 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1009"
+number: 1009
+slug: "issue-traceability-through-claims"
+title: "researched issue traceability through claim rows"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Status: accepted"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  Status: accepted
+  
+  Researched GitHub issues that affect current or candidate package claims must be linked from claim rows in `docs/review/conformance/claims_registry.json`.
+  
+  When a repo-local governance or certification concern spans multiple implemented claim rows, the issue must be attached to each materially affected claim row rather than only to prose notes.
+  
+  ## Context
+  
+  Tigrcorn already treats issues as plannable work items, but researched GitHub issues only appear in the canonical SSOT registry when a claim row carries an explicit `issue_refs` link. That created drift where `docs/notes/issue_reg.md` contained researched issues that the registry did not represent canonically.

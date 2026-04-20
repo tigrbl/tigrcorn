@@ -1,0 +1,26 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0611"
+number: 611
+slug: "planning-horizons"
+title: "Planning horizons"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Supported horizons:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  Supported horizons:
+  - `current`
+  - `next`
+  - `future`
+  - `explicit`
+  - `backlog`
+  - `out_of_bounds`
+  
+  Horizons answer *when* a feature or issue is targeted. They do not answer support lifecycle.

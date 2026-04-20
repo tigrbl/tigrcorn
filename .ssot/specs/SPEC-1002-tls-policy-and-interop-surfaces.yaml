@@ -1,0 +1,46 @@
+schema_version: 9
+kind: "spec"
+id: "spc:1002"
+number: 1002
+slug: "tls-policy-and-interop-surfaces"
+title: "TLS policy and interoperability surfaces"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This spec groups Tigrcorn's repo-local TLS and certificate-policy surfaces that are currently spread across RFC-scoped claim rows."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This spec groups Tigrcorn's repo-local TLS and certificate-policy surfaces that are currently spread across RFC-scoped claim rows.
+  
+  ## Scope
+  
+  This spec covers the package-owned TCP/TLS 1.3 and adjacent policy surfaces that matter to current SSOT planning and registry traceability:
+  
+  - external peer interoperability
+  - bounded stdlib backend control
+  - ALPN policy
+  - SNI handling
+  - status request and OCSP policy
+  - certificate profile material
+  - X.509 path validation
+  - HTTPS service identity compatibility
+  - HTTPS over HTTP/1.1 and HTTP/2 TLS posture
+  - QUIC TLS mapping and downstream HTTP/3 control-plane dependencies
+  
+  ## Requirements
+  
+  1. External peer interoperability claims must remain decomposed into atomic RFC-scoped rows rather than one broad correctness statement.
+  2. The stdlib TLS backend, if retained, is a bounded differential control and not a replacement for the package-owned TLS claim.
+  3. ALPN, SNI, OCSP or status-request behavior, certificate-profile material, and path validation must stay explicit in claim metadata and tests.
+  4. Higher-level HTTPS, HTTP/2-over-TLS, QUIC-TLS, and HTTP/3 promotion-facing claims may depend on lower-level TLS rows, but must keep those dependencies visible in registry planning.
+  
+  ## Relationship To Standards
+  
+  This repo-local spec does not replace the RFC-scoped claim rows. It provides one local specification surface that explains how the TLS-related claim family is organized in Tigrcorn's SSOT material.
+spec_kind: "local-policy"

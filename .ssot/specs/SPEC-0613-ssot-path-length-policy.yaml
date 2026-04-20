@@ -1,0 +1,36 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0613"
+number: 613
+slug: "ssot-path-length-policy"
+title: "SSOT path-length policy"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This specification defines path and filename limits for artifacts stored under `.ssot/`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  ## Scope
+  
+  This specification defines path and filename limits for artifacts stored under `.ssot/`.
+  
+  ## Rules
+  
+  For any file path that is under `.ssot`:
+  
+  1. The full repository-relative path MUST be at most **240** characters.
+  2. The filename component MUST be at most **120** characters.
+  
+  These limits apply to:
+  
+  - Declared `.ssot` paths in registry entities (for example evidence/documents).
+  - Materialized files physically present under `.ssot`.
+  
+  ## Enforcement
+  
+  Validation MUST fail when either rule is violated.

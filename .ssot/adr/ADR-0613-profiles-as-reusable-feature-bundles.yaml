@@ -1,0 +1,41 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0613"
+number: 613
+slug: "profiles-as-reusable-feature-bundles"
+title: "Profiles are reusable feature bundles with derived pass status"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The registry needed an entity between atomic features and release boundaries:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  The registry needed an entity between atomic features and release boundaries:
+  
+  - features are independently targetable,
+  - boundaries are release/freeze artifacts,
+  - releases certify a boundary scope.
+  
+  Teams also need reusable capability bundles that can be composed and evaluated.
+  
+  ## Decision
+  
+  Introduce a first-class `profiles` entity:
+  
+  - profile rows bundle `feature_ids` and nested `profile_ids`,
+  - profile pass/fail is computed (never stored),
+  - feature pass still requires satisfying claims and guard checks,
+  - boundary scope may include both direct `feature_ids` and `profile_ids`,
+  - boundary feature scope is resolved dynamically at evaluation/reporting time.
+  
+  Tier resolution is fail-closed:
+  
+  1. feature `plan.target_claim_tier`,
+  2. profile `claim_tier`,
+  3. no tier => failing evaluation.

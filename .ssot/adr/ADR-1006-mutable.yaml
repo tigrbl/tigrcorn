@@ -1,0 +1,33 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1006"
+number: 1006
+slug: "mutable"
+title: "mutable and immutable marks"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Use `MUT.json` as the canonical folder-state marker."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  # ADR 1006 — mutable and immutable marks
+  
+  Use `MUT.json` as the canonical folder-state marker.
+  
+  States:
+  
+  - `mutable`
+  - `immutable`
+  - `mixed`
+  
+  Nearest-ancestor-wins.
+  
+  ## Context
+  
+  The repository needs an explicit rule for frozen release/evidence folders and an agent-friendly way to resolve whether a path may be edited.

@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0604"
+number: 604
+slug: "normalized-prefixed-ids"
+title: "Normalized prefixed IDs"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Every first-class entity uses a normalized prefixed ID."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Every first-class entity uses a normalized prefixed ID.

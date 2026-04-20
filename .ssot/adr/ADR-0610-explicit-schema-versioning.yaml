@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0610"
+number: 610
+slug: "explicit-schema-versioning"
+title: "Explicit schema versioning"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Breaking schema changes increment `schema_version` and require migration."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Breaking schema changes increment `schema_version` and require migration.

@@ -1,0 +1,31 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1005"
+number: 1005
+slug: "doc-gov"
+title: "doc governance tree"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Adopt short-path mutable documentation folders under `docs/`:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  # ADR 1005 — doc governance tree
+  
+  Adopt short-path mutable documentation folders under `docs/`:
+  
+  - `docs/gov/`
+  - `docs/comp/`
+  - `docs/notes/`
+  
+  Use `MUT.json` markers plus index files for navigation.
+  
+  ## Context
+  
+  The repository needs a durable, scalable documentation layout that keeps new mutable docs out of root and makes navigation obvious for both humans and agents.

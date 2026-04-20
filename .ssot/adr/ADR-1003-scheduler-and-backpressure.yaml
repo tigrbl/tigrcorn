@@ -1,0 +1,21 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1003"
+number: 1003
+slug: "scheduler-and-backpressure"
+title: "scheduler and backpressure are separate concerns"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: concurrency and flow control belong in explicit scheduler and flow modules."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1003 — scheduler and backpressure are separate concerns
+  
+  Decision: concurrency and flow control belong in explicit scheduler and flow modules.
+  
+  Reason: protocol handlers should not encode ad-hoc concurrency policy.

@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0600"
+number: 600
+slug: "canonical-json-registry"
+title: "Canonical registry is a single JSON document"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The only authored machine-readable source of truth is `.ssot/registry.json`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The only authored machine-readable source of truth is `.ssot/registry.json`.

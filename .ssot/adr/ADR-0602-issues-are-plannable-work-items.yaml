@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0602"
+number: 602
+slug: "issues-are-plannable-work-items"
+title: "Issues are plannable work items"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Issues and tickets can be planned as current, next, future, explicit, backlog, or out-of-bounds, but they are not substitute targets for features."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Issues and tickets can be planned as current, next, future, explicit, backlog, or out-of-bounds, but they are not substitute targets for features.

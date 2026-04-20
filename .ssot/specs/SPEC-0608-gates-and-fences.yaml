@@ -1,0 +1,25 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0608"
+number: 608
+slug: "gates-and-fences"
+title: "Gates and fences"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The system enforces:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  The system enforces:
+  - claim closure guards
+  - certification gates
+  - promotion gates
+  - publication fences
+  - lifecycle guards
+  - boundary freezing
+  - release-blocking issue and risk fences

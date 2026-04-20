@@ -1,0 +1,54 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2004"
+number: 2004
+slug: "quic"
+title: "QUIC"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This repository includes a concrete QUIC transport core rather than only packet helpers."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  # QUIC
+  
+  This repository includes a concrete QUIC transport core rather than only packet helpers.
+  
+  ## Implemented And Locally Validated In This Build
+  
+  - QUIC packet helpers for long-header packets, short-header packets, Version Negotiation, Retry, and Stateless Reset parsing/encoding
+  - QUIC-TLS packet protection helpers for Initial, Handshake, 0-RTT, and 1-RTT packet protection
+  - a binary TLS 1.3 handshake driver with certificate verification, transport-parameter negotiation, session tickets, resumption, and 0-RTT support
+  - AES-based QUIC header protection helpers
+  - Retry integrity-tag computation and validation
+  - multiplexed stream frames, ACK ranges, RESET_STREAM / STOP_SENDING / CRYPTO / MAX_DATA / MAX_STREAM_DATA / MAX_STREAMS / PATH_CHALLENGE / PATH_RESPONSE / HANDSHAKE_DONE / CONNECTION_CLOSE frame handling in the codec
+  - connection-ID-based runtime session routing in the HTTP/3 UDP server path
+  - live recovery, ACK, loss, PTO, and pacing integration in the runtime
+  - public API / CLI startup for certificate-driven QUIC-TLS listeners over UDP
+  - UDP listener client-certificate verification through `ssl_ca_certs` and `ssl_require_client_cert`
+  - UDP listener Retry configuration through `quic_require_retry` / `--quic-require-retry`
+  
+  ## Evidence Tiers
+  
+  The canonical package-wide target for this transport is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+  
+  QUIC evidence is now split explicitly:
+  
+  - **local conformance** — RFC 9000, RFC 9001, RFC 9002, RFC 7301, and local TLS / X.509 fixtures in `corpus.json`
+  - **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/`
+  - **independent certification** — `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/`
+  
+  ## Current Certification Status
+  
+  The independent matrix proves that the UDP listener can complete an OpenSSL QUIC handshake and negotiate `h3`, and it now preserves passing third-party HTTP/3 feature-axis scenarios for Retry, resumption, 0-RTT, migration, mTLS, and GOAWAY / QPACK.
+  
+  Under the authoritative certification boundary, the QUIC transport now satisfies the required independent evidence for RFC 9000, RFC 9001, RFC 9002, and the HTTP/3 carrier that depends on them. The package-wide RFC 8446 target is no longer blocked by the public TCP/TLS listener path.
+  
+  Broader flow-control and strict all-surfaces-independent follow-on work remains tracked separately and does not change the current passing release-gate result.
+spec_kind: "local-policy"

@@ -1,0 +1,24 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0603"
+number: 603
+slug: "feature-lifecycle"
+title: "Feature lifecycle"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Supported lifecycle stages:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  Supported lifecycle stages:
+  - `active`
+  - `deprecated`
+  - `obsolete`
+  - `removed`
+  
+  Lifecycle answers support state. It is distinct from planning horizon and implementation status.

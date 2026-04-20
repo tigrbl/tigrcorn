@@ -1,14 +1,15 @@
 {
-  "schema_version": 4,
+  "schema_version": 9,
   "repo": {
     "id": "repo:tigrcorn",
     "name": "tigrcorn",
-    "version": "0.3.9"
+    "version": "0.3.9",
+    "kind": "repo-local"
   },
   "tooling": {
-    "ssot_registry_version": "0.2.2",
-    "initialized_with_version": "0.2.2",
-    "last_upgraded_from_version": "0.2.2"
+    "ssot_registry_version": "0.2.6",
+    "initialized_with_version": "0.2.6",
+    "last_upgraded_from_version": "0.2.6"
   },
   "paths": {
     "ssot_root": ".ssot",
@@ -92,13 +93,21 @@
       {
         "owner": "ssot-core",
         "start": 1,
+        "end": 599,
+        "immutable": true,
+        "deletable": false,
+        "assignable_by_repo": false
+      },
+      {
+        "owner": "ssot-origin",
+        "start": 600,
         "end": 999,
         "immutable": true,
         "deletable": false,
         "assignable_by_repo": false
       },
       {
-        "owner": "repo-local-default",
+        "owner": "repo-local",
         "start": 1000,
         "end": 4999,
         "immutable": false,
@@ -110,13 +119,21 @@
       {
         "owner": "ssot-core",
         "start": 1,
+        "end": 599,
+        "immutable": true,
+        "deletable": false,
+        "assignable_by_repo": false
+      },
+      {
+        "owner": "ssot-origin",
+        "start": 600,
         "end": 999,
         "immutable": true,
         "deletable": false,
         "assignable_by_repo": false
       },
       {
-        "owner": "repo-local-default",
+        "owner": "repo-local",
         "start": 1000,
         "end": 4999,
         "immutable": false,
@@ -9013,6 +9030,9 @@
           "F-P2-BASE-DEFAULT-AUDIT"
         ],
         "id": "TC-AUDIT-DEFAULT-BASE",
+        "issue_refs": [
+          "#13"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-PROFILE-DEFAULT-DRIFT"
@@ -9031,7 +9051,9 @@
           "RM-P2-01"
         ]
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:13"
+      ]
     },
     {
       "id": "clm:tc-audit-flag-contract-reviewed",
@@ -9063,6 +9085,9 @@
           "F-P2-FLAG-CONTRACT-REGISTRY"
         ],
         "id": "TC-AUDIT-FLAG-CONTRACT-REVIEWED",
+        "issue_refs": [
+          "#13"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-PROFILE-DEFAULT-DRIFT",
@@ -9082,7 +9107,9 @@
           "RM-P2-03"
         ]
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:13"
+      ]
     },
     {
       "id": "clm:tc-audit-profile-effective-defaults",
@@ -9113,6 +9140,9 @@
           "F-P2-PROFILE-DEFAULT-AUDIT"
         ],
         "id": "TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS",
+        "issue_refs": [
+          "#13"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-PROFILE-DEFAULT-DRIFT"
@@ -9131,7 +9161,9 @@
           "RM-P2-02"
         ]
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:13"
+      ]
     },
     {
       "id": "clm:tc-cert-automated-release-pipeline",
@@ -9210,9 +9242,15 @@
         "class": "certification_support",
         "current_evidence": "local_conformance",
         "id": "TC-CERT-INTEROP-RETENTION-BUNDLES",
+        "issue_refs": [
+          "#19"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-RELEASE-EVIDENCE-RETENTION"
+        ],
+        "spec_refs": [
+          "SPEC-1001"
         ],
         "source_files": [
           "docs/conformance/interop_retention.json",
@@ -9224,7 +9262,9 @@
         "surface": "interop_retention",
         "text": "Interop retention bundles are explicit release inputs and point to preserved canonical release-root evidence."
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:19"
+      ]
     },
     {
       "id": "clm:tc-cert-performance-retention-bundles",
@@ -9260,9 +9300,15 @@
         "class": "certification_support",
         "current_evidence": "local_conformance",
         "id": "TC-CERT-PERFORMANCE-RETENTION-BUNDLES",
+        "issue_refs": [
+          "#19"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-RELEASE-EVIDENCE-RETENTION"
+        ],
+        "spec_refs": [
+          "SPEC-1001"
         ],
         "source_files": [
           "docs/conformance/perf_retention.json",
@@ -9274,7 +9320,9 @@
         "surface": "performance_retention",
         "text": "Performance artifact bundles are retained as explicit release inputs rather than informal supporting attachments."
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:19"
+      ]
     },
     {
       "id": "clm:tc-cert-release-evidence-attachments",
@@ -9356,9 +9404,15 @@
         "class": "certification_support",
         "current_evidence": "local_conformance",
         "id": "TC-CERT-RELEASE-GATE-GRAPH",
+        "issue_refs": [
+          "#19"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-TRACEABILITY-GOVERNANCE-GAP"
+        ],
+        "spec_refs": [
+          "SPEC-1001"
         ],
         "source_files": [
           "src/tigrcorn/compat/release_gates.py",
@@ -9371,7 +9425,9 @@
         "surface": "release_gate_graph",
         "text": "Release gates consume machine-readable claims, risks, tests, and retained evidence inputs and fail closed on open blocking governance defects."
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:19"
+      ]
     },
     {
       "id": "clm:tc-cert-trusted-publishing-oidc",
@@ -10109,9 +10165,16 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "id": "TC-GOV-DEFAULT-AUDIT-POLICY",
+        "issue_refs": [
+          "#13"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-DEFAULT-BACKFILL-NONE"
+        ],
+        "spec_refs": [
+          "SPEC-1001",
+          "SPEC-2008"
         ],
         "source_files": [
           "docs/governance/DEFAULT_AUDIT_POLICY.md",
@@ -10122,7 +10185,9 @@
         "surface": "default_audit_governance",
         "text": "Generated default audits are governed by explicit package-owned authority that keeps code, generated audits, and operator tables aligned."
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:13"
+      ]
     },
     {
       "id": "clm:tc-gov-risk-register-traceability",
@@ -10210,9 +10275,15 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "id": "TC-GOV-TEST-STYLE-POLICY",
+        "issue_refs": [
+          "#16"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-TEST-STYLE-DRIFT"
+        ],
+        "spec_refs": [
+          "SPEC-1001"
         ],
         "source_files": [
           "docs/governance/TEST_STYLE_POLICY.md",
@@ -10224,7 +10295,9 @@
         "surface": "test_style_governance",
         "text": "Pytest is the sole forward runner while legacy unittest coverage is frozen behind an explicit approved inventory."
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:16"
+      ]
     },
     {
       "id": "clm:tc-interop-tls13-curl-openssl35",
@@ -12384,6 +12457,9 @@
           "F-P8-PYTEST-FORWARD"
         ],
         "id": "TC-ROADMAP-P8-PYTEST-FORWARD",
+        "issue_refs": [
+          "#16"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-TEST-STYLE-DRIFT"
@@ -12401,7 +12477,9 @@
           "RM-P8-02"
         ]
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:16"
+      ]
     },
     {
       "id": "clm:tc-roadmap-p8-release-gated-evidence",
@@ -12441,6 +12519,9 @@
           "F-P8-RELEASE-GATED-EVIDENCE"
         ],
         "id": "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
+        "issue_refs": [
+          "#19"
+        ],
         "required_evidence_tier": "local_conformance",
         "risk_refs": [
           "R-TRACEABILITY-GOVERNANCE-GAP"
@@ -12459,7 +12540,9 @@
           "RM-P8-03"
         ]
       },
-      "issue_ids": []
+      "issue_ids": [
+        "iss:19"
+      ]
     },
     {
       "id": "clm:tc-roadmap-p8-rfc9651-baseline",
@@ -17861,6 +17944,33 @@
       "release_blocking": false
     },
     {
+      "id": "iss:13",
+      "title": "Tracked issue #13",
+      "status": "open",
+      "severity": "medium",
+      "description": "Imported issue reference #13 from Tigrcorn planning and claim metadata.",
+      "plan": {
+        "horizon": "current",
+        "slot": "issues"
+      },
+      "feature_ids": [
+        "feat:f-p2-base-default-audit",
+        "feat:f-p2-profile-default-audit",
+        "feat:f-p2-flag-contract-registry",
+        "feat:surface-default-audit-governance"
+      ],
+      "claim_ids": [
+        "clm:tc-audit-default-base",
+        "clm:tc-audit-profile-effective-defaults",
+        "clm:tc-audit-flag-contract-reviewed",
+        "clm:tc-gov-default-audit-policy"
+      ],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": false
+    },
+    {
       "id": "iss:15",
       "title": "Tracked issue #15",
       "status": "open",
@@ -17923,6 +18033,29 @@
       "release_blocking": false
     },
     {
+      "id": "iss:16",
+      "title": "Tracked issue #16",
+      "status": "open",
+      "severity": "medium",
+      "description": "Imported issue reference #16 from Tigrcorn planning and claim metadata.",
+      "plan": {
+        "horizon": "current",
+        "slot": "issues"
+      },
+      "feature_ids": [
+        "feat:f-p8-pytest-forward",
+        "feat:surface-test-style-governance"
+      ],
+      "claim_ids": [
+        "clm:tc-roadmap-p8-pytest-forward",
+        "clm:tc-gov-test-style-policy"
+      ],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": false
+    },
+    {
       "id": "iss:17",
       "title": "Tracked issue #17",
       "status": "open",
@@ -17958,6 +18091,33 @@
       ],
       "claim_ids": [
         "clm:tc-rfc9113-http2-default-initialization"
+      ],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": false
+    },
+    {
+      "id": "iss:19",
+      "title": "Tracked issue #19",
+      "status": "open",
+      "severity": "medium",
+      "description": "Imported issue reference #19 from Tigrcorn planning and claim metadata.",
+      "plan": {
+        "horizon": "current",
+        "slot": "issues"
+      },
+      "feature_ids": [
+        "feat:f-p8-release-gated-evidence",
+        "feat:surface-release-gate-graph",
+        "feat:surface-interop-retention",
+        "feat:surface-performance-retention"
+      ],
+      "claim_ids": [
+        "clm:tc-roadmap-p8-release-gated-evidence",
+        "clm:tc-cert-release-gate-graph",
+        "clm:tc-cert-interop-retention-bundles",
+        "clm:tc-cert-performance-retention-bundles"
       ],
       "test_ids": [],
       "evidence_ids": [],
@@ -18278,7 +18438,8 @@
         "feat:test-inventory"
       ],
       "canonical_doc": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
-      "canonical_registry_source": ".ssot/registry.json"
+      "canonical_registry_source": ".ssot/registry.json",
+      "profile_ids": []
     }
   ],
   "releases": [
@@ -18673,579 +18834,800 @@
   ],
   "adrs": [
     {
-      "id": "adr:0001",
-      "number": 1,
+      "id": "adr:0600",
+      "number": 600,
       "slug": "canonical-json-registry",
       "title": "Canonical registry is a single JSON document",
-      "path": ".ssot/adr/ADR-0001-canonical-json-registry.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0600-canonical-json-registry.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "9f5bb7d2ee345837ed30579c9e494a239f470855776ba5dc10e1e5285ec75997",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "9d4559fee395ae732dbd6c6d7acd30f60ac2564ab634c465b9f77007b6b8ba2c",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0002",
-      "number": 2,
+      "id": "adr:0601",
+      "number": 601,
       "slug": "features-are-targetable-units",
       "title": "Features are the targetable units",
-      "path": ".ssot/adr/ADR-0002-features-are-targetable-units.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0601-features-are-targetable-units.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "c088e2e19d94b2751b170bff365d71361ee505e67c6467718b9dba9819fa98cb",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "d0f88f8b3a56f10a1be402a12c911624bc79b5211399ec33ad6d423bb8c10904",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0003",
-      "number": 3,
+      "id": "adr:0602",
+      "number": 602,
       "slug": "issues-are-plannable-work-items",
       "title": "Issues are plannable work items",
-      "path": ".ssot/adr/ADR-0003-issues-are-plannable-work-items.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0602-issues-are-plannable-work-items.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "5f9facd077de1b597cd92f881be2f24e7d2a84c53fbafadaa8d90e5a6fd43d36",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "2e4f2ff23d7494283df650ffb00767f67667dff875899e3d005c5805f8cd1fea",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0004",
-      "number": 4,
+      "id": "adr:0603",
+      "number": 603,
       "slug": "entity-centric-registry-derived-graph",
       "title": "Entity-centric registry with a derived graph export",
-      "path": ".ssot/adr/ADR-0004-entity-centric-registry-derived-graph.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0603-entity-centric-registry-derived-graph.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "9070a9343059aeb88c9c814eb6b09779259655b64db1c72c8dc87b67a5e0208b",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "e8eb076466f63c19ac1f27a09fc252195b36447cf17f37607c61f262904786d9",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0005",
-      "number": 5,
+      "id": "adr:0604",
+      "number": 604,
       "slug": "normalized-prefixed-ids",
       "title": "Normalized prefixed IDs",
-      "path": ".ssot/adr/ADR-0005-normalized-prefixed-ids.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0604-normalized-prefixed-ids.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "1b3ac2ec39ede1aa4f393d70ba284d76e5fb8be43aaf76bed3461b5c0d8bf790",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "14e8f2e75b05a2354e444613b10e78ba661bb025fbf70de358345e310c9025f5",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0006",
-      "number": 6,
+      "id": "adr:0605",
+      "number": 605,
       "slug": "claim-status-vs-tier",
       "title": "Claim status and claim tier are orthogonal",
-      "path": ".ssot/adr/ADR-0006-claim-status-vs-tier.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0605-claim-status-vs-tier.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "77b436414b489d834b4cfc3c9e73d3109253c1e69e4c5177773ba1b2e1a049b9",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "8a9b64d4250cdb1fcb9d965dba156738761d92a0e823d559e3324a274b75bd0f",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0007",
-      "number": 7,
+      "id": "adr:0606",
+      "number": 606,
       "slug": "feature-implementation-vs-lifecycle",
       "title": "Feature implementation state is separate from lifecycle state",
-      "path": ".ssot/adr/ADR-0007-feature-implementation-vs-lifecycle.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0606-feature-implementation-vs-lifecycle.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "1d9827f1d9ac80e21c9eb01860525546a12414b6d4dd59f85e2d1bfe3d9386f2",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "a835cb5afcbad76060e2625ebdadb420d33e373d95f108645e3fabdb58f389f9",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0008",
-      "number": 8,
+      "id": "adr:0607",
+      "number": 607,
       "slug": "immutable-boundary-and-release-snapshots",
       "title": "Immutable boundary and release snapshots",
-      "path": ".ssot/adr/ADR-0008-immutable-boundary-and-release-snapshots.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0607-immutable-boundary-and-release-snapshots.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "05cdcfecdd0291bf70d83df6f759234a6e030bee813f9ffccc281339f1020020",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "8c9bbfdb99bdac1238ee04832e59f74633af0ff8b4dcf8589aa748d34f5d7d7c",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0009",
-      "number": 9,
+      "id": "adr:0608",
+      "number": 608,
       "slug": "fail-closed-guards",
       "title": "Fail-closed guards",
-      "path": ".ssot/adr/ADR-0009-fail-closed-guards.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0608-fail-closed-guards.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "b3e4968a2407889f0a369cb4cd09aa6b22e25a6404d4aeda17ef9d8b39f639b8",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "354247cebe6a72d3ff237ed719ef00d7e4420a96f74baaea3dd0e7b7289c9a97",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0010",
-      "number": 10,
+      "id": "adr:0609",
+      "number": 609,
       "slug": "generated-projections-are-non-canonical",
       "title": "Generated projections are non-canonical",
-      "path": ".ssot/adr/ADR-0010-generated-projections-are-non-canonical.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0609-generated-projections-are-non-canonical.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "9384cc13dad85dc2ee3d65405edf92ae0cb8c90874db52beba33fa63f1fb1aad",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "ae54390825b4ec7d43751c430332aeb7e66654b2f520fa4dc40dd3893bcc18c1",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0011",
-      "number": 11,
+      "id": "adr:0610",
+      "number": 610,
       "slug": "explicit-schema-versioning",
       "title": "Explicit schema versioning",
-      "path": ".ssot/adr/ADR-0011-explicit-schema-versioning.md",
-      "origin": "ssot-core",
+      "path": ".ssot/adr/ADR-0610-explicit-schema-versioning.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "476d6d2c6e8bd6f6775492f11f2de3f26b77545dda62bd6e78e34ff37b53ed4e",
-      "status": "accepted",
+      "package_version": "0.2.6",
+      "content_sha256": "292c74ed694752c1c030dacfda8823a6e8d560852a10d12aa7d57c6de9b7ce22",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
-      "id": "adr:0012",
-      "number": 12,
+      "id": "adr:0611",
+      "number": 611,
       "slug": "portable-core-repo-specific-evidence-adapters",
-      "title": "Portable core with repo-specific evidence generation outside the core",
-      "path": ".ssot/adr/ADR-0012-portable-core-repo-specific-evidence-adapters.md",
-      "origin": "ssot-core",
+      "title": "Portable SSOT core with repo-specific evidence adapters",
+      "path": ".ssot/adr/ADR-0611-portable-core-repo-specific-evidence-adapters.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "ba8ea2c1e20eda7094c2cf92c9fd63427c1ef3edf9c18d2f43357e761101ba79",
+      "package_version": "0.2.6",
+      "content_sha256": "b4b2edfc60f175e333a654bf806392a480c8625fc86aeec029b9508194feaded",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:0612",
+      "number": 612,
+      "slug": "ssot-path-and-filename-length-limits",
+      "title": "Enforce max path and filename lengths under `.ssot`",
+      "path": ".ssot/adr/ADR-0612-ssot-path-and-filename-length-limits.yaml",
+      "origin": "ssot-origin",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.6",
+      "content_sha256": "a6fc0a01e2743d428644a208c2b93ad35184cdac16841097868587e5a0f39052",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:0613",
+      "number": 613,
+      "slug": "profiles-as-reusable-feature-bundles",
+      "title": "Profiles are reusable feature bundles with derived pass status",
+      "path": ".ssot/adr/ADR-0613-profiles-as-reusable-feature-bundles.yaml",
+      "origin": "ssot-origin",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.6",
+      "content_sha256": "59ef0b1bd8975e91afc6cfcf8ceebcf9944704f456538fd340c970d915e1bf49",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1001",
       "number": 1001,
       "slug": "preserve-asgi-boundary",
-      "title": "ADR-1001: preserve the ASGI boundary",
-      "path": ".ssot/adr/ADR-1001-preserve-asgi-boundary.md",
+      "title": "preserve the ASGI boundary",
+      "path": ".ssot/adr/ADR-1001-preserve-asgi-boundary.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "93df4bbea11ca3ecb824da0e1bddd4ebbfdec1c20a56e5b3553055e2349f4b8a",
+      "package_version": "0.2.6",
+      "content_sha256": "d8efeb257dd40f481e9ca55f84a4440868a1e8683c552b8a4a39e57c938bf134",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1002",
       "number": 1002,
       "slug": "transport-protocol-separation",
-      "title": "ADR-1002: separate transport and protocol",
-      "path": ".ssot/adr/ADR-1002-transport-protocol-separation.md",
+      "title": "separate transport and protocol",
+      "path": ".ssot/adr/ADR-1002-transport-protocol-separation.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "335cd72da5f4a8957178ba0e9965d8a392a754a26f05aa11b1d316b50dc08f33",
+      "package_version": "0.2.6",
+      "content_sha256": "f85943eed65300e52a928144a4fe07621aceae65240f098cd7a62a6a52404ddb",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1003",
       "number": 1003,
       "slug": "scheduler-and-backpressure",
-      "title": "ADR-1003: scheduler and backpressure are separate concerns",
-      "path": ".ssot/adr/ADR-1003-scheduler-and-backpressure.md",
+      "title": "scheduler and backpressure are separate concerns",
+      "path": ".ssot/adr/ADR-1003-scheduler-and-backpressure.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "387937a82e15cc0e414306ca754ccb35db9d18e30ff76d29802e9e55381bff61",
+      "package_version": "0.2.6",
+      "content_sha256": "3cd3d642b19a90119862e891a84e77862f02c9faa6961a7b24a9f6201ea497d9",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1004",
       "number": 1004,
       "slug": "custom-scope-types",
-      "title": "ADR-1004: custom scope types are allowed behind the ASGI surface",
-      "path": ".ssot/adr/ADR-1004-custom-scope-types.md",
+      "title": "custom scope types are allowed behind the ASGI surface",
+      "path": ".ssot/adr/ADR-1004-custom-scope-types.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "da582797f87eb61c70c83969785819653827f370f96f279c6398b8f6dbf8c6a5",
+      "package_version": "0.2.6",
+      "content_sha256": "09507149eeb5cf58f04a2be349c3c00147a2e9c18b4a4adea15d18d13289d9f7",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1005",
       "number": 1005,
       "slug": "doc-gov",
-      "title": "ADR-1005: doc governance tree",
-      "path": ".ssot/adr/ADR-1005-doc-gov.md",
+      "title": "doc governance tree",
+      "path": ".ssot/adr/ADR-1005-doc-gov.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "cf96f50f4aa17b91bb30fe2493819f6e825c34f96cd571e9b32a0ec7e931750f",
+      "package_version": "0.2.6",
+      "content_sha256": "40730700313cffb373f531f361693b65ce03b202a195c94a39ea2434854ac515",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1006",
       "number": 1006,
       "slug": "mutable",
-      "title": "ADR-1006: mutable and immutable marks",
-      "path": ".ssot/adr/ADR-1006-mutable.md",
+      "title": "mutable and immutable marks",
+      "path": ".ssot/adr/ADR-1006-mutable.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "4fb761c27b96a6eaa5f2486bc016d7dd64d35e419fab13c038a25c4c68261a2a",
+      "package_version": "0.2.6",
+      "content_sha256": "514b4e853d0d63041f120287eb6f7ec4a7a58933ed33658cc5a11f1f7563ee90",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1007",
       "number": 1007,
       "slug": "gov-auth",
-      "title": "ADR-1007: : Governance Authority",
-      "path": ".ssot/adr/ADR-1007-gov-auth.md",
+      "title": ": Governance Authority",
+      "path": ".ssot/adr/ADR-1007-gov-auth.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "11c5d628dc231ce343fac8c6b6ff0bd332c1431e25124d0ad34ffe96c3f3d3f7",
+      "package_version": "0.2.6",
+      "content_sha256": "f5cb374415bb0fb5152816d5a7fd373f9264d47c53e82954ea4b8e320b4b0198",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "adr:1008",
       "number": 1008,
       "slug": "gate-graph",
-      "title": "ADR-1008: : Release Gate Graph",
-      "path": ".ssot/adr/ADR-1008-gate-graph.md",
+      "title": ": Release Gate Graph",
+      "path": ".ssot/adr/ADR-1008-gate-graph.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "ff9341bff3015853b3784f3a82fab64641233f5289a7429e4fd4d8fe1449efad",
+      "package_version": "0.2.6",
+      "content_sha256": "7b88a447134756b05ad22704d6c4776d8d04f5053dd2f1b24cb675a32951cabb",
       "status": "accepted",
       "supersedes": [],
-      "superseded_by": []
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1009",
+      "number": 1009,
+      "slug": "issue-traceability-through-claims",
+      "title": "researched issue traceability through claim rows",
+      "path": ".ssot/adr/ADR-1009-issue-traceability-through-claims.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.6",
+      "content_sha256": "140212992908d719fd01657d901f650050e7091982437e0bfc7113e537fdf97f",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
     {
-      "id": "spc:0001",
-      "number": 1,
+      "id": "spc:0600",
+      "number": 600,
       "slug": "registry-core",
       "title": "Registry core",
-      "path": ".ssot/specs/SPEC-0001-registry-core.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0600-registry-core.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "2244e964a2e98cbb8c96959e80f94fbb6684825aa41f64e34d9bc918cb229b35",
+      "package_version": "0.2.6",
+      "content_sha256": "ad2dd542956a22663105d8effd21036990b198f911d038e77da499882e67a331",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0002",
-      "number": 2,
+      "id": "spc:0601",
+      "number": 601,
       "slug": "cli",
       "title": "CLI",
-      "path": ".ssot/specs/SPEC-0002-cli.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0601-cli.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "921aecf6cf292ef841c49c73b45ab8a38bdae817ef850097a870dc5241473c39",
+      "package_version": "0.2.6",
+      "content_sha256": "485ff4a815e85fa64742d7e0fcd3acb3ada655fcf0193b8687e4aa6a99c99725",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "operational"
     },
     {
-      "id": "spc:0003",
-      "number": 3,
+      "id": "spc:0602",
+      "number": 602,
       "slug": "graph-model",
       "title": "Graph model",
-      "path": ".ssot/specs/SPEC-0003-graph-model.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0602-graph-model.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "dbf7093288b63b1fd3a1f38d60b66147d93c27511487de992ee0d59efb43b744",
+      "package_version": "0.2.6",
+      "content_sha256": "c59709574807cbee7a24932f28457d62cad23ff3f9846952b49aa32534779440",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0004",
-      "number": 4,
+      "id": "spc:0603",
+      "number": 603,
       "slug": "feature-lifecycle",
       "title": "Feature lifecycle",
-      "path": ".ssot/specs/SPEC-0004-feature-lifecycle.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0603-feature-lifecycle.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "93f42169b551989e38f00598f899e6bfd9fc443a15467da77ead51c5bd01d02e",
+      "package_version": "0.2.6",
+      "content_sha256": "59fee673b5e996e8006ba754a9bb3011e80058530113131993cbb2eb3eaf91cc",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0005",
-      "number": 5,
+      "id": "spc:0604",
+      "number": 604,
       "slug": "claim-statuses",
       "title": "Claim statuses",
-      "path": ".ssot/specs/SPEC-0005-claim-statuses.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0604-claim-statuses.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "a22501ba039e61a6f438d50685a3e33a7928fb37179f4a8da31c8c3420ed9683",
+      "package_version": "0.2.6",
+      "content_sha256": "5fa31fc6765df3a28da79c2a79828569cb275ecaa2d131fd0034905c330ee7e8",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0006",
-      "number": 6,
+      "id": "spc:0605",
+      "number": 605,
       "slug": "claim-tiers",
       "title": "Claim tiers",
-      "path": ".ssot/specs/SPEC-0006-claim-tiers.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0605-claim-tiers.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "a86608fc0ae4b045cdf59257e666f0254df9a26f2dd93897628fafc142169163",
+      "package_version": "0.2.6",
+      "content_sha256": "2dac3715f16ad5273e7090f543e6b899bf5e9ddf0a6d765c73ea8745fbf148e7",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0007",
-      "number": 7,
+      "id": "spc:0606",
+      "number": 606,
       "slug": "snapshots-and-reports",
       "title": "Snapshots and reports",
-      "path": ".ssot/specs/SPEC-0007-snapshots-and-reports.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0606-snapshots-and-reports.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "47d3d3298a978e525b315a779db920714946011ccda92a0caf2e2a5d72cd21cb",
+      "package_version": "0.2.6",
+      "content_sha256": "10ca43d9005ec80dc8ac0a86aa89cd58b2bf328fca97bec9157321c1d5bdc116",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "operational"
     },
     {
-      "id": "spc:0008",
-      "number": 8,
+      "id": "spc:0607",
+      "number": 607,
       "slug": "repo-policy",
       "title": "Repository policy",
-      "path": ".ssot/specs/SPEC-0008-repo-policy.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0607-repo-policy.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "6e80832275da7d4c3609cbef3e39c1128bd14d559cdf315f78982dcc8f91edbf",
+      "package_version": "0.2.6",
+      "content_sha256": "d8ad7e550a9f9398a681154a61049146e2f82e60c6db35404c1422eb2812fe70",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "operational"
     },
     {
-      "id": "spc:0009",
-      "number": 9,
+      "id": "spc:0608",
+      "number": 608,
       "slug": "gates-and-fences",
       "title": "Gates and fences",
-      "path": ".ssot/specs/SPEC-0009-gates-and-fences.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0608-gates-and-fences.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "20ad0cb68eafaef7c0095136eef6ebe9b0704b5ad3d81211039ef73745bc02af",
+      "package_version": "0.2.6",
+      "content_sha256": "1d2c6efaecab6c918976cb016f9806987eb4b4b7738d397ab8264ef785c2dea9",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0010",
-      "number": 10,
+      "id": "spc:0609",
+      "number": 609,
       "slug": "id-normalization",
       "title": "ID normalization",
-      "path": ".ssot/specs/SPEC-0010-id-normalization.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0609-id-normalization.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "a217c496f8534f78906cf589ec07f14f3babfbf900d848a94bb58202ea06044f",
+      "package_version": "0.2.6",
+      "content_sha256": "201fdc85d032123c5ece91ea8bb858de869cd04c404f34075eaa2cf73aa54292",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0011",
-      "number": 11,
+      "id": "spc:0610",
+      "number": 610,
       "slug": "file-tree",
       "title": "File tree",
-      "path": ".ssot/specs/SPEC-0011-file-tree.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0610-file-tree.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "739d774289548e1d10e9c20dd88d24e774b1ddfd68cdc16bf8424481ef4b705b",
+      "package_version": "0.2.6",
+      "content_sha256": "8719621710b0215429ab31a3677498cc119c4494abeae19c64b95b3dd136f081",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0012",
-      "number": 12,
+      "id": "spc:0611",
+      "number": 611,
       "slug": "planning-horizons",
       "title": "Planning horizons",
-      "path": ".ssot/specs/SPEC-0012-planning-horizons.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0611-planning-horizons.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "bd748f1d15321d770410ed04ebfe4e6e558e02a30bfbd4e4bddce327f2f7f2d0",
+      "package_version": "0.2.6",
+      "content_sha256": "68d22f3df30273de1d81c096fa0d4d32b5d0fe36780e17d94a9678d64cfb6217",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "normative"
     },
     {
-      "id": "spc:0013",
-      "number": 13,
+      "id": "spc:0612",
+      "number": 612,
       "slug": "python-api",
       "title": "Python API",
-      "path": ".ssot/specs/SPEC-0013-python-api.md",
-      "origin": "ssot-core",
+      "path": ".ssot/specs/SPEC-0612-python-api.yaml",
+      "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.2",
-      "content_sha256": "a18bcc7c72373487d8cd4a88b93b605ca6a46703dbd8d5fa5d9f8c86937348da",
+      "package_version": "0.2.6",
+      "content_sha256": "e46c5a61e648cd36d7bcaec9d2be62e9ca4020d9fd44fed13b17cc6f177116b6",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
       "kind": "operational"
+    },
+    {
+      "id": "spc:0613",
+      "number": 613,
+      "slug": "ssot-path-length-policy",
+      "title": "SSOT path-length policy",
+      "path": ".ssot/specs/SPEC-0613-ssot-path-length-policy.yaml",
+      "origin": "ssot-origin",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.6",
+      "content_sha256": "a87f42c91635be8d9cf1f7f0a7c684bc318ba6c92bed23003d3233d9f86ce51b",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative"
+    },
+    {
+      "id": "spc:0614",
+      "number": 614,
+      "slug": "profile-evaluation-and-boundary-resolution",
+      "title": "Profile evaluation and boundary resolution",
+      "path": ".ssot/specs/SPEC-0614-profile-evaluation-and-boundary-resolution.yaml",
+      "origin": "ssot-origin",
+      "managed": true,
+      "immutable": true,
+      "package_version": "0.2.6",
+      "content_sha256": "c195c092aa178a076e7bcfaedbda1b047dd6bdb6c722178a7b95bf955a295e9d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative"
+    },
+    {
+      "id": "spc:1001",
+      "number": 1001,
+      "slug": "governance-issue-traceability",
+      "title": "governance issue traceability",
+      "path": ".ssot/specs/SPEC-1001-governance-issue-traceability.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.6",
+      "content_sha256": "c950c982c0226374d979f837f98f2bc16969a1679896dbdeb587687bd2abebf1",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:1002",
+      "number": 1002,
+      "slug": "tls-policy-and-interop-surfaces",
+      "title": "TLS policy and interoperability surfaces",
+      "path": ".ssot/specs/SPEC-1002-tls-policy-and-interop-surfaces.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.6",
+      "content_sha256": "95b01025f071f52d738d1508436c05818f558ba753a103687abc86b40779271b",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2001",
       "number": 2001,
       "slug": "http1",
       "title": "HTTP/1.1",
-      "path": ".ssot/specs/SPEC-2001-http1.md",
+      "path": ".ssot/specs/SPEC-2001-http1.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "053037d2ce8430c84447c9287334fee16effe81bf29a861903c234a950735da4",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "f74d538598eceddb258d3ad7d21ab09cf8269a77ff60d0860108f95d34f05f7d",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2002",
       "number": 2002,
       "slug": "http2",
       "title": "HTTP/2",
-      "path": ".ssot/specs/SPEC-2002-http2.md",
+      "path": ".ssot/specs/SPEC-2002-http2.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "0b230a4801a0d4d53d6819bcf9fa33590b764f71eada07341c806fcf365ff4b4",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "8cf6d3727fd28071ded2ffcc3f429b76092c2af8e663319ccf2f40862b975b1a",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2003",
       "number": 2003,
       "slug": "http3",
       "title": "HTTP/3",
-      "path": ".ssot/specs/SPEC-2003-http3.md",
+      "path": ".ssot/specs/SPEC-2003-http3.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "a297dae43c3c74dc525c457ae132129bfe129982c2466ff25150ce4557639843",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "70d3421ce819e5db6a12a41dabc98c8dfd7be18abdfcc7eb0cfabbc1f676d49c",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2004",
       "number": 2004,
       "slug": "quic",
       "title": "QUIC",
-      "path": ".ssot/specs/SPEC-2004-quic.md",
+      "path": ".ssot/specs/SPEC-2004-quic.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "abdb9b8f3fdefdba6125fc7940b763d2bb5365965b9bc8c7d23ad5fab0221a55",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "c3e95e2757a990e69c87aabab17813678b5efe9c646171e1ef600d048bc748f5",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2005",
       "number": 2005,
       "slug": "websocket",
       "title": "WebSocket",
-      "path": ".ssot/specs/SPEC-2005-websocket.md",
+      "path": ".ssot/specs/SPEC-2005-websocket.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "f9c9160e25467518d7ccc513665ef710abb85cf90e37b85d7f7b6b8030aabe81",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "581411d75bd86f034e34aacd96f324c32e592f5703f220df4171b7e10f62e716",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2006",
       "number": 2006,
       "slug": "custom-transports",
       "title": "Custom transports",
-      "path": ".ssot/specs/SPEC-2006-custom-transports.md",
+      "path": ".ssot/specs/SPEC-2006-custom-transports.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "6b659df18e2bb86a4b9772a97422d4a3e51f96b9f928602683ccd9378f9e4d96",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "d2ee414b726b38bc1e4aedfab26ef98fafb9924f182b09b4b8380d8dabaca600",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2007",
       "number": 2007,
       "slug": "public",
       "title": "Public operator and programmatic surface reference",
-      "path": ".ssot/specs/SPEC-2007-public.md",
+      "path": ".ssot/specs/SPEC-2007-public.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "276b7b42bdd39889fa9774bd2d1132ed04a76a05ea00cef544dd77355543711d",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "871f3a035e5d9d05816b0799935250b149275bbdf85753cc92aa3d3f50ef6ef7",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     },
     {
       "id": "spc:2008",
       "number": 2008,
       "slug": "tigrcorn-cli",
       "title": "CLI",
-      "path": ".ssot/specs/SPEC-2008-tigrcorn-cli.md",
+      "path": ".ssot/specs/SPEC-2008-tigrcorn-cli.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "a83a7b67fcbb9e787fb748ae1b59a3506af55463815af6bf40593b3481847e3e",
-      "kind": "repo-local"
+      "package_version": "0.2.6",
+      "content_sha256": "d005326bbd7efc3d4ad18483edcbbba526cde5b58a139053a7f4870a3c863118",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
-  ]
+  ],
+  "profiles": []
 }

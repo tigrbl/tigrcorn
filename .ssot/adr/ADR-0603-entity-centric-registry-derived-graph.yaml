@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0603"
+number: 603
+slug: "entity-centric-registry-derived-graph"
+title: "Entity-centric registry with a derived graph export"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The canonical registry is entity-centric JSON with explicit references. A graph export is derived from it."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The canonical registry is entity-centric JSON with explicit references. A graph export is derived from it.

@@ -846,6 +846,9 @@
         "F-P2-BASE-DEFAULT-AUDIT"
       ],
       "id": "TC-AUDIT-DEFAULT-BASE",
+      "issue_refs": [
+        "#13"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-PROFILE-DEFAULT-DRIFT"
@@ -873,6 +876,9 @@
         "F-P2-PROFILE-DEFAULT-AUDIT"
       ],
       "id": "TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS",
+      "issue_refs": [
+        "#13"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-PROFILE-DEFAULT-DRIFT"
@@ -900,6 +906,9 @@
         "F-P2-FLAG-CONTRACT-REGISTRY"
       ],
       "id": "TC-AUDIT-FLAG-CONTRACT-REVIEWED",
+      "issue_refs": [
+        "#13"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-PROFILE-DEFAULT-DRIFT",
@@ -1448,6 +1457,9 @@
         "F-P8-PYTEST-FORWARD"
       ],
       "id": "TC-ROADMAP-P8-PYTEST-FORWARD",
+      "issue_refs": [
+        "#16"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-TEST-STYLE-DRIFT"
@@ -1474,6 +1486,9 @@
         "F-P8-RELEASE-GATED-EVIDENCE"
       ],
       "id": "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
+      "issue_refs": [
+        "#19"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-TRACEABILITY-GOVERNANCE-GAP"
@@ -1524,9 +1539,16 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "id": "TC-GOV-DEFAULT-AUDIT-POLICY",
+      "issue_refs": [
+        "#13"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-DEFAULT-BACKFILL-NONE"
+      ],
+      "spec_refs": [
+        "SPEC-1001",
+        "SPEC-2008"
       ],
       "source_files": [
         "docs/governance/DEFAULT_AUDIT_POLICY.md",
@@ -1564,9 +1586,15 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "id": "TC-GOV-TEST-STYLE-POLICY",
+      "issue_refs": [
+        "#16"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-TEST-STYLE-DRIFT"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "source_files": [
         "docs/governance/TEST_STYLE_POLICY.md",
@@ -1584,9 +1612,15 @@
       "class": "certification_support",
       "current_evidence": "local_conformance",
       "id": "TC-CERT-RELEASE-GATE-GRAPH",
+      "issue_refs": [
+        "#19"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-TRACEABILITY-GOVERNANCE-GAP"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "source_files": [
         "src/tigrcorn/compat/release_gates.py",
@@ -1605,9 +1639,15 @@
       "class": "certification_support",
       "current_evidence": "local_conformance",
       "id": "TC-CERT-INTEROP-RETENTION-BUNDLES",
+      "issue_refs": [
+        "#19"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-RELEASE-EVIDENCE-RETENTION"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "source_files": [
         "docs/conformance/interop_retention.json",
@@ -1625,9 +1665,15 @@
       "class": "certification_support",
       "current_evidence": "local_conformance",
       "id": "TC-CERT-PERFORMANCE-RETENTION-BUNDLES",
+      "issue_refs": [
+        "#19"
+      ],
       "required_evidence_tier": "local_conformance",
       "risk_refs": [
         "R-RELEASE-EVIDENCE-RETENTION"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "source_files": [
         "docs/conformance/perf_retention.json",

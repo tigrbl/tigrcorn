@@ -1,0 +1,66 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0600"
+number: 600
+slug: "registry-core"
+title: "Registry core"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "`repo.kind` is required and MUST be one of:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  ## Repository Discriminator
+  
+  `repo.kind` is required and MUST be one of:
+  
+  - `ssot-core`
+  - `ssot-origin`
+  - `repo-local`
+  
+  ## Top Level Sections
+  
+  - `schema_version`
+  - `repo`
+  - `tooling`
+  - `paths`
+  - `program`
+  - `guard_policies`
+  - `document_id_reservations`
+  - `features`
+  - `profiles`
+  - `tests`
+  - `claims`
+  - `evidence`
+  - `issues`
+  - `risks`
+  - `boundaries`
+  - `releases`
+  - `adrs`
+  - `specs`
+  
+  ## Adr Spec Row Contract
+  
+  ADR and SPEC rows MUST include:
+  
+  - identity/location: `id`, `number`, `slug`, `title`, `path`
+  - provenance/materialization: `origin`, `managed`, `immutable`, `package_version`, `content_sha256`
+  - lifecycle/supersession: `status`, `supersedes`, `superseded_by`, `status_notes`
+  
+  Allowed `origin` values:
+  
+  - `ssot-core`
+  - `ssot-origin`
+  - `repo-local`
+  
+  SPEC `kind` is a non-provenance label and MUST be one of:
+  
+  - `normative`
+  - `operational`
+  - `governance`
+  - `local-policy`

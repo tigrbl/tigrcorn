@@ -1,0 +1,29 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2006"
+number: 2006
+slug: "custom-transports"
+title: "Custom transports"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "TigrCorn reserves a native extension surface for custom transports and scope types."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Custom transports
+  
+  TigrCorn reserves a native extension surface for custom transports and scope types.
+  
+  Examples:
+  
+  - raw framed RPC over TCP
+  - raw framed RPC over QUIC
+  - in-process transports for test harnesses
+  - custom stream and datagram scope types
+  
+  These extensions must not change the standard ASGI behavior for HTTP, WebSocket, or lifespan.
+spec_kind: "local-policy"

@@ -1,0 +1,38 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0607"
+number: 607
+slug: "repo-policy"
+title: "Repository policy"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This is part of your operator contract in `.ssot/specs`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "operational"
+body: |-
+  ## Scope
+  
+  This is part of your operator contract in `.ssot/specs`.
+  
+  ## Origin Model
+  
+  - `ssot-origin`: packaged contract docs synced from `ssot-registry` and immutable in operator repos.
+  - `repo-local`: docs authored by your repository and editable locally.
+  - `ssot-core`: upstream-only governance and not permitted in operator repositories.
+  
+  ## Numbering And Reservations
+  
+  - `1..599` is reserved for upstream `ssot-core` governance.
+  - `600..999` is reserved for packaged `ssot-origin` docs.
+  - `1000..4999` is assignable to `repo-local` docs.
+  
+  ## Required Locations
+  
+  - ADR files SHALL live under `.ssot/adr`.
+  - SPEC files SHALL live under `.ssot/specs`.
+  - Registry metadata SHALL keep ADR/SPEC records under top-level `adrs` and `specs` in `.ssot/registry.json`.

@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0608"
+number: 608
+slug: "fail-closed-guards"
+title: "Fail-closed guards"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Validation, certification, promotion, publication, and lifecycle transitions refuse to proceed on guard violations."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Validation, certification, promotion, publication, and lifecycle transitions refuse to proceed on guard violations.

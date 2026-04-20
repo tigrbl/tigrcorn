@@ -1,0 +1,33 @@
+schema_version: 9
+kind: "spec"
+id: "spc:0609"
+number: 609
+slug: "id-normalization"
+title: "ID normalization"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Grammar:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+spec_kind: "normative"
+body: |-
+  Grammar:
+  
+  ```text
+  ^[a-z][a-z0-9-]*:[a-z0-9][a-z0-9._-]*$
+  ```
+  
+  Prefixes:
+  - `repo:`
+  - `feat:`
+  - `tst:`
+  - `clm:`
+  - `evd:`
+  - `iss:`
+  - `rsk:`
+  - `bnd:`
+  - `rel:`

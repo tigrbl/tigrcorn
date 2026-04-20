@@ -1,0 +1,43 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2001"
+number: 2001
+slug: "http1"
+title: "HTTP/1.1"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Implemented in this build:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # HTTP/1.1
+  
+  Implemented in this build:
+  
+  - request line and header parsing
+  - origin-form, absolute-form, authority-form, and asterisk-form request targets
+  - `Content-Length` and `Transfer-Encoding: chunked` request bodies
+  - request-body streaming onto ASGI `http.request` events for the TCP/Unix server path
+  - request-trailer exposure through a custom `http.request.trailers` extension event on the chunked HTTP/1.1 path
+  - `Expect: 100-continue` on the HTTP/1.1 server path
+  - keep-alive handling for HTTP/1.0 and HTTP/1.1 requests
+  - chunked response bodies for streaming ASGI responses
+  - CONNECT relay tunneling on the HTTP/1.1 server path
+  
+  A formal intermediary/proxy corpus is now bundled under `docs/review/conformance/intermediary_proxy_corpus/`.
+  That seed corpus preserves the current third-party HTTP/1.1 `curl` artifact plus carrier-specific CONNECT relay vector metadata.
+  
+  Still incomplete relative to a stricter intermediary/proxy evidence program:
+  
+  - broader multi-carrier third-party intermediary/proxy interoperability evidence is still not bundled
+  - CONNECT relay tunneling is also implemented on the HTTP/2 and HTTP/3 carriers, but the bundled corpus still relies on local vector metadata for those carriers until additional third-party artifacts are preserved
+  
+  The authoritative certification boundary for package-wide RFC claims is `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+  
+  
+  A minimum certified intermediary/proxy-adjacent corpus now lives under `docs/review/conformance/intermediary_proxy_corpus_minimum_certified/`; the older seed corpus remains preserved for provenance.
+spec_kind: "local-policy"

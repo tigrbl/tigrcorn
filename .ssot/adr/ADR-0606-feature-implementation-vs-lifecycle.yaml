@@ -1,0 +1,17 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0606"
+number: 606
+slug: "feature-implementation-vs-lifecycle"
+title: "Feature implementation state is separate from lifecycle state"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "`implementation_status` and `lifecycle.stage` are distinct fields."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  `implementation_status` and `lifecycle.stage` are distinct fields.

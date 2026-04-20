@@ -1,0 +1,32 @@
+schema_version: 9
+kind: "adr"
+id: "adr:0609"
+number: 609
+slug: "generated-projections-are-non-canonical"
+title: "Generated projections are non-canonical"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This is an `ssot-origin` ADR copied into downstream SSOT repositories."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  This is an `ssot-origin` ADR copied into downstream SSOT repositories.
+  
+  In an operator repository, canonical authored SSOT content lives under `.ssot/`:
+  
+  - `.ssot/registry.json`,
+  - repo-local ADRs under `.ssot/adr/`,
+  - repo-local specs under `.ssot/specs/`.
+  
+  Packaged `ssot-origin` ADRs/specs provide baseline policy, but operators do not edit those synced copies directly.
+  
+  Generated projections include:
+  
+  - graph exports,
+  - reports and snapshots,
+  - rendered or exported representations such as CSV, YAML, TOML, DOT, PNG, and SVG,
+  - mirrored or regenerated documentation derived from the canonical SSOT content.

@@ -1,0 +1,50 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2005"
+number: 2005
+slug: "websocket"
+title: "WebSocket"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This build implements WebSocket handling across the HTTP/1.1, HTTP/2, and HTTP/3 carriers."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  # WebSocket
+  
+  This build implements WebSocket handling across the HTTP/1.1, HTTP/2, and HTTP/3 carriers.
+  
+  ## Implemented And Locally Validated In This Build
+  
+  - HTTP/1.1 upgrade validation and handshake
+  - ASGI `websocket.connect`, `websocket.accept`, `websocket.receive`, `websocket.send`, and `websocket.close`
+  - masking validation for client frames
+  - control-frame validation
+  - close-code and close-reason validation
+  - UTF-8 validation for text messages and close reasons
+  - fragmented-message tracking with aggregate message-size enforcement
+  - HTTP denial responses before upgrade acceptance
+  - permessage-deflate negotiation and RSV1 handling on the HTTP/1.1, HTTP/2, and HTTP/3 paths
+  - RFC 8441 WebSocket bootstrap on the HTTP/2 carrier
+  - RFC 9220 WebSocket bootstrap on the HTTP/3 carrier
+  
+  ## Evidence Tiers
+  
+  The canonical package-wide target for WebSocket is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
+  
+  - **local conformance** — `tests/test_websocket_rfc6455.py`, `tests/test_websocket_rfc7692.py`, `tests/test_http2_websocket_rfc8441.py`, and `tests/test_http3_websocket_rfc9220.py`
+  - **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical `0.3.9` same-stack bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/`
+  - **independent certification** — the canonical independent matrix at `docs/review/conformance/external_matrix.release.json`
+  
+  ## Current Certification Status
+  
+  HTTP/1.1 WebSocket, RFC 8441 WebSocket-over-HTTP/2, and RFC 9220 WebSocket-over-HTTP/3 all now have preserved passing third-party artifacts in the canonical independent release bundle.
+  
+  RFC 7692 across carriers is handled explicitly by the authoritative boundary rather than by narrative implication. The current release gate intentionally keeps RFC 7692 at `local_conformance`, so it is not an independent-certification blocker in the current bundle. A stricter all-surfaces-independent profile would still need additional third-party permessage-deflate artifacts. The package-owned TCP/TLS condition is satisfied separately, and the authoritative RFC 9220 requirement is now closed.
+spec_kind: "local-policy"

@@ -1,0 +1,22 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1002"
+number: 1002
+slug: "transport-protocol-separation"
+title: "separate transport and protocol"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: transport code and protocol code live in separate module trees."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1002 — separate transport and protocol
+  
+  Decision: transport code and protocol code live in separate module trees.
+  
+  Reason: TCP, UDP, QUIC, Unix sockets, and in-process transports should be reusable beneath
+  HTTP/1.1, HTTP/2, HTTP/3, WebSocket, raw framed, and custom protocols.

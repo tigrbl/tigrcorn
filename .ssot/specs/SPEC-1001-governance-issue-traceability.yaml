@@ -1,0 +1,40 @@
+schema_version: 9
+kind: "spec"
+id: "spc:1001"
+number: 1001
+slug: "governance-issue-traceability"
+title: "governance issue traceability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This spec defines the repo-local contract for how researched GitHub issues become canonical SSOT entities in Tigrcorn."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This spec defines the repo-local contract for how researched GitHub issues become canonical SSOT entities in Tigrcorn.
+  
+  ## Requirements
+  
+  1. Any researched GitHub issue that materially affects a current or candidate claim must appear in `issue_refs` on at least one claim row in `docs/review/conformance/claims_registry.json`.
+  2. If an issue materially affects more than one implemented or candidate surface, each affected claim row should carry the issue reference so the derived registry preserves issue-to-feature ownership.
+  3. Claim rows that own issue references must continue to include the code, docs, generated artifacts, and tests that provide the corresponding traceability path.
+  4. Governance issues around default audits, test-style policy, release-gate inputs, performance retention, and interop retention must be represented through the implemented governance and certification-support claims that own those surfaces.
+  5. The generated `.ssot/registry.json` remains canonical; issue ownership is derived from source claim metadata rather than hand-authored in the registry.
+  
+  ## Current Governed Surfaces
+  
+  - default-audit governance
+  - pytest-forward and test-style governance
+  - release-gate graph and release-gated evidence retention
+  - interop and performance retention bundles
+  
+  ## Non Goals
+  
+  - inventing registry-only issue entities without a backing claim row
+  - treating mutable prose notes as the sole machine-readable issue source
+spec_kind: "local-policy"
