@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2009"
+number: 2009
+slug: "structured-fields-strict-validation"
+title: "Structured fields strict validation"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This spec defines Tigrcorn's package-owned strict validation behavior for RFC 9651 structured fields."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  # Structured fields strict validation
+  
+  This spec defines Tigrcorn's package-owned strict validation behavior for RFC 9651 structured fields.
+  
+  ## Scope
+  
+  - `src/tigrcorn/http/structured_fields.py`
+  - `tests/test_structured_fields_validation.py`
+  
+  ## Required Behavior
+  
+  - The parser must reject malformed structured string escapes.
+  - The parser must reject control and non-ASCII characters inside structured strings.
+  - Structured keys must follow the RFC 9651 key grammar and reject uppercase characters.
+  - Structured tokens must keep RFC 9651-valid `:` and `/` characters when parsing and serializing.
+  - The serializer must reject invalid keys, invalid tokens, and invalid string values instead of emitting non-conformant wire output.
+  
+  ## Verification
+  
+  - `tests/test_structured_fields_validation.py` covers malformed strings, invalid keys, valid escaped strings, valid `:` and `/` tokens, and serializer rejection paths.
+  - `tests/test_p8_sf.py` remains the broader RFC 9651 round-trip baseline for the structured-fields surface.
+spec_kind: "local-policy"

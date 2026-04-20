@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import string
 from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any
@@ -44,6 +45,30 @@ StructuredValue = Item | list[ListMember] | dict[str, ListMember]
 
 class StructuredFieldError(ValueError):
     pass
+
+
+_KEY_START_CHARS = frozenset('abcdefghijklmnopqrstuvwxyz*')
+_KEY_CHARS = frozenset('abcdefghijklmnopqrstuvwxyz0123456789_-.*')
+_TOKEN_START_CHARS = frozenset(string.ascii_letters + '*')
+_TOKEN_CHARS = frozenset(string.ascii_letters + string.digits + "!#$%&'*+-.^_`|~:/")
+
+
+def _validate_key(key: str) -> None:
+    if not key or key[0] not in _KEY_START_CHARS or any(char not in _KEY_CHARS for char in key[1:]):
+        raise StructuredFieldError(f'invalid structured key {key!r}')
+
+
+def _validate_token(token: str) -> None:
+    if not token:
+        raise StructuredFieldError('expected token')
+    if token[0] not in _TOKEN_START_CHARS or any(char not in _TOKEN_CHARS for char in token[1:]):
+        raise StructuredFieldError(f'invalid structured token {token!r}')
+
+
+def _validate_string_value(value: str) -> None:
+    for char in value:
+        if ord(char) < 0x20 or ord(char) > 0x7E:
+            raise StructuredFieldError('invalid character in structured string')
 
 
 class _Parser:
@@ -152,9 +177,14 @@ class _Parser:
             if char == '\\':
                 if self.index >= self.length:
                     raise StructuredFieldError('unterminated escape in structured string')
-                chunks.append(self.text[self.index])
+                escaped = self.text[self.index]
+                if escaped not in {'"', '\\'}:
+                    raise StructuredFieldError('invalid escape in structured string')
+                chunks.append(escaped)
                 self.index += 1
                 continue
+            if ord(char) < 0x20 or ord(char) > 0x7E:
+                raise StructuredFieldError('invalid character in structured string')
             chunks.append(char)
         raise StructuredFieldError('unterminated structured string')
 
@@ -196,17 +226,15 @@ class _Parser:
 
     def _parse_token(self) -> str:
         start = self.index
-        while self.index < self.length and self.text[self.index] not in '()<>@,;:\\"/[]?={} \t':
+        while self.index < self.length and self.text[self.index] not in {'(', ')', '<', '>', '@', ',', ';', '\\', '"', '[', ']', '?', '=', '{', '}', ' ', '\t'}:
             self.index += 1
         token = self.text[start:self.index]
-        if not token:
-            raise StructuredFieldError('expected token')
+        _validate_token(token)
         return token
 
     def _parse_key(self) -> str:
         key = self._parse_token()
-        if not key[0].islower() and key[0] != '*':
-            raise StructuredFieldError(f'invalid structured key {key!r}')
+        _validate_key(key)
         return key
 
     def _parse_digits(self, *, allow_sign: bool) -> str:
@@ -264,6 +292,7 @@ def serialize_bare_item(value: BareItem) -> str:
     if isinstance(value, bool):
         return '?1' if value else '?0'
     if isinstance(value, Token):
+        _validate_token(value.value)
         return value.value
     if isinstance(value, ByteSequence):
         return ':' + base64.b64encode(value.value).decode('ascii') + ':'
@@ -275,7 +304,9 @@ def serialize_bare_item(value: BareItem) -> str:
         return text
     if isinstance(value, int):
         return str(value)
-    escaped = str(value).replace('\\', '\\\\').replace('"', '\\"')
+    text = str(value)
+    _validate_string_value(text)
+    escaped = text.replace('\\', '\\\\').replace('"', '\\"')
     return f'"{escaped}"'
 
 
@@ -293,6 +324,7 @@ def serialize_list_member(member: ListMember) -> str:
 def serialize_dictionary(value: dict[str, ListMember]) -> str:
     parts: list[str] = []
     for key, member in value.items():
+        _validate_key(key)
         if isinstance(member, Item) and member.value is True:
             parts.append(key + _serialize_params(member.params))
         else:
@@ -313,10 +345,11 @@ def serialize_structured_value(value: StructuredValue) -> str:
 
 
 def _serialize_params(params: dict[str, BareItem]) -> str:
-    return ''.join(
-        f';{key}' if raw is True else f';{key}={serialize_bare_item(raw)}'
-        for key, raw in params.items()
-    )
+    parts: list[str] = []
+    for key, raw in params.items():
+        _validate_key(key)
+        parts.append(f';{key}' if raw is True else f';{key}={serialize_bare_item(raw)}')
+    return ''.join(parts)
 
 
 def normalize_for_json(value: Any) -> Any:

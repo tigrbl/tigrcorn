@@ -7,9 +7,9 @@
     "kind": "repo-local"
   },
   "tooling": {
-    "ssot_registry_version": "0.2.8",
-    "initialized_with_version": "0.2.7",
-    "last_upgraded_from_version": "0.2.7"
+    "ssot_registry_version": "0.2.10",
+    "initialized_with_version": "0.2.10",
+    "last_upgraded_from_version": "0.2.10"
   },
   "paths": {
     "ssot_root": ".ssot",
@@ -164,12 +164,12 @@
       ],
       "test_ids": [
         "tst:doc-current-state-chain",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exists-and-is-explicit",
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exist-e6fb509016da",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-scoped-current-audits-are-non-canonical",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-archival-current-aliases-are-labeled",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-example-path-docs-are-normalized",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-record-normalization",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-green-after-doc-truth-normalization"
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-re-6ff13053e4d7",
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-3c3b2525f90e"
       ],
       "requires": [],
       "spec_ids": []
@@ -1024,6 +1024,40 @@
       "spec_ids": []
     },
     {
+      "id": "feat:f-p8-rfc9651-strict-validation",
+      "title": "F-P8-RFC9651-STRICT-VALIDATION",
+      "description": "Tighten RFC 9651 structured-field parsing and serialization so malformed strings, invalid keys, and invalid tokens fail closed while valid colon/slash tokens continue to round-trip.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "roadmap-feature",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "test_ids": [
+        "tst:src-tests-test-structured-fields-validation-py",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-rejects-malformed-strings",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-escaped-quote-and-backslash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-dictionary-rejects-uppercase-keys",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-tokens-with-colon-and-slash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-serialize-dictionary-rejects-invalid-keys-and-item-values"
+      ],
+      "requires": [
+        "feat:f-p8-rfc9651-baseline"
+      ],
+      "spec_ids": [
+        "spc:2009"
+      ]
+    },
+    {
       "id": "feat:f-p8-risk-traceability",
       "title": "F-P8-RISK-TRACEABILITY",
       "description": "Feature target F-P8-RISK-TRACEABILITY imported from claims_registry.json.",
@@ -1165,15 +1199,15 @@
       ],
       "test_ids": [
         "tst:corpus-ocsp-revocation-validation",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-leaf-with-san-and-key-identifiers",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-subject-alt-name",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-319cad054419",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-su-671a05cd9959",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-path-length-violation",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-name-constraints-violation",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-revoked-leaf-when-crl-is-present",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-policy-requires-it",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-pol-7d640797a7a1",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-fetches-ocsp-from-aia-and-reuses-cache",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-fetches-crl-from-distribution-point",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-revocation-source",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-r-c507ee25a839",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-rejects-stale-ocsp-response",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-surfaces-fetch-failure-context"
       ],
@@ -2634,14 +2668,14 @@
         "tst:pytest-file-tests-test-aioquic-adapter-preflight-py",
         "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-docs-bundle-and-notes-exist",
         "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-bundle-preserves-two-direct-adapter-runs",
-        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificate-and-handshake-state",
-        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-before-phase9-scripts",
+        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificat-372d67ddfa01",
+        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-44d2f17542c1",
         "tst:pytest-file-tests-test-certification-environment-freeze-py",
         "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-docs-bundle-and-workflow-exist",
         "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-snapshot-builder-records-contract",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-supports-non-ready-environments",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-mode-tracks-readiness",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-before-phase9-scripts",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-support-b0758abc233a",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-4ce166c63c45",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-bef-287b5ba49854",
         "tst:pytest-file-tests-test-certification-policy-alignment-py",
         "tst:pytest-file-tests-test-cli-and-asgi3-py",
         "tst:pytest-file-tests-test-compression-additional-py",
@@ -2664,7 +2698,7 @@
         "tst:pytest-file-tests-test-http3-request-stream-state-machine-py",
         "tst:pytest-file-tests-test-http3-server-py",
         "tst:pytest-file-tests-test-http-integrity-caching-signatures-status-py",
-        "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-status-document-exists",
+        "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-statu-eed46035a478",
         "tst:pytest-file-tests-test-import-py",
         "tst:pytest-file-tests-test-intermediary-proxy-corpus-py",
         "tst:pytest-file-tests-test-lifespan-py",
@@ -2673,18 +2707,18 @@
         "tst:pytest-file-tests-test-phase2-entity-semantics-checkpoint-py",
         "tst:pytest-file-tests-test-phase2-rfc-boundary-formalization-checkpoint-py",
         "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc7232-and-rfc7233",
-        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-describe-rfc7232-or-rfc7233-as-unsupported",
-        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-boundary-formalization",
+        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-descri-1e546824059b",
+        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3dc2910557e6",
         "tst:pytest-file-tests-test-phase3-h1-websocket-operator-surface-py",
         "tst:pytest-file-tests-test-phase3-transport-core-strictness-checkpoint-py",
         "tst:pytest-file-tests-test-phase4-advanced-protocol-delivery-checkpoint-py",
         "tst:pytest-file-tests-test-phase4-http2-operator-surface-py",
         "tst:pytest-file-tests-test-phase4-operator-surface-py",
         "tst:pytest-file-tests-test-phase4-rfc-boundary-formalization-checkpoint-py",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rfc7838-section3",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-explicit-and-rfc9218-remains-out",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-explicit-not-ambiguous",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-phase4-boundary-formalization",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rf-0615d88420c7",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-expli-492ee469e646",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-expli-205739c463ca",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3daa229ec6c5",
         "tst:pytest-file-tests-test-phase5-flow-control-bundle-py",
         "tst:pytest-file-tests-test-phase5-intermediary-proxy-corpus-py",
         "tst:pytest-file-tests-test-phase5-tls-operator-material-surface-py",
@@ -2704,37 +2738,37 @@
         "tst:pytest-case-tests-test-phase9-implementation-plan-py-test-current-state-and-readmes-point-to-phase9-plan",
         "tst:pytest-file-tests-test-phase9a-promotion-contract-freeze-py",
         "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-contract-freeze-docs-and-release-root-exist",
-        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-policy-and-scope",
-        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-scenario-and-flag-gap",
+        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-p-bbd84acc3e15",
+        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-b453cb3fd264",
         "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-updates-contract-files-and-readmes",
         "tst:pytest-file-tests-test-phase9b-independent-harness-foundation-py",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-docs-wrapper-registry-and-release-root-exist",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-wrapper-registry-covers-the-phase9b-peer-families",
-        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contains-required-artifacts",
-        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-scenario-file",
+        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contai-041ad23ef258",
+        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-6b6beb77ed40",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-runner-emits-phase9b-artifact-schema-for-new-runs",
         "tst:pytest-file-tests-test-phase9c-rfc7692-independent-closure-py",
         "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc7692-artifacts-and-local-negative-vectors",
-        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-and-reports-rfc7692-as-complete",
+        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc769-7f15f60c8da4",
+        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-5767e00400ca",
         "tst:pytest-file-tests-test-phase9d1-connect-relay-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connect-artifacts-and-local-negative-vectors",
-        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-connect-as-partial-artifact-failure-not-unknown-scenarios",
+        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connec-ec02696f7717",
+        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-conn-1d8830228b61",
         "tst:pytest-file-tests-test-phase9d1-connect-relay-local-negatives-py",
         "tst:pytest-file-tests-test-phase9d2-trailer-fields-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trailer-artifacts-and-local-behavior-bundle",
-        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trailer-progress-in-0-3-8-root",
+        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trail-de84ad59885d",
+        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trai-ac9cbc538db2",
         "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-independent-bundle-still-validates",
         "tst:pytest-file-tests-test-phase9d3-content-coding-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-content-coding-artifacts-and-local-behavior-bundle",
-        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-content-coding-progress-in-0-3-8-root",
+        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-conte-680e8d648210",
+        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-cont-e65fc9ad02a0",
         "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-independent-bundle-still-validates",
         "tst:pytest-file-tests-test-phase9e-ocsp-independent-closure-py",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-artifact-and-local-vectors",
+        "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-arti-e30052c31334",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-strict-boundary-and-validator-reflect-ocsp-progress",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-external-matrix-declares-openssl-ocsp-row",
         "tst:pytest-file-tests-test-phase9e-ocsp-local-validation-py",
@@ -2747,7 +2781,7 @@
         "tst:pytest-file-tests-test-phase9f3-concurrency-keepalive-checkpoint-py",
         "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase9f3-docs-and-status-exist",
         "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-flag-contracts-now-mark-all-rows-promotion-ready",
-        "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-report-have-green-flag-surface",
+        "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-9c65243f8f95",
         "tst:pytest-file-tests-test-phase9f3-concurrency-keepalive-closure-py",
         "tst:pytest-file-tests-test-phase9g-strict-performance-closure-py",
         "tst:pytest-file-tests-test-phase9h-promotion-evaluator-hardening-py",
@@ -2780,10 +2814,10 @@
         "tst:pytest-file-tests-test-response-pipeline-streaming-checkpoint-py",
         "tst:pytest-file-tests-test-response-trailers-rfc9110-py",
         "tst:pytest-file-tests-test-rfc-applicability-and-competitor-status-py",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-document-exists",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-applicability-report",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-ba6f7e2b595d",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-appli-ec222d1d3637",
         "tst:pytest-file-tests-test-rfc-applicability-and-competitor-support-py",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-support-document-exists",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-suppor-7a91b271876f",
         "tst:pytest-file-tests-test-rfc-compliance-hardening-py",
         "tst:pytest-file-tests-test-scheduler-runtime-py",
         "tst:pytest-file-tests-test-server-http1-py",
@@ -4463,7 +4497,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificate-and-handshake-state",
+      "id": "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificat-372d67ddfa01",
       "title": "Pytest case inventory tests/test_aioquic_adapter_preflight.py::test_aioquic_preflight_scenario_metadata_records_certificate_and_handshake_state",
       "status": "passing",
       "kind": "pytest-case",
@@ -4479,7 +4513,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-before-phase9-scripts",
+      "id": "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-44d2f17542c1",
       "title": "Pytest case inventory tests/test_aioquic_adapter_preflight.py::test_release_workflow_and_wrapper_require_aioquic_preflight_before_phase9_scripts",
       "status": "passing",
       "kind": "pytest-case",
@@ -4495,7 +4529,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-mode-tracks-readiness",
+      "id": "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-4ce166c63c45",
       "title": "Pytest case inventory tests/test_certification_environment_freeze.py::test_certification_environment_bundle_writer_strict_mode_tracks_readiness",
       "status": "passing",
       "kind": "pytest-case",
@@ -4511,7 +4545,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-supports-non-ready-environments",
+      "id": "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-support-b0758abc233a",
       "title": "Pytest case inventory tests/test_certification_environment_freeze.py::test_certification_environment_bundle_writer_supports_non_ready_environments",
       "status": "passing",
       "kind": "pytest-case",
@@ -4559,7 +4593,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-before-phase9-scripts",
+      "id": "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-bef-287b5ba49854",
       "title": "Pytest case inventory tests/test_certification_environment_freeze.py::test_release_workflow_and_wrapper_enforce_freeze_before_phase9_scripts",
       "status": "passing",
       "kind": "pytest-case",
@@ -4667,7 +4701,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exists-and-is-explicit",
+      "id": "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exist-e6fb509016da",
       "title": "Pytest case inventory tests/test_documentation_truth_normalization_checkpoint.py::test_canonical_current_state_chain_exists_and_is_explicit",
       "status": "passing",
       "kind": "pytest-case",
@@ -4699,7 +4733,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-record-normalization",
+      "id": "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-re-6ff13053e4d7",
       "title": "Pytest case inventory tests/test_documentation_truth_normalization_checkpoint.py::test_package_review_and_current_state_record_normalization",
       "status": "passing",
       "kind": "pytest-case",
@@ -4715,7 +4749,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-green-after-doc-truth-normalization",
+      "id": "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-3c3b2525f90e",
       "title": "Pytest case inventory tests/test_documentation_truth_normalization_checkpoint.py::test_release_gates_and_promotion_remain_green_after_doc_truth_normalization",
       "status": "passing",
       "kind": "pytest-case",
@@ -4747,7 +4781,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-status-document-exists",
+      "id": "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-statu-eed46035a478",
       "title": "Pytest case inventory tests/test_http_integrity_caching_signatures_status.py::test_http_integrity_caching_signatures_status_document_exists",
       "status": "passing",
       "kind": "pytest-case",
@@ -5057,7 +5091,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-describe-rfc7232-or-rfc7233-as-unsupported",
+      "id": "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-descri-1e546824059b",
       "title": "Pytest case inventory tests/test_phase2_rfc_boundary_formalization_checkpoint.py::test_current_state_docs_no_longer_describe_rfc7232_or_rfc7233_as_unsupported",
       "status": "passing",
       "kind": "pytest-case",
@@ -5073,7 +5107,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-boundary-formalization",
+      "id": "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3dc2910557e6",
       "title": "Pytest case inventory tests/test_phase2_rfc_boundary_formalization_checkpoint.py::test_release_gates_and_promotion_target_remain_green_after_boundary_formalization",
       "status": "passing",
       "kind": "pytest-case",
@@ -5089,7 +5123,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rfc7838-section3",
+      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rf-0615d88420c7",
       "title": "Pytest case inventory tests/test_phase4_rfc_boundary_formalization_checkpoint.py::test_boundaries_formalize_rfc8297_and_rfc7838_section3",
       "status": "passing",
       "kind": "pytest-case",
@@ -5105,7 +5139,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-explicit-not-ambiguous",
+      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-expli-205739c463ca",
       "title": "Pytest case inventory tests/test_phase4_rfc_boundary_formalization_checkpoint.py::test_phase4_current_state_docs_are_explicit_not_ambiguous",
       "status": "passing",
       "kind": "pytest-case",
@@ -5121,7 +5155,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-explicit-and-rfc9218-remains-out",
+      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-expli-492ee469e646",
       "title": "Pytest case inventory tests/test_phase4_rfc_boundary_formalization_checkpoint.py::test_phase4_support_statements_are_explicit_and_rfc9218_remains_out",
       "status": "passing",
       "kind": "pytest-case",
@@ -5137,7 +5171,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-phase4-boundary-formalization",
+      "id": "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3daa229ec6c5",
       "title": "Pytest case inventory tests/test_phase4_rfc_boundary_formalization_checkpoint.py::test_release_gates_and_promotion_target_remain_green_after_phase4_boundary_formalization",
       "status": "passing",
       "kind": "pytest-case",
@@ -5265,7 +5299,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-scenario-and-flag-gap",
+      "id": "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-b453cb3fd264",
       "title": "Pytest case inventory tests/test_phase9a_promotion_contract_freeze.py::test_phase9a_backlog_tracks_every_remaining_strict_scenario_and_flag_gap",
       "status": "passing",
       "kind": "pytest-case",
@@ -5297,7 +5331,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-policy-and-scope",
+      "id": "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-p-bbd84acc3e15",
       "title": "Pytest case inventory tests/test_phase9a_promotion_contract_freeze.py::test_phase9a_status_snapshot_freezes_release_root_policy_and_scope",
       "status": "passing",
       "kind": "pytest-case",
@@ -5329,7 +5363,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-scenario-file",
+      "id": "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-6b6beb77ed40",
       "title": "Pytest case inventory tests/test_phase9b_independent_harness_foundation.py::test_bundle_validator_rejects_missing_required_scenario_file",
       "status": "passing",
       "kind": "pytest-case",
@@ -5361,7 +5395,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contains-required-artifacts",
+      "id": "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contai-041ad23ef258",
       "title": "Pytest case inventory tests/test_phase9b_independent_harness_foundation.py::test_phase9b_proof_bundle_validates_and_contains_required_artifacts",
       "status": "passing",
       "kind": "pytest-case",
@@ -5425,7 +5459,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc7692-artifacts-and-local-negative-vectors",
+      "id": "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc769-7f15f60c8da4",
       "title": "Pytest case inventory tests/test_phase9c_rfc7692_independent_closure.py::test_phase9c_release_root_contains_passing_rfc7692_artifacts_and_local_negative_vectors",
       "status": "passing",
       "kind": "pytest-case",
@@ -5441,7 +5475,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-and-reports-rfc7692-as-complete",
+      "id": "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-5767e00400ca",
       "title": "Pytest case inventory tests/test_phase9c_rfc7692_independent_closure.py::test_phase9c_strict_boundary_now_points_to_0_3_8_and_reports_rfc7692_as_complete",
       "status": "passing",
       "kind": "pytest-case",
@@ -5473,7 +5507,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connect-artifacts-and-local-negative-vectors",
+      "id": "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connec-ec02696f7717",
       "title": "Pytest case inventory tests/test_phase9d1_connect_relay_independent_closure.py::test_phase9d1_release_root_contains_connect_artifacts_and_local_negative_vectors",
       "status": "passing",
       "kind": "pytest-case",
@@ -5489,7 +5523,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-connect-as-partial-artifact-failure-not-unknown-scenarios",
+      "id": "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-conn-1d8830228b61",
       "title": "Pytest case inventory tests/test_phase9d1_connect_relay_independent_closure.py::test_phase9d1_strict_boundary_reports_connect_as_partial_artifact_failure_not_unknown_scenarios",
       "status": "passing",
       "kind": "pytest-case",
@@ -5537,7 +5571,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trailer-artifacts-and-local-behavior-bundle",
+      "id": "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trail-de84ad59885d",
       "title": "Pytest case inventory tests/test_phase9d2_trailer_fields_independent_closure.py::test_phase9d2_release_root_contains_trailer_artifacts_and_local_behavior_bundle",
       "status": "passing",
       "kind": "pytest-case",
@@ -5553,7 +5587,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trailer-progress-in-0-3-8-root",
+      "id": "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trai-ac9cbc538db2",
       "title": "Pytest case inventory tests/test_phase9d2_trailer_fields_independent_closure.py::test_phase9d2_strict_boundary_tracks_trailer_progress_in_0_3_8_root",
       "status": "passing",
       "kind": "pytest-case",
@@ -5601,7 +5635,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-content-coding-artifacts-and-local-behavior-bundle",
+      "id": "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-conte-680e8d648210",
       "title": "Pytest case inventory tests/test_phase9d3_content_coding_independent_closure.py::test_phase9d3_release_root_contains_content_coding_artifacts_and_local_behavior_bundle",
       "status": "passing",
       "kind": "pytest-case",
@@ -5617,7 +5651,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-content-coding-progress-in-0-3-8-root",
+      "id": "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-cont-e65fc9ad02a0",
       "title": "Pytest case inventory tests/test_phase9d3_content_coding_independent_closure.py::test_phase9d3_strict_boundary_tracks_content_coding_progress_in_0_3_8_root",
       "status": "passing",
       "kind": "pytest-case",
@@ -5665,7 +5699,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-artifact-and-local-vectors",
+      "id": "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-arti-e30052c31334",
       "title": "Pytest case inventory tests/test_phase9e_ocsp_independent_closure.py::test_phase9e_release_root_contains_passing_ocsp_artifact_and_local_vectors",
       "status": "passing",
       "kind": "pytest-case",
@@ -5777,7 +5811,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-report-have-green-flag-surface",
+      "id": "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-9c65243f8f95",
       "title": "Pytest case inventory tests/test_phase9f3_concurrency_keepalive_checkpoint.py::test_phase8_snapshot_and_current_promotion_report_have_green_flag_surface",
       "status": "passing",
       "kind": "pytest-case",
@@ -5873,7 +5907,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-applicability-report",
+      "id": "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-appli-ec222d1d3637",
       "title": "Pytest case inventory tests/test_rfc_applicability_and_competitor_status.py::test_repository_documents_reference_rfc_applicability_report",
       "status": "passing",
       "kind": "pytest-case",
@@ -5889,7 +5923,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-document-exists",
+      "id": "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-ba6f7e2b595d",
       "title": "Pytest case inventory tests/test_rfc_applicability_and_competitor_status.py::test_rfc_applicability_and_competitor_status_document_exists",
       "status": "passing",
       "kind": "pytest-case",
@@ -5905,7 +5939,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-support-document-exists",
+      "id": "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-suppor-7a91b271876f",
       "title": "Pytest case inventory tests/test_rfc_applicability_and_competitor_support.py::test_rfc_applicability_and_competitor_support_document_exists",
       "status": "passing",
       "kind": "pytest-case",
@@ -6081,7 +6115,92 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-leaf-with-san-and-key-identifiers",
+      "id": "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-dictionary-rejects-uppercase-keys",
+      "title": "Pytest case inventory tests/test_structured_fields_validation.py::test_parse_dictionary_rejects_uppercase_keys",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_structured_fields_validation.py",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-escaped-quote-and-backslash",
+      "title": "Pytest case inventory tests/test_structured_fields_validation.py::test_parse_item_accepts_escaped_quote_and_backslash",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_structured_fields_validation.py",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-tokens-with-colon-and-slash",
+      "title": "Pytest case inventory tests/test_structured_fields_validation.py::test_parse_item_accepts_tokens_with_colon_and_slash",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_structured_fields_validation.py",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-rejects-malformed-strings",
+      "title": "Pytest case inventory tests/test_structured_fields_validation.py::test_parse_item_rejects_malformed_strings",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_structured_fields_validation.py",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-structured-fields-validation-py-test-serialize-dictionary-rejects-invalid-keys-and-item-values",
+      "title": "Pytest case inventory tests/test_structured_fields_validation.py::test_serialize_dictionary_rejects_invalid_keys_and_item_values",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_structured_fields_validation.py",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-319cad054419",
       "title": "Pytest case inventory tests/test_x509_webpki_validation.py::TestWebPkiValidator::test_accepts_directly_trusted_self_signed_leaf_with_san_and_key_identifiers",
       "status": "passing",
       "kind": "pytest-case",
@@ -6177,7 +6296,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-subject-alt-name",
+      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-su-671a05cd9959",
       "title": "Pytest case inventory tests/test_x509_webpki_validation.py::TestWebPkiValidator::test_rejects_server_certificate_without_subject_alt_name",
       "status": "passing",
       "kind": "pytest-case",
@@ -6225,7 +6344,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-policy-requires-it",
+      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-pol-7d640797a7a1",
       "title": "Pytest case inventory tests/test_x509_webpki_validation.py::TestWebPkiValidator::test_requires_revocation_evidence_when_policy_requires_it",
       "status": "passing",
       "kind": "pytest-case",
@@ -6241,7 +6360,7 @@
       ]
     },
     {
-      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-revocation-source",
+      "id": "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-r-c507ee25a839",
       "title": "Pytest case inventory tests/test_x509_webpki_validation.py::TestWebPkiValidator::test_soft_fail_allows_unreachable_online_revocation_source",
       "status": "passing",
       "kind": "pytest-case",
@@ -8321,12 +8440,12 @@
         "evd:src-profiles-strict-h3-edge-profile-json",
         "evd:src-profiles-strict-mtls-origin-profile-json",
         "evd:src-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json"
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-default-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-mtls-origin-profile-json"
       ]
     },
     {
@@ -8415,6 +8534,23 @@
       "evidence_ids": [
         "evd:src-src-tigrcorn-security-alpn-py",
         "evd:src-tests-test-security-compat-utils-py"
+      ]
+    },
+    {
+      "id": "tst:src-tests-test-structured-fields-validation-py",
+      "title": "Test coverage tests/test_structured_fields_validation.py",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_structured_fields_validation.py",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
       ]
     },
     {
@@ -8534,12 +8670,12 @@
       ],
       "test_ids": [
         "tst:doc-current-state-chain",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exists-and-is-explicit",
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exist-e6fb509016da",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-scoped-current-audits-are-non-canonical",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-archival-current-aliases-are-labeled",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-example-path-docs-are-normalized",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-record-normalization",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-green-after-doc-truth-normalization"
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-re-6ff13053e4d7",
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-3c3b2525f90e"
       ],
       "evidence_ids": [
         "evd:doc-current-state-chain"
@@ -8559,12 +8695,12 @@
         "tst:src-tests-test-profile-resolution-py"
       ],
       "evidence_ids": [
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json"
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-default-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-mtls-origin-profile-json"
       ]
     },
     {
@@ -8619,15 +8755,15 @@
       ],
       "test_ids": [
         "tst:corpus-ocsp-revocation-validation",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-leaf-with-san-and-key-identifiers",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-subject-alt-name",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-319cad054419",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-su-671a05cd9959",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-path-length-violation",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-name-constraints-violation",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-revoked-leaf-when-crl-is-present",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-policy-requires-it",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-pol-7d640797a7a1",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-fetches-ocsp-from-aia-and-reuses-cache",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-fetches-crl-from-distribution-point",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-revocation-source",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-r-c507ee25a839",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-rejects-stale-ocsp-response",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-surfaces-fetch-failure-context"
       ],
@@ -12811,6 +12947,29 @@
       "issue_ids": []
     },
     {
+      "id": "clm:tc-spec-structured-fields-strict-validation",
+      "title": "TC-SPEC-STRUCTURED-FIELDS-STRICT-VALIDATION",
+      "status": "implemented",
+      "tier": "T2",
+      "kind": "implementation_claim",
+      "description": "The structured-field helper rejects malformed string escapes, rejects invalid key and token syntax, preserves RFC 9651-valid colon/slash tokens, and refuses to serialize non-conformant key, token, or string values.",
+      "feature_ids": [
+        "feat:f-p8-rfc9651-strict-validation"
+      ],
+      "test_ids": [
+        "tst:src-tests-test-structured-fields-validation-py",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-rejects-malformed-strings",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-escaped-quote-and-backslash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-dictionary-rejects-uppercase-keys",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-tokens-with-colon-and-slash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-serialize-dictionary-rejects-invalid-keys-and-item-values"
+      ],
+      "evidence_ids": [
+        "evd:src-src-tigrcorn-http-structured-fields-py",
+        "evd:src-tests-test-structured-fields-validation-py"
+      ]
+    },
+    {
       "id": "clm:tc-state-quic-0rtt",
       "title": "TC-STATE-QUIC-0RTT",
       "status": "promoted",
@@ -13116,14 +13275,14 @@
         "tst:pytest-file-tests-test-aioquic-adapter-preflight-py",
         "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-docs-bundle-and-notes-exist",
         "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-bundle-preserves-two-direct-adapter-runs",
-        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificate-and-handshake-state",
-        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-before-phase9-scripts",
+        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificat-372d67ddfa01",
+        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-44d2f17542c1",
         "tst:pytest-file-tests-test-certification-environment-freeze-py",
         "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-docs-bundle-and-workflow-exist",
         "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-snapshot-builder-records-contract",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-supports-non-ready-environments",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-mode-tracks-readiness",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-before-phase9-scripts",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-support-b0758abc233a",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-4ce166c63c45",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-bef-287b5ba49854",
         "tst:pytest-file-tests-test-certification-policy-alignment-py",
         "tst:pytest-file-tests-test-cli-and-asgi3-py",
         "tst:pytest-file-tests-test-compression-additional-py",
@@ -13146,7 +13305,7 @@
         "tst:pytest-file-tests-test-http3-request-stream-state-machine-py",
         "tst:pytest-file-tests-test-http3-server-py",
         "tst:pytest-file-tests-test-http-integrity-caching-signatures-status-py",
-        "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-status-document-exists",
+        "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-statu-eed46035a478",
         "tst:pytest-file-tests-test-import-py",
         "tst:pytest-file-tests-test-intermediary-proxy-corpus-py",
         "tst:pytest-file-tests-test-lifespan-py",
@@ -13155,18 +13314,18 @@
         "tst:pytest-file-tests-test-phase2-entity-semantics-checkpoint-py",
         "tst:pytest-file-tests-test-phase2-rfc-boundary-formalization-checkpoint-py",
         "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc7232-and-rfc7233",
-        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-describe-rfc7232-or-rfc7233-as-unsupported",
-        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-boundary-formalization",
+        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-descri-1e546824059b",
+        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3dc2910557e6",
         "tst:pytest-file-tests-test-phase3-h1-websocket-operator-surface-py",
         "tst:pytest-file-tests-test-phase3-transport-core-strictness-checkpoint-py",
         "tst:pytest-file-tests-test-phase4-advanced-protocol-delivery-checkpoint-py",
         "tst:pytest-file-tests-test-phase4-http2-operator-surface-py",
         "tst:pytest-file-tests-test-phase4-operator-surface-py",
         "tst:pytest-file-tests-test-phase4-rfc-boundary-formalization-checkpoint-py",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rfc7838-section3",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-explicit-and-rfc9218-remains-out",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-explicit-not-ambiguous",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-phase4-boundary-formalization",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rf-0615d88420c7",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-expli-492ee469e646",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-expli-205739c463ca",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3daa229ec6c5",
         "tst:pytest-file-tests-test-phase5-flow-control-bundle-py",
         "tst:pytest-file-tests-test-phase5-intermediary-proxy-corpus-py",
         "tst:pytest-file-tests-test-phase5-tls-operator-material-surface-py",
@@ -13186,37 +13345,37 @@
         "tst:pytest-case-tests-test-phase9-implementation-plan-py-test-current-state-and-readmes-point-to-phase9-plan",
         "tst:pytest-file-tests-test-phase9a-promotion-contract-freeze-py",
         "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-contract-freeze-docs-and-release-root-exist",
-        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-policy-and-scope",
-        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-scenario-and-flag-gap",
+        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-p-bbd84acc3e15",
+        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-b453cb3fd264",
         "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-updates-contract-files-and-readmes",
         "tst:pytest-file-tests-test-phase9b-independent-harness-foundation-py",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-docs-wrapper-registry-and-release-root-exist",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-wrapper-registry-covers-the-phase9b-peer-families",
-        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contains-required-artifacts",
-        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-scenario-file",
+        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contai-041ad23ef258",
+        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-6b6beb77ed40",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-runner-emits-phase9b-artifact-schema-for-new-runs",
         "tst:pytest-file-tests-test-phase9c-rfc7692-independent-closure-py",
         "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc7692-artifacts-and-local-negative-vectors",
-        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-and-reports-rfc7692-as-complete",
+        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc769-7f15f60c8da4",
+        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-5767e00400ca",
         "tst:pytest-file-tests-test-phase9d1-connect-relay-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connect-artifacts-and-local-negative-vectors",
-        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-connect-as-partial-artifact-failure-not-unknown-scenarios",
+        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connec-ec02696f7717",
+        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-conn-1d8830228b61",
         "tst:pytest-file-tests-test-phase9d1-connect-relay-local-negatives-py",
         "tst:pytest-file-tests-test-phase9d2-trailer-fields-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trailer-artifacts-and-local-behavior-bundle",
-        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trailer-progress-in-0-3-8-root",
+        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trail-de84ad59885d",
+        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trai-ac9cbc538db2",
         "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-independent-bundle-still-validates",
         "tst:pytest-file-tests-test-phase9d3-content-coding-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-content-coding-artifacts-and-local-behavior-bundle",
-        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-content-coding-progress-in-0-3-8-root",
+        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-conte-680e8d648210",
+        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-cont-e65fc9ad02a0",
         "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-independent-bundle-still-validates",
         "tst:pytest-file-tests-test-phase9e-ocsp-independent-closure-py",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-artifact-and-local-vectors",
+        "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-arti-e30052c31334",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-strict-boundary-and-validator-reflect-ocsp-progress",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-external-matrix-declares-openssl-ocsp-row",
         "tst:pytest-file-tests-test-phase9e-ocsp-local-validation-py",
@@ -13229,7 +13388,7 @@
         "tst:pytest-file-tests-test-phase9f3-concurrency-keepalive-checkpoint-py",
         "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase9f3-docs-and-status-exist",
         "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-flag-contracts-now-mark-all-rows-promotion-ready",
-        "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-report-have-green-flag-surface",
+        "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-9c65243f8f95",
         "tst:pytest-file-tests-test-phase9f3-concurrency-keepalive-closure-py",
         "tst:pytest-file-tests-test-phase9g-strict-performance-closure-py",
         "tst:pytest-file-tests-test-phase9h-promotion-evaluator-hardening-py",
@@ -13262,10 +13421,10 @@
         "tst:pytest-file-tests-test-response-pipeline-streaming-checkpoint-py",
         "tst:pytest-file-tests-test-response-trailers-rfc9110-py",
         "tst:pytest-file-tests-test-rfc-applicability-and-competitor-status-py",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-document-exists",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-applicability-report",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-ba6f7e2b595d",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-appli-ec222d1d3637",
         "tst:pytest-file-tests-test-rfc-applicability-and-competitor-support-py",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-support-document-exists",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-suppor-7a91b271876f",
         "tst:pytest-file-tests-test-rfc-compliance-hardening-py",
         "tst:pytest-file-tests-test-scheduler-runtime-py",
         "tst:pytest-file-tests-test-server-http1-py",
@@ -14452,15 +14611,15 @@
       ],
       "test_ids": [
         "tst:corpus-ocsp-revocation-validation",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-leaf-with-san-and-key-identifiers",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-subject-alt-name",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-accepts-directly-trusted-self-signed-319cad054419",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-server-certificate-without-su-671a05cd9959",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-path-length-violation",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-name-constraints-violation",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-rejects-revoked-leaf-when-crl-is-present",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-policy-requires-it",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-requires-revocation-evidence-when-pol-7d640797a7a1",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-fetches-ocsp-from-aia-and-reuses-cache",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-fetches-crl-from-distribution-point",
-        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-revocation-source",
+        "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-soft-fail-allows-unreachable-online-r-c507ee25a839",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-rejects-stale-ocsp-response",
         "tst:pytest-case-tests-test-x509-webpki-validation-py-testwebpkivalidator-test-require-mode-surfaces-fetch-failure-context"
       ]
@@ -14603,12 +14762,12 @@
       ],
       "test_ids": [
         "tst:doc-current-state-chain",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exists-and-is-explicit",
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-canonical-current-state-chain-exist-e6fb509016da",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-scoped-current-audits-are-non-canonical",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-archival-current-aliases-are-labeled",
         "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-example-path-docs-are-normalized",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-record-normalization",
-        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-green-after-doc-truth-normalization"
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-package-review-and-current-state-re-6ff13053e4d7",
+        "tst:pytest-case-tests-test-documentation-truth-normalization-checkpoint-py-test-release-gates-and-promotion-remain-3c3b2525f90e"
       ]
     },
     {
@@ -14772,7 +14931,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-default-profile-json",
       "title": "Profile artifact profiles/default.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -14786,7 +14945,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-static-origin-profile-json",
       "title": "Profile artifact profiles/static-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -14800,7 +14959,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h1-origin-profile-json",
       "title": "Profile artifact profiles/strict-h1-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -14814,7 +14973,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h2-origin-profile-json",
       "title": "Profile artifact profiles/strict-h2-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -14828,7 +14987,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h3-edge-profile-json",
       "title": "Profile artifact profiles/strict-h3-edge.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -14842,7 +15001,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-mtls-origin-profile-json",
       "title": "Profile artifact profiles/strict-mtls-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -14905,8 +15064,8 @@
         "tst:pytest-file-tests-test-aioquic-adapter-preflight-py",
         "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-docs-bundle-and-notes-exist",
         "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-bundle-preserves-two-direct-adapter-runs",
-        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificate-and-handshake-state",
-        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-before-phase9-scripts"
+        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-aioquic-preflight-scenario-metadata-records-certificat-372d67ddfa01",
+        "tst:pytest-case-tests-test-aioquic-adapter-preflight-py-test-release-workflow-and-wrapper-require-aioquic-preflight-44d2f17542c1"
       ]
     },
     {
@@ -14923,9 +15082,9 @@
         "tst:pytest-file-tests-test-certification-environment-freeze-py",
         "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-docs-bundle-and-workflow-exist",
         "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-snapshot-builder-records-contract",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-supports-non-ready-environments",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-mode-tracks-readiness",
-        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-before-phase9-scripts"
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-support-b0758abc233a",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-certification-environment-bundle-writer-strict-4ce166c63c45",
+        "tst:pytest-case-tests-test-certification-environment-freeze-py-test-release-workflow-and-wrapper-enforce-freeze-bef-287b5ba49854"
       ]
     },
     {
@@ -15150,7 +15309,7 @@
       ],
       "test_ids": [
         "tst:pytest-file-tests-test-http-integrity-caching-signatures-status-py",
-        "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-status-document-exists"
+        "tst:pytest-case-tests-test-http-integrity-caching-signatures-status-py-test-http-integrity-caching-signatures-statu-eed46035a478"
       ]
     },
     {
@@ -15334,8 +15493,8 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase2-rfc-boundary-formalization-checkpoint-py",
         "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc7232-and-rfc7233",
-        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-describe-rfc7232-or-rfc7233-as-unsupported",
-        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-boundary-formalization"
+        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-current-state-docs-no-longer-descri-1e546824059b",
+        "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3dc2910557e6"
       ]
     },
     {
@@ -15420,10 +15579,10 @@
       ],
       "test_ids": [
         "tst:pytest-file-tests-test-phase4-rfc-boundary-formalization-checkpoint-py",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rfc7838-section3",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-explicit-and-rfc9218-remains-out",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-explicit-not-ambiguous",
-        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-remain-green-after-phase4-boundary-formalization"
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc8297-and-rf-0615d88420c7",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-support-statements-are-expli-492ee469e646",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-phase4-current-state-docs-are-expli-205739c463ca",
+        "tst:pytest-case-tests-test-phase4-rfc-boundary-formalization-checkpoint-py-test-release-gates-and-promotion-target-3daa229ec6c5"
       ]
     },
     {
@@ -15586,8 +15745,8 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase9a-promotion-contract-freeze-py",
         "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-contract-freeze-docs-and-release-root-exist",
-        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-policy-and-scope",
-        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-scenario-and-flag-gap",
+        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-status-snapshot-freezes-release-root-p-bbd84acc3e15",
+        "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-backlog-tracks-every-remaining-strict-b453cb3fd264",
         "tst:pytest-case-tests-test-phase9a-promotion-contract-freeze-py-test-phase9a-updates-contract-files-and-readmes"
       ]
     },
@@ -15605,8 +15764,8 @@
         "tst:pytest-file-tests-test-phase9b-independent-harness-foundation-py",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-docs-wrapper-registry-and-release-root-exist",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-wrapper-registry-covers-the-phase9b-peer-families",
-        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contains-required-artifacts",
-        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-scenario-file",
+        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-phase9b-proof-bundle-validates-and-contai-041ad23ef258",
+        "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-bundle-validator-rejects-missing-required-6b6beb77ed40",
         "tst:pytest-case-tests-test-phase9b-independent-harness-foundation-py-test-runner-emits-phase9b-artifact-schema-for-new-runs"
       ]
     },
@@ -15623,8 +15782,8 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase9c-rfc7692-independent-closure-py",
         "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc7692-artifacts-and-local-negative-vectors",
-        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-and-reports-rfc7692-as-complete"
+        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-release-root-contains-passing-rfc769-7f15f60c8da4",
+        "tst:pytest-case-tests-test-phase9c-rfc7692-independent-closure-py-test-phase9c-strict-boundary-now-points-to-0-3-8-5767e00400ca"
       ]
     },
     {
@@ -15640,8 +15799,8 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase9d1-connect-relay-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connect-artifacts-and-local-negative-vectors",
-        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-connect-as-partial-artifact-failure-not-unknown-scenarios"
+        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-release-root-contains-connec-ec02696f7717",
+        "tst:pytest-case-tests-test-phase9d1-connect-relay-independent-closure-py-test-phase9d1-strict-boundary-reports-conn-1d8830228b61"
       ]
     },
     {
@@ -15671,8 +15830,8 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase9d2-trailer-fields-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trailer-artifacts-and-local-behavior-bundle",
-        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trailer-progress-in-0-3-8-root",
+        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-release-root-contains-trail-de84ad59885d",
+        "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-strict-boundary-tracks-trai-ac9cbc538db2",
         "tst:pytest-case-tests-test-phase9d2-trailer-fields-independent-closure-py-test-phase9d2-independent-bundle-still-validates"
       ]
     },
@@ -15689,8 +15848,8 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase9d3-content-coding-independent-closure-py",
         "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-content-coding-artifacts-and-local-behavior-bundle",
-        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-content-coding-progress-in-0-3-8-root",
+        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-release-root-contains-conte-680e8d648210",
+        "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-strict-boundary-tracks-cont-e65fc9ad02a0",
         "tst:pytest-case-tests-test-phase9d3-content-coding-independent-closure-py-test-phase9d3-independent-bundle-still-validates"
       ]
     },
@@ -15707,7 +15866,7 @@
       "test_ids": [
         "tst:pytest-file-tests-test-phase9e-ocsp-independent-closure-py",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-docs-and-status-exist",
-        "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-artifact-and-local-vectors",
+        "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-release-root-contains-passing-ocsp-arti-e30052c31334",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-strict-boundary-and-validator-reflect-ocsp-progress",
         "tst:pytest-case-tests-test-phase9e-ocsp-independent-closure-py-test-phase9e-external-matrix-declares-openssl-ocsp-row"
       ]
@@ -15772,7 +15931,7 @@
         "tst:pytest-file-tests-test-phase9f3-concurrency-keepalive-checkpoint-py",
         "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase9f3-docs-and-status-exist",
         "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-flag-contracts-now-mark-all-rows-promotion-ready",
-        "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-report-have-green-flag-surface"
+        "tst:pytest-case-tests-test-phase9f3-concurrency-keepalive-checkpoint-py-test-phase8-snapshot-and-current-promotion-9c65243f8f95"
       ]
     },
     {
@@ -16169,8 +16328,8 @@
       ],
       "test_ids": [
         "tst:pytest-file-tests-test-rfc-applicability-and-competitor-status-py",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-document-exists",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-applicability-report"
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-rfc-applicability-and-competitor-status-ba6f7e2b595d",
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-status-py-test-repository-documents-reference-rfc-appli-ec222d1d3637"
       ]
     },
     {
@@ -16185,7 +16344,7 @@
       ],
       "test_ids": [
         "tst:pytest-file-tests-test-rfc-applicability-and-competitor-support-py",
-        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-support-document-exists"
+        "tst:pytest-case-tests-test-rfc-applicability-and-competitor-support-py-test-rfc-applicability-and-competitor-suppor-7a91b271876f"
       ]
     },
     {
@@ -17470,10 +17629,17 @@
       "path": "src/tigrcorn/http/structured_fields.py",
       "claim_ids": [
         "clm:tc-spec-structured-fields-rfc9651",
-        "clm:tc-roadmap-p8-rfc9651-baseline"
+        "clm:tc-roadmap-p8-rfc9651-baseline",
+        "clm:tc-spec-structured-fields-strict-validation"
       ],
       "test_ids": [
-        "tst:src-tests-test-p8-sf-py"
+        "tst:src-tests-test-p8-sf-py",
+        "tst:src-tests-test-structured-fields-validation-py",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-rejects-malformed-strings",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-escaped-quote-and-backslash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-dictionary-rejects-uppercase-keys",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-tokens-with-colon-and-slash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-serialize-dictionary-rejects-invalid-keys-and-item-values"
       ]
     },
     {
@@ -17917,6 +18083,25 @@
       ],
       "test_ids": [
         "tst:src-tests-test-security-compat-utils-py"
+      ]
+    },
+    {
+      "id": "evd:src-tests-test-structured-fields-validation-py",
+      "title": "Source artifact tests/test_structured_fields_validation.py",
+      "status": "passed",
+      "kind": "source_artifact",
+      "tier": "T2",
+      "path": "tests/test_structured_fields_validation.py",
+      "claim_ids": [
+        "clm:tc-spec-structured-fields-strict-validation"
+      ],
+      "test_ids": [
+        "tst:src-tests-test-structured-fields-validation-py",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-rejects-malformed-strings",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-escaped-quote-and-backslash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-dictionary-rejects-uppercase-keys",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-parse-item-accepts-tokens-with-colon-and-slash",
+        "tst:pytest-case-tests-test-structured-fields-validation-py-test-serialize-dictionary-rejects-invalid-keys-and-item-values"
       ]
     },
     {
@@ -18530,9 +18715,9 @@
         "feat:surface-websocket-accept-contract",
         "feat:test-inventory"
       ],
+      "profile_ids": [],
       "canonical_doc": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
-      "canonical_registry_source": ".ssot/registry.json",
-      "profile_ids": []
+      "canonical_registry_source": ".ssot/registry.json"
     }
   ],
   "releases": [
@@ -18715,12 +18900,12 @@
         "evd:gov-docs-conformance-sf9651-md",
         "evd:gov-docs-governance-test-style-policy-md",
         "evd:gov-legacy-unittest-inventory-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-default-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-00ac-tigrcorn-profiles-strict-mtls-origin-profile-json",
         "evd:pytest-file-tests-test-additional-remaining-work-py",
         "evd:pytest-file-tests-test-aioquic-adapter-helpers-py",
         "evd:pytest-file-tests-test-aioquic-adapter-preflight-py",
@@ -18915,6 +19100,7 @@
         "evd:src-tests-test-rfc7232-conditional-requests-py",
         "evd:src-tests-test-rfc7233-range-requests-py",
         "evd:src-tests-test-security-compat-utils-py",
+        "evd:src-tests-test-structured-fields-validation-py",
         "evd:src-tests-test-tls13-engine-upgrade-py",
         "evd:src-tests-test-websocket-additional-rfc6455-py",
         "evd:src-tools-cert-default-audits-py",
@@ -18935,7 +19121,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "e7bd19665fa1a92520ee9b21da493bd5e3e026209ac31fd64e344fcb1710bba5",
       "status": "draft",
       "supersedes": [],
@@ -18951,7 +19137,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "29b6b133e5ecd059c90da8ab7ef931f940ac566cb955a9f4b36a8d6b5f1e2ef7",
       "status": "draft",
       "supersedes": [],
@@ -18967,7 +19153,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "761ffd5988667d68d1ed70d24b1c15946c69c1143115b0230a0a6ccb5cfa4238",
       "status": "draft",
       "supersedes": [],
@@ -18983,7 +19169,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "f8b91bbe54942b2157744e0419b7f6c4b6bb84d02497a391ca1a088114c3c3da",
       "status": "draft",
       "supersedes": [],
@@ -18999,7 +19185,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "3e8243fe57d04a67d2eb94c02f100a466b7dd20566d292fd336979a35abdc6a2",
       "status": "draft",
       "supersedes": [],
@@ -19015,7 +19201,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "4aef17bb539ad05e48b04b70ee69119dc973ee4e16be407bc5d2d11fba0af607",
       "status": "draft",
       "supersedes": [],
@@ -19031,7 +19217,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "a2331253dabab9dc3e407adb55b25f0febb6c16ad590a515d97ac19f33a9b962",
       "status": "draft",
       "supersedes": [],
@@ -19047,7 +19233,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "2145618a72dff6597602ca96df720776b7ac13023fe8ff5462be021621446940",
       "status": "draft",
       "supersedes": [],
@@ -19063,7 +19249,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "3026817d03ed825e1435612c08557b01dfa1fcadd5d1db32172169b79c7a27b1",
       "status": "draft",
       "supersedes": [],
@@ -19079,7 +19265,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "400819479d8e5036da5fd39e30b768f82785aecd3f06fc18738cd1a2b0cce079",
       "status": "draft",
       "supersedes": [],
@@ -19095,7 +19281,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "c138f93e130f63857a2777dd40f3856fdceba7f4768d61dd0f2d0e5a9c7fe4cc",
       "status": "draft",
       "supersedes": [],
@@ -19111,7 +19297,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "87fd1773ace8f82b7707dda6e8b633e285da493e8b29ea17c0dc776da3b4d8b9",
       "status": "draft",
       "supersedes": [],
@@ -19127,7 +19313,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "c3534a8ae8a38bdd1328cc652b750530fdd8c84e00ecf8e19c81301030da822f",
       "status": "draft",
       "supersedes": [],
@@ -19143,7 +19329,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "52047d10ab6538e7423e6233490be2eb699cd31e374f5b81d3daeeeda8eab98d",
       "status": "accepted",
       "supersedes": [],
@@ -19159,7 +19345,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "129a1d94e36795f988372d43e6395467743f82a09dc0ee1f1812b3e282c54f38",
       "status": "accepted",
       "supersedes": [],
@@ -19175,7 +19361,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "e4bf4f7921165fef26c8813fb3b5c62be664efa7b435712ed8346b3614d79634",
       "status": "accepted",
       "supersedes": [],
@@ -19191,7 +19377,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "bd5f459d3bd07a0185da3e0ed9d314e75858690b83ec80f1cd2d8763c6864e05",
       "status": "accepted",
       "supersedes": [],
@@ -19207,7 +19393,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "a317ff62451308e38f73e67f84fad1322611f4354aae04a5249f81831236d82f",
       "status": "accepted",
       "supersedes": [],
@@ -19223,7 +19409,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "ec07f383ea95f99efccb12d7284e72aac4462da4016271e0261c7edf62328321",
       "status": "accepted",
       "supersedes": [],
@@ -19239,7 +19425,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "230a75d7fe3f84639ec7845223ff4676153f777b463d175fffe539222448115f",
       "status": "accepted",
       "supersedes": [],
@@ -19255,7 +19441,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "9449fd48da392e7f8874b42abbaa0aeaad80f7025780a09e4497e157ec614eb1",
       "status": "accepted",
       "supersedes": [],
@@ -19271,7 +19457,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "25afd3e318f828c0b9f907d3513fe729d1ce2992e1d0412a465d4be2922caf44",
       "status": "accepted",
       "supersedes": [],
@@ -19287,7 +19473,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "90d1bf7a2be365843ba1a0bf2a17841ef2e7c5790770771550320c6304f28e12",
       "status": "accepted",
       "supersedes": [],
@@ -19305,13 +19491,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "d03d461a32d1cbc5798cd33fbda66589010b8d082b65bf989f18f761d273b587",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0601",
@@ -19322,13 +19508,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "bacd750fcaee57277115e2bd61c5fde308624798839a34bce0bc8f1320de3287",
+      "kind": "operational",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "operational"
+      "status_notes": []
     },
     {
       "id": "spc:0602",
@@ -19339,13 +19525,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "c2f9addf6a50ccbfc020c40327de93027ec984bebd0dc12feb1f4febfa816293",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0603",
@@ -19356,13 +19542,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "fe3ff8e895162ae90359401bac69bc8e8e5c98b2b31447fea3b6e1ae76516c79",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0604",
@@ -19373,13 +19559,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "d789748eb6dd262134c80baf77a8c44dd85f6ca0ce1ab53586d25dcb576e32a1",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0605",
@@ -19390,13 +19576,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "7b350ed11cad9d9be5fce31e10f0f4350d6a071049a01c950af8694d5f0630d7",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0606",
@@ -19407,13 +19593,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "6952e1ae415375b4dbe46c92537f6c6cd3dce5709a2507d906197bf8043fd6d6",
+      "kind": "operational",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "operational"
+      "status_notes": []
     },
     {
       "id": "spc:0607",
@@ -19424,13 +19610,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "63b5056e142d551afb5a7c8e119b4e02913371771bb54c56c52464b1615893c2",
+      "kind": "operational",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "operational"
+      "status_notes": []
     },
     {
       "id": "spc:0608",
@@ -19441,13 +19627,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "ab8ef1311b825d7474f24a8b2eeff2fee19183804746cbccd7234f9f5e2166a9",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0609",
@@ -19458,13 +19644,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "ce9b9a9cd22703419af6d37aaf3e7da815291deb6bf493a16689f41d9019233e",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0610",
@@ -19475,13 +19661,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "e821e3c072a3973300b6c91eb2f6ce504cf4f34f4c6b49ed7c742a4315b7d5fc",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0611",
@@ -19492,13 +19678,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "fa4fab0acc1175f202b36fe1770cbe076332bf33e7bccf5eb539c477c9215b7d",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0612",
@@ -19509,13 +19695,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "bbea37ab830073ee6309011ee7aa9b13aa490e660bdf01448cd50f1d42a32993",
+      "kind": "operational",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "operational"
+      "status_notes": []
     },
     {
       "id": "spc:0613",
@@ -19526,13 +19712,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "9e7523c7f8fe3f5cad8bd05aa42796e96794c7427cb774639ef9c5dfc4082c8a",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:0614",
@@ -19543,13 +19729,13 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
+      "package_version": "0.2.10",
       "content_sha256": "38914181571d8d366258bc4cce8837a9857b2e480e03687db9d811555b807f77",
+      "kind": "normative",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "kind": "normative"
+      "status_notes": []
     },
     {
       "id": "spc:1001",
@@ -19560,7 +19746,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "61c262570ee7973943bf0e64d8902162005ed7c0f9ab6551aa698b4543ffeb24",
       "kind": "local-policy",
       "status": "draft",
@@ -19577,7 +19763,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "5020ef482e0b809587749c42f76c7c2d9d2de253d4cf55df572fe9dde17892f6",
       "kind": "local-policy",
       "status": "draft",
@@ -19594,7 +19780,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "ab5cb13541e38cd7a1ba79f732ee6d50c80bfe22cbd71fc596de29dc869f12ad",
       "kind": "local-policy",
       "status": "draft",
@@ -19611,7 +19797,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "7ddf8dc6e2155616ef9f1be350a201633616db2366d8387b71bfea4d4274343a",
       "kind": "local-policy",
       "status": "draft",
@@ -19628,7 +19814,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "be4b45f7a1a1beebb5ba3a3322860299aff459fb02463e534051971b2e870516",
       "kind": "local-policy",
       "status": "draft",
@@ -19645,7 +19831,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "f3ad6c4e6b9d84f2df607b167b77d20329ce172bf0d0365aee2280cce0790699",
       "kind": "local-policy",
       "status": "draft",
@@ -19662,7 +19848,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "c7b0cda43a52c1b146d90c166b864085d0ed2cfc2df244215b85274a0d8a1331",
       "kind": "local-policy",
       "status": "draft",
@@ -19679,7 +19865,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "3e3aea3f649fa3281259b1fcd1948921efb7bd7fbf65c00301e27f8897f984d8",
       "kind": "local-policy",
       "status": "draft",
@@ -19696,7 +19882,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "b03404d662b2b11d681bef420d799b14f3e4aa51a72ff08317489972e8994524",
       "kind": "local-policy",
       "status": "draft",
@@ -19713,8 +19899,25 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.7",
+      "package_version": "0.2.10",
       "content_sha256": "78ae763d63c29db11145e042d4711de406cb203403b24d45f1cc18c0705370c9",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2009",
+      "number": 2009,
+      "slug": "structured-fields-strict-validation",
+      "title": "Structured fields strict validation",
+      "path": ".ssot/specs/SPEC-2009-structured-fields-strict-validation.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "bbafb1e8cf96cc3f12993e587d24dc7b5c1e1725c11c5a0260594c8ebece3bd7",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],

@@ -1,24 +1,19 @@
 {
   "passed": true,
-  "registry_path": ".ssot/registry.json",
-  "from_schema_version": 10,
+  "registry_path": "C:/Users/bigman/.codex/worktrees/00ac/tigrcorn/.ssot/registry.json",
+  "from_schema_version": "0.1.0",
   "to_schema_version": "0.1.0",
-  "from_version": "0.2.7",
-  "to_version": "0.2.8",
-  "migrations": [
-    "0.2.6->0.2.7 (schema 9->10)",
-    "0.2.7->0.2.7 (schema 10->0.1.0)"
-  ],
-  "schema_migrations": [
-    "migrate_v9_to_v10",
-    "migrate_v10_to_v0_1_0"
-  ],
+  "from_version": "0.2.10",
+  "to_version": "0.2.10",
+  "migrations": [],
+  "schema_migrations": [],
   "renamed_specs": [],
   "document_migration": null,
   "sync": {
     "adr": {
       "created": [],
-      "updated": [
+      "updated": [],
+      "unchanged": [
         "adr:0600",
         "adr:0601",
         "adr:0602",
@@ -33,12 +28,12 @@
         "adr:0611",
         "adr:0612",
         "adr:0613"
-      ],
-      "unchanged": []
+      ]
     },
     "spec": {
       "created": [],
-      "updated": [
+      "updated": [],
+      "unchanged": [
         "spc:0600",
         "spc:0601",
         "spc:0602",
@@ -54,8 +49,7 @@
         "spc:0612",
         "spc:0613",
         "spc:0614"
-      ],
-      "unchanged": []
+      ]
     }
   },
   "changed": true
