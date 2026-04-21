@@ -1,0 +1,50 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2009"
+number: 2009
+slug: "rfc8785-jcs"
+title: "RFC 8785 JSON Canonicalization Scheme"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags:
+  - "json"
+  - "jcs"
+  - "rfc8785"
+summary: "This spec defines the planned Tigrcorn surface for RFC 8785 JSON Canonicalization Scheme support."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "RFC 8785: JSON Canonicalization Scheme (JCS)"
+body: |-
+  ## Purpose
+
+  This spec defines the planned Tigrcorn surface for RFC 8785 JSON Canonicalization Scheme support.
+
+  ## Scope
+
+  RFC 8785 JCS support covers deterministic canonical serialization of JSON values for hashing, signing, registry comparison, fixture generation, and conformance artifacts.
+
+  The scope is canonicalization of already-decoded JSON-compatible data. It is not a general JSON parser replacement, JOSE stack, COSE stack, signature framework, or schema validation layer.
+
+  ## Requirements
+
+  1. Canonicalization must emit UTF-8 JSON bytes without insignificant whitespace.
+  2. Object member names must be sorted deterministically according to RFC 8785 JCS ordering.
+  3. String escaping and number serialization must follow RFC 8785 JCS requirements rather than Python-specific display forms.
+  4. Inputs outside the RFC 8785 I-JSON constraints must fail closed with an explicit error.
+  5. The public API must make canonical byte generation explicit and must not silently alter existing config-file or registry parsing behavior.
+  6. Conformance tests must include the RFC 8785 examples and local regression cases for nested objects, arrays, Unicode strings, integer boundaries, floating-point edge cases, and rejection paths.
+
+  ## Relationship To Existing JSON Surfaces
+
+  Existing JSON readers and writers may continue to load, pretty-print, or preserve local formatting for human-authored files. JCS canonicalization is a separate operation used when Tigrcorn needs a stable standards-defined byte representation.
+
+  ## Non Goals
+
+  - JSON Schema validation
+  - JOSE or COSE signing
+  - Automatic canonicalization of every repository JSON file
+  - Canonicalization of non-JSON encodings
+spec_kind: "local-policy"

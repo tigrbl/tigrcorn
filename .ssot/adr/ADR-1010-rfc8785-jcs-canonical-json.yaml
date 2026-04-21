@@ -1,0 +1,31 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1010"
+number: 1010
+slug: "rfc8785-jcs-canonical-json"
+title: "adopt RFC 8785 JCS for canonical JSON"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags:
+  - "json"
+  - "jcs"
+  - "rfc8785"
+summary: "Decision: canonical JSON serialization work will target RFC 8785 JSON Canonicalization Scheme semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "RFC 8785: JSON Canonicalization Scheme (JCS)"
+body: |-
+  # ADR 1010 - adopt RFC 8785 JCS for canonical JSON
+
+  Decision: canonical JSON serialization work will target RFC 8785 JSON Canonicalization Scheme semantics.
+
+  Reason: Tigrcorn stores and compares substantial machine-readable governance, conformance, and release material as JSON. A standards-based canonical form gives signatures, hashes, fixtures, and registry comparisons one deterministic byte representation instead of relying on producer-specific pretty-printing or key-order conventions.
+
+  Consequences:
+
+  - JCS support is tracked as an explicit planned standards feature, not implied by ordinary JSON parsing.
+  - The implementation must preserve the distinction between JSON data modeling and canonical byte serialization.
+  - Numeric, string, object member ordering, whitespace, and I-JSON constraints are specified in the companion SPEC rather than scattered across tests.

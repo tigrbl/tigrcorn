@@ -1024,6 +1024,54 @@
       "spec_ids": []
     },
     {
+      "id": "feat:rfc-8785",
+      "title": "RFC 8785",
+      "description": "Explicit planned coverage for RFC 8785 JSON Canonicalization Scheme.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Planned standards scope; no implementation or conformance claim is registered yet."
+      },
+      "plan": {
+        "horizon": "explicit",
+        "slot": "authoritative-boundary",
+        "target_claim_tier": "T4",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2009"
+      ]
+    },
+    {
+      "id": "feat:jcs-canonical-json-serialization",
+      "title": "JCS canonical JSON serialization",
+      "description": "Package-owned canonical JSON byte serialization that follows RFC 8785 JCS semantics.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Planned implementation surface for standards-based canonical JSON generation."
+      },
+      "plan": {
+        "horizon": "explicit",
+        "slot": "roadmap-feature",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [
+        "feat:rfc-8785"
+      ],
+      "spec_ids": [
+        "spc:2009"
+      ]
+    },
+    {
       "id": "feat:f-p8-risk-traceability",
       "title": "F-P8-RISK-TRACEABILITY",
       "description": "Feature target F-P8-RISK-TRACEABILITY imported from claims_registry.json.",
@@ -19293,6 +19341,22 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1010",
+      "number": 1010,
+      "slug": "rfc8785-jcs-canonical-json",
+      "title": "adopt RFC 8785 JCS for canonical JSON",
+      "path": ".ssot/adr/ADR-1010-rfc8785-jcs-canonical-json.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.7",
+      "content_sha256": "9ced6a669090396d31609315e34719b8e8aaa4906205c64fbd0f5a48f8608fc3",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -19715,6 +19779,23 @@
       "immutable": false,
       "package_version": "0.2.7",
       "content_sha256": "78ae763d63c29db11145e042d4711de406cb203403b24d45f1cc18c0705370c9",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2009",
+      "number": 2009,
+      "slug": "rfc8785-jcs",
+      "title": "RFC 8785 JSON Canonicalization Scheme",
+      "path": ".ssot/specs/SPEC-2009-rfc8785-jcs.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.7",
+      "content_sha256": "02b53adf1a286483393c7e45069b45de0f98693b2c2782184a035b5237b9f3e4",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
