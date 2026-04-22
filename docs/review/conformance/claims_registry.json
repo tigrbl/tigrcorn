@@ -625,7 +625,7 @@
       "class": "certification_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P8-RFC9651-BASELINE"
+        "RFC 9651 baseline"
       ],
       "id": "TC-SPEC-STRUCTURED-FIELDS-RFC9651",
       "required_evidence_tier": "local_conformance",
@@ -698,7 +698,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P1-DEFAULT-BASELINE"
+        "Default baseline profile"
       ],
       "id": "TC-PROFILE-DEFAULT-BASELINE",
       "required_evidence_tier": "local_conformance",
@@ -723,7 +723,7 @@
       "class": "delivery_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P1-STRICT-H1-ORIGIN"
+        "Strict H1 origin profile"
       ],
       "id": "TC-PROFILE-STRICT-H1-ORIGIN",
       "required_evidence_tier": "local_conformance",
@@ -749,7 +749,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P1-STRICT-H2-ORIGIN"
+        "Strict H2 origin profile"
       ],
       "id": "TC-PROFILE-STRICT-H2-ORIGIN",
       "required_evidence_tier": "local_conformance",
@@ -771,7 +771,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P1-STRICT-H3-EDGE"
+        "Strict H3 edge profile"
       ],
       "id": "TC-PROFILE-STRICT-H3-EDGE",
       "required_evidence_tier": "local_conformance",
@@ -796,7 +796,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P1-STRICT-MTLS-ORIGIN"
+        "Strict mTLS origin profile"
       ],
       "id": "TC-PROFILE-STRICT-MTLS-ORIGIN",
       "required_evidence_tier": "local_conformance",
@@ -818,7 +818,7 @@
       "class": "delivery_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P1-STATIC-ORIGIN"
+        "Static origin profile"
       ],
       "id": "TC-PROFILE-STATIC-ORIGIN",
       "required_evidence_tier": "local_conformance",
@@ -843,7 +843,7 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P2-BASE-DEFAULT-AUDIT"
+        "Base default audit"
       ],
       "id": "TC-AUDIT-DEFAULT-BASE",
       "issue_refs": [
@@ -873,7 +873,7 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P2-PROFILE-DEFAULT-AUDIT"
+        "Profile default audit"
       ],
       "id": "TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS",
       "issue_refs": [
@@ -903,7 +903,7 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P2-FLAG-CONTRACT-REGISTRY"
+        "Flag contract registry"
       ],
       "id": "TC-AUDIT-FLAG-CONTRACT-REVIEWED",
       "issue_refs": [
@@ -934,7 +934,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P4-EARLY-DATA-ADMISSION"
+        "Early data admission policy"
       ],
       "id": "TC-CONTRACT-EARLYDATA-ADMISSION",
       "required_evidence_tier": "local_conformance",
@@ -964,7 +964,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P4-REPLAY-POLICY"
+        "Replay policy"
       ],
       "id": "TC-CONTRACT-EARLYDATA-REPLAY",
       "required_evidence_tier": "local_conformance",
@@ -993,7 +993,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P4-MULTI-INSTANCE-EARLY-DATA"
+        "Multi-instance early data policy"
       ],
       "id": "TC-CONTRACT-EARLYDATA-TOPOLOGY",
       "required_evidence_tier": "local_conformance",
@@ -1019,7 +1019,7 @@
       "class": "application_hosting",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P4-RETRY-APP-VISIBILITY"
+        "Retry app visibility"
       ],
       "id": "TC-CONTRACT-EARLYDATA-APP-VISIBILITY",
       "required_evidence_tier": "local_conformance",
@@ -1047,7 +1047,7 @@
       "class": "certification_support",
       "current_evidence": "independent_certification",
       "feature_refs": [
-        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+        "Independent QUIC state claims"
       ],
       "id": "TC-STATE-QUIC-RETRY",
       "required_evidence_tier": "independent_certification",
@@ -1073,7 +1073,7 @@
       "class": "certification_support",
       "current_evidence": "independent_certification",
       "feature_refs": [
-        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+        "Independent QUIC state claims"
       ],
       "id": "TC-STATE-QUIC-RESUMPTION",
       "required_evidence_tier": "independent_certification",
@@ -1099,7 +1099,7 @@
       "class": "certification_support",
       "current_evidence": "independent_certification",
       "feature_refs": [
-        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+        "Independent QUIC state claims"
       ],
       "id": "TC-STATE-QUIC-0RTT",
       "required_evidence_tier": "independent_certification",
@@ -1125,7 +1125,7 @@
       "class": "certification_support",
       "current_evidence": "independent_certification",
       "feature_refs": [
-        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+        "Independent QUIC state claims"
       ],
       "id": "TC-STATE-QUIC-MIGRATION",
       "required_evidence_tier": "independent_certification",
@@ -1151,7 +1151,7 @@
       "class": "certification_support",
       "current_evidence": "independent_certification",
       "feature_refs": [
-        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+        "Independent QUIC state claims"
       ],
       "id": "TC-STATE-QUIC-GOAWAY",
       "required_evidence_tier": "independent_certification",
@@ -1177,7 +1177,7 @@
       "class": "certification_support",
       "current_evidence": "independent_certification",
       "feature_refs": [
-        "F-P4-INDEPENDENT-QUIC-CLAIMS"
+        "Independent QUIC state claims"
       ],
       "id": "TC-STATE-QUIC-QPACK",
       "required_evidence_tier": "independent_certification",
@@ -1203,7 +1203,7 @@
       "class": "delivery_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P5-PATH-RESOLUTION"
+        "Origin path resolution"
       ],
       "id": "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
       "required_evidence_tier": "local_conformance",
@@ -1233,7 +1233,7 @@
       "class": "delivery_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P5-FILE-SELECTION-HTTP"
+        "HTTP file selection"
       ],
       "id": "TC-CONTRACT-ORIGIN-FILE-SELECTION",
       "required_evidence_tier": "local_conformance",
@@ -1267,7 +1267,7 @@
       "class": "application_hosting",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P5-PATHSEND-CONTRACT"
+        "ASGI pathsend contract"
       ],
       "id": "TC-CONTRACT-ORIGIN-PATHSEND",
       "required_evidence_tier": "local_conformance",
@@ -1299,7 +1299,7 @@
       "class": "operator_surface",
       "current_evidence": "docs/conformance/metrics_schema.json, docs/conformance/metrics_schema.md, tests/test_phase6_observability_surface.py",
       "feature_refs": [
-        "F-P6-QUIC-H3-COUNTERS"
+        "QUIC/H3 counters"
       ],
       "id": "TC-OBS-METRICS-SCHEMA",
       "required_evidence_tier": "local_conformance",
@@ -1319,7 +1319,7 @@
       "class": "operator_surface",
       "current_evidence": "docs/conformance/metrics_schema.json, docs/ops/observability.md, tests/test_phase6_observability_surface.py, tests/test_phase9f2_logging_exporter_closure.py",
       "feature_refs": [
-        "F-P6-EXPORT-SURFACES"
+        "Observability export surfaces"
       ],
       "id": "TC-OBS-EXPORT-ADAPTERS",
       "required_evidence_tier": "local_conformance",
@@ -1339,7 +1339,7 @@
       "class": "operator_surface",
       "current_evidence": "docs/conformance/qlog_experimental.json, docs/conformance/qlog_experimental.md, tests/test_phase6_observability_surface.py",
       "feature_refs": [
-        "F-P6-QLOG-STANCE"
+        "qlog stance"
       ],
       "id": "TC-OBS-QLOG-EXPERIMENTAL",
       "required_evidence_tier": "local_conformance",
@@ -1359,7 +1359,7 @@
       "class": "governance_support",
       "current_evidence": "docs/conformance/fail_state_registry.json, docs/conformance/fail_state_registry.md, tests/test_phase7_negative_certification.py",
       "feature_refs": [
-        "F-P7-FAIL-STATE-REGISTRY"
+        "Fail-state registry"
       ],
       "id": "TC-NEG-FAIL-STATE-REGISTRY",
       "required_evidence_tier": "local_conformance",
@@ -1379,8 +1379,8 @@
       "class": "certification_support",
       "current_evidence": "docs/conformance/negative_corpora.json, docs/conformance/negative_corpora.md, tests/test_phase7_negative_certification.py",
       "feature_refs": [
-        "F-P7-NEGATIVE-CORPORA-QUIC",
-        "F-P7-NEGATIVE-CORPORA-ORIGIN"
+        "QUIC negative corpora",
+        "Origin negative corpora"
       ],
       "id": "TC-NEG-ADVERSARIAL-CORPORA",
       "required_evidence_tier": "local_conformance",
@@ -1403,8 +1403,8 @@
       "class": "certification_support",
       "current_evidence": "docs/conformance/negative_bundles.json, docs/conformance/negative_bundles.md, docs/conformance/negative_bundles/, tests/test_phase7_negative_certification.py",
       "feature_refs": [
-        "F-P7-NEGATIVE-CORPORA-QUIC",
-        "F-P7-NEGATIVE-CORPORA-ORIGIN"
+        "QUIC negative corpora",
+        "Origin negative corpora"
       ],
       "id": "TC-NEG-BUNDLE-PRESERVATION",
       "required_evidence_tier": "local_conformance",
@@ -1427,7 +1427,7 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P8-RISK-TRACEABILITY"
+        "Risk traceability"
       ],
       "id": "TC-ROADMAP-P8-RISK-TRACEABILITY",
       "required_evidence_tier": "local_conformance",
@@ -1454,7 +1454,7 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P8-PYTEST-FORWARD"
+        "Pytest forward policy"
       ],
       "id": "TC-ROADMAP-P8-PYTEST-FORWARD",
       "issue_refs": [
@@ -1483,7 +1483,7 @@
       "class": "governance_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P8-RELEASE-GATED-EVIDENCE"
+        "Release-gated evidence"
       ],
       "id": "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
       "issue_refs": [
@@ -1513,7 +1513,7 @@
       "class": "certification_support",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P8-RFC9651-BASELINE"
+        "RFC 9651 baseline"
       ],
       "id": "TC-ROADMAP-P8-RFC9651-BASELINE",
       "required_evidence_tier": "local_conformance",
@@ -1744,7 +1744,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PROXY-TRUST"
+        "Proxy trust model"
       ],
       "id": "TC-CONTRACT-PROXY-TRUST",
       "required_evidence_tier": "local_conformance",
@@ -1772,7 +1772,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PROXY-PRECEDENCE"
+        "Proxy precedence"
       ],
       "id": "TC-CONTRACT-PROXY-PRECEDENCE",
       "required_evidence_tier": "local_conformance",
@@ -1800,7 +1800,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PROXY-PRECEDENCE"
+        "Proxy precedence"
       ],
       "id": "TC-CONTRACT-PROXY-NORMALIZATION",
       "required_evidence_tier": "local_conformance",
@@ -1828,7 +1828,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-CONNECT-POLICY"
+        "CONNECT policy"
       ],
       "id": "TC-POLICY-CONNECT",
       "required_evidence_tier": "local_conformance",
@@ -1855,7 +1855,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-TRAILER-POLICY"
+        "Trailer policy"
       ],
       "id": "TC-POLICY-TRAILERS",
       "required_evidence_tier": "local_conformance",
@@ -1882,7 +1882,7 @@
       "class": "delivery_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-CODING-POLICY"
+        "Content coding policy"
       ],
       "id": "TC-POLICY-CONTENT-CODING",
       "required_evidence_tier": "local_conformance",
@@ -1909,7 +1909,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-H2C",
       "required_evidence_tier": "local_conformance",
@@ -1934,7 +1934,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-ALPN",
       "required_evidence_tier": "local_conformance",
@@ -1958,7 +1958,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-REVOCATION",
       "required_evidence_tier": "local_conformance",
@@ -1982,7 +1982,7 @@
       "class": "protocol_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-WEBSOCKET-COMPRESSION",
       "required_evidence_tier": "local_conformance",
@@ -2007,7 +2007,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-LIMITS-TIMEOUTS",
       "required_evidence_tier": "local_conformance",
@@ -2032,7 +2032,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-WEBSOCKET-HEARTBEAT",
       "required_evidence_tier": "local_conformance",
@@ -2058,7 +2058,7 @@
       "class": "operator_surface",
       "current_evidence": "local_conformance",
       "feature_refs": [
-        "F-P3-PUBLIC-CONTROLS"
+        "Public controls policy"
       ],
       "id": "TC-POLICY-DRAIN-ADMISSION",
       "required_evidence_tier": "local_conformance",

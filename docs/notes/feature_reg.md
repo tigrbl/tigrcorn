@@ -108,39 +108,39 @@ These rows map the current roadmap bands into the mutable working register. They
 
 | feature_id | band | feature row | target family | current posture | next deliverables | evidence or conformance focus |
 |---|---|---|---|---|---|---|
-| `F-P1-DEFAULT-BASELINE` | `P1` | `default` safe baseline | profiles and safe baseline | in-bounds candidate | `profiles/default.profile.json`, operator docs, default audit rows | import-from-CWD, proxy spoof denial, no CONNECT relay, no early data |
-| `F-P1-STRICT-H1-ORIGIN` | `P1` | `strict-h1-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | keepalive semantics, forwarded rejection, redirect-host safety |
-| `F-P1-STRICT-H2-ORIGIN` | `P1` | `strict-h2-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | H2 parity, SETTINGS bounds, frame/header resource caps |
-| `F-P1-STRICT-H3-EDGE` | `P1` | `strict-h3-edge` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | token integrity, Retry path, default 0-RTT rejection, H3/QPACK stress |
-| `F-P1-STRICT-MTLS-ORIGIN` | `P1` | `strict-mtls-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | cert-path validation, SAN/EKU rejection, CRL/OCSP behavior |
-| `F-P1-STATIC-ORIGIN` | `P1` | `static-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | traversal denial, HEAD/GET parity, Range/If-Range correctness |
-| `F-P2-BASE-DEFAULT-AUDIT` | `P2` | Base default audit | defaults and profiles | in-bounds candidate | `DEFAULT_AUDIT.json`, `DEFAULT_AUDIT.md` | post-normalization parity, three-state default tests |
-| `F-P2-PROFILE-DEFAULT-AUDIT` | `P2` | Profile-effective default audit | defaults and profiles | in-bounds candidate | `PROFILE_DEFAULTS/*.json`, `PROFILE_DEFAULTS/*.md`, inheritance manifest | overlay parity, unsafe-default denial, profile doc/runtime sync |
-| `F-P2-FLAG-CONTRACT-REGISTRY` | `P2` | Reviewed flag contract registry | defaults and profiles | in-bounds candidate | reviewed `flag_contracts.json` | flag review coverage, doc/runtime/help sync |
-| `F-P3-PROXY-TRUST` | `P3` | Proxy trust model | proxy and public policy closure | in-bounds candidate | normative proxy contract | spoofed chain rejection, mixed-trust rejection |
-| `F-P3-PROXY-PRECEDENCE` | `P3` | Proxy precedence plus normalization | proxy and public policy closure | in-bounds candidate | precedence tables, normalization contract | conflicting host/proto/port tests, root-path injection tests |
-| `F-P3-CONNECT-POLICY` | `P3` | CONNECT relay policy | proxy and public policy closure | in-bounds candidate | policy docs, attack corpus slice | open-proxy denial, loopback/private-IP denial, DNS rebinding |
-| `F-P3-TRAILER-POLICY` | `P3` | Trailer policy | proxy and public policy closure | in-bounds candidate | policy docs, flag metadata | trailer correctness and malformed-trailer negatives |
-| `F-P3-CODING-POLICY` | `P3` | Content-coding policy | proxy and public policy closure | in-bounds candidate | policy docs, origin hooks | coding negotiation, compressed-range behavior |
-| `F-P3-PUBLIC-CONTROLS` | `P3` | ALPN/revocation/H2C/WS compression/limits/drain | proxy and public policy closure | in-bounds candidate | CLI/help/docs, policy metadata, operator pages | ALPN, OCSP/CRL, H2C, WS compression, idle/limit/drain tests |
-| `F-P4-EARLY-DATA-ADMISSION` | `P4` | Early-data admission policy | QUIC semantic closure | in-bounds candidate | early-data contract | admission matrix, unsafe-method rejection |
-| `F-P4-REPLAY-POLICY` | `P4` | Replay policy | QUIC semantic closure | in-bounds candidate | replay policy spec | replay behavior, `425` retry, intermediary propagation |
-| `F-P4-MULTI-INSTANCE-EARLY-DATA` | `P4` | Multi-instance early-data policy | QUIC semantic closure | in-bounds candidate | topology policy, deployment notes | multi-node replay, shared-ticket edge cases |
-| `F-P4-RETRY-APP-VISIBILITY` | `P4` | Retry plus app-visible semantics | QUIC semantic closure | in-bounds candidate | Retry/0-RTT interaction spec, runtime contract | invalid Retry, duplicate Retry, app visibility consistency |
-| `F-P4-INDEPENDENT-QUIC-CLAIMS` | `P4` | Independent QUIC state claims | QUIC semantic closure | in-bounds candidate | profile bindings, operator docs | token integrity, migration spoofing, GOAWAY/QPACK stress |
-| `F-P5-PATH-RESOLUTION` | `P5` | Path resolution | origin delivery contract | in-bounds candidate | normative origin contract | traversal, encoded traversal, symlink escape |
-| `F-P5-FILE-SELECTION-HTTP` | `P5` | File selection plus HTTP semantics | origin delivery contract | in-bounds candidate | origin contract, conformance corpus | HEAD parity, conditional conflicts, range-past-EOF |
-| `F-P5-PATHSEND-CONTRACT` | `P5` | ASGI `pathsend` contract | origin delivery contract | in-bounds candidate | origin contract, operator docs | file-replaced-mid-send, partial-send, disconnect-race |
-| `F-P6-QUIC-H3-COUNTERS` | `P6` | QUIC/H3 counter families | observability | in-bounds candidate | metrics schema, operator docs | counter correctness under retry, migration, loss |
-| `F-P6-EXPORT-SURFACES` | `P6` | Export surfaces | observability | in-bounds candidate | export config/docs | export smoke, schema compatibility |
-| `F-P6-QLOG-STANCE` | `P6` | qlog experimental stance | observability | in-bounds candidate | experimental export spec, schema versioning | redaction, schema-version, trace integrity |
-| `F-P7-FAIL-STATE-REGISTRY` | `P7` | Fail-state registry | negative certification | in-bounds candidate | negative-cert registry | assertion coverage |
-| `F-P7-NEGATIVE-CORPORA-QUIC` | `P7` | Proxy/early-data/QUIC corpora | negative certification | in-bounds candidate | attack corpora, expected outcomes | negative suites with preserved evidence |
-| `F-P7-NEGATIVE-CORPORA-ORIGIN` | `P7` | Origin/CONNECT/TLS/topology corpora | negative certification | in-bounds candidate | corpora, expected outcomes, evidence bundles | traversal, open relay, wrong EKU/SAN, mixed topology |
-| `F-P8-RISK-TRACEABILITY` | `P8` | Risk register plus traceability | governance and promotion discipline | in-bounds candidate | `RISK_REGISTER*`, `RISK_TRACEABILITY.json`, schema/docs | schema, ID uniqueness, referential integrity |
-| `F-P8-PYTEST-FORWARD` | `P8` | Pytest-only forward motion | governance and promotion discipline | in-bounds candidate | `TEST_STYLE_POLICY.md`, `LEGACY_UNITTEST_INVENTORY.json` | no new unittest imports/classes, mirror-exists tests |
-| `F-P8-RELEASE-GATED-EVIDENCE` | `P8` | Release-gated evidence plus interop plus perf | governance and promotion discipline | in-bounds candidate | boundary manifests, interop bundles, perf bundles | release-gate suite, artifact retention checks |
-| `F-P8-RFC9651-BASELINE` | `P8` | RFC 9651 structured-fields baseline | structured fields | in-bounds candidate | SFV conformance tests, dependency review, claim sync | round-trip/canonical serialization, stale-reference lint |
+| `Default baseline profile` | `P1` | `default` safe baseline | profiles and safe baseline | in-bounds candidate | `profiles/default.profile.json`, operator docs, default audit rows | import-from-CWD, proxy spoof denial, no CONNECT relay, no early data |
+| `Strict H1 origin profile` | `P1` | `strict-h1-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | keepalive semantics, forwarded rejection, redirect-host safety |
+| `Strict H2 origin profile` | `P1` | `strict-h2-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | H2 parity, SETTINGS bounds, frame/header resource caps |
+| `Strict H3 edge profile` | `P1` | `strict-h3-edge` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | token integrity, Retry path, default 0-RTT rejection, H3/QPACK stress |
+| `Strict mTLS origin profile` | `P1` | `strict-mtls-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | cert-path validation, SAN/EKU rejection, CRL/OCSP behavior |
+| `Static origin profile` | `P1` | `static-origin` | profiles and safe baseline | in-bounds candidate | profile spec, operator page, cert bundle | traversal denial, HEAD/GET parity, Range/If-Range correctness |
+| `Base default audit` | `P2` | Base default audit | defaults and profiles | in-bounds candidate | `DEFAULT_AUDIT.json`, `DEFAULT_AUDIT.md` | post-normalization parity, three-state default tests |
+| `Profile default audit` | `P2` | Profile-effective default audit | defaults and profiles | in-bounds candidate | `PROFILE_DEFAULTS/*.json`, `PROFILE_DEFAULTS/*.md`, inheritance manifest | overlay parity, unsafe-default denial, profile doc/runtime sync |
+| `Flag contract registry` | `P2` | Reviewed flag contract registry | defaults and profiles | in-bounds candidate | reviewed `flag_contracts.json` | flag review coverage, doc/runtime/help sync |
+| `Proxy trust model` | `P3` | Proxy trust model | proxy and public policy closure | in-bounds candidate | normative proxy contract | spoofed chain rejection, mixed-trust rejection |
+| `Proxy precedence` | `P3` | Proxy precedence plus normalization | proxy and public policy closure | in-bounds candidate | precedence tables, normalization contract | conflicting host/proto/port tests, root-path injection tests |
+| `CONNECT policy` | `P3` | CONNECT relay policy | proxy and public policy closure | in-bounds candidate | policy docs, attack corpus slice | open-proxy denial, loopback/private-IP denial, DNS rebinding |
+| `Trailer policy` | `P3` | Trailer policy | proxy and public policy closure | in-bounds candidate | policy docs, flag metadata | trailer correctness and malformed-trailer negatives |
+| `Content coding policy` | `P3` | Content-coding policy | proxy and public policy closure | in-bounds candidate | policy docs, origin hooks | coding negotiation, compressed-range behavior |
+| `Public controls policy` | `P3` | ALPN/revocation/H2C/WS compression/limits/drain | proxy and public policy closure | in-bounds candidate | CLI/help/docs, policy metadata, operator pages | ALPN, OCSP/CRL, H2C, WS compression, idle/limit/drain tests |
+| `Early data admission policy` | `P4` | Early-data admission policy | QUIC semantic closure | in-bounds candidate | early-data contract | admission matrix, unsafe-method rejection |
+| `Replay policy` | `P4` | Replay policy | QUIC semantic closure | in-bounds candidate | replay policy spec | replay behavior, `425` retry, intermediary propagation |
+| `Multi-instance early data policy` | `P4` | Multi-instance early-data policy | QUIC semantic closure | in-bounds candidate | topology policy, deployment notes | multi-node replay, shared-ticket edge cases |
+| `Retry app visibility` | `P4` | Retry plus app-visible semantics | QUIC semantic closure | in-bounds candidate | Retry/0-RTT interaction spec, runtime contract | invalid Retry, duplicate Retry, app visibility consistency |
+| `Independent QUIC state claims` | `P4` | Independent QUIC state claims | QUIC semantic closure | in-bounds candidate | profile bindings, operator docs | token integrity, migration spoofing, GOAWAY/QPACK stress |
+| `Origin path resolution` | `P5` | Path resolution | origin delivery contract | in-bounds candidate | normative origin contract | traversal, encoded traversal, symlink escape |
+| `HTTP file selection` | `P5` | File selection plus HTTP semantics | origin delivery contract | in-bounds candidate | origin contract, conformance corpus | HEAD parity, conditional conflicts, range-past-EOF |
+| `ASGI pathsend contract` | `P5` | ASGI `pathsend` contract | origin delivery contract | in-bounds candidate | origin contract, operator docs | file-replaced-mid-send, partial-send, disconnect-race |
+| `QUIC/H3 counters` | `P6` | QUIC/H3 counter families | observability | in-bounds candidate | metrics schema, operator docs | counter correctness under retry, migration, loss |
+| `Observability export surfaces` | `P6` | Export surfaces | observability | in-bounds candidate | export config/docs | export smoke, schema compatibility |
+| `qlog stance` | `P6` | qlog experimental stance | observability | in-bounds candidate | experimental export spec, schema versioning | redaction, schema-version, trace integrity |
+| `Fail-state registry` | `P7` | Fail-state registry | negative certification | in-bounds candidate | negative-cert registry | assertion coverage |
+| `QUIC negative corpora` | `P7` | Proxy/early-data/QUIC corpora | negative certification | in-bounds candidate | attack corpora, expected outcomes | negative suites with preserved evidence |
+| `Origin negative corpora` | `P7` | Origin/CONNECT/TLS/topology corpora | negative certification | in-bounds candidate | corpora, expected outcomes, evidence bundles | traversal, open relay, wrong EKU/SAN, mixed topology |
+| `Risk traceability` | `P8` | Risk register plus traceability | governance and promotion discipline | in-bounds candidate | `RISK_REGISTER*`, `RISK_TRACEABILITY.json`, schema/docs | schema, ID uniqueness, referential integrity |
+| `Pytest forward policy` | `P8` | Pytest-only forward motion | governance and promotion discipline | in-bounds candidate | `TEST_STYLE_POLICY.md`, `LEGACY_UNITTEST_INVENTORY.json` | no new unittest imports/classes, mirror-exists tests |
+| `Release-gated evidence` | `P8` | Release-gated evidence plus interop plus perf | governance and promotion discipline | in-bounds candidate | boundary manifests, interop bundles, perf bundles | release-gate suite, artifact retention checks |
+| `RFC 9651 baseline` | `P8` | RFC 9651 structured-fields baseline | structured fields | in-bounds candidate | SFV conformance tests, dependency review, claim sync | round-trip/canonical serialization, stale-reference lint |
 
 ## Atomic TLS / HTTPS interop claim rows
 

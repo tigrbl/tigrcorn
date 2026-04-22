@@ -200,9 +200,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p1-default-baseline",
-      "title": "F-P1-DEFAULT-BASELINE",
-      "description": "Feature target F-P1-DEFAULT-BASELINE imported from claims_registry.json.",
+      "id": "feat:default-baseline-profile",
+      "title": "Default baseline profile",
+      "description": "Feature target Default baseline profile imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -225,9 +225,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p1-static-origin",
-      "title": "F-P1-STATIC-ORIGIN",
-      "description": "Feature target F-P1-STATIC-ORIGIN imported from claims_registry.json.",
+      "id": "feat:static-origin-profile",
+      "title": "Static origin profile",
+      "description": "Feature target Static origin profile imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -250,9 +250,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p1-strict-h1-origin",
-      "title": "F-P1-STRICT-H1-ORIGIN",
-      "description": "Feature target F-P1-STRICT-H1-ORIGIN imported from claims_registry.json.",
+      "id": "feat:strict-h1-origin-profile",
+      "title": "Strict H1 origin profile",
+      "description": "Feature target Strict H1 origin profile imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -275,9 +275,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p1-strict-h2-origin",
-      "title": "F-P1-STRICT-H2-ORIGIN",
-      "description": "Feature target F-P1-STRICT-H2-ORIGIN imported from claims_registry.json.",
+      "id": "feat:strict-h2-origin-profile",
+      "title": "Strict H2 origin profile",
+      "description": "Feature target Strict H2 origin profile imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -300,9 +300,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p1-strict-h3-edge",
-      "title": "F-P1-STRICT-H3-EDGE",
-      "description": "Feature target F-P1-STRICT-H3-EDGE imported from claims_registry.json.",
+      "id": "feat:strict-h3-edge-profile",
+      "title": "Strict H3 edge profile",
+      "description": "Feature target Strict H3 edge profile imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -325,9 +325,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p1-strict-mtls-origin",
-      "title": "F-P1-STRICT-MTLS-ORIGIN",
-      "description": "Feature target F-P1-STRICT-MTLS-ORIGIN imported from claims_registry.json.",
+      "id": "feat:strict-mtls-origin-profile",
+      "title": "Strict mTLS origin profile",
+      "description": "Feature target Strict mTLS origin profile imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -350,9 +350,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p2-base-default-audit",
-      "title": "F-P2-BASE-DEFAULT-AUDIT",
-      "description": "Feature target F-P2-BASE-DEFAULT-AUDIT imported from claims_registry.json.",
+      "id": "feat:base-default-audit",
+      "title": "Base default audit",
+      "description": "Feature target Base default audit imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -375,9 +375,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p2-flag-contract-registry",
-      "title": "F-P2-FLAG-CONTRACT-REGISTRY",
-      "description": "Feature target F-P2-FLAG-CONTRACT-REGISTRY imported from claims_registry.json.",
+      "id": "feat:flag-contract-registry",
+      "title": "Flag contract registry",
+      "description": "Feature target Flag contract registry imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -401,9 +401,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p2-profile-default-audit",
-      "title": "F-P2-PROFILE-DEFAULT-AUDIT",
-      "description": "Feature target F-P2-PROFILE-DEFAULT-AUDIT imported from claims_registry.json.",
+      "id": "feat:profile-default-audit",
+      "title": "Profile default audit",
+      "description": "Feature target Profile default audit imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -426,9 +426,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p3-coding-policy",
-      "title": "F-P3-CODING-POLICY",
-      "description": "Feature target F-P3-CODING-POLICY imported from claims_registry.json.",
+      "id": "feat:content-coding-policy",
+      "title": "Content coding policy",
+      "description": "Feature target Content coding policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -451,9 +451,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p3-connect-policy",
-      "title": "F-P3-CONNECT-POLICY",
-      "description": "Feature target F-P3-CONNECT-POLICY imported from claims_registry.json.",
+      "id": "feat:connect-policy",
+      "title": "CONNECT policy",
+      "description": "Feature target CONNECT policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -476,9 +476,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p3-proxy-precedence",
-      "title": "F-P3-PROXY-PRECEDENCE",
-      "description": "Feature target F-P3-PROXY-PRECEDENCE imported from claims_registry.json.",
+      "id": "feat:proxy-precedence",
+      "title": "Proxy precedence",
+      "description": "Feature target Proxy precedence imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -502,9 +502,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p3-proxy-trust",
-      "title": "F-P3-PROXY-TRUST",
-      "description": "Feature target F-P3-PROXY-TRUST imported from claims_registry.json.",
+      "id": "feat:proxy-trust-model",
+      "title": "Proxy trust model",
+      "description": "Feature target Proxy trust model imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -527,9 +527,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p3-public-controls",
-      "title": "F-P3-PUBLIC-CONTROLS",
-      "description": "Feature target F-P3-PUBLIC-CONTROLS imported from claims_registry.json.",
+      "id": "feat:public-controls-policy",
+      "title": "Public controls policy",
+      "description": "Feature target Public controls policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -560,9 +560,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p3-trailer-policy",
-      "title": "F-P3-TRAILER-POLICY",
-      "description": "Feature target F-P3-TRAILER-POLICY imported from claims_registry.json.",
+      "id": "feat:trailer-policy",
+      "title": "Trailer policy",
+      "description": "Feature target Trailer policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -585,9 +585,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p4-early-data-admission",
-      "title": "F-P4-EARLY-DATA-ADMISSION",
-      "description": "Feature target F-P4-EARLY-DATA-ADMISSION imported from claims_registry.json.",
+      "id": "feat:early-data-admission-policy",
+      "title": "Early data admission policy",
+      "description": "Feature target Early data admission policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -610,9 +610,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p4-independent-quic-claims",
-      "title": "F-P4-INDEPENDENT-QUIC-CLAIMS",
-      "description": "Feature target F-P4-INDEPENDENT-QUIC-CLAIMS imported from claims_registry.json.",
+      "id": "feat:independent-quic-state-claims",
+      "title": "Independent QUIC state claims",
+      "description": "Feature target Independent QUIC state claims imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -640,9 +640,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p4-multi-instance-early-data",
-      "title": "F-P4-MULTI-INSTANCE-EARLY-DATA",
-      "description": "Feature target F-P4-MULTI-INSTANCE-EARLY-DATA imported from claims_registry.json.",
+      "id": "feat:multi-instance-early-data-policy",
+      "title": "Multi-instance early data policy",
+      "description": "Feature target Multi-instance early data policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -665,9 +665,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p4-replay-policy",
-      "title": "F-P4-REPLAY-POLICY",
-      "description": "Feature target F-P4-REPLAY-POLICY imported from claims_registry.json.",
+      "id": "feat:replay-policy",
+      "title": "Replay policy",
+      "description": "Feature target Replay policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -691,9 +691,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p4-retry-app-visibility",
-      "title": "F-P4-RETRY-APP-VISIBILITY",
-      "description": "Feature target F-P4-RETRY-APP-VISIBILITY imported from claims_registry.json.",
+      "id": "feat:retry-app-visibility",
+      "title": "Retry app visibility",
+      "description": "Feature target Retry app visibility imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -716,9 +716,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p5-file-selection-http",
-      "title": "F-P5-FILE-SELECTION-HTTP",
-      "description": "Feature target F-P5-FILE-SELECTION-HTTP imported from claims_registry.json.",
+      "id": "feat:http-file-selection",
+      "title": "HTTP file selection",
+      "description": "Feature target HTTP file selection imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -743,9 +743,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p5-path-resolution",
-      "title": "F-P5-PATH-RESOLUTION",
-      "description": "Feature target F-P5-PATH-RESOLUTION imported from claims_registry.json.",
+      "id": "feat:origin-path-resolution",
+      "title": "Origin path resolution",
+      "description": "Feature target Origin path resolution imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -768,9 +768,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p5-pathsend-contract",
-      "title": "F-P5-PATHSEND-CONTRACT",
-      "description": "Feature target F-P5-PATHSEND-CONTRACT imported from claims_registry.json.",
+      "id": "feat:asgi-pathsend-contract",
+      "title": "ASGI pathsend contract",
+      "description": "Feature target ASGI pathsend contract imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -794,9 +794,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p6-export-surfaces",
-      "title": "F-P6-EXPORT-SURFACES",
-      "description": "Feature target F-P6-EXPORT-SURFACES imported from claims_registry.json.",
+      "id": "feat:observability-export-surfaces",
+      "title": "Observability export surfaces",
+      "description": "Feature target Observability export surfaces imported from claims_registry.json.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -819,9 +819,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p6-qlog-stance",
-      "title": "F-P6-QLOG-STANCE",
-      "description": "Feature target F-P6-QLOG-STANCE imported from claims_registry.json.",
+      "id": "feat:qlog-stance",
+      "title": "qlog stance",
+      "description": "Feature target qlog stance imported from claims_registry.json.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -844,9 +844,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p6-quic-h3-counters",
-      "title": "F-P6-QUIC-H3-COUNTERS",
-      "description": "Feature target F-P6-QUIC-H3-COUNTERS imported from claims_registry.json.",
+      "id": "feat:quic-h3-counters",
+      "title": "QUIC/H3 counters",
+      "description": "Feature target QUIC/H3 counters imported from claims_registry.json.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -869,9 +869,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p7-fail-state-registry",
-      "title": "F-P7-FAIL-STATE-REGISTRY",
-      "description": "Feature target F-P7-FAIL-STATE-REGISTRY imported from claims_registry.json.",
+      "id": "feat:fail-state-registry",
+      "title": "Fail-state registry",
+      "description": "Feature target Fail-state registry imported from claims_registry.json.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -894,9 +894,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p7-negative-corpora-origin",
-      "title": "F-P7-NEGATIVE-CORPORA-ORIGIN",
-      "description": "Feature target F-P7-NEGATIVE-CORPORA-ORIGIN imported from claims_registry.json.",
+      "id": "feat:origin-negative-corpora",
+      "title": "Origin negative corpora",
+      "description": "Feature target Origin negative corpora imported from claims_registry.json.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -921,9 +921,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p7-negative-corpora-quic",
-      "title": "F-P7-NEGATIVE-CORPORA-QUIC",
-      "description": "Feature target F-P7-NEGATIVE-CORPORA-QUIC imported from claims_registry.json.",
+      "id": "feat:quic-negative-corpora",
+      "title": "QUIC negative corpora",
+      "description": "Feature target QUIC negative corpora imported from claims_registry.json.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -948,9 +948,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p8-pytest-forward",
-      "title": "F-P8-PYTEST-FORWARD",
-      "description": "Feature target F-P8-PYTEST-FORWARD imported from claims_registry.json.",
+      "id": "feat:pytest-forward-policy",
+      "title": "Pytest forward policy",
+      "description": "Feature target Pytest forward policy imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -973,9 +973,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p8-release-gated-evidence",
-      "title": "F-P8-RELEASE-GATED-EVIDENCE",
-      "description": "Feature target F-P8-RELEASE-GATED-EVIDENCE imported from claims_registry.json.",
+      "id": "feat:release-gated-evidence",
+      "title": "Release-gated evidence",
+      "description": "Feature target Release-gated evidence imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -998,9 +998,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:f-p8-rfc9651-baseline",
-      "title": "F-P8-RFC9651-BASELINE",
-      "description": "Feature target F-P8-RFC9651-BASELINE imported from claims_registry.json.",
+      "id": "feat:rfc-9651-baseline",
+      "title": "RFC 9651 baseline",
+      "description": "Feature target RFC 9651 baseline imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1072,9 +1072,9 @@
       ]
     },
     {
-      "id": "feat:f-p8-risk-traceability",
-      "title": "F-P8-RISK-TRACEABILITY",
-      "description": "Feature target F-P8-RISK-TRACEABILITY imported from claims_registry.json.",
+      "id": "feat:risk-traceability",
+      "title": "Risk traceability",
+      "description": "Feature target Risk traceability imported from claims_registry.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -3009,8 +3009,8 @@
       "kind": "claim_linkage",
       "path": "docs/review/conformance/claims_registry.json",
       "feature_ids": [
-        "feat:f-p7-negative-corpora-quic",
-        "feat:f-p7-negative-corpora-origin"
+        "feat:quic-negative-corpora",
+        "feat:origin-negative-corpora"
       ],
       "claim_ids": [
         "clm:tc-neg-adversarial-corpora"
@@ -3026,8 +3026,8 @@
       "kind": "claim_linkage",
       "path": "docs/review/conformance/claims_registry.json",
       "feature_ids": [
-        "feat:f-p7-negative-corpora-quic",
-        "feat:f-p7-negative-corpora-origin"
+        "feat:quic-negative-corpora",
+        "feat:origin-negative-corpora"
       ],
       "claim_ids": [
         "clm:tc-neg-bundle-preservation"
@@ -3043,7 +3043,7 @@
       "kind": "claim_linkage",
       "path": "docs/review/conformance/claims_registry.json",
       "feature_ids": [
-        "feat:f-p7-fail-state-registry"
+        "feat:fail-state-registry"
       ],
       "claim_ids": [
         "clm:tc-neg-fail-state-registry"
@@ -3059,7 +3059,7 @@
       "kind": "claim_linkage",
       "path": "docs/review/conformance/claims_registry.json",
       "feature_ids": [
-        "feat:f-p6-export-surfaces"
+        "feat:observability-export-surfaces"
       ],
       "claim_ids": [
         "clm:tc-obs-export-adapters"
@@ -3075,7 +3075,7 @@
       "kind": "claim_linkage",
       "path": "docs/review/conformance/claims_registry.json",
       "feature_ids": [
-        "feat:f-p6-quic-h3-counters"
+        "feat:quic-h3-counters"
       ],
       "claim_ids": [
         "clm:tc-obs-metrics-schema"
@@ -3091,7 +3091,7 @@
       "kind": "claim_linkage",
       "path": "docs/review/conformance/claims_registry.json",
       "feature_ids": [
-        "feat:f-p6-qlog-stance"
+        "feat:qlog-stance"
       ],
       "claim_ids": [
         "clm:tc-obs-qlog-experimental"
@@ -7995,9 +7995,9 @@
       "kind": "pytest",
       "path": "tests/test_default_audits.py",
       "feature_ids": [
-        "feat:f-p2-base-default-audit",
-        "feat:f-p2-profile-default-audit",
-        "feat:f-p2-flag-contract-registry"
+        "feat:base-default-audit",
+        "feat:profile-default-audit",
+        "feat:flag-contract-registry"
       ],
       "claim_ids": [
         "clm:tc-audit-default-base",
@@ -8043,9 +8043,9 @@
       "kind": "pytest",
       "path": "tests/test_p8_gov.py",
       "feature_ids": [
-        "feat:f-p8-risk-traceability",
-        "feat:f-p8-pytest-forward",
-        "feat:f-p8-release-gated-evidence",
+        "feat:risk-traceability",
+        "feat:pytest-forward-policy",
+        "feat:release-gated-evidence",
         "feat:surface-risk-register-governance",
         "feat:surface-test-style-governance",
         "feat:surface-release-gate-graph",
@@ -8087,7 +8087,7 @@
       "kind": "pytest",
       "path": "tests/test_p8_sf.py",
       "feature_ids": [
-        "feat:f-p8-rfc9651-baseline"
+        "feat:rfc-9651-baseline"
       ],
       "claim_ids": [
         "clm:tc-spec-structured-fields-rfc9651",
@@ -8137,7 +8137,7 @@
       "kind": "pytest",
       "path": "tests/test_phase2_cli_config_surface.py",
       "feature_ids": [
-        "feat:f-p2-flag-contract-registry"
+        "feat:flag-contract-registry"
       ],
       "claim_ids": [
         "clm:tc-audit-flag-contract-reviewed"
@@ -8157,7 +8157,7 @@
       "kind": "pytest",
       "path": "tests/test_phase2_static_delivery_surface.py",
       "feature_ids": [
-        "feat:f-p5-pathsend-contract"
+        "feat:asgi-pathsend-contract"
       ],
       "claim_ids": [
         "clm:tc-contract-origin-pathsend"
@@ -8182,9 +8182,9 @@
       "kind": "pytest",
       "path": "tests/test_phase3_policy_surface.py",
       "feature_ids": [
-        "feat:f-p3-proxy-trust",
-        "feat:f-p3-proxy-precedence",
-        "feat:f-p3-public-controls"
+        "feat:proxy-trust-model",
+        "feat:proxy-precedence",
+        "feat:public-controls-policy"
       ],
       "claim_ids": [
         "clm:tc-contract-proxy-trust",
@@ -8215,7 +8215,7 @@
       "kind": "pytest",
       "path": "tests/test_phase3_strict_rfc_surface.py",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "claim_ids": [
         "clm:tc-policy-websocket-compression"
@@ -8236,11 +8236,11 @@
       "kind": "pytest",
       "path": "tests/test_phase4_quic_surface.py",
       "feature_ids": [
-        "feat:f-p4-early-data-admission",
-        "feat:f-p4-replay-policy",
-        "feat:f-p4-multi-instance-early-data",
-        "feat:f-p4-retry-app-visibility",
-        "feat:f-p4-independent-quic-claims"
+        "feat:early-data-admission-policy",
+        "feat:replay-policy",
+        "feat:multi-instance-early-data-policy",
+        "feat:retry-app-visibility",
+        "feat:independent-quic-state-claims"
       ],
       "claim_ids": [
         "clm:tc-contract-earlydata-admission",
@@ -8278,9 +8278,9 @@
       "kind": "pytest",
       "path": "tests/test_phase5_origin_contract.py",
       "feature_ids": [
-        "feat:f-p5-path-resolution",
-        "feat:f-p5-file-selection-http",
-        "feat:f-p5-pathsend-contract"
+        "feat:origin-path-resolution",
+        "feat:http-file-selection",
+        "feat:asgi-pathsend-contract"
       ],
       "claim_ids": [
         "clm:tc-contract-origin-path-resolution",
@@ -8311,10 +8311,10 @@
       "kind": "pytest",
       "path": "tests/test_phase7_flag_surface_truth_reconciliation.py",
       "feature_ids": [
-        "feat:f-p3-connect-policy",
-        "feat:f-p3-trailer-policy",
-        "feat:f-p3-coding-policy",
-        "feat:f-p3-public-controls"
+        "feat:connect-policy",
+        "feat:trailer-policy",
+        "feat:content-coding-policy",
+        "feat:public-controls-policy"
       ],
       "claim_ids": [
         "clm:tc-policy-connect",
@@ -8343,12 +8343,12 @@
       "kind": "pytest",
       "path": "tests/test_profile_resolution.py",
       "feature_ids": [
-        "feat:f-p1-default-baseline",
-        "feat:f-p1-strict-h1-origin",
-        "feat:f-p1-strict-h2-origin",
-        "feat:f-p1-strict-h3-edge",
-        "feat:f-p1-strict-mtls-origin",
-        "feat:f-p1-static-origin",
+        "feat:default-baseline-profile",
+        "feat:strict-h1-origin-profile",
+        "feat:strict-h2-origin-profile",
+        "feat:strict-h3-edge-profile",
+        "feat:strict-mtls-origin-profile",
+        "feat:static-origin-profile",
         "feat:deployment-profiles"
       ],
       "claim_ids": [
@@ -8401,7 +8401,7 @@
       "kind": "pytest",
       "path": "tests/test_rfc7232_conditional_requests.py",
       "feature_ids": [
-        "feat:f-p5-file-selection-http"
+        "feat:http-file-selection"
       ],
       "claim_ids": [
         "clm:tc-contract-origin-file-selection"
@@ -8428,7 +8428,7 @@
       "kind": "pytest",
       "path": "tests/test_rfc7233_range_requests.py",
       "feature_ids": [
-        "feat:f-p5-file-selection-http"
+        "feat:http-file-selection"
       ],
       "claim_ids": [
         "clm:tc-contract-origin-file-selection"
@@ -8472,7 +8472,7 @@
       "kind": "pytest",
       "path": "tests/test_tls13_engine_upgrade.py",
       "feature_ids": [
-        "feat:f-p4-replay-policy"
+        "feat:replay-policy"
       ],
       "claim_ids": [
         "clm:tc-contract-earlydata-replay"
@@ -9150,7 +9150,7 @@
       "kind": "implementation_claim",
       "description": "A canonical base default audit now records zero-config defaults after normalization across the public flag surface and internal runtime defaults.",
       "feature_ids": [
-        "feat:f-p2-base-default-audit"
+        "feat:base-default-audit"
       ],
       "test_ids": [
         "tst:src-tests-test-default-audits-py"
@@ -9168,7 +9168,7 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P2-BASE-DEFAULT-AUDIT"
+          "Base default audit"
         ],
         "id": "TC-AUDIT-DEFAULT-BASE",
         "issue_refs": [
@@ -9204,7 +9204,7 @@
       "kind": "implementation_claim",
       "description": "Every public flag and default row now has reviewed status, machine-readable defaults, linked generated audits, and synchronized help/runtime posture.",
       "feature_ids": [
-        "feat:f-p2-flag-contract-registry"
+        "feat:flag-contract-registry"
       ],
       "test_ids": [
         "tst:src-tests-test-default-audits-py",
@@ -9223,7 +9223,7 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P2-FLAG-CONTRACT-REGISTRY"
+          "Flag contract registry"
         ],
         "id": "TC-AUDIT-FLAG-CONTRACT-REVIEWED",
         "issue_refs": [
@@ -9260,7 +9260,7 @@
       "kind": "implementation_claim",
       "description": "Profile-effective defaults are now audited after overlay for each blessed deployment profile so operator docs remain runtime-accurate.",
       "feature_ids": [
-        "feat:f-p2-profile-default-audit"
+        "feat:profile-default-audit"
       ],
       "test_ids": [
         "tst:src-tests-test-default-audits-py"
@@ -9278,7 +9278,7 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P2-PROFILE-DEFAULT-AUDIT"
+          "Profile default audit"
         ],
         "id": "TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS",
         "issue_refs": [
@@ -9617,7 +9617,7 @@
       "kind": "implementation_claim",
       "description": "QUIC early-data admission is now explicit as deny, allow, or require, with deny as the default and explicit session-ticket advertisement behavior.",
       "feature_ids": [
-        "feat:f-p4-early-data-admission"
+        "feat:early-data-admission-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -9638,7 +9638,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P4-EARLY-DATA-ADMISSION"
+          "Early data admission policy"
         ],
         "id": "TC-CONTRACT-EARLYDATA-ADMISSION",
         "required_evidence_tier": "local_conformance",
@@ -9672,7 +9672,7 @@
       "kind": "implementation_claim",
       "description": "Retry and 0-RTT interaction now has an explicit app/runtime visibility contract: transport state remains package-owned, ASGI apps see ordinary request scopes, and require-mode downgrade is surfaced as a package-generated 425 response before app invocation.",
       "feature_ids": [
-        "feat:f-p4-retry-app-visibility"
+        "feat:retry-app-visibility"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -9691,7 +9691,7 @@
         "class": "application_hosting",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P4-RETRY-APP-VISIBILITY"
+          "Retry app visibility"
         ],
         "id": "TC-CONTRACT-EARLYDATA-APP-VISIBILITY",
         "required_evidence_tier": "local_conformance",
@@ -9723,7 +9723,7 @@
       "kind": "implementation_claim",
       "description": "Replay handling is explicit through the package-owned 0-RTT ticket replay gate, allow-mode post-handshake downgrade, and require-mode 425 Too Early rejection.",
       "feature_ids": [
-        "feat:f-p4-replay-policy"
+        "feat:replay-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-tls13-engine-upgrade-py",
@@ -9744,7 +9744,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P4-REPLAY-POLICY"
+          "Replay policy"
         ],
         "id": "TC-CONTRACT-EARLYDATA-REPLAY",
         "required_evidence_tier": "local_conformance",
@@ -9777,7 +9777,7 @@
       "kind": "implementation_claim",
       "description": "The multi-instance and load-balancer contract now states the honest package boundary: anti-replay is package-owned only per instance unless operators add shared coordination, so deny remains the honest default edge posture.",
       "feature_ids": [
-        "feat:f-p4-multi-instance-early-data"
+        "feat:multi-instance-early-data-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -9794,7 +9794,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P4-MULTI-INSTANCE-EARLY-DATA"
+          "Multi-instance early data policy"
         ],
         "id": "TC-CONTRACT-EARLYDATA-TOPOLOGY",
         "required_evidence_tier": "local_conformance",
@@ -9824,7 +9824,7 @@
       "kind": "implementation_claim",
       "description": "File selection and HTTP semantics are now frozen as a package-owned contract: directory-to-index behavior is explicit, slash redirects and listings are not synthesized, MIME derivation and precompressed sidecar selection are deterministic, and HEAD, validators, Range, If-Range, 206, 304, and 416 behavior are aligned with the package-owned entity layer.",
       "feature_ids": [
-        "feat:f-p5-file-selection-http"
+        "feat:http-file-selection"
       ],
       "test_ids": [
         "tst:src-tests-test-phase5-origin-contract-py",
@@ -9851,7 +9851,7 @@
         "class": "delivery_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P5-FILE-SELECTION-HTTP"
+          "HTTP file selection"
         ],
         "id": "TC-CONTRACT-ORIGIN-FILE-SELECTION",
         "required_evidence_tier": "local_conformance",
@@ -9889,7 +9889,7 @@
       "kind": "implementation_claim",
       "description": "Path resolution is now frozen as a package-owned contract: percent-decoding happens once before normalization, parent-reference segments and backslash-separated segments are denied, mount-root containment is enforced after symlink resolution, and hidden names remain mount-relative rather than special-cased.",
       "feature_ids": [
-        "feat:f-p5-path-resolution"
+        "feat:origin-path-resolution"
       ],
       "test_ids": [
         "tst:src-tests-test-phase5-origin-contract-py"
@@ -9910,7 +9910,7 @@
         "class": "delivery_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P5-PATH-RESOLUTION"
+          "Origin path resolution"
         ],
         "id": "TC-CONTRACT-ORIGIN-PATH-RESOLUTION",
         "required_evidence_tier": "local_conformance",
@@ -9944,7 +9944,7 @@
       "kind": "implementation_claim",
       "description": "The ASGI pathsend contract is now explicit: the extension requires an absolute existing regular file, snapshots transfer length at dispatch, preserves best-effort zero-copy where available, caps growth races to the dispatch snapshot, and documents best-effort termination behavior for shrink and disconnect races after the response has started.",
       "feature_ids": [
-        "feat:f-p5-pathsend-contract"
+        "feat:asgi-pathsend-contract"
       ],
       "test_ids": [
         "tst:src-tests-test-phase2-static-delivery-surface-py",
@@ -9968,7 +9968,7 @@
         "class": "application_hosting",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P5-PATHSEND-CONTRACT"
+          "ASGI pathsend contract"
         ],
         "id": "TC-CONTRACT-ORIGIN-PATHSEND",
         "required_evidence_tier": "local_conformance",
@@ -10004,7 +10004,7 @@
       "kind": "implementation_claim",
       "description": "Forwarded-header parsing, root_path composition, and scope stripping now use one shared normalization contract across HTTP/1.1, HTTP/2, HTTP/3, and WebSocket carriers.",
       "feature_ids": [
-        "feat:f-p3-proxy-precedence"
+        "feat:proxy-precedence"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py"
@@ -10023,7 +10023,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PROXY-PRECEDENCE"
+          "Proxy precedence"
         ],
         "id": "TC-CONTRACT-PROXY-NORMALIZATION",
         "required_evidence_tier": "local_conformance",
@@ -10055,7 +10055,7 @@
       "kind": "implementation_claim",
       "description": "Forwarded and X-Forwarded-* precedence is explicit for client, scheme, host, and root_path resolution across the package-owned HTTP and WebSocket scope builders.",
       "feature_ids": [
-        "feat:f-p3-proxy-precedence"
+        "feat:proxy-precedence"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py"
@@ -10074,7 +10074,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PROXY-PRECEDENCE"
+          "Proxy precedence"
         ],
         "id": "TC-CONTRACT-PROXY-PRECEDENCE",
         "required_evidence_tier": "local_conformance",
@@ -10106,7 +10106,7 @@
       "kind": "implementation_claim",
       "description": "Trusted proxy admission is explicit and fail-closed; proxy identity headers are ignored unless proxy handling is enabled and the immediate peer is trusted.",
       "feature_ids": [
-        "feat:f-p3-proxy-trust"
+        "feat:proxy-trust-model"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py"
@@ -10125,7 +10125,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PROXY-TRUST"
+          "Proxy trust model"
         ],
         "id": "TC-CONTRACT-PROXY-TRUST",
         "required_evidence_tier": "local_conformance",
@@ -10524,8 +10524,8 @@
       "kind": "implemented_claim",
       "description": "Proxy, early-data, QUIC, origin, CONNECT relay, TLS/X.509, and mixed-topology adversarial suites are preserved with explicit expected outcomes so negative behavior is replayable rather than anecdotal.",
       "feature_ids": [
-        "feat:f-p7-negative-corpora-quic",
-        "feat:f-p7-negative-corpora-origin"
+        "feat:quic-negative-corpora",
+        "feat:origin-negative-corpora"
       ],
       "test_ids": [
         "tst:claim-tc-neg-adversarial-corpora"
@@ -10539,8 +10539,8 @@
         "class": "certification_support",
         "current_evidence": "docs/conformance/negative_corpora.json, docs/conformance/negative_corpora.md, tests/test_phase7_negative_certification.py",
         "feature_refs": [
-          "F-P7-NEGATIVE-CORPORA-QUIC",
-          "F-P7-NEGATIVE-CORPORA-ORIGIN"
+          "QUIC negative corpora",
+          "Origin negative corpora"
         ],
         "id": "TC-NEG-ADVERSARIAL-CORPORA",
         "required_evidence_tier": "local_conformance",
@@ -10567,8 +10567,8 @@
       "kind": "implemented_claim",
       "description": "Expected-outcome bundles for all risky surfaces are serialized as machine-readable artifacts and linked to preserved historical release-root negative bundles where those bundles already exist.",
       "feature_ids": [
-        "feat:f-p7-negative-corpora-quic",
-        "feat:f-p7-negative-corpora-origin"
+        "feat:quic-negative-corpora",
+        "feat:origin-negative-corpora"
       ],
       "test_ids": [
         "tst:claim-tc-neg-bundle-preservation"
@@ -10582,8 +10582,8 @@
         "class": "certification_support",
         "current_evidence": "docs/conformance/negative_bundles.json, docs/conformance/negative_bundles.md, docs/conformance/negative_bundles/, tests/test_phase7_negative_certification.py",
         "feature_refs": [
-          "F-P7-NEGATIVE-CORPORA-QUIC",
-          "F-P7-NEGATIVE-CORPORA-ORIGIN"
+          "QUIC negative corpora",
+          "Origin negative corpora"
         ],
         "id": "TC-NEG-BUNDLE-PRESERVATION",
         "required_evidence_tier": "local_conformance",
@@ -10610,7 +10610,7 @@
       "kind": "implemented_claim",
       "description": "Reject, close, abort, strip-and-continue, and gate-reject behavior for risky surfaces is frozen in a fail-state registry rather than inferred from scattered tests.",
       "feature_ids": [
-        "feat:f-p7-fail-state-registry"
+        "feat:fail-state-registry"
       ],
       "test_ids": [
         "tst:claim-tc-neg-fail-state-registry"
@@ -10624,7 +10624,7 @@
         "class": "governance_support",
         "current_evidence": "docs/conformance/fail_state_registry.json, docs/conformance/fail_state_registry.md, tests/test_phase7_negative_certification.py",
         "feature_refs": [
-          "F-P7-FAIL-STATE-REGISTRY"
+          "Fail-state registry"
         ],
         "id": "TC-NEG-FAIL-STATE-REGISTRY",
         "required_evidence_tier": "local_conformance",
@@ -10648,7 +10648,7 @@
       "kind": "implemented_claim",
       "description": "StatsD, DogStatsD, and OpenTelemetry export adapters are explicit supported operator controls with declared schema versions, accepted configuration forms, and bounded failure behavior.",
       "feature_ids": [
-        "feat:f-p6-export-surfaces"
+        "feat:observability-export-surfaces"
       ],
       "test_ids": [
         "tst:claim-tc-obs-export-adapters"
@@ -10662,7 +10662,7 @@
         "class": "operator_surface",
         "current_evidence": "docs/conformance/metrics_schema.json, docs/ops/observability.md, tests/test_phase6_observability_surface.py, tests/test_phase9f2_logging_exporter_closure.py",
         "feature_refs": [
-          "F-P6-EXPORT-SURFACES"
+          "Observability export surfaces"
         ],
         "id": "TC-OBS-EXPORT-ADAPTERS",
         "required_evidence_tier": "local_conformance",
@@ -10686,7 +10686,7 @@
       "kind": "implemented_claim",
       "description": "QUIC and HTTP/3 counter families have stable package-owned names and semantics for transport, security, retry, migration, loss, and HTTP/3 state behavior.",
       "feature_ids": [
-        "feat:f-p6-quic-h3-counters"
+        "feat:quic-h3-counters"
       ],
       "test_ids": [
         "tst:claim-tc-obs-metrics-schema"
@@ -10700,7 +10700,7 @@
         "class": "operator_surface",
         "current_evidence": "docs/conformance/metrics_schema.json, docs/conformance/metrics_schema.md, tests/test_phase6_observability_surface.py",
         "feature_refs": [
-          "F-P6-QUIC-H3-COUNTERS"
+          "QUIC/H3 counters"
         ],
         "id": "TC-OBS-METRICS-SCHEMA",
         "required_evidence_tier": "local_conformance",
@@ -10724,7 +10724,7 @@
       "kind": "implemented_claim",
       "description": "qlog export remains explicit, unstable, versioned, and redacted rather than being treated as a stable compatibility surface.",
       "feature_ids": [
-        "feat:f-p6-qlog-stance"
+        "feat:qlog-stance"
       ],
       "test_ids": [
         "tst:claim-tc-obs-qlog-experimental"
@@ -10738,7 +10738,7 @@
         "class": "operator_surface",
         "current_evidence": "docs/conformance/qlog_experimental.json, docs/conformance/qlog_experimental.md, tests/test_phase6_observability_surface.py",
         "feature_refs": [
-          "F-P6-QLOG-STANCE"
+          "qlog stance"
         ],
         "id": "TC-OBS-QLOG-EXPERIMENTAL",
         "required_evidence_tier": "local_conformance",
@@ -10801,7 +10801,7 @@
       "kind": "implementation_claim",
       "description": "ALPN offer ordering and negotiation posture is a reviewed public TLS policy surface with synchronized CLI, defaults, and generated docs.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
@@ -10819,7 +10819,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-ALPN",
         "required_evidence_tier": "local_conformance",
@@ -10847,7 +10847,7 @@
       "kind": "implementation_claim",
       "description": "CONNECT relay admission is a reviewed public contract with explicit deny, relay, and allowlist posture across the package-owned protocol carriers.",
       "feature_ids": [
-        "feat:f-p3-connect-policy"
+        "feat:connect-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
@@ -10865,7 +10865,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-CONNECT-POLICY"
+          "CONNECT policy"
         ],
         "id": "TC-POLICY-CONNECT",
         "required_evidence_tier": "local_conformance",
@@ -10896,7 +10896,7 @@
       "kind": "implementation_claim",
       "description": "Content-coding policy and coding allowlists are explicit public controls rather than hidden normalization behavior.",
       "feature_ids": [
-        "feat:f-p3-coding-policy"
+        "feat:content-coding-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
@@ -10914,7 +10914,7 @@
         "class": "delivery_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-CODING-POLICY"
+          "Content coding policy"
         ],
         "id": "TC-POLICY-CONTENT-CODING",
         "required_evidence_tier": "local_conformance",
@@ -10945,7 +10945,7 @@
       "kind": "implementation_claim",
       "description": "Concurrency limits, stream admission, and graceful drain timing are explicit public operator controls rather than implicit scheduler behavior.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py",
@@ -10966,7 +10966,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-DRAIN-ADMISSION",
         "required_evidence_tier": "local_conformance",
@@ -10996,7 +10996,7 @@
       "kind": "implementation_claim",
       "description": "H2C upgrade and direct-preface behavior is exposed as an explicit reviewed policy surface instead of an implicit transport default.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py"
@@ -11015,7 +11015,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-H2C",
         "required_evidence_tier": "local_conformance",
@@ -11044,7 +11044,7 @@
       "kind": "implementation_claim",
       "description": "Runtime resource, buffering, and timeout controls are promoted as reviewed public policy surface rather than hidden scheduler or transport internals.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
@@ -11063,7 +11063,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-LIMITS-TIMEOUTS",
         "required_evidence_tier": "local_conformance",
@@ -11092,7 +11092,7 @@
       "kind": "implementation_claim",
       "description": "OCSP, CRL, and online revocation-fetch controls are explicit public policy flags with generated operator documentation.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
@@ -11110,7 +11110,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-REVOCATION",
         "required_evidence_tier": "local_conformance",
@@ -11138,7 +11138,7 @@
       "kind": "implementation_claim",
       "description": "Trailer handling posture is explicit and documented as a stable policy surface across HTTP/1.1, HTTP/2, and HTTP/3.",
       "feature_ids": [
-        "feat:f-p3-trailer-policy"
+        "feat:trailer-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py"
@@ -11156,7 +11156,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-TRAILER-POLICY"
+          "Trailer policy"
         ],
         "id": "TC-POLICY-TRAILERS",
         "required_evidence_tier": "local_conformance",
@@ -11187,7 +11187,7 @@
       "kind": "implementation_claim",
       "description": "WebSocket compression posture is a stable public policy surface shared across the supported HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-strict-rfc-surface-py"
@@ -11206,7 +11206,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-WEBSOCKET-COMPRESSION",
         "required_evidence_tier": "local_conformance",
@@ -11235,7 +11235,7 @@
       "kind": "implementation_claim",
       "description": "WebSocket heartbeat interval and timeout are explicit public controls with carrier-parity documentation and tests.",
       "feature_ids": [
-        "feat:f-p3-public-controls"
+        "feat:public-controls-policy"
       ],
       "test_ids": [
         "tst:src-tests-test-phase3-policy-surface-py",
@@ -11256,7 +11256,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P3-PUBLIC-CONTROLS"
+          "Public controls policy"
         ],
         "id": "TC-POLICY-WEBSOCKET-HEARTBEAT",
         "required_evidence_tier": "local_conformance",
@@ -11286,7 +11286,7 @@
       "kind": "implementation_claim",
       "description": "A default safe baseline profile freezes boring zero-config posture for TCP plus HTTP/1.1, no proxy trust unless configured, no H2/H3/QUIC unless explicit, CONNECT denied, server header off, and early data denied or not applicable.",
       "feature_ids": [
-        "feat:f-p1-default-baseline"
+        "feat:default-baseline-profile"
       ],
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
@@ -11302,7 +11302,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P1-DEFAULT-BASELINE"
+          "Default baseline profile"
         ],
         "id": "TC-PROFILE-DEFAULT-BASELINE",
         "required_evidence_tier": "local_conformance",
@@ -11331,7 +11331,7 @@
       "kind": "implementation_claim",
       "description": "A static-origin profile freezes static roots, index rules, validators, range behavior, compression interaction, and traversal or symlink posture.",
       "feature_ids": [
-        "feat:f-p1-static-origin"
+        "feat:static-origin-profile"
       ],
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
@@ -11347,7 +11347,7 @@
         "class": "delivery_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P1-STATIC-ORIGIN"
+          "Static origin profile"
         ],
         "id": "TC-PROFILE-STATIC-ORIGIN",
         "required_evidence_tier": "local_conformance",
@@ -11376,7 +11376,7 @@
       "kind": "implementation_claim",
       "description": "A strict HTTP/1.1 origin profile freezes conservative origin semantics, trusted-proxy normalization, and explicit static/pathsend posture.",
       "feature_ids": [
-        "feat:f-p1-strict-h1-origin"
+        "feat:strict-h1-origin-profile"
       ],
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
@@ -11392,7 +11392,7 @@
         "class": "delivery_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P1-STRICT-H1-ORIGIN"
+          "Strict H1 origin profile"
         ],
         "id": "TC-PROFILE-STRICT-H1-ORIGIN",
         "required_evidence_tier": "local_conformance",
@@ -11422,7 +11422,7 @@
       "kind": "implementation_claim",
       "description": "A strict HTTP/2 origin profile freezes TLS plus ALPN plus H2 defaults and explicit frame, header, stream, and window bounds.",
       "feature_ids": [
-        "feat:f-p1-strict-h2-origin"
+        "feat:strict-h2-origin-profile"
       ],
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
@@ -11438,7 +11438,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P1-STRICT-H2-ORIGIN"
+          "Strict H2 origin profile"
         ],
         "id": "TC-PROFILE-STRICT-H2-ORIGIN",
         "required_evidence_tier": "local_conformance",
@@ -11464,7 +11464,7 @@
       "kind": "implementation_claim",
       "description": "A strict HTTP/3 edge profile freezes QUIC listener posture, Retry, migration, resumption, Alt-Svc posture, and default 0-RTT denial.",
       "feature_ids": [
-        "feat:f-p1-strict-h3-edge"
+        "feat:strict-h3-edge-profile"
       ],
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
@@ -11480,7 +11480,7 @@
         "class": "protocol_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P1-STRICT-H3-EDGE"
+          "Strict H3 edge profile"
         ],
         "id": "TC-PROFILE-STRICT-H3-EDGE",
         "required_evidence_tier": "local_conformance",
@@ -11509,7 +11509,7 @@
       "kind": "implementation_claim",
       "description": "A strict mTLS origin profile freezes client-certificate requirement, SAN/EKU policy, revocation mode, and hard-fail versus soft-fail behavior.",
       "feature_ids": [
-        "feat:f-p1-strict-mtls-origin"
+        "feat:strict-mtls-origin-profile"
       ],
       "test_ids": [
         "tst:src-tests-test-profile-resolution-py"
@@ -11525,7 +11525,7 @@
         "class": "operator_surface",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P1-STRICT-MTLS-ORIGIN"
+          "Strict mTLS origin profile"
         ],
         "id": "TC-PROFILE-STRICT-MTLS-ORIGIN",
         "required_evidence_tier": "local_conformance",
@@ -12569,7 +12569,7 @@
       "kind": "implementation_claim",
       "description": "Pytest becomes the only forward test runner while legacy unittest coverage is inventoried rather than expanded.",
       "feature_ids": [
-        "feat:f-p8-pytest-forward",
+        "feat:pytest-forward-policy",
         "feat:governance-graph"
       ],
       "test_ids": [
@@ -12595,7 +12595,7 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P8-PYTEST-FORWARD"
+          "Pytest forward policy"
         ],
         "id": "TC-ROADMAP-P8-PYTEST-FORWARD",
         "issue_refs": [
@@ -12630,7 +12630,7 @@
       "kind": "implementation_claim",
       "description": "Evidence, interoperability, and performance bundles become explicit release-gated inputs rather than informal supporting artifacts.",
       "feature_ids": [
-        "feat:f-p8-release-gated-evidence",
+        "feat:release-gated-evidence",
         "feat:governance-graph"
       ],
       "test_ids": [
@@ -12657,7 +12657,7 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P8-RELEASE-GATED-EVIDENCE"
+          "Release-gated evidence"
         ],
         "id": "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
         "issue_refs": [
@@ -12693,7 +12693,7 @@
       "kind": "implementation_claim",
       "description": "Structured-fields behavior, references, and claims use RFC 9651 as the active baseline instead of an obsolete predecessor baseline.",
       "feature_ids": [
-        "feat:f-p8-rfc9651-baseline",
+        "feat:rfc-9651-baseline",
         "feat:governance-graph"
       ],
       "test_ids": [
@@ -12717,7 +12717,7 @@
         "class": "certification_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P8-RFC9651-BASELINE"
+          "RFC 9651 baseline"
         ],
         "id": "TC-ROADMAP-P8-RFC9651-BASELINE",
         "required_evidence_tier": "local_conformance",
@@ -12747,7 +12747,7 @@
       "kind": "implementation_claim",
       "description": "Risk objects are machine-readable and linked to claims, tests, and evidence with referential-integrity checks.",
       "feature_ids": [
-        "feat:f-p8-risk-traceability",
+        "feat:risk-traceability",
         "feat:governance-graph"
       ],
       "test_ids": [
@@ -12774,7 +12774,7 @@
         "class": "governance_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P8-RISK-TRACEABILITY"
+          "Risk traceability"
         ],
         "id": "TC-ROADMAP-P8-RISK-TRACEABILITY",
         "required_evidence_tier": "local_conformance",
@@ -12805,7 +12805,7 @@
       "kind": "implementation_claim",
       "description": "Structured field parsing and serialization use RFC 9651 as the active baseline, provide deterministic package-owned parsing and serialization helpers, and lint active references so no obsolete predecessor baseline is presented as current.",
       "feature_ids": [
-        "feat:f-p8-rfc9651-baseline",
+        "feat:rfc-9651-baseline",
         "feat:governance-graph"
       ],
       "test_ids": [
@@ -12831,7 +12831,7 @@
         "class": "certification_support",
         "current_evidence": "local_conformance",
         "feature_refs": [
-          "F-P8-RFC9651-BASELINE"
+          "RFC 9651 baseline"
         ],
         "id": "TC-SPEC-STRUCTURED-FIELDS-RFC9651",
         "required_evidence_tier": "local_conformance",
@@ -12866,7 +12866,7 @@
       "kind": "implementation_claim",
       "description": "QUIC 0-RTT is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
       "feature_ids": [
-        "feat:f-p4-independent-quic-claims"
+        "feat:independent-quic-state-claims"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -12883,7 +12883,7 @@
         "class": "certification_support",
         "current_evidence": "independent_certification",
         "feature_refs": [
-          "F-P4-INDEPENDENT-QUIC-CLAIMS"
+          "Independent QUIC state claims"
         ],
         "id": "TC-STATE-QUIC-0RTT",
         "required_evidence_tier": "independent_certification",
@@ -12913,7 +12913,7 @@
       "kind": "implementation_claim",
       "description": "HTTP/3 GOAWAY is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
       "feature_ids": [
-        "feat:f-p4-independent-quic-claims"
+        "feat:independent-quic-state-claims"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -12930,7 +12930,7 @@
         "class": "certification_support",
         "current_evidence": "independent_certification",
         "feature_refs": [
-          "F-P4-INDEPENDENT-QUIC-CLAIMS"
+          "Independent QUIC state claims"
         ],
         "id": "TC-STATE-QUIC-GOAWAY",
         "required_evidence_tier": "independent_certification",
@@ -12960,7 +12960,7 @@
       "kind": "implementation_claim",
       "description": "QUIC migration is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
       "feature_ids": [
-        "feat:f-p4-independent-quic-claims"
+        "feat:independent-quic-state-claims"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -12977,7 +12977,7 @@
         "class": "certification_support",
         "current_evidence": "independent_certification",
         "feature_refs": [
-          "F-P4-INDEPENDENT-QUIC-CLAIMS"
+          "Independent QUIC state claims"
         ],
         "id": "TC-STATE-QUIC-MIGRATION",
         "required_evidence_tier": "independent_certification",
@@ -13007,7 +13007,7 @@
       "kind": "implementation_claim",
       "description": "HTTP/3 QPACK pressure is tracked as a discrete promoted state claim with preserved third-party aioquic GOAWAY/QPACK evidence in the canonical independent release matrix.",
       "feature_ids": [
-        "feat:f-p4-independent-quic-claims"
+        "feat:independent-quic-state-claims"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -13024,7 +13024,7 @@
         "class": "certification_support",
         "current_evidence": "independent_certification",
         "feature_refs": [
-          "F-P4-INDEPENDENT-QUIC-CLAIMS"
+          "Independent QUIC state claims"
         ],
         "id": "TC-STATE-QUIC-QPACK",
         "required_evidence_tier": "independent_certification",
@@ -13054,7 +13054,7 @@
       "kind": "implementation_claim",
       "description": "QUIC resumption is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
       "feature_ids": [
-        "feat:f-p4-independent-quic-claims"
+        "feat:independent-quic-state-claims"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -13071,7 +13071,7 @@
         "class": "certification_support",
         "current_evidence": "independent_certification",
         "feature_refs": [
-          "F-P4-INDEPENDENT-QUIC-CLAIMS"
+          "Independent QUIC state claims"
         ],
         "id": "TC-STATE-QUIC-RESUMPTION",
         "required_evidence_tier": "independent_certification",
@@ -13101,7 +13101,7 @@
       "kind": "implementation_claim",
       "description": "QUIC Retry is tracked as a discrete promoted state claim with preserved third-party aioquic evidence in the canonical independent release matrix.",
       "feature_ids": [
-        "feat:f-p4-independent-quic-claims"
+        "feat:independent-quic-state-claims"
       ],
       "test_ids": [
         "tst:src-tests-test-phase4-quic-surface-py"
@@ -13118,7 +13118,7 @@
         "class": "certification_support",
         "current_evidence": "independent_certification",
         "feature_refs": [
-          "F-P4-INDEPENDENT-QUIC-CLAIMS"
+          "Independent QUIC state claims"
         ],
         "id": "TC-STATE-QUIC-RETRY",
         "required_evidence_tier": "independent_certification",
@@ -18095,9 +18095,9 @@
         "slot": "issues"
       },
       "feature_ids": [
-        "feat:f-p2-base-default-audit",
-        "feat:f-p2-profile-default-audit",
-        "feat:f-p2-flag-contract-registry",
+        "feat:base-default-audit",
+        "feat:profile-default-audit",
+        "feat:flag-contract-registry",
         "feat:surface-default-audit-governance"
       ],
       "claim_ids": [
@@ -18184,7 +18184,7 @@
         "slot": "issues"
       },
       "feature_ids": [
-        "feat:f-p8-pytest-forward",
+        "feat:pytest-forward-policy",
         "feat:surface-test-style-governance"
       ],
       "claim_ids": [
@@ -18249,7 +18249,7 @@
         "slot": "issues"
       },
       "feature_ids": [
-        "feat:f-p8-release-gated-evidence",
+        "feat:release-gated-evidence",
         "feat:surface-release-gate-graph",
         "feat:surface-interop-retention",
         "feat:surface-performance-retention"
@@ -18511,33 +18511,33 @@
       "feature_ids": [
         "feat:current-state-chain",
         "feat:deployment-profiles",
-        "feat:f-p1-default-baseline",
-        "feat:f-p1-static-origin",
-        "feat:f-p1-strict-h1-origin",
-        "feat:f-p1-strict-h2-origin",
-        "feat:f-p1-strict-h3-edge",
-        "feat:f-p1-strict-mtls-origin",
-        "feat:f-p2-base-default-audit",
-        "feat:f-p2-flag-contract-registry",
-        "feat:f-p2-profile-default-audit",
-        "feat:f-p3-coding-policy",
-        "feat:f-p3-connect-policy",
-        "feat:f-p3-proxy-precedence",
-        "feat:f-p3-proxy-trust",
-        "feat:f-p3-public-controls",
-        "feat:f-p3-trailer-policy",
-        "feat:f-p4-early-data-admission",
-        "feat:f-p4-independent-quic-claims",
-        "feat:f-p4-multi-instance-early-data",
-        "feat:f-p4-replay-policy",
-        "feat:f-p4-retry-app-visibility",
-        "feat:f-p5-file-selection-http",
-        "feat:f-p5-path-resolution",
-        "feat:f-p5-pathsend-contract",
-        "feat:f-p8-pytest-forward",
-        "feat:f-p8-release-gated-evidence",
-        "feat:f-p8-rfc9651-baseline",
-        "feat:f-p8-risk-traceability",
+        "feat:default-baseline-profile",
+        "feat:static-origin-profile",
+        "feat:strict-h1-origin-profile",
+        "feat:strict-h2-origin-profile",
+        "feat:strict-h3-edge-profile",
+        "feat:strict-mtls-origin-profile",
+        "feat:base-default-audit",
+        "feat:flag-contract-registry",
+        "feat:profile-default-audit",
+        "feat:content-coding-policy",
+        "feat:connect-policy",
+        "feat:proxy-precedence",
+        "feat:proxy-trust-model",
+        "feat:public-controls-policy",
+        "feat:trailer-policy",
+        "feat:early-data-admission-policy",
+        "feat:independent-quic-state-claims",
+        "feat:multi-instance-early-data-policy",
+        "feat:replay-policy",
+        "feat:retry-app-visibility",
+        "feat:http-file-selection",
+        "feat:origin-path-resolution",
+        "feat:asgi-pathsend-contract",
+        "feat:pytest-forward-policy",
+        "feat:release-gated-evidence",
+        "feat:rfc-9651-baseline",
+        "feat:risk-traceability",
         "feat:governance-graph",
         "feat:rfc-5280",
         "feat:rfc-6455",

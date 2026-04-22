@@ -12,7 +12,7 @@
         "docs/conformance/risk/RISK_TRACEABILITY.json"
       ],
       "feature_refs": [
-        "F-P8-RISK-TRACEABILITY"
+        "Risk traceability"
       ],
       "owner": "tigrcorn-maintainers",
       "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",
@@ -36,7 +36,7 @@
         "docs/governance/TEST_STYLE_POLICY.md"
       ],
       "feature_refs": [
-        "F-P8-PYTEST-FORWARD"
+        "Pytest forward policy"
       ],
       "owner": "tigrcorn-maintainers",
       "policy_doc": "docs/governance/TEST_STYLE_POLICY.md",
@@ -60,7 +60,7 @@
         "docs/conformance/sf9651.md"
       ],
       "feature_refs": [
-        "F-P8-RFC9651-BASELINE"
+        "RFC 9651 baseline"
       ],
       "owner": "tigrcorn-maintainers",
       "policy_doc": "docs/governance/DEFAULT_AUDIT_POLICY.md",
@@ -85,7 +85,7 @@
         "docs/conformance/perf_retention.json"
       ],
       "feature_refs": [
-        "F-P8-RELEASE-GATED-EVIDENCE"
+        "Release-gated evidence"
       ],
       "owner": "tigrcorn-maintainers",
       "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",

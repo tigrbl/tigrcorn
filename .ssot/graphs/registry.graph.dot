@@ -1,71 +1,71 @@
 digraph ssot_registry {
   "feat:current-state-chain" [label="feat:current-state-chain
 (feature)"];
-  "feat:f-p1-default-baseline" [label="feat:f-p1-default-baseline
+  "feat:default-baseline-profile" [label="feat:default-baseline-profile
 (feature)"];
-  "feat:f-p1-static-origin" [label="feat:f-p1-static-origin
+  "feat:static-origin-profile" [label="feat:static-origin-profile
 (feature)"];
-  "feat:f-p1-strict-h1-origin" [label="feat:f-p1-strict-h1-origin
+  "feat:strict-h1-origin-profile" [label="feat:strict-h1-origin-profile
 (feature)"];
-  "feat:f-p1-strict-h2-origin" [label="feat:f-p1-strict-h2-origin
+  "feat:strict-h2-origin-profile" [label="feat:strict-h2-origin-profile
 (feature)"];
-  "feat:f-p1-strict-h3-edge" [label="feat:f-p1-strict-h3-edge
+  "feat:strict-h3-edge-profile" [label="feat:strict-h3-edge-profile
 (feature)"];
-  "feat:f-p1-strict-mtls-origin" [label="feat:f-p1-strict-mtls-origin
+  "feat:strict-mtls-origin-profile" [label="feat:strict-mtls-origin-profile
 (feature)"];
-  "feat:f-p2-base-default-audit" [label="feat:f-p2-base-default-audit
+  "feat:base-default-audit" [label="feat:base-default-audit
 (feature)"];
-  "feat:f-p2-flag-contract-registry" [label="feat:f-p2-flag-contract-registry
+  "feat:flag-contract-registry" [label="feat:flag-contract-registry
 (feature)"];
-  "feat:f-p2-profile-default-audit" [label="feat:f-p2-profile-default-audit
+  "feat:profile-default-audit" [label="feat:profile-default-audit
 (feature)"];
-  "feat:f-p3-coding-policy" [label="feat:f-p3-coding-policy
+  "feat:content-coding-policy" [label="feat:content-coding-policy
 (feature)"];
-  "feat:f-p3-connect-policy" [label="feat:f-p3-connect-policy
+  "feat:connect-policy" [label="feat:connect-policy
 (feature)"];
-  "feat:f-p3-proxy-precedence" [label="feat:f-p3-proxy-precedence
+  "feat:proxy-precedence" [label="feat:proxy-precedence
 (feature)"];
-  "feat:f-p3-proxy-trust" [label="feat:f-p3-proxy-trust
+  "feat:proxy-trust-model" [label="feat:proxy-trust-model
 (feature)"];
-  "feat:f-p3-public-controls" [label="feat:f-p3-public-controls
+  "feat:public-controls-policy" [label="feat:public-controls-policy
 (feature)"];
-  "feat:f-p3-trailer-policy" [label="feat:f-p3-trailer-policy
+  "feat:trailer-policy" [label="feat:trailer-policy
 (feature)"];
-  "feat:f-p4-early-data-admission" [label="feat:f-p4-early-data-admission
+  "feat:early-data-admission-policy" [label="feat:early-data-admission-policy
 (feature)"];
-  "feat:f-p4-independent-quic-claims" [label="feat:f-p4-independent-quic-claims
+  "feat:independent-quic-state-claims" [label="feat:independent-quic-state-claims
 (feature)"];
-  "feat:f-p4-multi-instance-early-data" [label="feat:f-p4-multi-instance-early-data
+  "feat:multi-instance-early-data-policy" [label="feat:multi-instance-early-data-policy
 (feature)"];
-  "feat:f-p4-replay-policy" [label="feat:f-p4-replay-policy
+  "feat:replay-policy" [label="feat:replay-policy
 (feature)"];
-  "feat:f-p4-retry-app-visibility" [label="feat:f-p4-retry-app-visibility
+  "feat:retry-app-visibility" [label="feat:retry-app-visibility
 (feature)"];
-  "feat:f-p5-file-selection-http" [label="feat:f-p5-file-selection-http
+  "feat:http-file-selection" [label="feat:http-file-selection
 (feature)"];
-  "feat:f-p5-path-resolution" [label="feat:f-p5-path-resolution
+  "feat:origin-path-resolution" [label="feat:origin-path-resolution
 (feature)"];
-  "feat:f-p5-pathsend-contract" [label="feat:f-p5-pathsend-contract
+  "feat:asgi-pathsend-contract" [label="feat:asgi-pathsend-contract
 (feature)"];
-  "feat:f-p6-export-surfaces" [label="feat:f-p6-export-surfaces
+  "feat:observability-export-surfaces" [label="feat:observability-export-surfaces
 (feature)"];
-  "feat:f-p6-qlog-stance" [label="feat:f-p6-qlog-stance
+  "feat:qlog-stance" [label="feat:qlog-stance
 (feature)"];
-  "feat:f-p6-quic-h3-counters" [label="feat:f-p6-quic-h3-counters
+  "feat:quic-h3-counters" [label="feat:quic-h3-counters
 (feature)"];
-  "feat:f-p7-fail-state-registry" [label="feat:f-p7-fail-state-registry
+  "feat:fail-state-registry" [label="feat:fail-state-registry
 (feature)"];
-  "feat:f-p7-negative-corpora-origin" [label="feat:f-p7-negative-corpora-origin
+  "feat:origin-negative-corpora" [label="feat:origin-negative-corpora
 (feature)"];
-  "feat:f-p7-negative-corpora-quic" [label="feat:f-p7-negative-corpora-quic
+  "feat:quic-negative-corpora" [label="feat:quic-negative-corpora
 (feature)"];
-  "feat:f-p8-pytest-forward" [label="feat:f-p8-pytest-forward
+  "feat:pytest-forward-policy" [label="feat:pytest-forward-policy
 (feature)"];
-  "feat:f-p8-release-gated-evidence" [label="feat:f-p8-release-gated-evidence
+  "feat:release-gated-evidence" [label="feat:release-gated-evidence
 (feature)"];
-  "feat:f-p8-rfc9651-baseline" [label="feat:f-p8-rfc9651-baseline
+  "feat:rfc-9651-baseline" [label="feat:rfc-9651-baseline
 (feature)"];
-  "feat:f-p8-risk-traceability" [label="feat:f-p8-risk-traceability
+  "feat:risk-traceability" [label="feat:risk-traceability
 (feature)"];
   "feat:governance-graph" [label="feat:governance-graph
 (feature)"];
@@ -1028,33 +1028,33 @@ digraph ssot_registry {
   "rel:0.3.9" [label="rel:0.3.9
 (release)"];
   "bnd:authoritative-0-3-9" -> "feat:current-state-chain" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p1-default-baseline" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p1-static-origin" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p1-strict-h1-origin" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p1-strict-h2-origin" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p1-strict-h3-edge" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p1-strict-mtls-origin" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p2-base-default-audit" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p2-flag-contract-registry" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p2-profile-default-audit" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p3-coding-policy" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p3-connect-policy" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p3-proxy-precedence" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p3-proxy-trust" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p3-public-controls" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p3-trailer-policy" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p4-early-data-admission" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p4-independent-quic-claims" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p4-multi-instance-early-data" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p4-replay-policy" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p4-retry-app-visibility" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p5-file-selection-http" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p5-path-resolution" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p5-pathsend-contract" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p8-pytest-forward" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p8-release-gated-evidence" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p8-rfc9651-baseline" [label="SCOPES"];
-  "bnd:authoritative-0-3-9" -> "feat:f-p8-risk-traceability" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:default-baseline-profile" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:static-origin-profile" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:strict-h1-origin-profile" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:strict-h2-origin-profile" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:strict-h3-edge-profile" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:strict-mtls-origin-profile" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:base-default-audit" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:flag-contract-registry" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:profile-default-audit" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:content-coding-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:connect-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:proxy-precedence" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:proxy-trust-model" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:public-controls-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:trailer-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:early-data-admission-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:independent-quic-state-claims" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:multi-instance-early-data-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:replay-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:retry-app-visibility" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:http-file-selection" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:origin-path-resolution" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:asgi-pathsend-contract" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:pytest-forward-policy" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:release-gated-evidence" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:rfc-9651-baseline" [label="SCOPES"];
+  "bnd:authoritative-0-3-9" -> "feat:risk-traceability" [label="SCOPES"];
   "bnd:authoritative-0-3-9" -> "feat:governance-graph" [label="SCOPES"];
   "bnd:authoritative-0-3-9" -> "feat:rfc-5280" [label="SCOPES"];
   "bnd:authoritative-0-3-9" -> "feat:rfc-6455" [label="SCOPES"];
@@ -1361,48 +1361,48 @@ digraph ssot_registry {
   "rel:0.3.9" -> "evd:src-tools-cert-policy-surface-py" [label="INCLUDES"];
   "rel:0.3.9" -> "evd:src-tools-cert-release-auto-py" [label="INCLUDES"];
   "feat:current-state-chain" -> "tst:doc-current-state-chain" [label="COVERED_BY"];
-  "feat:f-p1-default-baseline" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
-  "feat:f-p1-static-origin" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
-  "feat:f-p1-strict-h1-origin" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
-  "feat:f-p1-strict-h2-origin" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
-  "feat:f-p1-strict-h3-edge" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
-  "feat:f-p1-strict-mtls-origin" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
-  "feat:f-p2-base-default-audit" -> "tst:src-tests-test-default-audits-py" [label="COVERED_BY"];
-  "feat:f-p2-flag-contract-registry" -> "tst:src-tests-test-default-audits-py" [label="COVERED_BY"];
-  "feat:f-p2-flag-contract-registry" -> "tst:src-tests-test-phase2-cli-config-surface-py" [label="COVERED_BY"];
-  "feat:f-p2-profile-default-audit" -> "tst:src-tests-test-default-audits-py" [label="COVERED_BY"];
-  "feat:f-p3-coding-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
-  "feat:f-p3-connect-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
-  "feat:f-p3-proxy-precedence" -> "tst:src-tests-test-phase3-policy-surface-py" [label="COVERED_BY"];
-  "feat:f-p3-proxy-trust" -> "tst:src-tests-test-phase3-policy-surface-py" [label="COVERED_BY"];
-  "feat:f-p3-public-controls" -> "tst:src-tests-test-phase3-policy-surface-py" [label="COVERED_BY"];
-  "feat:f-p3-public-controls" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
-  "feat:f-p3-public-controls" -> "tst:src-tests-test-phase3-strict-rfc-surface-py" [label="COVERED_BY"];
-  "feat:f-p3-trailer-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
-  "feat:f-p4-early-data-admission" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
-  "feat:f-p4-independent-quic-claims" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
-  "feat:f-p4-multi-instance-early-data" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
-  "feat:f-p4-replay-policy" -> "tst:src-tests-test-tls13-engine-upgrade-py" [label="COVERED_BY"];
-  "feat:f-p4-replay-policy" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
-  "feat:f-p4-retry-app-visibility" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
-  "feat:f-p5-file-selection-http" -> "tst:src-tests-test-phase5-origin-contract-py" [label="COVERED_BY"];
-  "feat:f-p5-file-selection-http" -> "tst:src-tests-test-rfc7232-conditional-requests-py" [label="COVERED_BY"];
-  "feat:f-p5-file-selection-http" -> "tst:src-tests-test-rfc7233-range-requests-py" [label="COVERED_BY"];
-  "feat:f-p5-path-resolution" -> "tst:src-tests-test-phase5-origin-contract-py" [label="COVERED_BY"];
-  "feat:f-p5-pathsend-contract" -> "tst:src-tests-test-phase2-static-delivery-surface-py" [label="COVERED_BY"];
-  "feat:f-p5-pathsend-contract" -> "tst:src-tests-test-phase5-origin-contract-py" [label="COVERED_BY"];
-  "feat:f-p6-export-surfaces" -> "tst:claim-tc-obs-export-adapters" [label="COVERED_BY"];
-  "feat:f-p6-qlog-stance" -> "tst:claim-tc-obs-qlog-experimental" [label="COVERED_BY"];
-  "feat:f-p6-quic-h3-counters" -> "tst:claim-tc-obs-metrics-schema" [label="COVERED_BY"];
-  "feat:f-p7-fail-state-registry" -> "tst:claim-tc-neg-fail-state-registry" [label="COVERED_BY"];
-  "feat:f-p7-negative-corpora-origin" -> "tst:claim-tc-neg-adversarial-corpora" [label="COVERED_BY"];
-  "feat:f-p7-negative-corpora-origin" -> "tst:claim-tc-neg-bundle-preservation" [label="COVERED_BY"];
-  "feat:f-p7-negative-corpora-quic" -> "tst:claim-tc-neg-adversarial-corpora" [label="COVERED_BY"];
-  "feat:f-p7-negative-corpora-quic" -> "tst:claim-tc-neg-bundle-preservation" [label="COVERED_BY"];
-  "feat:f-p8-pytest-forward" -> "tst:src-tests-test-p8-gov-py" [label="COVERED_BY"];
-  "feat:f-p8-release-gated-evidence" -> "tst:src-tests-test-p8-gov-py" [label="COVERED_BY"];
-  "feat:f-p8-rfc9651-baseline" -> "tst:src-tests-test-p8-sf-py" [label="COVERED_BY"];
-  "feat:f-p8-risk-traceability" -> "tst:src-tests-test-p8-gov-py" [label="COVERED_BY"];
+  "feat:default-baseline-profile" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
+  "feat:static-origin-profile" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
+  "feat:strict-h1-origin-profile" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
+  "feat:strict-h2-origin-profile" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
+  "feat:strict-h3-edge-profile" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
+  "feat:strict-mtls-origin-profile" -> "tst:src-tests-test-profile-resolution-py" [label="COVERED_BY"];
+  "feat:base-default-audit" -> "tst:src-tests-test-default-audits-py" [label="COVERED_BY"];
+  "feat:flag-contract-registry" -> "tst:src-tests-test-default-audits-py" [label="COVERED_BY"];
+  "feat:flag-contract-registry" -> "tst:src-tests-test-phase2-cli-config-surface-py" [label="COVERED_BY"];
+  "feat:profile-default-audit" -> "tst:src-tests-test-default-audits-py" [label="COVERED_BY"];
+  "feat:content-coding-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
+  "feat:connect-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
+  "feat:proxy-precedence" -> "tst:src-tests-test-phase3-policy-surface-py" [label="COVERED_BY"];
+  "feat:proxy-trust-model" -> "tst:src-tests-test-phase3-policy-surface-py" [label="COVERED_BY"];
+  "feat:public-controls-policy" -> "tst:src-tests-test-phase3-policy-surface-py" [label="COVERED_BY"];
+  "feat:public-controls-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
+  "feat:public-controls-policy" -> "tst:src-tests-test-phase3-strict-rfc-surface-py" [label="COVERED_BY"];
+  "feat:trailer-policy" -> "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" [label="COVERED_BY"];
+  "feat:early-data-admission-policy" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
+  "feat:independent-quic-state-claims" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
+  "feat:multi-instance-early-data-policy" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
+  "feat:replay-policy" -> "tst:src-tests-test-tls13-engine-upgrade-py" [label="COVERED_BY"];
+  "feat:replay-policy" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
+  "feat:retry-app-visibility" -> "tst:src-tests-test-phase4-quic-surface-py" [label="COVERED_BY"];
+  "feat:http-file-selection" -> "tst:src-tests-test-phase5-origin-contract-py" [label="COVERED_BY"];
+  "feat:http-file-selection" -> "tst:src-tests-test-rfc7232-conditional-requests-py" [label="COVERED_BY"];
+  "feat:http-file-selection" -> "tst:src-tests-test-rfc7233-range-requests-py" [label="COVERED_BY"];
+  "feat:origin-path-resolution" -> "tst:src-tests-test-phase5-origin-contract-py" [label="COVERED_BY"];
+  "feat:asgi-pathsend-contract" -> "tst:src-tests-test-phase2-static-delivery-surface-py" [label="COVERED_BY"];
+  "feat:asgi-pathsend-contract" -> "tst:src-tests-test-phase5-origin-contract-py" [label="COVERED_BY"];
+  "feat:observability-export-surfaces" -> "tst:claim-tc-obs-export-adapters" [label="COVERED_BY"];
+  "feat:qlog-stance" -> "tst:claim-tc-obs-qlog-experimental" [label="COVERED_BY"];
+  "feat:quic-h3-counters" -> "tst:claim-tc-obs-metrics-schema" [label="COVERED_BY"];
+  "feat:fail-state-registry" -> "tst:claim-tc-neg-fail-state-registry" [label="COVERED_BY"];
+  "feat:origin-negative-corpora" -> "tst:claim-tc-neg-adversarial-corpora" [label="COVERED_BY"];
+  "feat:origin-negative-corpora" -> "tst:claim-tc-neg-bundle-preservation" [label="COVERED_BY"];
+  "feat:quic-negative-corpora" -> "tst:claim-tc-neg-adversarial-corpora" [label="COVERED_BY"];
+  "feat:quic-negative-corpora" -> "tst:claim-tc-neg-bundle-preservation" [label="COVERED_BY"];
+  "feat:pytest-forward-policy" -> "tst:src-tests-test-p8-gov-py" [label="COVERED_BY"];
+  "feat:release-gated-evidence" -> "tst:src-tests-test-p8-gov-py" [label="COVERED_BY"];
+  "feat:rfc-9651-baseline" -> "tst:src-tests-test-p8-sf-py" [label="COVERED_BY"];
+  "feat:risk-traceability" -> "tst:src-tests-test-p8-gov-py" [label="COVERED_BY"];
   "feat:governance-graph" -> "tst:gov-tests-test-p8-gov-py" [label="COVERED_BY"];
   "feat:governance-graph" -> "tst:gov-tests-test-p8-sf-py" [label="COVERED_BY"];
   "feat:rfc-5280" -> "tst:corpus-x509-path-validation" [label="COVERED_BY"];
@@ -1730,14 +1730,14 @@ digraph ssot_registry {
   "evd:bundle-websocket-http3-server-public-client-mtls" -> "clm:rfc-9220" [label="SUPPORTS"];
   "evd:bundle-websocket-http3-server-aioquic-client" -> "clm:rfc-9220" [label="SUPPORTS"];
   "evd:bundle-websocket-http3-server-aioquic-client-mtls" -> "clm:rfc-9220" [label="SUPPORTS"];
-  "clm:tc-audit-default-base" -> "feat:f-p2-base-default-audit" [label="ASSERTS"];
+  "clm:tc-audit-default-base" -> "feat:base-default-audit" [label="ASSERTS"];
   "tst:src-tests-test-default-audits-py" -> "clm:tc-audit-default-base" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-audit-py" -> "clm:tc-audit-default-base" [label="SUPPORTS"];
   "evd:src-tools-cert-default-audits-py" -> "clm:tc-audit-default-base" [label="SUPPORTS"];
   "evd:src-default-audit-json" -> "clm:tc-audit-default-base" [label="SUPPORTS"];
   "evd:src-default-audit-md" -> "clm:tc-audit-default-base" [label="SUPPORTS"];
   "evd:src-tests-test-default-audits-py" -> "clm:tc-audit-default-base" [label="SUPPORTS"];
-  "clm:tc-audit-flag-contract-reviewed" -> "feat:f-p2-flag-contract-registry" [label="ASSERTS"];
+  "clm:tc-audit-flag-contract-reviewed" -> "feat:flag-contract-registry" [label="ASSERTS"];
   "tst:src-tests-test-default-audits-py" -> "clm:tc-audit-flag-contract-reviewed" [label="VERIFIES"];
   "tst:src-tests-test-phase2-cli-config-surface-py" -> "clm:tc-audit-flag-contract-reviewed" [label="VERIFIES"];
   "evd:src-docs-review-conformance-flag-contracts-json" -> "clm:tc-audit-flag-contract-reviewed" [label="SUPPORTS"];
@@ -1745,7 +1745,7 @@ digraph ssot_registry {
   "evd:src-default-audit-json" -> "clm:tc-audit-flag-contract-reviewed" [label="SUPPORTS"];
   "evd:src-tests-test-default-audits-py" -> "clm:tc-audit-flag-contract-reviewed" [label="SUPPORTS"];
   "evd:src-tests-test-phase2-cli-config-surface-py" -> "clm:tc-audit-flag-contract-reviewed" [label="SUPPORTS"];
-  "clm:tc-audit-profile-effective-defaults" -> "feat:f-p2-profile-default-audit" [label="ASSERTS"];
+  "clm:tc-audit-profile-effective-defaults" -> "feat:profile-default-audit" [label="ASSERTS"];
   "tst:src-tests-test-default-audits-py" -> "clm:tc-audit-profile-effective-defaults" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-audit-py" -> "clm:tc-audit-profile-effective-defaults" [label="SUPPORTS"];
   "evd:src-tools-cert-default-audits-py" -> "clm:tc-audit-profile-effective-defaults" [label="SUPPORTS"];
@@ -1803,7 +1803,7 @@ digraph ssot_registry {
   "evd:src-github-workflows-publish-pypi-yml" -> "clm:tc-cert-trusted-publishing-oidc" [label="SUPPORTS"];
   "evd:src-docs-governance-release-auto-md" -> "clm:tc-cert-trusted-publishing-oidc" [label="SUPPORTS"];
   "evd:src-tests-test-p9-auto-py" -> "clm:tc-cert-trusted-publishing-oidc" [label="SUPPORTS"];
-  "clm:tc-contract-earlydata-admission" -> "feat:f-p4-early-data-admission" [label="ASSERTS"];
+  "clm:tc-contract-earlydata-admission" -> "feat:early-data-admission-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-admission" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-model-py" -> "clm:tc-contract-earlydata-admission" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-env-py" -> "clm:tc-contract-earlydata-admission" [label="SUPPORTS"];
@@ -1813,7 +1813,7 @@ digraph ssot_registry {
   "evd:src-docs-conformance-early-data-contract-json" -> "clm:tc-contract-earlydata-admission" [label="SUPPORTS"];
   "evd:src-docs-conformance-early-data-contract-md" -> "clm:tc-contract-earlydata-admission" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-admission" [label="SUPPORTS"];
-  "clm:tc-contract-earlydata-app-visibility" -> "feat:f-p4-retry-app-visibility" [label="ASSERTS"];
+  "clm:tc-contract-earlydata-app-visibility" -> "feat:retry-app-visibility" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-app-visibility" [label="VERIFIES"];
   "evd:src-src-tigrcorn-asgi-scopes-http-py" -> "clm:tc-contract-earlydata-app-visibility" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-protocols-http3-handler-py" -> "clm:tc-contract-earlydata-app-visibility" [label="SUPPORTS"];
@@ -1821,7 +1821,7 @@ digraph ssot_registry {
   "evd:src-docs-conformance-early-data-contract-json" -> "clm:tc-contract-earlydata-app-visibility" [label="SUPPORTS"];
   "evd:src-docs-conformance-early-data-contract-md" -> "clm:tc-contract-earlydata-app-visibility" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-app-visibility" [label="SUPPORTS"];
-  "clm:tc-contract-earlydata-replay" -> "feat:f-p4-replay-policy" [label="ASSERTS"];
+  "clm:tc-contract-earlydata-replay" -> "feat:replay-policy" [label="ASSERTS"];
   "tst:src-tests-test-tls13-engine-upgrade-py" -> "clm:tc-contract-earlydata-replay" [label="VERIFIES"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-replay" [label="VERIFIES"];
   "evd:src-src-tigrcorn-security-tls13-handshake-py" -> "clm:tc-contract-earlydata-replay" [label="SUPPORTS"];
@@ -1831,13 +1831,13 @@ digraph ssot_registry {
   "evd:src-docs-conformance-early-data-contract-md" -> "clm:tc-contract-earlydata-replay" [label="SUPPORTS"];
   "evd:src-tests-test-tls13-engine-upgrade-py" -> "clm:tc-contract-earlydata-replay" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-replay" [label="SUPPORTS"];
-  "clm:tc-contract-earlydata-topology" -> "feat:f-p4-multi-instance-early-data" [label="ASSERTS"];
+  "clm:tc-contract-earlydata-topology" -> "feat:multi-instance-early-data-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-topology" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-quic-surface-py" -> "clm:tc-contract-earlydata-topology" [label="SUPPORTS"];
   "evd:src-docs-conformance-early-data-contract-json" -> "clm:tc-contract-earlydata-topology" [label="SUPPORTS"];
   "evd:src-docs-conformance-early-data-contract-md" -> "clm:tc-contract-earlydata-topology" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-contract-earlydata-topology" [label="SUPPORTS"];
-  "clm:tc-contract-origin-file-selection" -> "feat:f-p5-file-selection-http" [label="ASSERTS"];
+  "clm:tc-contract-origin-file-selection" -> "feat:http-file-selection" [label="ASSERTS"];
   "tst:src-tests-test-phase5-origin-contract-py" -> "clm:tc-contract-origin-file-selection" [label="VERIFIES"];
   "tst:src-tests-test-rfc7232-conditional-requests-py" -> "clm:tc-contract-origin-file-selection" [label="VERIFIES"];
   "tst:src-tests-test-rfc7233-range-requests-py" -> "clm:tc-contract-origin-file-selection" [label="VERIFIES"];
@@ -1853,7 +1853,7 @@ digraph ssot_registry {
   "evd:src-tests-test-phase5-origin-contract-py" -> "clm:tc-contract-origin-file-selection" [label="SUPPORTS"];
   "evd:src-tests-test-rfc7232-conditional-requests-py" -> "clm:tc-contract-origin-file-selection" [label="SUPPORTS"];
   "evd:src-tests-test-rfc7233-range-requests-py" -> "clm:tc-contract-origin-file-selection" [label="SUPPORTS"];
-  "clm:tc-contract-origin-path-resolution" -> "feat:f-p5-path-resolution" [label="ASSERTS"];
+  "clm:tc-contract-origin-path-resolution" -> "feat:origin-path-resolution" [label="ASSERTS"];
   "tst:src-tests-test-phase5-origin-contract-py" -> "clm:tc-contract-origin-path-resolution" [label="VERIFIES"];
   "evd:src-src-tigrcorn-static-py" -> "clm:tc-contract-origin-path-resolution" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-origin-surface-py" -> "clm:tc-contract-origin-path-resolution" [label="SUPPORTS"];
@@ -1863,7 +1863,7 @@ digraph ssot_registry {
   "evd:src-docs-conformance-origin-negatives-md" -> "clm:tc-contract-origin-path-resolution" [label="SUPPORTS"];
   "evd:src-docs-ops-origin-md" -> "clm:tc-contract-origin-path-resolution" [label="SUPPORTS"];
   "evd:src-tests-test-phase5-origin-contract-py" -> "clm:tc-contract-origin-path-resolution" [label="SUPPORTS"];
-  "clm:tc-contract-origin-pathsend" -> "feat:f-p5-pathsend-contract" [label="ASSERTS"];
+  "clm:tc-contract-origin-pathsend" -> "feat:asgi-pathsend-contract" [label="ASSERTS"];
   "tst:src-tests-test-phase2-static-delivery-surface-py" -> "clm:tc-contract-origin-pathsend" [label="VERIFIES"];
   "tst:src-tests-test-phase5-origin-contract-py" -> "clm:tc-contract-origin-pathsend" [label="VERIFIES"];
   "evd:src-src-tigrcorn-asgi-send-py" -> "clm:tc-contract-origin-pathsend" [label="SUPPORTS"];
@@ -1876,7 +1876,7 @@ digraph ssot_registry {
   "evd:src-docs-ops-origin-md" -> "clm:tc-contract-origin-pathsend" [label="SUPPORTS"];
   "evd:src-tests-test-phase2-static-delivery-surface-py" -> "clm:tc-contract-origin-pathsend" [label="SUPPORTS"];
   "evd:src-tests-test-phase5-origin-contract-py" -> "clm:tc-contract-origin-pathsend" [label="SUPPORTS"];
-  "clm:tc-contract-proxy-normalization" -> "feat:f-p3-proxy-precedence" [label="ASSERTS"];
+  "clm:tc-contract-proxy-normalization" -> "feat:proxy-precedence" [label="ASSERTS"];
   "tst:src-tests-test-phase3-policy-surface-py" -> "clm:tc-contract-proxy-normalization" [label="VERIFIES"];
   "evd:src-src-tigrcorn-utils-proxy-py" -> "clm:tc-contract-proxy-normalization" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-contract-proxy-normalization" [label="SUPPORTS"];
@@ -1884,7 +1884,7 @@ digraph ssot_registry {
   "evd:src-docs-conformance-proxy-contract-json" -> "clm:tc-contract-proxy-normalization" [label="SUPPORTS"];
   "evd:src-docs-conformance-proxy-contract-md" -> "clm:tc-contract-proxy-normalization" [label="SUPPORTS"];
   "evd:src-tests-test-phase3-policy-surface-py" -> "clm:tc-contract-proxy-normalization" [label="SUPPORTS"];
-  "clm:tc-contract-proxy-precedence" -> "feat:f-p3-proxy-precedence" [label="ASSERTS"];
+  "clm:tc-contract-proxy-precedence" -> "feat:proxy-precedence" [label="ASSERTS"];
   "tst:src-tests-test-phase3-policy-surface-py" -> "clm:tc-contract-proxy-precedence" [label="VERIFIES"];
   "evd:src-src-tigrcorn-utils-proxy-py" -> "clm:tc-contract-proxy-precedence" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-contract-proxy-precedence" [label="SUPPORTS"];
@@ -1892,7 +1892,7 @@ digraph ssot_registry {
   "evd:src-docs-conformance-proxy-contract-json" -> "clm:tc-contract-proxy-precedence" [label="SUPPORTS"];
   "evd:src-docs-conformance-proxy-contract-md" -> "clm:tc-contract-proxy-precedence" [label="SUPPORTS"];
   "evd:src-tests-test-phase3-policy-surface-py" -> "clm:tc-contract-proxy-precedence" [label="SUPPORTS"];
-  "clm:tc-contract-proxy-trust" -> "feat:f-p3-proxy-trust" [label="ASSERTS"];
+  "clm:tc-contract-proxy-trust" -> "feat:proxy-trust-model" [label="ASSERTS"];
   "tst:src-tests-test-phase3-policy-surface-py" -> "clm:tc-contract-proxy-trust" [label="VERIFIES"];
   "evd:src-src-tigrcorn-utils-proxy-py" -> "clm:tc-contract-proxy-trust" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-contract-proxy-trust" [label="SUPPORTS"];
@@ -1944,52 +1944,52 @@ digraph ssot_registry {
   "clm:tc-interop-tls13-openssl35-sclient" -> "feat:surface-tcp-tls13-external-peer-interop" [label="ASSERTS"];
   "tst:claim-tc-interop-tls13-openssl35-sclient" -> "clm:tc-interop-tls13-openssl35-sclient" [label="VERIFIES"];
   "evd:claim-tc-interop-tls13-openssl35-sclient" -> "clm:tc-interop-tls13-openssl35-sclient" [label="SUPPORTS"];
-  "clm:tc-neg-adversarial-corpora" -> "feat:f-p7-negative-corpora-quic" [label="ASSERTS"];
-  "clm:tc-neg-adversarial-corpora" -> "feat:f-p7-negative-corpora-origin" [label="ASSERTS"];
+  "clm:tc-neg-adversarial-corpora" -> "feat:quic-negative-corpora" [label="ASSERTS"];
+  "clm:tc-neg-adversarial-corpora" -> "feat:origin-negative-corpora" [label="ASSERTS"];
   "tst:claim-tc-neg-adversarial-corpora" -> "clm:tc-neg-adversarial-corpora" [label="VERIFIES"];
   "evd:claim-tc-neg-adversarial-corpora" -> "clm:tc-neg-adversarial-corpora" [label="SUPPORTS"];
-  "clm:tc-neg-bundle-preservation" -> "feat:f-p7-negative-corpora-quic" [label="ASSERTS"];
-  "clm:tc-neg-bundle-preservation" -> "feat:f-p7-negative-corpora-origin" [label="ASSERTS"];
+  "clm:tc-neg-bundle-preservation" -> "feat:quic-negative-corpora" [label="ASSERTS"];
+  "clm:tc-neg-bundle-preservation" -> "feat:origin-negative-corpora" [label="ASSERTS"];
   "tst:claim-tc-neg-bundle-preservation" -> "clm:tc-neg-bundle-preservation" [label="VERIFIES"];
   "evd:claim-tc-neg-bundle-preservation" -> "clm:tc-neg-bundle-preservation" [label="SUPPORTS"];
-  "clm:tc-neg-fail-state-registry" -> "feat:f-p7-fail-state-registry" [label="ASSERTS"];
+  "clm:tc-neg-fail-state-registry" -> "feat:fail-state-registry" [label="ASSERTS"];
   "tst:claim-tc-neg-fail-state-registry" -> "clm:tc-neg-fail-state-registry" [label="VERIFIES"];
   "evd:claim-tc-neg-fail-state-registry" -> "clm:tc-neg-fail-state-registry" [label="SUPPORTS"];
-  "clm:tc-obs-export-adapters" -> "feat:f-p6-export-surfaces" [label="ASSERTS"];
+  "clm:tc-obs-export-adapters" -> "feat:observability-export-surfaces" [label="ASSERTS"];
   "tst:claim-tc-obs-export-adapters" -> "clm:tc-obs-export-adapters" [label="VERIFIES"];
   "evd:claim-tc-obs-export-adapters" -> "clm:tc-obs-export-adapters" [label="SUPPORTS"];
-  "clm:tc-obs-metrics-schema" -> "feat:f-p6-quic-h3-counters" [label="ASSERTS"];
+  "clm:tc-obs-metrics-schema" -> "feat:quic-h3-counters" [label="ASSERTS"];
   "tst:claim-tc-obs-metrics-schema" -> "clm:tc-obs-metrics-schema" [label="VERIFIES"];
   "evd:claim-tc-obs-metrics-schema" -> "clm:tc-obs-metrics-schema" [label="SUPPORTS"];
-  "clm:tc-obs-qlog-experimental" -> "feat:f-p6-qlog-stance" [label="ASSERTS"];
+  "clm:tc-obs-qlog-experimental" -> "feat:qlog-stance" [label="ASSERTS"];
   "tst:claim-tc-obs-qlog-experimental" -> "clm:tc-obs-qlog-experimental" [label="VERIFIES"];
   "evd:claim-tc-obs-qlog-experimental" -> "clm:tc-obs-qlog-experimental" [label="SUPPORTS"];
   "clm:tc-operator-cwd-import-resolution" -> "feat:surface-app-import-resolution" [label="ASSERTS"];
   "tst:src-tests-test-app-loader-py" -> "clm:tc-operator-cwd-import-resolution" [label="VERIFIES"];
   "evd:src-src-tigrcorn-server-app-loader-py" -> "clm:tc-operator-cwd-import-resolution" [label="SUPPORTS"];
   "evd:src-tests-test-app-loader-py" -> "clm:tc-operator-cwd-import-resolution" [label="SUPPORTS"];
-  "clm:tc-policy-alpn" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-alpn" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-alpn" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-alpn" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-policy-alpn" [label="SUPPORTS"];
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-alpn" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-alpn" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-alpn" [label="SUPPORTS"];
-  "clm:tc-policy-connect" -> "feat:f-p3-connect-policy" [label="ASSERTS"];
+  "clm:tc-policy-connect" -> "feat:connect-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-connect" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-connect" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-policy-connect" [label="SUPPORTS"];
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-connect" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-connect" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-connect" [label="SUPPORTS"];
-  "clm:tc-policy-content-coding" -> "feat:f-p3-coding-policy" [label="ASSERTS"];
+  "clm:tc-policy-content-coding" -> "feat:content-coding-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-content-coding" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-content-coding" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-policy-content-coding" [label="SUPPORTS"];
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-content-coding" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-content-coding" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-content-coding" [label="SUPPORTS"];
-  "clm:tc-policy-drain-admission" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-drain-admission" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase3-policy-surface-py" -> "clm:tc-policy-drain-admission" [label="VERIFIES"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-drain-admission" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-drain-admission" [label="SUPPORTS"];
@@ -1999,7 +1999,7 @@ digraph ssot_registry {
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-drain-admission" [label="SUPPORTS"];
   "evd:src-tests-test-phase3-policy-surface-py" -> "clm:tc-policy-drain-admission" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-drain-admission" [label="SUPPORTS"];
-  "clm:tc-policy-h2c" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-h2c" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase3-policy-surface-py" -> "clm:tc-policy-h2c" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-h2c" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-policy-h2c" [label="SUPPORTS"];
@@ -2007,7 +2007,7 @@ digraph ssot_registry {
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-h2c" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-h2c" [label="SUPPORTS"];
   "evd:src-tests-test-phase3-policy-surface-py" -> "clm:tc-policy-h2c" [label="SUPPORTS"];
-  "clm:tc-policy-limits-timeouts" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-limits-timeouts" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-limits-timeouts" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-limits-timeouts" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-env-py" -> "clm:tc-policy-limits-timeouts" [label="SUPPORTS"];
@@ -2015,21 +2015,21 @@ digraph ssot_registry {
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-limits-timeouts" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-limits-timeouts" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-limits-timeouts" [label="SUPPORTS"];
-  "clm:tc-policy-revocation" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-revocation" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-revocation" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-revocation" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-policy-revocation" [label="SUPPORTS"];
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-revocation" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-revocation" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-revocation" [label="SUPPORTS"];
-  "clm:tc-policy-trailers" -> "feat:f-p3-trailer-policy" [label="ASSERTS"];
+  "clm:tc-policy-trailers" -> "feat:trailer-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-trailers" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-trailers" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-policy-surface-py" -> "clm:tc-policy-trailers" [label="SUPPORTS"];
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-trailers" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-trailers" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-trailers" [label="SUPPORTS"];
-  "clm:tc-policy-websocket-compression" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-websocket-compression" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase3-strict-rfc-surface-py" -> "clm:tc-policy-websocket-compression" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-websocket-compression" [label="SUPPORTS"];
   "evd:src-src-tigrcorn-config-env-py" -> "clm:tc-policy-websocket-compression" [label="SUPPORTS"];
@@ -2037,7 +2037,7 @@ digraph ssot_registry {
   "evd:src-docs-ops-policies-md" -> "clm:tc-policy-websocket-compression" [label="SUPPORTS"];
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-websocket-compression" [label="SUPPORTS"];
   "evd:src-tests-test-phase3-strict-rfc-surface-py" -> "clm:tc-policy-websocket-compression" [label="SUPPORTS"];
-  "clm:tc-policy-websocket-heartbeat" -> "feat:f-p3-public-controls" [label="ASSERTS"];
+  "clm:tc-policy-websocket-heartbeat" -> "feat:public-controls-policy" [label="ASSERTS"];
   "tst:src-tests-test-phase3-policy-surface-py" -> "clm:tc-policy-websocket-heartbeat" [label="VERIFIES"];
   "tst:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-websocket-heartbeat" [label="VERIFIES"];
   "evd:src-src-tigrcorn-cli-py" -> "clm:tc-policy-websocket-heartbeat" [label="SUPPORTS"];
@@ -2047,32 +2047,32 @@ digraph ssot_registry {
   "evd:src-docs-conformance-policy-surface-json" -> "clm:tc-policy-websocket-heartbeat" [label="SUPPORTS"];
   "evd:src-tests-test-phase3-policy-surface-py" -> "clm:tc-policy-websocket-heartbeat" [label="SUPPORTS"];
   "evd:src-tests-test-phase7-flag-surface-truth-reconciliation-py" -> "clm:tc-policy-websocket-heartbeat" [label="SUPPORTS"];
-  "clm:tc-profile-default-baseline" -> "feat:f-p1-default-baseline" [label="ASSERTS"];
+  "clm:tc-profile-default-baseline" -> "feat:default-baseline-profile" [label="ASSERTS"];
   "tst:src-tests-test-profile-resolution-py" -> "clm:tc-profile-default-baseline" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-profiles-py" -> "clm:tc-profile-default-baseline" [label="SUPPORTS"];
   "evd:src-profiles-default-profile-json" -> "clm:tc-profile-default-baseline" [label="SUPPORTS"];
   "evd:src-tests-test-profile-resolution-py" -> "clm:tc-profile-default-baseline" [label="SUPPORTS"];
-  "clm:tc-profile-static-origin" -> "feat:f-p1-static-origin" [label="ASSERTS"];
+  "clm:tc-profile-static-origin" -> "feat:static-origin-profile" [label="ASSERTS"];
   "tst:src-tests-test-profile-resolution-py" -> "clm:tc-profile-static-origin" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-profiles-py" -> "clm:tc-profile-static-origin" [label="SUPPORTS"];
   "evd:src-profiles-static-origin-profile-json" -> "clm:tc-profile-static-origin" [label="SUPPORTS"];
   "evd:src-tests-test-profile-resolution-py" -> "clm:tc-profile-static-origin" [label="SUPPORTS"];
-  "clm:tc-profile-strict-h1-origin" -> "feat:f-p1-strict-h1-origin" [label="ASSERTS"];
+  "clm:tc-profile-strict-h1-origin" -> "feat:strict-h1-origin-profile" [label="ASSERTS"];
   "tst:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-h1-origin" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-profiles-py" -> "clm:tc-profile-strict-h1-origin" [label="SUPPORTS"];
   "evd:src-profiles-strict-h1-origin-profile-json" -> "clm:tc-profile-strict-h1-origin" [label="SUPPORTS"];
   "evd:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-h1-origin" [label="SUPPORTS"];
-  "clm:tc-profile-strict-h2-origin" -> "feat:f-p1-strict-h2-origin" [label="ASSERTS"];
+  "clm:tc-profile-strict-h2-origin" -> "feat:strict-h2-origin-profile" [label="ASSERTS"];
   "tst:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-h2-origin" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-profiles-py" -> "clm:tc-profile-strict-h2-origin" [label="SUPPORTS"];
   "evd:src-profiles-strict-h2-origin-profile-json" -> "clm:tc-profile-strict-h2-origin" [label="SUPPORTS"];
   "evd:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-h2-origin" [label="SUPPORTS"];
-  "clm:tc-profile-strict-h3-edge" -> "feat:f-p1-strict-h3-edge" [label="ASSERTS"];
+  "clm:tc-profile-strict-h3-edge" -> "feat:strict-h3-edge-profile" [label="ASSERTS"];
   "tst:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-h3-edge" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-profiles-py" -> "clm:tc-profile-strict-h3-edge" [label="SUPPORTS"];
   "evd:src-profiles-strict-h3-edge-profile-json" -> "clm:tc-profile-strict-h3-edge" [label="SUPPORTS"];
   "evd:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-h3-edge" [label="SUPPORTS"];
-  "clm:tc-profile-strict-mtls-origin" -> "feat:f-p1-strict-mtls-origin" [label="ASSERTS"];
+  "clm:tc-profile-strict-mtls-origin" -> "feat:strict-mtls-origin-profile" [label="ASSERTS"];
   "tst:src-tests-test-profile-resolution-py" -> "clm:tc-profile-strict-mtls-origin" [label="VERIFIES"];
   "evd:src-src-tigrcorn-config-profiles-py" -> "clm:tc-profile-strict-mtls-origin" [label="SUPPORTS"];
   "evd:src-profiles-strict-mtls-origin-profile-json" -> "clm:tc-profile-strict-mtls-origin" [label="SUPPORTS"];
@@ -2159,7 +2159,7 @@ digraph ssot_registry {
   "clm:tc-rfc9525-service-identity-hostname-compatibility" -> "feat:surface-https-service-identity" [label="ASSERTS"];
   "tst:claim-tc-rfc9525-service-identity-hostname-compatibility" -> "clm:tc-rfc9525-service-identity-hostname-compatibility" [label="VERIFIES"];
   "evd:claim-tc-rfc9525-service-identity-hostname-compatibility" -> "clm:tc-rfc9525-service-identity-hostname-compatibility" [label="SUPPORTS"];
-  "clm:tc-roadmap-p8-pytest-forward" -> "feat:f-p8-pytest-forward" [label="ASSERTS"];
+  "clm:tc-roadmap-p8-pytest-forward" -> "feat:pytest-forward-policy" [label="ASSERTS"];
   "clm:tc-roadmap-p8-pytest-forward" -> "feat:governance-graph" [label="ASSERTS"];
   "tst:src-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-pytest-forward" [label="VERIFIES"];
   "tst:gov-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-pytest-forward" [label="VERIFIES"];
@@ -2169,7 +2169,7 @@ digraph ssot_registry {
   "evd:src-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-pytest-forward" [label="SUPPORTS"];
   "evd:gov-legacy-unittest-inventory-json" -> "clm:tc-roadmap-p8-pytest-forward" [label="SUPPORTS"];
   "evd:gov-docs-governance-test-style-policy-md" -> "clm:tc-roadmap-p8-pytest-forward" [label="SUPPORTS"];
-  "clm:tc-roadmap-p8-release-gated-evidence" -> "feat:f-p8-release-gated-evidence" [label="ASSERTS"];
+  "clm:tc-roadmap-p8-release-gated-evidence" -> "feat:release-gated-evidence" [label="ASSERTS"];
   "clm:tc-roadmap-p8-release-gated-evidence" -> "feat:governance-graph" [label="ASSERTS"];
   "tst:src-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-release-gated-evidence" [label="VERIFIES"];
   "tst:gov-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-release-gated-evidence" [label="VERIFIES"];
@@ -2180,7 +2180,7 @@ digraph ssot_registry {
   "evd:src-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-release-gated-evidence" [label="SUPPORTS"];
   "evd:gov-docs-conformance-interop-retention-json" -> "clm:tc-roadmap-p8-release-gated-evidence" [label="SUPPORTS"];
   "evd:gov-docs-conformance-perf-retention-json" -> "clm:tc-roadmap-p8-release-gated-evidence" [label="SUPPORTS"];
-  "clm:tc-roadmap-p8-rfc9651-baseline" -> "feat:f-p8-rfc9651-baseline" [label="ASSERTS"];
+  "clm:tc-roadmap-p8-rfc9651-baseline" -> "feat:rfc-9651-baseline" [label="ASSERTS"];
   "clm:tc-roadmap-p8-rfc9651-baseline" -> "feat:governance-graph" [label="ASSERTS"];
   "tst:src-tests-test-p8-sf-py" -> "clm:tc-roadmap-p8-rfc9651-baseline" [label="VERIFIES"];
   "tst:gov-tests-test-p8-sf-py" -> "clm:tc-roadmap-p8-rfc9651-baseline" [label="VERIFIES"];
@@ -2190,7 +2190,7 @@ digraph ssot_registry {
   "evd:src-tests-test-p8-sf-py" -> "clm:tc-roadmap-p8-rfc9651-baseline" [label="SUPPORTS"];
   "evd:gov-docs-conformance-sf9651-json" -> "clm:tc-roadmap-p8-rfc9651-baseline" [label="SUPPORTS"];
   "evd:gov-docs-conformance-sf9651-md" -> "clm:tc-roadmap-p8-rfc9651-baseline" [label="SUPPORTS"];
-  "clm:tc-roadmap-p8-risk-traceability" -> "feat:f-p8-risk-traceability" [label="ASSERTS"];
+  "clm:tc-roadmap-p8-risk-traceability" -> "feat:risk-traceability" [label="ASSERTS"];
   "clm:tc-roadmap-p8-risk-traceability" -> "feat:governance-graph" [label="ASSERTS"];
   "tst:src-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-risk-traceability" [label="VERIFIES"];
   "tst:gov-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-risk-traceability" [label="VERIFIES"];
@@ -2201,7 +2201,7 @@ digraph ssot_registry {
   "evd:src-tests-test-p8-gov-py" -> "clm:tc-roadmap-p8-risk-traceability" [label="SUPPORTS"];
   "evd:gov-docs-conformance-risk-risk-register-json" -> "clm:tc-roadmap-p8-risk-traceability" [label="SUPPORTS"];
   "evd:gov-docs-conformance-risk-risk-traceability-json" -> "clm:tc-roadmap-p8-risk-traceability" [label="SUPPORTS"];
-  "clm:tc-spec-structured-fields-rfc9651" -> "feat:f-p8-rfc9651-baseline" [label="ASSERTS"];
+  "clm:tc-spec-structured-fields-rfc9651" -> "feat:rfc-9651-baseline" [label="ASSERTS"];
   "clm:tc-spec-structured-fields-rfc9651" -> "feat:governance-graph" [label="ASSERTS"];
   "tst:src-tests-test-p8-sf-py" -> "clm:tc-spec-structured-fields-rfc9651" [label="VERIFIES"];
   "tst:gov-tests-test-p8-sf-py" -> "clm:tc-spec-structured-fields-rfc9651" [label="VERIFIES"];
@@ -2213,37 +2213,37 @@ digraph ssot_registry {
   "evd:src-tests-test-p8-sf-py" -> "clm:tc-spec-structured-fields-rfc9651" [label="SUPPORTS"];
   "evd:gov-docs-conformance-sf9651-json" -> "clm:tc-spec-structured-fields-rfc9651" [label="SUPPORTS"];
   "evd:gov-docs-conformance-sf9651-md" -> "clm:tc-spec-structured-fields-rfc9651" [label="SUPPORTS"];
-  "clm:tc-state-quic-0rtt" -> "feat:f-p4-independent-quic-claims" [label="ASSERTS"];
+  "clm:tc-state-quic-0rtt" -> "feat:independent-quic-state-claims" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-0rtt" [label="VERIFIES"];
   "evd:src-docs-review-conformance-external-matrix-release-json" -> "clm:tc-state-quic-0rtt" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-json" -> "clm:tc-state-quic-0rtt" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-md" -> "clm:tc-state-quic-0rtt" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-0rtt" [label="SUPPORTS"];
-  "clm:tc-state-quic-goaway" -> "feat:f-p4-independent-quic-claims" [label="ASSERTS"];
+  "clm:tc-state-quic-goaway" -> "feat:independent-quic-state-claims" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-goaway" [label="VERIFIES"];
   "evd:src-docs-review-conformance-external-matrix-release-json" -> "clm:tc-state-quic-goaway" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-json" -> "clm:tc-state-quic-goaway" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-md" -> "clm:tc-state-quic-goaway" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-goaway" [label="SUPPORTS"];
-  "clm:tc-state-quic-migration" -> "feat:f-p4-independent-quic-claims" [label="ASSERTS"];
+  "clm:tc-state-quic-migration" -> "feat:independent-quic-state-claims" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-migration" [label="VERIFIES"];
   "evd:src-docs-review-conformance-external-matrix-release-json" -> "clm:tc-state-quic-migration" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-json" -> "clm:tc-state-quic-migration" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-md" -> "clm:tc-state-quic-migration" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-migration" [label="SUPPORTS"];
-  "clm:tc-state-quic-qpack" -> "feat:f-p4-independent-quic-claims" [label="ASSERTS"];
+  "clm:tc-state-quic-qpack" -> "feat:independent-quic-state-claims" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-qpack" [label="VERIFIES"];
   "evd:src-docs-review-conformance-external-matrix-release-json" -> "clm:tc-state-quic-qpack" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-json" -> "clm:tc-state-quic-qpack" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-md" -> "clm:tc-state-quic-qpack" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-qpack" [label="SUPPORTS"];
-  "clm:tc-state-quic-resumption" -> "feat:f-p4-independent-quic-claims" [label="ASSERTS"];
+  "clm:tc-state-quic-resumption" -> "feat:independent-quic-state-claims" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-resumption" [label="VERIFIES"];
   "evd:src-docs-review-conformance-external-matrix-release-json" -> "clm:tc-state-quic-resumption" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-json" -> "clm:tc-state-quic-resumption" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-md" -> "clm:tc-state-quic-resumption" [label="SUPPORTS"];
   "evd:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-resumption" [label="SUPPORTS"];
-  "clm:tc-state-quic-retry" -> "feat:f-p4-independent-quic-claims" [label="ASSERTS"];
+  "clm:tc-state-quic-retry" -> "feat:independent-quic-state-claims" [label="ASSERTS"];
   "tst:src-tests-test-phase4-quic-surface-py" -> "clm:tc-state-quic-retry" [label="VERIFIES"];
   "evd:src-docs-review-conformance-external-matrix-release-json" -> "clm:tc-state-quic-retry" [label="SUPPORTS"];
   "evd:src-docs-conformance-quic-state-json" -> "clm:tc-state-quic-retry" [label="SUPPORTS"];
