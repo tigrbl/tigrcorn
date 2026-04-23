@@ -33,6 +33,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--list-profiles', action='store_true', help='List profile ids and exit.')
     parser.add_argument('--list-lanes', action='store_true', help='List matrix lanes and their profile ids, then exit.')
     parser.add_argument('--validate', action='store_true', help='Validate an existing artifact root instead of running benchmarks.')
+    parser.add_argument('--shuffle', action='store_true', help='Randomize profile execution order.')
+    parser.add_argument('--seed', type=int, default=None, help='Random seed for reproducible shuffle (implies --shuffle).')
     return parser
 
 
@@ -71,11 +73,13 @@ def main(argv: list[str] | None = None) -> int:
         baseline_root=None if ns.establish_baseline else ns.baseline_root,
         profile_ids=ns.profiles,
         establish_baseline=ns.establish_baseline,
+        shuffle=ns.shuffle or ns.seed is not None,
+        seed=ns.seed,
     )
     lane_counts: dict[str, int] = {}
     for profile in matrix.profiles:
         lane_counts[profile.lane] = lane_counts.get(profile.lane, 0) + 1
-    print(json.dumps({
+    output = {
         'matrix_name': summary.matrix_name,
         'artifact_root': summary.artifact_root,
         'baseline_root': summary.baseline_root,
@@ -83,7 +87,11 @@ def main(argv: list[str] | None = None) -> int:
         'failed': summary.failed,
         'total': summary.total,
         'lane_counts': lane_counts,
-    }, indent=2, sort_keys=True))
+    }
+    if summary.shuffle_seed is not None:
+        output['shuffle_seed'] = summary.shuffle_seed
+        output['execution_order'] = summary.execution_order
+    print(json.dumps(output, indent=2, sort_keys=True))
     return 0 if summary.failed == 0 else 1
 
 
