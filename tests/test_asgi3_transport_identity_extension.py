@@ -1,0 +1,9 @@
+from __future__ import annotations
+
+import unittest
+
+
+@unittest.skip("placeholder: ASGI3 transport identity extension tests are planned in SSOT")
+class ASGI3TransportIdentityExtensionTests(unittest.TestCase):
+    def test_asgi3_transport_identity_extension_contract(self) -> None:
+        self.fail("placeholder")

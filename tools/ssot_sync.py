@@ -919,7 +919,7 @@ def build_registry() -> dict[str, Any]:
         _feature_id("webtransport-h3-quic-completion-events"),
         _feature_id("tigr-asgi-contract-0-1-2-validation"),
     ]
-    webtransport_specs = ["spc:2010", "spc:2003", "spc:2004"]
+    webtransport_specs = ["spc:2010", "spc:2003", "spc:2004", "spc:2037"]
     webtransport_rows = [
         (
             webtransport_feature_ids[0],
@@ -988,7 +988,7 @@ def build_registry() -> dict[str, Any]:
             horizon="out_of_bounds",
             implementation_status="absent",
         )
-    link_feature_specs(rest_jsonrpc_exclusion_ids, ["spc:2010"])
+    link_feature_specs(rest_jsonrpc_exclusion_ids, ["spc:2010", "spc:2024", "spc:2037"])
 
     contract_feature_rows = [
         (
@@ -1093,14 +1093,14 @@ def build_registry() -> dict[str, Any]:
             "emit-completion-events",
             "Emit completion events",
             "Represent emit completion semantics using tigr-asgi-contract completion levels.",
-            ["spc:2017", "spc:2031"],
+            ["spc:2017", "spc:2031", "spc:2037"],
             "completion",
         ),
         (
             "emit-completion-asgi-extension",
             "Emit completion ASGI/3 extension",
             "Expose completion metadata to ASGI/3 applications through documented extensions.",
-            ["spc:2014", "spc:2017", "spc:2034"],
+            ["spc:2014", "spc:2017", "spc:2034", "spc:2037"],
             "completion",
         ),
         (
@@ -1149,49 +1149,231 @@ def build_registry() -> dict[str, Any]:
             "generic-stream-runtime",
             "Generic stream runtime",
             "Model stream behavior as a contract-native runtime family.",
-            ["spc:2022", "spc:2031"],
+            ["spc:2022", "spc:2031", "spc:2037"],
             "streams",
         ),
         (
             "generic-datagram-runtime",
             "Generic datagram runtime",
             "Model datagram behavior as a contract-native runtime family.",
-            ["spc:2022", "spc:2031"],
+            ["spc:2022", "spc:2031", "spc:2037"],
             "datagrams",
         ),
         (
             "stream-backpressure-mapping",
             "Stream backpressure mapping",
             "Map stream backpressure and flow-control behavior into contract completion semantics.",
-            ["spc:2031", "spc:2022"],
+            ["spc:2031", "spc:2022", "spc:2037"],
             "flow-control",
         ),
         (
             "datagram-flow-control-mapping",
             "Datagram flow-control mapping",
             "Map datagram send behavior and carrier guarantees into contract completion semantics.",
-            ["spc:2031", "spc:2022"],
+            ["spc:2031", "spc:2022", "spc:2037"],
             "flow-control",
+        ),
+        (
+            "contract-listener-endpoint-metadata",
+            "Contract listener endpoint metadata",
+            "Expose listener endpoint metadata for TCP, UDS, fd, pipe, and in-process listeners without inventing new application scope types.",
+            ["spc:2036", "spc:2015", "spc:2030"],
+            "endpoint-metadata",
+        ),
+        (
+            "contract-uds-endpoint-metadata",
+            "Contract UDS endpoint metadata",
+            "Expose Unix domain socket listener metadata as endpoint metadata rather than a contract scope.",
+            ["spc:2036", "spc:2015"],
+            "endpoint-metadata",
+        ),
+        (
+            "contract-fd-endpoint-metadata",
+            "Contract fd endpoint metadata",
+            "Expose inherited file descriptor listener identity through endpoint metadata.",
+            ["spc:2036"],
+            "endpoint-metadata",
+        ),
+        (
+            "contract-pipe-endpoint-metadata",
+            "Contract pipe endpoint metadata",
+            "Expose pipe listener identity through endpoint metadata.",
+            ["spc:2036"],
+            "endpoint-metadata",
+        ),
+        (
+            "contract-inproc-endpoint-metadata",
+            "Contract in-process endpoint metadata",
+            "Expose in-process listener identity through endpoint metadata.",
+            ["spc:2036"],
+            "endpoint-metadata",
+        ),
+        (
+            "contract-tcp-connection-identity",
+            "Contract TCP connection identity",
+            "Propagate stable TCP connection identity through contract metadata and evidence.",
+            ["spc:2036", "spc:2018", "spc:2030"],
+            "transport-identity",
+        ),
+        (
+            "contract-unix-connection-identity",
+            "Contract Unix connection identity",
+            "Propagate Unix listener connection identity through contract metadata and evidence.",
+            ["spc:2036", "spc:2018", "spc:2030"],
+            "transport-identity",
+        ),
+        (
+            "contract-quic-connection-identity",
+            "Contract QUIC connection identity",
+            "Propagate QUIC connection identity through contract metadata and evidence.",
+            ["spc:2036", "spc:2004", "spc:2018", "spc:2030"],
+            "transport-identity",
+        ),
+        (
+            "contract-http2-stream-identity",
+            "Contract HTTP/2 stream identity",
+            "Propagate HTTP/2 stream identity through contract metadata and event handling.",
+            ["spc:2036", "spc:2002", "spc:2018"],
+            "transport-identity",
+        ),
+        (
+            "contract-http3-stream-identity",
+            "Contract HTTP/3 stream identity",
+            "Propagate HTTP/3 stream identity through contract metadata and event handling.",
+            ["spc:2036", "spc:2003", "spc:2018"],
+            "transport-identity",
+        ),
+        (
+            "contract-webtransport-session-identity",
+            "Contract WebTransport session identity",
+            "Propagate WebTransport session identity through native contract metadata.",
+            ["spc:2036", "spc:2010", "spc:2018", "spc:2022"],
+            "transport-identity",
+        ),
+        (
+            "contract-webtransport-stream-identity",
+            "Contract WebTransport stream identity",
+            "Propagate WebTransport stream identity through native contract metadata and stream events.",
+            ["spc:2036", "spc:2010", "spc:2018", "spc:2022"],
+            "transport-identity",
+        ),
+        (
+            "contract-datagram-unit-identity",
+            "Contract datagram unit identity",
+            "Propagate datagram unit identity through native contract metadata and datagram events.",
+            ["spc:2036", "spc:2018", "spc:2022"],
+            "transport-identity",
+        ),
+        (
+            "contract-tls-endpoint-metadata",
+            "Contract TLS endpoint metadata",
+            "Expose TLS endpoint state through contract metadata.",
+            ["spc:2036", "spc:2033"],
+            "security-metadata",
+        ),
+        (
+            "contract-mtls-peer-metadata",
+            "Contract mTLS peer metadata",
+            "Expose mTLS peer certificate and verification metadata through contract metadata.",
+            ["spc:2036", "spc:2033"],
+            "security-metadata",
+        ),
+        (
+            "contract-alpn-metadata",
+            "Contract ALPN metadata",
+            "Expose negotiated ALPN metadata through contract metadata and ASGI/3 extensions.",
+            ["spc:2036", "spc:2033"],
+            "security-metadata",
+        ),
+        (
+            "contract-sni-metadata",
+            "Contract SNI metadata",
+            "Expose SNI metadata through contract metadata where available.",
+            ["spc:2036", "spc:2033"],
+            "security-metadata",
+        ),
+        (
+            "contract-ocsp-crl-metadata",
+            "Contract OCSP/CRL metadata",
+            "Expose OCSP and CRL validation metadata through contract metadata where available.",
+            ["spc:2036", "spc:2033"],
+            "security-metadata",
+        ),
+        (
+            "asgi3-endpoint-metadata-extension",
+            "ASGI/3 endpoint metadata extension",
+            "Expose endpoint metadata to ASGI/3 applications through documented Tigrcorn extension keys.",
+            ["spc:2036", "spc:2014", "spc:2034"],
+            "asgi3-extension-exposure",
+        ),
+        (
+            "asgi3-transport-identity-extension",
+            "ASGI/3 transport identity extension",
+            "Expose transport identity metadata to ASGI/3 applications through documented Tigrcorn extension keys.",
+            ["spc:2036", "spc:2014", "spc:2034"],
+            "asgi3-extension-exposure",
+        ),
+        (
+            "asgi3-security-metadata-extension",
+            "ASGI/3 security metadata extension",
+            "Expose security metadata to ASGI/3 applications through documented Tigrcorn extension keys.",
+            ["spc:2036", "spc:2014", "spc:2034"],
+            "asgi3-extension-exposure",
+        ),
+        (
+            "asgi3-stream-datagram-extension",
+            "ASGI/3 stream and datagram extension",
+            "Expose stream and datagram metadata to ASGI/3 applications through documented Tigrcorn extension keys.",
+            ["spc:2036", "spc:2014", "spc:2022", "spc:2034"],
+            "asgi3-extension-exposure",
+        ),
+        (
+            "contract-unsupported-scope-rejection",
+            "Contract unsupported scope rejection",
+            "Reject unsupported contract scope types before application dispatch.",
+            ["spc:2036", "spc:2029", "spc:2015"],
+            "rejection",
+        ),
+        (
+            "contract-lossy-metadata-rejection",
+            "Contract lossy metadata rejection",
+            "Reject required metadata mappings that would lose correctness-critical endpoint or transport identity.",
+            ["spc:2036", "spc:2029"],
+            "rejection",
+        ),
+        (
+            "contract-illegal-event-order-rejection",
+            "Contract illegal event order rejection",
+            "Reject illegal event ordering across contract-native and ASGI/3 compatibility paths.",
+            ["spc:2036", "spc:2016", "spc:2029"],
+            "rejection",
+        ),
+        (
+            "contract-invalid-endpoint-metadata-rejection",
+            "Contract invalid endpoint metadata rejection",
+            "Reject malformed endpoint metadata before runtime dispatch or evidence promotion.",
+            ["spc:2036", "spc:2029"],
+            "rejection",
         ),
         (
             "sse-binding-classification",
             "SSE binding classification",
             "Classify SSE traffic through contract binding metadata without owning application-level SSE framework behavior.",
-            ["spc:2023"],
+            ["spc:2023", "spc:2037"],
             "binding-classification",
         ),
         (
             "rest-binding-classification",
             "REST binding classification",
             "Classify REST metadata without implementing REST as a server-owned application runtime.",
-            ["spc:2024"],
+            ["spc:2024", "spc:2037"],
             "binding-classification",
         ),
         (
             "jsonrpc-binding-classification",
             "JSON-RPC binding classification",
             "Classify JSON-RPC metadata without implementing JSON-RPC as a server-owned application runtime.",
-            ["spc:2024"],
+            ["spc:2024", "spc:2037"],
             "binding-classification",
         ),
         (
@@ -1401,7 +1583,7 @@ def build_registry() -> dict[str, Any]:
             horizon="out_of_bounds",
             implementation_status="absent",
         )
-        link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034"])
+        link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034", "spc:2037"])
 
     planned_test_inventory_path = "tests/test_contract_planned_coverage_inventory.py"
 
@@ -1454,12 +1636,97 @@ def build_registry() -> dict[str, Any]:
         ("asgi2-compat-exclusion", "ASGI2 compatibility exclusion"),
         ("wsgi-compat-exclusion", "WSGI compatibility exclusion"),
         ("rsgi-compat-exclusion", "RSGI compatibility exclusion"),
+        ("governance-graph", "Governance graph"),
     ]
     for raw_feature_id, title in planned_feature_tests:
         ensure_planned_feature_test(raw_feature_id, title)
 
     for raw_feature_id, title, _description, _spec_ids, _slot in contract_feature_rows:
         ensure_planned_feature_test(raw_feature_id, title)
+
+    placeholder_feature_tests = [
+        ("webtransport-h3-quic-scope", "WebTransport H3/QUIC scope", "tests/test_webtransport_h3_quic_scope.py"),
+        ("webtransport-h3-quic-session-events", "WebTransport H3/QUIC session events", "tests/test_webtransport_h3_quic_session_events.py"),
+        ("webtransport-h3-quic-stream-events", "WebTransport H3/QUIC stream events", "tests/test_webtransport_h3_quic_stream_events.py"),
+        ("webtransport-h3-quic-datagram-events", "WebTransport H3/QUIC datagram events", "tests/test_webtransport_h3_quic_datagram_events.py"),
+        ("webtransport-h3-quic-completion-events", "WebTransport H3/QUIC completion events", "tests/test_webtransport_h3_quic_completion_events.py"),
+        ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation", "tests/test_tigr_asgi_contract_0_1_2_validation.py"),
+        ("generic-stream-runtime", "Generic stream runtime", "tests/test_contract_generic_stream_runtime.py"),
+        ("generic-datagram-runtime", "Generic datagram runtime", "tests/test_contract_generic_datagram_runtime.py"),
+        ("stream-backpressure-mapping", "Stream backpressure mapping", "tests/test_contract_stream_backpressure_mapping.py"),
+        ("datagram-flow-control-mapping", "Datagram flow-control mapping", "tests/test_contract_datagram_flow_control_mapping.py"),
+        ("emit-completion-events", "Emit completion events", "tests/test_contract_emit_completion_events.py"),
+        ("emit-completion-asgi-extension", "Emit completion ASGI/3 extension", "tests/test_contract_emit_completion_asgi_extension.py"),
+        ("rest-binding-classification", "REST binding classification", "tests/test_contract_rest_binding_classification.py"),
+        ("jsonrpc-binding-classification", "JSON-RPC binding classification", "tests/test_contract_jsonrpc_binding_classification.py"),
+        ("sse-binding-classification", "SSE binding classification", "tests/test_contract_sse_binding_classification.py"),
+        ("rest-runtime-exclusion", "REST runtime exclusion", "tests/test_rest_runtime_exclusion.py"),
+        ("json-rpc-runtime-exclusion", "JSON-RPC runtime exclusion", "tests/test_json_rpc_runtime_exclusion.py"),
+        ("asgi2-compat-exclusion", "ASGI2 compatibility exclusion", "tests/test_asgi2_compat_exclusion.py"),
+        ("wsgi-compat-exclusion", "WSGI compatibility exclusion", "tests/test_wsgi_compat_exclusion.py"),
+        ("rsgi-compat-exclusion", "RSGI compatibility exclusion", "tests/test_rsgi_compat_exclusion.py"),
+        ("contract-listener-endpoint-metadata", "Contract listener endpoint metadata", "tests/test_contract_listener_endpoint_metadata.py"),
+        ("contract-uds-endpoint-metadata", "Contract UDS endpoint metadata", "tests/test_contract_uds_endpoint_metadata.py"),
+        ("contract-fd-endpoint-metadata", "Contract fd endpoint metadata", "tests/test_contract_fd_endpoint_metadata.py"),
+        ("contract-pipe-endpoint-metadata", "Contract pipe endpoint metadata", "tests/test_contract_pipe_endpoint_metadata.py"),
+        ("contract-inproc-endpoint-metadata", "Contract in-process endpoint metadata", "tests/test_contract_inproc_endpoint_metadata.py"),
+        ("contract-tcp-connection-identity", "Contract TCP connection identity", "tests/test_contract_tcp_connection_identity.py"),
+        ("contract-unix-connection-identity", "Contract Unix connection identity", "tests/test_contract_unix_connection_identity.py"),
+        ("contract-quic-connection-identity", "Contract QUIC connection identity", "tests/test_contract_quic_connection_identity.py"),
+        ("contract-http2-stream-identity", "Contract HTTP/2 stream identity", "tests/test_contract_http2_stream_identity.py"),
+        ("contract-http3-stream-identity", "Contract HTTP/3 stream identity", "tests/test_contract_http3_stream_identity.py"),
+        ("contract-webtransport-session-identity", "Contract WebTransport session identity", "tests/test_contract_webtransport_session_identity.py"),
+        ("contract-webtransport-stream-identity", "Contract WebTransport stream identity", "tests/test_contract_webtransport_stream_identity.py"),
+        ("contract-datagram-unit-identity", "Contract datagram unit identity", "tests/test_contract_datagram_unit_identity.py"),
+        ("contract-tls-endpoint-metadata", "Contract TLS endpoint metadata", "tests/test_contract_tls_endpoint_metadata.py"),
+        ("contract-mtls-peer-metadata", "Contract mTLS peer metadata", "tests/test_contract_mtls_peer_metadata.py"),
+        ("contract-alpn-metadata", "Contract ALPN metadata", "tests/test_contract_alpn_metadata.py"),
+        ("contract-sni-metadata", "Contract SNI metadata", "tests/test_contract_sni_metadata.py"),
+        ("contract-ocsp-crl-metadata", "Contract OCSP/CRL metadata", "tests/test_contract_ocsp_crl_metadata.py"),
+        ("asgi3-endpoint-metadata-extension", "ASGI/3 endpoint metadata extension", "tests/test_asgi3_endpoint_metadata_extension.py"),
+        ("asgi3-transport-identity-extension", "ASGI/3 transport identity extension", "tests/test_asgi3_transport_identity_extension.py"),
+        ("asgi3-security-metadata-extension", "ASGI/3 security metadata extension", "tests/test_asgi3_security_metadata_extension.py"),
+        ("asgi3-stream-datagram-extension", "ASGI/3 stream and datagram extension", "tests/test_asgi3_stream_datagram_extension.py"),
+        ("contract-unsupported-scope-rejection", "Contract unsupported scope rejection", "tests/test_contract_unsupported_scope_rejection.py"),
+        ("contract-lossy-metadata-rejection", "Contract lossy metadata rejection", "tests/test_contract_lossy_metadata_rejection.py"),
+        ("contract-illegal-event-order-rejection", "Contract illegal event order rejection", "tests/test_contract_illegal_event_order_rejection.py"),
+        ("contract-invalid-endpoint-metadata-rejection", "Contract invalid endpoint metadata rejection", "tests/test_contract_invalid_endpoint_metadata_rejection.py"),
+    ]
+    for raw_feature_id, title, path in placeholder_feature_tests:
+        feature_id = _feature_id(raw_feature_id)
+        claim_id = _claim_id(f"placeholder-test-coverage-{raw_feature_id}")
+        test_id = _test_id("placeholder", raw_feature_id)
+        evidence_id = _evidence_id("placeholder", raw_feature_id)
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"Placeholder test coverage for {title}",
+            description=f"Placeholder test file is linked for feature {feature_id}.",
+            tier="T1",
+            kind="planned_test_coverage",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = "proposed"
+        release_claim_ids.discard(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Placeholder test evidence for {title}",
+            kind="placeholder_test_file",
+            tier="T1",
+            path=path,
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        release_evidence_ids.discard(evidence_id)
+        ensure_test(
+            test_id=test_id,
+            title=f"Placeholder coverage: {title}",
+            status="planned",
+            kind="pytest",
+            path=path,
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
 
     concrete_feature_tests = [
         (

@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2036"
+number: 2036
+slug: "endpoint-transport-metadata"
+title: "Endpoint and transport metadata mapping"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose listener endpoint, transport identity, and security metadata through contract-native metadata and ASGI/3 compatibility extensions."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1031"
+  - "ADR-1016"
+  - "ADR-1017"
+  - "ADR-1021"
+  - "ADR-1024"
+body: |-
+  # Endpoint and transport metadata mapping
+
+  Tigrcorn shall expose listener endpoint, transport identity, and security metadata through contract-native metadata and ASGI/3 compatibility extensions.
+
+  Requirements:
+
+  - Listener metadata shall describe TCP, UDS, inherited file descriptor, pipe, and in-process endpoints without inventing new application scope types.
+  - Transport identity metadata shall preserve TCP connection identity, Unix connection identity, QUIC connection identity, HTTP/2 stream identity, HTTP/3 stream identity, WebTransport session identity, WebTransport stream identity, and datagram unit identity where the carrier provides those concepts.
+  - Security metadata shall preserve TLS endpoint state, mTLS peer state, ALPN, SNI, and OCSP/CRL validation material where available.
+  - ASGI/3 compatibility shall expose endpoint, transport identity, security, stream, and datagram metadata only through documented extension keys.
+  - Missing, unsupported, malformed, or lossy metadata mappings shall fail closed when required for correctness and shall otherwise be explicitly marked unavailable.
+  - UDS remains listener metadata; it is not a contract scope.
+
+  Non-goals:
+
+  - This specification does not add ASGI2, WSGI, RSGI, REST, or JSON-RPC runtime interfaces.
+  - This specification does not replace contract scope and event mapping specifications.
+  - This specification does not require peers to expose metadata their transport stack cannot observe.
+spec_kind: "local-policy"

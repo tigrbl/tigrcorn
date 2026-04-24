@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1031"
+number: 1031
+slug: "endpoint-transport-metadata"
+title: "treat endpoint and transport metadata as runtime-owned contract extensions"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall model listener endpoint, transport identity, and security metadata as runtime-owned contract extensions rather than new application scope types."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1016"
+  - "ADR-1017"
+  - "ADR-1021"
+  - "ADR-1024"
+  - "ADR-1027"
+body: |-
+  # ADR 1031 - Endpoint and transport metadata
+
+  Decision: Tigrcorn shall model listener endpoint, transport identity, and security metadata as runtime-owned contract extensions rather than new application scope types.
+
+  UDS, inherited file descriptors, pipes, in-process listeners, TCP peers, QUIC connection identifiers, HTTP stream identifiers, TLS state, ALPN, SNI, and peer certificate material describe the server/runtime boundary. They do not create new application protocol scopes.
+
+  Consequences:
+
+  - Contract scopes remain protocol/application scopes such as `http`, `websocket`, `lifespan`, and `webtransport`.
+  - Endpoint and transport metadata is attached through stable metadata fields and ASGI/3 extension keys where compatibility is selected.
+  - Unsupported or lossy metadata projection fails closed or is omitted only under explicitly documented degradation rules.
+  - Tests must prove metadata shape, identity propagation, ASGI/3 extension exposure, and rejection behavior separately from scope/event tests.

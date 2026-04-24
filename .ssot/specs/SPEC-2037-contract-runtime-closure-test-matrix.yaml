@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2037"
+number: 2037
+slug: "contract-runtime-closure-test-matrix"
+title: "Contract runtime closure test matrix"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define the required verification matrix for certifying WebTransport, stream, datagram, completion, classification, and exclusion closure features."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1018"
+  - "ADR-1022"
+  - "ADR-1023"
+  - "ADR-1024"
+  - "ADR-1025"
+  - "ADR-1026"
+  - "ADR-1028"
+body: |-
+  # Contract runtime closure test matrix
+
+  Tigrcorn shall define the required verification matrix for certifying WebTransport, stream, datagram, completion, classification, and exclusion closure features.
+
+  Requirements:
+
+  - Every WebTransport closure feature shall have positive scope/session/stream/datagram/completion tests and negative ordering, metadata, and unsupported-carrier tests.
+  - Every generic stream and datagram feature shall have capability, identity, lifecycle, carrier-semantics, and flow-control tests.
+  - Every completion feature shall verify buffering, flush, transport handoff, acknowledgement, unsupported-level rejection, and ASGI/3 extension exposure where compatibility is selected.
+  - REST, JSON-RPC, and SSE classification tests shall prove metadata classification without runtime ownership.
+  - REST and JSON-RPC runtime exclusion tests shall prove no public API, CLI flag, config mode, or dispatch path enables those runtimes.
+  - ASGI2, WSGI, and RSGI exclusion tests shall prove those interfaces are not supported product interfaces and are rejected unless a future explicit adapter feature is created.
+  - Each test row shall link to its immediate feature, claim, and evidence rows so release closure can prove certifiable implementation status.
+  - Negative tests shall fail closed with deterministic errors before dispatch or event emission.
+
+  Certification rule:
+
+  A closure feature is certifiably complete only when its positive tests, negative tests, SSOT feature links, claims, evidence rows, and release-boundary status all agree.
+spec_kind: "local-policy"
