@@ -144,6 +144,64 @@
   },
   "features": [
     {
+      "id": "feat:alt-svc-contract-map",
+      "title": "Alt-Svc contract map",
+      "description": "Map Alt-Svc behavior into contract metadata and ASGI/3 compatibility behavior.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "http-feature-mapping",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-alt-svc-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-alt-svc-contract-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2032",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
+    },
+    {
+      "id": "feat:asgi-extension-bridge",
+      "title": "ASGI/3 extension bridge",
+      "description": "Expose contract-native metadata and capabilities to ASGI/3 applications through documented extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "asgi3-compatibility",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi-extension-bridge"
+      ],
+      "test_ids": [
+        "tst:planned-asgi-extension-bridge"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2014",
+        "spc:2034"
+      ]
+    },
+    {
       "id": "feat:asgi-pathsend-contract",
       "title": "ASGI pathsend contract",
       "description": "Feature target ASGI pathsend contract imported from claims_registry.json.",
@@ -168,6 +226,121 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:asgi2-compat-exclusion",
+      "title": "ASGI2 compatibility exclusion",
+      "description": "Tigrcorn does not support ASGI2 as a product interface; ASGI/3 is the only supported ASGI compatibility layer.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "compatibility-exclusion",
+        "target_claim_tier": "T0",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi2-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-asgi2-compat-exclusion"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2026",
+        "spc:2027",
+        "spc:2034"
+      ]
+    },
+    {
+      "id": "feat:asgi3-app-compat-suite",
+      "title": "ASGI/3 app compatibility suite",
+      "description": "Verify ASGI/3 framework applications continue to run through the compatibility layer.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "verification",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-app-compat-suite"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-app-compat-suite"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2026",
+        "spc:2034"
+      ]
+    },
+    {
+      "id": "feat:asgi3-compat-layer",
+      "title": "ASGI/3 compatibility layer",
+      "description": "Run ASGI/3 applications through an explicit first-class compatibility layer.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "asgi3-compatibility",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-compat-layer"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-compat-layer"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2034"
+      ]
+    },
+    {
+      "id": "feat:asgi3-hot-path-isolation",
+      "title": "ASGI/3 hot-path isolation",
+      "description": "Keep ASGI/3 adapter code out of the native contract hot path unless ASGI/3 compatibility is selected.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "dispatch-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-hot-path-isolation"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-hot-path-isolation"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2013"
+      ]
     },
     {
       "id": "feat:base-default-audit",
@@ -195,6 +368,88 @@
       "spec_ids": []
     },
     {
+      "id": "feat:binding-legality-validation",
+      "title": "Binding legality validation",
+      "description": "Validate binding, exchange, family, and subevent combinations against tigr-asgi-contract.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "validation",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-binding-legality-validation"
+      ],
+      "test_ids": [
+        "tst:planned-binding-legality-validation"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2021"
+      ]
+    },
+    {
+      "id": "feat:compat-dispatch-selection",
+      "title": "Compatibility dispatch selection",
+      "description": "Select native contract or ASGI/3 compatibility dispatch before application traffic enters the hot path.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "dispatch-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-compat-dispatch-selection"
+      ],
+      "test_ids": [
+        "tst:planned-compat-dispatch-selection"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2013",
+        "spc:2025"
+      ]
+    },
+    {
+      "id": "feat:compat-feature-parity-matrix",
+      "title": "Compatibility feature parity matrix",
+      "description": "Maintain native contract versus ASGI/3 compatibility feature parity status.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "compatibility-reporting",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-compat-feature-parity-matrix"
+      ],
+      "test_ids": [
+        "tst:planned-compat-feature-parity-matrix"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2034"
+      ]
+    },
+    {
       "id": "feat:connect-policy",
       "title": "CONNECT policy",
       "description": "Feature target CONNECT policy imported from claims_registry.json.",
@@ -220,6 +475,36 @@
       "spec_ids": []
     },
     {
+      "id": "feat:content-coding-contract-map",
+      "title": "Content coding contract map",
+      "description": "Map HTTP content-coding behavior into contract metadata and ASGI/3 compatibility behavior.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "http-feature-mapping",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-content-coding-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-content-coding-contract-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2032",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
+    },
+    {
       "id": "feat:content-coding-policy",
       "title": "Content coding policy",
       "description": "Feature target Content coding policy imported from claims_registry.json.",
@@ -243,6 +528,457 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:contract-app-dispatch",
+      "title": "Contract app dispatch",
+      "description": "Dispatch contract-native applications through the native contract dispatcher.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-runtime",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-app-dispatch"
+      ],
+      "test_ids": [
+        "tst:planned-contract-app-dispatch"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2011",
+        "spc:2013",
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:contract-conformance-tests",
+      "title": "Contract conformance tests",
+      "description": "Test contract conformance across native and ASGI/3 compatibility paths.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "verification",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-conformance-tests"
+      ],
+      "test_ids": [
+        "tst:planned-contract-conformance-tests"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2026"
+      ]
+    },
+    {
+      "id": "feat:contract-docs-migration",
+      "title": "Contract docs migration",
+      "description": "Document the contract-native migration path and ASGI/3 compatibility policy.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "documentation",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-docs-migration"
+      ],
+      "test_ids": [
+        "tst:planned-contract-docs-migration"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2027"
+      ]
+    },
+    {
+      "id": "feat:contract-error-semantics",
+      "title": "Contract error semantics",
+      "description": "Reject invalid contract scopes, events, bindings, and compatibility mappings with deterministic errors.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "validation",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-error-semantics"
+      ],
+      "test_ids": [
+        "tst:planned-contract-error-semantics"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2029",
+        "spc:2021"
+      ]
+    },
+    {
+      "id": "feat:contract-examples",
+      "title": "Contract examples",
+      "description": "Provide examples for native contract apps and ASGI/3 compatibility apps.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "documentation",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-examples"
+      ],
+      "test_ids": [
+        "tst:planned-contract-examples"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2027",
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:contract-http-event-map",
+      "title": "Contract HTTP event map",
+      "description": "Map HTTP events between tigr-asgi-contract and ASGI/3 compatibility events.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-events",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-http-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-http-event-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2016",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
+    },
+    {
+      "id": "feat:contract-http-scope",
+      "title": "Contract HTTP scope",
+      "description": "Validate and dispatch contract HTTP scopes with ASGI/3 scope compatibility where applicable.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-scopes",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-http-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-http-scope"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2015",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
+    },
+    {
+      "id": "feat:contract-lifespan-event-map",
+      "title": "Contract lifespan event map",
+      "description": "Map lifespan events between tigr-asgi-contract and ASGI/3 compatibility events.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-events",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-lifespan-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-lifespan-event-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2016",
+        "spc:2012"
+      ]
+    },
+    {
+      "id": "feat:contract-lifespan-scope",
+      "title": "Contract lifespan scope",
+      "description": "Validate and dispatch contract lifespan scopes with ASGI/3 lifespan compatibility.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-scopes",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-lifespan-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-lifespan-scope"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2015",
+        "spc:2012"
+      ]
+    },
+    {
+      "id": "feat:contract-native-public-api",
+      "title": "Contract-native public API",
+      "description": "Provide a public API for registering and serving contract-native applications.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "public-api",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-native-public-api"
+      ],
+      "test_ids": [
+        "tst:planned-contract-native-public-api"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:contract-native-runtime",
+      "title": "Contract-native runtime",
+      "description": "Serve native tigr-asgi-contract applications without ASGI/3 translation in the application hot path.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-runtime",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-native-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-contract-native-runtime"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2011",
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:contract-release-evidence",
+      "title": "Contract release evidence",
+      "description": "Record release evidence for contract-native and ASGI/3 compatibility support claims.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "release-evidence",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-release-evidence"
+      ],
+      "test_ids": [
+        "tst:planned-contract-release-evidence"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2026",
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:contract-websocket-event-map",
+      "title": "Contract WebSocket event map",
+      "description": "Map WebSocket events between tigr-asgi-contract and ASGI/3 compatibility events.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-events",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-websocket-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-websocket-event-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2016",
+        "spc:2005"
+      ]
+    },
+    {
+      "id": "feat:contract-websocket-scope",
+      "title": "Contract WebSocket scope",
+      "description": "Validate and dispatch contract WebSocket scopes with ASGI/3 scope compatibility where applicable.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-scopes",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-websocket-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-websocket-scope"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2015",
+        "spc:2005"
+      ]
+    },
+    {
+      "id": "feat:contract-webtransport-events",
+      "title": "Contract WebTransport events",
+      "description": "Implement WebTransport session, stream, datagram, and completion event handling on the native contract path.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-events",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-webtransport-events"
+      ],
+      "test_ids": [
+        "tst:planned-contract-webtransport-events"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2010",
+        "spc:2016",
+        "spc:2022"
+      ]
+    },
+    {
+      "id": "feat:contract-webtransport-scope",
+      "title": "Contract WebTransport scope",
+      "description": "Validate and dispatch contract WebTransport scopes on the native contract path.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "contract-scopes",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-webtransport-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-webtransport-scope"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2010",
+        "spc:2015"
+      ]
     },
     {
       "id": "feat:current-state-chain",
@@ -274,6 +1010,34 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:datagram-flow-control-mapping",
+      "title": "Datagram flow-control mapping",
+      "description": "Map datagram send behavior and carrier guarantees into contract completion semantics.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "flow-control",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-datagram-flow-control-mapping"
+      ],
+      "test_ids": [
+        "tst:planned-datagram-flow-control-mapping"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2031",
+        "spc:2022"
+      ]
     },
     {
       "id": "feat:default-baseline-profile",
@@ -351,6 +1115,93 @@
       "spec_ids": []
     },
     {
+      "id": "feat:early-hints-contract-map",
+      "title": "Early Hints contract map",
+      "description": "Map HTTP 103 Early Hints behavior into contract metadata and ASGI/3 compatibility behavior.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "http-feature-mapping",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-early-hints-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-early-hints-contract-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2032",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
+    },
+    {
+      "id": "feat:emit-completion-asgi-extension",
+      "title": "Emit completion ASGI/3 extension",
+      "description": "Expose completion metadata to ASGI/3 applications through documented extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "completion",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-emit-completion-asgi-extension"
+      ],
+      "test_ids": [
+        "tst:planned-emit-completion-asgi-extension"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2014",
+        "spc:2017",
+        "spc:2034"
+      ]
+    },
+    {
+      "id": "feat:emit-completion-events",
+      "title": "Emit completion events",
+      "description": "Represent emit completion semantics using tigr-asgi-contract completion levels.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "completion",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-emit-completion-events"
+      ],
+      "test_ids": [
+        "tst:planned-emit-completion-events"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2017",
+        "spc:2031"
+      ]
+    },
+    {
       "id": "feat:fail-state-registry",
       "title": "Fail-state registry",
       "description": "Feature target Fail-state registry imported from claims_registry.json.",
@@ -374,6 +1225,33 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:family-capability-declaration",
+      "title": "Family capability declaration",
+      "description": "Declare request, session, message, stream, and datagram family capabilities through the contract model.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "capabilities",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-family-capability-declaration"
+      ],
+      "test_ids": [
+        "tst:planned-family-capability-declaration"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:flag-contract-registry",
@@ -400,6 +1278,62 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:generic-datagram-runtime",
+      "title": "Generic datagram runtime",
+      "description": "Model datagram behavior as a contract-native runtime family.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "datagrams",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-generic-datagram-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-generic-datagram-runtime"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2022",
+        "spc:2031"
+      ]
+    },
+    {
+      "id": "feat:generic-stream-runtime",
+      "title": "Generic stream runtime",
+      "description": "Model stream behavior as a contract-native runtime family.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "streams",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-generic-stream-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-generic-stream-runtime"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2022",
+        "spc:2031"
+      ]
     },
     {
       "id": "feat:governance-graph",
@@ -517,11 +1451,42 @@
         "target_claim_tier": "T0",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-json-rpc-runtime-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-json-rpc-runtime-exclusion"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:jsonrpc-binding-classification",
+      "title": "JSON-RPC binding classification",
+      "description": "Classify JSON-RPC metadata without implementing JSON-RPC as a server-owned application runtime.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "binding-classification",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-jsonrpc-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-jsonrpc-binding-classification"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2024"
       ]
     },
     {
@@ -548,6 +1513,35 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:observability-contract-metadata",
+      "title": "Observability contract metadata",
+      "description": "Expose contract metadata in logs, metrics, traces, and SSOT evidence.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "observability",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-observability-contract-metadata"
+      ],
+      "test_ids": [
+        "tst:planned-observability-contract-metadata"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2030",
+        "spc:2018",
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:observability-export-surfaces",
@@ -650,6 +1644,36 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:proxy-normalization-contract-map",
+      "title": "Proxy normalization contract map",
+      "description": "Map proxy and intermediary normalization behavior into contract metadata and ASGI/3 compatibility behavior.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "http-feature-mapping",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-proxy-normalization-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-proxy-normalization-contract-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2032",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
     },
     {
       "id": "feat:proxy-precedence",
@@ -889,6 +1913,33 @@
       "spec_ids": []
     },
     {
+      "id": "feat:rest-binding-classification",
+      "title": "REST binding classification",
+      "description": "Classify REST metadata without implementing REST as a server-owned application runtime.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "binding-classification",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-rest-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-rest-binding-classification"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2024"
+      ]
+    },
+    {
       "id": "feat:rest-runtime-exclusion",
       "title": "REST runtime exclusion",
       "description": "Tigrcorn does not implement a REST product runtime; REST remains an application/framework responsibility above ASGI HTTP.",
@@ -904,8 +1955,12 @@
         "target_claim_tier": "T0",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-rest-runtime-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-rest-runtime-exclusion"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010"
@@ -1639,6 +2694,63 @@
       "spec_ids": []
     },
     {
+      "id": "feat:rsgi-compat-exclusion",
+      "title": "RSGI compatibility exclusion",
+      "description": "Tigrcorn does not support RSGI as a product interface; native tigr-asgi-contract and ASGI/3 compatibility are the supported app interfaces.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "compatibility-exclusion",
+        "target_claim_tier": "T0",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-rsgi-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-rsgi-compat-exclusion"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2026",
+        "spc:2027",
+        "spc:2034"
+      ]
+    },
+    {
+      "id": "feat:sse-binding-classification",
+      "title": "SSE binding classification",
+      "description": "Classify SSE traffic through contract binding metadata without owning application-level SSE framework behavior.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "binding-classification",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-sse-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-sse-binding-classification"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2023"
+      ]
+    },
+    {
       "id": "feat:ssot-authoritative-product-boundary",
       "title": "SSOT authoritative product boundary",
       "description": ".ssot/registry.json is the authoritative product boundary; docs are projections and do not win conflicts.",
@@ -1670,6 +2782,64 @@
       "spec_ids": []
     },
     {
+      "id": "feat:ssot-contract-boundary-sync",
+      "title": "SSOT contract boundary sync",
+      "description": "Keep ADR, SPEC, feature, test, claim, evidence, and boundary records aligned for the contract-native support model.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "governance",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-ssot-contract-boundary-sync"
+      ],
+      "test_ids": [
+        "tst:planned-ssot-contract-boundary-sync",
+        "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-contract-and-asgi3-features-have-planned-test-links",
+        "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-unsupported-compatibility-surfaces-are-exclusion-features-only"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2026",
+        "spc:2027",
+        "spc:2034"
+      ]
+    },
+    {
+      "id": "feat:static-delivery-contract-map",
+      "title": "Static delivery contract map",
+      "description": "Map static delivery and file-send behavior into contract metadata and ASGI/3 compatibility extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "http-feature-mapping",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-static-delivery-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-static-delivery-contract-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2032"
+      ]
+    },
+    {
       "id": "feat:static-origin-profile",
       "title": "Static origin profile",
       "description": "Feature target Static origin profile imported from claims_registry.json.",
@@ -1693,6 +2863,34 @@
       ],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:stream-backpressure-mapping",
+      "title": "Stream backpressure mapping",
+      "description": "Map stream backpressure and flow-control behavior into contract completion semantics.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "flow-control",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-stream-backpressure-mapping"
+      ],
+      "test_ids": [
+        "tst:planned-stream-backpressure-mapping"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2031",
+        "spc:2022"
+      ]
     },
     {
       "id": "feat:strict-h1-origin-profile",
@@ -2853,9 +4051,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:tigr-asgi-contract-0-3-2-validation",
-      "title": "tigr-asgi-contract 0.3.2 validation",
-      "description": "Validate Tigrcorn's supported ASGI contract surface against tigr-asgi-contract 0.3.2 without adopting product-layer REST or JSON-RPC runtimes.",
+      "id": "feat:tigr-asgi-contract-0-1-2-validation",
+      "title": "tigr-asgi-contract 0.1.2 validation",
+      "description": "Validate Tigrcorn's supported native contract and ASGI/3 compatibility surface against tigr-asgi-contract 0.1.2 without adopting product-layer REST or JSON-RPC runtimes.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -2868,13 +4066,45 @@
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-tigr-asgi-contract-0-1-2-validation"
+      ],
+      "test_ids": [
+        "tst:planned-tigr-asgi-contract-0-1-2-validation"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010",
         "spc:2003",
         "spc:2004"
+      ]
+    },
+    {
+      "id": "feat:tls-metadata-extension",
+      "title": "TLS metadata extension",
+      "description": "Expose TLS and security metadata through contract metadata and ASGI/3 extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "metadata",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-tls-metadata-extension"
+      ],
+      "test_ids": [
+        "tst:planned-tls-metadata-extension"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2033",
+        "spc:2014"
       ]
     },
     {
@@ -2903,6 +4133,93 @@
       "spec_ids": []
     },
     {
+      "id": "feat:trailers-contract-map",
+      "title": "Trailers contract map",
+      "description": "Map HTTP trailers into contract events and ASGI/3 compatibility extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "http-feature-mapping",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-trailers-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-trailers-contract-map"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2032",
+        "spc:2016",
+        "spc:2001",
+        "spc:2002",
+        "spc:2003"
+      ]
+    },
+    {
+      "id": "feat:transport-metadata-model",
+      "title": "Transport metadata model",
+      "description": "Expose transport metadata through the contract metadata model and ASGI/3 extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "metadata",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-transport-metadata-model"
+      ],
+      "test_ids": [
+        "tst:planned-transport-metadata-model"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2019",
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:unit-id-propagation",
+      "title": "Unit ID propagation",
+      "description": "Propagate contract unit identifiers through dispatch, events, observability, and ASGI/3 extensions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "identity",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-unit-id-propagation"
+      ],
+      "test_ids": [
+        "tst:planned-unit-id-propagation"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2018",
+        "spc:2030"
+      ]
+    },
+    {
       "id": "feat:webtransport-h3-quic-completion-events",
       "title": "WebTransport completion events",
       "description": "Emit and validate transport.emit.complete semantics for WebTransport stream, datagram, message, and session operations.",
@@ -2918,8 +4235,12 @@
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-completion-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-completion-events"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010",
@@ -2943,8 +4264,12 @@
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-datagram-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-datagram-events"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010",
@@ -2955,7 +4280,7 @@
     {
       "id": "feat:webtransport-h3-quic-scope",
       "title": "WebTransport H3/QUIC scope",
-      "description": "Implement first-class ASGI3 webtransport scope support over the package-owned HTTP/3 and QUIC stack.",
+      "description": "Implement first-class contract webtransport scope support over the package-owned HTTP/3 and QUIC stack.",
       "implementation_status": "absent",
       "lifecycle": {
         "stage": "active",
@@ -2968,8 +4293,12 @@
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-scope"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-scope"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010",
@@ -2993,8 +4322,12 @@
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-session-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-session-events"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010",
@@ -3018,13 +4351,47 @@
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-stream-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-stream-events"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2010",
         "spc:2003",
         "spc:2004"
+      ]
+    },
+    {
+      "id": "feat:wsgi-compat-exclusion",
+      "title": "WSGI compatibility exclusion",
+      "description": "Tigrcorn does not support WSGI as a product interface; ASGI/3 is the only supported compatibility layer.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "compatibility-exclusion",
+        "target_claim_tier": "T0",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-wsgi-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-wsgi-compat-exclusion"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2026",
+        "spc:2027",
+        "spc:2034"
       ]
     }
   ],
@@ -4525,6 +5892,886 @@
       ]
     },
     {
+      "id": "tst:planned-alt-svc-contract-map",
+      "title": "Planned coverage: Alt-Svc contract map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:alt-svc-contract-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-alt-svc-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-alt-svc-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-asgi-extension-bridge",
+      "title": "Planned coverage: ASGI/3 extension bridge",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:asgi-extension-bridge"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi-extension-bridge"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi-extension-bridge"
+      ]
+    },
+    {
+      "id": "tst:planned-asgi2-compat-exclusion",
+      "title": "Planned coverage: ASGI2 compatibility exclusion",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:asgi2-compat-exclusion"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi2-compat-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi2-compat-exclusion"
+      ]
+    },
+    {
+      "id": "tst:planned-asgi3-app-compat-suite",
+      "title": "Planned coverage: ASGI/3 app compatibility suite",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:asgi3-app-compat-suite"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-app-compat-suite"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi3-app-compat-suite"
+      ]
+    },
+    {
+      "id": "tst:planned-asgi3-compat-layer",
+      "title": "Planned coverage: ASGI/3 compatibility layer",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:asgi3-compat-layer"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-compat-layer"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi3-compat-layer"
+      ]
+    },
+    {
+      "id": "tst:planned-asgi3-hot-path-isolation",
+      "title": "Planned coverage: ASGI/3 hot-path isolation",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:asgi3-hot-path-isolation"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-hot-path-isolation"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi3-hot-path-isolation"
+      ]
+    },
+    {
+      "id": "tst:planned-binding-legality-validation",
+      "title": "Planned coverage: Binding legality validation",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:binding-legality-validation"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-binding-legality-validation"
+      ],
+      "evidence_ids": [
+        "evd:planned-binding-legality-validation"
+      ]
+    },
+    {
+      "id": "tst:planned-compat-dispatch-selection",
+      "title": "Planned coverage: Compatibility dispatch selection",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:compat-dispatch-selection"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-compat-dispatch-selection"
+      ],
+      "evidence_ids": [
+        "evd:planned-compat-dispatch-selection"
+      ]
+    },
+    {
+      "id": "tst:planned-compat-feature-parity-matrix",
+      "title": "Planned coverage: Compatibility feature parity matrix",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:compat-feature-parity-matrix"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-compat-feature-parity-matrix"
+      ],
+      "evidence_ids": [
+        "evd:planned-compat-feature-parity-matrix"
+      ]
+    },
+    {
+      "id": "tst:planned-content-coding-contract-map",
+      "title": "Planned coverage: Content coding contract map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:content-coding-contract-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-content-coding-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-content-coding-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-app-dispatch",
+      "title": "Planned coverage: Contract app dispatch",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-app-dispatch"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-app-dispatch"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-app-dispatch"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-conformance-tests",
+      "title": "Planned coverage: Contract conformance tests",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-conformance-tests"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-conformance-tests"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-conformance-tests"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-docs-migration",
+      "title": "Planned coverage: Contract docs migration",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-docs-migration"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-docs-migration"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-docs-migration"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-error-semantics",
+      "title": "Planned coverage: Contract error semantics",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-error-semantics"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-error-semantics"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-error-semantics"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-examples",
+      "title": "Planned coverage: Contract examples",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-examples"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-examples"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-examples"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-http-event-map",
+      "title": "Planned coverage: Contract HTTP event map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-http-event-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-http-event-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-http-event-map"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-http-scope",
+      "title": "Planned coverage: Contract HTTP scope",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-http-scope"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-http-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-http-scope"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-lifespan-event-map",
+      "title": "Planned coverage: Contract lifespan event map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-lifespan-event-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-lifespan-event-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-lifespan-event-map"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-lifespan-scope",
+      "title": "Planned coverage: Contract lifespan scope",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-lifespan-scope"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-lifespan-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-lifespan-scope"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-native-public-api",
+      "title": "Planned coverage: Contract-native public API",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-native-public-api"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-native-public-api"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-native-public-api"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-native-runtime",
+      "title": "Planned coverage: Contract-native runtime",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-native-runtime"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-native-runtime"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-native-runtime"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-release-evidence",
+      "title": "Planned coverage: Contract release evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-release-evidence"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-release-evidence"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-release-evidence"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-websocket-event-map",
+      "title": "Planned coverage: Contract WebSocket event map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-websocket-event-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-websocket-event-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-websocket-event-map"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-websocket-scope",
+      "title": "Planned coverage: Contract WebSocket scope",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-websocket-scope"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-websocket-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-websocket-scope"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-webtransport-events",
+      "title": "Planned coverage: Contract WebTransport events",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-webtransport-events"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-webtransport-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-webtransport-events"
+      ]
+    },
+    {
+      "id": "tst:planned-contract-webtransport-scope",
+      "title": "Planned coverage: Contract WebTransport scope",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:contract-webtransport-scope"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-webtransport-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-webtransport-scope"
+      ]
+    },
+    {
+      "id": "tst:planned-datagram-flow-control-mapping",
+      "title": "Planned coverage: Datagram flow-control mapping",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:datagram-flow-control-mapping"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-datagram-flow-control-mapping"
+      ],
+      "evidence_ids": [
+        "evd:planned-datagram-flow-control-mapping"
+      ]
+    },
+    {
+      "id": "tst:planned-early-hints-contract-map",
+      "title": "Planned coverage: Early Hints contract map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:early-hints-contract-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-early-hints-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-early-hints-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-emit-completion-asgi-extension",
+      "title": "Planned coverage: Emit completion ASGI/3 extension",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:emit-completion-asgi-extension"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-emit-completion-asgi-extension"
+      ],
+      "evidence_ids": [
+        "evd:planned-emit-completion-asgi-extension"
+      ]
+    },
+    {
+      "id": "tst:planned-emit-completion-events",
+      "title": "Planned coverage: Emit completion events",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:emit-completion-events"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-emit-completion-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-emit-completion-events"
+      ]
+    },
+    {
+      "id": "tst:planned-family-capability-declaration",
+      "title": "Planned coverage: Family capability declaration",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:family-capability-declaration"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-family-capability-declaration"
+      ],
+      "evidence_ids": [
+        "evd:planned-family-capability-declaration"
+      ]
+    },
+    {
+      "id": "tst:planned-generic-datagram-runtime",
+      "title": "Planned coverage: Generic datagram runtime",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:generic-datagram-runtime"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-generic-datagram-runtime"
+      ],
+      "evidence_ids": [
+        "evd:planned-generic-datagram-runtime"
+      ]
+    },
+    {
+      "id": "tst:planned-generic-stream-runtime",
+      "title": "Planned coverage: Generic stream runtime",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:generic-stream-runtime"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-generic-stream-runtime"
+      ],
+      "evidence_ids": [
+        "evd:planned-generic-stream-runtime"
+      ]
+    },
+    {
+      "id": "tst:planned-json-rpc-runtime-exclusion",
+      "title": "Planned coverage: JSON-RPC runtime exclusion",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:json-rpc-runtime-exclusion"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-json-rpc-runtime-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-json-rpc-runtime-exclusion"
+      ]
+    },
+    {
+      "id": "tst:planned-jsonrpc-binding-classification",
+      "title": "Planned coverage: JSON-RPC binding classification",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:jsonrpc-binding-classification"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-jsonrpc-binding-classification"
+      ],
+      "evidence_ids": [
+        "evd:planned-jsonrpc-binding-classification"
+      ]
+    },
+    {
+      "id": "tst:planned-observability-contract-metadata",
+      "title": "Planned coverage: Observability contract metadata",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:observability-contract-metadata"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-observability-contract-metadata"
+      ],
+      "evidence_ids": [
+        "evd:planned-observability-contract-metadata"
+      ]
+    },
+    {
+      "id": "tst:planned-proxy-normalization-contract-map",
+      "title": "Planned coverage: Proxy normalization contract map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:proxy-normalization-contract-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-proxy-normalization-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-proxy-normalization-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-rest-binding-classification",
+      "title": "Planned coverage: REST binding classification",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:rest-binding-classification"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-rest-binding-classification"
+      ],
+      "evidence_ids": [
+        "evd:planned-rest-binding-classification"
+      ]
+    },
+    {
+      "id": "tst:planned-rest-runtime-exclusion",
+      "title": "Planned coverage: REST runtime exclusion",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:rest-runtime-exclusion"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-rest-runtime-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-rest-runtime-exclusion"
+      ]
+    },
+    {
+      "id": "tst:planned-rsgi-compat-exclusion",
+      "title": "Planned coverage: RSGI compatibility exclusion",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:rsgi-compat-exclusion"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-rsgi-compat-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-rsgi-compat-exclusion"
+      ]
+    },
+    {
+      "id": "tst:planned-sse-binding-classification",
+      "title": "Planned coverage: SSE binding classification",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:sse-binding-classification"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-sse-binding-classification"
+      ],
+      "evidence_ids": [
+        "evd:planned-sse-binding-classification"
+      ]
+    },
+    {
+      "id": "tst:planned-ssot-contract-boundary-sync",
+      "title": "Planned coverage: SSOT contract boundary sync",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:ssot-contract-boundary-sync"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-ssot-contract-boundary-sync"
+      ],
+      "evidence_ids": [
+        "evd:planned-ssot-contract-boundary-sync"
+      ]
+    },
+    {
+      "id": "tst:planned-static-delivery-contract-map",
+      "title": "Planned coverage: Static delivery contract map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:static-delivery-contract-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-static-delivery-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-static-delivery-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-stream-backpressure-mapping",
+      "title": "Planned coverage: Stream backpressure mapping",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:stream-backpressure-mapping"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-stream-backpressure-mapping"
+      ],
+      "evidence_ids": [
+        "evd:planned-stream-backpressure-mapping"
+      ]
+    },
+    {
+      "id": "tst:planned-tigr-asgi-contract-0-1-2-validation",
+      "title": "Planned coverage: tigr-asgi-contract 0.1.2 validation",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:tigr-asgi-contract-0-1-2-validation"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-tigr-asgi-contract-0-1-2-validation"
+      ],
+      "evidence_ids": [
+        "evd:planned-tigr-asgi-contract-0-1-2-validation"
+      ]
+    },
+    {
+      "id": "tst:planned-tls-metadata-extension",
+      "title": "Planned coverage: TLS metadata extension",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:tls-metadata-extension"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-tls-metadata-extension"
+      ],
+      "evidence_ids": [
+        "evd:planned-tls-metadata-extension"
+      ]
+    },
+    {
+      "id": "tst:planned-trailers-contract-map",
+      "title": "Planned coverage: Trailers contract map",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:trailers-contract-map"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-trailers-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-trailers-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-transport-metadata-model",
+      "title": "Planned coverage: Transport metadata model",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:transport-metadata-model"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-transport-metadata-model"
+      ],
+      "evidence_ids": [
+        "evd:planned-transport-metadata-model"
+      ]
+    },
+    {
+      "id": "tst:planned-unit-id-propagation",
+      "title": "Planned coverage: Unit ID propagation",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:unit-id-propagation"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-unit-id-propagation"
+      ],
+      "evidence_ids": [
+        "evd:planned-unit-id-propagation"
+      ]
+    },
+    {
+      "id": "tst:planned-webtransport-h3-quic-completion-events",
+      "title": "Planned coverage: WebTransport completion events",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-completion-events"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-completion-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-completion-events"
+      ]
+    },
+    {
+      "id": "tst:planned-webtransport-h3-quic-datagram-events",
+      "title": "Planned coverage: WebTransport datagram events",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-datagram-events"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-datagram-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-datagram-events"
+      ]
+    },
+    {
+      "id": "tst:planned-webtransport-h3-quic-scope",
+      "title": "Planned coverage: WebTransport H3/QUIC scope",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-scope"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-scope"
+      ]
+    },
+    {
+      "id": "tst:planned-webtransport-h3-quic-session-events",
+      "title": "Planned coverage: WebTransport session events",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-session-events"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-session-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-session-events"
+      ]
+    },
+    {
+      "id": "tst:planned-webtransport-h3-quic-stream-events",
+      "title": "Planned coverage: WebTransport stream events",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-stream-events"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-stream-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-stream-events"
+      ]
+    },
+    {
+      "id": "tst:planned-wsgi-compat-exclusion",
+      "title": "Planned coverage: WSGI compatibility exclusion",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:wsgi-compat-exclusion"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-wsgi-compat-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-wsgi-compat-exclusion"
+      ]
+    },
+    {
       "id": "tst:pytest-case-tests-test-aioquic-adapter-helpers-py-test-detect-retry-observed-scans-common-aioquic-state",
       "title": "Pytest case inventory tests/test_aioquic_adapter_helpers.py::test_detect_retry_observed_scans_common_aioquic_state",
       "status": "passing",
@@ -4870,6 +7117,38 @@
         "evd:src-src-tigrcorn-config-validate-py",
         "evd:src-tests-test-http2-state-machine-completion-py",
         "evd:src-tests-test-config-matrix-pytest-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-contract-and-asgi3-features-have-planned-test-links",
+      "title": "Pytest case inventory tests/test_contract_planned_coverage_inventory.py::test_contract_and_asgi3_features_have_planned_test_links",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:ssot-contract-boundary-sync"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-ssot-contract-boundary-sync"
+      ],
+      "evidence_ids": [
+        "evd:planned-ssot-contract-boundary-sync"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-unsupported-compatibility-surfaces-are-exclusion-features-only",
+      "title": "Pytest case inventory tests/test_contract_planned_coverage_inventory.py::test_unsupported_compatibility_surfaces_are_exclusion_features_only",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:ssot-contract-boundary-sync"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-ssot-contract-boundary-sync"
+      ],
+      "evidence_ids": [
+        "evd:planned-ssot-contract-boundary-sync"
       ]
     },
     {
@@ -8803,6 +11082,943 @@
         "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
         "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
         "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-alt-svc-contract-map",
+      "title": "Planned test coverage for Alt-Svc contract map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:alt-svc-contract-map.",
+      "feature_ids": [
+        "feat:alt-svc-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-alt-svc-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-alt-svc-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-asgi-extension-bridge",
+      "title": "Planned test coverage for ASGI/3 extension bridge",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:asgi-extension-bridge.",
+      "feature_ids": [
+        "feat:asgi-extension-bridge"
+      ],
+      "test_ids": [
+        "tst:planned-asgi-extension-bridge"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi-extension-bridge"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-asgi2-compat-exclusion",
+      "title": "Planned test coverage for ASGI2 compatibility exclusion",
+      "status": "proposed",
+      "tier": "T0",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:asgi2-compat-exclusion.",
+      "feature_ids": [
+        "feat:asgi2-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-asgi2-compat-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi2-compat-exclusion"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-asgi3-app-compat-suite",
+      "title": "Planned test coverage for ASGI/3 app compatibility suite",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:asgi3-app-compat-suite.",
+      "feature_ids": [
+        "feat:asgi3-app-compat-suite"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-app-compat-suite"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi3-app-compat-suite"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-asgi3-compat-layer",
+      "title": "Planned test coverage for ASGI/3 compatibility layer",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:asgi3-compat-layer.",
+      "feature_ids": [
+        "feat:asgi3-compat-layer"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-compat-layer"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi3-compat-layer"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-asgi3-hot-path-isolation",
+      "title": "Planned test coverage for ASGI/3 hot-path isolation",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:asgi3-hot-path-isolation.",
+      "feature_ids": [
+        "feat:asgi3-hot-path-isolation"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-hot-path-isolation"
+      ],
+      "evidence_ids": [
+        "evd:planned-asgi3-hot-path-isolation"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-binding-legality-validation",
+      "title": "Planned test coverage for Binding legality validation",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:binding-legality-validation.",
+      "feature_ids": [
+        "feat:binding-legality-validation"
+      ],
+      "test_ids": [
+        "tst:planned-binding-legality-validation"
+      ],
+      "evidence_ids": [
+        "evd:planned-binding-legality-validation"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-compat-dispatch-selection",
+      "title": "Planned test coverage for Compatibility dispatch selection",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:compat-dispatch-selection.",
+      "feature_ids": [
+        "feat:compat-dispatch-selection"
+      ],
+      "test_ids": [
+        "tst:planned-compat-dispatch-selection"
+      ],
+      "evidence_ids": [
+        "evd:planned-compat-dispatch-selection"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-compat-feature-parity-matrix",
+      "title": "Planned test coverage for Compatibility feature parity matrix",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:compat-feature-parity-matrix.",
+      "feature_ids": [
+        "feat:compat-feature-parity-matrix"
+      ],
+      "test_ids": [
+        "tst:planned-compat-feature-parity-matrix"
+      ],
+      "evidence_ids": [
+        "evd:planned-compat-feature-parity-matrix"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-content-coding-contract-map",
+      "title": "Planned test coverage for Content coding contract map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:content-coding-contract-map.",
+      "feature_ids": [
+        "feat:content-coding-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-content-coding-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-content-coding-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-app-dispatch",
+      "title": "Planned test coverage for Contract app dispatch",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-app-dispatch.",
+      "feature_ids": [
+        "feat:contract-app-dispatch"
+      ],
+      "test_ids": [
+        "tst:planned-contract-app-dispatch"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-app-dispatch"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-conformance-tests",
+      "title": "Planned test coverage for Contract conformance tests",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-conformance-tests.",
+      "feature_ids": [
+        "feat:contract-conformance-tests"
+      ],
+      "test_ids": [
+        "tst:planned-contract-conformance-tests"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-conformance-tests"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-docs-migration",
+      "title": "Planned test coverage for Contract docs migration",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-docs-migration.",
+      "feature_ids": [
+        "feat:contract-docs-migration"
+      ],
+      "test_ids": [
+        "tst:planned-contract-docs-migration"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-docs-migration"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-error-semantics",
+      "title": "Planned test coverage for Contract error semantics",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-error-semantics.",
+      "feature_ids": [
+        "feat:contract-error-semantics"
+      ],
+      "test_ids": [
+        "tst:planned-contract-error-semantics"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-error-semantics"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-examples",
+      "title": "Planned test coverage for Contract examples",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-examples.",
+      "feature_ids": [
+        "feat:contract-examples"
+      ],
+      "test_ids": [
+        "tst:planned-contract-examples"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-examples"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-http-event-map",
+      "title": "Planned test coverage for Contract HTTP event map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-http-event-map.",
+      "feature_ids": [
+        "feat:contract-http-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-http-event-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-http-event-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-http-scope",
+      "title": "Planned test coverage for Contract HTTP scope",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-http-scope.",
+      "feature_ids": [
+        "feat:contract-http-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-http-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-http-scope"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-lifespan-event-map",
+      "title": "Planned test coverage for Contract lifespan event map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-lifespan-event-map.",
+      "feature_ids": [
+        "feat:contract-lifespan-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-lifespan-event-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-lifespan-event-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-lifespan-scope",
+      "title": "Planned test coverage for Contract lifespan scope",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-lifespan-scope.",
+      "feature_ids": [
+        "feat:contract-lifespan-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-lifespan-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-lifespan-scope"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-native-public-api",
+      "title": "Planned test coverage for Contract-native public API",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-native-public-api.",
+      "feature_ids": [
+        "feat:contract-native-public-api"
+      ],
+      "test_ids": [
+        "tst:planned-contract-native-public-api"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-native-public-api"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-native-runtime",
+      "title": "Planned test coverage for Contract-native runtime",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-native-runtime.",
+      "feature_ids": [
+        "feat:contract-native-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-contract-native-runtime"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-native-runtime"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-release-evidence",
+      "title": "Planned test coverage for Contract release evidence",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-release-evidence.",
+      "feature_ids": [
+        "feat:contract-release-evidence"
+      ],
+      "test_ids": [
+        "tst:planned-contract-release-evidence"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-release-evidence"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-websocket-event-map",
+      "title": "Planned test coverage for Contract WebSocket event map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-websocket-event-map.",
+      "feature_ids": [
+        "feat:contract-websocket-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-websocket-event-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-websocket-event-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-websocket-scope",
+      "title": "Planned test coverage for Contract WebSocket scope",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-websocket-scope.",
+      "feature_ids": [
+        "feat:contract-websocket-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-websocket-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-websocket-scope"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-webtransport-events",
+      "title": "Planned test coverage for Contract WebTransport events",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-webtransport-events.",
+      "feature_ids": [
+        "feat:contract-webtransport-events"
+      ],
+      "test_ids": [
+        "tst:planned-contract-webtransport-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-webtransport-events"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-contract-webtransport-scope",
+      "title": "Planned test coverage for Contract WebTransport scope",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:contract-webtransport-scope.",
+      "feature_ids": [
+        "feat:contract-webtransport-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-webtransport-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-contract-webtransport-scope"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-datagram-flow-control-mapping",
+      "title": "Planned test coverage for Datagram flow-control mapping",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:datagram-flow-control-mapping.",
+      "feature_ids": [
+        "feat:datagram-flow-control-mapping"
+      ],
+      "test_ids": [
+        "tst:planned-datagram-flow-control-mapping"
+      ],
+      "evidence_ids": [
+        "evd:planned-datagram-flow-control-mapping"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-early-hints-contract-map",
+      "title": "Planned test coverage for Early Hints contract map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:early-hints-contract-map.",
+      "feature_ids": [
+        "feat:early-hints-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-early-hints-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-early-hints-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-emit-completion-asgi-extension",
+      "title": "Planned test coverage for Emit completion ASGI/3 extension",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:emit-completion-asgi-extension.",
+      "feature_ids": [
+        "feat:emit-completion-asgi-extension"
+      ],
+      "test_ids": [
+        "tst:planned-emit-completion-asgi-extension"
+      ],
+      "evidence_ids": [
+        "evd:planned-emit-completion-asgi-extension"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-emit-completion-events",
+      "title": "Planned test coverage for Emit completion events",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:emit-completion-events.",
+      "feature_ids": [
+        "feat:emit-completion-events"
+      ],
+      "test_ids": [
+        "tst:planned-emit-completion-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-emit-completion-events"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-family-capability-declaration",
+      "title": "Planned test coverage for Family capability declaration",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:family-capability-declaration.",
+      "feature_ids": [
+        "feat:family-capability-declaration"
+      ],
+      "test_ids": [
+        "tst:planned-family-capability-declaration"
+      ],
+      "evidence_ids": [
+        "evd:planned-family-capability-declaration"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-generic-datagram-runtime",
+      "title": "Planned test coverage for Generic datagram runtime",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:generic-datagram-runtime.",
+      "feature_ids": [
+        "feat:generic-datagram-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-generic-datagram-runtime"
+      ],
+      "evidence_ids": [
+        "evd:planned-generic-datagram-runtime"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-generic-stream-runtime",
+      "title": "Planned test coverage for Generic stream runtime",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:generic-stream-runtime.",
+      "feature_ids": [
+        "feat:generic-stream-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-generic-stream-runtime"
+      ],
+      "evidence_ids": [
+        "evd:planned-generic-stream-runtime"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-json-rpc-runtime-exclusion",
+      "title": "Planned test coverage for JSON-RPC runtime exclusion",
+      "status": "proposed",
+      "tier": "T0",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:json-rpc-runtime-exclusion.",
+      "feature_ids": [
+        "feat:json-rpc-runtime-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-json-rpc-runtime-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-json-rpc-runtime-exclusion"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-jsonrpc-binding-classification",
+      "title": "Planned test coverage for JSON-RPC binding classification",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:jsonrpc-binding-classification.",
+      "feature_ids": [
+        "feat:jsonrpc-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-jsonrpc-binding-classification"
+      ],
+      "evidence_ids": [
+        "evd:planned-jsonrpc-binding-classification"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-observability-contract-metadata",
+      "title": "Planned test coverage for Observability contract metadata",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:observability-contract-metadata.",
+      "feature_ids": [
+        "feat:observability-contract-metadata"
+      ],
+      "test_ids": [
+        "tst:planned-observability-contract-metadata"
+      ],
+      "evidence_ids": [
+        "evd:planned-observability-contract-metadata"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-proxy-normalization-contract-map",
+      "title": "Planned test coverage for Proxy normalization contract map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:proxy-normalization-contract-map.",
+      "feature_ids": [
+        "feat:proxy-normalization-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-proxy-normalization-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-proxy-normalization-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-rest-binding-classification",
+      "title": "Planned test coverage for REST binding classification",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:rest-binding-classification.",
+      "feature_ids": [
+        "feat:rest-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-rest-binding-classification"
+      ],
+      "evidence_ids": [
+        "evd:planned-rest-binding-classification"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-rest-runtime-exclusion",
+      "title": "Planned test coverage for REST runtime exclusion",
+      "status": "proposed",
+      "tier": "T0",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:rest-runtime-exclusion.",
+      "feature_ids": [
+        "feat:rest-runtime-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-rest-runtime-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-rest-runtime-exclusion"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-rsgi-compat-exclusion",
+      "title": "Planned test coverage for RSGI compatibility exclusion",
+      "status": "proposed",
+      "tier": "T0",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:rsgi-compat-exclusion.",
+      "feature_ids": [
+        "feat:rsgi-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-rsgi-compat-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-rsgi-compat-exclusion"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-sse-binding-classification",
+      "title": "Planned test coverage for SSE binding classification",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:sse-binding-classification.",
+      "feature_ids": [
+        "feat:sse-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-sse-binding-classification"
+      ],
+      "evidence_ids": [
+        "evd:planned-sse-binding-classification"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-ssot-contract-boundary-sync",
+      "title": "Planned test coverage for SSOT contract boundary sync",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:ssot-contract-boundary-sync.",
+      "feature_ids": [
+        "feat:ssot-contract-boundary-sync"
+      ],
+      "test_ids": [
+        "tst:planned-ssot-contract-boundary-sync",
+        "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-contract-and-asgi3-features-have-planned-test-links",
+        "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-unsupported-compatibility-surfaces-are-exclusion-features-only"
+      ],
+      "evidence_ids": [
+        "evd:planned-ssot-contract-boundary-sync"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-static-delivery-contract-map",
+      "title": "Planned test coverage for Static delivery contract map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:static-delivery-contract-map.",
+      "feature_ids": [
+        "feat:static-delivery-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-static-delivery-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-static-delivery-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-stream-backpressure-mapping",
+      "title": "Planned test coverage for Stream backpressure mapping",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:stream-backpressure-mapping.",
+      "feature_ids": [
+        "feat:stream-backpressure-mapping"
+      ],
+      "test_ids": [
+        "tst:planned-stream-backpressure-mapping"
+      ],
+      "evidence_ids": [
+        "evd:planned-stream-backpressure-mapping"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-tigr-asgi-contract-0-1-2-validation",
+      "title": "Planned test coverage for tigr-asgi-contract 0.1.2 validation",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:tigr-asgi-contract-0-1-2-validation.",
+      "feature_ids": [
+        "feat:tigr-asgi-contract-0-1-2-validation"
+      ],
+      "test_ids": [
+        "tst:planned-tigr-asgi-contract-0-1-2-validation"
+      ],
+      "evidence_ids": [
+        "evd:planned-tigr-asgi-contract-0-1-2-validation"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-tls-metadata-extension",
+      "title": "Planned test coverage for TLS metadata extension",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:tls-metadata-extension.",
+      "feature_ids": [
+        "feat:tls-metadata-extension"
+      ],
+      "test_ids": [
+        "tst:planned-tls-metadata-extension"
+      ],
+      "evidence_ids": [
+        "evd:planned-tls-metadata-extension"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-trailers-contract-map",
+      "title": "Planned test coverage for Trailers contract map",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:trailers-contract-map.",
+      "feature_ids": [
+        "feat:trailers-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-trailers-contract-map"
+      ],
+      "evidence_ids": [
+        "evd:planned-trailers-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-transport-metadata-model",
+      "title": "Planned test coverage for Transport metadata model",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:transport-metadata-model.",
+      "feature_ids": [
+        "feat:transport-metadata-model"
+      ],
+      "test_ids": [
+        "tst:planned-transport-metadata-model"
+      ],
+      "evidence_ids": [
+        "evd:planned-transport-metadata-model"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-unit-id-propagation",
+      "title": "Planned test coverage for Unit ID propagation",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:unit-id-propagation.",
+      "feature_ids": [
+        "feat:unit-id-propagation"
+      ],
+      "test_ids": [
+        "tst:planned-unit-id-propagation"
+      ],
+      "evidence_ids": [
+        "evd:planned-unit-id-propagation"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-webtransport-h3-quic-completion-events",
+      "title": "Planned test coverage for WebTransport completion events",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:webtransport-h3-quic-completion-events.",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-completion-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-completion-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-completion-events"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-webtransport-h3-quic-datagram-events",
+      "title": "Planned test coverage for WebTransport datagram events",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:webtransport-h3-quic-datagram-events.",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-datagram-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-datagram-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-datagram-events"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-webtransport-h3-quic-scope",
+      "title": "Planned test coverage for WebTransport H3/QUIC scope",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:webtransport-h3-quic-scope.",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-scope"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-scope"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-scope"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-webtransport-h3-quic-session-events",
+      "title": "Planned test coverage for WebTransport session events",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:webtransport-h3-quic-session-events.",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-session-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-session-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-session-events"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-webtransport-h3-quic-stream-events",
+      "title": "Planned test coverage for WebTransport stream events",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:webtransport-h3-quic-stream-events.",
+      "feature_ids": [
+        "feat:webtransport-h3-quic-stream-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-stream-events"
+      ],
+      "evidence_ids": [
+        "evd:planned-webtransport-h3-quic-stream-events"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-wsgi-compat-exclusion",
+      "title": "Planned test coverage for WSGI compatibility exclusion",
+      "status": "proposed",
+      "tier": "T0",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:wsgi-compat-exclusion.",
+      "feature_ids": [
+        "feat:wsgi-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-wsgi-compat-exclusion"
+      ],
+      "evidence_ids": [
+        "evd:planned-wsgi-compat-exclusion"
       ]
     },
     {
@@ -15026,6 +18242,778 @@
       ]
     },
     {
+      "id": "evd:planned-alt-svc-contract-map",
+      "title": "Planned test evidence anchor for Alt-Svc contract map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-alt-svc-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-alt-svc-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-asgi-extension-bridge",
+      "title": "Planned test evidence anchor for ASGI/3 extension bridge",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi-extension-bridge"
+      ],
+      "test_ids": [
+        "tst:planned-asgi-extension-bridge"
+      ]
+    },
+    {
+      "id": "evd:planned-asgi2-compat-exclusion",
+      "title": "Planned test evidence anchor for ASGI2 compatibility exclusion",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi2-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-asgi2-compat-exclusion"
+      ]
+    },
+    {
+      "id": "evd:planned-asgi3-app-compat-suite",
+      "title": "Planned test evidence anchor for ASGI/3 app compatibility suite",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-app-compat-suite"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-app-compat-suite"
+      ]
+    },
+    {
+      "id": "evd:planned-asgi3-compat-layer",
+      "title": "Planned test evidence anchor for ASGI/3 compatibility layer",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-compat-layer"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-compat-layer"
+      ]
+    },
+    {
+      "id": "evd:planned-asgi3-hot-path-isolation",
+      "title": "Planned test evidence anchor for ASGI/3 hot-path isolation",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-asgi3-hot-path-isolation"
+      ],
+      "test_ids": [
+        "tst:planned-asgi3-hot-path-isolation"
+      ]
+    },
+    {
+      "id": "evd:planned-binding-legality-validation",
+      "title": "Planned test evidence anchor for Binding legality validation",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-binding-legality-validation"
+      ],
+      "test_ids": [
+        "tst:planned-binding-legality-validation"
+      ]
+    },
+    {
+      "id": "evd:planned-compat-dispatch-selection",
+      "title": "Planned test evidence anchor for Compatibility dispatch selection",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-compat-dispatch-selection"
+      ],
+      "test_ids": [
+        "tst:planned-compat-dispatch-selection"
+      ]
+    },
+    {
+      "id": "evd:planned-compat-feature-parity-matrix",
+      "title": "Planned test evidence anchor for Compatibility feature parity matrix",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-compat-feature-parity-matrix"
+      ],
+      "test_ids": [
+        "tst:planned-compat-feature-parity-matrix"
+      ]
+    },
+    {
+      "id": "evd:planned-content-coding-contract-map",
+      "title": "Planned test evidence anchor for Content coding contract map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-content-coding-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-content-coding-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-app-dispatch",
+      "title": "Planned test evidence anchor for Contract app dispatch",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-app-dispatch"
+      ],
+      "test_ids": [
+        "tst:planned-contract-app-dispatch"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-conformance-tests",
+      "title": "Planned test evidence anchor for Contract conformance tests",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-conformance-tests"
+      ],
+      "test_ids": [
+        "tst:planned-contract-conformance-tests"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-docs-migration",
+      "title": "Planned test evidence anchor for Contract docs migration",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-docs-migration"
+      ],
+      "test_ids": [
+        "tst:planned-contract-docs-migration"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-error-semantics",
+      "title": "Planned test evidence anchor for Contract error semantics",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-error-semantics"
+      ],
+      "test_ids": [
+        "tst:planned-contract-error-semantics"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-examples",
+      "title": "Planned test evidence anchor for Contract examples",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-examples"
+      ],
+      "test_ids": [
+        "tst:planned-contract-examples"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-http-event-map",
+      "title": "Planned test evidence anchor for Contract HTTP event map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-http-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-http-event-map"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-http-scope",
+      "title": "Planned test evidence anchor for Contract HTTP scope",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-http-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-http-scope"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-lifespan-event-map",
+      "title": "Planned test evidence anchor for Contract lifespan event map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-lifespan-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-lifespan-event-map"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-lifespan-scope",
+      "title": "Planned test evidence anchor for Contract lifespan scope",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-lifespan-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-lifespan-scope"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-native-public-api",
+      "title": "Planned test evidence anchor for Contract-native public API",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-native-public-api"
+      ],
+      "test_ids": [
+        "tst:planned-contract-native-public-api"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-native-runtime",
+      "title": "Planned test evidence anchor for Contract-native runtime",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-native-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-contract-native-runtime"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-release-evidence",
+      "title": "Planned test evidence anchor for Contract release evidence",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-release-evidence"
+      ],
+      "test_ids": [
+        "tst:planned-contract-release-evidence"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-websocket-event-map",
+      "title": "Planned test evidence anchor for Contract WebSocket event map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-websocket-event-map"
+      ],
+      "test_ids": [
+        "tst:planned-contract-websocket-event-map"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-websocket-scope",
+      "title": "Planned test evidence anchor for Contract WebSocket scope",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-websocket-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-websocket-scope"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-webtransport-events",
+      "title": "Planned test evidence anchor for Contract WebTransport events",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-webtransport-events"
+      ],
+      "test_ids": [
+        "tst:planned-contract-webtransport-events"
+      ]
+    },
+    {
+      "id": "evd:planned-contract-webtransport-scope",
+      "title": "Planned test evidence anchor for Contract WebTransport scope",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-contract-webtransport-scope"
+      ],
+      "test_ids": [
+        "tst:planned-contract-webtransport-scope"
+      ]
+    },
+    {
+      "id": "evd:planned-datagram-flow-control-mapping",
+      "title": "Planned test evidence anchor for Datagram flow-control mapping",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-datagram-flow-control-mapping"
+      ],
+      "test_ids": [
+        "tst:planned-datagram-flow-control-mapping"
+      ]
+    },
+    {
+      "id": "evd:planned-early-hints-contract-map",
+      "title": "Planned test evidence anchor for Early Hints contract map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-early-hints-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-early-hints-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-emit-completion-asgi-extension",
+      "title": "Planned test evidence anchor for Emit completion ASGI/3 extension",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-emit-completion-asgi-extension"
+      ],
+      "test_ids": [
+        "tst:planned-emit-completion-asgi-extension"
+      ]
+    },
+    {
+      "id": "evd:planned-emit-completion-events",
+      "title": "Planned test evidence anchor for Emit completion events",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-emit-completion-events"
+      ],
+      "test_ids": [
+        "tst:planned-emit-completion-events"
+      ]
+    },
+    {
+      "id": "evd:planned-family-capability-declaration",
+      "title": "Planned test evidence anchor for Family capability declaration",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-family-capability-declaration"
+      ],
+      "test_ids": [
+        "tst:planned-family-capability-declaration"
+      ]
+    },
+    {
+      "id": "evd:planned-generic-datagram-runtime",
+      "title": "Planned test evidence anchor for Generic datagram runtime",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-generic-datagram-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-generic-datagram-runtime"
+      ]
+    },
+    {
+      "id": "evd:planned-generic-stream-runtime",
+      "title": "Planned test evidence anchor for Generic stream runtime",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-generic-stream-runtime"
+      ],
+      "test_ids": [
+        "tst:planned-generic-stream-runtime"
+      ]
+    },
+    {
+      "id": "evd:planned-json-rpc-runtime-exclusion",
+      "title": "Planned test evidence anchor for JSON-RPC runtime exclusion",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-json-rpc-runtime-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-json-rpc-runtime-exclusion"
+      ]
+    },
+    {
+      "id": "evd:planned-jsonrpc-binding-classification",
+      "title": "Planned test evidence anchor for JSON-RPC binding classification",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-jsonrpc-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-jsonrpc-binding-classification"
+      ]
+    },
+    {
+      "id": "evd:planned-observability-contract-metadata",
+      "title": "Planned test evidence anchor for Observability contract metadata",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-observability-contract-metadata"
+      ],
+      "test_ids": [
+        "tst:planned-observability-contract-metadata"
+      ]
+    },
+    {
+      "id": "evd:planned-proxy-normalization-contract-map",
+      "title": "Planned test evidence anchor for Proxy normalization contract map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-proxy-normalization-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-proxy-normalization-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-rest-binding-classification",
+      "title": "Planned test evidence anchor for REST binding classification",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-rest-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-rest-binding-classification"
+      ]
+    },
+    {
+      "id": "evd:planned-rest-runtime-exclusion",
+      "title": "Planned test evidence anchor for REST runtime exclusion",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-rest-runtime-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-rest-runtime-exclusion"
+      ]
+    },
+    {
+      "id": "evd:planned-rsgi-compat-exclusion",
+      "title": "Planned test evidence anchor for RSGI compatibility exclusion",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-rsgi-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-rsgi-compat-exclusion"
+      ]
+    },
+    {
+      "id": "evd:planned-sse-binding-classification",
+      "title": "Planned test evidence anchor for SSE binding classification",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-sse-binding-classification"
+      ],
+      "test_ids": [
+        "tst:planned-sse-binding-classification"
+      ]
+    },
+    {
+      "id": "evd:planned-ssot-contract-boundary-sync",
+      "title": "Planned test evidence anchor for SSOT contract boundary sync",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-ssot-contract-boundary-sync"
+      ],
+      "test_ids": [
+        "tst:planned-ssot-contract-boundary-sync",
+        "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-contract-and-asgi3-features-have-planned-test-links",
+        "tst:pytest-case-tests-test-contract-planned-coverage-inventory-py-test-unsupported-compatibility-surfaces-are-exclusion-features-only"
+      ]
+    },
+    {
+      "id": "evd:planned-static-delivery-contract-map",
+      "title": "Planned test evidence anchor for Static delivery contract map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-static-delivery-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-static-delivery-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-stream-backpressure-mapping",
+      "title": "Planned test evidence anchor for Stream backpressure mapping",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-stream-backpressure-mapping"
+      ],
+      "test_ids": [
+        "tst:planned-stream-backpressure-mapping"
+      ]
+    },
+    {
+      "id": "evd:planned-tigr-asgi-contract-0-1-2-validation",
+      "title": "Planned test evidence anchor for tigr-asgi-contract 0.1.2 validation",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-tigr-asgi-contract-0-1-2-validation"
+      ],
+      "test_ids": [
+        "tst:planned-tigr-asgi-contract-0-1-2-validation"
+      ]
+    },
+    {
+      "id": "evd:planned-tls-metadata-extension",
+      "title": "Planned test evidence anchor for TLS metadata extension",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-tls-metadata-extension"
+      ],
+      "test_ids": [
+        "tst:planned-tls-metadata-extension"
+      ]
+    },
+    {
+      "id": "evd:planned-trailers-contract-map",
+      "title": "Planned test evidence anchor for Trailers contract map",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-trailers-contract-map"
+      ],
+      "test_ids": [
+        "tst:planned-trailers-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-transport-metadata-model",
+      "title": "Planned test evidence anchor for Transport metadata model",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-transport-metadata-model"
+      ],
+      "test_ids": [
+        "tst:planned-transport-metadata-model"
+      ]
+    },
+    {
+      "id": "evd:planned-unit-id-propagation",
+      "title": "Planned test evidence anchor for Unit ID propagation",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-unit-id-propagation"
+      ],
+      "test_ids": [
+        "tst:planned-unit-id-propagation"
+      ]
+    },
+    {
+      "id": "evd:planned-webtransport-h3-quic-completion-events",
+      "title": "Planned test evidence anchor for WebTransport completion events",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-completion-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-completion-events"
+      ]
+    },
+    {
+      "id": "evd:planned-webtransport-h3-quic-datagram-events",
+      "title": "Planned test evidence anchor for WebTransport datagram events",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-datagram-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-datagram-events"
+      ]
+    },
+    {
+      "id": "evd:planned-webtransport-h3-quic-scope",
+      "title": "Planned test evidence anchor for WebTransport H3/QUIC scope",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-scope"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-scope"
+      ]
+    },
+    {
+      "id": "evd:planned-webtransport-h3-quic-session-events",
+      "title": "Planned test evidence anchor for WebTransport session events",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-session-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-session-events"
+      ]
+    },
+    {
+      "id": "evd:planned-webtransport-h3-quic-stream-events",
+      "title": "Planned test evidence anchor for WebTransport stream events",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-webtransport-h3-quic-stream-events"
+      ],
+      "test_ids": [
+        "tst:planned-webtransport-h3-quic-stream-events"
+      ]
+    },
+    {
+      "id": "evd:planned-wsgi-compat-exclusion",
+      "title": "Planned test evidence anchor for WSGI compatibility exclusion",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-wsgi-compat-exclusion"
+      ],
+      "test_ids": [
+        "tst:planned-wsgi-compat-exclusion"
+      ]
+    },
+    {
       "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
       "title": "Profile artifact profiles/default.profile.json",
       "status": "passed",
@@ -19417,10 +23405,12 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.8",
-      "content_sha256": "129a1d94e36795f988372d43e6395467743f82a09dc0ee1f1812b3e282c54f38",
-      "status": "accepted",
+      "content_sha256": "cc74dbe1bc7aa926d7c910d754d67922be896c727cf31f970eb2219efbe82b95",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
+      "superseded_by": [
+        "adr:1012"
+      ],
       "status_notes": []
     },
     {
@@ -19465,10 +23455,12 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.8",
-      "content_sha256": "a317ff62451308e38f73e67f84fad1322611f4354aae04a5249f81831236d82f",
-      "status": "accepted",
+      "content_sha256": "f3096a79156fd126f532ff6a78b3f699e5fd7e6ecfcd37cebe5708d865e63881",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
+      "superseded_by": [
+        "adr:1016"
+      ],
       "status_notes": []
     },
     {
@@ -19578,6 +23570,314 @@
       "immutable": false,
       "package_version": "0.2.8",
       "content_sha256": "b6c470c6167beb9411dfc0407ca9a438aad6deea493dfa5c72abfe8635cfad57",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1012",
+      "number": 1012,
+      "slug": "native-contract-runtime",
+      "title": "adopt tigr-asgi-contract as the native runtime contract",
+      "path": ".ssot/adr/ADR-1012-native-contract-runtime.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "79d01b3adbe0c0aaf0cab25e0e996a72dee49fcb48ebf63304253b763da4e2ec",
+      "status": "accepted",
+      "supersedes": [
+        "adr:1001"
+      ],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1013",
+      "number": 1013,
+      "slug": "asgi3-compatibility-layer",
+      "title": "preserve ASGI3 as a first-class compatibility layer",
+      "path": ".ssot/adr/ADR-1013-asgi3-compatibility-layer.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "24428d1b0004bdb63584e1410d64cbed631a16392b8e32968567d28faf820c59",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1014",
+      "number": 1014,
+      "slug": "asgi3-hot-path-isolation",
+      "title": "keep the ASGI3 adapter out of the native hot path",
+      "path": ".ssot/adr/ADR-1014-asgi3-hot-path-isolation.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "f691f2affe1d67a1bcff30d9c9cf873aa00cb04aa1cdbd342aea9855030d1791",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1015",
+      "number": 1015,
+      "slug": "asgi-feature-extension-bridge",
+      "title": "expose Tigrcorn features to ASGI3 apps through extensions",
+      "path": ".ssot/adr/ADR-1015-asgi-feature-extension-bridge.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "52a7a87a27940452c6afcab53dfb6d77178f2b2f2d67b23ddb4abbaf098aaedc",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1016",
+      "number": 1016,
+      "slug": "contract-scope-mapping",
+      "title": "map ASGI scopes through contract scopes",
+      "path": ".ssot/adr/ADR-1016-contract-scope-mapping.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "7f89dfe9c375e952968819585e8e777fe4faaec6ab8ab92b65cdcaf8cebb9377",
+      "status": "accepted",
+      "supersedes": [
+        "adr:1004"
+      ],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1017",
+      "number": 1017,
+      "slug": "contract-event-mapping",
+      "title": "map ASGI events through contract events",
+      "path": ".ssot/adr/ADR-1017-contract-event-mapping.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "1c4cad2494ff96b8d13134bc3cd1fe7923e6fd9ecd5c1c04da6fa3c5d2eeef63",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1018",
+      "number": 1018,
+      "slug": "emit-completion-semantics",
+      "title": "adopt explicit emit completion semantics",
+      "path": ".ssot/adr/ADR-1018-emit-completion-semantics.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "e2fb0fdeee6320a4628192865add361498cb77affd3e40a08b62e64aca98e141",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1019",
+      "number": 1019,
+      "slug": "unit-identity-model",
+      "title": "propagate contract unit identity through the runtime",
+      "path": ".ssot/adr/ADR-1019-unit-identity-model.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "678f51b940f5ca4292bc4efcde22ed1a374406c660555c7556c8ca5f3513a5d1",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1020",
+      "number": 1020,
+      "slug": "transport-metadata-model",
+      "title": "expose transport metadata through the contract model",
+      "path": ".ssot/adr/ADR-1020-transport-metadata-model.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "81cfda4f0dcdaf811bfbd7c0fd9a73d704eb0318bdeb667d290ac5ca9f98b8e9",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1021",
+      "number": 1021,
+      "slug": "family-capability-model",
+      "title": "declare family capabilities with the contract model",
+      "path": ".ssot/adr/ADR-1021-family-capability-model.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "04e1bb6cfc75eba1991bab4f2bef1bd1e71cedb0f840f0f6bf2c577ced3a8217",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1022",
+      "number": 1022,
+      "slug": "binding-and-subevent-legality",
+      "title": "enforce contract binding and subevent legality",
+      "path": ".ssot/adr/ADR-1022-binding-and-subevent-legality.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "ddabfc5b8773c7683e74eb06ef0c743304d4aeede85684fb969068d5fb773b18",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1023",
+      "number": 1023,
+      "slug": "webtransport-contract-runtime",
+      "title": "implement WebTransport as a contract-native runtime surface",
+      "path": ".ssot/adr/ADR-1023-webtransport-contract-runtime.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "c8af40a7bf90a38664eadcd712e793e96fd62eadb265f93882ecece83fc1a3f4",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1024",
+      "number": 1024,
+      "slug": "stream-and-datagram-runtime",
+      "title": "model streams and datagrams as first-class runtime families",
+      "path": ".ssot/adr/ADR-1024-stream-and-datagram-runtime.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "2d56506b91712d254a64a4b34a355d4c0cc380a1aa8dd153130b4a6a89f28d89",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1025",
+      "number": 1025,
+      "slug": "sse-and-server-streaming-posture",
+      "title": "classify SSE and server streaming through contract bindings",
+      "path": ".ssot/adr/ADR-1025-sse-and-server-streaming-posture.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "11d6f88fff238205baa913d69281940ed2bfc1ea61922623dba25e5e9929fc2d",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1026",
+      "number": 1026,
+      "slug": "rest-and-jsonrpc-binding-posture",
+      "title": "classify REST and JSON-RPC without owning application runtimes",
+      "path": ".ssot/adr/ADR-1026-rest-and-jsonrpc-binding-posture.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "37eea91a2f757be0627b050b94a93f73a88959062024e8e1d07b404110403e8b",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1027",
+      "number": 1027,
+      "slug": "compatibility-dispatch-selection",
+      "title": "select native or compatibility dispatch before serving traffic",
+      "path": ".ssot/adr/ADR-1027-compatibility-dispatch-selection.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "36ded07ebd815eb29653cbdaaf0716526b46088c2395b2dd6ed305868c1afdfa",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1028",
+      "number": 1028,
+      "slug": "legacy-compatibility-boundaries",
+      "title": "track ASGI2, WSGI, and RSGI-like compatibility as bounded adapters",
+      "path": ".ssot/adr/ADR-1028-legacy-compatibility-boundaries.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "c2dca446b802dc97a9e5d301b6eef25ff956821256ae298ce9b2ff63d0a3ac50",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1029",
+      "number": 1029,
+      "slug": "contract-conformance-test-strategy",
+      "title": "test contract conformance across native and compatibility paths",
+      "path": ".ssot/adr/ADR-1029-contract-conformance-test-strategy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "2386c537e1f5bf1c9f3778ee51200d2c21e265613a9ef5add867148d171dc66f",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1030",
+      "number": 1030,
+      "slug": "contract-docs-and-migration-policy",
+      "title": "document the contract-native migration and compatibility policy",
+      "path": ".ssot/adr/ADR-1030-contract-docs-and-migration-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "f15fd3c24b9e4b93a7e43b8c67177f7a26369257d77c078152a1abc905b88590",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19969,11 +24269,13 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.8",
-      "content_sha256": "3e3aea3f649fa3281259b1fcd1948921efb7bd7fbf65c00301e27f8897f984d8",
+      "content_sha256": "08db5cc6240e658fc20cf10d8fb86ec6ce35e1cbb950b311fc9e6e55da3458fd",
       "kind": "local-policy",
-      "status": "draft",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
+      "superseded_by": [
+        "spc:2015"
+      ],
       "status_notes": []
     },
     {
@@ -20037,7 +24339,417 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.8",
-      "content_sha256": "33857036eceb01ebd79634991203048c163059e52eebcc51065e52695a2bc2aa",
+      "content_sha256": "98e5832aeabb1a4e418ec7e03d5bde2f8ee15715430608f2759cb6e08db7fe01",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2011",
+      "number": 2011,
+      "slug": "native-contract-runtime",
+      "title": "Native tigr-asgi-contract runtime",
+      "path": ".ssot/specs/SPEC-2011-native-contract-runtime.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "12cec838fe5e2ad6c23d0f2b4466864ecc3fbe669d2349109807e736022b27cc",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2012",
+      "number": 2012,
+      "slug": "asgi3-compatibility-layer",
+      "title": "ASGI/3 compatibility layer",
+      "path": ".ssot/specs/SPEC-2012-asgi3-compatibility-layer.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "c5a9319100518406c2a7bb6533b97d170cc1e295235380e863f98a5cb92ac1d8",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2013",
+      "number": 2013,
+      "slug": "native-dispatch-selection",
+      "title": "Native and ASGI/3 dispatch selection",
+      "path": ".ssot/specs/SPEC-2013-native-dispatch-selection.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "831cc763c1f42cff896e6d9cc2a65424a60f2ff170b15111b327b0158fe42dd0",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2014",
+      "number": 2014,
+      "slug": "asgi-extension-bridge",
+      "title": "ASGI/3 extension bridge",
+      "path": ".ssot/specs/SPEC-2014-asgi-extension-bridge.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "59d511481fca5ab67baf3e6dd52cb9fb099d5581b484fde2a13a3ea06b24c5a3",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2015",
+      "number": 2015,
+      "slug": "contract-scope-mapping",
+      "title": "Contract scope mapping",
+      "path": ".ssot/specs/SPEC-2015-contract-scope-mapping.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "900dfadd48f8b14e0ceac7ac2957a0135e80ab92c9882ca46db4dca688fede02",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [
+        "spc:2006"
+      ],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2016",
+      "number": 2016,
+      "slug": "contract-event-mapping",
+      "title": "Contract event mapping",
+      "path": ".ssot/specs/SPEC-2016-contract-event-mapping.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "9c9f709121ff26093ad332ea45d5da0c05a6d304c7b5fdd8f269b5c1f3ffbef1",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2017",
+      "number": 2017,
+      "slug": "emit-completion",
+      "title": "Emit completion semantics",
+      "path": ".ssot/specs/SPEC-2017-emit-completion.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "257c958c6702f9b8ab44859208f51f46a07cc3374ab82af603ec99e4b90ad37b",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2018",
+      "number": 2018,
+      "slug": "unit-identity",
+      "title": "Contract unit identity",
+      "path": ".ssot/specs/SPEC-2018-unit-identity.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "eaebd2769a653952f5c925e2d2a53b9cff8314980b8a22a7f9012d4d1723cbf0",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2019",
+      "number": 2019,
+      "slug": "transport-metadata",
+      "title": "Transport metadata",
+      "path": ".ssot/specs/SPEC-2019-transport-metadata.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "208b12a31f75649d876a69a380b7f5edd8f33d9d0a652c256264f7fc63cb3daa",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2020",
+      "number": 2020,
+      "slug": "family-capabilities",
+      "title": "Family capability declarations",
+      "path": ".ssot/specs/SPEC-2020-family-capabilities.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "d1b94e0deae2b83ee86faf1ecb453e2038cb9f05410e89e926ac738f805f163e",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2021",
+      "number": 2021,
+      "slug": "binding-legality",
+      "title": "Binding and subevent legality",
+      "path": ".ssot/specs/SPEC-2021-binding-legality.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "7932e0580cddccc8c48598c1ea2f2882f0045457b9618fe88681ad37d43c1062",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2022",
+      "number": 2022,
+      "slug": "stream-and-datagram-runtime",
+      "title": "Stream and datagram runtime",
+      "path": ".ssot/specs/SPEC-2022-stream-and-datagram-runtime.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "a1e8bde8448a0d686b928e44b5db4efe27899399ddf79da559c50ef513976922",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2023",
+      "number": 2023,
+      "slug": "sse-binding-posture",
+      "title": "SSE binding posture",
+      "path": ".ssot/specs/SPEC-2023-sse-binding-posture.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "c4d644feb5354ad9ba638b092b2dbcb17b4123fdb6bc5cffd7d3bc12fd9795f9",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2024",
+      "number": 2024,
+      "slug": "rest-jsonrpc-classification",
+      "title": "REST and JSON-RPC classification",
+      "path": ".ssot/specs/SPEC-2024-rest-jsonrpc-classification.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "c19118214e9575dfa1e5005b81664226c2ba0890568fd224e0a3778e4df9d166",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2025",
+      "number": 2025,
+      "slug": "compatibility-app-detection",
+      "title": "Compatibility app detection",
+      "path": ".ssot/specs/SPEC-2025-compatibility-app-detection.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "fe10e31c3972ef1478bdc511cf399213479c3beda67a4ba7ec409446d23d767e",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2026",
+      "number": 2026,
+      "slug": "contract-conformance-testing",
+      "title": "Contract conformance testing",
+      "path": ".ssot/specs/SPEC-2026-contract-conformance-testing.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "cba3b920d1ccd2f335d423a2c283614e93239ecd8e833e859ffef4fe1ce41501",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2027",
+      "number": 2027,
+      "slug": "docs-migration-policy",
+      "title": "Contract documentation and migration policy",
+      "path": ".ssot/specs/SPEC-2027-docs-migration-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "a362f60e0bb23fef4ebe2d3f40daf987e8eba318165687f6a4b5f8bc89be7473",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2028",
+      "number": 2028,
+      "slug": "contract-native-public-api",
+      "title": "Contract-native public API",
+      "path": ".ssot/specs/SPEC-2028-contract-native-public-api.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "5f5d5d84128e9f7730578a6eacdbb82e130d46492861ef336cdb73bf51fe3df2",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2029",
+      "number": 2029,
+      "slug": "error-and-rejection-semantics",
+      "title": "Error and rejection semantics",
+      "path": ".ssot/specs/SPEC-2029-error-and-rejection-semantics.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "81cf15f873fe6b9aa27c9866c1c98ba4d170516d41fb0797872871d281428052",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2030",
+      "number": 2030,
+      "slug": "observability-evidence-metadata",
+      "title": "Observability and evidence metadata",
+      "path": ".ssot/specs/SPEC-2030-observability-evidence-metadata.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "d571839337afa4a20b66b6e0747144db165c2149b562e86d6b881e612a533f67",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2031",
+      "number": 2031,
+      "slug": "backpressure-flow-control",
+      "title": "Backpressure and flow-control mapping",
+      "path": ".ssot/specs/SPEC-2031-backpressure-flow-control.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "f18bd65eac5c30ca329863033284d317bd229d921d61547d990a41551451395c",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2032",
+      "number": 2032,
+      "slug": "static-delivery-file-send",
+      "title": "Static delivery and file-send mapping",
+      "path": ".ssot/specs/SPEC-2032-static-delivery-file-send.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "3aa5344bfcb62c0807270719b9aef902413ab4226ffc5e84a3cd5afc7e521110",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2033",
+      "number": 2033,
+      "slug": "tls-security-metadata",
+      "title": "TLS and security metadata",
+      "path": ".ssot/specs/SPEC-2033-tls-security-metadata.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "b2cd10fd3ed86efa2b7564c5f129bb5e125bc58e8dd8baa07db7c50dcaf60e6d",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2034",
+      "number": 2034,
+      "slug": "asgi3-compatibility-feature-parity",
+      "title": "ASGI/3 compatibility feature parity",
+      "path": ".ssot/specs/SPEC-2034-asgi3-compatibility-feature-parity.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.8",
+      "content_sha256": "7138deea8a5f44c99000061a140448045c94477afd35aae39824baeecf12d509",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],

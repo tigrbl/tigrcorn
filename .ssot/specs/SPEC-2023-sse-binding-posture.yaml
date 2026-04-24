@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2023"
+number: 2023
+slug: "sse-binding-posture"
+title: "SSE binding posture"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn may classify SSE traffic through contract binding metadata without owning application-level SSE framework behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1025"
+body: |-
+  # SSE binding posture
+
+  Tigrcorn may classify SSE traffic through contract binding metadata without owning application-level SSE framework behavior.
+
+  Requirements:
+
+  - SSE classification is metadata over HTTP response streaming.
+  - Transport-level streaming, flushing, and completion remain in bounds.
+  - Application event formatting and business semantics remain application-owned.
+  - ASGI/3 applications may consume SSE classification through extensions.
+spec_kind: "local-policy"

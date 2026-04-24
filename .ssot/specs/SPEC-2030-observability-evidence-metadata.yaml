@@ -1,0 +1,30 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2030"
+number: 2030
+slug: "observability-evidence-metadata"
+title: "Observability and evidence metadata"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose contract metadata in logs, metrics, traces, and SSOT evidence where applicable."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1019"
+  - "ADR-1020"
+  - "ADR-1029"
+body: |-
+  # Observability and evidence metadata
+
+  Tigrcorn shall expose contract metadata in logs, metrics, traces, and SSOT evidence where applicable.
+
+  Requirements:
+
+  - Dispatch mode is visible as native contract or ASGI/3 compatibility.
+  - Unit identifiers can connect runtime observations to conformance evidence.
+  - Metadata redaction rules are explicit for sensitive transport fields.
+  - Evidence records distinguish tested support from declared support.
+spec_kind: "local-policy"

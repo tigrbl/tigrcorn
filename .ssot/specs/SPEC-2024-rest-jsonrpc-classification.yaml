@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2024"
+number: 2024
+slug: "rest-jsonrpc-classification"
+title: "REST and JSON-RPC classification"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn may classify REST and JSON-RPC bindings but shall not implement them as server-owned application runtimes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1026"
+body: |-
+  # REST and JSON-RPC classification
+
+  Tigrcorn may classify REST and JSON-RPC bindings but shall not implement them as server-owned application runtimes.
+
+  Requirements:
+
+  - REST and JSON-RPC binding metadata can be validated and exposed.
+  - Routing, method dispatch, request body interpretation, and application errors remain application-owned.
+  - ASGI/3 frameworks keep responsibility for their REST or JSON-RPC behavior.
+  - Documentation distinguishes classification from runtime implementation.
+spec_kind: "local-policy"

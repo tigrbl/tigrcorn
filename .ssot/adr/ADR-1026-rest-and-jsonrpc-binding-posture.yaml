@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1026"
+number: 1026
+slug: "rest-and-jsonrpc-binding-posture"
+title: "classify REST and JSON-RPC without owning application runtimes"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn may classify REST and JSON-RPC bindings but shall not implement them as server-owned application runtimes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1026 - REST and JSON-RPC binding posture
+
+  Decision: Tigrcorn may classify REST and JSON-RPC bindings but shall not implement them as server-owned application runtimes.
+
+  REST and JSON-RPC sit above the server boundary. Tigrcorn can expose metadata and enforce transport-level legality, but framework behavior belongs to applications such as Starlette, FastAPI, or Tigrbl.
+
+  Consequences:
+
+  - REST and JSON-RPC are metadata classifications, not hosted product runtimes.
+  - Compatibility adapters do not parse application protocols unless a separate feature explicitly owns that behavior.
+  - Boundary docs must distinguish binding classification from application framework support.

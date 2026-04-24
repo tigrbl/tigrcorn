@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1017"
+number: 1017
+slug: "contract-event-mapping"
+title: "map ASGI events through contract events"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Runtime event translation shall use tigr-asgi-contract events as the normative vocabulary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1017 - Contract event mapping
+
+  Decision: Runtime event translation shall use `tigr-asgi-contract` events as the normative vocabulary.
+
+  Standard ASGI3 receive and send events map into contract events for HTTP, WebSocket, and lifespan. Contract events with no ASGI equivalent must either use extension events, adapter metadata, or explicit rejection.
+
+  Consequences:
+
+  - Event legality is validated against the contract model.
+  - Compatibility tests must prove both directions where the mapping is reversible.
+  - Lossy translations must be visible in documentation and evidence.

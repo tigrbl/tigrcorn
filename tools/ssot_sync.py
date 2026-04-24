@@ -867,7 +867,7 @@ def build_registry() -> dict[str, Any]:
             if risk_id not in issues[issue_id]["risk_ids"]:
                 issues[issue_id]["risk_ids"].append(risk_id)
 
-    # SSOT authority and tigr-asgi-contract 0.3.2 scope decisions
+    # SSOT authority and tigr-asgi-contract scope decisions
     ssot_authority_feature_id = _feature_id("ssot-authoritative-product-boundary")
     ensure_feature(
         feature_id=ssot_authority_feature_id,
@@ -917,14 +917,14 @@ def build_registry() -> dict[str, Any]:
         _feature_id("webtransport-h3-quic-stream-events"),
         _feature_id("webtransport-h3-quic-datagram-events"),
         _feature_id("webtransport-h3-quic-completion-events"),
-        _feature_id("tigr-asgi-contract-0-3-2-validation"),
+        _feature_id("tigr-asgi-contract-0-1-2-validation"),
     ]
     webtransport_specs = ["spc:2010", "spc:2003", "spc:2004"]
     webtransport_rows = [
         (
             webtransport_feature_ids[0],
             "WebTransport H3/QUIC scope",
-            "Implement first-class ASGI3 webtransport scope support over the package-owned HTTP/3 and QUIC stack.",
+            "Implement first-class contract webtransport scope support over the package-owned HTTP/3 and QUIC stack.",
         ),
         (
             webtransport_feature_ids[1],
@@ -948,8 +948,8 @@ def build_registry() -> dict[str, Any]:
         ),
         (
             webtransport_feature_ids[5],
-            "tigr-asgi-contract 0.3.2 validation",
-            "Validate Tigrcorn's supported ASGI contract surface against tigr-asgi-contract 0.3.2 without adopting product-layer REST or JSON-RPC runtimes.",
+            "tigr-asgi-contract 0.1.2 validation",
+            "Validate Tigrcorn's supported native contract and ASGI/3 compatibility surface against tigr-asgi-contract 0.1.2 without adopting product-layer REST or JSON-RPC runtimes.",
         ),
     ]
     for feature_id, title, description in webtransport_rows:
@@ -989,6 +989,421 @@ def build_registry() -> dict[str, Any]:
             implementation_status="absent",
         )
     link_feature_specs(rest_jsonrpc_exclusion_ids, ["spc:2010"])
+
+    contract_feature_rows = [
+        (
+            "contract-native-runtime",
+            "Contract-native runtime",
+            "Serve native tigr-asgi-contract applications without ASGI/3 translation in the application hot path.",
+            ["spc:2011", "spc:2028"],
+            "contract-runtime",
+        ),
+        (
+            "contract-app-dispatch",
+            "Contract app dispatch",
+            "Dispatch contract-native applications through the native contract dispatcher.",
+            ["spc:2011", "spc:2013", "spc:2028"],
+            "contract-runtime",
+        ),
+        (
+            "asgi3-compat-layer",
+            "ASGI/3 compatibility layer",
+            "Run ASGI/3 applications through an explicit first-class compatibility layer.",
+            ["spc:2012", "spc:2034"],
+            "asgi3-compatibility",
+        ),
+        (
+            "compat-dispatch-selection",
+            "Compatibility dispatch selection",
+            "Select native contract or ASGI/3 compatibility dispatch before application traffic enters the hot path.",
+            ["spc:2013", "spc:2025"],
+            "dispatch-selection",
+        ),
+        (
+            "asgi3-hot-path-isolation",
+            "ASGI/3 hot-path isolation",
+            "Keep ASGI/3 adapter code out of the native contract hot path unless ASGI/3 compatibility is selected.",
+            ["spc:2012", "spc:2013"],
+            "dispatch-selection",
+        ),
+        (
+            "asgi-extension-bridge",
+            "ASGI/3 extension bridge",
+            "Expose contract-native metadata and capabilities to ASGI/3 applications through documented extensions.",
+            ["spc:2014", "spc:2034"],
+            "asgi3-compatibility",
+        ),
+        (
+            "contract-http-scope",
+            "Contract HTTP scope",
+            "Validate and dispatch contract HTTP scopes with ASGI/3 scope compatibility where applicable.",
+            ["spc:2015", "spc:2001", "spc:2002", "spc:2003"],
+            "contract-scopes",
+        ),
+        (
+            "contract-websocket-scope",
+            "Contract WebSocket scope",
+            "Validate and dispatch contract WebSocket scopes with ASGI/3 scope compatibility where applicable.",
+            ["spc:2015", "spc:2005"],
+            "contract-scopes",
+        ),
+        (
+            "contract-lifespan-scope",
+            "Contract lifespan scope",
+            "Validate and dispatch contract lifespan scopes with ASGI/3 lifespan compatibility.",
+            ["spc:2015", "spc:2012"],
+            "contract-scopes",
+        ),
+        (
+            "contract-webtransport-scope",
+            "Contract WebTransport scope",
+            "Validate and dispatch contract WebTransport scopes on the native contract path.",
+            ["spc:2010", "spc:2015"],
+            "contract-scopes",
+        ),
+        (
+            "contract-http-event-map",
+            "Contract HTTP event map",
+            "Map HTTP events between tigr-asgi-contract and ASGI/3 compatibility events.",
+            ["spc:2016", "spc:2001", "spc:2002", "spc:2003"],
+            "contract-events",
+        ),
+        (
+            "contract-websocket-event-map",
+            "Contract WebSocket event map",
+            "Map WebSocket events between tigr-asgi-contract and ASGI/3 compatibility events.",
+            ["spc:2016", "spc:2005"],
+            "contract-events",
+        ),
+        (
+            "contract-lifespan-event-map",
+            "Contract lifespan event map",
+            "Map lifespan events between tigr-asgi-contract and ASGI/3 compatibility events.",
+            ["spc:2016", "spc:2012"],
+            "contract-events",
+        ),
+        (
+            "contract-webtransport-events",
+            "Contract WebTransport events",
+            "Implement WebTransport session, stream, datagram, and completion event handling on the native contract path.",
+            ["spc:2010", "spc:2016", "spc:2022"],
+            "contract-events",
+        ),
+        (
+            "emit-completion-events",
+            "Emit completion events",
+            "Represent emit completion semantics using tigr-asgi-contract completion levels.",
+            ["spc:2017", "spc:2031"],
+            "completion",
+        ),
+        (
+            "emit-completion-asgi-extension",
+            "Emit completion ASGI/3 extension",
+            "Expose completion metadata to ASGI/3 applications through documented extensions.",
+            ["spc:2014", "spc:2017", "spc:2034"],
+            "completion",
+        ),
+        (
+            "unit-id-propagation",
+            "Unit ID propagation",
+            "Propagate contract unit identifiers through dispatch, events, observability, and ASGI/3 extensions.",
+            ["spc:2018", "spc:2030"],
+            "identity",
+        ),
+        (
+            "transport-metadata-model",
+            "Transport metadata model",
+            "Expose transport metadata through the contract metadata model and ASGI/3 extensions.",
+            ["spc:2019", "spc:2030"],
+            "metadata",
+        ),
+        (
+            "tls-metadata-extension",
+            "TLS metadata extension",
+            "Expose TLS and security metadata through contract metadata and ASGI/3 extensions.",
+            ["spc:2033", "spc:2014"],
+            "metadata",
+        ),
+        (
+            "family-capability-declaration",
+            "Family capability declaration",
+            "Declare request, session, message, stream, and datagram family capabilities through the contract model.",
+            ["spc:2020"],
+            "capabilities",
+        ),
+        (
+            "binding-legality-validation",
+            "Binding legality validation",
+            "Validate binding, exchange, family, and subevent combinations against tigr-asgi-contract.",
+            ["spc:2021"],
+            "validation",
+        ),
+        (
+            "contract-error-semantics",
+            "Contract error semantics",
+            "Reject invalid contract scopes, events, bindings, and compatibility mappings with deterministic errors.",
+            ["spc:2029", "spc:2021"],
+            "validation",
+        ),
+        (
+            "generic-stream-runtime",
+            "Generic stream runtime",
+            "Model stream behavior as a contract-native runtime family.",
+            ["spc:2022", "spc:2031"],
+            "streams",
+        ),
+        (
+            "generic-datagram-runtime",
+            "Generic datagram runtime",
+            "Model datagram behavior as a contract-native runtime family.",
+            ["spc:2022", "spc:2031"],
+            "datagrams",
+        ),
+        (
+            "stream-backpressure-mapping",
+            "Stream backpressure mapping",
+            "Map stream backpressure and flow-control behavior into contract completion semantics.",
+            ["spc:2031", "spc:2022"],
+            "flow-control",
+        ),
+        (
+            "datagram-flow-control-mapping",
+            "Datagram flow-control mapping",
+            "Map datagram send behavior and carrier guarantees into contract completion semantics.",
+            ["spc:2031", "spc:2022"],
+            "flow-control",
+        ),
+        (
+            "sse-binding-classification",
+            "SSE binding classification",
+            "Classify SSE traffic through contract binding metadata without owning application-level SSE framework behavior.",
+            ["spc:2023"],
+            "binding-classification",
+        ),
+        (
+            "rest-binding-classification",
+            "REST binding classification",
+            "Classify REST metadata without implementing REST as a server-owned application runtime.",
+            ["spc:2024"],
+            "binding-classification",
+        ),
+        (
+            "jsonrpc-binding-classification",
+            "JSON-RPC binding classification",
+            "Classify JSON-RPC metadata without implementing JSON-RPC as a server-owned application runtime.",
+            ["spc:2024"],
+            "binding-classification",
+        ),
+        (
+            "contract-native-public-api",
+            "Contract-native public API",
+            "Provide a public API for registering and serving contract-native applications.",
+            ["spc:2028"],
+            "public-api",
+        ),
+        (
+            "static-delivery-contract-map",
+            "Static delivery contract map",
+            "Map static delivery and file-send behavior into contract metadata and ASGI/3 compatibility extensions.",
+            ["spc:2032"],
+            "http-feature-mapping",
+        ),
+        (
+            "early-hints-contract-map",
+            "Early Hints contract map",
+            "Map HTTP 103 Early Hints behavior into contract metadata and ASGI/3 compatibility behavior.",
+            ["spc:2032", "spc:2001", "spc:2002", "spc:2003"],
+            "http-feature-mapping",
+        ),
+        (
+            "alt-svc-contract-map",
+            "Alt-Svc contract map",
+            "Map Alt-Svc behavior into contract metadata and ASGI/3 compatibility behavior.",
+            ["spc:2032", "spc:2001", "spc:2002", "spc:2003"],
+            "http-feature-mapping",
+        ),
+        (
+            "trailers-contract-map",
+            "Trailers contract map",
+            "Map HTTP trailers into contract events and ASGI/3 compatibility extensions.",
+            ["spc:2032", "spc:2016", "spc:2001", "spc:2002", "spc:2003"],
+            "http-feature-mapping",
+        ),
+        (
+            "content-coding-contract-map",
+            "Content coding contract map",
+            "Map HTTP content-coding behavior into contract metadata and ASGI/3 compatibility behavior.",
+            ["spc:2032", "spc:2001", "spc:2002", "spc:2003"],
+            "http-feature-mapping",
+        ),
+        (
+            "proxy-normalization-contract-map",
+            "Proxy normalization contract map",
+            "Map proxy and intermediary normalization behavior into contract metadata and ASGI/3 compatibility behavior.",
+            ["spc:2032", "spc:2001", "spc:2002", "spc:2003"],
+            "http-feature-mapping",
+        ),
+        (
+            "observability-contract-metadata",
+            "Observability contract metadata",
+            "Expose contract metadata in logs, metrics, traces, and SSOT evidence.",
+            ["spc:2030", "spc:2018", "spc:2019"],
+            "observability",
+        ),
+        (
+            "contract-conformance-tests",
+            "Contract conformance tests",
+            "Test contract conformance across native and ASGI/3 compatibility paths.",
+            ["spc:2026"],
+            "verification",
+        ),
+        (
+            "asgi3-app-compat-suite",
+            "ASGI/3 app compatibility suite",
+            "Verify ASGI/3 framework applications continue to run through the compatibility layer.",
+            ["spc:2012", "spc:2026", "spc:2034"],
+            "verification",
+        ),
+        (
+            "compat-feature-parity-matrix",
+            "Compatibility feature parity matrix",
+            "Maintain native contract versus ASGI/3 compatibility feature parity status.",
+            ["spc:2034"],
+            "compatibility-reporting",
+        ),
+        (
+            "contract-release-evidence",
+            "Contract release evidence",
+            "Record release evidence for contract-native and ASGI/3 compatibility support claims.",
+            ["spc:2026", "spc:2030"],
+            "release-evidence",
+        ),
+        (
+            "contract-docs-migration",
+            "Contract docs migration",
+            "Document the contract-native migration path and ASGI/3 compatibility policy.",
+            ["spc:2027"],
+            "documentation",
+        ),
+        (
+            "contract-examples",
+            "Contract examples",
+            "Provide examples for native contract apps and ASGI/3 compatibility apps.",
+            ["spc:2027", "spc:2028"],
+            "documentation",
+        ),
+        (
+            "ssot-contract-boundary-sync",
+            "SSOT contract boundary sync",
+            "Keep ADR, SPEC, feature, test, claim, evidence, and boundary records aligned for the contract-native support model.",
+            ["spc:2026", "spc:2027", "spc:2034"],
+            "governance",
+        ),
+    ]
+    contract_feature_ids = []
+    for raw_feature_id, title, description, spec_ids, slot in contract_feature_rows:
+        feature_id = _feature_id(raw_feature_id)
+        contract_feature_ids.append(feature_id)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T3",
+            slot=slot,
+            horizon="next",
+            implementation_status="absent",
+        )
+        link_feature_specs([feature_id], spec_ids)
+
+    unsupported_compatibility_rows = [
+        (
+            "asgi2-compat-exclusion",
+            "ASGI2 compatibility exclusion",
+            "Tigrcorn does not support ASGI2 as a product interface; ASGI/3 is the only supported ASGI compatibility layer.",
+        ),
+        (
+            "wsgi-compat-exclusion",
+            "WSGI compatibility exclusion",
+            "Tigrcorn does not support WSGI as a product interface; ASGI/3 is the only supported compatibility layer.",
+        ),
+        (
+            "rsgi-compat-exclusion",
+            "RSGI compatibility exclusion",
+            "Tigrcorn does not support RSGI as a product interface; native tigr-asgi-contract and ASGI/3 compatibility are the supported app interfaces.",
+        ),
+    ]
+    unsupported_compatibility_ids = []
+    for raw_feature_id, title, description in unsupported_compatibility_rows:
+        feature_id = _feature_id(raw_feature_id)
+        unsupported_compatibility_ids.append(feature_id)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T0",
+            slot="compatibility-exclusion",
+            horizon="out_of_bounds",
+            implementation_status="absent",
+        )
+        link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034"])
+
+    planned_test_inventory_path = "tests/test_contract_planned_coverage_inventory.py"
+
+    def ensure_planned_feature_test(raw_feature_id: str, title: str) -> None:
+        feature_id = _feature_id(raw_feature_id)
+        target_tier = str(features[feature_id]["plan"].get("target_claim_tier") or "T1")
+        claim_id = _claim_id(f"planned-test-coverage-{raw_feature_id}")
+        test_id = _test_id("planned", raw_feature_id)
+        evidence_id = _evidence_id("planned", raw_feature_id)
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"Planned test coverage for {title}",
+            description=f"Planned test coverage is recorded for feature {feature_id}.",
+            tier=target_tier,
+            kind="planned_test_coverage",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = "proposed"
+        release_claim_ids.discard(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Planned test evidence anchor for {title}",
+            kind="planned_test_inventory",
+            tier="T1",
+            path=planned_test_inventory_path,
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        release_evidence_ids.discard(evidence_id)
+        ensure_test(
+            test_id=test_id,
+            title=f"Planned coverage: {title}",
+            status="planned",
+            kind="pytest",
+            path=planned_test_inventory_path,
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+
+    planned_feature_tests = [
+        ("webtransport-h3-quic-scope", "WebTransport H3/QUIC scope"),
+        ("webtransport-h3-quic-session-events", "WebTransport session events"),
+        ("webtransport-h3-quic-stream-events", "WebTransport stream events"),
+        ("webtransport-h3-quic-datagram-events", "WebTransport datagram events"),
+        ("webtransport-h3-quic-completion-events", "WebTransport completion events"),
+        ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation"),
+        ("rest-runtime-exclusion", "REST runtime exclusion"),
+        ("json-rpc-runtime-exclusion", "JSON-RPC runtime exclusion"),
+        ("asgi2-compat-exclusion", "ASGI2 compatibility exclusion"),
+        ("wsgi-compat-exclusion", "WSGI compatibility exclusion"),
+        ("rsgi-compat-exclusion", "RSGI compatibility exclusion"),
+    ]
+    for raw_feature_id, title in planned_feature_tests:
+        ensure_planned_feature_test(raw_feature_id, title)
+
+    for raw_feature_id, title, _description, _spec_ids, _slot in contract_feature_rows:
+        ensure_planned_feature_test(raw_feature_id, title)
 
     # RFC features, claims, tests, and evidence
     artifact_bundles = boundary.get("artifact_bundles", {})

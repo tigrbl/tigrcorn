@@ -12,7 +12,8 @@ summary: "Tigrcorn shall implement first-class WebTransport support over the exi
 supersedes: []
 superseded_by: []
 status_notes: []
-references: []
+references:
+  - "ADR-1023"
 body: |-
   ## Content
   
@@ -22,13 +23,14 @@ body: |-
   
   ## Required target surface
   
-  - ASGI3 `webtransport` scope construction.
+  - Contract `webtransport` scope construction.
   - `webtransport.connect` and `webtransport.accept` session admission.
   - `webtransport.disconnect` and `webtransport.close` session termination.
   - `webtransport.stream.receive` and `webtransport.stream.send` stream events.
   - `webtransport.datagram.receive` and `webtransport.datagram.send` datagram events when QUIC DATAGRAM support is enabled.
   - `transport.emit.complete` completion signaling for session, stream, datagram, and message emission paths.
-  - Contract validation against `tigr-asgi-contract` version `0.3.2`.
+  - Contract validation against `tigr-asgi-contract` version `0.1.2`.
+  - ASGI/3 exposure only through documented Tigrcorn extensions when compatibility is explicitly selected.
   
   ## Boundary exclusions
   

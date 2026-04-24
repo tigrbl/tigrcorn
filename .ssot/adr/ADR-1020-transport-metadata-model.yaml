@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1020"
+number: 1020
+slug: "transport-metadata-model"
+title: "expose transport metadata through the contract model"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall expose transport and TLS metadata through tigr-asgi-contract metadata structures."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1020 - Transport metadata model
+
+  Decision: Tigrcorn shall expose transport and TLS metadata through `tigr-asgi-contract` metadata structures.
+
+  Transport details such as protocol, ALPN, peer information, TLS state, and security metadata are contract fields first. ASGI3 compatibility exposes them through documented extension metadata.
+
+  Consequences:
+
+  - Metadata claims use one canonical model across native and compatibility paths.
+  - ASGI3 apps can consume richer Tigrcorn metadata without a native rewrite.
+  - Missing metadata is explicit and distinguishable from unsupported metadata.

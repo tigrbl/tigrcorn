@@ -4,13 +4,14 @@ id: "adr:1004"
 number: 1004
 slug: "custom-scope-types"
 title: "custom scope types are allowed behind the ASGI surface"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Decision: custom transports may expose custom scope types in the future."
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "adr:1016"
 status_notes: []
 references: []
 body: |-

@@ -1,0 +1,29 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1012"
+number: 1012
+slug: "native-contract-runtime"
+title: "adopt tigr-asgi-contract as the native runtime contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall treat tigr-asgi-contract as its native runtime contract."
+supersedes:
+  - "adr:1001"
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1012 - Native contract runtime
+
+  Decision: Tigrcorn shall treat `tigr-asgi-contract` as its native runtime contract.
+
+  Tigrcorn's first-class app boundary is the contract scope and event model, not ASGI3. The runtime may still host ASGI3 applications, but that support is compatibility behavior layered over the contract boundary.
+
+  Consequences:
+
+  - Native contract applications bypass ASGI translation.
+  - Scope, event, metadata, capability, and completion semantics are governed by `tigr-asgi-contract`.
+  - ASGI3 support is retained as a first-class compatibility surface, not as the normative product model.
+  - ADR-1001 is superseded where it made ASGI the public runtime boundary.

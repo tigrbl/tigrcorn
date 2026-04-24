@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2021"
+number: 2021
+slug: "binding-legality"
+title: "Binding and subevent legality"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall validate binding, exchange, family, and subevent combinations against tigr-asgi-contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1022"
+body: |-
+  # Binding and subevent legality
+
+  Tigrcorn shall validate binding, exchange, family, and subevent combinations against `tigr-asgi-contract`.
+
+  Requirements:
+
+  - Illegal combinations are rejected before dispatch or emission.
+  - Binding metadata classification does not create application runtime ownership.
+  - ASGI/3 compatibility preserves legal classification metadata where representable.
+  - Negative tests cover invalid binding and subevent combinations.
+spec_kind: "local-policy"

@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2022"
+number: 2022
+slug: "stream-and-datagram-runtime"
+title: "Stream and datagram runtime"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall model stream and datagram behavior as contract-native runtime families."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1024"
+body: |-
+  # Stream and datagram runtime
+
+  Tigrcorn shall model stream and datagram behavior as contract-native runtime families.
+
+  Requirements:
+
+  - Native scopes declare stream and datagram capabilities where supported.
+  - Stream events preserve stream identity, direction, close state, and flow-control state.
+  - Datagram events preserve unit identity, payload, and delivery semantics supported by the carrier.
+  - ASGI/3 compatibility exposes these families only through documented extensions.
+spec_kind: "local-policy"

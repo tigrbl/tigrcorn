@@ -4,13 +4,14 @@ id: "spc:2006"
 number: 2006
 slug: "custom-transports"
 title: "Custom transports"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "TigrCorn reserves a native extension surface for custom transports and scope types."
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "spc:2015"
 status_notes: []
 references: []
 body: |-

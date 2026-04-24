@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1016"
+number: 1016
+slug: "contract-scope-mapping"
+title: "map ASGI scopes through contract scopes"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Scope translation shall be defined from tigr-asgi-contract scopes to ASGI3 scopes and extensions."
+supersedes:
+  - "adr:1004"
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1016 - Contract scope mapping
+
+  Decision: Scope translation shall be defined from `tigr-asgi-contract` scopes to ASGI3 scopes and extensions.
+
+  Supported contract scope types are `http`, `websocket`, `lifespan`, and `webtransport`. ASGI3 maps standard `http`, `websocket`, and `lifespan` scopes directly. WebTransport and richer contract metadata map through documented extensions or are rejected when the selected compatibility mode cannot represent them.
+
+  Consequences:
+
+  - Native scope validation follows the contract package.
+  - Compatibility mappings are explicit per scope type.
+  - Unsupported or lossy mappings fail closed unless an operator selects a degraded compatibility mode.

@@ -1,0 +1,29 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2031"
+number: 2031
+slug: "backpressure-flow-control"
+title: "Backpressure and flow-control mapping"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall map backpressure and flow-control behavior into contract completion and family semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1018"
+  - "ADR-1024"
+body: |-
+  # Backpressure and flow-control mapping
+
+  Tigrcorn shall map backpressure and flow-control behavior into contract completion and family semantics.
+
+  Requirements:
+
+  - Native streams expose flow-control state where supported.
+  - Emission APIs report completion levels that match the actual carrier guarantee.
+  - ASGI/3 compatibility exposes additional flow-control metadata only through extensions.
+  - Tests cover stalled consumers, closed streams, buffered sends, and transport handoff.
+spec_kind: "local-policy"

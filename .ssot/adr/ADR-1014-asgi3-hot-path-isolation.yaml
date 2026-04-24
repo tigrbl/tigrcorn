@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1014"
+number: 1014
+slug: "asgi3-hot-path-isolation"
+title: "keep the ASGI3 adapter out of the native hot path"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Native contract applications shall not traverse ASGI3 compatibility code."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1014 - ASGI3 hot path isolation
+
+  Decision: Native contract applications shall not traverse ASGI3 compatibility code.
+
+  Tigrcorn must select the app interface before request dispatch. ASGI3 translation is only in the hot path when the selected application is an ASGI3 app or when an operator explicitly enables ASGI compatibility for that route or mount.
+
+  Consequences:
+
+  - Native contract dispatch has a separate fast path.
+  - Compatibility behavior is explicit and testable.
+  - Performance claims for the native path cannot rely on hidden ASGI translation.

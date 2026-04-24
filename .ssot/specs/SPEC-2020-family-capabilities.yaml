@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2020"
+number: 2020
+slug: "family-capabilities"
+title: "Family capability declarations"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall declare request, session, message, stream, and datagram capabilities through the contract model."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1021"
+body: |-
+  # Family capability declarations
+
+  Tigrcorn shall declare request, session, message, stream, and datagram capabilities through the contract model.
+
+  Requirements:
+
+  - Each accepted scope declares the families it supports.
+  - Runtime event validation uses the declared family capabilities.
+  - ASGI/3 compatibility advertises only capabilities it can expose.
+  - Unsupported family access fails before application dispatch where possible.
+spec_kind: "local-policy"

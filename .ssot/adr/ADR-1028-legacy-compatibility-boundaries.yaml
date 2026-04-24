@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1028"
+number: 1028
+slug: "legacy-compatibility-boundaries"
+title: "track ASGI2, WSGI, and RSGI-like compatibility as bounded adapters"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall track non-ASGI3 compatibility as bounded adapters, not as native runtime contracts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1028 - Legacy compatibility boundaries
+
+  Decision: Tigrcorn shall track non-ASGI3 compatibility as bounded adapters, not as native runtime contracts.
+
+  ASGI2, WSGI, and RSGI-like surfaces may be documented, compared, or implemented as adapters when justified. They do not change the native `tigr-asgi-contract` boundary.
+
+  Consequences:
+
+  - ASGI3 remains the first-class compatibility layer.
+  - Legacy adapters require explicit feature rows and conformance tests before support is claimed.
+  - Unsupported competitor compatibility surfaces remain tracked out of bounds.

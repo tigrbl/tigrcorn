@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2017"
+number: 2017
+slug: "emit-completion"
+title: "Emit completion semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall model emit completion using tigr-asgi-contract completion levels."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1018"
+body: |-
+  # Emit completion semantics
+
+  Tigrcorn shall model emit completion using `tigr-asgi-contract` completion levels.
+
+  Requirements:
+
+  - Native event emission records completion level where the contract requires it.
+  - Completion metadata distinguishes buffering, flush, transport handoff, and acknowledgement semantics.
+  - ASGI/3 compatibility exposes completion through extensions when standard ASGI/3 has no field.
+  - Unsupported completion guarantees fail closed.
+spec_kind: "local-policy"

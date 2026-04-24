@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2016"
+number: 2016
+slug: "contract-event-mapping"
+title: "Contract event mapping"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define event mapping between contract events and ASGI/3 compatibility events."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1017"
+body: |-
+  # Contract event mapping
+
+  Tigrcorn shall define event mapping between contract events and ASGI/3 compatibility events.
+
+  Requirements:
+
+  - ASGI/3 HTTP, WebSocket, and lifespan events map into contract event records.
+  - Contract events with standard ASGI/3 equivalents map back to standard ASGI/3 events.
+  - Contract events without standard ASGI/3 equivalents require documented extension events or rejection.
+  - Illegal event order and illegal event type combinations fail validation.
+spec_kind: "local-policy"

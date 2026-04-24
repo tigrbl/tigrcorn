@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1024"
+number: 1024
+slug: "stream-and-datagram-runtime"
+title: "model streams and datagrams as first-class runtime families"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall model streams and datagrams as first-class runtime families."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1024 - Stream and datagram runtime
+
+  Decision: Tigrcorn shall model streams and datagrams as first-class runtime families.
+
+  Stream and datagram behavior is not only an implementation detail of QUIC. It must be visible in contract scopes, events, capabilities, flow control, and evidence.
+
+  Consequences:
+
+  - QUIC and WebTransport implementations share one family model.
+  - ASGI3 compatibility must expose these families through extensions or reject them.
+  - Backpressure and datagram loss semantics require dedicated tests.

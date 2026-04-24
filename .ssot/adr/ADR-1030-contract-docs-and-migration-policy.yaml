@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1030"
+number: 1030
+slug: "contract-docs-and-migration-policy"
+title: "document the contract-native migration and compatibility policy"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall document the contract-native migration and compatibility policy as a governed product boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1030 - Contract docs and migration policy
+
+  Decision: Tigrcorn shall document the contract-native migration and compatibility policy as a governed product boundary.
+
+  Documentation must explain native contract apps, ASGI3 compatibility, adapter activation, extension keys, unsupported mappings, and migration guidance for existing ASGI3 users.
+
+  Consequences:
+
+  - Public docs must align with `.ssot/registry.json`.
+  - Migration guidance must not imply that ASGI3 support is being removed.
+  - Compatibility caveats must be concrete and test-backed.

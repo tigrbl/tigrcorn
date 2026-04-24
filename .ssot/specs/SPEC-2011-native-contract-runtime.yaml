@@ -1,0 +1,34 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2011"
+number: 2011
+slug: "native-contract-runtime"
+title: "Native tigr-asgi-contract runtime"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall use tigr-asgi-contract as the native runtime contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1012"
+body: |-
+  # Native tigr-asgi-contract runtime
+
+  Tigrcorn shall use `tigr-asgi-contract` as the native application runtime contract.
+
+  Requirements:
+
+  - Native applications receive contract scopes and contract events.
+  - Native dispatch does not require ASGI/3 translation.
+  - Scope, event, binding, family, exchange, metadata, and completion validation follows `tigr-asgi-contract`.
+  - ASGI/3 remains a compatibility layer, not the native contract.
+
+  Exclusions:
+
+  - ASGI2 is not a supported product interface.
+  - WSGI is not a supported product interface.
+  - RSGI is not a supported product interface.
+spec_kind: "local-policy"

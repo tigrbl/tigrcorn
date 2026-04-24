@@ -1,0 +1,29 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2013"
+number: 2013
+slug: "native-dispatch-selection"
+title: "Native and ASGI/3 dispatch selection"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall select native contract dispatch or ASGI/3 compatibility dispatch before traffic enters the app hot path."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1014"
+  - "ADR-1027"
+body: |-
+  # Native and ASGI/3 dispatch selection
+
+  Tigrcorn shall select native contract dispatch or ASGI/3 compatibility dispatch before traffic enters the app hot path.
+
+  Requirements:
+
+  - Native contract applications use the contract dispatcher.
+  - ASGI/3 applications use the ASGI/3 compatibility dispatcher.
+  - Ambiguous applications fail closed unless an operator explicitly selects ASGI/3 compatibility.
+  - Dispatch mode is observable in logs and conformance evidence.
+spec_kind: "local-policy"

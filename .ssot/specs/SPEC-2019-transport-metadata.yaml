@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2019"
+number: 2019
+slug: "transport-metadata"
+title: "Transport metadata"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose transport metadata through the contract metadata model and ASGI/3 extensions."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1020"
+body: |-
+  # Transport metadata
+
+  Tigrcorn shall expose transport metadata through the contract metadata model and ASGI/3 extensions.
+
+  Requirements:
+
+  - Native scopes include available protocol, peer, local address, ALPN, and transport state metadata.
+  - Missing metadata is represented explicitly.
+  - ASGI/3 compatibility exposes non-standard metadata through extension keys.
+  - Metadata claims are backed by tests for each supported carrier.
+spec_kind: "local-policy"

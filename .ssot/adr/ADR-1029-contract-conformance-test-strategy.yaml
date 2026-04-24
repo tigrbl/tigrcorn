@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1029"
+number: 1029
+slug: "contract-conformance-test-strategy"
+title: "test contract conformance across native and compatibility paths"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall prove contract conformance with native-path, compatibility-path, negative, and evidence-linked tests."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1029 - Contract conformance test strategy
+
+  Decision: Tigrcorn shall prove contract conformance with native-path, compatibility-path, negative, and evidence-linked tests.
+
+  Every supported contract scope, event family, binding classification, completion level, metadata surface, and compatibility mapping needs a targeted verification unit.
+
+  Consequences:
+
+  - Feature rows must link to tests and evidence before support is promoted.
+  - Negative tests are required for illegal mappings and unsupported capabilities.
+  - Registry sync and validation are part of the proof path.

@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2014"
+number: 2014
+slug: "asgi-extension-bridge"
+title: "ASGI/3 extension bridge"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose contract-native metadata and capabilities to ASGI/3 apps through documented extensions."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1015"
+body: |-
+  # ASGI/3 extension bridge
+
+  Tigrcorn shall expose contract-native metadata and capabilities to ASGI/3 apps through documented extensions.
+
+  Requirements:
+
+  - Extensions are namespaced under Tigrcorn-owned keys.
+  - Extensions do not change standard ASGI/3 behavior for applications that ignore them.
+  - Every native feature exposed to ASGI/3 has a documented extension or an explicit not-mappable decision.
+  - Extension payloads preserve contract validation semantics where possible.
+spec_kind: "local-policy"

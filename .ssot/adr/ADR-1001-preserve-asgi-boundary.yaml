@@ -4,13 +4,14 @@ id: "adr:1001"
 number: 1001
 slug: "preserve-asgi-boundary"
 title: "preserve the ASGI boundary"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Decision: TigrCorn remains an ASGI server at its public boundary."
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "adr:1012"
 status_notes: []
 references: []
 body: |-

@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1013"
+number: 1013
+slug: "asgi3-compatibility-layer"
+title: "preserve ASGI3 as a first-class compatibility layer"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall keep ASGI3 support first class through an explicit compatibility layer."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1013 - ASGI3 compatibility layer
+
+  Decision: Tigrcorn shall keep ASGI3 support first class through an explicit compatibility layer.
+
+  Starlette, FastAPI, Tigrbl, and other ASGI3 apps must continue to run with Tigrcorn features available through the adapter and extension bridge.
+
+  Consequences:
+
+  - ASGI3 compatibility remains an in-bounds product surface.
+  - The compatibility layer must preserve app behavior expected by standard ASGI3 frameworks.
+  - Native contract behavior remains authoritative when ASGI and contract semantics diverge.

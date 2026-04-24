@@ -1,0 +1,28 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2018"
+number: 2018
+slug: "unit-identity"
+title: "Contract unit identity"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall propagate contract unit identifiers through native and ASGI/3 compatibility paths."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1019"
+body: |-
+  # Contract unit identity
+
+  Tigrcorn shall propagate contract unit identifiers through native and ASGI/3 compatibility paths.
+
+  Requirements:
+
+  - Request, session, message, stream, and datagram units receive stable identifiers.
+  - Identifiers are preserved across event emission, logging, metrics, and evidence.
+  - ASGI/3 compatibility exposes identifiers through extension metadata.
+  - Adapter-created identifiers are stable for the lifetime of the associated runtime unit.
+spec_kind: "local-policy"

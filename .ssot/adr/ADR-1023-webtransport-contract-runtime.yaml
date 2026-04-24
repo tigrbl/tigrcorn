@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1023"
+number: 1023
+slug: "webtransport-contract-runtime"
+title: "implement WebTransport as a contract-native runtime surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: WebTransport shall be implemented as a contract-native Tigrcorn runtime surface."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1023 - WebTransport contract runtime
+
+  Decision: WebTransport shall be implemented as a contract-native Tigrcorn runtime surface.
+
+  WebTransport belongs in the native contract path because it depends on HTTP/3, QUIC streams, datagrams, session semantics, and transport metadata that ASGI3 does not standardize.
+
+  Consequences:
+
+  - WebTransport is not modeled as ordinary ASGI HTTP.
+  - ASGI3 exposure, if present, must be extension-based and capability-gated.
+  - WebTransport tests must cover streams, datagrams, session lifecycle, and metadata.

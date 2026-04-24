@@ -1,0 +1,29 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2015"
+number: 2015
+slug: "contract-scope-mapping"
+title: "Contract scope mapping"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define scope mapping between tigr-asgi-contract and ASGI/3 compatibility scopes."
+supersedes:
+  - "spc:2006"
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1016"
+body: |-
+  # Contract scope mapping
+
+  Tigrcorn shall define scope mapping between `tigr-asgi-contract` and ASGI/3 compatibility scopes.
+
+  Requirements:
+
+  - Contract `http`, `websocket`, and `lifespan` scopes map to standard ASGI/3 scope types.
+  - Contract `webtransport` maps to the native contract path and only to ASGI/3 through documented extensions.
+  - Contract metadata that has no ASGI/3 field maps through the extension bridge or fails closed.
+  - Custom ad hoc scope types are not the compatibility mechanism.
+spec_kind: "local-policy"
