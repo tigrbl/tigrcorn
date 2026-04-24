@@ -2958,7 +2958,8 @@
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules",
         "tst:pytest-case-tests-test-ssot-registry-py-test-committed-ssot-registry-validates-with-ssot-registry",
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
-        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces"
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces",
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-links-concrete-contract-app-interface-tests-to-features"
       ],
       "requires": [],
       "spec_ids": []
@@ -9036,6 +9037,22 @@
       ]
     },
     {
+      "id": "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-links-concrete-contract-app-interface-tests-to-features",
+      "title": "Pytest case inventory tests/test_ssot_registry.py::test_ssot_links_concrete_contract_app_interface_tests_to_features",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_ssot_registry.py",
+      "feature_ids": [
+        "feat:ssot-authoritative-product-boundary"
+      ],
+      "claim_ids": [
+        "clm:ssot-authoritative-product-boundary"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-ssot-registry-py"
+      ]
+    },
+    {
       "id": "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-imports-all-claim-rows-and-freezes-active-boundary",
       "title": "Pytest case inventory tests/test_ssot_registry.py::test_ssot_registry_imports_all_claim_rows_and_freezes_active_boundary",
       "status": "passing",
@@ -13325,7 +13342,8 @@
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules",
         "tst:pytest-case-tests-test-ssot-registry-py-test-committed-ssot-registry-validates-with-ssot-registry",
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
-        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces"
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces",
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-links-concrete-contract-app-interface-tests-to-features"
       ],
       "evidence_ids": [
         "evd:pytest-tests-test-ssot-registry-py"
@@ -21614,7 +21632,8 @@
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules",
         "tst:pytest-case-tests-test-ssot-registry-py-test-committed-ssot-registry-validates-with-ssot-registry",
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
-        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces"
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces",
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-links-concrete-contract-app-interface-tests-to-features"
       ]
     },
     {
