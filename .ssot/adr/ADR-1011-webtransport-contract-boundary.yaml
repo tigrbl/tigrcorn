@@ -1,0 +1,25 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1011"
+number: 1011
+slug: "webtransport-contract-boundary"
+title: "adopt WebTransport over HTTP/3 and QUIC as an in-bound contract target"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 and QUIC as an in-bound product target."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1011 - WebTransport contract boundary
+  
+  Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 and QUIC as an in-bound product target.
+  
+  The authoritative product boundary is the `.ssot` registry. Human-readable docs are projections and do not win conflicts with `.ssot/registry.json`.
+  
+  WebTransport is in bounds because it is a transport/protocol/application-hosting target that sits directly on the package-owned QUIC and HTTP/3 stack.
+  
+  REST and JSON-RPC are out of bounds for Tigrcorn's runtime. They are application or framework bindings above ASGI HTTP. Tigrcorn may validate contract metadata that classifies HTTP traffic, but it shall not implement REST or JSON-RPC product runtimes.

@@ -1,0 +1,38 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2010"
+number: 2010
+slug: "webtransport-contract"
+title: "WebTransport contract target"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall implement first-class WebTransport support over the existing package-owned HTTP/3 and QUIC stack."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  # WebTransport contract target
+  
+  Tigrcorn shall implement first-class WebTransport support over the existing package-owned HTTP/3 and QUIC stack.
+  
+  ## Required target surface
+  
+  - ASGI3 `webtransport` scope construction.
+  - `webtransport.connect` and `webtransport.accept` session admission.
+  - `webtransport.disconnect` and `webtransport.close` session termination.
+  - `webtransport.stream.receive` and `webtransport.stream.send` stream events.
+  - `webtransport.datagram.receive` and `webtransport.datagram.send` datagram events when QUIC DATAGRAM support is enabled.
+  - `transport.emit.complete` completion signaling for session, stream, datagram, and message emission paths.
+  - Contract validation against `tigr-asgi-contract` version `0.3.2`.
+  
+  ## Boundary exclusions
+  
+  Tigrcorn shall not implement REST or JSON-RPC as product runtimes. Those bindings remain application/framework responsibilities above ASGI HTTP.
+  
+  Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
+spec_kind: "local-policy"

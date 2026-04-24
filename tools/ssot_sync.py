@@ -422,6 +422,7 @@ def build_registry() -> dict[str, Any]:
                 "claim_ids": [],
                 "test_ids": [],
                 "requires": [],
+                "spec_ids": [],
             },
         )
         row["description"] = description or row["description"]
@@ -432,6 +433,13 @@ def build_registry() -> dict[str, Any]:
             row["plan"]["horizon"] = horizon
         if slot and not row["plan"]["slot"]:
             row["plan"]["slot"] = slot
+
+    def link_feature_specs(feature_ids: list[str], spec_ids: list[str]) -> None:
+        for feature_id in feature_ids:
+            feature = features[feature_id]
+            for spec_id in spec_ids:
+                if spec_id not in feature["spec_ids"]:
+                    feature["spec_ids"].append(spec_id)
 
     def ensure_claim(
         *,
@@ -859,6 +867,129 @@ def build_registry() -> dict[str, Any]:
             if risk_id not in issues[issue_id]["risk_ids"]:
                 issues[issue_id]["risk_ids"].append(risk_id)
 
+    # SSOT authority and tigr-asgi-contract 0.3.2 scope decisions
+    ssot_authority_feature_id = _feature_id("ssot-authoritative-product-boundary")
+    ensure_feature(
+        feature_id=ssot_authority_feature_id,
+        title="SSOT authoritative product boundary",
+        description=(
+            ".ssot/registry.json is the authoritative product boundary; docs are projections "
+            "and do not win conflicts."
+        ),
+        tier="T2",
+        slot="product-boundary",
+        horizon="current",
+        implementation_status="implemented",
+    )
+    ssot_authority_claim_id = _claim_id("ssot-authoritative-product-boundary")
+    ssot_authority_test_id = _test_id("pytest", "tests/test_ssot_registry.py::test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out")
+    ssot_authority_evidence_id = _evidence_id("pytest", "tests/test_ssot_registry.py")
+    ensure_claim(
+        claim_id=ssot_authority_claim_id,
+        title="SSOT authoritative product boundary",
+        description=".ssot/registry.json is authoritative for product boundary decisions; docs are non-authoritative projections.",
+        tier="T2",
+        kind="product_boundary",
+        feature_ids=[ssot_authority_feature_id],
+    )
+    ensure_evidence(
+        evidence_id=ssot_authority_evidence_id,
+        title="SSOT registry product-boundary test evidence",
+        kind="pytest",
+        tier="T2",
+        path="tests/test_ssot_registry.py",
+        claim_ids=[ssot_authority_claim_id],
+        test_ids=[ssot_authority_test_id],
+    )
+    ensure_test(
+        test_id=ssot_authority_test_id,
+        title="SSOT WebTransport and exclusion boundary coverage",
+        status="passing",
+        kind="pytest",
+        path="tests/test_ssot_registry.py",
+        feature_ids=[ssot_authority_feature_id],
+        claim_ids=[ssot_authority_claim_id],
+        evidence_ids=[ssot_authority_evidence_id],
+    )
+    webtransport_feature_ids = [
+        _feature_id("webtransport-h3-quic-scope"),
+        _feature_id("webtransport-h3-quic-session-events"),
+        _feature_id("webtransport-h3-quic-stream-events"),
+        _feature_id("webtransport-h3-quic-datagram-events"),
+        _feature_id("webtransport-h3-quic-completion-events"),
+        _feature_id("tigr-asgi-contract-0-3-2-validation"),
+    ]
+    webtransport_specs = ["spc:2010", "spc:2003", "spc:2004"]
+    webtransport_rows = [
+        (
+            webtransport_feature_ids[0],
+            "WebTransport H3/QUIC scope",
+            "Implement first-class ASGI3 webtransport scope support over the package-owned HTTP/3 and QUIC stack.",
+        ),
+        (
+            webtransport_feature_ids[1],
+            "WebTransport session events",
+            "Implement webtransport.connect, webtransport.accept, webtransport.disconnect, and webtransport.close event handling.",
+        ),
+        (
+            webtransport_feature_ids[2],
+            "WebTransport stream events",
+            "Implement WebTransport stream receive/send handling on HTTP/3 request streams.",
+        ),
+        (
+            webtransport_feature_ids[3],
+            "WebTransport datagram events",
+            "Implement WebTransport datagram receive/send handling over QUIC DATAGRAM where enabled.",
+        ),
+        (
+            webtransport_feature_ids[4],
+            "WebTransport completion events",
+            "Emit and validate transport.emit.complete semantics for WebTransport stream, datagram, message, and session operations.",
+        ),
+        (
+            webtransport_feature_ids[5],
+            "tigr-asgi-contract 0.3.2 validation",
+            "Validate Tigrcorn's supported ASGI contract surface against tigr-asgi-contract 0.3.2 without adopting product-layer REST or JSON-RPC runtimes.",
+        ),
+    ]
+    for feature_id, title, description in webtransport_rows:
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T3",
+            slot="webtransport-contract",
+            horizon="next",
+            implementation_status="absent",
+        )
+    link_feature_specs(webtransport_feature_ids, webtransport_specs)
+    rest_jsonrpc_exclusion_ids = [
+        _feature_id("rest-runtime-exclusion"),
+        _feature_id("json-rpc-runtime-exclusion"),
+    ]
+    for feature_id, title, description in [
+        (
+            rest_jsonrpc_exclusion_ids[0],
+            "REST runtime exclusion",
+            "Tigrcorn does not implement a REST product runtime; REST remains an application/framework responsibility above ASGI HTTP.",
+        ),
+        (
+            rest_jsonrpc_exclusion_ids[1],
+            "JSON-RPC runtime exclusion",
+            "Tigrcorn does not implement a JSON-RPC product runtime; JSON-RPC remains an application/framework responsibility above ASGI HTTP.",
+        ),
+    ]:
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T0",
+            slot="product-boundary-exclusion",
+            horizon="out_of_bounds",
+            implementation_status="absent",
+        )
+    link_feature_specs(rest_jsonrpc_exclusion_ids, ["spc:2010"])
+
     # RFC features, claims, tests, and evidence
     artifact_bundles = boundary.get("artifact_bundles", {})
     for rfc_name in boundary.get("required_rfcs", []):
@@ -1090,11 +1221,12 @@ def build_registry() -> dict[str, Any]:
     )
 
     registry = {
-        "schema_version": 4,
+        "schema_version": "0.1.0",
         "repo": {
             "id": "repo:tigrcorn",
             "name": "tigrcorn",
             "version": version,
+            "kind": "repo-local",
         },
         "tooling": {
             "ssot_registry_version": package_meta["version"],
@@ -1126,6 +1258,7 @@ def build_registry() -> dict[str, Any]:
         },
         "document_id_reservations": package_meta["document_id_reservations"],
         "features": sorted(features.values(), key=lambda row: row["id"]),
+        "profiles": [],
         "tests": sorted(tests.values(), key=lambda row: row["id"]),
         "claims": sorted(claims.values(), key=lambda row: row["id"]),
         "evidence": sorted(evidence.values(), key=lambda row: row["id"]),
@@ -1140,6 +1273,7 @@ def build_registry() -> dict[str, Any]:
                 "feature_ids": boundary_feature_ids,
                 "canonical_doc": _relative(ROOT / "docs" / "review" / "conformance" / "CERTIFICATION_BOUNDARY.md"),
                 "canonical_registry_source": ".ssot/registry.json",
+                "profile_ids": [],
             }
         ],
         "releases": [

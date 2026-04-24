@@ -73,3 +73,27 @@ def test_committed_ssot_registry_validates_with_ssot_registry() -> None:
         repo_root=ROOT,
     )
     assert report["passed"], report["failures"]
+
+
+def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    features = {row["id"]: row for row in registry["features"]}
+
+    for feature_id in {
+        "feat:webtransport-h3-quic-scope",
+        "feat:webtransport-h3-quic-session-events",
+        "feat:webtransport-h3-quic-stream-events",
+        "feat:webtransport-h3-quic-datagram-events",
+        "feat:webtransport-h3-quic-completion-events",
+        "feat:tigr-asgi-contract-0-3-2-validation",
+    }:
+        feature = features[feature_id]
+        assert feature["implementation_status"] == "absent"
+        assert feature["plan"]["horizon"] == "next"
+        assert "spc:2010" in feature["spec_ids"]
+
+    for feature_id in {"feat:rest-runtime-exclusion", "feat:json-rpc-runtime-exclusion"}:
+        feature = features[feature_id]
+        assert feature["implementation_status"] == "absent"
+        assert feature["plan"]["horizon"] == "out_of_bounds"
+        assert "spc:2010" in feature["spec_ids"]
