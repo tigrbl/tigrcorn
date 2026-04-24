@@ -1,0 +1,53 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2035"
+number: 2035
+slug: "app-interface-selection"
+title: "Application interface selection"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall provide an explicit operator and programmatic selector for choosing the application interface before serving traffic."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1012"
+  - "ADR-1013"
+  - "ADR-1014"
+  - "ADR-1027"
+body: |-
+  ## Content
+  
+  Tigrcorn shall provide an explicit operator and programmatic selector for choosing the application interface before serving traffic.
+  
+  ## Purpose
+  
+  This specification defines how Tigrcorn selects between its native `tigr-asgi-contract` runtime path and its ASGI/3 compatibility path.
+  
+  ## Requirements
+  
+  1. Tigrcorn shall expose a global CLI flag named `--app-interface`.
+  2. The accepted values shall be `auto`, `tigr-asgi-contract`, and `asgi3`.
+  3. Tigrcorn shall expose a config-file key at `[app].interface` with the same accepted values.
+  4. Tigrcorn shall expose an environment variable named `TIGRCORN_APP_INTERFACE` through the configured environment prefix mechanism.
+  5. Public programmatic startup APIs shall accept an equivalent app-interface selector.
+  6. Config precedence shall remain `CLI > env > config file > defaults`.
+  7. Explicit operator or API selection shall take precedence over introspection.
+  8. `auto` shall select native contract dispatch only when the app is unambiguously marked or wrapped as a native contract app.
+  9. `auto` shall select ASGI/3 compatibility only when the app is unambiguously ASGI/3-compatible.
+  10. Ambiguous applications shall fail closed unless the operator explicitly selects `asgi3` or `tigr-asgi-contract`.
+  11. Unsupported interfaces, including ASGI2, WSGI, and RSGI, shall fail closed rather than being adapted implicitly.
+  12. The selected dispatch mode shall be observable in logs and conformance evidence.
+  
+  ## Non Goals
+  
+  - This specification does not make ASGI2, WSGI, RSGI, REST, or JSON-RPC product runtime interfaces.
+  - This specification does not change transport protocol selection such as `--protocol` or HTTP version selection such as `--http`.
+  - This specification does not redefine `--runtime`, which remains the event-loop or worker runtime selector.
+  
+  ## Relationships
+  
+  This specification refines ADR-1012, ADR-1013, ADR-1014, and ADR-1027 for operator-facing and programmatic configuration surfaces.
+spec_kind: "local-policy"

@@ -1202,6 +1202,48 @@ def build_registry() -> dict[str, Any]:
             "public-api",
         ),
         (
+            "app-interface-cli-flag",
+            "Application interface CLI flag",
+            "Expose --app-interface with auto, tigr-asgi-contract, and asgi3 values for global app interface selection.",
+            ["spc:2035", "spc:2008", "spc:2013"],
+            "app-interface-selection",
+        ),
+        (
+            "app-interface-config-toml",
+            "Application interface config TOML",
+            "Expose [app].interface in config files with auto, tigr-asgi-contract, and asgi3 values.",
+            ["spc:2035", "spc:2007", "spc:2013", "spc:2025"],
+            "app-interface-selection",
+        ),
+        (
+            "app-interface-env-var",
+            "Application interface environment variable",
+            "Expose TIGRCORN_APP_INTERFACE through the configured environment prefix mechanism.",
+            ["spc:2035", "spc:2008", "spc:2025"],
+            "app-interface-selection",
+        ),
+        (
+            "app-interface-public-api",
+            "Application interface public API",
+            "Expose app-interface selection through public programmatic startup and config construction APIs.",
+            ["spc:2035", "spc:2028"],
+            "app-interface-selection",
+        ),
+        (
+            "app-interface-detection-precedence",
+            "Application interface detection precedence",
+            "Apply CLI greater-than env greater-than config file greater-than defaults precedence and explicit selection before introspection.",
+            ["spc:2035", "spc:2013", "spc:2025"],
+            "app-interface-selection",
+        ),
+        (
+            "app-interface-fail-closed-ambiguity",
+            "Application interface fail-closed ambiguity",
+            "Fail closed for ambiguous or unsupported app interfaces unless an operator explicitly selects a supported app interface.",
+            ["spc:2035", "spc:2012", "spc:2013", "spc:2025"],
+            "app-interface-selection",
+        ),
+        (
             "static-delivery-contract-map",
             "Static delivery contract map",
             "Map static delivery and file-send behavior into contract metadata and ASGI/3 compatibility extensions.",
@@ -1300,9 +1342,23 @@ def build_registry() -> dict[str, Any]:
             "governance",
         ),
     ]
+    implemented_contract_app_interface_features = {
+        "contract-native-runtime",
+        "contract-app-dispatch",
+        "contract-native-public-api",
+        "compat-dispatch-selection",
+        "asgi3-hot-path-isolation",
+        "app-interface-cli-flag",
+        "app-interface-config-toml",
+        "app-interface-env-var",
+        "app-interface-public-api",
+        "app-interface-detection-precedence",
+        "app-interface-fail-closed-ambiguity",
+    }
     contract_feature_ids = []
     for raw_feature_id, title, description, spec_ids, slot in contract_feature_rows:
         feature_id = _feature_id(raw_feature_id)
+        implemented = raw_feature_id in implemented_contract_app_interface_features
         contract_feature_ids.append(feature_id)
         ensure_feature(
             feature_id=feature_id,
@@ -1310,8 +1366,8 @@ def build_registry() -> dict[str, Any]:
             description=description,
             tier="T3",
             slot=slot,
-            horizon="next",
-            implementation_status="absent",
+            horizon="current" if implemented else "next",
+            implementation_status="implemented" if implemented else "absent",
         )
         link_feature_specs([feature_id], spec_ids)
 
@@ -1404,6 +1460,126 @@ def build_registry() -> dict[str, Any]:
 
     for raw_feature_id, title, _description, _spec_ids, _slot in contract_feature_rows:
         ensure_planned_feature_test(raw_feature_id, title)
+
+    concrete_feature_tests = [
+        (
+            "contract-native-runtime",
+            "Contract-native runtime",
+            "tests/test_contract_native_runtime.py",
+            "tst:contract-native-runtime",
+            "clm:contract-native-runtime-implemented",
+            "evd:contract-native-runtime-pytest",
+        ),
+        (
+            "contract-app-dispatch",
+            "Contract app dispatch",
+            "tests/test_contract_app_dispatch.py",
+            "tst:contract-app-dispatch",
+            "clm:contract-app-dispatch-implemented",
+            "evd:contract-app-dispatch-pytest",
+        ),
+        (
+            "contract-native-public-api",
+            "Contract-native public API",
+            "tests/test_contract_native_public_api.py",
+            "tst:contract-native-public-api",
+            "clm:contract-native-public-api-implemented",
+            "evd:contract-native-public-api-pytest",
+        ),
+        (
+            "compat-dispatch-selection",
+            "Compatibility dispatch selection",
+            "tests/test_compat_dispatch_selection.py",
+            "tst:compat-dispatch-selection",
+            "clm:compat-dispatch-selection-implemented",
+            "evd:compat-dispatch-selection-pytest",
+        ),
+        (
+            "asgi3-hot-path-isolation",
+            "ASGI3 hot path isolation",
+            "tests/test_asgi3_hot_path_isolation.py",
+            "tst:asgi3-hot-path-isolation",
+            "clm:asgi3-hot-path-isolation-implemented",
+            "evd:asgi3-hot-path-isolation-pytest",
+        ),
+        (
+            "app-interface-cli-flag",
+            "Application interface CLI flag",
+            "tests/test_app_interface_cli_flag.py",
+            "tst:app-interface-cli-flag",
+            "clm:app-interface-cli-flag-implemented",
+            "evd:app-interface-cli-flag-pytest",
+        ),
+        (
+            "app-interface-config-toml",
+            "Application interface config TOML",
+            "tests/test_app_interface_config_toml.py",
+            "tst:app-interface-config-toml",
+            "clm:app-interface-config-toml-implemented",
+            "evd:app-interface-config-toml-pytest",
+        ),
+        (
+            "app-interface-env-var",
+            "Application interface environment variable",
+            "tests/test_app_interface_env_var.py",
+            "tst:app-interface-env-var",
+            "clm:app-interface-env-var-implemented",
+            "evd:app-interface-env-var-pytest",
+        ),
+        (
+            "app-interface-public-api",
+            "Application interface public API",
+            "tests/test_app_interface_public_api.py",
+            "tst:app-interface-public-api",
+            "clm:app-interface-public-api-implemented",
+            "evd:app-interface-public-api-pytest",
+        ),
+        (
+            "app-interface-detection-precedence",
+            "Application interface detection precedence",
+            "tests/test_app_interface_detection_precedence.py",
+            "tst:app-interface-detection-precedence",
+            "clm:app-interface-detection-precedence-implemented",
+            "evd:app-interface-detection-precedence-pytest",
+        ),
+        (
+            "app-interface-fail-closed-ambiguity",
+            "Application interface fail-closed ambiguity",
+            "tests/test_app_interface_fail_closed_ambiguity.py",
+            "tst:app-interface-fail-closed-ambiguity",
+            "clm:app-interface-fail-closed-ambiguity-implemented",
+            "evd:app-interface-fail-closed-ambiguity-pytest",
+        ),
+    ]
+    for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
+        feature_id = _feature_id(raw_feature_id)
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"{title} implemented",
+            description=f"Executable tests verify feature {feature_id}.",
+            tier="T3",
+            kind="implementation",
+            feature_ids=[feature_id],
+        )
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Pytest evidence for {title}",
+            kind="pytest",
+            tier="T3",
+            path=path,
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=title,
+            status="current",
+            kind="pytest",
+            path=path,
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
 
     # RFC features, claims, tests, and evidence
     artifact_bundles = boundary.get("artifact_bundles", {})

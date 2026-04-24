@@ -26,6 +26,8 @@ def validate_config(config: ServerConfig) -> None:
     normalize_config(config)
     if config.app.profile is not None and config.app.profile not in set(list_blessed_profiles()):
         raise ConfigError(f"unsupported app.profile: {config.app.profile!r}")
+    if config.app.interface not in {"auto", "tigr-asgi-contract", "asgi3"}:
+        raise ConfigError(f"unsupported app.interface: {config.app.interface!r}")
     if config.app.lifespan not in {"auto", "on", "off"}:
         raise ConfigError(f"invalid lifespan mode: {config.app.lifespan!r}")
     if config.process.workers <= 0:

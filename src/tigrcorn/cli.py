@@ -23,6 +23,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("app", nargs="?", help="Application import string in module:attr form")
 
     app_group = parser.add_argument_group("App / process / development")
+    app_group.add_argument("--app-interface", choices=["auto", "tigr-asgi-contract", "asgi3"], default=None, help="Application interface dispatch mode")
     app_group.add_argument("--factory", action="store_true", default=None, help="Treat APP as an application factory")
     app_group.add_argument("--app-dir", dest="app_dir", default=None, help="Add a directory to sys.path before loading the app")
     app_group.add_argument("--reload", action="store_true", default=None, help="Enable development autoreload")

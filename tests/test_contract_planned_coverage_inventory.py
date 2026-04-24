@@ -13,6 +13,7 @@ def test_contract_and_asgi3_features_have_planned_test_links() -> None:
         if row["plan"]["slot"]
         in {
             "asgi3-compatibility",
+            "app-interface-selection",
             "binding-classification",
             "capabilities",
             "compatibility-exclusion",

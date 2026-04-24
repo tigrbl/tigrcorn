@@ -43,6 +43,7 @@ def _ensure_list(value: list[str] | tuple[str, ...] | str | None) -> list[str]:
 
 def normalize_config(config: ServerConfig) -> None:
     config.logging.level = config.logging.level.lower()
+    config.app.interface = str(config.app.interface or 'auto').lower().replace('_', '-')  # type: ignore[assignment]
     config.app.env_prefix = config.app.env_prefix.upper().replace('-', '_')
     config.process.runtime = str(config.process.runtime or 'auto').lower()
     config.http.http_versions = [str(v).replace('http/', '') for v in _ensure_list(config.http.http_versions)] or ["1.1", "2"]

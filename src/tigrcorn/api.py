@@ -16,6 +16,7 @@ async def serve(
     app: ASGIApp,
     *,
     profile: str | None = None,
+    app_interface: str = "auto",
     host: str = "127.0.0.1",
     port: int = 8000,
     uds: str | None = None,
@@ -43,6 +44,7 @@ async def serve(
     if config is None:
         config = build_config(
             profile=profile,
+            app_interface=app_interface,
             host=host,
             port=port,
             uds=uds,
@@ -75,6 +77,7 @@ async def serve_import_string(
     app_target: str | None = None,
     *,
     profile: str | None = None,
+    app_interface: str = "auto",
     host: str = "127.0.0.1",
     port: int = 8000,
     uds: str | None = None,
@@ -113,6 +116,7 @@ async def serve_import_string(
     await serve(
         cast(ASGIApp, app),
         profile=profile,
+        app_interface=app_interface,
         host=host,
         port=port,
         uds=uds,
@@ -143,6 +147,7 @@ def run(
     app: ASGIApp | str,
     *,
     profile: str | None = None,
+    app_interface: str = "auto",
     host: str = "127.0.0.1",
     port: int = 8000,
     uds: str | None = None,
@@ -174,6 +179,7 @@ def run(
             lambda: serve_import_string(
                 app,
                 profile=profile,
+                app_interface=app_interface,
                 host=host,
                 port=port,
                 uds=uds,
@@ -206,6 +212,7 @@ def run(
             lambda: serve(
                 app,
                 profile=profile,
+                app_interface=app_interface,
                 host=host,
                 port=port,
                 uds=uds,

@@ -36,11 +36,13 @@ from tigrcorn.constants import (
 ListenerKind = Literal["tcp", "udp", "unix", "pipe", "inproc"]
 ProtocolName = Literal["http1", "http2", "http3", "quic", "websocket", "rawframed", "custom"]
 ClaimClass = Literal["rfc_scoped", "hybrid", "pure_operator", "non_rfc_custom"]
+AppInterface = Literal["auto", "tigr-asgi-contract", "asgi3"]
 
 
 @dataclass(slots=True)
 class AppConfig:
     target: str | None = None
+    interface: AppInterface = "auto"
     factory: bool = False
     profile: str | None = None
     app_dir: str | None = None

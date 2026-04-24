@@ -208,6 +208,7 @@ def namespace_to_overrides(ns: Namespace) -> dict[str, Any]:
         app_block['target'] = ns.app
     for key, dest in (
         ('factory', 'factory'),
+        ('app_interface', 'interface'),
         ('app_dir', 'app_dir'),
         ('lifespan', 'lifespan'),
         ('reload', 'reload'),
@@ -415,6 +416,7 @@ def build_config(
     *,
     profile: str | None = None,
     app: str | None = None,
+    app_interface: str = 'auto',
     host: str = DEFAULT_HOST,
     port: int = DEFAULT_PORT,
     uds: str | None = None,
@@ -473,7 +475,7 @@ def build_config(
 ) -> ServerConfig:
     profile_selected = profile is not None
     overrides: dict[str, Any] = {
-        'app': {'target': app, 'lifespan': lifespan, 'env_file': env_file, 'profile': profile},
+        'app': {'target': app, 'interface': app_interface, 'lifespan': lifespan, 'env_file': env_file, 'profile': profile},
         'logging': {'level': log_level, 'access_log': access_log, 'use_colors': use_colors},
         'http': {
             'enable_h2c': enable_h2c,

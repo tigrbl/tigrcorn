@@ -7,9 +7,9 @@
     "kind": "repo-local"
   },
   "tooling": {
-    "ssot_registry_version": "0.2.8",
-    "initialized_with_version": "0.2.8",
-    "last_upgraded_from_version": "0.2.8"
+    "ssot_registry_version": "0.2.2",
+    "initialized_with_version": "0.2.2",
+    "last_upgraded_from_version": "0.2.2"
   },
   "paths": {
     "ssot_root": ".ssot",
@@ -93,21 +93,13 @@
       {
         "owner": "ssot-core",
         "start": 1,
-        "end": 599,
-        "immutable": true,
-        "deletable": false,
-        "assignable_by_repo": false
-      },
-      {
-        "owner": "ssot-origin",
-        "start": 600,
         "end": 999,
         "immutable": true,
         "deletable": false,
         "assignable_by_repo": false
       },
       {
-        "owner": "repo-local",
+        "owner": "repo-local-default",
         "start": 1000,
         "end": 4999,
         "immutable": false,
@@ -119,21 +111,13 @@
       {
         "owner": "ssot-core",
         "start": 1,
-        "end": 599,
-        "immutable": true,
-        "deletable": false,
-        "assignable_by_repo": false
-      },
-      {
-        "owner": "ssot-origin",
-        "start": 600,
         "end": 999,
         "immutable": true,
         "deletable": false,
         "assignable_by_repo": false
       },
       {
-        "owner": "repo-local",
+        "owner": "repo-local-default",
         "start": 1000,
         "end": 4999,
         "immutable": false,
@@ -171,6 +155,193 @@
         "spc:2001",
         "spc:2002",
         "spc:2003"
+      ]
+    },
+    {
+      "id": "feat:app-interface-cli-flag",
+      "title": "Application interface CLI flag",
+      "description": "Expose --app-interface with auto, tigr-asgi-contract, and asgi3 values for global app interface selection.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "app-interface-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-cli-flag",
+        "clm:app-interface-cli-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-cli-flag",
+        "tst:app-interface-cli-flag"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2008",
+        "spc:2013"
+      ]
+    },
+    {
+      "id": "feat:app-interface-config-toml",
+      "title": "Application interface config TOML",
+      "description": "Expose [app].interface in config files with auto, tigr-asgi-contract, and asgi3 values.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "app-interface-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-config-toml",
+        "clm:app-interface-config-toml-implemented"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-config-toml",
+        "tst:app-interface-config-toml"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2007",
+        "spc:2013",
+        "spc:2025"
+      ]
+    },
+    {
+      "id": "feat:app-interface-detection-precedence",
+      "title": "Application interface detection precedence",
+      "description": "Apply CLI greater-than env greater-than config file greater-than defaults precedence and explicit selection before introspection.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "app-interface-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-detection-precedence",
+        "clm:app-interface-detection-precedence-implemented"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-detection-precedence",
+        "tst:app-interface-detection-precedence"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2013",
+        "spc:2025"
+      ]
+    },
+    {
+      "id": "feat:app-interface-env-var",
+      "title": "Application interface environment variable",
+      "description": "Expose TIGRCORN_APP_INTERFACE through the configured environment prefix mechanism.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "app-interface-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-env-var",
+        "clm:app-interface-env-var-implemented"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-env-var",
+        "tst:app-interface-env-var"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2008",
+        "spc:2025"
+      ]
+    },
+    {
+      "id": "feat:app-interface-fail-closed-ambiguity",
+      "title": "Application interface fail-closed ambiguity",
+      "description": "Fail closed for ambiguous or unsupported app interfaces unless an operator explicitly selects a supported app interface.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "app-interface-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-fail-closed-ambiguity",
+        "clm:app-interface-fail-closed-ambiguity-implemented"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-fail-closed-ambiguity",
+        "tst:app-interface-fail-closed-ambiguity"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2012",
+        "spc:2013",
+        "spc:2025"
+      ]
+    },
+    {
+      "id": "feat:app-interface-public-api",
+      "title": "Application interface public API",
+      "description": "Expose app-interface selection through public programmatic startup and config construction APIs.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "app-interface-selection",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-public-api",
+        "clm:app-interface-public-api-implemented"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-public-api",
+        "tst:app-interface-public-api"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2028"
       ]
     },
     {
@@ -318,23 +489,25 @@
       "id": "feat:asgi3-hot-path-isolation",
       "title": "ASGI/3 hot-path isolation",
       "description": "Keep ASGI/3 adapter code out of the native contract hot path unless ASGI/3 compatibility is selected.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "current",
         "slot": "dispatch-selection",
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:planned-test-coverage-asgi3-hot-path-isolation"
+        "clm:planned-test-coverage-asgi3-hot-path-isolation",
+        "clm:asgi3-hot-path-isolation-implemented"
       ],
       "test_ids": [
-        "tst:planned-asgi3-hot-path-isolation"
+        "tst:planned-asgi3-hot-path-isolation",
+        "tst:asgi3-hot-path-isolation"
       ],
       "requires": [],
       "spec_ids": [
@@ -398,23 +571,25 @@
       "id": "feat:compat-dispatch-selection",
       "title": "Compatibility dispatch selection",
       "description": "Select native contract or ASGI/3 compatibility dispatch before application traffic enters the hot path.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "current",
         "slot": "dispatch-selection",
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:planned-test-coverage-compat-dispatch-selection"
+        "clm:planned-test-coverage-compat-dispatch-selection",
+        "clm:compat-dispatch-selection-implemented"
       ],
       "test_ids": [
-        "tst:planned-compat-dispatch-selection"
+        "tst:planned-compat-dispatch-selection",
+        "tst:compat-dispatch-selection"
       ],
       "requires": [],
       "spec_ids": [
@@ -533,23 +708,25 @@
       "id": "feat:contract-app-dispatch",
       "title": "Contract app dispatch",
       "description": "Dispatch contract-native applications through the native contract dispatcher.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "current",
         "slot": "contract-runtime",
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:planned-test-coverage-contract-app-dispatch"
+        "clm:planned-test-coverage-contract-app-dispatch",
+        "clm:contract-app-dispatch-implemented"
       ],
       "test_ids": [
-        "tst:planned-contract-app-dispatch"
+        "tst:planned-contract-app-dispatch",
+        "tst:contract-app-dispatch"
       ],
       "requires": [],
       "spec_ids": [
@@ -788,23 +965,25 @@
       "id": "feat:contract-native-public-api",
       "title": "Contract-native public API",
       "description": "Provide a public API for registering and serving contract-native applications.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "current",
         "slot": "public-api",
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:planned-test-coverage-contract-native-public-api"
+        "clm:planned-test-coverage-contract-native-public-api",
+        "clm:contract-native-public-api-implemented"
       ],
       "test_ids": [
-        "tst:planned-contract-native-public-api"
+        "tst:planned-contract-native-public-api",
+        "tst:contract-native-public-api"
       ],
       "requires": [],
       "spec_ids": [
@@ -815,23 +994,25 @@
       "id": "feat:contract-native-runtime",
       "title": "Contract-native runtime",
       "description": "Serve native tigr-asgi-contract applications without ASGI/3 translation in the application hot path.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "current",
         "slot": "contract-runtime",
         "target_claim_tier": "T3",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:planned-test-coverage-contract-native-runtime"
+        "clm:planned-test-coverage-contract-native-runtime",
+        "clm:contract-native-runtime-implemented"
       ],
       "test_ids": [
-        "tst:planned-contract-native-runtime"
+        "tst:planned-contract-native-runtime",
+        "tst:contract-native-runtime"
       ],
       "requires": [],
       "spec_ids": [
@@ -2776,7 +2957,8 @@
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-imports-all-claim-rows-and-freezes-active-boundary",
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules",
         "tst:pytest-case-tests-test-ssot-registry-py-test-committed-ssot-registry-validates-with-ssot-registry",
-        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out"
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces"
       ],
       "requires": [],
       "spec_ids": []
@@ -4398,6 +4580,118 @@
   "profiles": [],
   "tests": [
     {
+      "id": "tst:app-interface-cli-flag",
+      "title": "Application interface CLI flag",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_app_interface_cli_flag.py",
+      "feature_ids": [
+        "feat:app-interface-cli-flag"
+      ],
+      "claim_ids": [
+        "clm:app-interface-cli-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-cli-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:app-interface-config-toml",
+      "title": "Application interface config TOML",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_app_interface_config_toml.py",
+      "feature_ids": [
+        "feat:app-interface-config-toml"
+      ],
+      "claim_ids": [
+        "clm:app-interface-config-toml-implemented"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-config-toml-pytest"
+      ]
+    },
+    {
+      "id": "tst:app-interface-detection-precedence",
+      "title": "Application interface detection precedence",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_app_interface_detection_precedence.py",
+      "feature_ids": [
+        "feat:app-interface-detection-precedence"
+      ],
+      "claim_ids": [
+        "clm:app-interface-detection-precedence-implemented"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-detection-precedence-pytest"
+      ]
+    },
+    {
+      "id": "tst:app-interface-env-var",
+      "title": "Application interface environment variable",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_app_interface_env_var.py",
+      "feature_ids": [
+        "feat:app-interface-env-var"
+      ],
+      "claim_ids": [
+        "clm:app-interface-env-var-implemented"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-env-var-pytest"
+      ]
+    },
+    {
+      "id": "tst:app-interface-fail-closed-ambiguity",
+      "title": "Application interface fail-closed ambiguity",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_app_interface_fail_closed_ambiguity.py",
+      "feature_ids": [
+        "feat:app-interface-fail-closed-ambiguity"
+      ],
+      "claim_ids": [
+        "clm:app-interface-fail-closed-ambiguity-implemented"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-fail-closed-ambiguity-pytest"
+      ]
+    },
+    {
+      "id": "tst:app-interface-public-api",
+      "title": "Application interface public API",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_app_interface_public_api.py",
+      "feature_ids": [
+        "feat:app-interface-public-api"
+      ],
+      "claim_ids": [
+        "clm:app-interface-public-api-implemented"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-public-api-pytest"
+      ]
+    },
+    {
+      "id": "tst:asgi3-hot-path-isolation",
+      "title": "ASGI3 hot path isolation",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_asgi3_hot_path_isolation.py",
+      "feature_ids": [
+        "feat:asgi3-hot-path-isolation"
+      ],
+      "claim_ids": [
+        "clm:asgi3-hot-path-isolation-implemented"
+      ],
+      "evidence_ids": [
+        "evd:asgi3-hot-path-isolation-pytest"
+      ]
+    },
+    {
       "id": "tst:claim-claim-cwd-factory-import",
       "title": "Claim linkage claim-cwd-factory-import",
       "status": "passing",
@@ -4975,6 +5269,70 @@
       ],
       "evidence_ids": [
         "evd:claim-tc-rfc9525-service-identity-hostname-compatibility"
+      ]
+    },
+    {
+      "id": "tst:compat-dispatch-selection",
+      "title": "Compatibility dispatch selection",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_compat_dispatch_selection.py",
+      "feature_ids": [
+        "feat:compat-dispatch-selection"
+      ],
+      "claim_ids": [
+        "clm:compat-dispatch-selection-implemented"
+      ],
+      "evidence_ids": [
+        "evd:compat-dispatch-selection-pytest"
+      ]
+    },
+    {
+      "id": "tst:contract-app-dispatch",
+      "title": "Contract app dispatch",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_contract_app_dispatch.py",
+      "feature_ids": [
+        "feat:contract-app-dispatch"
+      ],
+      "claim_ids": [
+        "clm:contract-app-dispatch-implemented"
+      ],
+      "evidence_ids": [
+        "evd:contract-app-dispatch-pytest"
+      ]
+    },
+    {
+      "id": "tst:contract-native-public-api",
+      "title": "Contract-native public API",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_contract_native_public_api.py",
+      "feature_ids": [
+        "feat:contract-native-public-api"
+      ],
+      "claim_ids": [
+        "clm:contract-native-public-api-implemented"
+      ],
+      "evidence_ids": [
+        "evd:contract-native-public-api-pytest"
+      ]
+    },
+    {
+      "id": "tst:contract-native-runtime",
+      "title": "Contract-native runtime",
+      "status": "current",
+      "kind": "pytest",
+      "path": "tests/test_contract_native_runtime.py",
+      "feature_ids": [
+        "feat:contract-native-runtime"
+      ],
+      "claim_ids": [
+        "clm:contract-native-runtime-implemented"
+      ],
+      "evidence_ids": [
+        "evd:contract-native-runtime-pytest"
       ]
     },
     {
@@ -5905,6 +6263,102 @@
       ],
       "evidence_ids": [
         "evd:planned-alt-svc-contract-map"
+      ]
+    },
+    {
+      "id": "tst:planned-app-interface-cli-flag",
+      "title": "Planned coverage: Application interface CLI flag",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:app-interface-cli-flag"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-cli-flag"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-cli-flag"
+      ]
+    },
+    {
+      "id": "tst:planned-app-interface-config-toml",
+      "title": "Planned coverage: Application interface config TOML",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:app-interface-config-toml"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-config-toml"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-config-toml"
+      ]
+    },
+    {
+      "id": "tst:planned-app-interface-detection-precedence",
+      "title": "Planned coverage: Application interface detection precedence",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:app-interface-detection-precedence"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-detection-precedence"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-detection-precedence"
+      ]
+    },
+    {
+      "id": "tst:planned-app-interface-env-var",
+      "title": "Planned coverage: Application interface environment variable",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:app-interface-env-var"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-env-var"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-env-var"
+      ]
+    },
+    {
+      "id": "tst:planned-app-interface-fail-closed-ambiguity",
+      "title": "Planned coverage: Application interface fail-closed ambiguity",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:app-interface-fail-closed-ambiguity"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-fail-closed-ambiguity"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-fail-closed-ambiguity"
+      ]
+    },
+    {
+      "id": "tst:planned-app-interface-public-api",
+      "title": "Planned coverage: Application interface public API",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "feature_ids": [
+        "feat:app-interface-public-api"
+      ],
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-public-api"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-public-api"
       ]
     },
     {
@@ -8550,6 +9004,22 @@
       ]
     },
     {
+      "id": "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces",
+      "title": "Pytest case inventory tests/test_ssot_registry.py::test_ssot_declares_app_interface_selection_surfaces",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_ssot_registry.py",
+      "feature_ids": [
+        "feat:ssot-authoritative-product-boundary"
+      ],
+      "claim_ids": [
+        "clm:ssot-authoritative-product-boundary"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-ssot-registry-py"
+      ]
+    },
+    {
       "id": "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
       "title": "Pytest case inventory tests/test_ssot_registry.py::test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out",
       "status": "passing",
@@ -10976,6 +11446,125 @@
   ],
   "claims": [
     {
+      "id": "clm:app-interface-cli-flag-implemented",
+      "title": "Application interface CLI flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:app-interface-cli-flag.",
+      "feature_ids": [
+        "feat:app-interface-cli-flag"
+      ],
+      "test_ids": [
+        "tst:app-interface-cli-flag"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-cli-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:app-interface-config-toml-implemented",
+      "title": "Application interface config TOML implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:app-interface-config-toml.",
+      "feature_ids": [
+        "feat:app-interface-config-toml"
+      ],
+      "test_ids": [
+        "tst:app-interface-config-toml"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-config-toml-pytest"
+      ]
+    },
+    {
+      "id": "clm:app-interface-detection-precedence-implemented",
+      "title": "Application interface detection precedence implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:app-interface-detection-precedence.",
+      "feature_ids": [
+        "feat:app-interface-detection-precedence"
+      ],
+      "test_ids": [
+        "tst:app-interface-detection-precedence"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-detection-precedence-pytest"
+      ]
+    },
+    {
+      "id": "clm:app-interface-env-var-implemented",
+      "title": "Application interface environment variable implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:app-interface-env-var.",
+      "feature_ids": [
+        "feat:app-interface-env-var"
+      ],
+      "test_ids": [
+        "tst:app-interface-env-var"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-env-var-pytest"
+      ]
+    },
+    {
+      "id": "clm:app-interface-fail-closed-ambiguity-implemented",
+      "title": "Application interface fail-closed ambiguity implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:app-interface-fail-closed-ambiguity.",
+      "feature_ids": [
+        "feat:app-interface-fail-closed-ambiguity"
+      ],
+      "test_ids": [
+        "tst:app-interface-fail-closed-ambiguity"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-fail-closed-ambiguity-pytest"
+      ]
+    },
+    {
+      "id": "clm:app-interface-public-api-implemented",
+      "title": "Application interface public API implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:app-interface-public-api.",
+      "feature_ids": [
+        "feat:app-interface-public-api"
+      ],
+      "test_ids": [
+        "tst:app-interface-public-api"
+      ],
+      "evidence_ids": [
+        "evd:app-interface-public-api-pytest"
+      ]
+    },
+    {
+      "id": "clm:asgi3-hot-path-isolation-implemented",
+      "title": "ASGI3 hot path isolation implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:asgi3-hot-path-isolation.",
+      "feature_ids": [
+        "feat:asgi3-hot-path-isolation"
+      ],
+      "test_ids": [
+        "tst:asgi3-hot-path-isolation"
+      ],
+      "evidence_ids": [
+        "evd:asgi3-hot-path-isolation-pytest"
+      ]
+    },
+    {
       "id": "clm:claim-cwd-factory-import",
       "title": "claim-cwd-factory-import",
       "status": "implemented",
@@ -11040,6 +11629,74 @@
       "issue_ids": []
     },
     {
+      "id": "clm:compat-dispatch-selection-implemented",
+      "title": "Compatibility dispatch selection implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:compat-dispatch-selection.",
+      "feature_ids": [
+        "feat:compat-dispatch-selection"
+      ],
+      "test_ids": [
+        "tst:compat-dispatch-selection"
+      ],
+      "evidence_ids": [
+        "evd:compat-dispatch-selection-pytest"
+      ]
+    },
+    {
+      "id": "clm:contract-app-dispatch-implemented",
+      "title": "Contract app dispatch implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:contract-app-dispatch.",
+      "feature_ids": [
+        "feat:contract-app-dispatch"
+      ],
+      "test_ids": [
+        "tst:contract-app-dispatch"
+      ],
+      "evidence_ids": [
+        "evd:contract-app-dispatch-pytest"
+      ]
+    },
+    {
+      "id": "clm:contract-native-public-api-implemented",
+      "title": "Contract-native public API implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:contract-native-public-api.",
+      "feature_ids": [
+        "feat:contract-native-public-api"
+      ],
+      "test_ids": [
+        "tst:contract-native-public-api"
+      ],
+      "evidence_ids": [
+        "evd:contract-native-public-api-pytest"
+      ]
+    },
+    {
+      "id": "clm:contract-native-runtime-implemented",
+      "title": "Contract-native runtime implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:contract-native-runtime.",
+      "feature_ids": [
+        "feat:contract-native-runtime"
+      ],
+      "test_ids": [
+        "tst:contract-native-runtime"
+      ],
+      "evidence_ids": [
+        "evd:contract-native-runtime-pytest"
+      ]
+    },
+    {
       "id": "clm:current-state-chain",
       "title": "Canonical current-state chain is explicit",
       "status": "promoted",
@@ -11099,6 +11756,108 @@
       ],
       "evidence_ids": [
         "evd:planned-alt-svc-contract-map"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-app-interface-cli-flag",
+      "title": "Planned test coverage for Application interface CLI flag",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:app-interface-cli-flag.",
+      "feature_ids": [
+        "feat:app-interface-cli-flag"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-cli-flag"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-cli-flag"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-app-interface-config-toml",
+      "title": "Planned test coverage for Application interface config TOML",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:app-interface-config-toml.",
+      "feature_ids": [
+        "feat:app-interface-config-toml"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-config-toml"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-config-toml"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-app-interface-detection-precedence",
+      "title": "Planned test coverage for Application interface detection precedence",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:app-interface-detection-precedence.",
+      "feature_ids": [
+        "feat:app-interface-detection-precedence"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-detection-precedence"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-detection-precedence"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-app-interface-env-var",
+      "title": "Planned test coverage for Application interface environment variable",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:app-interface-env-var.",
+      "feature_ids": [
+        "feat:app-interface-env-var"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-env-var"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-env-var"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-app-interface-fail-closed-ambiguity",
+      "title": "Planned test coverage for Application interface fail-closed ambiguity",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:app-interface-fail-closed-ambiguity.",
+      "feature_ids": [
+        "feat:app-interface-fail-closed-ambiguity"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-fail-closed-ambiguity"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-fail-closed-ambiguity"
+      ]
+    },
+    {
+      "id": "clm:planned-test-coverage-app-interface-public-api",
+      "title": "Planned test coverage for Application interface public API",
+      "status": "proposed",
+      "tier": "T3",
+      "kind": "planned_test_coverage",
+      "description": "Planned test coverage is recorded for feature feat:app-interface-public-api.",
+      "feature_ids": [
+        "feat:app-interface-public-api"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-public-api"
+      ],
+      "evidence_ids": [
+        "evd:planned-app-interface-public-api"
       ]
     },
     {
@@ -12565,7 +13324,8 @@
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-imports-all-claim-rows-and-freezes-active-boundary",
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules",
         "tst:pytest-case-tests-test-ssot-registry-py-test-committed-ssot-registry-validates-with-ssot-registry",
-        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out"
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces"
       ],
       "evidence_ids": [
         "evd:pytest-tests-test-ssot-registry-py"
@@ -16864,6 +17624,104 @@
   ],
   "evidence": [
     {
+      "id": "evd:app-interface-cli-flag-pytest",
+      "title": "Pytest evidence for Application interface CLI flag",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_app_interface_cli_flag.py",
+      "claim_ids": [
+        "clm:app-interface-cli-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:app-interface-cli-flag"
+      ]
+    },
+    {
+      "id": "evd:app-interface-config-toml-pytest",
+      "title": "Pytest evidence for Application interface config TOML",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_app_interface_config_toml.py",
+      "claim_ids": [
+        "clm:app-interface-config-toml-implemented"
+      ],
+      "test_ids": [
+        "tst:app-interface-config-toml"
+      ]
+    },
+    {
+      "id": "evd:app-interface-detection-precedence-pytest",
+      "title": "Pytest evidence for Application interface detection precedence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_app_interface_detection_precedence.py",
+      "claim_ids": [
+        "clm:app-interface-detection-precedence-implemented"
+      ],
+      "test_ids": [
+        "tst:app-interface-detection-precedence"
+      ]
+    },
+    {
+      "id": "evd:app-interface-env-var-pytest",
+      "title": "Pytest evidence for Application interface environment variable",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_app_interface_env_var.py",
+      "claim_ids": [
+        "clm:app-interface-env-var-implemented"
+      ],
+      "test_ids": [
+        "tst:app-interface-env-var"
+      ]
+    },
+    {
+      "id": "evd:app-interface-fail-closed-ambiguity-pytest",
+      "title": "Pytest evidence for Application interface fail-closed ambiguity",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_app_interface_fail_closed_ambiguity.py",
+      "claim_ids": [
+        "clm:app-interface-fail-closed-ambiguity-implemented"
+      ],
+      "test_ids": [
+        "tst:app-interface-fail-closed-ambiguity"
+      ]
+    },
+    {
+      "id": "evd:app-interface-public-api-pytest",
+      "title": "Pytest evidence for Application interface public API",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_app_interface_public_api.py",
+      "claim_ids": [
+        "clm:app-interface-public-api-implemented"
+      ],
+      "test_ids": [
+        "tst:app-interface-public-api"
+      ]
+    },
+    {
+      "id": "evd:asgi3-hot-path-isolation-pytest",
+      "title": "Pytest evidence for ASGI3 hot path isolation",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_asgi3_hot_path_isolation.py",
+      "claim_ids": [
+        "clm:asgi3-hot-path-isolation-implemented"
+      ],
+      "test_ids": [
+        "tst:asgi3-hot-path-isolation"
+      ]
+    },
+    {
       "id": "evd:bundle-http1-server-curl-client",
       "title": "Preserved scenario http1-server-curl-client",
       "status": "passed",
@@ -17724,6 +18582,62 @@
       ]
     },
     {
+      "id": "evd:compat-dispatch-selection-pytest",
+      "title": "Pytest evidence for Compatibility dispatch selection",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_compat_dispatch_selection.py",
+      "claim_ids": [
+        "clm:compat-dispatch-selection-implemented"
+      ],
+      "test_ids": [
+        "tst:compat-dispatch-selection"
+      ]
+    },
+    {
+      "id": "evd:contract-app-dispatch-pytest",
+      "title": "Pytest evidence for Contract app dispatch",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_contract_app_dispatch.py",
+      "claim_ids": [
+        "clm:contract-app-dispatch-implemented"
+      ],
+      "test_ids": [
+        "tst:contract-app-dispatch"
+      ]
+    },
+    {
+      "id": "evd:contract-native-public-api-pytest",
+      "title": "Pytest evidence for Contract-native public API",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_contract_native_public_api.py",
+      "claim_ids": [
+        "clm:contract-native-public-api-implemented"
+      ],
+      "test_ids": [
+        "tst:contract-native-public-api"
+      ]
+    },
+    {
+      "id": "evd:contract-native-runtime-pytest",
+      "title": "Pytest evidence for Contract-native runtime",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_contract_native_runtime.py",
+      "claim_ids": [
+        "clm:contract-native-runtime-implemented"
+      ],
+      "test_ids": [
+        "tst:contract-native-runtime"
+      ]
+    },
+    {
       "id": "evd:corpus-hpack-dynamic-state",
       "title": "Corpus vector hpack-dynamic-state",
       "status": "passed",
@@ -18253,6 +19167,90 @@
       ],
       "test_ids": [
         "tst:planned-alt-svc-contract-map"
+      ]
+    },
+    {
+      "id": "evd:planned-app-interface-cli-flag",
+      "title": "Planned test evidence anchor for Application interface CLI flag",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-cli-flag"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-cli-flag"
+      ]
+    },
+    {
+      "id": "evd:planned-app-interface-config-toml",
+      "title": "Planned test evidence anchor for Application interface config TOML",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-config-toml"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-config-toml"
+      ]
+    },
+    {
+      "id": "evd:planned-app-interface-detection-precedence",
+      "title": "Planned test evidence anchor for Application interface detection precedence",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-detection-precedence"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-detection-precedence"
+      ]
+    },
+    {
+      "id": "evd:planned-app-interface-env-var",
+      "title": "Planned test evidence anchor for Application interface environment variable",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-env-var"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-env-var"
+      ]
+    },
+    {
+      "id": "evd:planned-app-interface-fail-closed-ambiguity",
+      "title": "Planned test evidence anchor for Application interface fail-closed ambiguity",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-fail-closed-ambiguity"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-fail-closed-ambiguity"
+      ]
+    },
+    {
+      "id": "evd:planned-app-interface-public-api",
+      "title": "Planned test evidence anchor for Application interface public API",
+      "status": "passed",
+      "kind": "planned_test_inventory",
+      "tier": "T1",
+      "path": "tests/test_contract_planned_coverage_inventory.py",
+      "claim_ids": [
+        "clm:planned-test-coverage-app-interface-public-api"
+      ],
+      "test_ids": [
+        "tst:planned-app-interface-public-api"
       ]
     },
     {
@@ -20615,7 +21613,8 @@
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-imports-all-claim-rows-and-freezes-active-boundary",
         "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules",
         "tst:pytest-case-tests-test-ssot-registry-py-test-committed-ssot-registry-validates-with-ssot-registry",
-        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out"
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
+        "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-declares-app-interface-selection-surfaces"
       ]
     },
     {
@@ -22704,10 +23703,21 @@
       "status": "frozen",
       "frozen": true,
       "feature_ids": [
+        "feat:app-interface-cli-flag",
+        "feat:app-interface-config-toml",
+        "feat:app-interface-detection-precedence",
+        "feat:app-interface-env-var",
+        "feat:app-interface-fail-closed-ambiguity",
+        "feat:app-interface-public-api",
         "feat:asgi-pathsend-contract",
+        "feat:asgi3-hot-path-isolation",
         "feat:base-default-audit",
+        "feat:compat-dispatch-selection",
         "feat:connect-policy",
         "feat:content-coding-policy",
+        "feat:contract-app-dispatch",
+        "feat:contract-native-public-api",
+        "feat:contract-native-runtime",
         "feat:current-state-chain",
         "feat:default-baseline-profile",
         "feat:deployment-profiles",
@@ -22786,6 +23796,17 @@
       "status": "promoted",
       "boundary_id": "bnd:authoritative-0-3-9",
       "claim_ids": [
+        "clm:app-interface-cli-flag-implemented",
+        "clm:app-interface-config-toml-implemented",
+        "clm:app-interface-detection-precedence-implemented",
+        "clm:app-interface-env-var-implemented",
+        "clm:app-interface-fail-closed-ambiguity-implemented",
+        "clm:app-interface-public-api-implemented",
+        "clm:asgi3-hot-path-isolation-implemented",
+        "clm:compat-dispatch-selection-implemented",
+        "clm:contract-app-dispatch-implemented",
+        "clm:contract-native-public-api-implemented",
+        "clm:contract-native-runtime-implemented",
         "clm:current-state-chain",
         "clm:deployment-profiles",
         "clm:rfc-5280",
@@ -22869,6 +23890,13 @@
         "clm:test-inventory"
       ],
       "evidence_ids": [
+        "evd:app-interface-cli-flag-pytest",
+        "evd:app-interface-config-toml-pytest",
+        "evd:app-interface-detection-precedence-pytest",
+        "evd:app-interface-env-var-pytest",
+        "evd:app-interface-fail-closed-ambiguity-pytest",
+        "evd:app-interface-public-api-pytest",
+        "evd:asgi3-hot-path-isolation-pytest",
         "evd:bundle-http1-server-curl-client",
         "evd:bundle-http2-server-curl-client",
         "evd:bundle-http2-server-h2-client",
@@ -22928,6 +23956,10 @@
         "evd:claim-tc-rfc9114-h3-control-plane-after-tls-success",
         "evd:claim-tc-rfc9204-qpack-after-stable-h3-handshake",
         "evd:claim-tc-rfc9525-service-identity-hostname-compatibility",
+        "evd:compat-dispatch-selection-pytest",
+        "evd:contract-app-dispatch-pytest",
+        "evd:contract-native-public-api-pytest",
+        "evd:contract-native-runtime-pytest",
         "evd:corpus-hpack-dynamic-state",
         "evd:corpus-http-alt-svc-header-advertisement",
         "evd:corpus-http-byte-ranges",
@@ -23175,14 +24207,14 @@
       "id": "adr:0600",
       "number": 600,
       "slug": "canonical-json-registry",
-      "title": "Canonical registry is a single JSON document",
+      "title": "ADR-0600-canonical-json-registry",
       "path": ".ssot/adr/ADR-0600-canonical-json-registry.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "e7bd19665fa1a92520ee9b21da493bd5e3e026209ac31fd64e344fcb1710bba5",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23191,14 +24223,14 @@
       "id": "adr:0601",
       "number": 601,
       "slug": "features-are-targetable-units",
-      "title": "Features are the targetable units",
+      "title": "ADR-0601-features-are-targetable-units",
       "path": ".ssot/adr/ADR-0601-features-are-targetable-units.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "29b6b133e5ecd059c90da8ab7ef931f940ac566cb955a9f4b36a8d6b5f1e2ef7",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23207,14 +24239,14 @@
       "id": "adr:0602",
       "number": 602,
       "slug": "issues-are-plannable-work-items",
-      "title": "Issues are plannable work items",
+      "title": "ADR-0602-issues-are-plannable-work-items",
       "path": ".ssot/adr/ADR-0602-issues-are-plannable-work-items.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "761ffd5988667d68d1ed70d24b1c15946c69c1143115b0230a0a6ccb5cfa4238",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23223,14 +24255,14 @@
       "id": "adr:0603",
       "number": 603,
       "slug": "entity-centric-registry-derived-graph",
-      "title": "Entity-centric registry with a derived graph export",
+      "title": "ADR-0603-entity-centric-registry-derived-graph",
       "path": ".ssot/adr/ADR-0603-entity-centric-registry-derived-graph.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "f8b91bbe54942b2157744e0419b7f6c4b6bb84d02497a391ca1a088114c3c3da",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23239,14 +24271,14 @@
       "id": "adr:0604",
       "number": 604,
       "slug": "normalized-prefixed-ids",
-      "title": "Normalized prefixed IDs",
+      "title": "ADR-0604-normalized-prefixed-ids",
       "path": ".ssot/adr/ADR-0604-normalized-prefixed-ids.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "3e8243fe57d04a67d2eb94c02f100a466b7dd20566d292fd336979a35abdc6a2",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23255,14 +24287,14 @@
       "id": "adr:0605",
       "number": 605,
       "slug": "claim-status-vs-tier",
-      "title": "Claim status and claim tier are orthogonal",
+      "title": "ADR-0605-claim-status-vs-tier",
       "path": ".ssot/adr/ADR-0605-claim-status-vs-tier.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "4aef17bb539ad05e48b04b70ee69119dc973ee4e16be407bc5d2d11fba0af607",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23271,14 +24303,14 @@
       "id": "adr:0606",
       "number": 606,
       "slug": "feature-implementation-vs-lifecycle",
-      "title": "Feature implementation state is separate from lifecycle state",
+      "title": "ADR-0606-feature-implementation-vs-lifecycle",
       "path": ".ssot/adr/ADR-0606-feature-implementation-vs-lifecycle.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "a2331253dabab9dc3e407adb55b25f0febb6c16ad590a515d97ac19f33a9b962",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23287,14 +24319,14 @@
       "id": "adr:0607",
       "number": 607,
       "slug": "immutable-boundary-and-release-snapshots",
-      "title": "Immutable boundary and release snapshots",
+      "title": "ADR-0607-immutable-boundary-and-release-snapshots",
       "path": ".ssot/adr/ADR-0607-immutable-boundary-and-release-snapshots.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "2145618a72dff6597602ca96df720776b7ac13023fe8ff5462be021621446940",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23303,14 +24335,14 @@
       "id": "adr:0608",
       "number": 608,
       "slug": "fail-closed-guards",
-      "title": "Fail-closed guards",
+      "title": "ADR-0608-fail-closed-guards",
       "path": ".ssot/adr/ADR-0608-fail-closed-guards.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "3026817d03ed825e1435612c08557b01dfa1fcadd5d1db32172169b79c7a27b1",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23319,14 +24351,14 @@
       "id": "adr:0609",
       "number": 609,
       "slug": "generated-projections-are-non-canonical",
-      "title": "Generated projections are non-canonical",
+      "title": "ADR-0609-generated-projections-are-non-canonical",
       "path": ".ssot/adr/ADR-0609-generated-projections-are-non-canonical.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "400819479d8e5036da5fd39e30b768f82785aecd3f06fc18738cd1a2b0cce079",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23335,14 +24367,14 @@
       "id": "adr:0610",
       "number": 610,
       "slug": "explicit-schema-versioning",
-      "title": "Explicit schema versioning",
+      "title": "ADR-0610-explicit-schema-versioning",
       "path": ".ssot/adr/ADR-0610-explicit-schema-versioning.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "c138f93e130f63857a2777dd40f3856fdceba7f4768d61dd0f2d0e5a9c7fe4cc",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23351,14 +24383,14 @@
       "id": "adr:0611",
       "number": 611,
       "slug": "portable-core-repo-specific-evidence-adapters",
-      "title": "Portable SSOT core with repo-specific evidence adapters",
+      "title": "ADR-0611-portable-core-repo-specific-evidence-adapters",
       "path": ".ssot/adr/ADR-0611-portable-core-repo-specific-evidence-adapters.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "87fd1773ace8f82b7707dda6e8b633e285da493e8b29ea17c0dc776da3b4d8b9",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23367,14 +24399,14 @@
       "id": "adr:0612",
       "number": 612,
       "slug": "ssot-path-and-filename-length-limits",
-      "title": "Enforce max path and filename lengths under `.ssot`",
+      "title": "ADR-0612-ssot-path-and-filename-length-limits",
       "path": ".ssot/adr/ADR-0612-ssot-path-and-filename-length-limits.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "c3534a8ae8a38bdd1328cc652b750530fdd8c84e00ecf8e19c81301030da822f",
-      "status": "draft",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -23383,12 +24415,12 @@
       "id": "adr:0613",
       "number": 613,
       "slug": "profiles-as-reusable-feature-bundles",
-      "title": "Profiles are reusable feature bundles with derived pass status",
+      "title": "Context",
       "path": ".ssot/adr/ADR-0613-profiles-as-reusable-feature-bundles.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "52047d10ab6538e7423e6233490be2eb699cd31e374f5b81d3daeeeda8eab98d",
       "status": "accepted",
       "supersedes": [],
@@ -23399,30 +24431,28 @@
       "id": "adr:1001",
       "number": 1001,
       "slug": "preserve-asgi-boundary",
-      "title": "preserve the ASGI boundary",
+      "title": "ADR 1001 \u2014 preserve the ASGI boundary",
       "path": ".ssot/adr/ADR-1001-preserve-asgi-boundary.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "cc74dbe1bc7aa926d7c910d754d67922be896c727cf31f970eb2219efbe82b95",
-      "status": "superseded",
+      "status": "accepted",
       "supersedes": [],
-      "superseded_by": [
-        "adr:1012"
-      ],
+      "superseded_by": [],
       "status_notes": []
     },
     {
       "id": "adr:1002",
       "number": 1002,
       "slug": "transport-protocol-separation",
-      "title": "separate transport and protocol",
+      "title": "ADR 1002 \u2014 separate transport and protocol",
       "path": ".ssot/adr/ADR-1002-transport-protocol-separation.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "e4bf4f7921165fef26c8813fb3b5c62be664efa7b435712ed8346b3614d79634",
       "status": "accepted",
       "supersedes": [],
@@ -23433,12 +24463,12 @@
       "id": "adr:1003",
       "number": 1003,
       "slug": "scheduler-and-backpressure",
-      "title": "scheduler and backpressure are separate concerns",
+      "title": "ADR 1003 \u2014 scheduler and backpressure are separate concerns",
       "path": ".ssot/adr/ADR-1003-scheduler-and-backpressure.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "bd5f459d3bd07a0185da3e0ed9d314e75858690b83ec80f1cd2d8763c6864e05",
       "status": "accepted",
       "supersedes": [],
@@ -23449,30 +24479,28 @@
       "id": "adr:1004",
       "number": 1004,
       "slug": "custom-scope-types",
-      "title": "custom scope types are allowed behind the ASGI surface",
+      "title": "ADR 1004 \u2014 custom scope types are allowed behind the ASGI surface",
       "path": ".ssot/adr/ADR-1004-custom-scope-types.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "f3096a79156fd126f532ff6a78b3f699e5fd7e6ecfcd37cebe5708d865e63881",
-      "status": "superseded",
+      "status": "accepted",
       "supersedes": [],
-      "superseded_by": [
-        "adr:1016"
-      ],
+      "superseded_by": [],
       "status_notes": []
     },
     {
       "id": "adr:1005",
       "number": 1005,
       "slug": "doc-gov",
-      "title": "doc governance tree",
+      "title": "Decision",
       "path": ".ssot/adr/ADR-1005-doc-gov.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "ec07f383ea95f99efccb12d7284e72aac4462da4016271e0261c7edf62328321",
       "status": "accepted",
       "supersedes": [],
@@ -23483,12 +24511,12 @@
       "id": "adr:1006",
       "number": 1006,
       "slug": "mutable",
-      "title": "mutable and immutable marks",
+      "title": "Decision",
       "path": ".ssot/adr/ADR-1006-mutable.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "230a75d7fe3f84639ec7845223ff4676153f777b463d175fffe539222448115f",
       "status": "accepted",
       "supersedes": [],
@@ -23499,12 +24527,12 @@
       "id": "adr:1007",
       "number": 1007,
       "slug": "gov-auth",
-      "title": ": Governance Authority",
+      "title": "ADR 1007: Governance Authority",
       "path": ".ssot/adr/ADR-1007-gov-auth.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "9449fd48da392e7f8874b42abbaa0aeaad80f7025780a09e4497e157ec614eb1",
       "status": "accepted",
       "supersedes": [],
@@ -23515,12 +24543,12 @@
       "id": "adr:1008",
       "number": 1008,
       "slug": "gate-graph",
-      "title": ": Release Gate Graph",
+      "title": "ADR 1008: Release Gate Graph",
       "path": ".ssot/adr/ADR-1008-gate-graph.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "25afd3e318f828c0b9f907d3513fe729d1ce2992e1d0412a465d4be2922caf44",
       "status": "accepted",
       "supersedes": [],
@@ -23531,12 +24559,12 @@
       "id": "adr:1009",
       "number": 1009,
       "slug": "issue-traceability-through-claims",
-      "title": "researched issue traceability through claim rows",
+      "title": "Decision",
       "path": ".ssot/adr/ADR-1009-issue-traceability-through-claims.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "90d1bf7a2be365843ba1a0bf2a17841ef2e7c5790770771550320c6304f28e12",
       "status": "accepted",
       "supersedes": [],
@@ -23547,12 +24575,12 @@
       "id": "adr:1010",
       "number": 1010,
       "slug": "rfc8785-jcs-canonical-json",
-      "title": "adopt RFC 8785 JCS for canonical JSON",
+      "title": "ADR 1010 - adopt RFC 8785 JCS for canonical JSON",
       "path": ".ssot/adr/ADR-1010-rfc8785-jcs-canonical-json.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "9ced6a669090396d31609315e34719b8e8aaa4906205c64fbd0f5a48f8608fc3",
       "status": "accepted",
       "supersedes": [],
@@ -23563,12 +24591,12 @@
       "id": "adr:1011",
       "number": 1011,
       "slug": "webtransport-contract-boundary",
-      "title": "adopt WebTransport over HTTP/3 and QUIC as an in-bound contract target",
+      "title": "ADR 1011 - WebTransport contract boundary",
       "path": ".ssot/adr/ADR-1011-webtransport-contract-boundary.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "b6c470c6167beb9411dfc0407ca9a438aad6deea493dfa5c72abfe8635cfad57",
       "status": "accepted",
       "supersedes": [],
@@ -23579,17 +24607,15 @@
       "id": "adr:1012",
       "number": 1012,
       "slug": "native-contract-runtime",
-      "title": "adopt tigr-asgi-contract as the native runtime contract",
+      "title": "ADR 1012 - Native contract runtime",
       "path": ".ssot/adr/ADR-1012-native-contract-runtime.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "79d01b3adbe0c0aaf0cab25e0e996a72dee49fcb48ebf63304253b763da4e2ec",
       "status": "accepted",
-      "supersedes": [
-        "adr:1001"
-      ],
+      "supersedes": [],
       "superseded_by": [],
       "status_notes": []
     },
@@ -23597,12 +24623,12 @@
       "id": "adr:1013",
       "number": 1013,
       "slug": "asgi3-compatibility-layer",
-      "title": "preserve ASGI3 as a first-class compatibility layer",
+      "title": "ADR 1013 - ASGI3 compatibility layer",
       "path": ".ssot/adr/ADR-1013-asgi3-compatibility-layer.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "24428d1b0004bdb63584e1410d64cbed631a16392b8e32968567d28faf820c59",
       "status": "accepted",
       "supersedes": [],
@@ -23613,12 +24639,12 @@
       "id": "adr:1014",
       "number": 1014,
       "slug": "asgi3-hot-path-isolation",
-      "title": "keep the ASGI3 adapter out of the native hot path",
+      "title": "ADR 1014 - ASGI3 hot path isolation",
       "path": ".ssot/adr/ADR-1014-asgi3-hot-path-isolation.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "f691f2affe1d67a1bcff30d9c9cf873aa00cb04aa1cdbd342aea9855030d1791",
       "status": "accepted",
       "supersedes": [],
@@ -23629,12 +24655,12 @@
       "id": "adr:1015",
       "number": 1015,
       "slug": "asgi-feature-extension-bridge",
-      "title": "expose Tigrcorn features to ASGI3 apps through extensions",
+      "title": "ADR 1015 - ASGI feature extension bridge",
       "path": ".ssot/adr/ADR-1015-asgi-feature-extension-bridge.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "52a7a87a27940452c6afcab53dfb6d77178f2b2f2d67b23ddb4abbaf098aaedc",
       "status": "accepted",
       "supersedes": [],
@@ -23645,17 +24671,15 @@
       "id": "adr:1016",
       "number": 1016,
       "slug": "contract-scope-mapping",
-      "title": "map ASGI scopes through contract scopes",
+      "title": "ADR 1016 - Contract scope mapping",
       "path": ".ssot/adr/ADR-1016-contract-scope-mapping.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "7f89dfe9c375e952968819585e8e777fe4faaec6ab8ab92b65cdcaf8cebb9377",
       "status": "accepted",
-      "supersedes": [
-        "adr:1004"
-      ],
+      "supersedes": [],
       "superseded_by": [],
       "status_notes": []
     },
@@ -23663,12 +24687,12 @@
       "id": "adr:1017",
       "number": 1017,
       "slug": "contract-event-mapping",
-      "title": "map ASGI events through contract events",
+      "title": "ADR 1017 - Contract event mapping",
       "path": ".ssot/adr/ADR-1017-contract-event-mapping.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "1c4cad2494ff96b8d13134bc3cd1fe7923e6fd9ecd5c1c04da6fa3c5d2eeef63",
       "status": "accepted",
       "supersedes": [],
@@ -23679,12 +24703,12 @@
       "id": "adr:1018",
       "number": 1018,
       "slug": "emit-completion-semantics",
-      "title": "adopt explicit emit completion semantics",
+      "title": "ADR 1018 - Emit completion semantics",
       "path": ".ssot/adr/ADR-1018-emit-completion-semantics.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "e2fb0fdeee6320a4628192865add361498cb77affd3e40a08b62e64aca98e141",
       "status": "accepted",
       "supersedes": [],
@@ -23695,12 +24719,12 @@
       "id": "adr:1019",
       "number": 1019,
       "slug": "unit-identity-model",
-      "title": "propagate contract unit identity through the runtime",
+      "title": "ADR 1019 - Unit identity model",
       "path": ".ssot/adr/ADR-1019-unit-identity-model.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "678f51b940f5ca4292bc4efcde22ed1a374406c660555c7556c8ca5f3513a5d1",
       "status": "accepted",
       "supersedes": [],
@@ -23711,12 +24735,12 @@
       "id": "adr:1020",
       "number": 1020,
       "slug": "transport-metadata-model",
-      "title": "expose transport metadata through the contract model",
+      "title": "ADR 1020 - Transport metadata model",
       "path": ".ssot/adr/ADR-1020-transport-metadata-model.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "81cfda4f0dcdaf811bfbd7c0fd9a73d704eb0318bdeb667d290ac5ca9f98b8e9",
       "status": "accepted",
       "supersedes": [],
@@ -23727,12 +24751,12 @@
       "id": "adr:1021",
       "number": 1021,
       "slug": "family-capability-model",
-      "title": "declare family capabilities with the contract model",
+      "title": "ADR 1021 - Family capability model",
       "path": ".ssot/adr/ADR-1021-family-capability-model.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "04e1bb6cfc75eba1991bab4f2bef1bd1e71cedb0f840f0f6bf2c577ced3a8217",
       "status": "accepted",
       "supersedes": [],
@@ -23743,12 +24767,12 @@
       "id": "adr:1022",
       "number": 1022,
       "slug": "binding-and-subevent-legality",
-      "title": "enforce contract binding and subevent legality",
+      "title": "ADR 1022 - Binding and subevent legality",
       "path": ".ssot/adr/ADR-1022-binding-and-subevent-legality.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "ddabfc5b8773c7683e74eb06ef0c743304d4aeede85684fb969068d5fb773b18",
       "status": "accepted",
       "supersedes": [],
@@ -23759,12 +24783,12 @@
       "id": "adr:1023",
       "number": 1023,
       "slug": "webtransport-contract-runtime",
-      "title": "implement WebTransport as a contract-native runtime surface",
+      "title": "ADR 1023 - WebTransport contract runtime",
       "path": ".ssot/adr/ADR-1023-webtransport-contract-runtime.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "c8af40a7bf90a38664eadcd712e793e96fd62eadb265f93882ecece83fc1a3f4",
       "status": "accepted",
       "supersedes": [],
@@ -23775,12 +24799,12 @@
       "id": "adr:1024",
       "number": 1024,
       "slug": "stream-and-datagram-runtime",
-      "title": "model streams and datagrams as first-class runtime families",
+      "title": "ADR 1024 - Stream and datagram runtime",
       "path": ".ssot/adr/ADR-1024-stream-and-datagram-runtime.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "2d56506b91712d254a64a4b34a355d4c0cc380a1aa8dd153130b4a6a89f28d89",
       "status": "accepted",
       "supersedes": [],
@@ -23791,12 +24815,12 @@
       "id": "adr:1025",
       "number": 1025,
       "slug": "sse-and-server-streaming-posture",
-      "title": "classify SSE and server streaming through contract bindings",
+      "title": "ADR 1025 - SSE and server streaming posture",
       "path": ".ssot/adr/ADR-1025-sse-and-server-streaming-posture.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "11d6f88fff238205baa913d69281940ed2bfc1ea61922623dba25e5e9929fc2d",
       "status": "accepted",
       "supersedes": [],
@@ -23807,12 +24831,12 @@
       "id": "adr:1026",
       "number": 1026,
       "slug": "rest-and-jsonrpc-binding-posture",
-      "title": "classify REST and JSON-RPC without owning application runtimes",
+      "title": "ADR 1026 - REST and JSON-RPC binding posture",
       "path": ".ssot/adr/ADR-1026-rest-and-jsonrpc-binding-posture.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "37eea91a2f757be0627b050b94a93f73a88959062024e8e1d07b404110403e8b",
       "status": "accepted",
       "supersedes": [],
@@ -23823,12 +24847,12 @@
       "id": "adr:1027",
       "number": 1027,
       "slug": "compatibility-dispatch-selection",
-      "title": "select native or compatibility dispatch before serving traffic",
+      "title": "ADR 1027 - Compatibility dispatch selection",
       "path": ".ssot/adr/ADR-1027-compatibility-dispatch-selection.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "36ded07ebd815eb29653cbdaaf0716526b46088c2395b2dd6ed305868c1afdfa",
       "status": "accepted",
       "supersedes": [],
@@ -23839,12 +24863,12 @@
       "id": "adr:1028",
       "number": 1028,
       "slug": "legacy-compatibility-boundaries",
-      "title": "track ASGI2, WSGI, and RSGI-like compatibility as bounded adapters",
+      "title": "ADR 1028 - Legacy compatibility boundaries",
       "path": ".ssot/adr/ADR-1028-legacy-compatibility-boundaries.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "c2dca446b802dc97a9e5d301b6eef25ff956821256ae298ce9b2ff63d0a3ac50",
       "status": "accepted",
       "supersedes": [],
@@ -23855,12 +24879,12 @@
       "id": "adr:1029",
       "number": 1029,
       "slug": "contract-conformance-test-strategy",
-      "title": "test contract conformance across native and compatibility paths",
+      "title": "ADR 1029 - Contract conformance test strategy",
       "path": ".ssot/adr/ADR-1029-contract-conformance-test-strategy.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "2386c537e1f5bf1c9f3778ee51200d2c21e265613a9ef5add867148d171dc66f",
       "status": "accepted",
       "supersedes": [],
@@ -23871,12 +24895,12 @@
       "id": "adr:1030",
       "number": 1030,
       "slug": "contract-docs-and-migration-policy",
-      "title": "document the contract-native migration and compatibility policy",
+      "title": "ADR 1030 - Contract docs and migration policy",
       "path": ".ssot/adr/ADR-1030-contract-docs-and-migration-policy.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "f15fd3c24b9e4b93a7e43b8c67177f7a26369257d77c078152a1abc905b88590",
       "status": "accepted",
       "supersedes": [],
@@ -23889,14 +24913,14 @@
       "id": "spc:0600",
       "number": 600,
       "slug": "registry-core",
-      "title": "Registry core",
+      "title": "Repository Discriminator",
       "path": ".ssot/specs/SPEC-0600-registry-core.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "d03d461a32d1cbc5798cd33fbda66589010b8d082b65bf989f18f761d273b587",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -23906,14 +24930,14 @@
       "id": "spc:0601",
       "number": 601,
       "slug": "cli",
-      "title": "CLI",
+      "title": "SPEC-0601-cli",
       "path": ".ssot/specs/SPEC-0601-cli.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "bacd750fcaee57277115e2bd61c5fde308624798839a34bce0bc8f1320de3287",
-      "kind": "operational",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -23923,14 +24947,14 @@
       "id": "spc:0602",
       "number": 602,
       "slug": "graph-model",
-      "title": "Graph model",
+      "title": "SPEC-0602-graph-model",
       "path": ".ssot/specs/SPEC-0602-graph-model.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "c2f9addf6a50ccbfc020c40327de93027ec984bebd0dc12feb1f4febfa816293",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -23940,14 +24964,14 @@
       "id": "spc:0603",
       "number": 603,
       "slug": "feature-lifecycle",
-      "title": "Feature lifecycle",
+      "title": "SPEC-0603-feature-lifecycle",
       "path": ".ssot/specs/SPEC-0603-feature-lifecycle.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "fe3ff8e895162ae90359401bac69bc8e8e5c98b2b31447fea3b6e1ae76516c79",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -23957,14 +24981,14 @@
       "id": "spc:0604",
       "number": 604,
       "slug": "claim-statuses",
-      "title": "Claim statuses",
+      "title": "SPEC-0604-claim-statuses",
       "path": ".ssot/specs/SPEC-0604-claim-statuses.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "d789748eb6dd262134c80baf77a8c44dd85f6ca0ce1ab53586d25dcb576e32a1",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -23974,14 +24998,14 @@
       "id": "spc:0605",
       "number": 605,
       "slug": "claim-tiers",
-      "title": "Claim tiers",
+      "title": "SPEC-0605-claim-tiers",
       "path": ".ssot/specs/SPEC-0605-claim-tiers.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "7b350ed11cad9d9be5fce31e10f0f4350d6a071049a01c950af8694d5f0630d7",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -23991,14 +25015,14 @@
       "id": "spc:0606",
       "number": 606,
       "slug": "snapshots-and-reports",
-      "title": "Snapshots and reports",
+      "title": "SPEC-0606-snapshots-and-reports",
       "path": ".ssot/specs/SPEC-0606-snapshots-and-reports.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "6952e1ae415375b4dbe46c92537f6c6cd3dce5709a2507d906197bf8043fd6d6",
-      "kind": "operational",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24008,14 +25032,14 @@
       "id": "spc:0607",
       "number": 607,
       "slug": "repo-policy",
-      "title": "Repository policy",
+      "title": "Scope",
       "path": ".ssot/specs/SPEC-0607-repo-policy.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "63b5056e142d551afb5a7c8e119b4e02913371771bb54c56c52464b1615893c2",
-      "kind": "operational",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24025,14 +25049,14 @@
       "id": "spc:0608",
       "number": 608,
       "slug": "gates-and-fences",
-      "title": "Gates and fences",
+      "title": "SPEC-0608-gates-and-fences",
       "path": ".ssot/specs/SPEC-0608-gates-and-fences.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "ab8ef1311b825d7474f24a8b2eeff2fee19183804746cbccd7234f9f5e2166a9",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24042,14 +25066,14 @@
       "id": "spc:0609",
       "number": 609,
       "slug": "id-normalization",
-      "title": "ID normalization",
+      "title": "SPEC-0609-id-normalization",
       "path": ".ssot/specs/SPEC-0609-id-normalization.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "ce9b9a9cd22703419af6d37aaf3e7da815291deb6bf493a16689f41d9019233e",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24059,14 +25083,14 @@
       "id": "spc:0610",
       "number": 610,
       "slug": "file-tree",
-      "title": "File tree",
+      "title": "Adr Spec Contract",
       "path": ".ssot/specs/SPEC-0610-file-tree.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "e821e3c072a3973300b6c91eb2f6ce504cf4f34f4c6b49ed7c742a4315b7d5fc",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24076,14 +25100,14 @@
       "id": "spc:0611",
       "number": 611,
       "slug": "planning-horizons",
-      "title": "Planning horizons",
+      "title": "SPEC-0611-planning-horizons",
       "path": ".ssot/specs/SPEC-0611-planning-horizons.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "fa4fab0acc1175f202b36fe1770cbe076332bf33e7bccf5eb539c477c9215b7d",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24093,14 +25117,14 @@
       "id": "spc:0612",
       "number": 612,
       "slug": "python-api",
-      "title": "Python API",
+      "title": "SPEC-0612-python-api",
       "path": ".ssot/specs/SPEC-0612-python-api.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "bbea37ab830073ee6309011ee7aa9b13aa490e660bdf01448cd50f1d42a32993",
-      "kind": "operational",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24110,14 +25134,14 @@
       "id": "spc:0613",
       "number": 613,
       "slug": "ssot-path-length-policy",
-      "title": "SSOT path-length policy",
+      "title": "Scope",
       "path": ".ssot/specs/SPEC-0613-ssot-path-length-policy.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "9e7523c7f8fe3f5cad8bd05aa42796e96794c7427cb774639ef9c5dfc4082c8a",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24127,14 +25151,14 @@
       "id": "spc:0614",
       "number": 614,
       "slug": "profile-evaluation-and-boundary-resolution",
-      "title": "Profile evaluation and boundary resolution",
+      "title": "Overview",
       "path": ".ssot/specs/SPEC-0614-profile-evaluation-and-boundary-resolution.yaml",
-      "origin": "ssot-origin",
-      "managed": true,
-      "immutable": true,
-      "package_version": "0.2.8",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
       "content_sha256": "38914181571d8d366258bc4cce8837a9857b2e480e03687db9d811555b807f77",
-      "kind": "normative",
+      "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -24144,12 +25168,12 @@
       "id": "spc:1001",
       "number": 1001,
       "slug": "governance-issue-traceability",
-      "title": "governance issue traceability",
+      "title": "Purpose",
       "path": ".ssot/specs/SPEC-1001-governance-issue-traceability.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "61c262570ee7973943bf0e64d8902162005ed7c0f9ab6551aa698b4543ffeb24",
       "kind": "local-policy",
       "status": "draft",
@@ -24161,12 +25185,12 @@
       "id": "spc:1002",
       "number": 1002,
       "slug": "tls-policy-and-interop-surfaces",
-      "title": "TLS policy and interoperability surfaces",
+      "title": "Purpose",
       "path": ".ssot/specs/SPEC-1002-tls-policy-and-interop-surfaces.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "5020ef482e0b809587749c42f76c7c2d9d2de253d4cf55df572fe9dde17892f6",
       "kind": "local-policy",
       "status": "draft",
@@ -24183,7 +25207,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "ab5cb13541e38cd7a1ba79f732ee6d50c80bfe22cbd71fc596de29dc869f12ad",
       "kind": "local-policy",
       "status": "draft",
@@ -24195,12 +25219,12 @@
       "id": "spc:2002",
       "number": 2002,
       "slug": "http2",
-      "title": "HTTP/2",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2002-http2.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "7ddf8dc6e2155616ef9f1be350a201633616db2366d8387b71bfea4d4274343a",
       "kind": "local-policy",
       "status": "draft",
@@ -24212,12 +25236,12 @@
       "id": "spc:2003",
       "number": 2003,
       "slug": "http3",
-      "title": "HTTP/3",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2003-http3.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "be4b45f7a1a1beebb5ba3a3322860299aff459fb02463e534051971b2e870516",
       "kind": "local-policy",
       "status": "draft",
@@ -24229,12 +25253,12 @@
       "id": "spc:2004",
       "number": 2004,
       "slug": "quic",
-      "title": "QUIC",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2004-quic.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "f3ad6c4e6b9d84f2df607b167b77d20329ce172bf0d0365aee2280cce0790699",
       "kind": "local-policy",
       "status": "draft",
@@ -24246,12 +25270,12 @@
       "id": "spc:2005",
       "number": 2005,
       "slug": "websocket",
-      "title": "WebSocket",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2005-websocket.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "c7b0cda43a52c1b146d90c166b864085d0ed2cfc2df244215b85274a0d8a1331",
       "kind": "local-policy",
       "status": "draft",
@@ -24268,26 +25292,24 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "08db5cc6240e658fc20cf10d8fb86ec6ce35e1cbb950b311fc9e6e55da3458fd",
       "kind": "local-policy",
-      "status": "superseded",
+      "status": "draft",
       "supersedes": [],
-      "superseded_by": [
-        "spc:2015"
-      ],
+      "superseded_by": [],
       "status_notes": []
     },
     {
       "id": "spc:2007",
       "number": 2007,
       "slug": "public",
-      "title": "Public operator and programmatic surface reference",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2007-public.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "b03404d662b2b11d681bef420d799b14f3e4aa51a72ff08317489972e8994524",
       "kind": "local-policy",
       "status": "draft",
@@ -24299,12 +25321,12 @@
       "id": "spc:2008",
       "number": 2008,
       "slug": "tigrcorn-cli",
-      "title": "CLI",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2008-tigrcorn-cli.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "78ae763d63c29db11145e042d4711de406cb203403b24d45f1cc18c0705370c9",
       "kind": "local-policy",
       "status": "draft",
@@ -24316,12 +25338,12 @@
       "id": "spc:2009",
       "number": 2009,
       "slug": "rfc8785-jcs",
-      "title": "RFC 8785 JSON Canonicalization Scheme",
+      "title": "Purpose",
       "path": ".ssot/specs/SPEC-2009-rfc8785-jcs.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "02b53adf1a286483393c7e45069b45de0f98693b2c2782184a035b5237b9f3e4",
       "kind": "local-policy",
       "status": "draft",
@@ -24333,12 +25355,12 @@
       "id": "spc:2010",
       "number": 2010,
       "slug": "webtransport-contract",
-      "title": "WebTransport contract target",
+      "title": "Content",
       "path": ".ssot/specs/SPEC-2010-webtransport-contract.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "98e5832aeabb1a4e418ec7e03d5bde2f8ee15715430608f2759cb6e08db7fe01",
       "kind": "local-policy",
       "status": "draft",
@@ -24355,7 +25377,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "12cec838fe5e2ad6c23d0f2b4466864ecc3fbe669d2349109807e736022b27cc",
       "kind": "local-policy",
       "status": "draft",
@@ -24372,7 +25394,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "c5a9319100518406c2a7bb6533b97d170cc1e295235380e863f98a5cb92ac1d8",
       "kind": "local-policy",
       "status": "draft",
@@ -24389,7 +25411,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "831cc763c1f42cff896e6d9cc2a65424a60f2ff170b15111b327b0158fe42dd0",
       "kind": "local-policy",
       "status": "draft",
@@ -24406,7 +25428,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "59d511481fca5ab67baf3e6dd52cb9fb099d5581b484fde2a13a3ea06b24c5a3",
       "kind": "local-policy",
       "status": "draft",
@@ -24423,13 +25445,11 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "900dfadd48f8b14e0ceac7ac2957a0135e80ab92c9882ca46db4dca688fede02",
       "kind": "local-policy",
       "status": "draft",
-      "supersedes": [
-        "spc:2006"
-      ],
+      "supersedes": [],
       "superseded_by": [],
       "status_notes": []
     },
@@ -24442,7 +25462,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "9c9f709121ff26093ad332ea45d5da0c05a6d304c7b5fdd8f269b5c1f3ffbef1",
       "kind": "local-policy",
       "status": "draft",
@@ -24459,7 +25479,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "257c958c6702f9b8ab44859208f51f46a07cc3374ab82af603ec99e4b90ad37b",
       "kind": "local-policy",
       "status": "draft",
@@ -24476,7 +25496,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "eaebd2769a653952f5c925e2d2a53b9cff8314980b8a22a7f9012d4d1723cbf0",
       "kind": "local-policy",
       "status": "draft",
@@ -24493,7 +25513,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "208b12a31f75649d876a69a380b7f5edd8f33d9d0a652c256264f7fc63cb3daa",
       "kind": "local-policy",
       "status": "draft",
@@ -24510,7 +25530,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "d1b94e0deae2b83ee86faf1ecb453e2038cb9f05410e89e926ac738f805f163e",
       "kind": "local-policy",
       "status": "draft",
@@ -24527,7 +25547,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "7932e0580cddccc8c48598c1ea2f2882f0045457b9618fe88681ad37d43c1062",
       "kind": "local-policy",
       "status": "draft",
@@ -24544,7 +25564,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "a1e8bde8448a0d686b928e44b5db4efe27899399ddf79da559c50ef513976922",
       "kind": "local-policy",
       "status": "draft",
@@ -24561,7 +25581,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "c4d644feb5354ad9ba638b092b2dbcb17b4123fdb6bc5cffd7d3bc12fd9795f9",
       "kind": "local-policy",
       "status": "draft",
@@ -24578,7 +25598,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "c19118214e9575dfa1e5005b81664226c2ba0890568fd224e0a3778e4df9d166",
       "kind": "local-policy",
       "status": "draft",
@@ -24595,7 +25615,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "fe10e31c3972ef1478bdc511cf399213479c3beda67a4ba7ec409446d23d767e",
       "kind": "local-policy",
       "status": "draft",
@@ -24612,7 +25632,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "cba3b920d1ccd2f335d423a2c283614e93239ecd8e833e859ffef4fe1ce41501",
       "kind": "local-policy",
       "status": "draft",
@@ -24629,7 +25649,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "a362f60e0bb23fef4ebe2d3f40daf987e8eba318165687f6a4b5f8bc89be7473",
       "kind": "local-policy",
       "status": "draft",
@@ -24646,7 +25666,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "5f5d5d84128e9f7730578a6eacdbb82e130d46492861ef336cdb73bf51fe3df2",
       "kind": "local-policy",
       "status": "draft",
@@ -24663,7 +25683,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "81cf15f873fe6b9aa27c9866c1c98ba4d170516d41fb0797872871d281428052",
       "kind": "local-policy",
       "status": "draft",
@@ -24680,7 +25700,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "d571839337afa4a20b66b6e0747144db165c2149b562e86d6b881e612a533f67",
       "kind": "local-policy",
       "status": "draft",
@@ -24697,7 +25717,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "f18bd65eac5c30ca329863033284d317bd229d921d61547d990a41551451395c",
       "kind": "local-policy",
       "status": "draft",
@@ -24714,7 +25734,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "3aa5344bfcb62c0807270719b9aef902413ab4226ffc5e84a3cd5afc7e521110",
       "kind": "local-policy",
       "status": "draft",
@@ -24731,7 +25751,7 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "b2cd10fd3ed86efa2b7564c5f129bb5e125bc58e8dd8baa07db7c50dcaf60e6d",
       "kind": "local-policy",
       "status": "draft",
@@ -24748,8 +25768,25 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.8",
+      "package_version": "0.2.2",
       "content_sha256": "7138deea8a5f44c99000061a140448045c94477afd35aae39824baeecf12d509",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2035",
+      "number": 2035,
+      "slug": "app-interface-selection",
+      "title": "Content",
+      "path": ".ssot/specs/SPEC-2035-app-interface-selection.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.2",
+      "content_sha256": "9a72523ecd32dc77d23b627892a300440e4e9d07d1e6b7159062ad73181ab517",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],

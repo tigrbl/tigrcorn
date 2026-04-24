@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from tigrcorn.compat.asgi3 import assert_asgi3_app
+from tigrcorn.app_interfaces import resolve_app_dispatch
 from tigrcorn.config.model import ServerConfig
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.types import ASGIApp
@@ -29,7 +29,7 @@ class EmbeddedServer:
     server: TigrCornServer | None = field(default=None, init=False)
 
     async def start(self) -> TigrCornServer:
-        assert_asgi3_app(self.app)
+        resolve_app_dispatch(self.app, self.config.app.interface)
         if self.server is None:
             self.server = TigrCornServer(self.app, self.config)
         await self.server.start()

@@ -97,3 +97,49 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
         assert feature["implementation_status"] == "absent"
         assert feature["plan"]["horizon"] == "out_of_bounds"
         assert "spc:2010" in feature["spec_ids"]
+
+
+def test_ssot_declares_app_interface_selection_surfaces() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    specs = {row["id"]: row for row in registry["specs"]}
+    features = {row["id"]: row for row in registry["features"]}
+
+    assert "spc:2035" in specs
+    for feature_id in {
+        "feat:app-interface-cli-flag",
+        "feat:app-interface-config-toml",
+        "feat:app-interface-env-var",
+        "feat:app-interface-public-api",
+        "feat:app-interface-detection-precedence",
+        "feat:app-interface-fail-closed-ambiguity",
+    }:
+        feature = features[feature_id]
+        assert feature["implementation_status"] == "implemented"
+        assert feature["plan"]["horizon"] == "current"
+        assert feature["plan"]["slot"] == "app-interface-selection"
+        assert "spc:2035" in feature["spec_ids"]
+
+
+def test_ssot_links_concrete_contract_app_interface_tests_to_features() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    tests = {row["id"]: row for row in registry["tests"]}
+
+    expected = {
+        "tst:contract-native-runtime": ("feat:contract-native-runtime", "tests/test_contract_native_runtime.py"),
+        "tst:contract-app-dispatch": ("feat:contract-app-dispatch", "tests/test_contract_app_dispatch.py"),
+        "tst:contract-native-public-api": ("feat:contract-native-public-api", "tests/test_contract_native_public_api.py"),
+        "tst:compat-dispatch-selection": ("feat:compat-dispatch-selection", "tests/test_compat_dispatch_selection.py"),
+        "tst:asgi3-hot-path-isolation": ("feat:asgi3-hot-path-isolation", "tests/test_asgi3_hot_path_isolation.py"),
+        "tst:app-interface-cli-flag": ("feat:app-interface-cli-flag", "tests/test_app_interface_cli_flag.py"),
+        "tst:app-interface-config-toml": ("feat:app-interface-config-toml", "tests/test_app_interface_config_toml.py"),
+        "tst:app-interface-env-var": ("feat:app-interface-env-var", "tests/test_app_interface_env_var.py"),
+        "tst:app-interface-public-api": ("feat:app-interface-public-api", "tests/test_app_interface_public_api.py"),
+        "tst:app-interface-detection-precedence": ("feat:app-interface-detection-precedence", "tests/test_app_interface_detection_precedence.py"),
+        "tst:app-interface-fail-closed-ambiguity": ("feat:app-interface-fail-closed-ambiguity", "tests/test_app_interface_fail_closed_ambiguity.py"),
+    }
+
+    for test_id, (feature_id, path) in expected.items():
+        row = tests[test_id]
+        assert row["status"] == "current"
+        assert row["path"] == path
+        assert feature_id in row["feature_ids"]

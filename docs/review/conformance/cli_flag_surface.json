@@ -23,6 +23,28 @@
       "performance_profiles": []
     },
     {
+      "flag_id": "app_interface",
+      "flags": [
+        "--app-interface"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.interface",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": "auto",
+      "validation_rules": [
+        "one of auto, tigr-asgi-contract, asgi3"
+      ],
+      "unit_tests": [
+        "tests/test_app_interface_cli_flag.py::AppInterfaceCLIFlagTests::test_cli_flag_selects_app_interface"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
       "flag_id": "app_dir",
       "flags": [
         "--app-dir"

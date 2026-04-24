@@ -10,6 +10,7 @@ from .merge import merge_config_dicts
 
 _FLAT_ENV_MAP = {
     "APP": ("app", "target"),
+    "APP_INTERFACE": ("app", "interface"),
     "FACTORY": ("app", "factory"),
     "PROFILE": ("app", "profile"),
     "APP_DIR": ("app", "app_dir"),

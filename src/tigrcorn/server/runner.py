@@ -8,7 +8,7 @@ from typing import Any
 from tigrcorn.asgi.receive import HTTPRequestReceive, HTTPStreamingRequestReceive
 from tigrcorn.asgi.scopes.http import build_http_scope
 from tigrcorn.asgi.send import FileBodySegment, HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
-from tigrcorn.compat.asgi3 import assert_asgi3_app
+from tigrcorn.app_interfaces import resolve_app_dispatch
 from tigrcorn.errors import ProtocolError
 from tigrcorn.config.model import ListenerConfig, ServerConfig
 from tigrcorn.constants import H2_PREFACE
@@ -45,8 +45,9 @@ from tigrcorn.utils.proxy import resolve_proxy_view
 
 class TigrCornServer:
     def __init__(self, app: ASGIApp, config: ServerConfig) -> None:
-        assert_asgi3_app(app)
-        self.app = app
+        selection = resolve_app_dispatch(app, config.app.interface)
+        self.app = selection.app
+        self.app_interface = selection.interface
         self.config = config
         self._resolved_logging = resolve_logging_config(config.log_level, config=config.logging)
         self.logger = configure_logging(config.log_level, config=config.logging)

@@ -1,6 +1,16 @@
 from .version import __version__
 
-__all__ = ["__version__", "run", "serve", "serve_import_string", "StaticFilesApp", "EmbeddedServer"]
+__all__ = [
+    "__version__",
+    "run",
+    "serve",
+    "serve_import_string",
+    "StaticFilesApp",
+    "EmbeddedServer",
+    "NativeContractApp",
+    "native_contract_app",
+    "mark_native_contract_app",
+]
 
 
 def __getattr__(name: str):
@@ -17,6 +27,15 @@ def __getattr__(name: str):
         from .embedded import EmbeddedServer
 
         return EmbeddedServer
+    if name in {"NativeContractApp", "native_contract_app", "mark_native_contract_app"}:
+        from .app_interfaces import NativeContractApp, mark_native_contract_app, native_contract_app
+
+        mapping = {
+            "NativeContractApp": NativeContractApp,
+            "native_contract_app": native_contract_app,
+            "mark_native_contract_app": mark_native_contract_app,
+        }
+        return mapping[name]
     if name == "StaticFilesApp":
         from .static import StaticFilesApp
 
