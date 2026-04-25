@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: HTTP/2 stream identity contract tests are planned in SSOT")
-class ContractHTTP2StreamIdentityTests(unittest.TestCase):
+class ContractHTTP2StreamIdentityTests(ContractClosureAssertions):
     def test_http2_stream_identity_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_stream_identity('http2')

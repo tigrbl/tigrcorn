@@ -14,6 +14,7 @@ superseded_by: []
 status_notes: []
 references: []
 spec_kind: "normative"
+adr_ids: []
 body: |-
   The authored registry is entity-centric JSON.
   The graph export is derived and consists of nodes and typed edges.

@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: ALPN metadata contract tests are planned in SSOT")
-class ContractALPNMetadataTests(unittest.TestCase):
+class ContractALPNMetadataTests(ContractClosureAssertions):
     def test_alpn_metadata_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_security_metadata('alpn')

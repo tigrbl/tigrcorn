@@ -52,3 +52,4 @@ body: |-
   
   Broader flow-control and strict all-surfaces-independent follow-on work remains tracked separately and does not change the current passing release-gate result.
 spec_kind: "local-policy"
+adr_ids: []

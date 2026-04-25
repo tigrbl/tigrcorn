@@ -18,13 +18,14 @@ references:
   - "ADR-1027"
 body: |-
   # Error and rejection semantics
-
+  
   Tigrcorn shall define fail-closed error and rejection behavior for invalid contract and ASGI/3 compatibility states.
-
+  
   Requirements:
-
+  
   - Invalid scopes are rejected before application dispatch.
   - Invalid event order, event type, or binding combinations produce deterministic errors.
   - Unsupported compatibility mappings identify the unsupported field or event.
   - Rejection paths are observable and covered by tests.
 spec_kind: "local-policy"
+adr_ids: []

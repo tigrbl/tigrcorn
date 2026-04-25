@@ -17,19 +17,20 @@ references:
   - "ADR-1014"
 body: |-
   # ASGI/3 compatibility layer
-
+  
   Tigrcorn shall support ASGI/3 applications through an explicit compatibility layer.
-
+  
   Requirements:
-
+  
   - Standard ASGI/3 callable applications run through the compatibility dispatcher.
   - Starlette, FastAPI, Tigrbl, and other ASGI/3 applications remain in bounds.
   - Compatibility behavior is active only for ASGI/3 applications or explicitly configured ASGI/3 mounts.
   - Native contract applications bypass this layer.
-
+  
   Non-supported compatibility interfaces:
-
+  
   - ASGI2.
   - WSGI.
   - RSGI.
 spec_kind: "local-policy"
+adr_ids: []

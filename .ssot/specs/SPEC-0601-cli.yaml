@@ -14,6 +14,7 @@ superseded_by: []
 status_notes: []
 references: []
 spec_kind: "operational"
+adr_ids: []
 body: |-
   Primary distribution: `ssot-cli`
   
@@ -40,3 +41,14 @@ body: |-
   - `ssot-registry release publish`
   - `ssot-registry release revoke`
   - `ssot-registry graph export`
+  
+  ADR and SPEC authoring commands SHALL support two body source flags:
+  - `--body`
+  - `--body-file`
+  
+  CLI source-selection rules:
+  - `adr create` and `spec create` SHALL require exactly one of `--body` or `--body-file`
+  - `adr update` and `spec update` SHALL allow zero or one of `--body` or `--body-file`
+  - create and update commands SHALL reject requests that provide both `--body` and `--body-file`
+  
+  CLI body flags SHALL map directly onto the corresponding runtime document mutation inputs.

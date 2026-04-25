@@ -13,6 +13,10 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
 
 
+def _portable_path(value: str) -> str:
+    return value.replace('\\', '/')
+
+
 def test_aioquic_preflight_docs_bundle_and_notes_exist() -> None:
     assert (CONFORMANCE / 'AIOQUIC_ADAPTER_PREFLIGHT.md').exists()
     assert (CONFORMANCE / 'aioquic_adapter_preflight.current.json').exists()
@@ -22,7 +26,7 @@ def test_aioquic_preflight_docs_bundle_and_notes_exist() -> None:
 
     manifest = _load_json(RELEASE_ROOT / 'manifest.json')
     assert 'aioquic_adapter_preflight' in manifest['bundles']
-    assert manifest['bundles']['aioquic_adapter_preflight']['path'] == str(BUNDLE_ROOT.relative_to(ROOT))
+    assert _portable_path(manifest['bundles']['aioquic_adapter_preflight']['path']) == BUNDLE_ROOT.relative_to(ROOT).as_posix()
 
     bundle_index = _load_json(BUNDLE_ROOT / 'index.json')
     status = _load_json(CONFORMANCE / 'aioquic_adapter_preflight.current.json')

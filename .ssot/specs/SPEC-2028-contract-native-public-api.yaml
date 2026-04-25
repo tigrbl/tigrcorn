@@ -17,13 +17,14 @@ references:
   - "ADR-1027"
 body: |-
   # Contract-native public API
-
+  
   Tigrcorn shall provide a public API for registering and serving contract-native applications.
-
+  
   Requirements:
-
+  
   - Native app registration is explicit and documented.
   - Public APIs do not require native apps to mimic ASGI/3 call signatures.
   - The API exposes capability declaration, app metadata, and dispatch selection.
   - ASGI/3 compatibility registration remains available through its own path.
 spec_kind: "local-policy"
+adr_ids: []

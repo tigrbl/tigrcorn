@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: RSGI compatibility exclusion tests are planned in SSOT")
-class RSGICompatExclusionTests(unittest.TestCase):
+class RSGICompatExclusionTests(ContractClosureAssertions):
     def test_rsgi_compat_exclusion_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_compat_exclusion('rsgi')

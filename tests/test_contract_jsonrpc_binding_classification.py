@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: JSON-RPC binding classification closure tests are planned in SSOT")
-class ContractJSONRPCBindingClassificationTests(unittest.TestCase):
+class ContractJSONRPCBindingClassificationTests(ContractClosureAssertions):
     def test_jsonrpc_binding_classification_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_binding_classification('jsonrpc')

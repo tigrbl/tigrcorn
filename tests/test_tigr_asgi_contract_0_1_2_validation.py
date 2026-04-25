@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: tigr-asgi-contract schema target validation tests are planned in SSOT")
-class TigrASGIContract012ValidationTests(unittest.TestCase):
-    def test_tigr_asgi_contract_0_1_2_validation_contract(self) -> None:
-        self.fail("placeholder")
+class TigrASGIContractValidationTests(ContractClosureAssertions):
+    def test_tigr_asgi_contract_validation_surface(self) -> None:
+        self.assert_contract_validation_surface()

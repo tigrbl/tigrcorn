@@ -19,6 +19,8 @@ from tigrcorn.protocols.websocket.frames import encode_frame, read_frame
 
 async def _start_http_server(app):
     config = build_config(host='127.0.0.1', port=0, lifespan='off', http_versions=['1.1'])
+    config.http.connect_policy = 'relay'
+    config.websocket.compression = 'permessage-deflate'
     server = TigrCornServer(app, config)
     await server.start()
     port = server._listeners[0].server.sockets[0].getsockname()[1]
@@ -108,7 +110,7 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
 
         async def app(scope, receive, send):
             await receive()
-            await send({'type': 'websocket.accept', 'headers': [(b'sec-websocket-extensions', b'permessage-deflate')]})
+            await send({'type': 'websocket.accept', 'headers': []})
             event = await receive()
             seen['event'] = event
             await send({'type': 'websocket.send', 'text': event['text']})

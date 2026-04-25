@@ -16,13 +16,14 @@ references:
   - "ADR-1030"
 body: |-
   # Contract documentation and migration policy
-
+  
   Tigrcorn documentation shall describe native contract usage, ASGI/3 compatibility, and migration rules.
-
+  
   Requirements:
-
+  
   - Docs identify `tigr-asgi-contract` as the native runtime contract.
   - Docs preserve ASGI/3 as a first-class compatibility path.
   - Docs list extension keys, lossy mappings, and fail-closed cases.
   - Docs state that ASGI2, WSGI, and RSGI are not supported product interfaces.
 spec_kind: "local-policy"
+adr_ids: []

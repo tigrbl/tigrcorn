@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: datagram flow-control mapping closure tests are planned in SSOT")
-class ContractDatagramFlowControlMappingTests(unittest.TestCase):
+class ContractDatagramFlowControlMappingTests(ContractClosureAssertions):
     def test_datagram_flow_control_mapping_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_generic_datagram_runtime()

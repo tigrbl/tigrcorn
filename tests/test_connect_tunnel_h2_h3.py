@@ -14,6 +14,7 @@ from tigrcorn.transports.quic import QuicConnection
 
 async def _start_h2_server(app):
     config = build_config(host='127.0.0.1', port=0, lifespan='off', http_versions=['2'])
+    config.http.connect_policy = 'relay'
     server = TigrCornServer(app, config)
     await server.start()
     port = server._listeners[0].server.sockets[0].getsockname()[1]
@@ -30,6 +31,7 @@ async def _start_h3_server(app):
         protocols=['http3'],
         quic_secret=b'shared',
     )
+    config.http.connect_policy = 'relay'
     server = TigrCornServer(app, config)
     await server.start()
     port = server._listeners[0].transport.get_extra_info('sockname')[1]

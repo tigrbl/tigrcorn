@@ -31,6 +31,7 @@
     "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-mixed-compatibility-release-matrix",
     "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-mixed-compatibility-release-matrix\\index.json",
     "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-mixed-compatibility-release-matrix\\manifest.json",
+    ".ssot\\registry.json",
     "docs\\review\\conformance\\claims_registry.json",
     "docs\\conformance\\risk\\RISK_REGISTER.json",
     "docs\\conformance\\risk\\RISK_TRACEABILITY.json",

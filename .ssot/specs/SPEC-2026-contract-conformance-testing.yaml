@@ -16,13 +16,14 @@ references:
   - "ADR-1029"
 body: |-
   # Contract conformance testing
-
+  
   Tigrcorn shall test contract conformance across native and ASGI/3 compatibility paths.
-
+  
   Requirements:
-
+  
   - Every supported contract scope has positive and negative tests.
   - Every supported contract event family has ordering and legality tests.
   - ASGI/3 compatibility tests prove standard framework apps still run.
   - Unsupported interfaces, including ASGI2, WSGI, and RSGI, are not certified as supported.
 spec_kind: "local-policy"
+adr_ids: []

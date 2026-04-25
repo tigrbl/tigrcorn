@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: datagram unit identity contract tests are planned in SSOT")
-class ContractDatagramUnitIdentityTests(unittest.TestCase):
+class ContractDatagramUnitIdentityTests(ContractClosureAssertions):
     def test_datagram_unit_identity_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_datagram_identity()

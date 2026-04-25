@@ -29,6 +29,7 @@ INIT_NORMALIZED_DIRS = (
     "reports",
     "cache",
 )
+MAX_NORMALIZED_ID_LENGTH = 128
 
 TIER_MAP = {
     "local_conformance": "T2",
@@ -62,20 +63,29 @@ def _slug(value: str) -> str:
     return lowered
 
 
+def _bounded_id(prefix: str, slug: str) -> str:
+    candidate = f"{prefix}:{slug}"
+    if len(candidate) <= MAX_NORMALIZED_ID_LENGTH:
+        return candidate
+    digest = hashlib.sha256(candidate.encode("utf-8")).hexdigest()[:10]
+    keep = MAX_NORMALIZED_ID_LENGTH - len(prefix) - len(digest) - 2
+    return f"{prefix}:{slug[:keep].rstrip('-')}-{digest}"
+
+
 def _claim_id(raw: str) -> str:
-    return f"clm:{_slug(raw)}"
+    return _bounded_id("clm", _slug(raw))
 
 
 def _test_id(prefix: str, raw: str) -> str:
-    return f"tst:{prefix}-{_slug(raw)}"
+    return _bounded_id("tst", f"{prefix}-{_slug(raw)}")
 
 
 def _evidence_id(prefix: str, raw: str) -> str:
-    return f"evd:{prefix}-{_slug(raw)}"
+    return _bounded_id("evd", f"{prefix}-{_slug(raw)}")
 
 
 def _feature_id(raw: str) -> str:
-    return f"feat:{_slug(raw)}"
+    return _bounded_id("feat", _slug(raw))
 
 
 def _feature_title(raw: str) -> str:
@@ -137,7 +147,7 @@ def _merge_impl_status(current: str, candidate: str) -> str:
 
 
 def _issue_id(raw: str) -> str:
-    return f"iss:{_slug(raw)}"
+    return _bounded_id("iss", _slug(raw))
 
 
 def _sha256(path: Path) -> str:
@@ -155,10 +165,12 @@ def _normalized_content_sha(path: Path) -> str:
 def _load_ssot_package_metadata() -> dict[str, Any]:
     try:
         from ssot_registry.model.document import default_document_id_reservations, load_document_manifest
+        from ssot_registry.model.enums import SCHEMA_VERSION
         from ssot_registry.model.registry import default_guard_policies
         from ssot_registry.version import __version__
     except ImportError:
         return {
+            "schema_version": "0.1.0",
             "version": "0.2.2",
             "guard_policies": {
                 "claim_closure": {
@@ -233,6 +245,7 @@ def _load_ssot_package_metadata() -> dict[str, Any]:
         }
 
     return {
+        "schema_version": SCHEMA_VERSION,
         "version": __version__,
         "guard_policies": default_guard_policies(),
         "document_id_reservations": default_document_id_reservations(),
@@ -270,6 +283,8 @@ def _inventory_documents(
     manifest_paths = {entry["target_path"] for entry in manifest}
 
     for entry in manifest:
+        if not (ROOT / entry["target_path"]).exists():
+            continue
         row = {
             "id": entry["id"],
             "number": entry["number"],
@@ -289,6 +304,7 @@ def _inventory_documents(
             row["status_notes"] = entry.get("status_notes", [])
         else:
             row["kind"] = entry.get("kind", "normative")
+            row["adr_ids"] = entry.get("adr_ids", [])
             row["status"] = entry.get("status", "draft")
             row["supersedes"] = entry.get("supersedes", [])
             row["superseded_by"] = entry.get("superseded_by", [])
@@ -336,6 +352,7 @@ def _inventory_documents(
                 row["status_notes"] = payload.get("status_notes", [])
             else:
                 row["kind"] = payload.get("spec_kind", "local-policy")
+                row["adr_ids"] = payload.get("adr_ids", [])
                 row["status"] = payload.get("status", "draft")
                 row["supersedes"] = payload.get("supersedes", [])
                 row["superseded_by"] = payload.get("superseded_by", [])
@@ -347,6 +364,7 @@ def _inventory_documents(
             row["status_notes"] = []
         else:
             row["kind"] = "local-policy"
+            row["adr_ids"] = []
             row["status"] = "draft"
             row["supersedes"] = []
             row["superseded_by"] = []
@@ -959,8 +977,8 @@ def build_registry() -> dict[str, Any]:
             description=description,
             tier="T3",
             slot="webtransport-contract",
-            horizon="next",
-            implementation_status="absent",
+            horizon="current",
+            implementation_status="implemented",
         )
     link_feature_specs(webtransport_feature_ids, webtransport_specs)
     rest_jsonrpc_exclusion_ids = [
@@ -1530,6 +1548,41 @@ def build_registry() -> dict[str, Any]:
         "contract-native-public-api",
         "compat-dispatch-selection",
         "asgi3-hot-path-isolation",
+        "contract-listener-endpoint-metadata",
+        "contract-uds-endpoint-metadata",
+        "contract-fd-endpoint-metadata",
+        "contract-pipe-endpoint-metadata",
+        "contract-inproc-endpoint-metadata",
+        "contract-tcp-connection-identity",
+        "contract-unix-connection-identity",
+        "contract-quic-connection-identity",
+        "contract-http2-stream-identity",
+        "contract-http3-stream-identity",
+        "contract-webtransport-session-identity",
+        "contract-webtransport-stream-identity",
+        "contract-datagram-unit-identity",
+        "contract-tls-endpoint-metadata",
+        "contract-mtls-peer-metadata",
+        "contract-alpn-metadata",
+        "contract-sni-metadata",
+        "contract-ocsp-crl-metadata",
+        "asgi3-endpoint-metadata-extension",
+        "asgi3-transport-identity-extension",
+        "asgi3-security-metadata-extension",
+        "asgi3-stream-datagram-extension",
+        "contract-unsupported-scope-rejection",
+        "contract-lossy-metadata-rejection",
+        "contract-illegal-event-order-rejection",
+        "contract-invalid-endpoint-metadata-rejection",
+        "generic-stream-runtime",
+        "generic-datagram-runtime",
+        "stream-backpressure-mapping",
+        "datagram-flow-control-mapping",
+        "emit-completion-events",
+        "emit-completion-asgi-extension",
+        "rest-binding-classification",
+        "jsonrpc-binding-classification",
+        "sse-binding-classification",
         "app-interface-cli-flag",
         "app-interface-config-toml",
         "app-interface-env-var",
@@ -1585,9 +1638,25 @@ def build_registry() -> dict[str, Any]:
         )
         link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034", "spc:2037"])
 
+    closed_test_feature_ids = set(implemented_contract_app_interface_features) | {
+        "webtransport-h3-quic-scope",
+        "webtransport-h3-quic-session-events",
+        "webtransport-h3-quic-stream-events",
+        "webtransport-h3-quic-datagram-events",
+        "webtransport-h3-quic-completion-events",
+        "tigr-asgi-contract-0-1-2-validation",
+        "rest-runtime-exclusion",
+        "json-rpc-runtime-exclusion",
+        "asgi2-compat-exclusion",
+        "wsgi-compat-exclusion",
+        "rsgi-compat-exclusion",
+    }
+
     planned_test_inventory_path = "tests/test_contract_planned_coverage_inventory.py"
 
     def ensure_planned_feature_test(raw_feature_id: str, title: str) -> None:
+        if raw_feature_id in closed_test_feature_ids:
+            return
         feature_id = _feature_id(raw_feature_id)
         target_tier = str(features[feature_id]["plan"].get("target_claim_tier") or "T1")
         claim_id = _claim_id(f"planned-test-coverage-{raw_feature_id}")
@@ -1644,7 +1713,7 @@ def build_registry() -> dict[str, Any]:
     for raw_feature_id, title, _description, _spec_ids, _slot in contract_feature_rows:
         ensure_planned_feature_test(raw_feature_id, title)
 
-    placeholder_feature_tests = [
+    concrete_closure_feature_tests = [
         ("webtransport-h3-quic-scope", "WebTransport H3/QUIC scope", "tests/test_webtransport_h3_quic_scope.py"),
         ("webtransport-h3-quic-session-events", "WebTransport H3/QUIC session events", "tests/test_webtransport_h3_quic_session_events.py"),
         ("webtransport-h3-quic-stream-events", "WebTransport H3/QUIC stream events", "tests/test_webtransport_h3_quic_stream_events.py"),
@@ -1692,42 +1761,6 @@ def build_registry() -> dict[str, Any]:
         ("contract-illegal-event-order-rejection", "Contract illegal event order rejection", "tests/test_contract_illegal_event_order_rejection.py"),
         ("contract-invalid-endpoint-metadata-rejection", "Contract invalid endpoint metadata rejection", "tests/test_contract_invalid_endpoint_metadata_rejection.py"),
     ]
-    for raw_feature_id, title, path in placeholder_feature_tests:
-        feature_id = _feature_id(raw_feature_id)
-        claim_id = _claim_id(f"placeholder-test-coverage-{raw_feature_id}")
-        test_id = _test_id("placeholder", raw_feature_id)
-        evidence_id = _evidence_id("placeholder", raw_feature_id)
-        ensure_claim(
-            claim_id=claim_id,
-            title=f"Placeholder test coverage for {title}",
-            description=f"Placeholder test file is linked for feature {feature_id}.",
-            tier="T1",
-            kind="planned_test_coverage",
-            feature_ids=[feature_id],
-        )
-        claims[claim_id]["status"] = "proposed"
-        release_claim_ids.discard(claim_id)
-        ensure_evidence(
-            evidence_id=evidence_id,
-            title=f"Placeholder test evidence for {title}",
-            kind="placeholder_test_file",
-            tier="T1",
-            path=path,
-            claim_ids=[claim_id],
-            test_ids=[test_id],
-        )
-        release_evidence_ids.discard(evidence_id)
-        ensure_test(
-            test_id=test_id,
-            title=f"Placeholder coverage: {title}",
-            status="planned",
-            kind="pytest",
-            path=path,
-            feature_ids=[feature_id],
-            claim_ids=[claim_id],
-            evidence_ids=[evidence_id],
-        )
-
     concrete_feature_tests = [
         (
             "contract-native-runtime",
@@ -1818,14 +1851,31 @@ def build_registry() -> dict[str, Any]:
             "evd:app-interface-fail-closed-ambiguity-pytest",
         ),
     ]
+    for raw_feature_id, title, path in concrete_closure_feature_tests:
+        slug = _slug(raw_feature_id)
+        concrete_feature_tests.append(
+            (
+                raw_feature_id,
+                title,
+                path,
+                f"tst:{slug}",
+                f"clm:{slug}-implemented",
+                f"evd:{slug}-pytest",
+            )
+        )
     for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
         feature_id = _feature_id(raw_feature_id)
+        out_of_bounds = features[feature_id]["plan"]["horizon"] == "out_of_bounds"
         ensure_claim(
             claim_id=claim_id,
-            title=f"{title} implemented",
-            description=f"Executable tests verify feature {feature_id}.",
+            title=f"{title} {'exclusion verified' if out_of_bounds else 'implemented'}",
+            description=(
+                f"Executable negative tests verify product-boundary exclusion for {feature_id}."
+                if out_of_bounds
+                else f"Executable tests verify feature {feature_id}."
+            ),
             tier="T3",
-            kind="implementation",
+            kind="boundary_exclusion" if out_of_bounds else "implementation",
             feature_ids=[feature_id],
         )
         ensure_evidence(
@@ -1840,7 +1890,7 @@ def build_registry() -> dict[str, Any]:
         ensure_test(
             test_id=test_id,
             title=title,
-            status="current",
+            status="passing",
             kind="pytest",
             path=path,
             feature_ids=[feature_id],
@@ -2079,7 +2129,7 @@ def build_registry() -> dict[str, Any]:
     )
 
     registry = {
-        "schema_version": "0.1.0",
+        "schema_version": package_meta["schema_version"],
         "repo": {
             "id": "repo:tigrcorn",
             "name": "tigrcorn",

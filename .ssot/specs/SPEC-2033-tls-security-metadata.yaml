@@ -16,13 +16,14 @@ references:
   - "ADR-1020"
 body: |-
   # TLS and security metadata
-
+  
   Tigrcorn shall expose TLS and security metadata through contract metadata and ASGI/3 extensions.
-
+  
   Requirements:
-
+  
   - Native scopes expose available TLS version, cipher, ALPN, SNI, certificate, and verification metadata.
   - Sensitive metadata is redacted or omitted according to documented policy.
   - ASGI/3 compatibility exposes TLS metadata through extension keys.
   - Tests cover metadata presence, absence, and redaction behavior.
 spec_kind: "local-policy"
+adr_ids: []

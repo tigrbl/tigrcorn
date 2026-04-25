@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: SSE binding classification closure tests are planned in SSOT")
-class ContractSSEBindingClassificationTests(unittest.TestCase):
+class ContractSSEBindingClassificationTests(ContractClosureAssertions):
     def test_sse_binding_classification_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_binding_classification('sse')

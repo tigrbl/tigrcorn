@@ -897,3 +897,4 @@ body: |-
   - `--quic-secret` exists in the parser but is intentionally hidden from the public help and excluded from the public certified CLI surface.
   - When public CLI behavior changes, maintainers must update code, tests, `cli_flag_surface.json`, the human CLI docs, and current-state/promotion docs together.
 spec_kind: "local-policy"
+adr_ids: []

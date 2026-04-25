@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: SNI metadata contract tests are planned in SSOT")
-class ContractSNIMetadataTests(unittest.TestCase):
+class ContractSNIMetadataTests(ContractClosureAssertions):
     def test_sni_metadata_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_security_metadata('sni')

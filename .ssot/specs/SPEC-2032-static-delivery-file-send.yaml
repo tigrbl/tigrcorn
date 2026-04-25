@@ -17,13 +17,14 @@ references:
   - "ADR-1017"
 body: |-
   # Static delivery and file-send mapping
-
+  
   Tigrcorn shall map static delivery and file-send behavior into contract metadata and ASGI/3 compatibility extensions.
-
+  
   Requirements:
-
+  
   - Native contract responses can represent file-send intent and completion metadata.
   - ASGI/3 compatibility preserves existing file-send extension behavior where implemented.
   - Range, conditional, content-coding, and trailer interactions remain aligned with HTTP specs.
   - Unsupported file-send carrier behavior is explicit.
 spec_kind: "local-policy"
+adr_ids: []

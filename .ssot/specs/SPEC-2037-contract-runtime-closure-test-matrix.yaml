@@ -22,11 +22,11 @@ references:
   - "ADR-1028"
 body: |-
   # Contract runtime closure test matrix
-
+  
   Tigrcorn shall define the required verification matrix for certifying WebTransport, stream, datagram, completion, classification, and exclusion closure features.
-
+  
   Requirements:
-
+  
   - Every WebTransport closure feature shall have positive scope/session/stream/datagram/completion tests and negative ordering, metadata, and unsupported-carrier tests.
   - Every generic stream and datagram feature shall have capability, identity, lifecycle, carrier-semantics, and flow-control tests.
   - Every completion feature shall verify buffering, flush, transport handoff, acknowledgement, unsupported-level rejection, and ASGI/3 extension exposure where compatibility is selected.
@@ -35,8 +35,9 @@ body: |-
   - ASGI2, WSGI, and RSGI exclusion tests shall prove those interfaces are not supported product interfaces and are rejected unless a future explicit adapter feature is created.
   - Each test row shall link to its immediate feature, claim, and evidence rows so release closure can prove certifiable implementation status.
   - Negative tests shall fail closed with deterministic errors before dispatch or event emission.
-
+  
   Certification rule:
-
+  
   A closure feature is certifiably complete only when its positive tests, negative tests, SSOT feature links, claims, evidence rows, and release-boundary status all agree.
 spec_kind: "local-policy"
+adr_ids: []

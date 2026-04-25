@@ -38,3 +38,4 @@ body: |-
   - inventing registry-only issue entities without a backing claim row
   - treating mutable prose notes as the sole machine-readable issue source
 spec_kind: "local-policy"
+adr_ids: []

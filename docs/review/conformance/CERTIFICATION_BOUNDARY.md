@@ -81,6 +81,8 @@ Historical preserved roots remain in-tree for provenance:
 - `docs/review/conformance/releases/0.3.6-rfc-hardening/release-0.3.6-rfc-hardening/`
 - `docs/review/conformance/releases/0.3.7/release-0.3.7/`
 
+The preserved `0.3.7` root remains the candidate next release root for the Phase 7 checkpoint only; it is not the current canonical release root.
+
 The 0.3.9 canonical root is green under both the authoritative boundary and the stricter all-surfaces-independent target.
 
 ## Release-gate requirements

@@ -1,4 +1,5 @@
-usage: tigrcorn [-h] [--factory] [--app-dir APP_DIR] [--reload]
+usage: tigrcorn [-h] [--app-interface {auto,tigr-asgi-contract,asgi3}]
+                [--factory] [--app-dir APP_DIR] [--reload]
                 [--reload-dir RELOAD_DIR] [--reload-include RELOAD_INCLUDE]
                 [--reload-exclude RELOAD_EXCLUDE] [--workers WORKERS]
                 [--worker-class WORKER_CLASS]
@@ -89,6 +90,8 @@ options:
   -h, --help            show this help message and exit
 
 App / process / development:
+  --app-interface {auto,tigr-asgi-contract,asgi3}
+                        Application interface dispatch mode
   --factory             Treat APP as an application factory
   --app-dir APP_DIR     Add a directory to sys.path before loading the app
   --reload              Enable development autoreload

@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: REST runtime exclusion tests are planned in SSOT")
-class RESTRuntimeExclusionTests(unittest.TestCase):
+class RESTRuntimeExclusionTests(ContractClosureAssertions):
     def test_rest_runtime_exclusion_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_runtime_exclusion('rest')

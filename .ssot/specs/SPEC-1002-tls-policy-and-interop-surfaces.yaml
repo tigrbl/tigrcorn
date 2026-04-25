@@ -44,3 +44,4 @@ body: |-
   
   This repo-local spec does not replace the RFC-scoped claim rows. It provides one local specification surface that explains how the TLS-related claim family is organized in Tigrcorn's SSOT material.
 spec_kind: "local-policy"
+adr_ids: []

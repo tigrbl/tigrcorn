@@ -1870,6 +1870,77 @@
       }
     },
     {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --app-interface at app.interface. This surface selects the supported application interface boundary between auto detection, native tigr-asgi-contract, and ASGI3.",
+      "config_path": "app.interface",
+      "contract_id": "app_interface",
+      "default": "auto",
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "App / process / development",
+      "flag_id": "app_interface",
+      "flag_strings": [
+        "--app-interface"
+      ],
+      "help_text": "Application interface dispatch mode",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/normalize.py",
+        "src/tigrcorn/config/validate.py",
+        "src/tigrcorn/app_interfaces.py",
+        "src/tigrcorn/server/runner.py",
+        "src/tigrcorn/embedded.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "operator_bundle_only",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true,
+        "release_note": "Native contract and ASGI3 app-interface selection is wired through CLI/config/env/public API dispatch with fail-closed ambiguity handling."
+      },
+      "unit_tests": [
+        "tests/test_app_interface_cli_flag.py::AppInterfaceCLIFlagTests::test_cli_flag_selects_app_interface",
+        "tests/test_app_interface_config_toml.py::AppInterfaceConfigTOMLTests::test_config_toml_selects_app_interface",
+        "tests/test_app_interface_env_var.py::AppInterfaceEnvVarTests::test_env_var_selects_app_interface",
+        "tests/test_app_interface_public_api.py::AppInterfacePublicAPITests::test_public_api_selects_app_interface",
+        "tests/test_app_interface_detection_precedence.py::AppInterfaceDetectionPrecedenceTests::test_cli_overrides_config_for_app_interface",
+        "tests/test_app_interface_fail_closed_ambiguity.py::AppInterfaceFailClosedAmbiguityTests::test_ambiguous_app_interface_fails_closed"
+      ],
+      "validation_rules": [
+        "enum: auto, tigr-asgi-contract, asgi3",
+        "fail-closed ambiguity"
+      ],
+      "value_space": {
+        "kind": "enum",
+        "sample": "tigr-asgi-contract",
+        "values": [
+          "auto",
+          "tigr-asgi-contract",
+          "asgi3"
+        ]
+      }
+    },
+    {
       "claim_class": "hybrid",
       "claim_text": "Hybrid contract for --fd at listeners[].fd. This control is not itself RFC-defined, but it must preserve the declared RFC surfaces under supported load and deployment profiles.",
       "config_path": "listeners[].fd",
@@ -10185,7 +10256,7 @@
   ],
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "current_state": {
-    "contract_rows_defined": 124,
+    "contract_rows_defined": 125,
     "notes": [
       "Phase 7 reconciles markdown, JSON, CLI help snapshots, and current-state truth for the full 124-flag public surface.",
       "Phase 6 publishes the public lifecycle and EmbeddedServer contract with ordering and failure semantics.",
@@ -10201,9 +10272,9 @@
       "Step 2 descopes trio from the public runtime surface until an end-to-end trio server core is implemented.",
       "Phase 2 adds server-native static route/mount/index/expires controls and closes standard ASGI http.response.pathsend-backed file delivery."
     ],
-    "promotion_ready_rows": 124,
+    "promotion_ready_rows": 125,
     "review_status": "reviewed_phase2",
-    "reviewed_contract_rows": 124,
+    "reviewed_contract_rows": 125,
     "runtime_gap_flags": [],
     "strict_target_pending_flags": [
       "--connect-allow",
@@ -10224,10 +10295,10 @@
   "phase2_review": {
     "default_audit": "DEFAULT_AUDIT.json",
     "profile_defaults_dir": "PROFILE_DEFAULTS",
-    "public_flag_string_count": 124,
+    "public_flag_string_count": 125,
     "review_status": "reviewed_phase2",
     "reviewed": true,
-    "reviewed_contract_rows": 124
+    "reviewed_contract_rows": 125
   },
   "phase3_review": {
     "contract_doc": "docs/conformance/proxy_contract.md",
@@ -10285,7 +10356,7 @@
     "status": "frozen",
     "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md"
   },
-  "public_flag_string_count": 124,
+  "public_flag_string_count": 125,
   "schema_version": 1,
   "strict_target_boundary": "docs/review/conformance/certification_boundary.strict_target.json",
   "target_name": "phase8_family_flag_contracts"

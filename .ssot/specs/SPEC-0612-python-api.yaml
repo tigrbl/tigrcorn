@@ -14,6 +14,7 @@ superseded_by: []
 status_notes: []
 references: []
 spec_kind: "operational"
+adr_ids: []
 body: |-
   Stable imports:
   
@@ -33,5 +34,20 @@ body: |-
       publish_release,
       revoke_release,
       export_graph,
+      create_document,
+      update_document,
   )
   ```
+  
+  Authored document mutations SHALL support source selection through Python API parameters:
+  
+  ```python
+  create_document(..., body: str | None = None, body_file: str | Path | None = None, ...)
+  update_document(..., body: str | None = None, body_file: str | Path | None = None, ...)
+  ```
+  
+  API source-selection rules:
+  - `create_document()` SHALL require exactly one of `body` or `body_file`
+  - `update_document()` SHALL allow zero or one of `body` or `body_file`
+  - both APIs SHALL reject requests that provide both `body` and `body_file`
+  - `update_document()` with neither input SHALL preserve the existing authored body while applying other requested mutable-field changes

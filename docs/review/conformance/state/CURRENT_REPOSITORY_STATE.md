@@ -8,6 +8,7 @@ The repository continues to operate under the **dual-boundary model**:
 
 Historical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the canonical 0.3.9 release root is now green.
 
+- Canonical promotion was **not** performed for the historical 0.3.7 candidate checkpoint.
 - `evaluate_release_gates('.')` is **green** under the authoritative boundary
 - the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **green** under the canonical 0.3.9 release root
 - `evaluate_promotion_target()` is now **green**

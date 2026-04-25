@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: emit completion ASGI extension closure tests are planned in SSOT")
-class ContractEmitCompletionASGIExtensionTests(unittest.TestCase):
+class ContractEmitCompletionASGIExtensionTests(ContractClosureAssertions):
     def test_emit_completion_asgi_extension_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_asgi3_extension('tigrcorn.emit_completion')

@@ -16,13 +16,14 @@ references:
   - "ADR-1027"
 body: |-
   # Compatibility app detection
-
+  
   Tigrcorn shall detect or configure native contract apps and ASGI/3 apps before dispatch.
-
+  
   Requirements:
-
+  
   - Explicit operator configuration takes precedence over introspection.
   - Native contract apps can identify themselves through a stable contract marker or wrapper.
   - ASGI/3 apps are selected through ASGI/3-compatible call signatures or explicit configuration.
   - Ambiguous or unsupported app interfaces fail closed.
 spec_kind: "local-policy"
+adr_ids: []

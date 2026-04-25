@@ -16,13 +16,14 @@ references:
   - "ADR-1021"
 body: |-
   # Family capability declarations
-
+  
   Tigrcorn shall declare request, session, message, stream, and datagram capabilities through the contract model.
-
+  
   Requirements:
-
+  
   - Each accepted scope declares the families it supports.
   - Runtime event validation uses the declared family capabilities.
   - ASGI/3 compatibility advertises only capabilities it can expose.
   - Unsupported family access fails before application dispatch where possible.
 spec_kind: "local-policy"
+adr_ids: []

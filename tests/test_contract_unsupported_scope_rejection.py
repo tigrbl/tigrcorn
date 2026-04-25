@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: unsupported scope rejection tests are planned in SSOT")
-class ContractUnsupportedScopeRejectionTests(unittest.TestCase):
+class ContractUnsupportedScopeRejectionTests(ContractClosureAssertions):
     def test_unsupported_scope_rejection_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_unsupported_scope_rejection()

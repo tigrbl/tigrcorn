@@ -51,3 +51,4 @@ body: |-
   
   This specification refines ADR-1012, ADR-1013, ADR-1014, and ADR-1027 for operator-facing and programmatic configuration surfaces.
 spec_kind: "local-policy"
+adr_ids: []

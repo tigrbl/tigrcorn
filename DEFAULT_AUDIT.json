@@ -7,6 +7,7 @@
     "app.env_file": null,
     "app.env_prefix": "TIGRCORN",
     "app.factory": false,
+    "app.interface": "auto",
     "app.lifespan": "auto",
     "app.profile": "default",
     "app.reload": false,
@@ -320,6 +321,13 @@
       "config_path": "app.factory",
       "effective_default": false,
       "flag": "--factory",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "app.interface",
+      "effective_default": "auto",
+      "flag": "--app-interface",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -1117,6 +1125,6 @@
     "proxy.server_header.from": "tigrcorn",
     "proxy.server_header.to": ""
   },
-  "parser_public_flag_count": 124,
+  "parser_public_flag_count": 125,
   "profile": "default"
 }

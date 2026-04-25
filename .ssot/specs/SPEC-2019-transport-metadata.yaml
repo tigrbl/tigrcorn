@@ -16,13 +16,14 @@ references:
   - "ADR-1020"
 body: |-
   # Transport metadata
-
+  
   Tigrcorn shall expose transport metadata through the contract metadata model and ASGI/3 extensions.
-
+  
   Requirements:
-
+  
   - Native scopes include available protocol, peer, local address, ALPN, and transport state metadata.
   - Missing metadata is represented explicitly.
   - ASGI/3 compatibility exposes non-standard metadata through extension keys.
   - Metadata claims are backed by tests for each supported carrier.
 spec_kind: "local-policy"
+adr_ids: []

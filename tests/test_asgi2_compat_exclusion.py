@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: ASGI2 compatibility exclusion tests are planned in SSOT")
-class ASGI2CompatExclusionTests(unittest.TestCase):
+class ASGI2CompatExclusionTests(ContractClosureAssertions):
     def test_asgi2_compat_exclusion_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_compat_exclusion('asgi2')

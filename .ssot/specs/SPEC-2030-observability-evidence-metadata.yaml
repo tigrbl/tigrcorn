@@ -18,13 +18,14 @@ references:
   - "ADR-1029"
 body: |-
   # Observability and evidence metadata
-
+  
   Tigrcorn shall expose contract metadata in logs, metrics, traces, and SSOT evidence where applicable.
-
+  
   Requirements:
-
+  
   - Dispatch mode is visible as native contract or ASGI/3 compatibility.
   - Unit identifiers can connect runtime observations to conformance evidence.
   - Metadata redaction rules are explicit for sensitive transport fields.
   - Evidence records distinguish tested support from declared support.
 spec_kind: "local-policy"
+adr_ids: []

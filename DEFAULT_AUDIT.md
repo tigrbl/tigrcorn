@@ -28,6 +28,7 @@ This file is generated from code. It records the Phase 2 base default audit for 
 | `--env-prefix` | `app.env_prefix` | `None` | `TIGRCORN` | `reviewed_phase2` |
 | `--error-log-file` | `logging.error_log_file` | `None` | `None` | `reviewed_phase2` |
 | `--factory` | `app.factory` | `None` | `False` | `reviewed_phase2` |
+| `--app-interface` | `app.interface` | `None` | `auto` | `reviewed_phase2` |
 | `--fd` | `listeners[].fd` | `None` | `None` | `reviewed_phase2` |
 | `--forwarded-allow-ips` | `proxy.forwarded_allow_ips` | `None` | `[]` | `reviewed_phase2` |
 | `--host` | `listeners[].host` | `None` | `127.0.0.1` | `reviewed_phase2` |

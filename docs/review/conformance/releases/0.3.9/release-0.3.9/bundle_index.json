@@ -97,8 +97,8 @@
     "flag_surface": {
       "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle",
       "release_gate_eligible": true,
-      "flag_count": 124,
-      "promotion_ready_count": 124
+      "flag_count": 125,
+      "promotion_ready_count": 125
     },
     "operator_surface": {
       "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle",

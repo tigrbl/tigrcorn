@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: OCSP/CRL metadata contract tests are planned in SSOT")
-class ContractOCSPCRLMetadataTests(unittest.TestCase):
+class ContractOCSPCRLMetadataTests(ContractClosureAssertions):
     def test_ocsp_crl_metadata_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_security_metadata('ocsp')

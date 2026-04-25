@@ -1546,14 +1546,14 @@
       "risk_refs": [
         "R-DEFAULT-BACKFILL-NONE"
       ],
-      "spec_refs": [
-        "SPEC-1001",
-        "SPEC-2008"
-      ],
       "source_files": [
         "docs/governance/DEFAULT_AUDIT_POLICY.md",
         "DEFAULT_AUDIT.json",
         "DEFAULT_AUDIT.md"
+      ],
+      "spec_refs": [
+        "SPEC-1001",
+        "SPEC-2008"
       ],
       "status": "implemented_in_tree",
       "surface": "default_audit_governance",
@@ -1593,14 +1593,14 @@
       "risk_refs": [
         "R-TEST-STYLE-DRIFT"
       ],
-      "spec_refs": [
-        "SPEC-1001"
-      ],
       "source_files": [
         "docs/governance/TEST_STYLE_POLICY.md",
         "LEGACY_UNITTEST_INVENTORY.json",
         "scripts/ci/validate.sh",
         "tests/test_p8_gov.py"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "status": "implemented_in_tree",
       "surface": "test_style_governance",
@@ -1619,15 +1619,15 @@
       "risk_refs": [
         "R-TRACEABILITY-GOVERNANCE-GAP"
       ],
-      "spec_refs": [
-        "SPEC-1001"
-      ],
       "source_files": [
         "src/tigrcorn/compat/release_gates.py",
         "docs/conformance/risk/RISK_REGISTER.json",
         "docs/conformance/risk/RISK_TRACEABILITY.json",
         "LEGACY_UNITTEST_INVENTORY.json",
         "tests/test_p8_gov.py"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "status": "implemented_in_tree",
       "surface": "release_gate_graph",
@@ -1646,14 +1646,14 @@
       "risk_refs": [
         "R-RELEASE-EVIDENCE-RETENTION"
       ],
-      "spec_refs": [
-        "SPEC-1001"
-      ],
       "source_files": [
         "docs/conformance/interop_retention.json",
         "docs/conformance/interop_retention.md",
         "docs/conformance/risk/RISK_TRACEABILITY.json",
         "tests/test_p8_gov.py"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "status": "implemented_in_tree",
       "surface": "interop_retention",
@@ -1672,14 +1672,14 @@
       "risk_refs": [
         "R-RELEASE-EVIDENCE-RETENTION"
       ],
-      "spec_refs": [
-        "SPEC-1001"
-      ],
       "source_files": [
         "docs/conformance/perf_retention.json",
         "docs/conformance/perf_retention.md",
         "docs/conformance/risk/RISK_TRACEABILITY.json",
         "tests/test_p8_gov.py"
+      ],
+      "spec_refs": [
+        "SPEC-1001"
       ],
       "status": "implemented_in_tree",
       "surface": "performance_retention",

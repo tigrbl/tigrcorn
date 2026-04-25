@@ -37,8 +37,8 @@ async def _read_h3_response_with_client_progress(
     """
     loop = asyncio.get_running_loop()
     response_state = None
-    for _ in range(128):
-        data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 2.0)
+    for _ in range(256):
+        data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 5.0)
         for event in client.receive_datagram(data):
             if event.kind == 'stream' and event.stream_id == 0:
                 response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)

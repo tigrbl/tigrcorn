@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: Unix connection identity contract tests are planned in SSOT")
-class ContractUnixConnectionIdentityTests(unittest.TestCase):
+class ContractUnixConnectionIdentityTests(ContractClosureAssertions):
     def test_unix_connection_identity_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_connection_identity('unix')

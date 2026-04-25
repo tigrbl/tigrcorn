@@ -48,3 +48,4 @@ body: |-
   
   RFC 7692 across carriers is handled explicitly by the authoritative boundary rather than by narrative implication. The current release gate intentionally keeps RFC 7692 at `local_conformance`, so it is not an independent-certification blocker in the current bundle. A stricter all-surfaces-independent profile would still need additional third-party permessage-deflate artifacts. The package-owned TCP/TLS condition is satisfied separately, and the authoritative RFC 9220 requirement is now closed.
 spec_kind: "local-policy"
+adr_ids: []

@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: stream backpressure mapping closure tests are planned in SSOT")
-class ContractStreamBackpressureMappingTests(unittest.TestCase):
+class ContractStreamBackpressureMappingTests(ContractClosureAssertions):
     def test_stream_backpressure_mapping_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_generic_stream_runtime()

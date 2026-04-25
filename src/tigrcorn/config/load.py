@@ -438,7 +438,7 @@ def build_config(
     static_path_dir_to_file: bool = True,
     static_path_index_file: str | None = 'index.html',
     static_path_expires: int | None = None,
-    enable_h2c: bool = False,
+    enable_h2c: bool | None = None,
     max_body_size: int | None = None,
     max_header_size: int | None = None,
     http1_max_incomplete_event_size: int | None = None,
@@ -474,11 +474,33 @@ def build_config(
     use_colors: bool | None = None,
 ) -> ServerConfig:
     profile_selected = profile is not None
+    requested_http_versions = list(http_versions) if http_versions is not None else None
+    direct_runtime_customized = (
+        app is not None
+        or app_interface != 'auto'
+        or host != DEFAULT_HOST
+        or port != DEFAULT_PORT
+        or uds is not None
+        or transport != 'tcp'
+        or lifespan != 'auto'
+        or http_versions is not None
+        or protocols is not None
+        or quic_secret is not None
+        or pipe_mode != 'rawframed'
+        or websocket is not None
+        or websocket_max_queue is not None
+    )
+    effective_websocket_enabled = True if websocket is None and direct_runtime_customized else bool(websocket)
+    effective_h2c_enabled = (
+        bool(enable_h2c)
+        if enable_h2c is not None
+        else bool(requested_http_versions and "2" in {str(version).replace("http/", "") for version in requested_http_versions})
+    )
     overrides: dict[str, Any] = {
         'app': {'target': app, 'interface': app_interface, 'lifespan': lifespan, 'env_file': env_file, 'profile': profile},
         'logging': {'level': log_level, 'access_log': access_log, 'use_colors': use_colors},
         'http': {
-            'enable_h2c': enable_h2c,
+            'enable_h2c': effective_h2c_enabled,
             'alt_svc_headers': alt_svc or [],
             'alt_svc_persist': alt_svc_persist,
             'http1_keep_alive': http1_keep_alive,
@@ -507,10 +529,26 @@ def build_config(
             'crl': ssl_crl,
         },
     }
+    if (
+        isinstance(config, Mapping)
+        and isinstance(config.get('scheduler'), Mapping)
+        and config['scheduler'].get('max_streams') is not None  # type: ignore[index]
+        and not (isinstance(config.get('http'), Mapping) and 'http2_max_concurrent_streams' in config['http'])  # type: ignore[index]
+        and http2_max_concurrent_streams is None
+    ):
+        overrides['http']['http2_max_concurrent_streams'] = None
+    if (
+        max_header_size is not None
+        and http2_max_headers_size is None
+        and not (isinstance(config, Mapping) and isinstance(config.get('http'), Mapping) and 'http2_max_headers_size' in config['http'])  # type: ignore[index]
+    ):
+        overrides['http']['http2_max_headers_size'] = None
     if alt_svc_auto is not None or not profile_selected:
         overrides['http']['alt_svc_auto'] = False if alt_svc_auto is None else alt_svc_auto
-    if websocket is not None or not profile_selected:
-        overrides['websocket'] = {'enabled': False if websocket is None else websocket, 'max_queue': websocket_max_queue}
+    if requested_http_versions is not None:
+        overrides['http']['http_versions'] = requested_http_versions
+    if websocket is not None or (not profile_selected and direct_runtime_customized):
+        overrides['websocket'] = {'enabled': effective_websocket_enabled, 'max_queue': websocket_max_queue}
     elif websocket_max_queue is not None:
         overrides['websocket'] = {'max_queue': websocket_max_queue}
     if quic_require_retry is not None or not profile_selected:
@@ -519,7 +557,7 @@ def build_config(
         overrides['tls']['require_client_cert'] = False if ssl_require_client_cert is None else ssl_require_client_cert
 
     listener_customized = (
-        not profile_selected
+        (not profile_selected and direct_runtime_customized)
         or uds is not None
         or transport != 'tcp'
         or host != DEFAULT_HOST
@@ -545,8 +583,8 @@ def build_config(
                 'ssl_require_client_cert': False if ssl_require_client_cert is None else ssl_require_client_cert,
                 'ssl_ciphers': ssl_ciphers,
                 'ssl_crl': ssl_crl,
-                'http_versions': list(http_versions) if http_versions is not None else None,
-                'websocket': False if websocket is None else websocket,
+                'http_versions': requested_http_versions,
+                'websocket': effective_websocket_enabled,
                 'protocols': list(protocols) if protocols is not None else None,
                 'quic_secret': quic_secret,
                 'quic_require_retry': False if quic_require_retry is None else quic_require_retry,

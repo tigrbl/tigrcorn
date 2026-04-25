@@ -25,7 +25,9 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = []
+dependencies = [
+    "tigr-asgi-contract>=0.3.2",
+]
 
 [project.optional-dependencies]
 tls-x509 = [

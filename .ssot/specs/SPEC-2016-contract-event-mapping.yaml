@@ -16,13 +16,14 @@ references:
   - "ADR-1017"
 body: |-
   # Contract event mapping
-
+  
   Tigrcorn shall define event mapping between contract events and ASGI/3 compatibility events.
-
+  
   Requirements:
-
+  
   - ASGI/3 HTTP, WebSocket, and lifespan events map into contract event records.
   - Contract events with standard ASGI/3 equivalents map back to standard ASGI/3 events.
   - Contract events without standard ASGI/3 equivalents require documented extension events or rejection.
   - Illegal event order and illegal event type combinations fail validation.
 spec_kind: "local-policy"
+adr_ids: []

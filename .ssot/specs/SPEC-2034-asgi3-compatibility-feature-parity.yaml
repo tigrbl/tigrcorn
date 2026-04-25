@@ -18,13 +18,14 @@ references:
   - "ADR-1030"
 body: |-
   # ASGI/3 compatibility feature parity
-
+  
   Tigrcorn shall maintain a feature parity map for native contract support and ASGI/3 compatibility exposure.
-
+  
   Requirements:
-
+  
   - Every native contract feature is marked as directly available, extension-available, degraded, or unavailable for ASGI/3 apps.
   - Degraded or unavailable mappings include the reason and test status.
   - ASGI/3 compatibility parity is validated before support claims are promoted.
   - ASGI2, WSGI, and RSGI are excluded from the supported compatibility matrix.
 spec_kind: "local-policy"
+adr_ids: []

@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: generic stream runtime closure tests are planned in SSOT")
-class ContractGenericStreamRuntimeTests(unittest.TestCase):
+class ContractGenericStreamRuntimeTests(ContractClosureAssertions):
     def test_generic_stream_runtime_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_generic_stream_runtime()

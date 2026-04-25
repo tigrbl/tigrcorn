@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: WebTransport stream identity contract tests are planned in SSOT")
-class ContractWebTransportStreamIdentityTests(unittest.TestCase):
+class ContractWebTransportStreamIdentityTests(ContractClosureAssertions):
     def test_webtransport_stream_identity_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_stream_identity('webtransport-stream')

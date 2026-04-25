@@ -28,3 +28,4 @@ body: |-
   
   These extensions must not change the standard ASGI behavior for HTTP, WebSocket, or lifespan.
 spec_kind: "local-policy"
+adr_ids: []

@@ -61,6 +61,8 @@ def scan() -> int:
         ".pytest_cache",
         ".mypy_cache",
         ".ruff_cache",
+        ".tmp",
+        ".uv-cache",
         ".tox",
         ".nox",
         ".venv",

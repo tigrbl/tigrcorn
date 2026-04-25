@@ -3,7 +3,7 @@ from __future__ import annotations
 from tools.ssot_sync import build_registry
 
 
-def test_contract_and_asgi3_features_have_planned_test_links() -> None:
+def test_contract_and_asgi3_features_have_test_links() -> None:
     registry = build_registry()
     features = {row["id"]: row for row in registry["features"]}
 
@@ -51,14 +51,77 @@ def test_contract_and_asgi3_features_have_planned_test_links() -> None:
     )
 
     tests = registry["tests"]
-    planned_test_feature_ids = {
+    covered_feature_ids = {
         feature_id
         for row in tests
-        if row["id"].startswith("tst:planned-")
+        if row["status"] in {"current", "passing", "planned"}
         for feature_id in row["feature_ids"]
     }
 
-    assert required_feature_ids <= planned_test_feature_ids
+    assert required_feature_ids <= covered_feature_ids
+
+
+def test_closed_contract_features_have_passing_executable_tests() -> None:
+    registry = build_registry()
+    tests = registry["tests"]
+
+    closed_feature_ids = {
+        "feat:webtransport-h3-quic-scope",
+        "feat:webtransport-h3-quic-session-events",
+        "feat:webtransport-h3-quic-stream-events",
+        "feat:webtransport-h3-quic-datagram-events",
+        "feat:webtransport-h3-quic-completion-events",
+        "feat:tigr-asgi-contract-0-1-2-validation",
+        "feat:generic-stream-runtime",
+        "feat:generic-datagram-runtime",
+        "feat:stream-backpressure-mapping",
+        "feat:datagram-flow-control-mapping",
+        "feat:emit-completion-events",
+        "feat:emit-completion-asgi-extension",
+        "feat:rest-binding-classification",
+        "feat:jsonrpc-binding-classification",
+        "feat:sse-binding-classification",
+        "feat:contract-listener-endpoint-metadata",
+        "feat:contract-uds-endpoint-metadata",
+        "feat:contract-fd-endpoint-metadata",
+        "feat:contract-pipe-endpoint-metadata",
+        "feat:contract-inproc-endpoint-metadata",
+        "feat:contract-tcp-connection-identity",
+        "feat:contract-unix-connection-identity",
+        "feat:contract-quic-connection-identity",
+        "feat:contract-http2-stream-identity",
+        "feat:contract-http3-stream-identity",
+        "feat:contract-webtransport-session-identity",
+        "feat:contract-webtransport-stream-identity",
+        "feat:contract-datagram-unit-identity",
+        "feat:contract-tls-endpoint-metadata",
+        "feat:contract-mtls-peer-metadata",
+        "feat:contract-alpn-metadata",
+        "feat:contract-sni-metadata",
+        "feat:contract-ocsp-crl-metadata",
+        "feat:asgi3-endpoint-metadata-extension",
+        "feat:asgi3-transport-identity-extension",
+        "feat:asgi3-security-metadata-extension",
+        "feat:asgi3-stream-datagram-extension",
+        "feat:contract-unsupported-scope-rejection",
+        "feat:contract-lossy-metadata-rejection",
+        "feat:contract-illegal-event-order-rejection",
+        "feat:contract-invalid-endpoint-metadata-rejection",
+        "feat:rest-runtime-exclusion",
+        "feat:json-rpc-runtime-exclusion",
+        "feat:asgi2-compat-exclusion",
+        "feat:wsgi-compat-exclusion",
+        "feat:rsgi-compat-exclusion",
+    }
+    passing_feature_ids = {
+        feature_id
+        for row in tests
+        if row["status"] == "passing" and row["path"].startswith("tests/test_") and not row["id"].startswith("tst:placeholder-")
+        for feature_id in row["feature_ids"]
+    }
+
+    assert closed_feature_ids <= passing_feature_ids
+    assert not any(row["id"].startswith("tst:placeholder-") for row in tests)
 
 
 def test_unsupported_compatibility_surfaces_are_exclusion_features_only() -> None:

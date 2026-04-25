@@ -38,3 +38,4 @@ body: |-
   
   Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
 spec_kind: "local-policy"
+adr_ids: []

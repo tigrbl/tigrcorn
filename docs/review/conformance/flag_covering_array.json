@@ -2,7 +2,7 @@
   "schema_version": 1,
   "target_name": "phase8_flag_covering_array",
   "status": "planned",
-  "public_flag_string_count": 124,
+  "public_flag_string_count": 125,
   "strategy": {
     "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
     "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
@@ -3410,6 +3410,23 @@
         "http3_quic_mtls"
       ],
       "claim_plane": "rfc_scoped",
+      "status": "planned"
+    },
+    {
+      "case_id": "flag-155-app_interface",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--app-interface",
+          "value": "tigr-asgi-contract"
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
       "status": "planned"
     }
   ],

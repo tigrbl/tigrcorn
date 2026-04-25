@@ -73,6 +73,23 @@ class ColorFormatter(logging.Formatter):
         return f'{color}{message}{self._RESET}'
 
 
+class CloseAfterEmitFileHandler(logging.Handler):
+    terminator = '\n'
+
+    def __init__(self, path: str) -> None:
+        super().__init__()
+        self.baseFilename = str(Path(path))
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+
+    def emit(self, record: logging.LogRecord) -> None:
+        try:
+            message = self.format(record)
+            with open(self.baseFilename, 'a', encoding='utf-8') as stream:
+                stream.write(message + self.terminator)
+        except Exception:
+            self.handleError(record)
+
+
 class AccessLogger:
     def __init__(self, logger: Logger, *, enabled: bool = True, fmt: str | None = None) -> None:
         self.logger = logger
@@ -102,8 +119,7 @@ def _coerce_level(level: str) -> int:
 
 
 def _file_handler(path: str, formatter: logging.Formatter) -> logging.Handler:
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    handler = logging.FileHandler(path)
+    handler = CloseAfterEmitFileHandler(path)
     handler.setFormatter(formatter)
     return handler
 

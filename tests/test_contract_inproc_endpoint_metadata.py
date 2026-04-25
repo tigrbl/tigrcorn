@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: in-process endpoint metadata contract tests are planned in SSOT")
-class ContractInprocEndpointMetadataTests(unittest.TestCase):
+class ContractInprocEndpointMetadataTests(ContractClosureAssertions):
     def test_inproc_endpoint_metadata_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_endpoint_metadata('inproc')

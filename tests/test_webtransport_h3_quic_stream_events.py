@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: WebTransport stream event closure tests are planned in SSOT")
-class WebTransportH3QUICStreamEventsTests(unittest.TestCase):
-    def test_webtransport_h3_quic_stream_events_contract(self) -> None:
-        self.fail("placeholder")
+class WebTransportH3QUICStreamEventsTests(ContractClosureAssertions):
+    def test_webtransport_stream_event_contract(self) -> None:
+        self.assert_webtransport_stream_events()

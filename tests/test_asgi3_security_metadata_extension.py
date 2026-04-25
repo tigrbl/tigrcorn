@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import unittest
+from tests.contract_closure_assertions import ContractClosureAssertions
 
 
-@unittest.skip("placeholder: ASGI3 security metadata extension tests are planned in SSOT")
-class ASGI3SecurityMetadataExtensionTests(unittest.TestCase):
+class ASGI3SecurityMetadataExtensionTests(ContractClosureAssertions):
     def test_asgi3_security_metadata_extension_contract(self) -> None:
-        self.fail("placeholder")
+        self.assert_asgi3_extension('tigrcorn.security')

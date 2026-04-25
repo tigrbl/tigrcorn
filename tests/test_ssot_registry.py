@@ -88,8 +88,8 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
         "feat:tigr-asgi-contract-0-1-2-validation",
     }:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "absent"
-        assert feature["plan"]["horizon"] == "next"
+        assert feature["implementation_status"] == "implemented"
+        assert feature["plan"]["horizon"] == "current"
         assert "spc:2010" in feature["spec_ids"]
 
     for feature_id in {"feat:rest-runtime-exclusion", "feat:json-rpc-runtime-exclusion"}:
@@ -140,6 +140,6 @@ def test_ssot_links_concrete_contract_app_interface_tests_to_features() -> None:
 
     for test_id, (feature_id, path) in expected.items():
         row = tests[test_id]
-        assert row["status"] == "current"
+        assert row["status"] == "passing"
         assert row["path"] == path
         assert feature_id in row["feature_ids"]

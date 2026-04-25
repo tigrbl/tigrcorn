@@ -41,3 +41,4 @@ body: |-
   
   A minimum certified intermediary/proxy-adjacent corpus now lives under `docs/review/conformance/intermediary_proxy_corpus_minimum_certified/`; the older seed corpus remains preserved for provenance.
 spec_kind: "local-policy"
+adr_ids: []
