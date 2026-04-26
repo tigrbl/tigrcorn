@@ -14,7 +14,7 @@ Current maintainer of record in package metadata: **Jacob Stewart** (`jacob@swar
 ## Read order before making a documentation or public-surface change
 
 1. `README.md`
-2. `AGENTS.md`
+2. `.codex/AGENTS.md`
 3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 4. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 5. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
@@ -71,7 +71,7 @@ Use short, purpose-scoped folders:
 Root remains intentionally narrow. Root documentation is limited to package entrypoints and community entrypoints such as:
 
 - `README.md`
-- `AGENTS.md`
+- `.codex/AGENTS.md`
 - `RELEASE_NOTES_*.md`
 - `CONTRIBUTING.md`
 - `CODE_OF_CONDUCT.md`
