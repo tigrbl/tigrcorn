@@ -3,10 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from tigrcorn.app_interfaces import resolve_app_dispatch
-from tigrcorn.config.model import ServerConfig
-from tigrcorn.server.runner import TigrCornServer
-from tigrcorn.types import ASGIApp
+from tigrcorn_runtime.app_interfaces import resolve_app_dispatch
+from tigrcorn_config.model import ServerConfig
+from tigrcorn_runtime.server.runner import TigrCornServer
+from tigrcorn_core.types import ASGIApp
 
 
 @dataclass(slots=True)

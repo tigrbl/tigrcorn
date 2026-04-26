@@ -7,8 +7,8 @@ import stat
 from collections.abc import Awaitable, Callable
 from pathlib import Path
 
-from tigrcorn.errors import ServerError
-from tigrcorn.transports.pipe.connection import PipeConnection
+from tigrcorn_core.errors import ServerError
+from tigrcorn_transports.pipe.connection import PipeConnection
 
 from .base import BaseListener
 

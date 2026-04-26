@@ -4,20 +4,20 @@ import asyncio
 from contextlib import suppress
 from typing import Awaitable, Callable
 
-from tigrcorn.flow.keepalive import KeepAlivePolicy, KeepAliveRuntime
-from tigrcorn.observability.metrics import Metrics
+from tigrcorn_protocols.flow.keepalive import KeepAlivePolicy, KeepAliveRuntime
+from tigrcorn_observability.metrics import Metrics
 
-from tigrcorn.asgi.events.websocket import websocket_connect, websocket_disconnect, websocket_receive_bytes, websocket_receive_text
-from tigrcorn.asgi.receive import QueueReceive
-from tigrcorn.asgi.scopes.websocket import build_websocket_scope
-from tigrcorn.config.model import ServerConfig
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols.http1.parser import ParsedRequest
-from tigrcorn.protocols.websocket.codec import binary_frame, close_frame, pong_frame, text_frame
-from tigrcorn.protocols.websocket.extensions import PerMessageDeflateRuntime, default_permessage_deflate_agreement, negotiate_permessage_deflate, parse_permessage_deflate_offers
-from tigrcorn.protocols.websocket.frames import OP_BINARY, OP_CLOSE, OP_CONT, OP_PING, OP_PONG, OP_TEXT, decode_close_payload, parse_frame_bytes, serialize_frame
-from tigrcorn.types import ASGIApp
-from tigrcorn.utils.headers import get_header
+from tigrcorn_asgi.events.websocket import websocket_connect, websocket_disconnect, websocket_receive_bytes, websocket_receive_text
+from tigrcorn_asgi.receive import QueueReceive
+from tigrcorn_asgi.scopes.websocket import build_websocket_scope
+from tigrcorn_config.model import ServerConfig
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols.http1.parser import ParsedRequest
+from tigrcorn_protocols.websocket.codec import binary_frame, close_frame, pong_frame, text_frame
+from tigrcorn_protocols.websocket.extensions import PerMessageDeflateRuntime, default_permessage_deflate_agreement, negotiate_permessage_deflate, parse_permessage_deflate_offers
+from tigrcorn_protocols.websocket.frames import OP_BINARY, OP_CLOSE, OP_CONT, OP_PING, OP_PONG, OP_TEXT, decode_close_payload, parse_frame_bytes, serialize_frame
+from tigrcorn_core.types import ASGIApp
+from tigrcorn_core.utils.headers import get_header
 
 
 class H3WebSocketSession:

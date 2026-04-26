@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tigrcorn.security.tls13.messages import (
+from tigrcorn_security.tls13.messages import (
     Certificate,
     CertificateVerify,
     ClientHello,

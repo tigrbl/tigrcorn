@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import timedelta
 
-from tigrcorn.config.model import ListenerConfig
-from tigrcorn.security.x509.path import (
+from tigrcorn_config.model import ListenerConfig
+from tigrcorn_security.x509.path import (
     CertificatePurpose,
     CertificateValidationPolicy,
     RevocationCache,

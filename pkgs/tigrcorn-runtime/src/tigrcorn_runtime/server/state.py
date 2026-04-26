@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from time import monotonic
 
-from tigrcorn.observability.metrics import Metrics
+from tigrcorn_observability.metrics import Metrics
 
 
 @dataclass(slots=True)

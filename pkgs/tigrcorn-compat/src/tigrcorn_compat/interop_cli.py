@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 
-from tigrcorn.compat.interop_runner import run_external_matrix
+from tigrcorn_certification.interop_runner import run_external_matrix
 
 
 

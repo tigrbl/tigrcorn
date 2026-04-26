@@ -5,8 +5,8 @@ from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import ClassVar, Sequence
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.security.tls13.extensions import (
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_security.tls13.extensions import (
     ExtensionType,
     TlsExtension,
     TLS_LEGACY_VERSION,

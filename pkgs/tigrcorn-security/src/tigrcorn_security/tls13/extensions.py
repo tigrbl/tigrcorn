@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import Iterable, Sequence
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
 
 TLS_VERSION_1_3 = 0x0304
 TLS_LEGACY_VERSION = 0x0303

@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any
 
-from tigrcorn.config.governance_surface import STRUCTURED_FIELD_REGISTRY
+from tigrcorn_config.governance_surface import STRUCTURED_FIELD_REGISTRY
 
 
 @dataclass(frozen=True, slots=True)

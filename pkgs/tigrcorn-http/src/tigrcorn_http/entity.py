@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tigrcorn.asgi.send import BodySegment
-from tigrcorn.http.conditional import apply_conditional_request
-from tigrcorn.http.etag import generate_entity_tag
-from tigrcorn.http.range import apply_byte_ranges, build_file_range_segments, plan_file_byte_ranges
-from tigrcorn.protocols.content_coding import ContentCodingSelection, apply_http_content_coding
-from tigrcorn.protocols.http1.serializer import response_allows_body
-from tigrcorn.utils.headers import append_if_missing, get_header, replace_header
+from tigrcorn_asgi.send import BodySegment
+from tigrcorn_http.conditional import apply_conditional_request
+from tigrcorn_http.etag import generate_entity_tag
+from tigrcorn_http.range import apply_byte_ranges, build_file_range_segments, plan_file_byte_ranges
+from tigrcorn_protocols.content_coding import ContentCodingSelection, apply_http_content_coding
+from tigrcorn_protocols.http1.serializer import response_allows_body
+from tigrcorn_core.utils.headers import append_if_missing, get_header, replace_header
 
 
 HeaderList = list[tuple[bytes, bytes]]

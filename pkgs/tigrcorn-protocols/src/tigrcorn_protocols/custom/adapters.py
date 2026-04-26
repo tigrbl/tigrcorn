@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.asgi.events.custom import stream_receive, stream_send
+from tigrcorn_asgi.events.custom import stream_receive, stream_send
 
 
 def adapt_scope(scope: dict) -> dict:

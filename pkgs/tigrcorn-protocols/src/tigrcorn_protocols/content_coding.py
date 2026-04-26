@@ -9,8 +9,8 @@ try:  # pragma: no cover - optional dependency surface
 except Exception:  # pragma: no cover - optional dependency surface
     brotli = None  # type: ignore[assignment]
 
-from tigrcorn.protocols.http1.serializer import response_allows_body
-from tigrcorn.utils.headers import append_if_missing, get_header
+from tigrcorn_protocols.http1.serializer import response_allows_body
+from tigrcorn_core.utils.headers import append_if_missing, get_header
 
 _SUPPORTED_ENCODINGS = ('br', 'gzip', 'deflate')
 

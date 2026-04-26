@@ -4,9 +4,9 @@ import os
 import sys
 from contextlib import contextmanager
 
-from tigrcorn.errors import AppLoadError
-from tigrcorn.types import ASGIApp
-from tigrcorn.utils.imports import import_from_string
+from tigrcorn_core.errors import AppLoadError
+from tigrcorn_core.types import ASGIApp
+from tigrcorn_core.utils.imports import import_from_string
 
 
 @contextmanager

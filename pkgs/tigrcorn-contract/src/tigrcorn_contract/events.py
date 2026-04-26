@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any
 
-from tigrcorn.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError
 
 
 class CompletionLevel(StrEnum):

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from tigrcorn.constants import ASGI_SPEC_VERSION, ASGI_VERSION
-from tigrcorn.protocols.http1.parser import ParsedRequest, ParsedRequestHead
-from tigrcorn.types import Scope
-from tigrcorn.utils.proxy import resolve_proxy_view, strip_root_path
+from tigrcorn_core.constants import ASGI_SPEC_VERSION, ASGI_VERSION
+from tigrcorn_protocols.http1.parser import ParsedRequest, ParsedRequestHead
+from tigrcorn_core.types import Scope
+from tigrcorn_core.utils.proxy import resolve_proxy_view, strip_root_path
 
 
 def build_http_scope(

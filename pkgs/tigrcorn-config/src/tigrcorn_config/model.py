@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from tigrcorn.constants import (
+from tigrcorn_core.constants import (
     DEFAULT_BACKLOG,
     DEFAULT_ENV_PREFIX,
     DEFAULT_HOST,

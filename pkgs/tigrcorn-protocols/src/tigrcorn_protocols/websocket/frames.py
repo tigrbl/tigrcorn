@@ -3,8 +3,8 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.types import StreamReaderLike
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.types import StreamReaderLike
 
 OP_CONT = 0x0
 OP_TEXT = 0x1

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.errors import ConfigError
+from tigrcorn_core.errors import ConfigError
 
 CIPHER_TLS_AES_128_GCM_SHA256 = 0x1301
 CIPHER_TLS_AES_256_GCM_SHA384 = 0x1302

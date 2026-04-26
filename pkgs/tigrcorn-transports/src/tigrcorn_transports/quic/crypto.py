@@ -6,8 +6,8 @@ import secrets
 from dataclasses import dataclass
 from typing import Iterable
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.bytes import xor_bytes
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import xor_bytes
 
 QUIC_V1_INITIAL_SALT = bytes.fromhex('38762cf7f55934b34d179ae6a4c80cadccbb7f0a')
 RETRY_INTEGRITY_KEY = bytes.fromhex('be0c690b9f66575a1d766b54e368c84e')

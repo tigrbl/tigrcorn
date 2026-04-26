@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.protocols.websocket.frames import (
+from tigrcorn_protocols.websocket.frames import (
     OP_BINARY,
     OP_CLOSE,
     OP_PING,

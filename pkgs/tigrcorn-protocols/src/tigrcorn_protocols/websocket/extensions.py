@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import zlib
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.headers import get_headers
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.headers import get_headers
 
 _PERMESSAGE_DEFLATE = b"permessage-deflate"
 _SERVER_NO_CONTEXT_TAKEOVER = b"server_no_context_takeover"

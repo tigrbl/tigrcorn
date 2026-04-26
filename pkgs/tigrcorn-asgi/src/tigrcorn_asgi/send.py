@@ -7,16 +7,16 @@ import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from tigrcorn.asgi.errors import ASGIProtocolError
-from tigrcorn.protocols.content_coding import apply_http_content_coding
-from tigrcorn.protocols.http1.serializer import (
+from tigrcorn_asgi.errors import ASGIProtocolError
+from tigrcorn_protocols.content_coding import apply_http_content_coding
+from tigrcorn_protocols.http1.serializer import (
     finalize_chunked_body,
     response_allows_body,
     serialize_http11_response_chunk,
     serialize_http11_response_head,
     serialize_http11_response_whole,
 )
-from tigrcorn.utils.headers import get_header
+from tigrcorn_core.utils.headers import get_header
 
 
 @dataclass(frozen=True, slots=True)

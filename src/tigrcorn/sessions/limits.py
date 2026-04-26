@@ -1,12 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class SessionLimits:
-    max_streams: int = 128
-    max_inflight_bytes: int = 1_048_576
-
-    def allow_stream(self, current: int) -> bool:
-        return current < self.max_streams
+_module = _import_module("tigrcorn_protocols.sessions.limits")
+_sys.modules[__name__] = _module

@@ -1,12 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-from .base import BaseSession
-
-
-@dataclass(slots=True)
-class ConnectionSession(BaseSession):
-    protocol: str = 'tcp'
-    peer: tuple[str | None, int | None] | None = None
-    server: tuple[str | None, int | None] | None = None
+_module = _import_module("tigrcorn_protocols.sessions.connection")
+_sys.modules[__name__] = _module

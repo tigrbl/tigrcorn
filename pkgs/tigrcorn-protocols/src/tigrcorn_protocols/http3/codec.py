@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
 
 FRAME_DATA = 0x0
 FRAME_HEADERS = 0x1

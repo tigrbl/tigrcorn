@@ -3,11 +3,11 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Awaitable, Callable
 
-from tigrcorn.asgi.events.http import http_disconnect, http_request, http_request_trailers
-from tigrcorn.asgi.events.lifespan import lifespan_shutdown, lifespan_startup
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols.http1.parser import _validate_header_name, _validate_header_value
-from tigrcorn.types import Message, StreamReaderLike
+from tigrcorn_asgi.events.http import http_disconnect, http_request, http_request_trailers
+from tigrcorn_asgi.events.lifespan import lifespan_shutdown, lifespan_startup
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols.http1.parser import _validate_header_name, _validate_header_value
+from tigrcorn_core.types import Message, StreamReaderLike
 
 
 

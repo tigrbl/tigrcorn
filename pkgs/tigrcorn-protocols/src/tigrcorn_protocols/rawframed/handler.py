@@ -3,15 +3,15 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Protocol
 
-from tigrcorn.asgi.events.custom import stream_receive
-from tigrcorn.asgi.receive import QueueReceive
-from tigrcorn.asgi.scopes.custom import build_custom_scope
-from tigrcorn.config.model import ListenerConfig, ServerConfig
-from tigrcorn.observability.logging import AccessLogger
-from tigrcorn.protocols.custom.adapters import adapt_scope
-from tigrcorn.protocols.rawframed.frames import encode_frame, try_decode_frame
-from tigrcorn.protocols.rawframed.state import RawFramedState
-from tigrcorn.types import ASGIApp
+from tigrcorn_asgi.events.custom import stream_receive
+from tigrcorn_asgi.receive import QueueReceive
+from tigrcorn_asgi.scopes.custom import build_custom_scope
+from tigrcorn_config.model import ListenerConfig, ServerConfig
+from tigrcorn_observability.logging import AccessLogger
+from tigrcorn_protocols.custom.adapters import adapt_scope
+from tigrcorn_protocols.rawframed.frames import encode_frame, try_decode_frame
+from tigrcorn_protocols.rawframed.state import RawFramedState
+from tigrcorn_core.types import ASGIApp
 
 
 class _Writable(Protocol):

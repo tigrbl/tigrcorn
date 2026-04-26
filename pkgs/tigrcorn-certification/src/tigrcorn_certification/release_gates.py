@@ -1289,7 +1289,7 @@ def _load_json_payload(path: Path) -> dict[str, Any]:
 def _load_public_parser_flags() -> dict[str, dict[str, Any]]:
     import argparse
 
-    from tigrcorn.cli import build_parser
+    from tigrcorn_runtime.cli import build_parser
 
     parser = build_parser()
     public_flags: dict[str, dict[str, Any]] = {}

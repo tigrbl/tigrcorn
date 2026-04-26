@@ -25,13 +25,13 @@ except ModuleNotFoundError:  # pragma: no cover - exercised in dependency-light 
     x509 = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
     serialization = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
 
-from tigrcorn.config.model import ListenerConfig
-from tigrcorn.errors import ProtocolError
-from tigrcorn.security.tls13.handshake import QuicTlsHandshakeDriver, TlsAlertError
-from tigrcorn.security.tls13.key_schedule import Tls13KeySchedule
-from tigrcorn.security.tls13.messages import decode_handshake_message
-from tigrcorn.security.policies import build_validation_policy_for_listener
-from tigrcorn.security.x509.path import (
+from tigrcorn_config.model import ListenerConfig
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_security.tls13.handshake import QuicTlsHandshakeDriver, TlsAlertError
+from tigrcorn_security.tls13.key_schedule import Tls13KeySchedule
+from tigrcorn_security.tls13.messages import decode_handshake_message
+from tigrcorn_security.policies import build_validation_policy_for_listener
+from tigrcorn_security.x509.path import (
     CertificatePurpose,
     CertificateValidationPolicy,
     RevocationCache,
@@ -45,7 +45,7 @@ from tigrcorn.security.x509.path import (
     verify_certificate_hostname,
     verify_certificate_validity,
 )
-from tigrcorn.transports.quic.crypto import aes_gcm_decrypt, aes_gcm_encrypt
+from tigrcorn_transports.quic.crypto import aes_gcm_decrypt, aes_gcm_encrypt
 
 _TLS_CONTENT_CHANGE_CIPHER_SPEC = 20
 _TLS_CONTENT_ALERT = 21

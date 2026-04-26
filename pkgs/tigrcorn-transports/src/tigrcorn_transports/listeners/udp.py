@@ -5,9 +5,9 @@ import inspect
 import socket
 from collections.abc import Awaitable, Callable
 
-from tigrcorn.transports.udp.endpoint import UDPEndpoint
-from tigrcorn.transports.udp.packet import UDPPacket
-from tigrcorn.transports.udp.socketopts import configure_udp_socket
+from tigrcorn_transports.udp.endpoint import UDPEndpoint
+from tigrcorn_transports.udp.packet import UDPPacket
+from tigrcorn_transports.udp.socketopts import configure_udp_socket
 
 from .base import BaseListener
 

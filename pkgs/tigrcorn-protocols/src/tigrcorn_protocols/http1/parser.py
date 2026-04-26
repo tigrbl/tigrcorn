@@ -5,10 +5,10 @@ from dataclasses import dataclass
 from typing import Literal
 from urllib.parse import urlsplit
 
-from tigrcorn.errors import ProtocolError, UnsupportedFeature
-from tigrcorn.protocols.http1.keepalive import expect_continue, keep_alive_for_request
-from tigrcorn.types import StreamReaderLike
-from tigrcorn.utils.headers import get_headers, header_contains_token
+from tigrcorn_core.errors import ProtocolError, UnsupportedFeature
+from tigrcorn_protocols.http1.keepalive import expect_continue, keep_alive_for_request
+from tigrcorn_core.types import StreamReaderLike
+from tigrcorn_core.utils.headers import get_headers, header_contains_token
 
 
 RequestTargetForm = Literal['origin', 'absolute', 'authority', 'asterisk']

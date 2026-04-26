@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass, field
 
-from tigrcorn.protocols.http2.state import FlowWindow, MAX_FLOW_WINDOW
+from tigrcorn_protocols.http2.state import FlowWindow, MAX_FLOW_WINDOW
 
 
 @dataclass(slots=True)

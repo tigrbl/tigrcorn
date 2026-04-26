@@ -7,8 +7,8 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Sequence
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.transports.quic.crypto import (
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_transports.quic.crypto import (
     QuicPacketProtectionKeys,
     derive_initial_packet_protection_keys,
     derive_quic_packet_protection_keys,
@@ -18,9 +18,9 @@ from tigrcorn.transports.quic.crypto import (
     unprotect_quic_packet,
     update_quic_secret,
 )
-from tigrcorn.transports.quic.flow import QuicFlowControl
-from tigrcorn.transports.quic.handshake import HandshakeFlight, QuicTlsHandshakeDriver, TlsAlertError, TransportParameters
-from tigrcorn.transports.quic.packets import (
+from tigrcorn_transports.quic.flow import QuicFlowControl
+from tigrcorn_transports.quic.handshake import HandshakeFlight, QuicTlsHandshakeDriver, TlsAlertError, TransportParameters
+from tigrcorn_transports.quic.packets import (
     QuicLongHeaderPacket,
     QuicLongHeaderType,
     QuicRetryPacket,
@@ -31,9 +31,9 @@ from tigrcorn.transports.quic.packets import (
     decode_packet,
     split_coalesced_packets,
 )
-from tigrcorn.transports.quic.recovery import QuicLossRecovery
-from tigrcorn.transports.quic.scheduler import QuicTimerWheel
-from tigrcorn.transports.quic.streams import (
+from tigrcorn_transports.quic.recovery import QuicLossRecovery
+from tigrcorn_transports.quic.scheduler import QuicTimerWheel
+from tigrcorn_transports.quic.streams import (
     FRAME_ACK,
     FRAME_CONNECTION_CLOSE,
     FRAME_CONNECTION_CLOSE_APP,
@@ -66,7 +66,7 @@ from tigrcorn.transports.quic.streams import (
     validate_frame_for_packet_space,
     validate_frames_for_packet_space,
 )
-from tigrcorn.utils.bytes import decode_quic_varint
+from tigrcorn_core.utils.bytes import decode_quic_varint
 
 PACKET_SPACE_INITIAL = 'initial'
 PACKET_SPACE_HANDSHAKE = 'handshake'

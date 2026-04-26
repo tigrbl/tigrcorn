@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError
 
 # Shared HPACK/QPACK Huffman tables from RFC 7541 Appendix B.
 HUFFMAN_CODES: tuple[int, ...] = (

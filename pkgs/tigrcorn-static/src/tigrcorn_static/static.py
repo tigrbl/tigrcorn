@@ -10,14 +10,14 @@ from pathlib import Path, PurePosixPath
 from typing import Iterable
 from urllib.parse import unquote
 
-from tigrcorn.asgi.send import FileBodySegment, MemoryBodySegment, materialize_response_body_segments, iter_response_body_segments
-from tigrcorn.http.conditional import apply_conditional_request
-from tigrcorn.http.entity import apply_response_entity_semantics, finalize_response_content_length
-from tigrcorn.http.range import ByteRange, FileRangePlan, plan_file_byte_ranges
-from tigrcorn.protocols.http1.serializer import response_allows_body
-from tigrcorn.types import ASGIApp
-from tigrcorn.utils.headers import append_if_missing, get_header
-from tigrcorn.utils.proxy import strip_root_path
+from tigrcorn_asgi.send import FileBodySegment, MemoryBodySegment, materialize_response_body_segments, iter_response_body_segments
+from tigrcorn_http.conditional import apply_conditional_request
+from tigrcorn_http.entity import apply_response_entity_semantics, finalize_response_content_length
+from tigrcorn_http.range import ByteRange, FileRangePlan, plan_file_byte_ranges
+from tigrcorn_protocols.http1.serializer import response_allows_body
+from tigrcorn_core.types import ASGIApp
+from tigrcorn_core.utils.headers import append_if_missing, get_header
+from tigrcorn_core.utils.proxy import strip_root_path
 
 
 HeaderList = list[tuple[bytes, bytes]]

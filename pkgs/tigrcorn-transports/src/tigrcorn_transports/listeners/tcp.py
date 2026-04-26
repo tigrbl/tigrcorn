@@ -6,8 +6,8 @@ from collections.abc import Awaitable, Callable
 from contextlib import suppress
 from typing import Any
 
-from tigrcorn.security.tls import wrap_server_tls_connection
-from tigrcorn.transports.tcp.socketopts import configure_socket
+from tigrcorn_security.tls import wrap_server_tls_connection
+from tigrcorn_transports.tcp.socketopts import configure_socket
 
 from .base import BaseListener
 

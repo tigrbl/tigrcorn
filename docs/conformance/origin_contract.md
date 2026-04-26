@@ -5,7 +5,7 @@ This file is generated from the package-owned Phase 5 origin metadata.
 ## Public surface
 
 - Flag group: `static_path`
-- Public API: `tigrcorn.StaticFilesApp, tigrcorn.static.mount_static_app`
+- Public API: `tigrcorn.StaticFilesApp, tigrcorn_static.static.mount_static_app`
 
 ## Path resolution
 

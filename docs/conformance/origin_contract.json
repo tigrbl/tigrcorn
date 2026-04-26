@@ -74,6 +74,6 @@
   },
   "public_api": [
     "tigrcorn.StaticFilesApp",
-    "tigrcorn.static.mount_static_app"
+    "tigrcorn_static.static.mount_static_app"
   ]
 }

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.utils.headers import apply_response_header_policy, get_header, sanitize_early_hints_headers, strip_connection_specific_headers
+from tigrcorn_core.utils.headers import apply_response_header_policy, get_header, sanitize_early_hints_headers, strip_connection_specific_headers
 
 
 _REASON_PHRASES = {

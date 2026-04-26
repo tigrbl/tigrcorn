@@ -1,8 +1,8 @@
-from tigrcorn.http.conditional import ConditionalEvaluation, apply_conditional_request, parse_http_date
-from tigrcorn.http.entity import EntitySemanticsResult, apply_response_entity_semantics
-from tigrcorn.http.etag import EntityTag, EntityTagList, format_etag, generate_entity_tag, parse_entity_tag, parse_entity_tag_list, strong_compare, weak_compare
-from tigrcorn.http.range import ByteRange, RangeEvaluation, apply_byte_ranges, parse_range_header
-from tigrcorn.http.structured_fields import (
+from tigrcorn_http.conditional import ConditionalEvaluation, apply_conditional_request, parse_http_date
+from tigrcorn_http.entity import EntitySemanticsResult, apply_response_entity_semantics
+from tigrcorn_http.etag import EntityTag, EntityTagList, format_etag, generate_entity_tag, parse_entity_tag, parse_entity_tag_list, strong_compare, weak_compare
+from tigrcorn_http.range import ByteRange, RangeEvaluation, apply_byte_ranges, parse_range_header
+from tigrcorn_http.structured_fields import (
     ByteSequence,
     Date,
     InnerList,

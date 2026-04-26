@@ -53,7 +53,7 @@ except ModuleNotFoundError:  # pragma: no cover - exercised in dependency-light 
     ExtensionOID = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
     ExtendedKeyUsageOID = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
 
-from tigrcorn.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError
 
 
 class CertificatePurpose(str, Enum):

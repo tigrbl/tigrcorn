@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.constants import ASGI_SPEC_VERSION, ASGI_VERSION
-from tigrcorn.types import Scope
+from tigrcorn_core.constants import ASGI_SPEC_VERSION, ASGI_VERSION
+from tigrcorn_core.types import Scope
 
 
 def build_lifespan_scope() -> Scope:

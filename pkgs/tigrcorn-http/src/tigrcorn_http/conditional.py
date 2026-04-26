@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from email.utils import parsedate_to_datetime
 
-from tigrcorn.http.etag import EntityTag, EntityTagList, parse_entity_tag, parse_entity_tag_list, strong_compare, weak_compare
-from tigrcorn.utils.headers import get_header
+from tigrcorn_http.etag import EntityTag, EntityTagList, parse_entity_tag, parse_entity_tag_list, strong_compare, weak_compare
+from tigrcorn_core.utils.headers import get_header
 
 
 HeaderList = list[tuple[bytes, bytes]]

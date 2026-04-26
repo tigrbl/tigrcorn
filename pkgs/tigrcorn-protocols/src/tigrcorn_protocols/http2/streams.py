@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols.http2.state import FlowWindow, H2StreamState
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols.http2.state import FlowWindow, H2StreamState
 
 
 @dataclass(slots=True)

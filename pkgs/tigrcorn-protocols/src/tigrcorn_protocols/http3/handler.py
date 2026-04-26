@@ -5,21 +5,21 @@ from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any
 
-from tigrcorn.asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
-from tigrcorn.asgi.scopes.custom import build_custom_scope
-from tigrcorn.asgi.scopes.http import build_http_scope
-from tigrcorn.asgi.send import HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
-from tigrcorn.config.model import ListenerConfig, ServerConfig
-from tigrcorn.errors import ProtocolError
-from tigrcorn.observability.logging import AccessLogger
-from tigrcorn.observability.metrics import Metrics
-from tigrcorn.security.tls import build_server_ssl_context
-from tigrcorn.protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
-from tigrcorn.protocols.custom.adapters import adapt_scope
-from tigrcorn.protocols.http1.parser import ParsedRequest
-from tigrcorn.http.alt_svc import configured_alt_svc_values
-from tigrcorn.http.entity import apply_response_entity_semantics, plan_file_backed_response_entity_semantics
-from tigrcorn.protocols.http3.codec import (
+from tigrcorn_asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
+from tigrcorn_asgi.scopes.custom import build_custom_scope
+from tigrcorn_asgi.scopes.http import build_http_scope
+from tigrcorn_asgi.send import HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
+from tigrcorn_config.model import ListenerConfig, ServerConfig
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_observability.logging import AccessLogger
+from tigrcorn_observability.metrics import Metrics
+from tigrcorn_security.tls import build_server_ssl_context
+from tigrcorn_protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
+from tigrcorn_protocols.custom.adapters import adapt_scope
+from tigrcorn_protocols.http1.parser import ParsedRequest
+from tigrcorn_http.alt_svc import configured_alt_svc_values
+from tigrcorn_http.entity import apply_response_entity_semantics, plan_file_backed_response_entity_semantics
+from tigrcorn_protocols.http3.codec import (
     FRAME_DATA,
     FRAME_HEADERS,
     H3_CONNECT_ERROR,
@@ -30,21 +30,21 @@ from tigrcorn.protocols.http3.codec import (
     HTTP3StreamError,
     encode_frame,
 )
-from tigrcorn.protocols.http3.streams import (
+from tigrcorn_protocols.http3.streams import (
     STREAM_TYPE_QPACK_DECODER,
     STREAM_TYPE_QPACK_ENCODER,
     HTTP3ConnectionCore,
 )
-from tigrcorn.protocols.http3.websocket import H3WebSocketSession
-from tigrcorn.transports.quic.connection import QuicConnection
-from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters
-from tigrcorn.transports.quic.packets import QuicLongHeaderPacket, QuicLongHeaderType, QuicRetryPacket, QuicShortHeaderPacket, QuicVersionNegotiationPacket, decode_packet
-from tigrcorn.transports.udp.endpoint import UDPEndpoint
-from tigrcorn.transports.udp.packet import UDPPacket
-from tigrcorn.types import ASGIApp
-from tigrcorn.utils.bytes import encode_quic_varint
-from tigrcorn.utils.authority import authority_allowed
-from tigrcorn.utils.headers import apply_response_header_policy, sanitize_early_hints_headers, strip_connection_specific_headers
+from tigrcorn_protocols.http3.websocket import H3WebSocketSession
+from tigrcorn_transports.quic.connection import QuicConnection
+from tigrcorn_transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters
+from tigrcorn_transports.quic.packets import QuicLongHeaderPacket, QuicLongHeaderType, QuicRetryPacket, QuicShortHeaderPacket, QuicVersionNegotiationPacket, decode_packet
+from tigrcorn_transports.udp.endpoint import UDPEndpoint
+from tigrcorn_transports.udp.packet import UDPPacket
+from tigrcorn_core.types import ASGIApp
+from tigrcorn_core.utils.bytes import encode_quic_varint
+from tigrcorn_core.utils.authority import authority_allowed
+from tigrcorn_core.utils.headers import apply_response_header_policy, sanitize_early_hints_headers, strip_connection_specific_headers
 
 
 @dataclass(slots=True)

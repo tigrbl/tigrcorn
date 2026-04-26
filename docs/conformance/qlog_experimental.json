@@ -4,7 +4,7 @@
     "experimental_marker": "trace.common_fields.tigrcorn_qlog.experimental",
     "redaction_marker": "trace.common_fields.tigrcorn_qlog.redaction"
   },
-  "producer": "tigrcorn.compat.interop_runner.generate_observer_qlog",
+  "producer": "tigrcorn_certification.interop_runner.generate_observer_qlog",
   "redaction_rules": {
     "connection_ids": "dcid/scid values are redacted in emitted packet summaries",
     "network_endpoints": "remote endpoint addresses are redacted from qlog output",

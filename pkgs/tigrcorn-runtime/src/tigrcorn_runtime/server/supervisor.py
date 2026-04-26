@@ -7,12 +7,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from tigrcorn.config.load import config_to_dict
-from tigrcorn.config.model import ServerConfig
-from tigrcorn.server.bootstrap import prebind_listener_sockets, run_worker_from_config_payload
-from tigrcorn.server.signals import install_sync_signal_handlers, restore_signal_handlers
-from tigrcorn.workers.process import ProcessWorker
-from tigrcorn.workers.supervisor import WorkerSupervisor
+from tigrcorn_config.load import config_to_dict
+from tigrcorn_config.model import ServerConfig
+from tigrcorn_runtime.server.bootstrap import prebind_listener_sockets, run_worker_from_config_payload
+from tigrcorn_runtime.server.signals import install_sync_signal_handlers, restore_signal_handlers
+from tigrcorn_runtime.workers.process import ProcessWorker
+from tigrcorn_runtime.workers.supervisor import WorkerSupervisor
 
 
 @dataclass(slots=True)

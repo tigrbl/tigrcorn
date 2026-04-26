@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.utils.headers import get_header, header_contains_token
+from tigrcorn_core.utils.headers import get_header, header_contains_token
 
 
 def keep_alive_for_request(http_version: str, headers: list[tuple[bytes, bytes]]) -> bool:

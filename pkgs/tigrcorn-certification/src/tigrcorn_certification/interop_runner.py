@@ -15,8 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
-from tigrcorn.config.observability_surface import QLOG_EXPERIMENTAL_SCHEMA_VERSION
-from tigrcorn.transports.quic.packets import (
+from tigrcorn_config.observability_surface import QLOG_EXPERIMENTAL_SCHEMA_VERSION
+from tigrcorn_transports.quic.packets import (
     QuicLongHeaderPacket,
     QuicRetryPacket,
     QuicShortHeaderPacket,
@@ -24,7 +24,7 @@ from tigrcorn.transports.quic.packets import (
     decode_packet,
     split_coalesced_packets,
 )
-from tigrcorn.version import __version__
+from tigrcorn_core.version import __version__
 
 DEFAULT_READY_TIMEOUT = 10.0
 DEFAULT_RUN_TIMEOUT = 30.0

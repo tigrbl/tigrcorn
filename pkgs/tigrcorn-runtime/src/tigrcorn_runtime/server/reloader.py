@@ -9,9 +9,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable
 
-from tigrcorn.config.model import ServerConfig
-from tigrcorn.server.hooks import run_sync_hooks
-from tigrcorn.server.signals import install_sync_signal_handlers, restore_signal_handlers
+from tigrcorn_config.model import ServerConfig
+from tigrcorn_runtime.server.hooks import run_sync_hooks
+from tigrcorn_runtime.server.signals import install_sync_signal_handlers, restore_signal_handlers
 
 _RELOADER_ENV = 'TIGRCORN_INTERNAL_RELOADER_CHILD'
 

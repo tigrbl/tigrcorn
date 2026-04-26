@@ -2,7 +2,7 @@ from __future__ import annotations
 
 ORIGIN_CONTRACT = {
     'flag_group': 'static_path',
-    'public_api': ['tigrcorn.StaticFilesApp', 'tigrcorn.static.mount_static_app'],
+    'public_api': ['tigrcorn.StaticFilesApp', 'tigrcorn_static.static.mount_static_app'],
     'path_resolution': {
         'decode_order': 'Percent-decode the request path once before mount-relative normalization.',
         'dot_segments': 'Reject any parent-reference ".." segment after decoding; ignore "." segments and repeated slashes.',

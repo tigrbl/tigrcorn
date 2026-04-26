@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import IntEnum
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.transports.quic.crypto import compute_retry_integrity_tag, verify_retry_integrity_tag
-from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_transports.quic.crypto import compute_retry_integrity_tag, verify_retry_integrity_tag
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
 
 
 class QuicLongHeaderType(IntEnum):

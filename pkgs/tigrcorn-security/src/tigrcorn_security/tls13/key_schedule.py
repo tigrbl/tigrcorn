@@ -4,8 +4,8 @@ import hashlib
 import hmac
 from dataclasses import dataclass
 
-from tigrcorn.security.tls13.transcript import HandshakeTranscript
-from tigrcorn.transports.quic.crypto import hkdf_expand_label, hkdf_extract
+from tigrcorn_security.tls13.transcript import HandshakeTranscript
+from tigrcorn_transports.quic.crypto import hkdf_expand_label, hkdf_extract
 
 
 @dataclass(slots=True)

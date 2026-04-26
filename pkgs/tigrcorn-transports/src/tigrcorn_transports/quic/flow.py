@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.transports.quic.streams import stream_is_local_initiated, stream_is_unidirectional
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_transports.quic.streams import stream_is_local_initiated, stream_is_unidirectional
 
 FLOW_CONTROL_CERTIFICATION_SCOPES: tuple[str, ...] = (
     'credit-exhaustion',

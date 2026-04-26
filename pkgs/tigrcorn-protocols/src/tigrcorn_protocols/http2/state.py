@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols.http2.codec import DEFAULT_SETTINGS, SETTING_ENABLE_PUSH, SETTING_INITIAL_WINDOW_SIZE, SETTING_MAX_CONCURRENT_STREAMS, SETTING_MAX_FRAME_SIZE, SETTING_MAX_HEADER_LIST_SIZE
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols.http2.codec import DEFAULT_SETTINGS, SETTING_ENABLE_PUSH, SETTING_INITIAL_WINDOW_SIZE, SETTING_MAX_CONCURRENT_STREAMS, SETTING_MAX_FRAME_SIZE, SETTING_MAX_HEADER_LIST_SIZE
 
 MAX_FLOW_WINDOW = 0x7FFFFFFF
 

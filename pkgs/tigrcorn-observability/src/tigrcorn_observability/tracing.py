@@ -14,7 +14,7 @@ from dataclasses import asdict, dataclass
 from typing import Any, Iterator
 from uuid import uuid4
 
-from tigrcorn.observability.metrics import Metrics, OTEL_EXPORT_SCHEMA_VERSION, otel_metric_payload
+from tigrcorn_observability.metrics import Metrics, OTEL_EXPORT_SCHEMA_VERSION, otel_metric_payload
 
 _current_trace_id: ContextVar[str | None] = ContextVar('tigrcorn_trace_id', default=None)
 _current_span_id: ContextVar[str | None] = ContextVar('tigrcorn_span_id', default=None)

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from tigrcorn.errors import ConfigError
+from tigrcorn_core.errors import ConfigError
 
 BindingKind = Literal["http", "websocket", "lifespan", "webtransport", "stream", "datagram", "rest", "jsonrpc", "sse"]
 

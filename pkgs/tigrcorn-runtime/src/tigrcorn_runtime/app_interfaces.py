@@ -4,8 +4,8 @@ import inspect
 from dataclasses import dataclass, field
 from typing import Any, Awaitable, Callable, Literal
 
-from tigrcorn.compat.asgi3 import assert_asgi3_app, describe_app
-from tigrcorn.types import ASGIApp, Message, Scope
+from tigrcorn_compat.asgi3 import assert_asgi3_app, describe_app
+from tigrcorn_core.types import ASGIApp, Message, Scope
 
 AppInterface = Literal["auto", "tigr-asgi-contract", "asgi3"]
 APP_INTERFACE_VALUES: tuple[AppInterface, ...] = ("auto", "tigr-asgi-contract", "asgi3")

@@ -37,14 +37,14 @@ except ModuleNotFoundError:  # pragma: no cover - exercised in dependency-light 
     ExtendedKeyUsageOID = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
     NameOID = _MissingDependencyProxy("cryptography")  # type: ignore[assignment]
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.security.x509.path import (
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_security.x509.path import (
     CertificatePurpose,
     CertificateValidationPolicy,
     load_pem_certificates,
     verify_certificate_chain,
 )
-from tigrcorn.security.tls13.extensions import (
+from tigrcorn_security.tls13.extensions import (
     CIPHER_TLS_AES_128_GCM_SHA256,
     CIPHER_TLS_AES_256_GCM_SHA384,
     GROUP_SECP256R1,
@@ -69,8 +69,8 @@ from tigrcorn.security.tls13.extensions import (
     extension_dict,
     encode_pre_shared_key_client_without_binders,
 )
-from tigrcorn.security.tls13.key_schedule import Tls13KeySchedule
-from tigrcorn.security.tls13.messages import (
+from tigrcorn_security.tls13.key_schedule import Tls13KeySchedule
+from tigrcorn_security.tls13.messages import (
     HELLO_RETRY_REQUEST_RANDOM,
     Certificate,
     CertificateEntry,
@@ -86,8 +86,8 @@ from tigrcorn.security.tls13.messages import (
     ServerHello,
     decode_handshake_message,
 )
-from tigrcorn.security.tls13.transcript import HandshakeTranscript
-from tigrcorn.transports.quic.tls_adapter import split_handshake_flights
+from tigrcorn_security.tls13.transcript import HandshakeTranscript
+from tigrcorn_transports.quic.tls_adapter import split_handshake_flights
 
 _SERVER_CERT_VERIFY_CONTEXT = b'TLS 1.3, server CertificateVerify'
 _CLIENT_CERT_VERIFY_CONTEXT = b'TLS 1.3, client CertificateVerify'

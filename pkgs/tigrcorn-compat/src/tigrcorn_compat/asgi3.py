@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 from dataclasses import dataclass
 
-from tigrcorn.types import ASGIApp, Message, Scope
+from tigrcorn_core.types import ASGIApp, Message, Scope
 
 
 @dataclass(slots=True)

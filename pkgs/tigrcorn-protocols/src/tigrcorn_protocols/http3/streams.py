@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols.http3.codec import (
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols.http3.codec import (
     FRAME_CANCEL_PUSH,
     FRAME_DATA,
     FRAME_GOAWAY,
@@ -34,7 +34,7 @@ from tigrcorn.protocols.http3.codec import (
     encode_frame,
     encode_settings,
 )
-from tigrcorn.protocols.http3.qpack import (
+from tigrcorn_protocols.http3.qpack import (
     QpackBlocked,
     QpackDecoder,
     QpackDecoderStreamError,
@@ -44,7 +44,7 @@ from tigrcorn.protocols.http3.qpack import (
     decode_field_section,
     encode_field_section,
 )
-from tigrcorn.protocols.http3.state import (
+from tigrcorn_protocols.http3.state import (
     HTTP3BlockedSection,
     HTTP3ConnectionState,
     HTTP3PushPromiseState,
@@ -54,7 +54,7 @@ from tigrcorn.protocols.http3.state import (
     HTTP3RequestState,
     HTTP3UniStreamState,
 )
-from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
 
 HTTP3_STREAM_PRESSURE_CERTIFICATION_SCOPES: tuple[str, ...] = ('stream-level-backpressure', 'connection-level-backpressure', 'goaway-pressure')
 

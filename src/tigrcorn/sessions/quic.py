@@ -1,14 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-from .base import BaseSession
-
-
-@dataclass(slots=True)
-class QuicSession(BaseSession):
-    protocol: str = 'quic'
-    stream_count: int = 0
-
-    def opened_stream(self) -> None:
-        self.stream_count += 1
+_module = _import_module("tigrcorn_protocols.sessions.quic")
+_sys.modules[__name__] = _module

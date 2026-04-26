@@ -5,7 +5,7 @@ from argparse import Namespace
 from pathlib import Path
 from typing import Any, Mapping
 
-from tigrcorn.constants import DEFAULT_ENV_PREFIX, DEFAULT_HOST, DEFAULT_PORT
+from tigrcorn_core.constants import DEFAULT_ENV_PREFIX, DEFAULT_HOST, DEFAULT_PORT
 
 from .defaults import default_config
 from .env import load_env_config, load_env_file

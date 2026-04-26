@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from tigrcorn.utils.headers import strip_connection_specific_headers
+from tigrcorn_core.utils.headers import strip_connection_specific_headers
 
 
 HeaderList = list[tuple[bytes, bytes]]

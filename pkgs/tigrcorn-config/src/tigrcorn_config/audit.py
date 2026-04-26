@@ -85,7 +85,7 @@ def _diff(before: Any, after: Any) -> Any:
 
 
 def parser_public_defaults() -> list[dict[str, Any]]:
-    from tigrcorn.cli import build_parser
+    from tigrcorn_runtime.cli import build_parser
 
     parser = build_parser()
     rows: list[dict[str, Any]] = []

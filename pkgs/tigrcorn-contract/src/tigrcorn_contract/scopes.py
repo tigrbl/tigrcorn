@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from tigrcorn.asgi.scopes.custom import build_custom_scope
-from tigrcorn.errors import ProtocolError
+from tigrcorn_asgi.scopes.custom import build_custom_scope
+from tigrcorn_core.errors import ProtocolError
 
 SUPPORTED_SCOPE_TYPES = ("http", "websocket", "lifespan", "webtransport", "tigrcorn.stream", "tigrcorn.datagram")
 

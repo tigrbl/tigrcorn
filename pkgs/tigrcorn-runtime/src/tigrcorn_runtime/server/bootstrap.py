@@ -8,16 +8,16 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping
 
-from tigrcorn.config.load import build_config, config_from_mapping, config_to_dict
-from tigrcorn.config.model import ListenerConfig, ServerConfig
-from tigrcorn.constants import SUPPORTED_RUNTIMES
-from tigrcorn.server.app_loader import load_app
-from tigrcorn.server.runner import TigrCornServer
-from tigrcorn.static import mount_static_app
-from tigrcorn.types import ASGIApp
-from tigrcorn.server.signals import install_signal_handlers
-from tigrcorn.transports.tcp.socketopts import configure_socket
-from tigrcorn.transports.udp.socketopts import configure_udp_socket
+from tigrcorn_config.load import build_config, config_from_mapping, config_to_dict
+from tigrcorn_config.model import ListenerConfig, ServerConfig
+from tigrcorn_core.constants import SUPPORTED_RUNTIMES
+from tigrcorn_runtime.server.app_loader import load_app
+from tigrcorn_runtime.server.runner import TigrCornServer
+from tigrcorn_static.static import mount_static_app
+from tigrcorn_core.types import ASGIApp
+from tigrcorn_runtime.server.signals import install_signal_handlers
+from tigrcorn_transports.tcp.socketopts import configure_socket
+from tigrcorn_transports.udp.socketopts import configure_udp_socket
 
 
 def bootstrap(app_target: str, **kwargs) -> TigrCornServer:

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols.rawframed.frames import RawFrame, encode_frame, try_decode_frame
-from tigrcorn.types import StreamReaderLike
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols.rawframed.frames import RawFrame, encode_frame, try_decode_frame
+from tigrcorn_core.types import StreamReaderLike
 
 
 async def read_frame(reader: StreamReaderLike, *, max_frame_size: int = 16 * 1024 * 1024) -> RawFrame:

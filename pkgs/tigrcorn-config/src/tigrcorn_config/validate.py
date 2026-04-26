@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from tigrcorn.config.model import ServerConfig
-from tigrcorn.config.normalize import normalize_config
-from tigrcorn.constants import SUPPORTED_RUNTIMES, SUPPORTED_WORKER_CLASS_ALIASES
-from tigrcorn.protocols.connect import validate_connect_allow_entry
-from tigrcorn.observability.logging import validate_logging_contract
-from tigrcorn.observability.metrics import parse_statsd_host
-from tigrcorn.observability.tracing import validate_otel_endpoint
-from tigrcorn.errors import ConfigError
-from tigrcorn.config.profiles import list_blessed_profiles
+from tigrcorn_config.model import ServerConfig
+from tigrcorn_config.normalize import normalize_config
+from tigrcorn_core.constants import SUPPORTED_RUNTIMES, SUPPORTED_WORKER_CLASS_ALIASES
+from tigrcorn_protocols.connect import validate_connect_allow_entry
+from tigrcorn_observability.logging import validate_logging_contract
+from tigrcorn_observability.metrics import parse_statsd_host
+from tigrcorn_observability.tracing import validate_otel_endpoint
+from tigrcorn_core.errors import ConfigError
+from tigrcorn_config.profiles import list_blessed_profiles
 
 _ALLOWED_PROTOCOLS = {"http1", "http2", "http3", "quic", "websocket", "webtransport", "rawframed", "custom"}
 _ALLOWED_WORKER_CLASSES = {"local", "process", *SUPPORTED_WORKER_CLASS_ALIASES}

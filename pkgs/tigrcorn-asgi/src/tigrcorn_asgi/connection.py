@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tigrcorn.types import Receive, Scope, Send
+from tigrcorn_core.types import Receive, Scope, Send
 
 
 @dataclass(slots=True)

@@ -4,11 +4,11 @@ import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 
-from tigrcorn.asgi.send import FileBodySegment, MemoryBodySegment
-from tigrcorn.http.conditional import parse_http_date
-from tigrcorn.http.etag import parse_entity_tag, strong_compare
-from tigrcorn.protocols.http1.serializer import response_allows_body
-from tigrcorn.utils.headers import append_if_missing, get_header, replace_header
+from tigrcorn_asgi.send import FileBodySegment, MemoryBodySegment
+from tigrcorn_http.conditional import parse_http_date
+from tigrcorn_http.etag import parse_entity_tag, strong_compare
+from tigrcorn_protocols.http1.serializer import response_allows_body
+from tigrcorn_core.utils.headers import append_if_missing, get_header, replace_header
 
 
 HeaderList = list[tuple[bytes, bytes]]

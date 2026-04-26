@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable, Mapping
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.bytes import decode_u24, encode_u24, split_chunks
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import decode_u24, encode_u24, split_chunks
 
 FRAME_DATA = 0x0
 FRAME_HEADERS = 0x1

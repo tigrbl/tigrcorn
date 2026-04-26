@@ -2,16 +2,16 @@ from __future__ import annotations
 
 import secrets
 
-from tigrcorn.config.model import ListenerConfig, ServerConfig
-from tigrcorn.constants import (
+from tigrcorn_config.model import ListenerConfig, ServerConfig
+from tigrcorn_core.constants import (
     DEFAULT_HTTP2_INITIAL_CONNECTION_WINDOW_SIZE,
     DEFAULT_HTTP2_INITIAL_STREAM_WINDOW_SIZE,
     SUPPORTED_WORKER_CLASS_ALIASES,
 )
-from tigrcorn.errors import ConfigError
-from tigrcorn.security.alpn import normalize_alpn_list
-from tigrcorn.security.tls_cipher_policy import parse_tls13_cipher_allowlist
-from tigrcorn.utils.headers import normalize_header_entries
+from tigrcorn_core.errors import ConfigError
+from tigrcorn_security.alpn import normalize_alpn_list
+from tigrcorn_security.tls_cipher_policy import parse_tls13_cipher_allowlist
+from tigrcorn_core.utils.headers import normalize_header_entries
 
 
 

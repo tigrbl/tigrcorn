@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Iterable
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint, pack_varbytes, unpack_varbytes
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint, pack_varbytes, unpack_varbytes
 
 FRAME_PADDING = 0x00
 FRAME_PING = 0x01

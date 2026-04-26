@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrcorn.observability.metrics import OTEL_EXPORT_SCHEMA_VERSION, STATSD_EXPORT_MODES, STATSD_EXPORT_SCHEMA_VERSION
+from tigrcorn_observability.metrics import OTEL_EXPORT_SCHEMA_VERSION, STATSD_EXPORT_MODES, STATSD_EXPORT_SCHEMA_VERSION
 
 QLOG_EXPERIMENTAL_SCHEMA_VERSION = 'tigrcorn.qlog.experimental.v1'
 
@@ -82,7 +82,7 @@ QLOG_EXPERIMENTAL_SURFACE = {
     'schema_version': QLOG_EXPERIMENTAL_SCHEMA_VERSION,
     'stability': 'experimental',
     'compatibility': 'best_effort_internal_artifact_only',
-    'producer': 'tigrcorn.compat.interop_runner.generate_observer_qlog',
+    'producer': 'tigrcorn_certification.interop_runner.generate_observer_qlog',
     'redaction_rules': {
         'network_endpoints': 'remote endpoint addresses are redacted from qlog output',
         'connection_ids': 'dcid/scid values are redacted in emitted packet summaries',

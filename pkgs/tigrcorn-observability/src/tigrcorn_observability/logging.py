@@ -7,7 +7,7 @@ from logging import Logger
 from pathlib import Path
 from typing import Any, Mapping
 
-from tigrcorn.config.files import ConfigFileError, load_config_source
+from tigrcorn_config.files import ConfigFileError, load_config_source
 
 
 class LoggingConfigError(RuntimeError):

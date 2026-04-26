@@ -5,7 +5,7 @@ This file is generated from the package-owned Phase 6 observability metadata.
 - `schema_version`: `tigrcorn.qlog.experimental.v1`
 - `stability`: `experimental`
 - `compatibility`: `best_effort_internal_artifact_only`
-- `producer`: `tigrcorn.compat.interop_runner.generate_observer_qlog`
+- `producer`: `tigrcorn_certification.interop_runner.generate_observer_qlog`
 
 ## Redaction rules
 

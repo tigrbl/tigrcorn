@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Iterable
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.protocols._compression import (
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_protocols._compression import (
     decode_prefixed_integer,
     decode_prefixed_string,
     encode_prefixed_integer,

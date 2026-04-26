@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from tigrcorn.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError
 
 EndpointKind = Literal["tcp", "uds", "fd", "pipe", "inproc"]
 IdentityKind = Literal["tcp", "unix", "quic", "http2", "http3", "webtransport-session", "webtransport-stream", "datagram"]

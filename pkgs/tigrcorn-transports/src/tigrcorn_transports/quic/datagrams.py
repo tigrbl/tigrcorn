@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import IntEnum
 
-from tigrcorn.errors import ProtocolError
-from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint, pack_varbytes, unpack_varbytes
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint, pack_varbytes, unpack_varbytes
 
 
 class QuicPacketType(IntEnum):

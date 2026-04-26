@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass, field
 
-from tigrcorn.security.tls13.messages import SyntheticMessageHash
+from tigrcorn_security.tls13.messages import SyntheticMessageHash
 
 
 @dataclass(slots=True)

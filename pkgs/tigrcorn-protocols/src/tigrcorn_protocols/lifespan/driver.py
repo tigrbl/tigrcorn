@@ -3,12 +3,12 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass
 
-from tigrcorn.asgi.events.lifespan import lifespan_shutdown, lifespan_startup
-from tigrcorn.asgi.receive import LifespanReceive
-from tigrcorn.asgi.scopes.lifespan import build_lifespan_scope
-from tigrcorn.asgi.send import LifespanSend
-from tigrcorn.errors import TigrCornError
-from tigrcorn.types import ASGIApp
+from tigrcorn_asgi.events.lifespan import lifespan_shutdown, lifespan_startup
+from tigrcorn_asgi.receive import LifespanReceive
+from tigrcorn_asgi.scopes.lifespan import build_lifespan_scope
+from tigrcorn_asgi.send import LifespanSend
+from tigrcorn_core.errors import TigrCornError
+from tigrcorn_core.types import ASGIApp
 
 
 class LifespanError(TigrCornError):
