@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-contract"
+version = "0.3.9"
+description = "tigr-asgi-contract adapters, app markers, and runtime boundary classification for Tigrcorn."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+dependencies = [
+  "tigrcorn-core==0.3.9",
+  "tigrcorn-asgi==0.3.9",
+  "tigr-asgi-contract>=0.3.2",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+tigrcorn_contract = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

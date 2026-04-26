@@ -26,6 +26,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
+    "tigrcorn-core==0.3.9",
     "tigr-asgi-contract>=0.3.2",
 ]
 
@@ -84,3 +85,21 @@ tigrcorn = ["py.typed", "profiles/*.profile.json", "profiles/README.md"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.uv.workspace]
+members = ["pkgs/*"]
+
+[tool.uv.sources]
+tigrcorn-core = { workspace = true }
+tigrcorn-config = { workspace = true }
+tigrcorn-asgi = { workspace = true }
+tigrcorn-contract = { workspace = true }
+tigrcorn-transports = { workspace = true }
+tigrcorn-protocols = { workspace = true }
+tigrcorn-http = { workspace = true }
+tigrcorn-security = { workspace = true }
+tigrcorn-runtime = { workspace = true }
+tigrcorn-static = { workspace = true }
+tigrcorn-observability = { workspace = true }
+tigrcorn-compat = { workspace = true }
+tigrcorn-certification = { workspace = true }

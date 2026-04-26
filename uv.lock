@@ -2,6 +2,24 @@ version = 1
 revision = 1
 requires-python = ">=3.11"
 
+[manifest]
+members = [
+    "tigrcorn",
+    "tigrcorn-asgi",
+    "tigrcorn-certification",
+    "tigrcorn-compat",
+    "tigrcorn-config",
+    "tigrcorn-contract",
+    "tigrcorn-core",
+    "tigrcorn-http",
+    "tigrcorn-observability",
+    "tigrcorn-protocols",
+    "tigrcorn-runtime",
+    "tigrcorn-security",
+    "tigrcorn-static",
+    "tigrcorn-transports",
+]
+
 [[package]]
 name = "aioquic"
 version = "1.3.0"
@@ -692,6 +710,7 @@ version = "0.3.9"
 source = { editable = "." }
 dependencies = [
     { name = "tigr-asgi-contract" },
+    { name = "tigrcorn-core" },
 ]
 
 [package.optional-dependencies]
@@ -755,6 +774,7 @@ requires-dist = [
     { name = "pyyaml", marker = "extra == 'full-featured'", specifier = ">=6.0" },
     { name = "ssot-registry", marker = "extra == 'dev'", specifier = ">=0.1.0" },
     { name = "tigr-asgi-contract", specifier = ">=0.3.2" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
     { name = "trio", marker = "extra == 'runtime-trio'", specifier = ">=0.25.0" },
     { name = "uvloop", marker = "sys_platform != 'win32' and extra == 'dev'", specifier = ">=0.19.0" },
     { name = "uvloop", marker = "sys_platform != 'win32' and extra == 'full-featured'", specifier = ">=0.19.0" },
@@ -765,6 +785,245 @@ requires-dist = [
     { name = "wsproto", marker = "extra == 'dev'", specifier = ">=1.3.0" },
 ]
 provides-extras = ["tls-x509", "certification", "config-yaml", "compression", "runtime-uvloop", "runtime-trio", "full-featured", "dev"]
+
+[[package]]
+name = "tigrcorn-asgi"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-asgi" }
+dependencies = [
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" }]
+
+[[package]]
+name = "tigrcorn-certification"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-certification" }
+dependencies = [
+    { name = "aioquic" },
+    { name = "cryptography" },
+    { name = "h2" },
+    { name = "tigrcorn-compat" },
+    { name = "tigrcorn-runtime" },
+    { name = "websockets" },
+    { name = "wsproto" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aioquic", specifier = ">=1.3.0" },
+    { name = "cryptography", specifier = ">=46.0.0" },
+    { name = "h2", specifier = ">=4.1.0" },
+    { name = "tigrcorn-compat", editable = "pkgs/tigrcorn-compat" },
+    { name = "tigrcorn-runtime", editable = "pkgs/tigrcorn-runtime" },
+    { name = "websockets", specifier = ">=12.0" },
+    { name = "wsproto", specifier = ">=1.3.0" },
+]
+
+[[package]]
+name = "tigrcorn-compat"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-compat" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-runtime" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-runtime", editable = "pkgs/tigrcorn-runtime" },
+]
+
+[[package]]
+name = "tigrcorn-config"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-config" }
+dependencies = [
+    { name = "tigrcorn-core" },
+]
+
+[package.optional-dependencies]
+yaml = [
+    { name = "pyyaml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pyyaml", marker = "extra == 'yaml'", specifier = ">=6.0" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+provides-extras = ["yaml"]
+
+[[package]]
+name = "tigrcorn-contract"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-contract" }
+dependencies = [
+    { name = "tigr-asgi-contract" },
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigr-asgi-contract", specifier = ">=0.3.2" },
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+
+[[package]]
+name = "tigrcorn-core"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-core" }
+
+[[package]]
+name = "tigrcorn-http"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-http" }
+dependencies = [
+    { name = "tigrcorn-core" },
+]
+
+[package.optional-dependencies]
+compression = [
+    { name = "brotli" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "brotli", marker = "extra == 'compression'", specifier = ">=1.1.0" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+provides-extras = ["compression"]
+
+[[package]]
+name = "tigrcorn-observability"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-observability" }
+dependencies = [
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+
+[[package]]
+name = "tigrcorn-protocols"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-protocols" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-http" },
+    { name = "tigrcorn-transports" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-http", editable = "pkgs/tigrcorn-http" },
+    { name = "tigrcorn-transports", editable = "pkgs/tigrcorn-transports" },
+]
+
+[[package]]
+name = "tigrcorn-runtime"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-runtime" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-protocols" },
+    { name = "tigrcorn-security" },
+    { name = "tigrcorn-transports" },
+]
+
+[package.optional-dependencies]
+trio = [
+    { name = "trio" },
+]
+uvloop = [
+    { name = "uvloop", marker = "sys_platform != 'win32'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-protocols", editable = "pkgs/tigrcorn-protocols" },
+    { name = "tigrcorn-security", editable = "pkgs/tigrcorn-security" },
+    { name = "tigrcorn-transports", editable = "pkgs/tigrcorn-transports" },
+    { name = "trio", marker = "extra == 'trio'", specifier = ">=0.25.0" },
+    { name = "uvloop", marker = "sys_platform != 'win32' and extra == 'uvloop'", specifier = ">=0.19.0" },
+]
+provides-extras = ["uvloop", "trio"]
+
+[[package]]
+name = "tigrcorn-security"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-security" }
+dependencies = [
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+]
+
+[package.optional-dependencies]
+x509 = [
+    { name = "cryptography" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cryptography", marker = "extra == 'x509'", specifier = ">=46.0.0" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+provides-extras = ["x509"]
+
+[[package]]
+name = "tigrcorn-static"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-static" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-http" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-http", editable = "pkgs/tigrcorn-http" },
+]
+
+[[package]]
+name = "tigrcorn-transports"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-transports" }
+dependencies = [
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
 
 [[package]]
 name = "trio"

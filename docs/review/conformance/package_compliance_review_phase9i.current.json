@@ -10,7 +10,7 @@
     "operator_surface_passed": true,
     "performance_passed": true,
     "documentation_passed": true,
-    "public_flag_count": 125,
+    "public_flag_count": 130,
     "operator_implemented_count": 7,
     "performance_profile_count": 32,
     "remaining_non_passing_independent_scenarios": [],

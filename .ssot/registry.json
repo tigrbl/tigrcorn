@@ -2551,6 +2551,74 @@
       "spec_ids": []
     },
     {
+      "id": "feat:package-boundary-dependency-dag",
+      "title": "Package boundary dependency DAG",
+      "description": "Enforce one-way dependency direction from core toward runtime, compatibility, certification, and the umbrella facade.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "package-boundaries",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "test_ids": [
+        "tst:pytest-tests-test-package-boundaries-py",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-workspace-declares-all-target-packages",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-dependency-dag-is-forward-only",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-pyprojects-match-boundary-manifest",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-extracted-core-is-importable-and-compat-shims-preserve-old-surface",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-scaffold-import-names-are-available",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-core-package-has-no-inward-tigrcorn-imports"
+      ],
+      "requires": [
+        "feat:package-workspace-boundaries"
+      ],
+      "spec_ids": [
+        "spc:2038"
+      ]
+    },
+    {
+      "id": "feat:package-workspace-boundaries",
+      "title": "Package workspace boundaries",
+      "description": "Declare the publishable monorepo package set while preserving tigrcorn as the umbrella public install.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "package-boundaries",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "test_ids": [
+        "tst:pytest-tests-test-package-boundaries-py",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-workspace-declares-all-target-packages",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-dependency-dag-is-forward-only",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-pyprojects-match-boundary-manifest",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-extracted-core-is-importable-and-compat-shims-preserve-old-surface",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-scaffold-import-names-are-available",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-core-package-has-no-inward-tigrcorn-imports"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2038"
+      ]
+    },
+    {
       "id": "feat:profile-default-audit",
       "title": "Profile default audit",
       "description": "Feature target Profile default audit imported from claims_registry.json.",
@@ -5017,6 +5085,41 @@
         "spc:2003",
         "spc:2004",
         "spc:2037"
+      ]
+    },
+    {
+      "id": "feat:tigrcorn-core-extraction-shims",
+      "title": "tigrcorn-core extraction shims",
+      "description": "Extract dependency-light constants, errors, and type aliases to tigrcorn-core while preserving legacy tigrcorn.* imports.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "package-boundaries",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "test_ids": [
+        "tst:pytest-tests-test-package-boundaries-py",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-workspace-declares-all-target-packages",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-dependency-dag-is-forward-only",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-pyprojects-match-boundary-manifest",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-extracted-core-is-importable-and-compat-shims-preserve-old-surface",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-scaffold-import-names-are-available",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-core-package-has-no-inward-tigrcorn-imports"
+      ],
+      "requires": [
+        "feat:package-workspace-boundaries"
+      ],
+      "spec_ids": [
+        "spc:2038"
       ]
     },
     {
@@ -9290,6 +9393,114 @@
       ]
     },
     {
+      "id": "tst:pytest-case-tests-test-package-boundaries-py-test-core-package-has-no-inward-tigrcorn-imports",
+      "title": "Pytest case inventory tests/test_package_boundaries.py::test_core_package_has_no_inward_tigrcorn_imports",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-package-boundaries-py-test-extracted-core-is-importable-and-compat-shims-preserve-old-surface",
+      "title": "Pytest case inventory tests/test_package_boundaries.py::test_extracted_core_is_importable_and_compat_shims_preserve_old_surface",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-package-boundaries-py-test-package-dependency-dag-is-forward-only",
+      "title": "Pytest case inventory tests/test_package_boundaries.py::test_package_dependency_dag_is_forward_only",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-package-boundaries-py-test-package-pyprojects-match-boundary-manifest",
+      "title": "Pytest case inventory tests/test_package_boundaries.py::test_package_pyprojects_match_boundary_manifest",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-package-boundaries-py-test-scaffold-import-names-are-available",
+      "title": "Pytest case inventory tests/test_package_boundaries.py::test_scaffold_import_names_are_available",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-case-tests-test-package-boundaries-py-test-workspace-declares-all-target-packages",
+      "title": "Pytest case inventory tests/test_package_boundaries.py::test_workspace_declares_all_target_packages",
+      "status": "passing",
+      "kind": "pytest-case",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
       "id": "tst:pytest-case-tests-test-phase2-rfc-boundary-formalization-checkpoint-py-test-boundaries-formalize-rfc7232-and-rfc7233",
       "title": "Pytest case inventory tests/test_phase2_rfc_boundary_formalization_checkpoint.py::test_boundaries_formalize_rfc7232_and_rfc7233",
       "status": "passing",
@@ -12186,6 +12397,24 @@
       ]
     },
     {
+      "id": "tst:pytest-tests-test-package-boundaries-py",
+      "title": "Package boundary workspace and shim coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_package_boundaries.py",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
+      ]
+    },
+    {
       "id": "tst:pytest-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
       "title": "SSOT WebTransport and exclusion boundary coverage",
       "status": "passing",
@@ -12660,12 +12889,12 @@
         "evd:src-src-tigrcorn-config-profiles-py",
         "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json"
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json"
       ]
     },
     {
@@ -13881,12 +14110,12 @@
         "tst:src-tests-test-profile-resolution-py"
       ],
       "evidence_ids": [
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json"
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json"
       ]
     },
     {
@@ -13989,6 +14218,31 @@
       ],
       "evidence_ids": [
         "evd:jsonrpc-binding-classification-pytest"
+      ]
+    },
+    {
+      "id": "clm:package-workspace-boundaries-implemented",
+      "title": "Package workspace boundaries implemented",
+      "status": "promoted",
+      "tier": "T2",
+      "kind": "architecture_boundary",
+      "description": "The workspace package set, dependency DAG, and first core extraction shims are executable and tested.",
+      "feature_ids": [
+        "feat:package-workspace-boundaries",
+        "feat:package-boundary-dependency-dag",
+        "feat:tigrcorn-core-extraction-shims"
+      ],
+      "test_ids": [
+        "tst:pytest-tests-test-package-boundaries-py",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-workspace-declares-all-target-packages",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-dependency-dag-is-forward-only",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-pyprojects-match-boundary-manifest",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-extracted-core-is-importable-and-compat-shims-preserve-old-surface",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-scaffold-import-names-are-available",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-core-package-has-no-inward-tigrcorn-imports"
+      ],
+      "evidence_ids": [
+        "evd:pytest-tests-test-package-boundaries-py"
       ]
     },
     {
@@ -22201,7 +22455,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-default-profile-json",
       "title": "Profile artifact src/tigrcorn/profiles/default.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -22215,7 +22469,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
       "title": "Profile artifact src/tigrcorn/profiles/static-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -22229,7 +22483,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
       "title": "Profile artifact src/tigrcorn/profiles/strict-h1-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -22243,7 +22497,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
       "title": "Profile artifact src/tigrcorn/profiles/strict-h2-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -22257,7 +22511,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
       "title": "Profile artifact src/tigrcorn/profiles/strict-h3-edge.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -22271,7 +22525,7 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json",
+      "id": "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json",
       "title": "Profile artifact src/tigrcorn/profiles/strict-mtls-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
@@ -23783,6 +24037,26 @@
       ],
       "test_ids": [
         "tst:pytest-file-tests-test-websocket-frames-py"
+      ]
+    },
+    {
+      "id": "evd:pytest-tests-test-package-boundaries-py",
+      "title": "Package boundary pytest evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": "tests/test_package_boundaries.py",
+      "claim_ids": [
+        "clm:package-workspace-boundaries-implemented"
+      ],
+      "test_ids": [
+        "tst:pytest-tests-test-package-boundaries-py",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-workspace-declares-all-target-packages",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-dependency-dag-is-forward-only",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-package-pyprojects-match-boundary-manifest",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-extracted-core-is-importable-and-compat-shims-preserve-old-surface",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-scaffold-import-names-are-available",
+        "tst:pytest-case-tests-test-package-boundaries-py-test-core-package-has-no-inward-tigrcorn-imports"
       ]
     },
     {
@@ -26183,6 +26457,8 @@
         "feat:jsonrpc-binding-classification",
         "feat:multi-instance-early-data-policy",
         "feat:origin-path-resolution",
+        "feat:package-boundary-dependency-dag",
+        "feat:package-workspace-boundaries",
         "feat:profile-default-audit",
         "feat:proxy-precedence",
         "feat:proxy-trust-model",
@@ -26243,6 +26519,7 @@
         "feat:surface-websocket-accept-contract",
         "feat:test-inventory",
         "feat:tigr-asgi-contract-0-1-2-validation",
+        "feat:tigrcorn-core-extraction-shims",
         "feat:trailer-policy",
         "feat:webtransport-carrier-fail-closed",
         "feat:webtransport-carrier-normalization",
@@ -26328,6 +26605,7 @@
         "clm:generic-stream-runtime-implemented",
         "clm:json-rpc-runtime-exclusion-implemented",
         "clm:jsonrpc-binding-classification-implemented",
+        "clm:package-workspace-boundaries-implemented",
         "clm:rest-binding-classification-implemented",
         "clm:rest-runtime-exclusion-implemented",
         "clm:rfc-5280",
@@ -26568,12 +26846,12 @@
         "evd:gov-legacy-unittest-inventory-json",
         "evd:json-rpc-runtime-exclusion-pytest",
         "evd:jsonrpc-binding-classification-pytest",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-c-users-bigman-codex-worktrees-3858-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json",
         "evd:pytest-file-tests-test-additional-remaining-work-py",
         "evd:pytest-file-tests-test-aioquic-adapter-helpers-py",
         "evd:pytest-file-tests-test-aioquic-adapter-preflight-py",
@@ -26676,6 +26954,7 @@
         "evd:pytest-file-tests-test-trailer-policy-strict-local-py",
         "evd:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
         "evd:pytest-file-tests-test-websocket-frames-py",
+        "evd:pytest-tests-test-package-boundaries-py",
         "evd:pytest-tests-test-ssot-registry-py",
         "evd:rest-binding-classification-pytest",
         "evd:rest-runtime-exclusion-pytest",
@@ -27518,6 +27797,22 @@
       "immutable": false,
       "package_version": "0.2.11",
       "content_sha256": "732a082733e4d25ff71ea13b033fb94c762a3e320405fca13426502978a5bcd3",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1032",
+      "number": 1032,
+      "slug": "package-workspace-boundaries",
+      "title": "Split Tigrcorn into governed workspace packages",
+      "path": ".ssot/adr/ADR-1032-package-workspace-boundaries.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "3011ecb92d5d55f59042a7ddcd89322e78240afb2fb6e6ae6f16f6734d06b76e",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -28515,6 +28810,26 @@
       "content_sha256": "21fe7ee1e7ffbc862ba270968bf0ef625d4eb7dd87294e5ac23f0b5fe78736c2",
       "kind": "local-policy",
       "adr_ids": [],
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2038",
+      "number": 2038,
+      "slug": "package-boundaries",
+      "title": "Package boundaries",
+      "path": ".ssot/specs/SPEC-2038-package-boundaries.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "c18db682e9c476c5ce123221d9ee2a256c8e9b56aa96304e6710ab0477c8ce39",
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1032"
+      ],
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],

@@ -959,6 +959,74 @@ def build_registry() -> dict[str, Any]:
         claim_ids=[ssot_authority_claim_id],
         evidence_ids=[ssot_authority_evidence_id],
     )
+
+    package_boundary_feature_ids = [
+        _feature_id("package-workspace-boundaries"),
+        _feature_id("package-boundary-dependency-dag"),
+        _feature_id("tigrcorn-core-extraction-shims"),
+    ]
+    package_boundary_rows = [
+        (
+            package_boundary_feature_ids[0],
+            "Package workspace boundaries",
+            "Declare the publishable monorepo package set while preserving tigrcorn as the umbrella public install.",
+        ),
+        (
+            package_boundary_feature_ids[1],
+            "Package boundary dependency DAG",
+            "Enforce one-way dependency direction from core toward runtime, compatibility, certification, and the umbrella facade.",
+        ),
+        (
+            package_boundary_feature_ids[2],
+            "tigrcorn-core extraction shims",
+            "Extract dependency-light constants, errors, and type aliases to tigrcorn-core while preserving legacy tigrcorn.* imports.",
+        ),
+    ]
+    for feature_id, title, description in package_boundary_rows:
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T2",
+            slot="package-boundaries",
+            horizon="current",
+            implementation_status="implemented",
+        )
+    link_feature_specs(package_boundary_feature_ids, ["spc:2038"])
+    for feature_id in package_boundary_feature_ids[1:]:
+        if package_boundary_feature_ids[0] not in features[feature_id]["requires"]:
+            features[feature_id]["requires"].append(package_boundary_feature_ids[0])
+    package_boundary_claim_id = _claim_id("package-workspace-boundaries-implemented")
+    package_boundary_test_id = _test_id("pytest", "tests/test_package_boundaries.py")
+    package_boundary_evidence_id = _evidence_id("pytest", "tests/test_package_boundaries.py")
+    ensure_claim(
+        claim_id=package_boundary_claim_id,
+        title="Package workspace boundaries implemented",
+        description="The workspace package set, dependency DAG, and first core extraction shims are executable and tested.",
+        tier="T2",
+        kind="architecture_boundary",
+        feature_ids=package_boundary_feature_ids,
+    )
+    ensure_evidence(
+        evidence_id=package_boundary_evidence_id,
+        title="Package boundary pytest evidence",
+        kind="pytest",
+        tier="T2",
+        path="tests/test_package_boundaries.py",
+        claim_ids=[package_boundary_claim_id],
+        test_ids=[package_boundary_test_id],
+    )
+    ensure_test(
+        test_id=package_boundary_test_id,
+        title="Package boundary workspace and shim coverage",
+        status="passing",
+        kind="pytest",
+        path="tests/test_package_boundaries.py",
+        feature_ids=package_boundary_feature_ids,
+        claim_ids=[package_boundary_claim_id],
+        evidence_ids=[package_boundary_evidence_id],
+    )
+
     webtransport_feature_ids = [
         _feature_id("webtransport-h3-quic-scope"),
         _feature_id("webtransport-h3-quic-session-events"),
