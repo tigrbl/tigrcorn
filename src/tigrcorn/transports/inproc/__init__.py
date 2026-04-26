@@ -1,3 +1,12 @@
-from .channel import InProcChannel
+from __future__ import annotations
 
-__all__ = ["InProcChannel"]
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_transports.inproc")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

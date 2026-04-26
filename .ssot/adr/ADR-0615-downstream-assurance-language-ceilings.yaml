@@ -1,0 +1,62 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:0615"
+number: 615
+slug: "downstream-assurance-language-ceilings"
+title: "Downstream assurance-language ceilings for feature target claim tiers"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "SSOT downstream repositories use feature target claim tiers, linked claims, tests, and evidence to describe what a system can responsibly claim about a feature. The shared `T0` through `T4` tiers describe assurance strength, but downstream reports, release notes, README content, generated summaries, and certification artifacts also need a common language ceiling so weakly evidenced features are not described with stronger assurance language than their proof chains support."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  SSOT downstream repositories use feature target claim tiers, linked claims, tests, and evidence to describe what a system can responsibly claim about a feature. The shared `T0` through `T4` tiers describe assurance strength, but downstream reports, release notes, README content, generated summaries, and certification artifacts also need a common language ceiling so weakly evidenced features are not described with stronger assurance language than their proof chains support.
+  
+  This ADR is an `ssot-origin` decision. It is intended to apply to downstream repositories that synchronize and conform to SSOT origin documents, not only to the `ssot-registry` package repository.
+  
+  ## Decision
+  
+  Downstream SSOT repositories must treat each feature's effective target claim tier as the ceiling for assurance language used in SSOT-controlled outputs. A feature may be described with language from its effective tier or any weaker tier. It must not be described with stronger language unless a linked claim passes claim-closure checks at the stronger tier and the feature evaluation requires or accepts that stronger tier.
+  
+  The effective tier is resolved by the applicable evaluation policy. For direct feature evaluation, use `feature.plan.target_claim_tier`. For profile evaluation, use the feature target tier when present, otherwise the profile claim tier when the profile policy permits that fallback. If no effective tier can be resolved, downstream tooling must fail closed and must not emit assurance claims stronger than inventory-level language.
+  
+  Acceptable language by tier:
+  
+  | Tier | Assurance ceiling | Acceptable claims language |
+  |---|---|---|
+  | `T0` | Declared intent or inventory-level | declared, tracked, intended, planned, in scope, inventory-level support |
+  | `T1` | Maintainer-asserted with local evidence | maintainer-asserted, locally evidenced, supported by local evidence, observed in maintainer-run checks |
+  | `T2` | Reproducible project-controlled verification | reproducibly verified, project-verified, verified by project-controlled tests or CI, repeatably validated |
+  | `T3` | Release-grade certified claim | release-certified, release-grade verified, certified for a named release or frozen boundary |
+  | `T4` | Independently reviewed or externally attested claim | independently reviewed, externally attested, third-party validated, validated by a named external source or artifact |
+  
+  Disallowed escalations:
+  
+  - `T0` features must not be described as working, verified, tested, certified, or attested.
+  - `T1` features must not be described as reproducibly verified, release-certified, or independently reviewed.
+  - `T2` features must not be described as release-certified or independently reviewed.
+  - `T3` features must not be described as independently reviewed or externally attested unless `T4` evidence exists.
+  
+  Canonical wording templates:
+  
+  - `T0`: Feature `<id>` is declared in scope for `<capability>`.
+  - `T1`: Maintainers assert that feature `<id>` supports `<capability>`, backed by local evidence `<evidence-id>`.
+  - `T2`: Feature `<id>` is reproducibly verified by project-controlled checks for `<capability>`.
+  - `T3`: Feature `<id>` is release-certified for `<release-or-boundary>` with passing claim closure at tier `T3` or higher.
+  - `T4`: Feature `<id>` is independently reviewed or externally attested for `<capability>` by `<source-or-artifact>`.
+  
+  Claim status remains orthogonal to claim tier. Status may describe lifecycle progress, but it does not authorize stronger assurance language. Evidence tier alignment, linked test status, and feature target tier evaluation remain the enforcement mechanisms for whether stronger language is valid.
+  
+  ## Consequences
+  
+  Downstream generated summaries, READMEs, release notes, certification reports, review comments, and human-authored SSOT-controlled documentation must choose assurance language from the feature's effective tier or a weaker tier.
+  
+  Downstream projects may adopt stricter vocabulary, additional review gates, or domain-specific phrasing, but they must not permit stronger assurance wording than the feature's passing proof chain supports.
+  
+  Reviewers and automation should treat over-strong assurance language as a policy defect even when the underlying feature is implemented.

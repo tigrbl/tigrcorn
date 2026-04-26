@@ -71,6 +71,48 @@ def test_scaffold_import_names_are_available() -> None:
         assert getattr(module, "PACKAGE_BOUNDARY", "core") in {boundary.distribution.removeprefix("tigrcorn-"), "core"}
 
 
+def test_split_packages_own_executable_modules_and_root_imports_are_shims() -> None:
+    import tigrcorn.asgi.send as root_asgi_send
+    import tigrcorn.compat.release_gates as root_release_gates
+    import tigrcorn.config.model as root_config_model
+    import tigrcorn.contract.events as root_contract_events
+    import tigrcorn.http.etag as root_http_etag
+    import tigrcorn.observability.metrics as root_observability_metrics
+    import tigrcorn.protocols.http1.parser as root_http1_parser
+    import tigrcorn.security.tls as root_tls
+    import tigrcorn.server.runner as root_server_runner
+    import tigrcorn.static as root_static
+    import tigrcorn.transports.tcp.connection as root_tcp_connection
+    import tigrcorn_asgi.send as package_asgi_send
+    import tigrcorn_certification.release_gates as package_release_gates
+    import tigrcorn_config.model as package_config_model
+    import tigrcorn_contract.events as package_contract_events
+    import tigrcorn_http.etag as package_http_etag
+    import tigrcorn_observability.metrics as package_observability_metrics
+    import tigrcorn_protocols.http1.parser as package_http1_parser
+    import tigrcorn_runtime.server.runner as package_server_runner
+    import tigrcorn_security.tls as package_tls
+    import tigrcorn_static.static as package_static
+    import tigrcorn_transports.tcp.connection as package_tcp_connection
+
+    active_pairs = (
+        (root_asgi_send.materialize_response_body_segments, package_asgi_send.materialize_response_body_segments, "tigrcorn_asgi"),
+        (root_config_model.ServerConfig, package_config_model.ServerConfig, "tigrcorn_config"),
+        (root_contract_events.validate_event_order, package_contract_events.validate_event_order, "tigrcorn_contract"),
+        (root_http_etag.generate_entity_tag, package_http_etag.generate_entity_tag, "tigrcorn_http"),
+        (root_observability_metrics.Metrics, package_observability_metrics.Metrics, "tigrcorn_observability"),
+        (root_http1_parser.ParsedRequestHead, package_http1_parser.ParsedRequestHead, "tigrcorn_protocols"),
+        (root_tls.ServerTLSContext, package_tls.ServerTLSContext, "tigrcorn_security"),
+        (root_tcp_connection.TCPConnection, package_tcp_connection.TCPConnection, "tigrcorn_transports"),
+        (root_server_runner.TigrCornServer, package_server_runner.TigrCornServer, "tigrcorn_runtime"),
+        (root_static.StaticFilesApp, package_static.StaticFilesApp, "tigrcorn_static"),
+        (root_release_gates.evaluate_release_gates, package_release_gates.evaluate_release_gates, "tigrcorn_certification"),
+    )
+    for root_symbol, package_symbol, owner_prefix in active_pairs:
+        assert root_symbol is package_symbol
+        assert package_symbol.__module__.startswith(owner_prefix)
+
+
 def test_core_package_has_no_inward_tigrcorn_imports() -> None:
     core_root = ROOT / "pkgs" / "tigrcorn-core" / "src" / "tigrcorn_core"
     forbidden_prefixes = ("tigrcorn.", "tigrcorn_", "tigrcorn-")

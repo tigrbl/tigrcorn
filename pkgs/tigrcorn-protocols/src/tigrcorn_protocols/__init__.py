@@ -1,5 +1,1 @@
-from __future__ import annotations
-
-PACKAGE_BOUNDARY = "protocols"
-
-__all__ = ["PACKAGE_BOUNDARY"]
+"""Protocol implementations and protocol registries."""

@@ -1,28 +1,7 @@
 from __future__ import annotations
 
-import struct
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class RawFrame:
-    payload: bytes
-
-    @property
-    def length(self) -> int:
-        return len(self.payload)
-
-
-def encode_frame(payload: bytes) -> bytes:
-    return struct.pack("!I", len(payload)) + payload
-
-
-def try_decode_frame(buffer: bytearray) -> RawFrame | None:
-    if len(buffer) < 4:
-        return None
-    size = struct.unpack("!I", buffer[:4])[0]
-    if len(buffer) < 4 + size:
-        return None
-    payload = bytes(buffer[4 : 4 + size])
-    del buffer[: 4 + size]
-    return RawFrame(payload)
+_module = _import_module('tigrcorn_protocols.rawframed.frames')
+_sys.modules[__name__] = _module

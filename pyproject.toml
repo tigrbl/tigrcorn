@@ -27,6 +27,18 @@ classifiers = [
 ]
 dependencies = [
     "tigrcorn-core==0.3.9",
+    "tigrcorn-config==0.3.9",
+    "tigrcorn-asgi==0.3.9",
+    "tigrcorn-contract==0.3.9",
+    "tigrcorn-transports==0.3.9",
+    "tigrcorn-protocols==0.3.9",
+    "tigrcorn-http==0.3.9",
+    "tigrcorn-security==0.3.9",
+    "tigrcorn-runtime==0.3.9",
+    "tigrcorn-static==0.3.9",
+    "tigrcorn-observability==0.3.9",
+    "tigrcorn-compat==0.3.9",
+    "tigrcorn-certification==0.3.9",
     "tigr-asgi-contract>=0.3.2",
 ]
 

@@ -1,15 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Callable, Any
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class CustomProtocolRegistry:
-    handlers: dict[str, Callable[..., Any]] = field(default_factory=dict)
-
-    def register(self, name: str, handler: Callable[..., Any]) -> None:
-        self.handlers[name] = handler
-
-    def get(self, name: str):
-        return self.handlers[name]
+_module = _import_module('tigrcorn_protocols.custom.registry')
+_sys.modules[__name__] = _module

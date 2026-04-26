@@ -1,5 +1,3 @@
 from __future__ import annotations
 
-PACKAGE_BOUNDARY = "static"
-
-__all__ = ["PACKAGE_BOUNDARY"]
+from tigrcorn_static.static import *  # noqa: F401,F403

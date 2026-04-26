@@ -1,54 +1,12 @@
-from tigrcorn.http.conditional import ConditionalEvaluation, apply_conditional_request, parse_http_date
-from tigrcorn.http.entity import EntitySemanticsResult, apply_response_entity_semantics
-from tigrcorn.http.etag import EntityTag, EntityTagList, format_etag, generate_entity_tag, parse_entity_tag, parse_entity_tag_list, strong_compare, weak_compare
-from tigrcorn.http.range import ByteRange, RangeEvaluation, apply_byte_ranges, parse_range_header
-from tigrcorn.http.structured_fields import (
-    ByteSequence,
-    Date,
-    InnerList,
-    Item,
-    StructuredFieldError,
-    Token,
-    parse_dictionary,
-    parse_item,
-    parse_list,
-    parse_structured_field,
-    serialize_dictionary,
-    serialize_item,
-    serialize_list,
-    serialize_structured_value,
-)
+from __future__ import annotations
 
-__all__ = [
-    'ByteRange',
-    'ConditionalEvaluation',
-    'EntitySemanticsResult',
-    'EntityTag',
-    'EntityTagList',
-    'RangeEvaluation',
-    'ByteSequence',
-    'Date',
-    'InnerList',
-    'Item',
-    'StructuredFieldError',
-    'Token',
-    'apply_byte_ranges',
-    'apply_conditional_request',
-    'apply_response_entity_semantics',
-    'format_etag',
-    'generate_entity_tag',
-    'parse_entity_tag',
-    'parse_entity_tag_list',
-    'parse_http_date',
-    'parse_dictionary',
-    'parse_range_header',
-    'parse_item',
-    'parse_list',
-    'parse_structured_field',
-    'serialize_dictionary',
-    'serialize_item',
-    'serialize_list',
-    'serialize_structured_value',
-    'strong_compare',
-    'weak_compare',
-]
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_http")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)
