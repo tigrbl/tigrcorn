@@ -490,10 +490,15 @@
         "--quic-max-datagram-size",
         "--quic-idle-timeout",
         "--quic-early-data-policy",
+        "--webtransport-max-sessions",
+        "--webtransport-max-streams",
+        "--webtransport-max-datagram-size",
+        "--webtransport-origin",
+        "--webtransport-path",
         "--pipe-mode"
       ],
       "family": "Protocol / transport",
-      "config_path": "http.* / websocket.* / quic.* / listeners[].protocols",
+      "config_path": "http.* / websocket.* / quic.* / webtransport.* / listeners[].protocols",
       "claim_class": "rfc_scoped",
       "rfc_targets": [
         "RFC 9112",
@@ -506,9 +511,9 @@
         "RFC 7692",
         "RFC 8441",
         "RFC 9220",
-        "RFC 9110 \u00a79.3.6",
-        "RFC 9110 \u00a76.5",
-        "RFC 9110 \u00a78"
+        "RFC 9110 §9.3.6",
+        "RFC 9110 §6.5",
+        "RFC 9110 §8"
       ],
       "default_value": "defaults file",
       "validation_rules": [
@@ -518,7 +523,8 @@
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
         "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_cli_protocol_webtransport_wires_h3_quic_and_tuning_flags"
       ],
       "interop_scenarios": [
         "websocket-http11-server-websockets-client-permessage-deflate",
@@ -572,6 +578,6 @@
       ]
     }
   ],
-  "public_flag_string_count": 125,
-  "promotion_ready_count": 125
+  "public_flag_string_count": 130,
+  "promotion_ready_count": 130
 }

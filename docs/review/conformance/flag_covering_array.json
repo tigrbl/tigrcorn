@@ -2,7 +2,7 @@
   "schema_version": 1,
   "target_name": "phase8_flag_covering_array",
   "status": "planned",
-  "public_flag_string_count": 125,
+  "public_flag_string_count": 130,
   "strategy": {
     "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
     "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
@@ -3428,6 +3428,81 @@
       ],
       "claim_plane": "pure_operator",
       "status": "planned"
+    },
+    {
+      "case_id": "flag-156-webtransport_max_sessions",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--webtransport-max-sessions",
+          "value": 8
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "implemented"
+    },
+    {
+      "case_id": "flag-157-webtransport_max_streams",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--webtransport-max-streams",
+          "value": 64
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "implemented"
+    },
+    {
+      "case_id": "flag-158-webtransport_max_datagram_size",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--webtransport-max-datagram-size",
+          "value": 1200
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "implemented"
+    },
+    {
+      "case_id": "flag-159-webtransport_origin",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--webtransport-origin",
+          "value": "https://example.test"
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "implemented"
+    },
+    {
+      "case_id": "flag-160-webtransport_path",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--webtransport-path",
+          "value": "/wt"
+        }
+      ],
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "claim_plane": "rfc_scoped",
+      "status": "implemented"
     }
   ],
   "phase9a_contract_freeze": {

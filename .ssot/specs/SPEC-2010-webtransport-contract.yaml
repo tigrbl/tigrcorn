@@ -1,19 +1,22 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2010"
 number: 2010
 slug: "webtransport-contract"
 title: "WebTransport contract target"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Tigrcorn shall implement first-class WebTransport support over the existing package-owned HTTP/3 and QUIC stack."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1023"
+status_notes:
+  -
+    status: "accepted"
+    note: "WebTransport operator activation and tuning semantics are now governed."
+    at: "2026-04-26T05:47:33Z"
+references: []
 body: |-
   ## Content
   
@@ -21,7 +24,7 @@ body: |-
   
   Tigrcorn shall implement first-class WebTransport support over the existing package-owned HTTP/3 and QUIC stack.
   
-  ## Required target surface
+  ## Required runtime surface
   
   - Contract `webtransport` scope construction.
   - `webtransport.connect` and `webtransport.accept` session admission.
@@ -29,8 +32,18 @@ body: |-
   - `webtransport.stream.receive` and `webtransport.stream.send` stream events.
   - `webtransport.datagram.receive` and `webtransport.datagram.send` datagram events when QUIC DATAGRAM support is enabled.
   - `transport.emit.complete` completion signaling for session, stream, datagram, and message emission paths.
-  - Contract validation against `tigr-asgi-contract` version `0.1.2`.
+  - Contract validation against the SSOT-declared tigr-asgi-contract schema target.
   - ASGI/3 exposure only through documented Tigrcorn extensions when compatibility is explicitly selected.
+  
+  ## Required operator surface
+  
+  - Tigrcorn shall accept `webtransport` as a public `--protocol` value.
+  - A listener that selects `webtransport` shall resolve to the required H3/QUIC carrier state.
+  - WebTransport protocol selection shall require UDP transport semantics.
+  - WebTransport protocol selection shall require HTTP/3 and QUIC carrier semantics.
+  - Tigrcorn shall fail closed when WebTransport is selected on a non-UDP listener or when required carrier state is malformed.
+  - Tigrcorn shall expose WebTransport tuning through a `[webtransport]` config block, prefixed environment variables, public config-construction APIs, and equivalent CLI flags.
+  - WebTransport tuning shall include maximum sessions, maximum streams, maximum datagram size, allowed origins, and path prefix controls.
   
   ## Boundary exclusions
   
@@ -38,4 +51,6 @@ body: |-
   
   Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1011"
+  - "adr:1023"

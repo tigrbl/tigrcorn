@@ -152,7 +152,12 @@
     "websocket.max_message_size": 16777216,
     "websocket.max_queue": 32,
     "websocket.ping_interval": null,
-    "websocket.ping_timeout": null
+    "websocket.ping_timeout": null,
+    "webtransport.max_datagram_size": null,
+    "webtransport.max_sessions": null,
+    "webtransport.max_streams": null,
+    "webtransport.origins": [],
+    "webtransport.path": null
   },
   "profile": "strict-mtls-origin",
   "profile_overlays_flat": {

@@ -135,7 +135,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     protocol_group = parser.add_argument_group("Protocol / transport")
     protocol_group.add_argument("--http", dest="http_versions", action="append", choices=["1.1", "2", "3"], default=None, help="Enable an HTTP version")
-    protocol_group.add_argument("--protocol", dest="protocols", action="append", choices=["http1", "http2", "http3", "quic", "websocket", "rawframed", "custom"], default=None, help="Enable a listener protocol")
+    protocol_group.add_argument("--protocol", dest="protocols", action="append", choices=["http1", "http2", "http3", "quic", "websocket", "webtransport", "rawframed", "custom"], default=None, help="Enable a listener protocol")
     protocol_group.add_argument("--disable-websocket", action="store_true", default=None)
     protocol_group.add_argument("--disable-h2c", action="store_true", default=None, help=flag_help("--disable-h2c"))
     protocol_group.add_argument("--websocket-compression", choices=["off", "permessage-deflate"], default=None, help=flag_help("--websocket-compression"))
@@ -152,6 +152,11 @@ def build_parser() -> argparse.ArgumentParser:
     protocol_group.add_argument("--quic-max-datagram-size", type=int, default=None, help=quic_flag_help("--quic-max-datagram-size"))
     protocol_group.add_argument("--quic-idle-timeout", type=float, default=None, help=quic_flag_help("--quic-idle-timeout"))
     protocol_group.add_argument("--quic-early-data-policy", choices=["allow", "deny", "require"], default=None, help=quic_flag_help("--quic-early-data-policy"))
+    protocol_group.add_argument("--webtransport-max-sessions", type=int, default=None, help="Maximum concurrently active WebTransport sessions")
+    protocol_group.add_argument("--webtransport-max-streams", type=int, default=None, help="Maximum concurrently active WebTransport streams")
+    protocol_group.add_argument("--webtransport-max-datagram-size", type=int, default=None, help="Maximum WebTransport datagram payload size")
+    protocol_group.add_argument("--webtransport-origin", action="append", default=None, help="Allowed WebTransport Origin value; repeat or use comma-separated values")
+    protocol_group.add_argument("--webtransport-path", default=None, help="WebTransport CONNECT path prefix")
     protocol_group.add_argument("--pipe-mode", choices=["rawframed", "stream"], default=None)
     protocol_group.add_argument("--quic-secret", default=None, help=argparse.SUPPRESS)
     return parser

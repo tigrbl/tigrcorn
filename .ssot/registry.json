@@ -4984,7 +4984,8 @@
         "tst:pytest-file-tests-test-tcp-tls-package-owned-py",
         "tst:pytest-file-tests-test-trailer-policy-strict-local-py",
         "tst:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
-        "tst:pytest-file-tests-test-websocket-frames-py"
+        "tst:pytest-file-tests-test-websocket-frames-py",
+        "tst:pytest-file-tests-test-webtransport-operator-surface-py"
       ],
       "requires": [],
       "spec_ids": []
@@ -11733,6 +11734,22 @@
       ],
       "evidence_ids": [
         "evd:pytest-file-tests-test-websocket-frames-py"
+      ]
+    },
+    {
+      "id": "tst:pytest-file-tests-test-webtransport-operator-surface-py",
+      "title": "Pytest module inventory tests/test_webtransport_operator_surface.py",
+      "status": "passing",
+      "kind": "pytest-file",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:test-inventory"
+      ],
+      "claim_ids": [
+        "clm:test-inventory"
+      ],
+      "evidence_ids": [
+        "evd:pytest-file-tests-test-webtransport-operator-surface-py"
       ]
     },
     {
@@ -18721,7 +18738,8 @@
         "tst:pytest-file-tests-test-tcp-tls-package-owned-py",
         "tst:pytest-file-tests-test-trailer-policy-strict-local-py",
         "tst:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
-        "tst:pytest-file-tests-test-websocket-frames-py"
+        "tst:pytest-file-tests-test-websocket-frames-py",
+        "tst:pytest-file-tests-test-webtransport-operator-surface-py"
       ],
       "evidence_ids": [
         "evd:pytest-file-tests-test-additional-remaining-work-py",
@@ -18825,7 +18843,8 @@
         "evd:pytest-file-tests-test-tcp-tls-package-owned-py",
         "evd:pytest-file-tests-test-trailer-policy-strict-local-py",
         "evd:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
-        "evd:pytest-file-tests-test-websocket-frames-py"
+        "evd:pytest-file-tests-test-websocket-frames-py",
+        "evd:pytest-file-tests-test-webtransport-operator-surface-py"
       ]
     },
     {
@@ -18945,6 +18964,19 @@
       ],
       "evidence_ids": [
         "evd:wsgi-compat-exclusion-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-protocol-cli-flag-implemented",
+      "title": "WebTransport protocol CLI flag implemented",
+      "status": "evidenced",
+      "tier": "T3",
+      "kind": "operator-surface",
+      "description": "Tigrcorn accepts webtransport as a public --protocol value and routes it through governed WebTransport-over-H3/QUIC configuration.",
+      "feature_ids": [],
+      "test_ids": [],
+      "evidence_ids": [
+        "evd:webtransport-protocol-cli-flag-pytest"
       ]
     }
   ],
@@ -22980,6 +23012,20 @@
       ]
     },
     {
+      "id": "evd:pytest-file-tests-test-webtransport-operator-surface-py",
+      "title": "Pytest module tests/test_webtransport_operator_surface.py",
+      "status": "passed",
+      "kind": "pytest_module",
+      "tier": "T2",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:test-inventory"
+      ],
+      "test_ids": [
+        "tst:pytest-file-tests-test-webtransport-operator-surface-py"
+      ]
+    },
+    {
       "id": "evd:pytest-tests-test-ssot-registry-py",
       "title": "SSOT registry product-boundary test evidence",
       "status": "passed",
@@ -24806,6 +24852,18 @@
       "test_ids": [
         "tst:wsgi-compat-exclusion"
       ]
+    },
+    {
+      "id": "evd:webtransport-protocol-cli-flag-pytest",
+      "title": "Pytest evidence for WebTransport protocol CLI flag",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-protocol-cli-flag-implemented"
+      ],
+      "test_ids": []
     }
   ],
   "issues": [
@@ -25778,6 +25836,7 @@
         "evd:pytest-file-tests-test-trailer-policy-strict-local-py",
         "evd:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
         "evd:pytest-file-tests-test-websocket-frames-py",
+        "evd:pytest-file-tests-test-webtransport-operator-surface-py",
         "evd:pytest-tests-test-ssot-registry-py",
         "evd:rest-binding-classification-pytest",
         "evd:rest-runtime-exclusion-pytest",
@@ -27067,13 +27126,23 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "bc104570f052ca38b1b2f696d7bf45db7b1ce1759a1858ac95b5e0e9c71813bb",
+      "content_sha256": "396f499d72490d7ed3ccf637e6e55f47540d791c4c92944401698a102445dd0f",
       "kind": "local-policy",
-      "adr_ids": [],
-      "status": "draft",
+      "adr_ids": [
+        "adr:1002",
+        "adr:1011",
+        "adr:1023"
+      ],
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Public CLI protocol and WebTransport tuning flags are now governed.",
+          "at": "2026-04-26T05:47:34Z"
+        }
+      ]
     },
     {
       "id": "spc:2009",
@@ -27103,13 +27172,22 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "1b81abd0ac5954a813a231e2b916259314fa8a45903cbb00b7789164436b7259",
+      "content_sha256": "c2c6523f42b9d7181981d635c63f43fba80cfd627f6b7346ebbed02616c1160c",
       "kind": "local-policy",
-      "adr_ids": [],
-      "status": "draft",
+      "adr_ids": [
+        "adr:1011",
+        "adr:1023"
+      ],
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "WebTransport operator activation and tuning semantics are now governed.",
+          "at": "2026-04-26T05:47:33Z"
+        }
+      ]
     },
     {
       "id": "spc:2011",

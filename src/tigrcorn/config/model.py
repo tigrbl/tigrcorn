@@ -34,7 +34,7 @@ from tigrcorn.constants import (
 )
 
 ListenerKind = Literal["tcp", "udp", "unix", "pipe", "inproc"]
-ProtocolName = Literal["http1", "http2", "http3", "quic", "websocket", "rawframed", "custom"]
+ProtocolName = Literal["http1", "http2", "http3", "quic", "websocket", "webtransport", "rawframed", "custom"]
 ClaimClass = Literal["rfc_scoped", "hybrid", "pure_operator", "non_rfc_custom"]
 AppInterface = Literal["auto", "tigr-asgi-contract", "asgi3"]
 
@@ -158,6 +158,15 @@ class QUICConfig:
     max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
     idle_timeout: float = DEFAULT_IDLE_TIMEOUT
     early_data_policy: Literal["allow", "deny", "require"] = "deny"
+
+
+@dataclass(slots=True)
+class WebTransportConfig:
+    max_sessions: int | None = None
+    max_streams: int | None = None
+    max_datagram_size: int | None = None
+    origins: list[str] = field(default_factory=list)
+    path: str | None = None
 
 
 @dataclass(slots=True)
@@ -294,6 +303,7 @@ class ServerConfig:
     websocket: WebSocketConfig = field(default_factory=WebSocketConfig)
     static: StaticConfig = field(default_factory=StaticConfig)
     quic: QUICConfig = field(default_factory=QUICConfig)
+    webtransport: WebTransportConfig = field(default_factory=WebTransportConfig)
     logging: LoggingConfig = field(default_factory=LoggingConfig)
     metrics: MetricsConfig = field(default_factory=MetricsConfig)
     scheduler: SchedulerConfig = field(default_factory=SchedulerConfig)

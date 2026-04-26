@@ -200,6 +200,7 @@ def namespace_to_overrides(ns: Namespace) -> dict[str, Any]:
     websocket_block: dict[str, Any] = {}
     static_block: dict[str, Any] = {}
     quic_block: dict[str, Any] = {}
+    webtransport_block: dict[str, Any] = {}
     logging_block: dict[str, Any] = {}
     metrics_block: dict[str, Any] = {}
     scheduler_block: dict[str, Any] = {}
@@ -289,6 +290,10 @@ def namespace_to_overrides(ns: Namespace) -> dict[str, Any]:
         'quic_max_datagram_size': (quic_block, 'max_datagram_size'),
         'quic_idle_timeout': (quic_block, 'idle_timeout'),
         'quic_early_data_policy': (quic_block, 'early_data_policy'),
+        'webtransport_max_sessions': (webtransport_block, 'max_sessions'),
+        'webtransport_max_streams': (webtransport_block, 'max_streams'),
+        'webtransport_max_datagram_size': (webtransport_block, 'max_datagram_size'),
+        'webtransport_path': (webtransport_block, 'path'),
         'log_level': (logging_block, 'level'),
         'access_log': (logging_block, 'access_log'),
         'access_log_file': (logging_block, 'access_log_file'),
@@ -347,6 +352,8 @@ def namespace_to_overrides(ns: Namespace) -> dict[str, Any]:
         websocket_block['enabled'] = not ns.disable_websocket
     if ns.quic_secret is not None:
         quic_block['quic_secret'] = ns.quic_secret.encode('utf-8') if isinstance(ns.quic_secret, str) else ns.quic_secret
+    if getattr(ns, 'webtransport_origin', None):
+        webtransport_block['origins'] = _listify(ns.webtransport_origin)
 
     listeners = _listener_overrides_from_namespace(ns)
     if listeners:
@@ -363,6 +370,7 @@ def namespace_to_overrides(ns: Namespace) -> dict[str, Any]:
         ('websocket', websocket_block),
         ('static', static_block),
         ('quic', quic_block),
+        ('webtransport', webtransport_block),
         ('logging', logging_block),
         ('metrics', metrics_block),
         ('scheduler', scheduler_block),
@@ -457,6 +465,11 @@ def build_config(
     protocols: list[str] | None = None,
     quic_secret: bytes | None = None,
     quic_require_retry: bool | None = None,
+    webtransport_max_sessions: int | None = None,
+    webtransport_max_streams: int | None = None,
+    webtransport_max_datagram_size: int | None = None,
+    webtransport_origins: list[str] | None = None,
+    webtransport_path: str | None = None,
     pipe_mode: str = 'rawframed',
     config: Mapping[str, Any] | None = None,
     default_headers: list[str] | list[tuple[str, str]] | None = None,
@@ -489,6 +502,11 @@ def build_config(
         or pipe_mode != 'rawframed'
         or websocket is not None
         or websocket_max_queue is not None
+        or webtransport_max_sessions is not None
+        or webtransport_max_streams is not None
+        or webtransport_max_datagram_size is not None
+        or webtransport_origins is not None
+        or webtransport_path is not None
     )
     effective_websocket_enabled = True if websocket is None and direct_runtime_customized else bool(websocket)
     effective_h2c_enabled = (
@@ -553,6 +571,23 @@ def build_config(
         overrides['websocket'] = {'max_queue': websocket_max_queue}
     if quic_require_retry is not None or not profile_selected:
         overrides['quic'] = {'require_retry': False if quic_require_retry is None else quic_require_retry}
+    if any(
+        value is not None
+        for value in (
+            webtransport_max_sessions,
+            webtransport_max_streams,
+            webtransport_max_datagram_size,
+            webtransport_origins,
+            webtransport_path,
+        )
+    ):
+        overrides['webtransport'] = {
+            'max_sessions': webtransport_max_sessions,
+            'max_streams': webtransport_max_streams,
+            'max_datagram_size': webtransport_max_datagram_size,
+            'origins': webtransport_origins or [],
+            'path': webtransport_path,
+        }
     if ssl_require_client_cert is not None or not profile_selected:
         overrides['tls']['require_client_cert'] = False if ssl_require_client_cert is None else ssl_require_client_cert
 
@@ -568,6 +603,11 @@ def build_config(
         or pipe_mode != 'rawframed'
         or websocket is not None
         or quic_require_retry is not None
+        or webtransport_max_sessions is not None
+        or webtransport_max_streams is not None
+        or webtransport_max_datagram_size is not None
+        or webtransport_origins is not None
+        or webtransport_path is not None
     )
     if listener_customized:
         overrides['listeners'] = [

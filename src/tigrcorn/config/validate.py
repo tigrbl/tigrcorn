@@ -12,7 +12,7 @@ from tigrcorn.observability.tracing import validate_otel_endpoint
 from tigrcorn.errors import ConfigError
 from tigrcorn.config.profiles import list_blessed_profiles
 
-_ALLOWED_PROTOCOLS = {"http1", "http2", "http3", "quic", "websocket", "rawframed", "custom"}
+_ALLOWED_PROTOCOLS = {"http1", "http2", "http3", "quic", "websocket", "webtransport", "rawframed", "custom"}
 _ALLOWED_WORKER_CLASSES = {"local", "process", *SUPPORTED_WORKER_CLASS_ALIASES}
 _ALLOWED_RUNTIMES = set(SUPPORTED_RUNTIMES)
 
@@ -85,6 +85,9 @@ def validate_config(config: ServerConfig) -> None:
         "websocket.ping_timeout": config.websocket.ping_timeout,
         "quic.max_datagram_size": config.quic.max_datagram_size,
         "quic.idle_timeout": config.quic.idle_timeout,
+        "webtransport.max_sessions": config.webtransport.max_sessions,
+        "webtransport.max_streams": config.webtransport.max_streams,
+        "webtransport.max_datagram_size": config.webtransport.max_datagram_size,
         "tls.ocsp_cache_size": config.tls.ocsp_cache_size,
         "scheduler.limit_concurrency": config.scheduler.limit_concurrency,
         "scheduler.max_connections": config.scheduler.max_connections,
@@ -118,6 +121,8 @@ def validate_config(config: ServerConfig) -> None:
         raise ConfigError(f"unsupported quic early data policy: {config.quic.early_data_policy!r}")
     if config.quic.quic_secret is not None and len(config.quic.quic_secret) == 0:
         raise ConfigError('quic.quic_secret must not be empty when provided')
+    if config.webtransport.path is not None and not config.webtransport.path.startswith('/'):
+        raise ConfigError("webtransport.path must start with '/'")
     if config.tls.ocsp_mode not in {"off", "soft-fail", "require"}:
         raise ConfigError(f"unsupported ocsp_mode: {config.tls.ocsp_mode!r}")
     if config.tls.crl_mode not in {"off", "soft-fail", "require"}:
@@ -210,6 +215,11 @@ def validate_config(config: ServerConfig) -> None:
                 raise ConfigError('udp listener quic_secret must not be empty when provided')
             if "http3" in listener.enabled_protocols and "quic" not in listener.enabled_protocols:
                 raise ConfigError("http3 requires quic on udp listeners")
+            if "webtransport" in listener.enabled_protocols:
+                if "quic" not in listener.enabled_protocols or "http3" not in listener.enabled_protocols:
+                    raise ConfigError("webtransport requires quic and http3 on udp listeners")
+                if "3" not in listener.http_versions:
+                    raise ConfigError("webtransport requires HTTP/3 on udp listeners")
             if listener.ssl_ca_certs and not listener.ssl_enabled:
                 raise ConfigError("ssl_ca_certs requires ssl_certfile and ssl_keyfile on udp listeners")
             if listener.ssl_require_client_cert:
@@ -217,6 +227,8 @@ def validate_config(config: ServerConfig) -> None:
                     raise ConfigError("ssl_require_client_cert requires ssl_certfile and ssl_keyfile on udp listeners")
                 if not listener.ssl_ca_certs:
                     raise ConfigError("ssl_ca_certs is required when ssl_require_client_cert is enabled for udp listeners")
+        elif "webtransport" in listener.enabled_protocols:
+            raise ConfigError("webtransport requires an udp listener")
         if listener.kind == "pipe" and listener.pipe_mode not in {"rawframed", "stream"}:
             raise ConfigError(f"unsupported pipe mode: {listener.pipe_mode!r}")
 

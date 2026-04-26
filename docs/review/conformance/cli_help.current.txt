@@ -65,7 +65,7 @@ usage: tigrcorn [-h] [--app-interface {auto,tigr-asgi-contract,asgi3}]
                 [--websocket-ping-interval WEBSOCKET_PING_INTERVAL]
                 [--websocket-ping-timeout WEBSOCKET_PING_TIMEOUT]
                 [--idle-timeout IDLE_TIMEOUT] [--http {1.1,2,3}]
-                [--protocol {http1,http2,http3,quic,websocket,rawframed,custom}]
+                [--protocol {http1,http2,http3,quic,websocket,webtransport,rawframed,custom}]
                 [--disable-websocket] [--disable-h2c]
                 [--websocket-compression {off,permessage-deflate}]
                 [--connect-policy {relay,deny,allowlist}]
@@ -78,6 +78,11 @@ usage: tigrcorn [-h] [--app-interface {auto,tigr-asgi-contract,asgi3}]
                 [--quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE]
                 [--quic-idle-timeout QUIC_IDLE_TIMEOUT]
                 [--quic-early-data-policy {allow,deny,require}]
+                [--webtransport-max-sessions WEBTRANSPORT_MAX_SESSIONS]
+                [--webtransport-max-streams WEBTRANSPORT_MAX_STREAMS]
+                [--webtransport-max-datagram-size WEBTRANSPORT_MAX_DATAGRAM_SIZE]
+                [--webtransport-origin WEBTRANSPORT_ORIGIN]
+                [--webtransport-path WEBTRANSPORT_PATH]
                 [--pipe-mode {rawframed,stream}]
                 [app]
 
@@ -305,7 +310,7 @@ Resource / timeouts / concurrency:
 
 Protocol / transport:
   --http {1.1,2,3}      Enable an HTTP version
-  --protocol {http1,http2,http3,quic,websocket,rawframed,custom}
+  --protocol {http1,http2,http3,quic,websocket,webtransport,rawframed,custom}
                         Enable a listener protocol
   --disable-websocket
   --disable-h2c         Disable cleartext HTTP/2 upgrade and direct-preface
@@ -347,4 +352,15 @@ Protocol / transport:
   --quic-early-data-policy {allow,deny,require}
                         QUIC early-data policy: deny, allow, or require with
                         425 downgrade handling
+  --webtransport-max-sessions WEBTRANSPORT_MAX_SESSIONS
+                        Maximum concurrently active WebTransport sessions
+  --webtransport-max-streams WEBTRANSPORT_MAX_STREAMS
+                        Maximum concurrently active WebTransport streams
+  --webtransport-max-datagram-size WEBTRANSPORT_MAX_DATAGRAM_SIZE
+                        Maximum WebTransport datagram payload size
+  --webtransport-origin WEBTRANSPORT_ORIGIN
+                        Allowed WebTransport Origin value; repeat or use
+                        comma-separated values
+  --webtransport-path WEBTRANSPORT_PATH
+                        WebTransport CONNECT path prefix
   --pipe-mode {rawframed,stream}

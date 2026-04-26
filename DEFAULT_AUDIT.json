@@ -153,55 +153,25 @@
     "websocket.max_message_size": 16777216,
     "websocket.max_queue": 32,
     "websocket.ping_interval": null,
-    "websocket.ping_timeout": null
+    "websocket.ping_timeout": null,
+    "webtransport.max_datagram_size": null,
+    "webtransport.max_sessions": null,
+    "webtransport.max_streams": null,
+    "webtransport.origins": [],
+    "webtransport.path": null
   },
   "flags": [
     {
-      "config_path": "logging.access_log",
-      "effective_default": true,
-      "flag": "--access-log",
+      "config_path": "app.interface",
+      "effective_default": "auto",
+      "flag": "--app-interface",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "logging.access_log_file",
-      "effective_default": null,
-      "flag": "--access-log-file",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.access_log_format",
-      "effective_default": null,
-      "flag": "--access-log-format",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.alt_svc_headers",
-      "effective_default": [],
-      "flag": "--alt-svc",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.alt_svc_auto",
+      "config_path": "app.factory",
       "effective_default": false,
-      "flag": "--alt-svc-auto",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.alt_svc_max_age",
-      "effective_default": 86400,
-      "flag": "--alt-svc-ma",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.alt_svc_persist",
-      "effective_default": false,
-      "flag": "--alt-svc-persist",
+      "flag": "--factory",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -213,16 +183,65 @@
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "listeners[].backlog",
-      "effective_default": 2048,
-      "flag": "--backlog",
+      "config_path": "app.reload",
+      "effective_default": false,
+      "flag": "--reload",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "listeners[].bind",
+      "config_path": "app.reload_dirs",
+      "effective_default": [],
+      "flag": "--reload-dir",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "app.reload_include",
+      "effective_default": [],
+      "flag": "--reload-include",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "app.reload_exclude",
+      "effective_default": [],
+      "flag": "--reload-exclude",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "process.workers",
+      "effective_default": 1,
+      "flag": "--workers",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "process.worker_class",
+      "effective_default": "local",
+      "flag": "--worker-class",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "process.runtime",
+      "effective_default": "auto",
+      "flag": "--runtime",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "process.pid_file",
       "effective_default": null,
-      "flag": "--bind",
+      "flag": "--pid",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "process.worker_healthcheck_timeout",
+      "effective_default": 30.0,
+      "flag": "--worker-healthcheck-timeout",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -230,69 +249,6 @@
       "config_path": "app.config_file",
       "effective_default": null,
       "flag": "--config",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.connect_allow",
-      "effective_default": [],
-      "flag": "--connect-allow",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.connect_policy",
-      "effective_default": "deny",
-      "flag": "--connect-policy",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.content_coding_policy",
-      "effective_default": "allowlist",
-      "flag": "--content-coding-policy",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.content_codings",
-      "effective_default": null,
-      "flag": "--content-codings",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.include_date_header",
-      "effective_default": true,
-      "flag": "--date-header",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.default_headers[]",
-      "effective_default": null,
-      "flag": "--header",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.enable_h2c",
-      "effective_default": false,
-      "flag": "--disable-h2c",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "websocket.enabled",
-      "effective_default": false,
-      "flag": "--disable-websocket",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].endpoint",
-      "effective_default": null,
-      "flag": "--endpoint",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -311,37 +267,30 @@
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "logging.error_log_file",
-      "effective_default": null,
-      "flag": "--error-log-file",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.factory",
-      "effective_default": false,
-      "flag": "--factory",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.interface",
+      "config_path": "app.lifespan",
       "effective_default": "auto",
-      "flag": "--app-interface",
+      "flag": "--lifespan",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "listeners[].fd",
+      "config_path": "process.limit_max_requests",
       "effective_default": null,
-      "flag": "--fd",
+      "flag": "--limit-max-requests",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "proxy.forwarded_allow_ips",
-      "effective_default": [],
-      "flag": "--forwarded-allow-ips",
+      "config_path": "process.max_requests_jitter",
+      "effective_default": 0,
+      "flag": "--max-requests-jitter",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].bind",
+      "effective_default": null,
+      "flag": "--bind",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -353,9 +302,471 @@
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "http.http_versions",
+      "config_path": "listeners[].port",
+      "effective_default": 8000,
+      "flag": "--port",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].path",
       "effective_default": null,
-      "flag": "--http",
+      "flag": "--uds",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].fd",
+      "effective_default": null,
+      "flag": "--fd",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].endpoint",
+      "effective_default": null,
+      "flag": "--endpoint",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].insecure_bind",
+      "effective_default": null,
+      "flag": "--insecure-bind",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].quic_bind",
+      "effective_default": null,
+      "flag": "--quic-bind",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].kind",
+      "effective_default": "tcp",
+      "flag": "--transport",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].reuse_port",
+      "effective_default": false,
+      "flag": "--reuse-port",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].reuse_address",
+      "effective_default": true,
+      "flag": "--reuse-address",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].backlog",
+      "effective_default": 2048,
+      "flag": "--backlog",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].user",
+      "effective_default": null,
+      "flag": "--user",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].group",
+      "effective_default": null,
+      "flag": "--group",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].umask",
+      "effective_default": null,
+      "flag": "--umask",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "static.route",
+      "effective_default": null,
+      "flag": "--static-path-route",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "static.mount",
+      "effective_default": null,
+      "flag": "--static-path-mount",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "static.dir_to_file",
+      "effective_default": true,
+      "flag": "--static-path-dir-to-file",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "static.dir_to_file",
+      "effective_default": true,
+      "flag": "--no-static-path-dir-to-file",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "static.index_file",
+      "effective_default": "index.html",
+      "flag": "--static-path-index-file",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "static.expires",
+      "effective_default": null,
+      "flag": "--static-path-expires",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.certfile",
+      "effective_default": null,
+      "flag": "--ssl-certfile",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.keyfile",
+      "effective_default": null,
+      "flag": "--ssl-keyfile",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.keyfile_password",
+      "effective_default": null,
+      "flag": "--ssl-keyfile-password",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.ca_certs",
+      "effective_default": null,
+      "flag": "--ssl-ca-certs",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.require_client_cert",
+      "effective_default": false,
+      "flag": "--ssl-require-client-cert",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.ciphers",
+      "effective_default": null,
+      "flag": "--ssl-ciphers",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.alpn_protocols",
+      "effective_default": null,
+      "flag": "--ssl-alpn",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.ocsp_mode",
+      "effective_default": "off",
+      "flag": "--ssl-ocsp-mode",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.ocsp_soft_fail",
+      "effective_default": false,
+      "flag": "--ssl-ocsp-soft-fail",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.ocsp_cache_size",
+      "effective_default": 128,
+      "flag": "--ssl-ocsp-cache-size",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.ocsp_max_age",
+      "effective_default": 43200.0,
+      "flag": "--ssl-ocsp-max-age",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.crl_mode",
+      "effective_default": "off",
+      "flag": "--ssl-crl-mode",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.crl",
+      "effective_default": null,
+      "flag": "--ssl-crl",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "tls.revocation_fetch",
+      "effective_default": true,
+      "flag": "--ssl-revocation-fetch",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.proxy_headers",
+      "effective_default": false,
+      "flag": "--proxy-headers",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.forwarded_allow_ips",
+      "effective_default": [],
+      "flag": "--forwarded-allow-ips",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.root_path",
+      "effective_default": "",
+      "flag": "--root-path",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.server_header",
+      "effective_default": "",
+      "flag": "--server-header",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.include_server_header",
+      "effective_default": false,
+      "flag": "--no-server-header",
+      "parser_default": false,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.include_date_header",
+      "effective_default": true,
+      "flag": "--date-header",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.include_date_header",
+      "effective_default": true,
+      "flag": "--no-date-header",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.default_headers[]",
+      "effective_default": null,
+      "flag": "--header",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "proxy.server_names[]",
+      "effective_default": null,
+      "flag": "--server-name",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.level",
+      "effective_default": "info",
+      "flag": "--log-level",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.access_log",
+      "effective_default": true,
+      "flag": "--access-log",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.access_log",
+      "effective_default": true,
+      "flag": "--no-access-log",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.access_log_file",
+      "effective_default": null,
+      "flag": "--access-log-file",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.access_log_format",
+      "effective_default": null,
+      "flag": "--access-log-format",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.error_log_file",
+      "effective_default": null,
+      "flag": "--error-log-file",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.log_config",
+      "effective_default": null,
+      "flag": "--log-config",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.structured",
+      "effective_default": false,
+      "flag": "--structured-log",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.use_colors",
+      "effective_default": null,
+      "flag": "--use-colors",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "logging.use_colors",
+      "effective_default": null,
+      "flag": "--no-use-colors",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "metrics.enabled",
+      "effective_default": false,
+      "flag": "--metrics",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "metrics.bind",
+      "effective_default": null,
+      "flag": "--metrics-bind",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "metrics.statsd_host",
+      "effective_default": null,
+      "flag": "--statsd-host",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "metrics.otel_endpoint",
+      "effective_default": null,
+      "flag": "--otel-endpoint",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.keep_alive_timeout",
+      "effective_default": 5.0,
+      "flag": "--timeout-keep-alive",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.read_timeout",
+      "effective_default": 30.0,
+      "flag": "--read-timeout",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.write_timeout",
+      "effective_default": 30.0,
+      "flag": "--write-timeout",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.shutdown_timeout",
+      "effective_default": 30.0,
+      "flag": "--timeout-graceful-shutdown",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "scheduler.limit_concurrency",
+      "effective_default": null,
+      "flag": "--limit-concurrency",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "scheduler.max_connections",
+      "effective_default": null,
+      "flag": "--max-connections",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "scheduler.max_tasks",
+      "effective_default": null,
+      "flag": "--max-tasks",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "scheduler.max_streams",
+      "effective_default": null,
+      "flag": "--max-streams",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.max_body_size",
+      "effective_default": 16777216,
+      "flag": "--max-body-size",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.max_header_size",
+      "effective_default": 65536,
+      "flag": "--max-header-size",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.http1_max_incomplete_event_size",
+      "effective_default": 65536,
+      "flag": "--http1-max-incomplete-event-size",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -381,9 +792,30 @@
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "http.http1_max_incomplete_event_size",
+      "config_path": "http.http1_keep_alive",
+      "effective_default": true,
+      "flag": "--no-http1-keep-alive",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.http2_max_concurrent_streams",
+      "effective_default": 128,
+      "flag": "--http2-max-concurrent-streams",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.http2_max_headers_size",
       "effective_default": 65536,
-      "flag": "--http1-max-incomplete-event-size",
+      "flag": "--http2-max-headers-size",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.http2_max_frame_size",
+      "effective_default": 16384,
+      "flag": "--http2-max-frame-size",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -391,6 +823,13 @@
       "config_path": "http.http2_adaptive_window",
       "effective_default": false,
       "flag": "--http2-adaptive-window",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.http2_adaptive_window",
+      "effective_default": false,
+      "flag": "--no-http2-adaptive-window",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
@@ -423,559 +862,6 @@
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "http.http2_max_concurrent_streams",
-      "effective_default": 128,
-      "flag": "--http2-max-concurrent-streams",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.http2_max_frame_size",
-      "effective_default": 16384,
-      "flag": "--http2-max-frame-size",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.http2_max_headers_size",
-      "effective_default": 65536,
-      "flag": "--http2-max-headers-size",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.idle_timeout",
-      "effective_default": 30.0,
-      "flag": "--idle-timeout",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].insecure_bind",
-      "effective_default": null,
-      "flag": "--insecure-bind",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.lifespan",
-      "effective_default": "auto",
-      "flag": "--lifespan",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "scheduler.limit_concurrency",
-      "effective_default": null,
-      "flag": "--limit-concurrency",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "process.limit_max_requests",
-      "effective_default": null,
-      "flag": "--limit-max-requests",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.log_config",
-      "effective_default": null,
-      "flag": "--log-config",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.level",
-      "effective_default": "info",
-      "flag": "--log-level",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.max_body_size",
-      "effective_default": 16777216,
-      "flag": "--max-body-size",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "scheduler.max_connections",
-      "effective_default": null,
-      "flag": "--max-connections",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.max_header_size",
-      "effective_default": 65536,
-      "flag": "--max-header-size",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "process.max_requests_jitter",
-      "effective_default": 0,
-      "flag": "--max-requests-jitter",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "scheduler.max_streams",
-      "effective_default": null,
-      "flag": "--max-streams",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "scheduler.max_tasks",
-      "effective_default": null,
-      "flag": "--max-tasks",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "metrics.enabled",
-      "effective_default": false,
-      "flag": "--metrics",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "metrics.bind",
-      "effective_default": null,
-      "flag": "--metrics-bind",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.access_log",
-      "effective_default": true,
-      "flag": "--no-access-log",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.alt_svc_auto",
-      "effective_default": false,
-      "flag": "--no-alt-svc-auto",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.include_date_header",
-      "effective_default": true,
-      "flag": "--no-date-header",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.http1_keep_alive",
-      "effective_default": true,
-      "flag": "--no-http1-keep-alive",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.http2_adaptive_window",
-      "effective_default": false,
-      "flag": "--no-http2-adaptive-window",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.include_server_header",
-      "effective_default": false,
-      "flag": "--no-server-header",
-      "parser_default": false,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "static.dir_to_file",
-      "effective_default": true,
-      "flag": "--no-static-path-dir-to-file",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.use_colors",
-      "effective_default": null,
-      "flag": "--no-use-colors",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "metrics.otel_endpoint",
-      "effective_default": null,
-      "flag": "--otel-endpoint",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "process.pid_file",
-      "effective_default": null,
-      "flag": "--pid",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].pipe_mode",
-      "effective_default": "rawframed",
-      "flag": "--pipe-mode",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].port",
-      "effective_default": 8000,
-      "flag": "--port",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].protocols",
-      "effective_default": null,
-      "flag": "--protocol",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.proxy_headers",
-      "effective_default": false,
-      "flag": "--proxy-headers",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].quic_bind",
-      "effective_default": null,
-      "flag": "--quic-bind",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "quic.early_data_policy",
-      "effective_default": "deny",
-      "flag": "--quic-early-data-policy",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "quic.idle_timeout",
-      "effective_default": 30.0,
-      "flag": "--quic-idle-timeout",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "quic.max_datagram_size",
-      "effective_default": 1200,
-      "flag": "--quic-max-datagram-size",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "quic.require_retry",
-      "effective_default": false,
-      "flag": "--quic-require-retry",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.read_timeout",
-      "effective_default": 30.0,
-      "flag": "--read-timeout",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.reload",
-      "effective_default": false,
-      "flag": "--reload",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.reload_dirs",
-      "effective_default": [],
-      "flag": "--reload-dir",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.reload_exclude",
-      "effective_default": [],
-      "flag": "--reload-exclude",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "app.reload_include",
-      "effective_default": [],
-      "flag": "--reload-include",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].reuse_address",
-      "effective_default": true,
-      "flag": "--reuse-address",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].reuse_port",
-      "effective_default": false,
-      "flag": "--reuse-port",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.root_path",
-      "effective_default": "",
-      "flag": "--root-path",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "process.runtime",
-      "effective_default": "auto",
-      "flag": "--runtime",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.server_header",
-      "effective_default": "",
-      "flag": "--server-header",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "proxy.server_names[]",
-      "effective_default": null,
-      "flag": "--server-name",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.alpn_protocols",
-      "effective_default": null,
-      "flag": "--ssl-alpn",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.ca_certs",
-      "effective_default": null,
-      "flag": "--ssl-ca-certs",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.certfile",
-      "effective_default": null,
-      "flag": "--ssl-certfile",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.ciphers",
-      "effective_default": null,
-      "flag": "--ssl-ciphers",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.crl",
-      "effective_default": null,
-      "flag": "--ssl-crl",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.crl_mode",
-      "effective_default": "off",
-      "flag": "--ssl-crl-mode",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.keyfile",
-      "effective_default": null,
-      "flag": "--ssl-keyfile",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.keyfile_password",
-      "effective_default": null,
-      "flag": "--ssl-keyfile-password",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.ocsp_cache_size",
-      "effective_default": 128,
-      "flag": "--ssl-ocsp-cache-size",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.ocsp_max_age",
-      "effective_default": 43200.0,
-      "flag": "--ssl-ocsp-max-age",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.ocsp_mode",
-      "effective_default": "off",
-      "flag": "--ssl-ocsp-mode",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.ocsp_soft_fail",
-      "effective_default": false,
-      "flag": "--ssl-ocsp-soft-fail",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.require_client_cert",
-      "effective_default": false,
-      "flag": "--ssl-require-client-cert",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "tls.revocation_fetch",
-      "effective_default": true,
-      "flag": "--ssl-revocation-fetch",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "static.dir_to_file",
-      "effective_default": true,
-      "flag": "--static-path-dir-to-file",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "static.expires",
-      "effective_default": null,
-      "flag": "--static-path-expires",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "static.index_file",
-      "effective_default": "index.html",
-      "flag": "--static-path-index-file",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "static.mount",
-      "effective_default": null,
-      "flag": "--static-path-mount",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "static.route",
-      "effective_default": null,
-      "flag": "--static-path-route",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "metrics.statsd_host",
-      "effective_default": null,
-      "flag": "--statsd-host",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.structured",
-      "effective_default": false,
-      "flag": "--structured-log",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.shutdown_timeout",
-      "effective_default": 30.0,
-      "flag": "--timeout-graceful-shutdown",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.keep_alive_timeout",
-      "effective_default": 5.0,
-      "flag": "--timeout-keep-alive",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "http.trailer_policy",
-      "effective_default": "pass",
-      "flag": "--trailer-policy",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].kind",
-      "effective_default": "tcp",
-      "flag": "--transport",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].path",
-      "effective_default": null,
-      "flag": "--uds",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].group",
-      "effective_default": null,
-      "flag": "--group",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].umask",
-      "effective_default": null,
-      "flag": "--umask",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "listeners[].user",
-      "effective_default": null,
-      "flag": "--user",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "logging.use_colors",
-      "effective_default": null,
-      "flag": "--use-colors",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "websocket.compression",
-      "effective_default": "off",
-      "flag": "--websocket-compression",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
       "config_path": "websocket.max_message_size",
       "effective_default": 16777216,
       "flag": "--websocket-max-message-size",
@@ -1004,30 +890,184 @@
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "process.worker_class",
-      "effective_default": "local",
-      "flag": "--worker-class",
-      "parser_default": null,
-      "review_status": "reviewed_phase2"
-    },
-    {
-      "config_path": "process.worker_healthcheck_timeout",
+      "config_path": "http.idle_timeout",
       "effective_default": 30.0,
-      "flag": "--worker-healthcheck-timeout",
+      "flag": "--idle-timeout",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "process.workers",
-      "effective_default": 1,
-      "flag": "--workers",
+      "config_path": "http.http_versions",
+      "effective_default": null,
+      "flag": "--http",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     },
     {
-      "config_path": "http.write_timeout",
+      "config_path": "listeners[].protocols",
+      "effective_default": null,
+      "flag": "--protocol",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "websocket.enabled",
+      "effective_default": false,
+      "flag": "--disable-websocket",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.enable_h2c",
+      "effective_default": false,
+      "flag": "--disable-h2c",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "websocket.compression",
+      "effective_default": "off",
+      "flag": "--websocket-compression",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.connect_policy",
+      "effective_default": "deny",
+      "flag": "--connect-policy",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.connect_allow",
+      "effective_default": [],
+      "flag": "--connect-allow",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.trailer_policy",
+      "effective_default": "pass",
+      "flag": "--trailer-policy",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.content_coding_policy",
+      "effective_default": "allowlist",
+      "flag": "--content-coding-policy",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.content_codings",
+      "effective_default": null,
+      "flag": "--content-codings",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.alt_svc_headers",
+      "effective_default": [],
+      "flag": "--alt-svc",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.alt_svc_auto",
+      "effective_default": false,
+      "flag": "--alt-svc-auto",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.alt_svc_auto",
+      "effective_default": false,
+      "flag": "--no-alt-svc-auto",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.alt_svc_max_age",
+      "effective_default": 86400,
+      "flag": "--alt-svc-ma",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "http.alt_svc_persist",
+      "effective_default": false,
+      "flag": "--alt-svc-persist",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "quic.require_retry",
+      "effective_default": false,
+      "flag": "--quic-require-retry",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "quic.max_datagram_size",
+      "effective_default": 1200,
+      "flag": "--quic-max-datagram-size",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "quic.idle_timeout",
       "effective_default": 30.0,
-      "flag": "--write-timeout",
+      "flag": "--quic-idle-timeout",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "quic.early_data_policy",
+      "effective_default": "deny",
+      "flag": "--quic-early-data-policy",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "webtransport.max_sessions",
+      "effective_default": null,
+      "flag": "--webtransport-max-sessions",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "webtransport.max_streams",
+      "effective_default": null,
+      "flag": "--webtransport-max-streams",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "webtransport.max_datagram_size",
+      "effective_default": null,
+      "flag": "--webtransport-max-datagram-size",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "webtransport.origins",
+      "effective_default": [],
+      "flag": "--webtransport-origin",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "webtransport.path",
+      "effective_default": null,
+      "flag": "--webtransport-path",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "listeners[].pipe_mode",
+      "effective_default": "rawframed",
+      "flag": "--pipe-mode",
       "parser_default": null,
       "review_status": "reviewed_phase2"
     }
@@ -1125,6 +1165,6 @@
     "proxy.server_header.from": "tigrcorn",
     "proxy.server_header.to": ""
   },
-  "parser_public_flag_count": 125,
+  "parser_public_flag_count": 130,
   "profile": "default"
 }

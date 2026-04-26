@@ -71,6 +71,16 @@ def normalize_config(config: ServerConfig) -> None:
     if config.http.http2_keep_alive_timeout is not None:
         config.http.http2_keep_alive_timeout = float(config.http.http2_keep_alive_timeout)
     config.websocket.max_queue = int(config.websocket.max_queue or 32)
+    if config.webtransport.max_sessions is not None:
+        config.webtransport.max_sessions = int(config.webtransport.max_sessions)
+    if config.webtransport.max_streams is not None:
+        config.webtransport.max_streams = int(config.webtransport.max_streams)
+    if config.webtransport.max_datagram_size is not None:
+        config.webtransport.max_datagram_size = int(config.webtransport.max_datagram_size)
+    config.webtransport.origins = [str(v).strip() for v in _ensure_list(config.webtransport.origins) if str(v).strip()]
+    if config.webtransport.path is not None:
+        path = str(config.webtransport.path).strip()
+        config.webtransport.path = ('/' + path.lstrip('/')).rstrip('/') or '/'
     config.http.alt_svc_headers = [bytes(v).decode('latin1') if isinstance(v, (bytes, bytearray, memoryview)) else str(v).strip() for v in _ensure_list(config.http.alt_svc_headers) if str(v).strip()]
     config.app.reload_dirs = [str(v) for v in _ensure_list(config.app.reload_dirs)]
     config.app.reload_include = [str(v) for v in _ensure_list(config.app.reload_include)]
@@ -195,6 +205,14 @@ def normalize_config(config: ServerConfig) -> None:
                     listener.protocols.append("websocket")
         listener.websocket = config.websocket.enabled if listener.websocket else listener.websocket
         if listener.kind == "udp":
+            if "webtransport" in listener.protocols:
+                if "quic" not in listener.protocols:
+                    listener.protocols.insert(0, "quic")
+                if "http3" not in listener.protocols:
+                    insert_at = listener.protocols.index("quic") + 1 if "quic" in listener.protocols else 0
+                    listener.protocols.insert(insert_at, "http3")
+                if "3" not in listener.http_versions:
+                    listener.http_versions.append("3")
             if "http3" in listener.protocols and "quic" not in listener.protocols:
                 listener.protocols.insert(0, "quic")
             listener.max_datagram_size = int(config.quic.max_datagram_size or listener.max_datagram_size)
