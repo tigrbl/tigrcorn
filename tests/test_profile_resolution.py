@@ -92,7 +92,7 @@ class ProfileResolutionTests(unittest.TestCase):
     def test_profile_artifacts_are_generated_from_registry(self):
         bundle = json.loads(Path('docs/conformance/profile_bundles.json').read_text(encoding='utf-8'))
         self.assertEqual([item['profile_id'] for item in bundle['profiles']], list(list_blessed_profiles()))
-        profile_file = json.loads(Path('profiles/default.profile.json').read_text(encoding='utf-8'))
+        profile_file = json.loads(Path('src/tigrcorn/profiles/default.profile.json').read_text(encoding='utf-8'))
         self.assertEqual(profile_file['profile_id'], 'default')
         self.assertEqual(profile_file['effective_config']['app']['profile'], 'default')
         strict_bundle = resolve_profile_spec('strict-mtls-origin')

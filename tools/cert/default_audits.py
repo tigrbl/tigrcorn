@@ -54,7 +54,7 @@ def generate() -> None:
     base_audit = resolve_effective_defaults('default')
     profile_audits = {profile: resolve_effective_defaults(profile) for profile in list_blessed_profiles()}
 
-    profile_dir = ROOT / 'PROFILE_DEFAULTS'
+    profile_dir = ROOT / '.ssot' / 'reports' / 'profile-defaults'
     profile_dir.mkdir(parents=True, exist_ok=True)
 
     contracts_path = ROOT / 'docs' / 'review' / 'conformance' / 'flag_contracts.json'
@@ -78,7 +78,7 @@ def generate() -> None:
             'reviewed': True,
             'review_status': 'reviewed_phase2',
             'default_audit': 'DEFAULT_AUDIT.json',
-            'profile_defaults_dir': 'PROFILE_DEFAULTS',
+            'profile_defaults_dir': '.ssot/reports/profile-defaults',
             'help_parity': True,
             'runtime_parity': True,
             'profile_overrides': profile_overrides,
@@ -97,7 +97,7 @@ def generate() -> None:
         'reviewed': True,
         'review_status': 'reviewed_phase2',
         'default_audit': 'DEFAULT_AUDIT.json',
-        'profile_defaults_dir': 'PROFILE_DEFAULTS',
+        'profile_defaults_dir': '.ssot/reports/profile-defaults',
         'reviewed_contract_rows': len(contract_rows),
         'public_flag_string_count': len(review_rows),
     }
@@ -141,7 +141,7 @@ def generate() -> None:
         )
         (profile_dir / f'{profile}.md').write_text(md, encoding='utf-8')
         profile_rows_md.append(
-            f"| `{profile}` | `PROFILE_DEFAULTS/{profile}.json` | `PROFILE_DEFAULTS/{profile}.md` | `{len(payload['profile_overlays_flat'])}` |"
+            f"| `{profile}` | `.ssot/reports/profile-defaults/{profile}.json` | `.ssot/reports/profile-defaults/{profile}.md` | `{len(payload['profile_overlays_flat'])}` |"
         )
 
     (profile_dir / 'README.md').write_text(

@@ -3,9 +3,9 @@
     "TC-PROFILE-DEFAULT-BASELINE",
     "TC-PROFILE-STRICT-H1-ORIGIN",
     "TC-PROFILE-STRICT-H2-ORIGIN",
-    "TC-PROFILE-STRICT-MTLS-ORIGIN"
+    "TC-PROFILE-STRICT-H3-EDGE"
   ],
-  "description": "HTTP/2 TLS origin posture with mandatory client certificates and explicit trust-store requirements.",
+  "description": "Dual TCP+UDP edge posture with explicit HTTP/3 and QUIC listeners, automatic Alt-Svc, Retry, and default 0-RTT denial.",
   "effective_config": {
     "app": {
       "app_dir": null,
@@ -13,8 +13,9 @@
       "env_file": null,
       "env_prefix": "TIGRCORN",
       "factory": false,
+      "interface": "auto",
       "lifespan": "auto",
-      "profile": "strict-mtls-origin",
+      "profile": "strict-h3-edge",
       "reload": false,
       "reload_dirs": [],
       "reload_exclude": [],
@@ -28,7 +29,7 @@
       "on_startup": []
     },
     "http": {
-      "alt_svc_auto": false,
+      "alt_svc_auto": true,
       "alt_svc_headers": [],
       "alt_svc_max_age": 86400,
       "alt_svc_persist": false,
@@ -54,6 +55,7 @@
       "http2_max_frame_size": 16384,
       "http2_max_headers_size": 65536,
       "http_versions": [
+        "1.1",
         "2"
       ],
       "idle_timeout": 30.0,
@@ -68,18 +70,38 @@
     "listeners": [
       {
         "alpn_protocols": [
-          "h2"
+          "h2",
+          "http/1.1"
         ],
         "host": "127.0.0.1",
         "http_versions": [
+          "1.1",
           "2"
         ],
         "kind": "tcp",
         "port": 8443,
         "protocols": [
+          "http1",
           "http2"
         ],
-        "ssl_require_client_cert": true,
+        "websocket": false
+      },
+      {
+        "alpn_protocols": [
+          "h3"
+        ],
+        "host": "127.0.0.1",
+        "http_versions": [
+          "3"
+        ],
+        "kind": "udp",
+        "port": 8443,
+        "protocols": [
+          "quic",
+          "http3"
+        ],
+        "quic_require_retry": true,
+        "quic_secret": null,
         "websocket": false
       }
     ],
@@ -126,7 +148,7 @@
       "idle_timeout": 30.0,
       "max_datagram_size": 1200,
       "quic_secret": null,
-      "require_retry": false
+      "require_retry": true
     },
     "scheduler": {
       "limit_concurrency": null,
@@ -143,7 +165,8 @@
     },
     "tls": {
       "alpn_protocols": [
-        "h2"
+        "h2",
+        "http/1.1"
       ],
       "ca_certs": null,
       "certfile": null,
@@ -154,9 +177,9 @@
       "keyfile_password": null,
       "ocsp_cache_size": 128,
       "ocsp_max_age": 43200.0,
-      "ocsp_mode": "soft-fail",
+      "ocsp_mode": "off",
       "ocsp_soft_fail": false,
-      "require_client_cert": true,
+      "require_client_cert": false,
       "resolved_cipher_suites": [],
       "revocation_fetch": true
     },
@@ -167,24 +190,30 @@
       "max_queue": 32,
       "ping_interval": null,
       "ping_timeout": null
+    },
+    "webtransport": {
+      "max_datagram_size": null,
+      "max_sessions": null,
+      "max_streams": null,
+      "origins": [],
+      "path": null
     }
   },
   "explicit_posture": {
     "connect": "deny",
-    "early_data": "not_applicable",
-    "http3_quic": "disabled",
-    "protocol_family": "h2-mtls-origin",
+    "early_data": "deny",
+    "http3_quic": "enabled",
+    "protocol_family": "h2-h3-edge",
     "proxy_trust": "disabled",
     "static_serving": "disabled_until_mount_configured",
     "trusted_proxy_behavior": "deny_untrusted_forwarded_headers"
   },
   "extends": "strict-h2-origin",
   "profile_bundle_version": 1,
-  "profile_id": "strict-mtls-origin",
+  "profile_id": "strict-h3-edge",
   "required_overrides": [
     "tls.certfile",
-    "tls.keyfile",
-    "tls.ca_certs"
+    "tls.keyfile"
   ],
   "rfc_targets": [
     "RFC 9112",
@@ -193,6 +222,10 @@
     "RFC 9113",
     "RFC 8446",
     "RFC 7301",
-    "RFC 5280"
+    "RFC 9114",
+    "RFC 9000",
+    "RFC 9001",
+    "RFC 9002",
+    "RFC 7838 Section 3"
   ]
 }

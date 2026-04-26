@@ -4984,8 +4984,7 @@
         "tst:pytest-file-tests-test-tcp-tls-package-owned-py",
         "tst:pytest-file-tests-test-trailer-policy-strict-local-py",
         "tst:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
-        "tst:pytest-file-tests-test-websocket-frames-py",
-        "tst:pytest-file-tests-test-webtransport-operator-surface-py"
+        "tst:pytest-file-tests-test-websocket-frames-py"
       ],
       "requires": [],
       "spec_ids": []
@@ -5161,6 +5160,131 @@
       ]
     },
     {
+      "id": "feat:webtransport-carrier-fail-closed",
+      "title": "WebTransport carrier fail-closed validation",
+      "description": "Fail closed when WebTransport is selected on non-UDP listeners or without required H3/QUIC carrier semantics.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-carrier-fail-closed-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-carrier-fail-closed"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010",
+        "spc:2003",
+        "spc:2004",
+        "spc:2029"
+      ]
+    },
+    {
+      "id": "feat:webtransport-carrier-normalization",
+      "title": "WebTransport carrier normalization",
+      "description": "Normalize valid WebTransport protocol selection to the required HTTP/3 and QUIC carrier state.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-carrier-normalization-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-carrier-normalization"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010",
+        "spc:2003",
+        "spc:2004"
+      ]
+    },
+    {
+      "id": "feat:webtransport-config-toml",
+      "title": "WebTransport config TOML",
+      "description": "Expose WebTransport protocol and tuning through config-file listener protocol lists and the [webtransport] block.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-config-toml-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-config-toml"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2007",
+        "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:webtransport-env-var",
+      "title": "WebTransport environment variables",
+      "description": "Expose WebTransport protocol and tuning through the configured environment prefix mechanism.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-env-var-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-env-var"
+      ],
+      "requires": [
+        "feat:webtransport-config-toml"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010"
+      ]
+    },
+    {
       "id": "feat:webtransport-h3-quic-completion-events",
       "title": "WebTransport completion events",
       "description": "Emit and validate transport.emit.complete semantics for WebTransport stream, datagram, message, and session operations.",
@@ -5311,6 +5435,218 @@
       ]
     },
     {
+      "id": "feat:webtransport-max-datagram-size-flag",
+      "title": "WebTransport max datagram size flag",
+      "description": "Expose --webtransport-max-datagram-size and map it to webtransport.max_datagram_size.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-max-datagram-size-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-datagram-size-flag"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:webtransport-max-sessions-flag",
+      "title": "WebTransport max sessions flag",
+      "description": "Expose --webtransport-max-sessions and map it to webtransport.max_sessions.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-max-sessions-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-sessions-flag"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:webtransport-max-streams-flag",
+      "title": "WebTransport max streams flag",
+      "description": "Expose --webtransport-max-streams and map it to webtransport.max_streams.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-max-streams-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-streams-flag"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:webtransport-origin-flag",
+      "title": "WebTransport origin flag",
+      "description": "Expose repeatable --webtransport-origin and map it to webtransport.origins.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-origin-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-origin-flag"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:webtransport-path-flag",
+      "title": "WebTransport path flag",
+      "description": "Expose --webtransport-path and map it to webtransport.path.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-path-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-path-flag"
+      ],
+      "requires": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010"
+      ]
+    },
+    {
+      "id": "feat:webtransport-protocol-cli-flag",
+      "title": "WebTransport protocol CLI flag",
+      "description": "Expose webtransport as a public --protocol value for WebTransport-over-H3/QUIC listeners.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-protocol-cli-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-protocol-cli-flag"
+      ],
+      "requires": [
+        "feat:webtransport-h3-quic-scope"
+      ],
+      "spec_ids": [
+        "spc:2008",
+        "spc:2010",
+        "spc:2003",
+        "spc:2004"
+      ]
+    },
+    {
+      "id": "feat:webtransport-public-api",
+      "title": "WebTransport public API",
+      "description": "Expose WebTransport protocol and tuning through public config construction APIs.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "webtransport-operator-surface",
+        "target_claim_tier": "T3",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-public-api-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-public-api"
+      ],
+      "requires": [
+        "feat:webtransport-config-toml"
+      ],
+      "spec_ids": [
+        "spc:2028",
+        "spc:2010"
+      ]
+    },
+    {
       "id": "feat:wsgi-compat-exclusion",
       "title": "WSGI compatibility exclusion",
       "description": "Tigrcorn does not support WSGI as a product interface; ASGI/3 is the only supported compatibility layer.",
@@ -5342,7 +5678,120 @@
       ]
     }
   ],
-  "profiles": [],
+  "profiles": [
+    {
+      "id": "prf:default",
+      "title": "Default deployment profile",
+      "description": "Safe zero-config TCP HTTP/1.1 baseline with deny-by-default transport posture.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:default-baseline-profile",
+        "feat:deployment-profiles"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T2",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:static-origin",
+      "title": "Static origin deployment profile",
+      "description": "Static origin posture with explicit mounted delivery, validators, ranges, and no proxy trust by default.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:deployment-profiles",
+        "feat:static-origin-profile"
+      ],
+      "profile_ids": [
+        "prf:strict-h1-origin"
+      ],
+      "claim_tier": "T2",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:strict-h1-origin",
+      "title": "Strict HTTP/1.1 origin deployment profile",
+      "description": "Conservative HTTP/1.1 origin posture with explicit host validation and no proxy trust by default.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:deployment-profiles",
+        "feat:strict-h1-origin-profile"
+      ],
+      "profile_ids": [
+        "prf:default"
+      ],
+      "claim_tier": "T2",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:strict-h2-origin",
+      "title": "Strict HTTP/2 origin deployment profile",
+      "description": "TLS-backed HTTP/2 origin posture with explicit ALPN and h2-only protocol selection.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:deployment-profiles",
+        "feat:strict-h2-origin-profile"
+      ],
+      "profile_ids": [
+        "prf:strict-h1-origin"
+      ],
+      "claim_tier": "T2",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:strict-h3-edge",
+      "title": "Strict HTTP/3 edge deployment profile",
+      "description": "Dual TCP and UDP edge posture with explicit HTTP/3 and QUIC listeners, Retry, Alt-Svc, and default 0-RTT denial.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:deployment-profiles",
+        "feat:strict-h3-edge-profile"
+      ],
+      "profile_ids": [
+        "prf:strict-h2-origin"
+      ],
+      "claim_tier": "T2",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:strict-mtls-origin",
+      "title": "Strict mTLS origin deployment profile",
+      "description": "HTTP/2 TLS origin posture with mandatory client certificates and explicit trust-store requirements.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:deployment-profiles",
+        "feat:strict-mtls-origin-profile"
+      ],
+      "profile_ids": [
+        "prf:strict-h2-origin"
+      ],
+      "claim_tier": "T2",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    }
+  ],
   "tests": [
     {
       "id": "tst:app-interface-cli-flag",
@@ -11737,22 +12186,6 @@
       ]
     },
     {
-      "id": "tst:pytest-file-tests-test-webtransport-operator-surface-py",
-      "title": "Pytest module inventory tests/test_webtransport_operator_surface.py",
-      "status": "passing",
-      "kind": "pytest-file",
-      "path": "tests/test_webtransport_operator_surface.py",
-      "feature_ids": [
-        "feat:test-inventory"
-      ],
-      "claim_ids": [
-        "clm:test-inventory"
-      ],
-      "evidence_ids": [
-        "evd:pytest-file-tests-test-webtransport-operator-surface-py"
-      ]
-    },
-    {
       "id": "tst:pytest-tests-test-ssot-registry-py-test-ssot-declares-webtransport-in-scope-and-rest-jsonrpc-out",
       "title": "SSOT WebTransport and exclusion boundary coverage",
       "status": "passing",
@@ -11874,8 +12307,7 @@
         "evd:src-default-audit-json",
         "evd:src-default-audit-md",
         "evd:src-tests-test-default-audits-py",
-        "evd:src-profile-defaults-default-json",
-        "evd:src-profile-defaults-strict-h3-edge-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-docs-review-conformance-flag-contracts-json",
         "evd:src-docs-ops-defaults-md",
         "evd:src-tests-test-phase2-cli-config-surface-py"
@@ -12226,19 +12658,14 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-default-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py",
-        "evd:src-profiles-strict-h1-origin-profile-json",
-        "evd:src-profiles-strict-h2-origin-profile-json",
-        "evd:src-profiles-strict-h3-edge-profile-json",
-        "evd:src-profiles-strict-mtls-origin-profile-json",
-        "evd:src-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json"
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json"
       ]
     },
     {
@@ -12417,6 +12844,70 @@
       ]
     },
     {
+      "id": "tst:webtransport-carrier-fail-closed",
+      "title": "WebTransport carrier fail-closed validation",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-carrier-fail-closed"
+      ],
+      "claim_ids": [
+        "clm:webtransport-carrier-fail-closed-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-carrier-fail-closed-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-carrier-normalization",
+      "title": "WebTransport carrier normalization",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-carrier-normalization"
+      ],
+      "claim_ids": [
+        "clm:webtransport-carrier-normalization-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-carrier-normalization-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-config-toml",
+      "title": "WebTransport config TOML",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-config-toml"
+      ],
+      "claim_ids": [
+        "clm:webtransport-config-toml-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-config-toml-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-env-var",
+      "title": "WebTransport environment variables",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-env-var"
+      ],
+      "claim_ids": [
+        "clm:webtransport-env-var-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-env-var-pytest"
+      ]
+    },
+    {
       "id": "tst:webtransport-h3-quic-completion-events",
       "title": "WebTransport H3/QUIC completion events",
       "status": "passing",
@@ -12494,6 +12985,118 @@
       ],
       "evidence_ids": [
         "evd:webtransport-h3-quic-stream-events-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-max-datagram-size-flag",
+      "title": "WebTransport max datagram size flag",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-max-datagram-size-flag"
+      ],
+      "claim_ids": [
+        "clm:webtransport-max-datagram-size-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-max-datagram-size-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-max-sessions-flag",
+      "title": "WebTransport max sessions flag",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-max-sessions-flag"
+      ],
+      "claim_ids": [
+        "clm:webtransport-max-sessions-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-max-sessions-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-max-streams-flag",
+      "title": "WebTransport max streams flag",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-max-streams-flag"
+      ],
+      "claim_ids": [
+        "clm:webtransport-max-streams-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-max-streams-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-origin-flag",
+      "title": "WebTransport origin flag",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-origin-flag"
+      ],
+      "claim_ids": [
+        "clm:webtransport-origin-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-origin-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-path-flag",
+      "title": "WebTransport path flag",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-path-flag"
+      ],
+      "claim_ids": [
+        "clm:webtransport-path-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-path-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-protocol-cli-flag",
+      "title": "WebTransport protocol CLI flag",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "claim_ids": [
+        "clm:webtransport-protocol-cli-flag-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-protocol-cli-flag-pytest"
+      ]
+    },
+    {
+      "id": "tst:webtransport-public-api",
+      "title": "WebTransport public API",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "feature_ids": [
+        "feat:webtransport-public-api"
+      ],
+      "claim_ids": [
+        "clm:webtransport-public-api-implemented"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-public-api-pytest"
       ]
     },
     {
@@ -13270,7 +13873,7 @@
       "status": "promoted",
       "tier": "T2",
       "kind": "profile_inventory",
-      "description": "Profile JSON artifacts under profiles/ are inventoried and linked to the package's profile validation path.",
+      "description": "Packaged profile JSON artifacts under src/tigrcorn/profiles/ are inventoried and linked to the package's profile validation path.",
       "feature_ids": [
         "feat:deployment-profiles"
       ],
@@ -13278,12 +13881,12 @@
         "tst:src-tests-test-profile-resolution-py"
       ],
       "evidence_ids": [
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json"
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json"
       ]
     },
     {
@@ -14681,8 +15284,7 @@
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-audit-py",
         "evd:src-tools-cert-default-audits-py",
-        "evd:src-profile-defaults-default-json",
-        "evd:src-profile-defaults-strict-h3-edge-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-default-audits-py"
       ],
       "source_row": {
@@ -16706,7 +17308,7 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-default-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py"
       ],
       "source_row": {
@@ -16751,7 +17353,7 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-static-origin-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py"
       ],
       "source_row": {
@@ -16796,7 +17398,7 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-strict-h1-origin-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py"
       ],
       "source_row": {
@@ -16842,7 +17444,7 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-strict-h2-origin-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py"
       ],
       "source_row": {
@@ -16884,7 +17486,7 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-strict-h3-edge-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py"
       ],
       "source_row": {
@@ -16929,7 +17531,7 @@
       ],
       "evidence_ids": [
         "evd:src-src-tigrcorn-config-profiles-py",
-        "evd:src-profiles-strict-mtls-origin-profile-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-tests-test-profile-resolution-py"
       ],
       "source_row": {
@@ -18738,8 +19340,7 @@
         "tst:pytest-file-tests-test-tcp-tls-package-owned-py",
         "tst:pytest-file-tests-test-trailer-policy-strict-local-py",
         "tst:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
-        "tst:pytest-file-tests-test-websocket-frames-py",
-        "tst:pytest-file-tests-test-webtransport-operator-surface-py"
+        "tst:pytest-file-tests-test-websocket-frames-py"
       ],
       "evidence_ids": [
         "evd:pytest-file-tests-test-additional-remaining-work-py",
@@ -18843,8 +19444,7 @@
         "evd:pytest-file-tests-test-tcp-tls-package-owned-py",
         "evd:pytest-file-tests-test-trailer-policy-strict-local-py",
         "evd:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
-        "evd:pytest-file-tests-test-websocket-frames-py",
-        "evd:pytest-file-tests-test-webtransport-operator-surface-py"
+        "evd:pytest-file-tests-test-websocket-frames-py"
       ]
     },
     {
@@ -18862,6 +19462,74 @@
       ],
       "evidence_ids": [
         "evd:tigr-asgi-contract-0-1-2-validation-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-carrier-fail-closed-implemented",
+      "title": "WebTransport carrier fail-closed validation implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-carrier-fail-closed.",
+      "feature_ids": [
+        "feat:webtransport-carrier-fail-closed"
+      ],
+      "test_ids": [
+        "tst:webtransport-carrier-fail-closed"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-carrier-fail-closed-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-carrier-normalization-implemented",
+      "title": "WebTransport carrier normalization implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-carrier-normalization.",
+      "feature_ids": [
+        "feat:webtransport-carrier-normalization"
+      ],
+      "test_ids": [
+        "tst:webtransport-carrier-normalization"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-carrier-normalization-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-config-toml-implemented",
+      "title": "WebTransport config TOML implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-config-toml.",
+      "feature_ids": [
+        "feat:webtransport-config-toml"
+      ],
+      "test_ids": [
+        "tst:webtransport-config-toml"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-config-toml-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-env-var-implemented",
+      "title": "WebTransport environment variables implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-env-var.",
+      "feature_ids": [
+        "feat:webtransport-env-var"
+      ],
+      "test_ids": [
+        "tst:webtransport-env-var"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-env-var-pytest"
       ]
     },
     {
@@ -18950,6 +19618,125 @@
       ]
     },
     {
+      "id": "clm:webtransport-max-datagram-size-flag-implemented",
+      "title": "WebTransport max datagram size flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-max-datagram-size-flag.",
+      "feature_ids": [
+        "feat:webtransport-max-datagram-size-flag"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-datagram-size-flag"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-max-datagram-size-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-max-sessions-flag-implemented",
+      "title": "WebTransport max sessions flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-max-sessions-flag.",
+      "feature_ids": [
+        "feat:webtransport-max-sessions-flag"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-sessions-flag"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-max-sessions-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-max-streams-flag-implemented",
+      "title": "WebTransport max streams flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-max-streams-flag.",
+      "feature_ids": [
+        "feat:webtransport-max-streams-flag"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-streams-flag"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-max-streams-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-origin-flag-implemented",
+      "title": "WebTransport origin flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-origin-flag.",
+      "feature_ids": [
+        "feat:webtransport-origin-flag"
+      ],
+      "test_ids": [
+        "tst:webtransport-origin-flag"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-origin-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-path-flag-implemented",
+      "title": "WebTransport path flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-path-flag.",
+      "feature_ids": [
+        "feat:webtransport-path-flag"
+      ],
+      "test_ids": [
+        "tst:webtransport-path-flag"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-path-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-protocol-cli-flag-implemented",
+      "title": "WebTransport protocol CLI flag implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-protocol-cli-flag.",
+      "feature_ids": [
+        "feat:webtransport-protocol-cli-flag"
+      ],
+      "test_ids": [
+        "tst:webtransport-protocol-cli-flag"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-protocol-cli-flag-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-public-api-implemented",
+      "title": "WebTransport public API implemented",
+      "status": "promoted",
+      "tier": "T3",
+      "kind": "implementation",
+      "description": "Executable tests verify feature feat:webtransport-public-api.",
+      "feature_ids": [
+        "feat:webtransport-public-api"
+      ],
+      "test_ids": [
+        "tst:webtransport-public-api"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-public-api-pytest"
+      ]
+    },
+    {
       "id": "clm:wsgi-compat-exclusion-implemented",
       "title": "WSGI compatibility exclusion exclusion verified",
       "status": "promoted",
@@ -18964,19 +19751,6 @@
       ],
       "evidence_ids": [
         "evd:wsgi-compat-exclusion-pytest"
-      ]
-    },
-    {
-      "id": "clm:webtransport-protocol-cli-flag-implemented",
-      "title": "WebTransport protocol CLI flag implemented",
-      "status": "evidenced",
-      "tier": "T3",
-      "kind": "operator-surface",
-      "description": "Tigrcorn accepts webtransport as a public --protocol value and routes it through governed WebTransport-over-H3/QUIC configuration.",
-      "feature_ids": [],
-      "test_ids": [],
-      "evidence_ids": [
-        "evd:webtransport-protocol-cli-flag-pytest"
       ]
     }
   ],
@@ -21427,12 +22201,12 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-      "title": "Profile artifact profiles/default.profile.json",
+      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+      "title": "Profile artifact src/tigrcorn/profiles/default.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
       "tier": "T2",
-      "path": "profiles/default.profile.json",
+      "path": "src/tigrcorn/profiles/default.profile.json",
       "claim_ids": [
         "clm:deployment-profiles"
       ],
@@ -21441,12 +22215,12 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-      "title": "Profile artifact profiles/static-origin.profile.json",
+      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+      "title": "Profile artifact src/tigrcorn/profiles/static-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
       "tier": "T2",
-      "path": "profiles/static-origin.profile.json",
+      "path": "src/tigrcorn/profiles/static-origin.profile.json",
       "claim_ids": [
         "clm:deployment-profiles"
       ],
@@ -21455,12 +22229,12 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-      "title": "Profile artifact profiles/strict-h1-origin.profile.json",
+      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+      "title": "Profile artifact src/tigrcorn/profiles/strict-h1-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
       "tier": "T2",
-      "path": "profiles/strict-h1-origin.profile.json",
+      "path": "src/tigrcorn/profiles/strict-h1-origin.profile.json",
       "claim_ids": [
         "clm:deployment-profiles"
       ],
@@ -21469,12 +22243,12 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-      "title": "Profile artifact profiles/strict-h2-origin.profile.json",
+      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+      "title": "Profile artifact src/tigrcorn/profiles/strict-h2-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
       "tier": "T2",
-      "path": "profiles/strict-h2-origin.profile.json",
+      "path": "src/tigrcorn/profiles/strict-h2-origin.profile.json",
       "claim_ids": [
         "clm:deployment-profiles"
       ],
@@ -21483,12 +22257,12 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-      "title": "Profile artifact profiles/strict-h3-edge.profile.json",
+      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+      "title": "Profile artifact src/tigrcorn/profiles/strict-h3-edge.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
       "tier": "T2",
-      "path": "profiles/strict-h3-edge.profile.json",
+      "path": "src/tigrcorn/profiles/strict-h3-edge.profile.json",
       "claim_ids": [
         "clm:deployment-profiles"
       ],
@@ -21497,12 +22271,12 @@
       ]
     },
     {
-      "id": "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json",
-      "title": "Profile artifact profiles/strict-mtls-origin.profile.json",
+      "id": "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json",
+      "title": "Profile artifact src/tigrcorn/profiles/strict-mtls-origin.profile.json",
       "status": "passed",
       "kind": "profile_artifact",
       "tier": "T2",
-      "path": "profiles/strict-mtls-origin.profile.json",
+      "path": "src/tigrcorn/profiles/strict-mtls-origin.profile.json",
       "claim_ids": [
         "clm:deployment-profiles"
       ],
@@ -23012,20 +23786,6 @@
       ]
     },
     {
-      "id": "evd:pytest-file-tests-test-webtransport-operator-surface-py",
-      "title": "Pytest module tests/test_webtransport_operator_surface.py",
-      "status": "passed",
-      "kind": "pytest_module",
-      "tier": "T2",
-      "path": "tests/test_webtransport_operator_surface.py",
-      "claim_ids": [
-        "clm:test-inventory"
-      ],
-      "test_ids": [
-        "tst:pytest-file-tests-test-webtransport-operator-surface-py"
-      ]
-    },
-    {
       "id": "evd:pytest-tests-test-ssot-registry-py",
       "title": "SSOT registry product-boundary test evidence",
       "status": "passed",
@@ -23671,6 +24431,27 @@
       ]
     },
     {
+      "id": "evd:src-docs-review-conformance-corpus-json",
+      "title": "Source artifact docs/review/conformance/corpus.json",
+      "status": "passed",
+      "kind": "source_artifact",
+      "tier": "T2",
+      "path": "docs/review/conformance/corpus.json",
+      "claim_ids": [
+        "clm:tc-profile-default-baseline",
+        "clm:tc-profile-strict-h1-origin",
+        "clm:tc-profile-strict-h2-origin",
+        "clm:tc-profile-strict-h3-edge",
+        "clm:tc-profile-strict-mtls-origin",
+        "clm:tc-profile-static-origin",
+        "clm:tc-audit-profile-effective-defaults"
+      ],
+      "test_ids": [
+        "tst:src-tests-test-profile-resolution-py",
+        "tst:src-tests-test-default-audits-py"
+      ]
+    },
+    {
       "id": "evd:src-docs-review-conformance-external-matrix-release-json",
       "title": "Source artifact docs/review/conformance/external_matrix.release.json",
       "status": "passed",
@@ -23754,118 +24535,6 @@
       ],
       "test_ids": [
         "tst:src-tests-test-p8-gov-py"
-      ]
-    },
-    {
-      "id": "evd:src-profile-defaults-default-json",
-      "title": "Source artifact PROFILE_DEFAULTS/default.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "PROFILE_DEFAULTS/default.json",
-      "claim_ids": [
-        "clm:tc-audit-profile-effective-defaults"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-default-audits-py"
-      ]
-    },
-    {
-      "id": "evd:src-profile-defaults-strict-h3-edge-json",
-      "title": "Source artifact PROFILE_DEFAULTS/strict-h3-edge.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "PROFILE_DEFAULTS/strict-h3-edge.json",
-      "claim_ids": [
-        "clm:tc-audit-profile-effective-defaults"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-default-audits-py"
-      ]
-    },
-    {
-      "id": "evd:src-profiles-default-profile-json",
-      "title": "Source artifact profiles/default.profile.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "profiles/default.profile.json",
-      "claim_ids": [
-        "clm:tc-profile-default-baseline"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-profile-resolution-py"
-      ]
-    },
-    {
-      "id": "evd:src-profiles-static-origin-profile-json",
-      "title": "Source artifact profiles/static-origin.profile.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "profiles/static-origin.profile.json",
-      "claim_ids": [
-        "clm:tc-profile-static-origin"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-profile-resolution-py"
-      ]
-    },
-    {
-      "id": "evd:src-profiles-strict-h1-origin-profile-json",
-      "title": "Source artifact profiles/strict-h1-origin.profile.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "profiles/strict-h1-origin.profile.json",
-      "claim_ids": [
-        "clm:tc-profile-strict-h1-origin"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-profile-resolution-py"
-      ]
-    },
-    {
-      "id": "evd:src-profiles-strict-h2-origin-profile-json",
-      "title": "Source artifact profiles/strict-h2-origin.profile.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "profiles/strict-h2-origin.profile.json",
-      "claim_ids": [
-        "clm:tc-profile-strict-h2-origin"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-profile-resolution-py"
-      ]
-    },
-    {
-      "id": "evd:src-profiles-strict-h3-edge-profile-json",
-      "title": "Source artifact profiles/strict-h3-edge.profile.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "profiles/strict-h3-edge.profile.json",
-      "claim_ids": [
-        "clm:tc-profile-strict-h3-edge"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-profile-resolution-py"
-      ]
-    },
-    {
-      "id": "evd:src-profiles-strict-mtls-origin-profile-json",
-      "title": "Source artifact profiles/strict-mtls-origin.profile.json",
-      "status": "passed",
-      "kind": "source_artifact",
-      "tier": "T2",
-      "path": "profiles/strict-mtls-origin.profile.json",
-      "claim_ids": [
-        "clm:tc-profile-strict-mtls-origin"
-      ],
-      "test_ids": [
-        "tst:src-tests-test-profile-resolution-py"
       ]
     },
     {
@@ -24770,6 +25439,62 @@
       ]
     },
     {
+      "id": "evd:webtransport-carrier-fail-closed-pytest",
+      "title": "Pytest evidence for WebTransport carrier fail-closed validation",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-carrier-fail-closed-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-carrier-fail-closed"
+      ]
+    },
+    {
+      "id": "evd:webtransport-carrier-normalization-pytest",
+      "title": "Pytest evidence for WebTransport carrier normalization",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-carrier-normalization-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-carrier-normalization"
+      ]
+    },
+    {
+      "id": "evd:webtransport-config-toml-pytest",
+      "title": "Pytest evidence for WebTransport config TOML",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-config-toml-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-config-toml"
+      ]
+    },
+    {
+      "id": "evd:webtransport-env-var-pytest",
+      "title": "Pytest evidence for WebTransport environment variables",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-env-var-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-env-var"
+      ]
+    },
+    {
       "id": "evd:webtransport-h3-quic-completion-events-pytest",
       "title": "Pytest evidence for WebTransport H3/QUIC completion events",
       "status": "passed",
@@ -24840,17 +25565,73 @@
       ]
     },
     {
-      "id": "evd:wsgi-compat-exclusion-pytest",
-      "title": "Pytest evidence for WSGI compatibility exclusion",
+      "id": "evd:webtransport-max-datagram-size-flag-pytest",
+      "title": "Pytest evidence for WebTransport max datagram size flag",
       "status": "passed",
       "kind": "pytest",
       "tier": "T3",
-      "path": "tests/test_wsgi_compat_exclusion.py",
+      "path": "tests/test_webtransport_operator_surface.py",
       "claim_ids": [
-        "clm:wsgi-compat-exclusion-implemented"
+        "clm:webtransport-max-datagram-size-flag-implemented"
       ],
       "test_ids": [
-        "tst:wsgi-compat-exclusion"
+        "tst:webtransport-max-datagram-size-flag"
+      ]
+    },
+    {
+      "id": "evd:webtransport-max-sessions-flag-pytest",
+      "title": "Pytest evidence for WebTransport max sessions flag",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-max-sessions-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-sessions-flag"
+      ]
+    },
+    {
+      "id": "evd:webtransport-max-streams-flag-pytest",
+      "title": "Pytest evidence for WebTransport max streams flag",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-max-streams-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-max-streams-flag"
+      ]
+    },
+    {
+      "id": "evd:webtransport-origin-flag-pytest",
+      "title": "Pytest evidence for WebTransport origin flag",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-origin-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-origin-flag"
+      ]
+    },
+    {
+      "id": "evd:webtransport-path-flag-pytest",
+      "title": "Pytest evidence for WebTransport path flag",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-path-flag-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-path-flag"
       ]
     },
     {
@@ -24863,7 +25644,37 @@
       "claim_ids": [
         "clm:webtransport-protocol-cli-flag-implemented"
       ],
-      "test_ids": []
+      "test_ids": [
+        "tst:webtransport-protocol-cli-flag"
+      ]
+    },
+    {
+      "id": "evd:webtransport-public-api-pytest",
+      "title": "Pytest evidence for WebTransport public API",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_webtransport_operator_surface.py",
+      "claim_ids": [
+        "clm:webtransport-public-api-implemented"
+      ],
+      "test_ids": [
+        "tst:webtransport-public-api"
+      ]
+    },
+    {
+      "id": "evd:wsgi-compat-exclusion-pytest",
+      "title": "Pytest evidence for WSGI compatibility exclusion",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T3",
+      "path": "tests/test_wsgi_compat_exclusion.py",
+      "claim_ids": [
+        "clm:wsgi-compat-exclusion-implemented"
+      ],
+      "test_ids": [
+        "tst:wsgi-compat-exclusion"
+      ]
     }
   ],
   "issues": [
@@ -25433,16 +26244,34 @@
         "feat:test-inventory",
         "feat:tigr-asgi-contract-0-1-2-validation",
         "feat:trailer-policy",
+        "feat:webtransport-carrier-fail-closed",
+        "feat:webtransport-carrier-normalization",
+        "feat:webtransport-config-toml",
+        "feat:webtransport-env-var",
         "feat:webtransport-h3-quic-completion-events",
         "feat:webtransport-h3-quic-datagram-events",
         "feat:webtransport-h3-quic-scope",
         "feat:webtransport-h3-quic-session-events",
         "feat:webtransport-h3-quic-stream-events",
+        "feat:webtransport-max-datagram-size-flag",
+        "feat:webtransport-max-sessions-flag",
+        "feat:webtransport-max-streams-flag",
+        "feat:webtransport-origin-flag",
+        "feat:webtransport-path-flag",
+        "feat:webtransport-protocol-cli-flag",
+        "feat:webtransport-public-api",
         "feat:wsgi-compat-exclusion"
       ],
       "canonical_doc": "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
       "canonical_registry_source": ".ssot/registry.json",
-      "profile_ids": []
+      "profile_ids": [
+        "prf:default",
+        "prf:static-origin",
+        "prf:strict-h1-origin",
+        "prf:strict-h2-origin",
+        "prf:strict-h3-edge",
+        "prf:strict-mtls-origin"
+      ]
     }
   ],
   "releases": [
@@ -25584,11 +26413,22 @@
         "clm:tc-state-quic-retry",
         "clm:test-inventory",
         "clm:tigr-asgi-contract-0-1-2-validation-implemented",
+        "clm:webtransport-carrier-fail-closed-implemented",
+        "clm:webtransport-carrier-normalization-implemented",
+        "clm:webtransport-config-toml-implemented",
+        "clm:webtransport-env-var-implemented",
         "clm:webtransport-h3-quic-completion-events-implemented",
         "clm:webtransport-h3-quic-datagram-events-implemented",
         "clm:webtransport-h3-quic-scope-implemented",
         "clm:webtransport-h3-quic-session-events-implemented",
         "clm:webtransport-h3-quic-stream-events-implemented",
+        "clm:webtransport-max-datagram-size-flag-implemented",
+        "clm:webtransport-max-sessions-flag-implemented",
+        "clm:webtransport-max-streams-flag-implemented",
+        "clm:webtransport-origin-flag-implemented",
+        "clm:webtransport-path-flag-implemented",
+        "clm:webtransport-protocol-cli-flag-implemented",
+        "clm:webtransport-public-api-implemented",
         "clm:wsgi-compat-exclusion-implemented"
       ],
       "evidence_ids": [
@@ -25728,12 +26568,12 @@
         "evd:gov-legacy-unittest-inventory-json",
         "evd:json-rpc-runtime-exclusion-pytest",
         "evd:jsonrpc-binding-classification-pytest",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-default-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-static-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h1-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h2-origin-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-h3-edge-profile-json",
-        "evd:profile-e-swarmauri-github-tigrcorn-profiles-strict-mtls-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-default-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-static-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h1-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h2-origin-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-h3-edge-profile-json",
+        "evd:profile-e-swarmauri-github-tigrcorn-src-tigrcorn-profiles-strict-mtls-origin-profile-json",
         "evd:pytest-file-tests-test-additional-remaining-work-py",
         "evd:pytest-file-tests-test-aioquic-adapter-helpers-py",
         "evd:pytest-file-tests-test-aioquic-adapter-preflight-py",
@@ -25836,7 +26676,6 @@
         "evd:pytest-file-tests-test-trailer-policy-strict-local-py",
         "evd:pytest-file-tests-test-trio-runtime-surface-reconciliation-checkpoint-py",
         "evd:pytest-file-tests-test-websocket-frames-py",
-        "evd:pytest-file-tests-test-webtransport-operator-surface-py",
         "evd:pytest-tests-test-ssot-registry-py",
         "evd:rest-binding-classification-pytest",
         "evd:rest-runtime-exclusion-pytest",
@@ -25875,19 +26714,12 @@
         "evd:src-docs-ops-policies-md",
         "evd:src-docs-reference-risk-register-schema-json",
         "evd:src-docs-review-conformance-app-load-claims-json",
+        "evd:src-docs-review-conformance-corpus-json",
         "evd:src-docs-review-conformance-external-matrix-release-json",
         "evd:src-docs-review-conformance-flag-contracts-json",
         "evd:src-github-workflows-docs-yml",
         "evd:src-github-workflows-publish-pypi-yml",
         "evd:src-legacy-unittest-inventory-json",
-        "evd:src-profile-defaults-default-json",
-        "evd:src-profile-defaults-strict-h3-edge-json",
-        "evd:src-profiles-default-profile-json",
-        "evd:src-profiles-static-origin-profile-json",
-        "evd:src-profiles-strict-h1-origin-profile-json",
-        "evd:src-profiles-strict-h2-origin-profile-json",
-        "evd:src-profiles-strict-h3-edge-profile-json",
-        "evd:src-profiles-strict-mtls-origin-profile-json",
         "evd:src-scripts-ci-validate-sh",
         "evd:src-src-tigrcorn-asgi-scopes-http-py",
         "evd:src-src-tigrcorn-asgi-send-py",
@@ -25941,11 +26773,22 @@
         "evd:sse-binding-classification-pytest",
         "evd:stream-backpressure-mapping-pytest",
         "evd:tigr-asgi-contract-0-1-2-validation-pytest",
+        "evd:webtransport-carrier-fail-closed-pytest",
+        "evd:webtransport-carrier-normalization-pytest",
+        "evd:webtransport-config-toml-pytest",
+        "evd:webtransport-env-var-pytest",
         "evd:webtransport-h3-quic-completion-events-pytest",
         "evd:webtransport-h3-quic-datagram-events-pytest",
         "evd:webtransport-h3-quic-scope-pytest",
         "evd:webtransport-h3-quic-session-events-pytest",
         "evd:webtransport-h3-quic-stream-events-pytest",
+        "evd:webtransport-max-datagram-size-flag-pytest",
+        "evd:webtransport-max-sessions-flag-pytest",
+        "evd:webtransport-max-streams-flag-pytest",
+        "evd:webtransport-origin-flag-pytest",
+        "evd:webtransport-path-flag-pytest",
+        "evd:webtransport-protocol-cli-flag-pytest",
+        "evd:webtransport-public-api-pytest",
         "evd:wsgi-compat-exclusion-pytest"
       ],
       "canonical_release_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9"

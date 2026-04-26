@@ -139,9 +139,9 @@ This page is generated from the runtime default audit and reviewed flag-contract
 
 | Profile | JSON | Markdown | Overlay keys |
 |---|---|---|---|
-| `default` | `PROFILE_DEFAULTS/default.json` | `PROFILE_DEFAULTS/default.md` | `0` |
-| `strict-h1-origin` | `PROFILE_DEFAULTS/strict-h1-origin.json` | `PROFILE_DEFAULTS/strict-h1-origin.md` | `2` |
-| `strict-h2-origin` | `PROFILE_DEFAULTS/strict-h2-origin.json` | `PROFILE_DEFAULTS/strict-h2-origin.md` | `89` |
-| `strict-h3-edge` | `PROFILE_DEFAULTS/strict-h3-edge.json` | `PROFILE_DEFAULTS/strict-h3-edge.md` | `134` |
-| `strict-mtls-origin` | `PROFILE_DEFAULTS/strict-mtls-origin.json` | `PROFILE_DEFAULTS/strict-mtls-origin.md` | `95` |
-| `static-origin` | `PROFILE_DEFAULTS/static-origin.json` | `PROFILE_DEFAULTS/static-origin.md` | `12` |
+| `default` | `.ssot/reports/profile-defaults/default.json` | `.ssot/reports/profile-defaults/default.md` | `0` |
+| `strict-h1-origin` | `.ssot/reports/profile-defaults/strict-h1-origin.json` | `.ssot/reports/profile-defaults/strict-h1-origin.md` | `2` |
+| `strict-h2-origin` | `.ssot/reports/profile-defaults/strict-h2-origin.json` | `.ssot/reports/profile-defaults/strict-h2-origin.md` | `89` |
+| `strict-h3-edge` | `.ssot/reports/profile-defaults/strict-h3-edge.json` | `.ssot/reports/profile-defaults/strict-h3-edge.md` | `134` |
+| `strict-mtls-origin` | `.ssot/reports/profile-defaults/strict-mtls-origin.json` | `.ssot/reports/profile-defaults/strict-mtls-origin.md` | `95` |
+| `static-origin` | `.ssot/reports/profile-defaults/static-origin.json` | `.ssot/reports/profile-defaults/static-origin.md` | `12` |

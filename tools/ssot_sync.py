@@ -88,6 +88,10 @@ def _feature_id(raw: str) -> str:
     return _bounded_id("feat", _slug(raw))
 
 
+def _profile_id(raw: str) -> str:
+    return _bounded_id("prf", _slug(raw))
+
+
 def _feature_title(raw: str) -> str:
     return raw.strip("`") if raw else raw
 
@@ -405,6 +409,7 @@ def build_registry() -> dict[str, Any]:
     evidence: dict[str, dict[str, Any]] = {}
     issues: dict[str, dict[str, Any]] = {}
     risks: dict[str, dict[str, Any]] = {}
+    profiles: dict[str, dict[str, Any]] = {}
 
     release_claim_ids: set[str] = set()
     release_evidence_ids: set[str] = set()
@@ -566,6 +571,31 @@ def build_registry() -> dict[str, Any]:
         for test_id in test_ids:
             if test_id not in row["test_ids"]:
                 row["test_ids"].append(test_id)
+
+    def ensure_profile(
+        *,
+        profile_id: str,
+        title: str,
+        description: str,
+        kind: str,
+        feature_ids: list[str],
+        profile_ids: list[str],
+        claim_tier: str,
+    ) -> None:
+        profiles[profile_id] = {
+            "id": profile_id,
+            "title": title,
+            "description": description,
+            "status": "active",
+            "kind": kind,
+            "feature_ids": sorted(dict.fromkeys(feature_ids)),
+            "profile_ids": sorted(dict.fromkeys(profile_ids)),
+            "claim_tier": claim_tier,
+            "evaluation": {
+                "mode": "all_features_must_pass",
+                "allow_feature_override_tier": True,
+            },
+        }
 
     def ensure_issue(*, raw_ref: str) -> str:
         issue_id = _issue_id(raw_ref)
@@ -981,6 +1011,105 @@ def build_registry() -> dict[str, Any]:
             implementation_status="implemented",
         )
     link_feature_specs(webtransport_feature_ids, webtransport_specs)
+
+    webtransport_operator_rows = [
+        (
+            "webtransport-protocol-cli-flag",
+            "WebTransport protocol CLI flag",
+            "Expose webtransport as a public --protocol value for WebTransport-over-H3/QUIC listeners.",
+            ["spc:2008", "spc:2010", "spc:2003", "spc:2004"],
+            ["webtransport-h3-quic-scope"],
+        ),
+        (
+            "webtransport-carrier-normalization",
+            "WebTransport carrier normalization",
+            "Normalize valid WebTransport protocol selection to the required HTTP/3 and QUIC carrier state.",
+            ["spc:2008", "spc:2010", "spc:2003", "spc:2004"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-carrier-fail-closed",
+            "WebTransport carrier fail-closed validation",
+            "Fail closed when WebTransport is selected on non-UDP listeners or without required H3/QUIC carrier semantics.",
+            ["spc:2008", "spc:2010", "spc:2003", "spc:2004", "spc:2029"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-config-toml",
+            "WebTransport config TOML",
+            "Expose WebTransport protocol and tuning through config-file listener protocol lists and the [webtransport] block.",
+            ["spc:2007", "spc:2010"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-env-var",
+            "WebTransport environment variables",
+            "Expose WebTransport protocol and tuning through the configured environment prefix mechanism.",
+            ["spc:2008", "spc:2010"],
+            ["webtransport-config-toml"],
+        ),
+        (
+            "webtransport-public-api",
+            "WebTransport public API",
+            "Expose WebTransport protocol and tuning through public config construction APIs.",
+            ["spc:2028", "spc:2010"],
+            ["webtransport-config-toml"],
+        ),
+        (
+            "webtransport-max-sessions-flag",
+            "WebTransport max sessions flag",
+            "Expose --webtransport-max-sessions and map it to webtransport.max_sessions.",
+            ["spc:2008", "spc:2010"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-max-streams-flag",
+            "WebTransport max streams flag",
+            "Expose --webtransport-max-streams and map it to webtransport.max_streams.",
+            ["spc:2008", "spc:2010"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-max-datagram-size-flag",
+            "WebTransport max datagram size flag",
+            "Expose --webtransport-max-datagram-size and map it to webtransport.max_datagram_size.",
+            ["spc:2008", "spc:2010"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-origin-flag",
+            "WebTransport origin flag",
+            "Expose repeatable --webtransport-origin and map it to webtransport.origins.",
+            ["spc:2008", "spc:2010"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+        (
+            "webtransport-path-flag",
+            "WebTransport path flag",
+            "Expose --webtransport-path and map it to webtransport.path.",
+            ["spc:2008", "spc:2010"],
+            ["webtransport-protocol-cli-flag"],
+        ),
+    ]
+    webtransport_operator_feature_ids = []
+    for raw_feature_id, title, description, spec_ids, requires in webtransport_operator_rows:
+        feature_id = _feature_id(raw_feature_id)
+        webtransport_operator_feature_ids.append(feature_id)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T3",
+            slot="webtransport-operator-surface",
+            horizon="current",
+            implementation_status="implemented",
+        )
+        link_feature_specs([feature_id], spec_ids)
+        for required_raw in requires:
+            required_id = _feature_id(required_raw)
+            if required_id not in features[feature_id]["requires"]:
+                features[feature_id]["requires"].append(required_id)
+
     rest_jsonrpc_exclusion_ids = [
         _feature_id("rest-runtime-exclusion"),
         _feature_id("json-rpc-runtime-exclusion"),
@@ -1645,6 +1774,17 @@ def build_registry() -> dict[str, Any]:
         "webtransport-h3-quic-datagram-events",
         "webtransport-h3-quic-completion-events",
         "tigr-asgi-contract-0-1-2-validation",
+        "webtransport-protocol-cli-flag",
+        "webtransport-carrier-normalization",
+        "webtransport-carrier-fail-closed",
+        "webtransport-config-toml",
+        "webtransport-env-var",
+        "webtransport-public-api",
+        "webtransport-max-sessions-flag",
+        "webtransport-max-streams-flag",
+        "webtransport-max-datagram-size-flag",
+        "webtransport-origin-flag",
+        "webtransport-path-flag",
         "rest-runtime-exclusion",
         "json-rpc-runtime-exclusion",
         "asgi2-compat-exclusion",
@@ -1720,6 +1860,17 @@ def build_registry() -> dict[str, Any]:
         ("webtransport-h3-quic-datagram-events", "WebTransport H3/QUIC datagram events", "tests/test_webtransport_h3_quic_datagram_events.py"),
         ("webtransport-h3-quic-completion-events", "WebTransport H3/QUIC completion events", "tests/test_webtransport_h3_quic_completion_events.py"),
         ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation", "tests/test_tigr_asgi_contract_0_1_2_validation.py"),
+        ("webtransport-protocol-cli-flag", "WebTransport protocol CLI flag", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-carrier-normalization", "WebTransport carrier normalization", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-carrier-fail-closed", "WebTransport carrier fail-closed validation", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-config-toml", "WebTransport config TOML", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-env-var", "WebTransport environment variables", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-public-api", "WebTransport public API", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-max-sessions-flag", "WebTransport max sessions flag", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-max-streams-flag", "WebTransport max streams flag", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-max-datagram-size-flag", "WebTransport max datagram size flag", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-origin-flag", "WebTransport origin flag", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-path-flag", "WebTransport path flag", "tests/test_webtransport_operator_surface.py"),
         ("generic-stream-runtime", "Generic stream runtime", "tests/test_contract_generic_stream_runtime.py"),
         ("generic-datagram-runtime", "Generic datagram runtime", "tests/test_contract_generic_datagram_runtime.py"),
         ("stream-backpressure-mapping", "Stream backpressure mapping", "tests/test_contract_stream_backpressure_mapping.py"),
@@ -1992,7 +2143,7 @@ def build_registry() -> dict[str, Any]:
     ensure_claim(
         claim_id=profile_claim_id,
         title="Deployment profile artifacts tracked",
-        description="Profile JSON artifacts under profiles/ are inventoried and linked to the package's profile validation path.",
+        description="Packaged profile JSON artifacts under src/tigrcorn/profiles/ are inventoried and linked to the package's profile validation path.",
         tier="T2",
         kind="profile_inventory",
         feature_ids=[profile_feature_id],
@@ -2017,7 +2168,62 @@ def build_registry() -> dict[str, Any]:
             features[profile_feature_id]["test_ids"].append(profile_test_id)
         if profile_test_id not in claims[profile_claim_id]["test_ids"]:
             claims[profile_claim_id]["test_ids"].append(profile_test_id)
-    for profile_path in sorted((ROOT / "profiles").glob("*.profile.json")):
+    deployment_profile_rows = [
+        (
+            "default",
+            "Default deployment profile",
+            "Safe zero-config TCP HTTP/1.1 baseline with deny-by-default transport posture.",
+            "default-baseline-profile",
+            [],
+        ),
+        (
+            "strict-h1-origin",
+            "Strict HTTP/1.1 origin deployment profile",
+            "Conservative HTTP/1.1 origin posture with explicit host validation and no proxy trust by default.",
+            "strict-h1-origin-profile",
+            ["default"],
+        ),
+        (
+            "strict-h2-origin",
+            "Strict HTTP/2 origin deployment profile",
+            "TLS-backed HTTP/2 origin posture with explicit ALPN and h2-only protocol selection.",
+            "strict-h2-origin-profile",
+            ["strict-h1-origin"],
+        ),
+        (
+            "strict-h3-edge",
+            "Strict HTTP/3 edge deployment profile",
+            "Dual TCP and UDP edge posture with explicit HTTP/3 and QUIC listeners, Retry, Alt-Svc, and default 0-RTT denial.",
+            "strict-h3-edge-profile",
+            ["strict-h2-origin"],
+        ),
+        (
+            "strict-mtls-origin",
+            "Strict mTLS origin deployment profile",
+            "HTTP/2 TLS origin posture with mandatory client certificates and explicit trust-store requirements.",
+            "strict-mtls-origin-profile",
+            ["strict-h2-origin"],
+        ),
+        (
+            "static-origin",
+            "Static origin deployment profile",
+            "Static origin posture with explicit mounted delivery, validators, ranges, and no proxy trust by default.",
+            "static-origin-profile",
+            ["strict-h1-origin"],
+        ),
+    ]
+    for raw_profile_id, title, description, raw_feature_id, parent_profiles in deployment_profile_rows:
+        ensure_profile(
+            profile_id=_profile_id(raw_profile_id),
+            title=title,
+            description=description,
+            kind="deployment",
+            feature_ids=[profile_feature_id, _feature_id(raw_feature_id)],
+            profile_ids=[_profile_id(parent) for parent in parent_profiles],
+            claim_tier="T2",
+        )
+
+    for profile_path in sorted((ROOT / "src" / "tigrcorn" / "profiles").glob("*.profile.json")):
         evidence_id = _evidence_id("profile", profile_path.as_posix())
         ensure_evidence(
             evidence_id=evidence_id,
@@ -2166,7 +2372,7 @@ def build_registry() -> dict[str, Any]:
         },
         "document_id_reservations": package_meta["document_id_reservations"],
         "features": sorted(features.values(), key=lambda row: row["id"]),
-        "profiles": [],
+        "profiles": sorted(profiles.values(), key=lambda row: row["id"]),
         "tests": sorted(tests.values(), key=lambda row: row["id"]),
         "claims": sorted(claims.values(), key=lambda row: row["id"]),
         "evidence": sorted(evidence.values(), key=lambda row: row["id"]),
@@ -2181,7 +2387,7 @@ def build_registry() -> dict[str, Any]:
                 "feature_ids": boundary_feature_ids,
                 "canonical_doc": _relative(ROOT / "docs" / "review" / "conformance" / "CERTIFICATION_BOUNDARY.md"),
                 "canonical_registry_source": ".ssot/registry.json",
-                "profile_ids": [],
+                "profile_ids": sorted(profiles),
             }
         ],
         "releases": [

@@ -15,8 +15,8 @@ These profiles do not widen the current certification boundary. They freeze expl
 
 ## Consumption
 
-- Use `tigrcorn --config profiles/default.profile.json` for the boring safe baseline.
-- Use `tigrcorn --config profiles/strict-h3-edge.profile.json --ssl-certfile cert.pem --ssl-keyfile key.pem` for the explicit H3 edge posture.
+- Use `tigrcorn --config src/tigrcorn/profiles/default.profile.json` for the boring safe baseline.
+- Use `tigrcorn --config src/tigrcorn/profiles/strict-h3-edge.profile.json --ssl-certfile cert.pem --ssl-keyfile key.pem` for the explicit H3 edge posture.
 - Use `app.profile` in a config file or `build_config(profile=...)` in code when you want the runtime to resolve the blessed profile before applying overrides.
 
 ## Required overrides
@@ -29,4 +29,4 @@ These profiles do not widen the current certification boundary. They freeze expl
 ## Conformance bundles
 
 - Machine-readable profile bundles: `docs/conformance/profile_bundles.json`
-- Runtime artifacts: `profiles/*.profile.json`
+- Runtime artifacts: `src/tigrcorn/profiles/*.profile.json`

@@ -1,10 +1,8 @@
 {
   "claim_ids": [
-    "TC-PROFILE-DEFAULT-BASELINE",
-    "TC-PROFILE-STRICT-H1-ORIGIN",
-    "TC-PROFILE-STATIC-ORIGIN"
+    "TC-PROFILE-DEFAULT-BASELINE"
   ],
-  "description": "Static origin posture with explicit mounted delivery, index handling, validators, range support, and no proxy trust by default.",
+  "description": "Safe zero-config baseline with a single TCP HTTP/1.1 listener and deny-by-default transport posture.",
   "effective_config": {
     "app": {
       "app_dir": null,
@@ -12,8 +10,9 @@
       "env_file": null,
       "env_prefix": "TIGRCORN",
       "factory": false,
+      "interface": "auto",
       "lifespan": "auto",
-      "profile": "static-origin",
+      "profile": "default",
       "reload": false,
       "reload_dirs": [],
       "reload_exclude": [],
@@ -35,9 +34,9 @@
       "connect_policy": "deny",
       "content_coding_policy": "allowlist",
       "content_codings": [
-        "br",
         "gzip",
-        "deflate"
+        "deflate",
+        "br"
       ],
       "enable_h2c": false,
       "http1_buffer_size": 65536,
@@ -115,9 +114,7 @@
       "proxy_headers": false,
       "root_path": "",
       "server_header": "",
-      "server_names": [
-        "localhost"
-      ]
+      "server_names": []
     },
     "quic": {
       "early_data_policy": "deny",
@@ -134,10 +131,10 @@
     },
     "static": {
       "dir_to_file": true,
-      "expires": 3600,
+      "expires": null,
       "index_file": "index.html",
       "mount": null,
-      "route": "/"
+      "route": null
     },
     "tls": {
       "alpn_protocols": [
@@ -166,27 +163,29 @@
       "max_queue": 32,
       "ping_interval": null,
       "ping_timeout": null
+    },
+    "webtransport": {
+      "max_datagram_size": null,
+      "max_sessions": null,
+      "max_streams": null,
+      "origins": [],
+      "path": null
     }
   },
   "explicit_posture": {
     "connect": "deny",
-    "early_data": "not_applicable",
+    "early_data": "deny_or_not_applicable",
     "http3_quic": "disabled",
-    "protocol_family": "http1-static-origin",
+    "protocol_family": "http1-only",
     "proxy_trust": "disabled",
-    "static_serving": "enabled_when_mount_present",
-    "trusted_proxy_behavior": "deny_untrusted_forwarded_headers"
+    "static_serving": "disabled",
+    "trusted_proxy_behavior": "disabled"
   },
-  "extends": "strict-h1-origin",
+  "extends": null,
   "profile_bundle_version": 1,
-  "profile_id": "static-origin",
-  "required_overrides": [
-    "static.mount"
-  ],
+  "profile_id": "default",
+  "required_overrides": [],
   "rfc_targets": [
-    "RFC 9112",
-    "RFC 7232",
-    "RFC 7233",
-    "RFC 9110 Section 8"
+    "RFC 9112"
   ]
 }

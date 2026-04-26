@@ -23,7 +23,7 @@ class DefaultAuditTests(unittest.TestCase):
 
     def test_profile_default_audits_match_runtime(self):
         for profile in list_blessed_profiles():
-            generated = self._load_json(f'PROFILE_DEFAULTS/{profile}.json')
+            generated = self._load_json(f'.ssot/reports/profile-defaults/{profile}.json')
             runtime = resolve_effective_defaults(profile)
             self.assertEqual(generated['claim_id'], 'TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS')
             self.assertEqual(generated['effective_defaults_flat'], runtime['effective_defaults_flat'])

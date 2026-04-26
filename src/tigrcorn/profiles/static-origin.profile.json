@@ -2,9 +2,9 @@
   "claim_ids": [
     "TC-PROFILE-DEFAULT-BASELINE",
     "TC-PROFILE-STRICT-H1-ORIGIN",
-    "TC-PROFILE-STRICT-H2-ORIGIN"
+    "TC-PROFILE-STATIC-ORIGIN"
   ],
-  "description": "TLS-backed HTTP/2 origin posture with explicit ALPN and h2-only protocol selection.",
+  "description": "Static origin posture with explicit mounted delivery, index handling, validators, range support, and no proxy trust by default.",
   "effective_config": {
     "app": {
       "app_dir": null,
@@ -12,8 +12,9 @@
       "env_file": null,
       "env_prefix": "TIGRCORN",
       "factory": false,
+      "interface": "auto",
       "lifespan": "auto",
-      "profile": "strict-h2-origin",
+      "profile": "static-origin",
       "reload": false,
       "reload_dirs": [],
       "reload_exclude": [],
@@ -35,9 +36,9 @@
       "connect_policy": "deny",
       "content_coding_policy": "allowlist",
       "content_codings": [
+        "br",
         "gzip",
-        "deflate",
-        "br"
+        "deflate"
       ],
       "enable_h2c": false,
       "http1_buffer_size": 65536,
@@ -53,7 +54,7 @@
       "http2_max_frame_size": 16384,
       "http2_max_headers_size": 65536,
       "http_versions": [
-        "2"
+        "1.1"
       ],
       "idle_timeout": 30.0,
       "keep_alive_timeout": 5.0,
@@ -67,16 +68,16 @@
     "listeners": [
       {
         "alpn_protocols": [
-          "h2"
+          "http/1.1"
         ],
         "host": "127.0.0.1",
         "http_versions": [
-          "2"
+          "1.1"
         ],
         "kind": "tcp",
-        "port": 8443,
+        "port": 8000,
         "protocols": [
-          "http2"
+          "http1"
         ],
         "websocket": false
       }
@@ -134,14 +135,15 @@
     },
     "static": {
       "dir_to_file": true,
-      "expires": null,
+      "expires": 3600,
       "index_file": "index.html",
       "mount": null,
-      "route": null
+      "route": "/"
     },
     "tls": {
       "alpn_protocols": [
-        "h2"
+        "h2",
+        "http/1.1"
       ],
       "ca_certs": null,
       "certfile": null,
@@ -165,30 +167,34 @@
       "max_queue": 32,
       "ping_interval": null,
       "ping_timeout": null
+    },
+    "webtransport": {
+      "max_datagram_size": null,
+      "max_sessions": null,
+      "max_streams": null,
+      "origins": [],
+      "path": null
     }
   },
   "explicit_posture": {
     "connect": "deny",
     "early_data": "not_applicable",
     "http3_quic": "disabled",
-    "protocol_family": "h2-origin",
+    "protocol_family": "http1-static-origin",
     "proxy_trust": "disabled",
-    "static_serving": "disabled_until_mount_configured",
+    "static_serving": "enabled_when_mount_present",
     "trusted_proxy_behavior": "deny_untrusted_forwarded_headers"
   },
   "extends": "strict-h1-origin",
   "profile_bundle_version": 1,
-  "profile_id": "strict-h2-origin",
+  "profile_id": "static-origin",
   "required_overrides": [
-    "tls.certfile",
-    "tls.keyfile"
+    "static.mount"
   ],
   "rfc_targets": [
     "RFC 9112",
     "RFC 7232",
     "RFC 7233",
-    "RFC 9113",
-    "RFC 8446",
-    "RFC 7301"
+    "RFC 9110 Section 8"
   ]
 }

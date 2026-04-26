@@ -31,7 +31,7 @@ def _write_json(path: Path, payload: Any) -> None:
 
 
 def _profile_filename(profile_id: str) -> Path:
-    return ROOT / 'profiles' / f'{profile_id}.profile.json'
+    return ROOT / 'src' / 'tigrcorn' / 'profiles' / f'{profile_id}.profile.json'
 
 
 def _profile_doc_row(spec: dict[str, Any]) -> str:
@@ -49,7 +49,7 @@ def generate() -> None:
     readme_lines = [
         '# Blessed Profiles',
         '',
-        'This folder contains the canonical Phase 1 blessed deployment profile artifacts.',
+        'This package module contains the canonical blessed deployment profile artifacts.',
         '',
         'These JSON files are directly consumable via `tigrcorn --config <path>` because they include runtime config blocks plus profile metadata.',
         '',
@@ -109,8 +109,8 @@ def generate() -> None:
             '',
             '## Consumption',
             '',
-            '- Use `tigrcorn --config profiles/default.profile.json` for the boring safe baseline.',
-            '- Use `tigrcorn --config profiles/strict-h3-edge.profile.json --ssl-certfile cert.pem --ssl-keyfile key.pem` for the explicit H3 edge posture.',
+            '- Use `tigrcorn --config src/tigrcorn/profiles/default.profile.json` for the boring safe baseline.',
+            '- Use `tigrcorn --config src/tigrcorn/profiles/strict-h3-edge.profile.json --ssl-certfile cert.pem --ssl-keyfile key.pem` for the explicit H3 edge posture.',
             '- Use `app.profile` in a config file or `build_config(profile=...)` in code when you want the runtime to resolve the blessed profile before applying overrides.',
             '',
             '## Required overrides',
@@ -123,7 +123,7 @@ def generate() -> None:
             '## Conformance bundles',
             '',
             '- Machine-readable profile bundles: `docs/conformance/profile_bundles.json`',
-            '- Runtime artifacts: `profiles/*.profile.json`',
+            '- Runtime artifacts: `src/tigrcorn/profiles/*.profile.json`',
         ]
     )
     (ROOT / 'docs' / 'ops' / 'profiles.md').write_text('\n'.join(operator_doc) + '\n', encoding='utf-8')
@@ -140,10 +140,10 @@ def generate() -> None:
         conformance_doc.append(
             f"| `{profile['profile_id']}` | {', '.join(profile['claim_ids'])} | "
             f"`{', '.join(profile['required_overrides']) or 'none'}` | "
-            f"`profiles/{profile['profile_id']}.profile.json` |"
+            f"`src/tigrcorn/profiles/{profile['profile_id']}.profile.json` |"
         )
     (ROOT / 'docs' / 'conformance' / 'profile_bundles.md').write_text('\n'.join(conformance_doc) + '\n', encoding='utf-8')
-    (ROOT / 'profiles' / 'README.md').write_text('\n'.join(readme_lines) + '\n', encoding='utf-8')
+    (ROOT / 'src' / 'tigrcorn' / 'profiles' / 'README.md').write_text('\n'.join(readme_lines) + '\n', encoding='utf-8')
 
 
 if __name__ == '__main__':

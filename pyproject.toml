@@ -80,7 +80,7 @@ package-dir = {"" = "src"}
 license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
-tigrcorn = ["py.typed"]
+tigrcorn = ["py.typed", "profiles/*.profile.json", "profiles/README.md"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

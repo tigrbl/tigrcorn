@@ -25,7 +25,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -94,7 +94,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -150,7 +150,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -209,7 +209,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -265,7 +265,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -321,7 +321,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -377,7 +377,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -436,7 +436,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -496,7 +496,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -553,7 +553,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -614,7 +614,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -671,7 +671,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -725,7 +725,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -782,7 +782,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -835,7 +835,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -892,7 +892,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -955,7 +955,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1015,7 +1015,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1084,7 +1084,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1164,7 +1164,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1244,7 +1244,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-h2-origin": 8443,
           "strict-h3-edge": 8443,
@@ -1328,7 +1328,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1408,7 +1408,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1488,7 +1488,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1568,7 +1568,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1648,7 +1648,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1728,7 +1728,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1814,7 +1814,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1894,7 +1894,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -1974,7 +1974,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2042,7 +2042,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2096,7 +2096,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2150,7 +2150,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2207,7 +2207,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "static-origin": "/"
         },
@@ -2285,7 +2285,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "static-origin": "/srv/static"
         },
@@ -2363,7 +2363,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2438,7 +2438,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2499,7 +2499,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2574,7 +2574,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2656,7 +2656,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-h2-origin": "cert.pem",
           "strict-h3-edge": "cert.pem",
@@ -2736,7 +2736,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-h2-origin": "key.pem",
           "strict-h3-edge": "key.pem",
@@ -2815,7 +2815,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -2889,7 +2889,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-mtls-origin": "ca.pem"
         },
@@ -2967,7 +2967,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-mtls-origin": true
         },
@@ -3045,7 +3045,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3156,7 +3156,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3246,7 +3246,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-mtls-origin": "soft-fail"
         },
@@ -3342,7 +3342,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3432,7 +3432,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3522,7 +3522,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3612,7 +3612,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3705,7 +3705,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3794,7 +3794,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3881,7 +3881,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -3956,7 +3956,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4031,7 +4031,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4106,7 +4106,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4165,7 +4165,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4222,7 +4222,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4277,7 +4277,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4332,7 +4332,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4388,7 +4388,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4445,7 +4445,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4500,7 +4500,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4555,7 +4555,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4610,7 +4610,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4665,7 +4665,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4720,7 +4720,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4775,7 +4775,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4858,7 +4858,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4913,7 +4913,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -4965,7 +4965,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5017,7 +5017,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5072,7 +5072,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5127,7 +5127,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5225,7 +5225,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5331,7 +5331,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5419,7 +5419,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5507,7 +5507,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5595,7 +5595,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5683,7 +5683,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5809,7 +5809,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5897,7 +5897,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -5985,7 +5985,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6073,7 +6073,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6161,7 +6161,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6249,7 +6249,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6342,7 +6342,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6435,7 +6435,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6519,7 +6519,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6603,7 +6603,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6693,7 +6693,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6786,7 +6786,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6879,7 +6879,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -6972,7 +6972,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7065,7 +7065,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7156,7 +7156,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7249,7 +7249,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7342,7 +7342,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7435,7 +7435,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7528,7 +7528,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7616,7 +7616,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7710,7 +7710,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7838,7 +7838,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -7966,7 +7966,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8091,7 +8091,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8216,7 +8216,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8345,7 +8345,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8466,7 +8466,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8590,7 +8590,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8718,7 +8718,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8847,7 +8847,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -8972,7 +8972,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9101,7 +9101,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9230,7 +9230,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9323,7 +9323,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9386,7 +9386,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-h3-edge": true
         },
@@ -9450,7 +9450,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-h3-edge": true
         },
@@ -9514,7 +9514,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9576,7 +9576,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9681,7 +9681,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {
           "strict-h3-edge": true
         },
@@ -9814,7 +9814,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -9935,7 +9935,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10056,7 +10056,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10151,7 +10151,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10215,7 +10215,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10279,7 +10279,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10343,7 +10343,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10407,7 +10407,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10516,7 +10516,7 @@
       "phase2_review": {
         "default_audit": "DEFAULT_AUDIT.json",
         "help_parity": true,
-        "profile_defaults_dir": "PROFILE_DEFAULTS",
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
         "profile_overrides": {},
         "review_status": "reviewed_phase2",
         "reviewed": true,
@@ -10615,7 +10615,7 @@
   "family_count": 7,
   "phase2_review": {
     "default_audit": "DEFAULT_AUDIT.json",
-    "profile_defaults_dir": "PROFILE_DEFAULTS",
+    "profile_defaults_dir": ".ssot/reports/profile-defaults",
     "public_flag_string_count": 130,
     "review_status": "reviewed_phase2",
     "reviewed": true,

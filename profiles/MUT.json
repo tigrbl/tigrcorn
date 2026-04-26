@@ -1,8 +1,0 @@
-{
-  "state": "mutable",
-  "scope": "profile_artifacts",
-  "reason": "Generated blessed deployment profile artifacts for the mutable working tree.",
-  "file_name_max": 40,
-  "folder_name_max": 16,
-  "path_max": 120
-}

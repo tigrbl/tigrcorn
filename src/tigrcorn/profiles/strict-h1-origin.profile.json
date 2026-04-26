@@ -11,6 +11,7 @@
       "env_file": null,
       "env_prefix": "TIGRCORN",
       "factory": false,
+      "interface": "auto",
       "lifespan": "auto",
       "profile": "strict-h1-origin",
       "reload": false,
@@ -165,6 +166,13 @@
       "max_queue": 32,
       "ping_interval": null,
       "ping_timeout": null
+    },
+    "webtransport": {
+      "max_datagram_size": null,
+      "max_sessions": null,
+      "max_streams": null,
+      "origins": [],
+      "path": null
     }
   },
   "explicit_posture": {
