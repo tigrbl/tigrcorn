@@ -112,6 +112,20 @@ def test_closed_contract_features_have_passing_executable_tests() -> None:
         "feat:asgi2-compat-exclusion",
         "feat:wsgi-compat-exclusion",
         "feat:rsgi-compat-exclusion",
+        "feat:contract-http-scope",
+        "feat:contract-websocket-scope",
+        "feat:contract-lifespan-scope",
+        "feat:contract-webtransport-scope",
+        "feat:contract-http-event-map",
+        "feat:contract-websocket-event-map",
+        "feat:contract-lifespan-event-map",
+        "feat:contract-webtransport-events",
+        "feat:unit-id-propagation",
+        "feat:transport-metadata-model",
+        "feat:tls-metadata-extension",
+        "feat:family-capability-declaration",
+        "feat:binding-legality-validation",
+        "feat:contract-error-semantics",
     }
     passing_feature_ids = {
         feature_id

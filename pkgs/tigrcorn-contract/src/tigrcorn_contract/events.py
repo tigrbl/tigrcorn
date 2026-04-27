@@ -6,6 +6,44 @@ from typing import Any
 
 from tigrcorn_core.errors import ProtocolError
 
+HTTP_EVENT_MAP = {
+    "request.open": "http.request",
+    "request.body_in": "http.request",
+    "request.disconnect": "http.disconnect",
+    "response.open": "http.response.start",
+    "response.body_out": "http.response.body",
+    "response.close": "http.response.body",
+    "response.emit_complete": "transport.emit.complete",
+}
+WEBSOCKET_EVENT_MAP = {
+    "session.open": "websocket.connect",
+    "message.in": "websocket.receive",
+    "message.out": "websocket.send",
+    "session.accept": "websocket.accept",
+    "session.close": "websocket.close",
+    "session.disconnect": "websocket.disconnect",
+    "session.emit_complete": "transport.emit.complete",
+}
+LIFESPAN_EVENT_MAP = {
+    "session.open": "lifespan.startup",
+    "session.ready": "lifespan.startup.complete",
+    "session.close": "lifespan.shutdown",
+    "session.disconnect": "lifespan.shutdown.complete",
+}
+WEBTRANSPORT_EVENT_MAP = {
+    "session.open": "webtransport.connect",
+    "session.accept": "webtransport.accept",
+    "session.close": "webtransport.close",
+    "session.disconnect": "webtransport.disconnect",
+    "stream.chunk_in": "webtransport.stream.receive",
+    "stream.chunk_out": "webtransport.stream.send",
+    "datagram.in": "webtransport.datagram.receive",
+    "datagram.out": "webtransport.datagram.send",
+    "stream.emit_complete": "transport.emit.complete",
+    "datagram.emit_complete": "transport.emit.complete",
+    "session.emit_complete": "transport.emit.complete",
+}
+
 
 class CompletionLevel(StrEnum):
     ACCEPTED_BY_RUNTIME = "accepted_by_runtime"
@@ -26,6 +64,86 @@ class EventOrderRule:
 
 def _event(event_type: str, **payload: Any) -> dict[str, Any]:
     return {"type": event_type, **payload}
+
+
+def _require_unit_id(unit_id: str) -> str:
+    if not unit_id:
+        raise ProtocolError("contract event requires unit_id")
+    return unit_id
+
+
+def http_request(unit_id: str, *, body: bytes = b"", more_body: bool = False) -> dict[str, Any]:
+    return _event("http.request", unit_id=_require_unit_id(unit_id), body=body, more_body=more_body)
+
+
+def http_disconnect(unit_id: str) -> dict[str, Any]:
+    return _event("http.disconnect", unit_id=_require_unit_id(unit_id))
+
+
+def http_response_start(unit_id: str, *, status: int, headers: list[tuple[bytes, bytes]] | None = None) -> dict[str, Any]:
+    if not 100 <= status <= 599:
+        raise ProtocolError(f"invalid HTTP response status: {status!r}")
+    return _event("http.response.start", unit_id=_require_unit_id(unit_id), status=status, headers=headers or [])
+
+
+def http_response_body(unit_id: str, *, body: bytes = b"", more_body: bool = False) -> dict[str, Any]:
+    return _event("http.response.body", unit_id=_require_unit_id(unit_id), body=body, more_body=more_body)
+
+
+def websocket_connect(unit_id: str) -> dict[str, Any]:
+    return _event("websocket.connect", unit_id=_require_unit_id(unit_id))
+
+
+def websocket_receive(unit_id: str, *, text: str | None = None, bytes_: bytes | None = None) -> dict[str, Any]:
+    if text is None and bytes_ is None:
+        raise ProtocolError("websocket receive requires text or bytes")
+    return _event("websocket.receive", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_)
+
+
+def websocket_send(unit_id: str, *, text: str | None = None, bytes_: bytes | None = None) -> dict[str, Any]:
+    if text is None and bytes_ is None:
+        raise ProtocolError("websocket send requires text or bytes")
+    return _event("websocket.send", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_)
+
+
+def websocket_accept(unit_id: str, *, subprotocol: str | None = None) -> dict[str, Any]:
+    event = _event("websocket.accept", unit_id=_require_unit_id(unit_id))
+    if subprotocol is not None:
+        event["subprotocol"] = subprotocol
+    return event
+
+
+def lifespan_startup(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.startup", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_startup_complete(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.startup.complete", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_shutdown(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.shutdown", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_shutdown_complete(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.shutdown.complete", unit_id=_require_unit_id(unit_id))
+
+
+def map_contract_event(binding: str, subevent: str) -> str:
+    maps = {
+        "http": HTTP_EVENT_MAP,
+        "http.stream": HTTP_EVENT_MAP,
+        "websocket": WEBSOCKET_EVENT_MAP,
+        "lifespan": LIFESPAN_EVENT_MAP,
+        "webtransport": WEBTRANSPORT_EVENT_MAP,
+    }
+    event_map = maps.get(binding)
+    if event_map is None:
+        raise ProtocolError(f"unsupported contract event binding: {binding!r}")
+    try:
+        return event_map[subevent]
+    except KeyError as exc:
+        raise ProtocolError(f"illegal subevent {subevent!r} for binding {binding!r}") from exc
 
 
 def stream_receive(stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:

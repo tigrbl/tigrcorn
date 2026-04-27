@@ -1791,6 +1791,20 @@ def build_registry() -> dict[str, Any]:
         "app-interface-public-api",
         "app-interface-detection-precedence",
         "app-interface-fail-closed-ambiguity",
+        "contract-http-scope",
+        "contract-websocket-scope",
+        "contract-lifespan-scope",
+        "contract-webtransport-scope",
+        "contract-http-event-map",
+        "contract-websocket-event-map",
+        "contract-lifespan-event-map",
+        "contract-webtransport-events",
+        "unit-id-propagation",
+        "transport-metadata-model",
+        "tls-metadata-extension",
+        "family-capability-declaration",
+        "binding-legality-validation",
+        "contract-error-semantics",
     }
     contract_feature_ids = []
     for raw_feature_id, title, description, spec_ids, slot in contract_feature_rows:
@@ -1984,6 +1998,20 @@ def build_registry() -> dict[str, Any]:
         ("contract-lossy-metadata-rejection", "Contract lossy metadata rejection", "tests/test_contract_lossy_metadata_rejection.py"),
         ("contract-illegal-event-order-rejection", "Contract illegal event order rejection", "tests/test_contract_illegal_event_order_rejection.py"),
         ("contract-invalid-endpoint-metadata-rejection", "Contract invalid endpoint metadata rejection", "tests/test_contract_invalid_endpoint_metadata_rejection.py"),
+        ("contract-http-scope", "Contract HTTP scope", "tests/test_contract_core_boundary.py"),
+        ("contract-websocket-scope", "Contract WebSocket scope", "tests/test_contract_core_boundary.py"),
+        ("contract-lifespan-scope", "Contract lifespan scope", "tests/test_contract_core_boundary.py"),
+        ("contract-webtransport-scope", "Contract WebTransport scope", "tests/test_contract_core_boundary.py"),
+        ("contract-http-event-map", "Contract HTTP event map", "tests/test_contract_core_boundary.py"),
+        ("contract-websocket-event-map", "Contract WebSocket event map", "tests/test_contract_core_boundary.py"),
+        ("contract-lifespan-event-map", "Contract lifespan event map", "tests/test_contract_core_boundary.py"),
+        ("contract-webtransport-events", "Contract WebTransport events", "tests/test_contract_core_boundary.py"),
+        ("unit-id-propagation", "Unit ID propagation", "tests/test_contract_core_boundary.py"),
+        ("transport-metadata-model", "Transport metadata model", "tests/test_contract_core_boundary.py"),
+        ("tls-metadata-extension", "TLS metadata extension", "tests/test_contract_core_boundary.py"),
+        ("family-capability-declaration", "Family capability declaration", "tests/test_contract_core_boundary.py"),
+        ("binding-legality-validation", "Binding legality validation", "tests/test_contract_core_boundary.py"),
+        ("contract-error-semantics", "Contract error semantics", "tests/test_contract_core_boundary.py"),
     ]
     concrete_feature_tests = [
         (
@@ -2410,8 +2438,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:contract-core-next",
             "title": "Contract core next boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:family-capability-declaration",
                 "feat:contract-http-scope",
@@ -2642,7 +2670,7 @@ def ensure_initialized_ssot_tree(version: str) -> None:
 def write_registry(*, check: bool) -> int:
     registry = build_registry()
     REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    payload = json.dumps(registry, indent=2, sort_keys=False) + "\n"
+    payload = json.dumps(registry, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
     if check:
         current = REGISTRY_PATH.read_text(encoding="utf-8") if REGISTRY_PATH.exists() else ""

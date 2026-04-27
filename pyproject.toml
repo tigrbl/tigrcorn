@@ -115,3 +115,8 @@ tigrcorn-static = { workspace = true }
 tigrcorn-observability = { workspace = true }
 tigrcorn-compat = { workspace = true }
 tigrcorn-certification = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "ssot-registry>=0.2.13",
+]

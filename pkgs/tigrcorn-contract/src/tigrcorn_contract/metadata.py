@@ -64,6 +64,25 @@ class StreamIdentity:
 
 
 @dataclass(frozen=True, slots=True)
+class UnitIdentity:
+    unit_id: str
+    family: str
+    binding: str
+    connection_id: str | None = None
+    stream_id: str | None = None
+    session_id: str | None = None
+    datagram_id: str | None = None
+
+    def as_dict(self) -> dict[str, Any]:
+        payload = {"unit_id": self.unit_id, "family": self.family, "binding": self.binding}
+        for key in ("connection_id", "stream_id", "session_id", "datagram_id"):
+            value = getattr(self, key)
+            if value is not None:
+                payload[key] = value
+        return payload
+
+
+@dataclass(frozen=True, slots=True)
 class SecurityMetadata:
     tls: bool = False
     mtls: bool = False
@@ -134,6 +153,18 @@ def datagram_identity(connection_id: str, datagram_id: str, *, session_id: str |
     return StreamIdentity(kind="datagram", connection_id=connection_id, stream_id=datagram_id, datagram_id=datagram_id, session_id=session_id)
 
 
+def unit_identity(unit_id: str, *, family: str, binding: str, **fields: Any) -> UnitIdentity:
+    if not unit_id:
+        raise ProtocolError("unit identity requires unit_id")
+    normalized_family = family.strip().lower()
+    if normalized_family not in {"request", "session", "message", "stream", "datagram"}:
+        raise ProtocolError(f"unsupported unit family: {family!r}")
+    normalized_binding = binding.strip().lower()
+    if normalized_binding not in {"http", "http.stream", "websocket", "lifespan", "webtransport", "stream", "datagram"}:
+        raise ProtocolError(f"unsupported unit binding: {binding!r}")
+    return UnitIdentity(unit_id=unit_id, family=normalized_family, binding=normalized_binding, **fields)
+
+
 def security_metadata(**fields: Any) -> SecurityMetadata:
     metadata = SecurityMetadata(**fields)
     if metadata.mtls and not metadata.tls:
@@ -155,6 +186,7 @@ def asgi3_extensions(
     stream: StreamIdentity | None = None,
     datagram: StreamIdentity | None = None,
     completion: dict[str, Any] | None = None,
+    unit: UnitIdentity | None = None,
 ) -> dict[str, Any]:
     extensions: dict[str, Any] = {}
     if endpoint is not None:
@@ -169,4 +201,6 @@ def asgi3_extensions(
         extensions["tigrcorn.datagram"] = datagram.as_dict()
     if completion is not None:
         extensions["tigrcorn.emit_completion"] = completion
+    if unit is not None:
+        extensions["tigrcorn.unit"] = unit.as_dict()
     return extensions
