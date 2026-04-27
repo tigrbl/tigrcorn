@@ -26,6 +26,8 @@ from tigrcorn_protocols.http3.codec import (
     H3_GENERAL_PROTOCOL_ERROR,
     H3_REQUEST_CANCELLED,
     SETTING_ENABLE_CONNECT_PROTOCOL,
+    SETTING_ENABLE_WEBTRANSPORT,
+    SETTING_H3_DATAGRAM,
     HTTP3ConnectionError,
     HTTP3StreamError,
     encode_frame,
@@ -66,6 +68,7 @@ class HTTP3Session:
     timer_handle: asyncio.TimerHandle | None = None
     connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
     websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
+    webtransport_streams: set[int] = field(default_factory=set)
     stream_work_leases: dict[int, object] = field(default_factory=dict)
     early_data_accounted: bool = False
     peer_goaway_observed: bool = False
@@ -561,7 +564,16 @@ class HTTP3DatagramHandler:
                                     continue
                             protocol = header_map.get(b':protocol') if header_map is not None else None
                             if header_map is not None and protocol is not None and event.stream_id not in session.responded_streams:
-                                if protocol != b'websocket' or not self.listener.websocket:
+                                if protocol == b'webtransport' and 'webtransport' in self.listener.enabled_protocols:
+                                    outbound.extend(
+                                        await self._start_webtransport_stream_locked(
+                                            session,
+                                            event.stream_id,
+                                            request_state,
+                                            header_map,
+                                        )
+                                    )
+                                elif protocol != b'websocket' or not self.listener.websocket:
                                     target = self._request_target_from_header_map(header_map)
                                     self.access_logger.log_http(session.addr, 'CONNECT', target, 501, 'HTTP/3')
                                     outbound.extend(
@@ -596,13 +608,15 @@ class HTTP3DatagramHandler:
                                     )
                                 )
                                 session.responded_streams.add(event.stream_id)
-                            if event.stream_id in session.websocket_sessions:
-                                await self._drain_websocket_request_body_locked(session, event.stream_id, request_state, endpoint)
-                            elif event.stream_id in session.connect_tunnels:
-                                await self._drain_connect_request_body_locked(session, event.stream_id, request_state)
-                            elif request_state.ready and event.stream_id not in session.responded_streams:
-                                outbound.extend(await self._invoke_http_app(session, event.stream_id, request_state, endpoint))
-                                session.responded_streams.add(event.stream_id)
+                        if event.stream_id in session.websocket_sessions:
+                            await self._drain_websocket_request_body_locked(session, event.stream_id, request_state, endpoint)
+                        elif event.stream_id in session.connect_tunnels:
+                            await self._drain_connect_request_body_locked(session, event.stream_id, request_state)
+                        elif event.stream_id in session.webtransport_streams:
+                            pass
+                        elif request_state.ready and event.stream_id not in session.responded_streams:
+                            outbound.extend(await self._invoke_http_app(session, event.stream_id, request_state, endpoint))
+                            session.responded_streams.add(event.stream_id)
                         outbound.extend(await self._respond_ready_requests(session, endpoint))
                     else:
                         outbound.extend(await self._invoke_custom_quic_app(session, event, endpoint))
@@ -617,6 +631,9 @@ class HTTP3DatagramHandler:
                         tunnel = session.connect_tunnels.get(event.stream_id)
                         if tunnel is not None:
                             await tunnel.abort()
+                        if event.stream_id in session.webtransport_streams:
+                            session.webtransport_streams.discard(event.stream_id)
+                            self._release_stream_work_lease(session, event.stream_id)
                         session.h3.abandon_stream(event.stream_id)
                         outbound.extend(self._flush_qpack_streams(session))
                 elif event.kind == 'close':
@@ -645,6 +662,10 @@ class HTTP3DatagramHandler:
         control_settings = {1: 0, 6: self.listener.max_datagram_size}
         if self.listener.websocket:
             control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
+        if 'webtransport' in self.listener.enabled_protocols:
+            control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
+            control_settings[SETTING_H3_DATAGRAM] = 1
+            control_settings[SETTING_ENABLE_WEBTRANSPORT] = 1
         control_payload = session.h3.encode_control_stream(control_settings)
         session.server_control_stream_sent = True
         return [session.quic.send_stream_data(session.server_control_stream_id, control_payload, fin=False)]
@@ -1132,6 +1153,43 @@ class HTTP3DatagramHandler:
         session.websocket_sessions[stream_id] = websocket
         await websocket.start()
         return []
+
+    async def _start_webtransport_stream_locked(
+        self,
+        session: HTTP3Session,
+        stream_id: int,
+        request_state: Any,
+        header_map: dict[bytes, bytes],
+    ) -> list[bytes]:
+        request = self._build_request(request_state, header_map)
+        authority = header_map.get(b':authority')
+        if self.config.allowed_server_names and not authority_allowed(authority, self.config.allowed_server_names):
+            self.access_logger.log_http(session.addr, 'CONNECT', request.path, 421, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                421,
+                [(b'content-type', b'text/plain')],
+                b'misdirected request',
+                end_stream=True,
+            )
+        if not self._admit_stream_work(session, stream_id):
+            self.access_logger.log_http(session.addr, 'CONNECT', request.path, 503, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                503,
+                [(b'content-type', b'text/plain')],
+                b'scheduler overloaded',
+                end_stream=True,
+            )
+        response_headers: list[tuple[bytes, bytes]] = []
+        draft = next((value for name, value in request_state.headers if name.lower() == b'sec-webtransport-http3-draft'), None)
+        if draft:
+            response_headers.append((b'sec-webtransport-http3-draft', draft))
+        session.webtransport_streams.add(stream_id)
+        self.access_logger.log_http(session.addr, 'CONNECT', request.path, 200, 'HTTP/3')
+        return self._build_http3_response_datagrams_locked(session, stream_id, 200, response_headers, b'', end_stream=False)
 
     async def _drain_connect_request_body_locked(
         self,
