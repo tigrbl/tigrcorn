@@ -349,6 +349,11 @@ def _inventory_documents(
         if path.suffix.lower() in {".yaml", ".json"} and load_document_yaml is not None and normalize_document_payload is not None:
             payload = normalize_document_payload(kind, load_document_yaml(path))
             row["title"] = payload.get("title", row["title"])
+            origin = payload.get("origin")
+            if origin:
+                row["origin"] = origin
+                row["managed"] = origin == "ssot-origin"
+                row["immutable"] = origin == "ssot-origin"
             if kind == "adr":
                 row["status"] = payload.get("status", "draft")
                 row["supersedes"] = payload.get("supersedes", [])
@@ -2401,6 +2406,111 @@ def build_registry() -> dict[str, Any]:
         package_version=package_meta["version"],
         manifest=package_meta["spec_manifest"],
     )
+    planned_boundaries = [
+        {
+            "id": "bnd:contract-core-next",
+            "title": "Contract core next boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:family-capability-declaration",
+                "feat:contract-http-scope",
+                "feat:contract-lifespan-scope",
+                "feat:contract-websocket-scope",
+                "feat:contract-webtransport-scope",
+                "feat:contract-http-event-map",
+                "feat:contract-lifespan-event-map",
+                "feat:contract-websocket-event-map",
+                "feat:contract-webtransport-events",
+                "feat:unit-id-propagation",
+                "feat:transport-metadata-model",
+                "feat:tls-metadata-extension",
+                "feat:binding-legality-validation",
+                "feat:contract-error-semantics",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:compat-http-next",
+            "title": "Compatibility and HTTP mapping next boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:asgi3-compat-layer",
+                "feat:asgi-extension-bridge",
+                "feat:compat-feature-parity-matrix",
+                "feat:alt-svc-contract-map",
+                "feat:content-coding-contract-map",
+                "feat:early-hints-contract-map",
+                "feat:proxy-normalization-contract-map",
+                "feat:static-delivery-contract-map",
+                "feat:trailers-contract-map",
+                "feat:observability-contract-metadata",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:contract-proof-next",
+            "title": "Contract proof next boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:contract-docs-migration",
+                "feat:contract-examples",
+                "feat:ssot-contract-boundary-sync",
+                "feat:contract-release-evidence",
+                "feat:asgi3-app-compat-suite",
+                "feat:contract-conformance-tests",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:certification-explicit-surfaces",
+            "title": "Certification explicit surfaces boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:surface-http2-tls-posture",
+                "feat:surface-https-http11",
+                "feat:surface-https-service-identity",
+                "feat:surface-tcp-tls13-external-peer-interop",
+                "feat:surface-tls13-handshake-messages",
+                "feat:surface-tls13-record-layer",
+                "feat:surface-tls13-shutdown-behavior",
+                "feat:surface-tls13-state-transition",
+                "feat:surface-tls-server-name-indication",
+                "feat:surface-x509-certificate-profiles",
+                "feat:surface-x509-path-validation",
+                "feat:surface-http3-control-plane",
+                "feat:surface-ocsp-policy",
+                "feat:surface-qpack-error-handling",
+                "feat:surface-quic-retry-token-integrity",
+                "feat:surface-quic-tls-mapping",
+                "feat:surface-tls-status-request-policy",
+                "feat:surface-tcp-tls13-backend-control",
+                "feat:surface-package-owned-http-fields",
+                "feat:fail-state-registry",
+                "feat:observability-export-surfaces",
+                "feat:origin-negative-corpora",
+                "feat:qlog-stance",
+                "feat:quic-h3-counters",
+                "feat:quic-negative-corpora",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+    ]
+    missing_boundary_features = sorted(
+        feature_id
+        for boundary_row in planned_boundaries
+        for feature_id in boundary_row["feature_ids"]
+        if feature_id not in features
+    )
+    if missing_boundary_features:
+        raise ValueError(f"Planned boundary references unknown features: {missing_boundary_features}")
 
     registry = {
         "schema_version": package_meta["schema_version"],
@@ -2457,7 +2567,8 @@ def build_registry() -> dict[str, Any]:
                 "canonical_registry_source": ".ssot/registry.json",
                 "profile_ids": sorted(profiles),
             }
-        ],
+        ]
+        + planned_boundaries,
         "releases": [
             {
                 "id": release_id,
