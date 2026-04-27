@@ -824,6 +824,75 @@ def build_registry() -> dict[str, Any]:
             if claim_status == "promoted":
                 release_evidence_ids.add(evidence_id)
 
+    certification_explicit_surface_feature_ids = [
+        "feat:surface-http2-tls-posture",
+        "feat:surface-https-http11",
+        "feat:surface-https-service-identity",
+        "feat:surface-tcp-tls13-external-peer-interop",
+        "feat:surface-tls13-handshake-messages",
+        "feat:surface-tls13-record-layer",
+        "feat:surface-tls13-shutdown-behavior",
+        "feat:surface-tls13-state-transition",
+        "feat:surface-tls-server-name-indication",
+        "feat:surface-x509-certificate-profiles",
+        "feat:surface-x509-path-validation",
+        "feat:surface-http3-control-plane",
+        "feat:surface-ocsp-policy",
+        "feat:surface-qpack-error-handling",
+        "feat:surface-quic-retry-token-integrity",
+        "feat:surface-quic-tls-mapping",
+        "feat:surface-tls-status-request-policy",
+        "feat:surface-tcp-tls13-backend-control",
+        "feat:surface-package-owned-http-fields",
+        "feat:fail-state-registry",
+        "feat:observability-export-surfaces",
+        "feat:origin-negative-corpora",
+        "feat:qlog-stance",
+        "feat:quic-h3-counters",
+        "feat:quic-negative-corpora",
+    ]
+    explicit_surface_claim_id = "clm:certification-explicit-surfaces-closed"
+    explicit_surface_test_id = "tst:certification-explicit-surfaces-boundary"
+    explicit_surface_evidence_id = "evd:certification-explicit-surfaces-manifest"
+    for feature_id in certification_explicit_surface_feature_ids:
+        feature = features[feature_id]
+        ensure_feature(
+            feature_id=feature_id,
+            title=feature["title"],
+            description=feature["description"],
+            tier=feature["plan"]["target_claim_tier"],
+            slot=feature["plan"]["slot"],
+            horizon="explicit",
+            implementation_status="implemented",
+        )
+    ensure_claim(
+        claim_id=explicit_surface_claim_id,
+        title="Certification explicit surfaces closed",
+        description="The explicit certification surface boundary is implemented through a packaged catalog, machine-readable manifest, release evidence, and executable registry agreement tests.",
+        tier="T4",
+        kind="boundary_closure",
+        feature_ids=certification_explicit_surface_feature_ids,
+    )
+    ensure_evidence(
+        evidence_id=explicit_surface_evidence_id,
+        title="Certification explicit surfaces manifest",
+        kind="boundary_manifest",
+        tier="T4",
+        path="docs/review/conformance/certification_explicit_surfaces.json",
+        claim_ids=[explicit_surface_claim_id],
+        test_ids=[explicit_surface_test_id],
+    )
+    ensure_test(
+        test_id=explicit_surface_test_id,
+        title="Certification explicit surfaces boundary",
+        status="passing",
+        kind="pytest",
+        path="tests/test_certification_explicit_surfaces_boundary.py",
+        feature_ids=certification_explicit_surface_feature_ids,
+        claim_ids=[explicit_surface_claim_id],
+        evidence_ids=[explicit_surface_evidence_id],
+    )
+
     # Governance feature
     governance_feature_id = _feature_id("governance-graph")
     ensure_feature(
@@ -1791,6 +1860,16 @@ def build_registry() -> dict[str, Any]:
         "app-interface-public-api",
         "app-interface-detection-precedence",
         "app-interface-fail-closed-ambiguity",
+        "asgi3-compat-layer",
+        "asgi-extension-bridge",
+        "compat-feature-parity-matrix",
+        "alt-svc-contract-map",
+        "content-coding-contract-map",
+        "early-hints-contract-map",
+        "proxy-normalization-contract-map",
+        "static-delivery-contract-map",
+        "trailers-contract-map",
+        "observability-contract-metadata",
         "contract-http-scope",
         "contract-websocket-scope",
         "contract-lifespan-scope",
@@ -1805,6 +1884,12 @@ def build_registry() -> dict[str, Any]:
         "family-capability-declaration",
         "binding-legality-validation",
         "contract-error-semantics",
+        "contract-docs-migration",
+        "contract-examples",
+        "ssot-contract-boundary-sync",
+        "contract-release-evidence",
+        "asgi3-app-compat-suite",
+        "contract-conformance-tests",
     }
     contract_feature_ids = []
     for raw_feature_id, title, description, spec_ids, slot in contract_feature_rows:
@@ -1998,6 +2083,16 @@ def build_registry() -> dict[str, Any]:
         ("contract-lossy-metadata-rejection", "Contract lossy metadata rejection", "tests/test_contract_lossy_metadata_rejection.py"),
         ("contract-illegal-event-order-rejection", "Contract illegal event order rejection", "tests/test_contract_illegal_event_order_rejection.py"),
         ("contract-invalid-endpoint-metadata-rejection", "Contract invalid endpoint metadata rejection", "tests/test_contract_invalid_endpoint_metadata_rejection.py"),
+        ("asgi3-compat-layer", "ASGI/3 compatibility layer", "tests/test_compat_http_boundary.py"),
+        ("asgi-extension-bridge", "ASGI/3 extension bridge", "tests/test_compat_http_boundary.py"),
+        ("compat-feature-parity-matrix", "Compatibility feature parity matrix", "tests/test_compat_http_boundary.py"),
+        ("alt-svc-contract-map", "Alt-Svc contract map", "tests/test_compat_http_boundary.py"),
+        ("content-coding-contract-map", "Content coding contract map", "tests/test_compat_http_boundary.py"),
+        ("early-hints-contract-map", "Early Hints contract map", "tests/test_compat_http_boundary.py"),
+        ("proxy-normalization-contract-map", "Proxy normalization contract map", "tests/test_compat_http_boundary.py"),
+        ("static-delivery-contract-map", "Static delivery contract map", "tests/test_compat_http_boundary.py"),
+        ("trailers-contract-map", "Trailers contract map", "tests/test_compat_http_boundary.py"),
+        ("observability-contract-metadata", "Observability contract metadata", "tests/test_compat_http_boundary.py"),
         ("contract-http-scope", "Contract HTTP scope", "tests/test_contract_core_boundary.py"),
         ("contract-websocket-scope", "Contract WebSocket scope", "tests/test_contract_core_boundary.py"),
         ("contract-lifespan-scope", "Contract lifespan scope", "tests/test_contract_core_boundary.py"),
@@ -2012,6 +2107,12 @@ def build_registry() -> dict[str, Any]:
         ("family-capability-declaration", "Family capability declaration", "tests/test_contract_core_boundary.py"),
         ("binding-legality-validation", "Binding legality validation", "tests/test_contract_core_boundary.py"),
         ("contract-error-semantics", "Contract error semantics", "tests/test_contract_core_boundary.py"),
+        ("contract-docs-migration", "Contract docs migration", "tests/test_contract_proof_boundary.py"),
+        ("contract-examples", "Contract examples", "tests/test_contract_proof_boundary.py"),
+        ("ssot-contract-boundary-sync", "SSOT contract boundary sync", "tests/test_contract_proof_boundary.py"),
+        ("contract-release-evidence", "Contract release evidence", "tests/test_contract_proof_boundary.py"),
+        ("asgi3-app-compat-suite", "ASGI/3 app compatibility suite", "tests/test_contract_proof_boundary.py"),
+        ("contract-conformance-tests", "Contract conformance tests", "tests/test_contract_proof_boundary.py"),
     ]
     concrete_feature_tests = [
         (
@@ -2462,8 +2563,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:compat-http-next",
             "title": "Compatibility and HTTP mapping next boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:asgi3-compat-layer",
                 "feat:asgi-extension-bridge",
@@ -2482,8 +2583,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:contract-proof-next",
             "title": "Contract proof next boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:contract-docs-migration",
                 "feat:contract-examples",
@@ -2498,8 +2599,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:certification-explicit-surfaces",
             "title": "Certification explicit surfaces boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:surface-http2-tls-posture",
                 "feat:surface-https-http11",
