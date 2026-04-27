@@ -1,0 +1,46 @@
+services:
+  tigrcorn-h2-app:
+    build:
+      context: ../..
+      dockerfile: examples/http2_asgi3_demo/Dockerfile
+    image: tigrcorn-http2-asgi3-demo:local
+    command:
+      - tigrcorn
+      - examples.http2_asgi3_demo.app:app
+      - --config
+      - examples/http2_asgi3_demo/tigrcorn-h2.toml
+      - --app-interface
+      - asgi3
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --http
+      - "2"
+      - --protocol
+      - http2
+      - --http2-max-concurrent-streams
+      - "128"
+      - --http2-initial-connection-window-size
+      - "131072"
+      - --http2-initial-stream-window-size
+      - "98304"
+      - --http2-adaptive-window
+      - --access-log
+    ports:
+      - "8002:8000/tcp"
+
+  tigrcorn-h2-uix:
+    image: tigrcorn-http2-asgi3-demo:local
+    pull_policy: never
+    environment:
+      TIGRCORN_H2_HOST: tigrcorn-h2-app
+      TIGRCORN_H2_PORT: "8000"
+    command:
+      - python
+      - -m
+      - examples.http2_asgi3_demo.client_server
+    ports:
+      - "8089:8080/tcp"
+    depends_on:
+      - tigrcorn-h2-app

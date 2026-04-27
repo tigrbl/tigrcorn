@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn Static UIX</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Tigrcorn Static UIX</h1>
+        <p>Experiment with a Tigrcorn-hosted ASGI3 static mount.</p>
+      </div>
+      <a class="asset-link" href="http://localhost:8020/assets/" target="_blank" rel="noreferrer">Open asset root</a>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls">
+        <label>
+          Backend origin
+          <input id="origin" value="http://localhost:8020">
+        </label>
+        <label>
+          Asset path
+          <select id="assetPath">
+            <option value="/assets/">/assets/</option>
+            <option value="/assets/site.css">/assets/site.css</option>
+            <option value="/assets/data/config.json">/assets/data/config.json</option>
+            <option value="/assets/docs/readme.txt">/assets/docs/readme.txt</option>
+            <option value="/assets/images/pattern.svg">/assets/images/pattern.svg</option>
+          </select>
+        </label>
+        <div class="button-row">
+          <button id="getBtn">GET</button>
+          <button id="headBtn">HEAD</button>
+          <button id="rangeBtn">Range</button>
+          <button id="etagBtn">ETag roundtrip</button>
+        </div>
+      </section>
+
+      <section class="panel preview">
+        <div class="preview-bar">
+          <h2>Preview</h2>
+          <button id="refreshFrame">Refresh</button>
+        </div>
+        <iframe id="frame" title="Tigrcorn static asset preview"></iframe>
+      </section>
+
+      <section class="panel output">
+        <div class="preview-bar">
+          <h2>Response</h2>
+          <button id="clearBtn">Clear</button>
+        </div>
+        <pre id="output">Ready.</pre>
+      </section>
+    </main>
+
+    <script src="./main.js"></script>
+  </body>
+</html>

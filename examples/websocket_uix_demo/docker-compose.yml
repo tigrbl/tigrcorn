@@ -1,0 +1,20 @@
+services:
+  tigrcorn-ws-asgi3:
+    build:
+      context: ../..
+      dockerfile: examples/websocket_uix_demo/Dockerfile.backend
+    image: tigrcorn-ws-asgi3-demo:local
+    ports:
+      - "8765:8765/tcp"
+
+  tigrcorn-ws-uix:
+    build:
+      context: ../..
+      dockerfile: examples/websocket_uix_demo/Dockerfile.client
+    image: tigrcorn-ws-uix-demo:local
+    environment:
+      TIGRCORN_WS_URL: ws://localhost:8765/ws
+    ports:
+      - "8091:8080/tcp"
+    depends_on:
+      - tigrcorn-ws-asgi3

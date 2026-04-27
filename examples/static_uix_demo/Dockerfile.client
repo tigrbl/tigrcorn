@@ -1,0 +1,8 @@
+FROM python:3.13-alpine AS runtime
+
+WORKDIR /site
+COPY examples/static_uix_demo/client ./client
+COPY examples/static_uix_demo/client_server.py ./
+
+EXPOSE 8080/tcp
+CMD ["python", "client_server.py"]

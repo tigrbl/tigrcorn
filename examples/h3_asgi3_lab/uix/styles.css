@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #1b2430;
+  background: #f3f6f8;
+  font-family: Arial, sans-serif;
+}
+
+.shell {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+.topbar p {
+  margin-top: 6px;
+  color: #526170;
+}
+
+.state {
+  min-width: 138px;
+  padding: 8px 10px;
+  border: 1px solid #b5c1cc;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #26323f;
+  text-align: center;
+  font-weight: 700;
+}
+
+.state[data-state="connected"] {
+  border-color: #2e7d32;
+  color: #1b5e20;
+}
+
+.state[data-state="failed"],
+.state[data-state="closed with error"] {
+  border-color: #b3261e;
+  color: #8c1d18;
+}
+
+.workbench {
+  display: grid;
+  gap: 18px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.4fr) minmax(220px, 1fr) minmax(380px, auto);
+  gap: 12px;
+  align-items: end;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #34495e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input,
+button {
+  height: 40px;
+  border: 1px solid #aeb9c4;
+  border-radius: 6px;
+  font: inherit;
+}
+
+input {
+  width: 100%;
+  padding: 0 10px;
+  background: #ffffff;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(82px, 1fr));
+  gap: 8px;
+}
+
+button {
+  padding: 0 12px;
+  color: #ffffff;
+  background: #245bdb;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #8996a3;
+  cursor: not-allowed;
+}
+
+.readouts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 14px;
+}
+
+article {
+  min-width: 0;
+}
+
+h2 {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+pre {
+  min-height: 420px;
+  max-height: 68vh;
+  margin: 0;
+  padding: 12px;
+  overflow: auto;
+  border: 1px solid #c3cdd7;
+  border-radius: 6px;
+  background: #111923;
+  color: #d9e5ef;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .topbar,
+  .controls,
+  .readouts {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+

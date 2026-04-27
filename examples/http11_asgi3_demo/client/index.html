@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn HTTP/1.1 ASGI3 Lab</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">ASGI3 over Tigrcorn HTTP/1.1</p>
+          <h1>HTTP/1.1 Lab</h1>
+          <p class="summary">Inspect ASGI scope metadata, send bodies, watch chunked responses, and inspect raw trailers or Early Hints from a browser-hosted UIX client.</p>
+        </div>
+        <div class="target">
+          <span>server</span>
+          <code id="server-url">http://localhost:8011</code>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Experiments">
+        <button data-action="inspect">Inspect</button>
+        <button data-action="echo">Echo POST</button>
+        <button data-action="stream">Stream</button>
+        <button data-action="trailers">Raw Trailers</button>
+        <button data-action="early">Raw 103</button>
+      </section>
+
+      <section class="grid">
+        <form id="request-form" class="panel">
+          <label for="base-url">Tigrcorn origin</label>
+          <input id="base-url" name="base-url" value="http://localhost:8011">
+
+          <label for="body-text">POST body</label>
+          <textarea id="body-text" rows="8">hello from an ASGI3 app over Tigrcorn HTTP/1.1</textarea>
+
+          <label for="custom-token">Demo header</label>
+          <input id="custom-token" value="uix-client">
+        </form>
+
+        <section class="panel output-panel">
+          <div class="output-header">
+            <h2 id="output-title">Response</h2>
+            <span id="status">idle</span>
+          </div>
+          <pre id="output"></pre>
+        </section>
+      </section>
+    </main>
+    <script src="./main.js"></script>
+  </body>
+</html>

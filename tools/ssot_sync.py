@@ -19,6 +19,7 @@ CLAIMS_REGISTRY_PATH = ROOT / "docs" / "review" / "conformance" / "claims_regist
 RISK_REGISTER_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_REGISTER.json"
 RISK_TRACEABILITY_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_TRACEABILITY.json"
 PYPROJECT_PATH = ROOT / "pyproject.toml"
+PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH = ROOT / "tests" / "fixtures_protocol_scope" / "fixture_manifest.json"
 INIT_NORMALIZED_DIRS = (
     "schemas",
     "adr",
@@ -1303,6 +1304,64 @@ def build_registry() -> dict[str, Any]:
             required_id = _feature_id(required_raw)
             if required_id not in features[feature_id]["requires"]:
                 features[feature_id]["requires"].append(required_id)
+
+    if PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH.exists():
+        fixture_manifest = _load_json(PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH)
+    else:
+        fixture_manifest = {"fixtures": []}
+    protocol_scope_fixture_feature_ids: list[str] = []
+    for fixture in fixture_manifest.get("fixtures", []):
+        feature_id = str(fixture["feature_id"])
+        fixture_id = str(fixture["id"])
+        title = str(fixture["title"])
+        surface_kind = str(fixture["surface_kind"])
+        surface = str(fixture["surface"])
+        fixture_path = str(fixture["fixture_path"])
+        coverage_paths = [str(path) for path in fixture.get("coverage_paths", [])]
+        protocol_scope_fixture_feature_ids.append(feature_id)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=(
+                f"Maintain the {fixture_id} {surface_kind} fixture for {surface} at {fixture_path} "
+                f"with declared coverage paths {', '.join(coverage_paths)}."
+            ),
+            tier="T2",
+            slot="protocol-scope-fixtures",
+            horizon="current",
+            implementation_status="implemented",
+        )
+        link_feature_specs([feature_id], ["spc:2039"])
+        claim_id = _claim_id(f"{fixture_id}-present-and-covered")
+        test_id = _test_id("pytest", f"tests/test_protocol_scope_fixtures.py::{fixture_id}")
+        evidence_id = _evidence_id("pytest", f"tests/test_protocol_scope_fixtures.py::{fixture_id}")
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"{title} is present and covered",
+            description=f"The {fixture_id} fixture exists and has explicit coverage for {surface_kind} surface {surface}.",
+            tier="T2",
+            kind="fixture_coverage",
+            feature_ids=[feature_id],
+        )
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Fixture coverage pytest evidence for {title}",
+            kind="pytest",
+            tier="T2",
+            path="tests/test_protocol_scope_fixtures.py",
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"{title} fixture presence and coverage",
+            status="passing",
+            kind="pytest",
+            path="tests/test_protocol_scope_fixtures.py",
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
 
     rest_jsonrpc_exclusion_ids = [
         _feature_id("rest-runtime-exclusion"),
