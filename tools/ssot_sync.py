@@ -906,6 +906,257 @@ def build_registry() -> dict[str, Any]:
         evidence_ids=[explicit_surface_evidence_id],
     )
 
+    # Logging governance, configuration, and standards features.
+    logging_spec_ids = ["spc:2040", "spc:2041"]
+    logging_governance_features = [
+        {
+            "raw": "colored-console-logs",
+            "title": "Colored console logs",
+            "description": "Console logging can use ANSI color formatting when explicitly enabled or when TTY detection enables it.",
+            "slot": "logging-console",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_phase1_surface_parity_checkpoint.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
+        },
+        {
+            "raw": "toml-logging-config",
+            "title": "TOML logging configuration",
+            "description": "TOML config files can populate the logging block used by the runtime configuration model.",
+            "slot": "logging-config",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_phase2_cli_config_surface.py",
+            "evidence_path": "pkgs/tigrcorn-config/src/tigrcorn_config/load.py",
+        },
+        {
+            "raw": "default-logging-configuration",
+            "title": "Default logging configuration",
+            "description": "The default logging configuration provides an info-level access-log-enabled baseline with optional color detection.",
+            "slot": "logging-config",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_default_audits.py",
+            "evidence_path": "pkgs/tigrcorn-config/src/tigrcorn_config/model.py",
+        },
+        {
+            "raw": "jsonl-logging-support",
+            "title": "JSON Lines logging support",
+            "description": "Structured log output is tracked as newline-delimited JSON records suitable for JSON Lines consumers.",
+            "slot": "logging-format",
+            "status": "partial",
+            "horizon": "current",
+            "test_path": "tests/test_phase4_operator_surface.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
+        },
+        {
+            "raw": "dict-logging-support-pep-391",
+            "title": "PEP 391 dict logging support",
+            "description": "Dictionary-based stdlib logging configuration is tracked as a future operator compatibility target.",
+            "slot": "logging-standards",
+            "status": "absent",
+            "horizon": "explicit",
+            "test_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+            "evidence_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+        },
+        {
+            "raw": "rfc-5424-logging",
+            "title": "RFC 5424 logging",
+            "description": "Syslog protocol output and message-size behavior are tracked as an explicit non-default conformance target.",
+            "slot": "logging-standards",
+            "status": "absent",
+            "horizon": "explicit",
+            "test_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+            "evidence_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+        },
+        {
+            "raw": "otel-logging-support",
+            "title": "OTEL logging support",
+            "description": "OpenTelemetry log data model support is tracked separately from the existing metrics and lifecycle span exporter.",
+            "slot": "logging-telemetry",
+            "status": "partial",
+            "horizon": "explicit",
+            "test_path": "tests/test_phase9f2_logging_exporter_closure.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/tracing.py",
+        },
+        {
+            "raw": "qlog-logging-support-and-conformance",
+            "title": "qlog logging support and conformance",
+            "description": "QUIC and HTTP/3 qlog artifacts are tracked as protocol conformance logs with schema and redaction rules.",
+            "slot": "logging-qlog",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_external_interop_runner_matrix.py",
+            "evidence_path": "docs/conformance/qlog_experimental.md",
+        },
+    ]
+    logging_cli_flag_features = [
+        ("logging-cli-log-level-flag", "--log-level", "logging.level"),
+        ("logging-cli-access-log-flag", "--access-log", "logging.access_log"),
+        ("logging-cli-no-access-log-flag", "--no-access-log", "logging.access_log"),
+        ("logging-cli-access-log-file-flag", "--access-log-file", "logging.access_log_file"),
+        ("logging-cli-access-log-format-flag", "--access-log-format", "logging.access_log_format"),
+        ("logging-cli-error-log-file-flag", "--error-log-file", "logging.error_log_file"),
+        ("logging-cli-log-config-flag", "--log-config", "logging.log_config"),
+        ("logging-cli-structured-log-flag", "--structured-log", "logging.structured"),
+        ("logging-cli-use-colors-flag", "--use-colors", "logging.use_colors"),
+        ("logging-cli-no-use-colors-flag", "--no-use-colors", "logging.use_colors"),
+        ("logging-cli-metrics-flag", "--metrics", "metrics.enabled"),
+        ("logging-cli-metrics-bind-flag", "--metrics-bind", "metrics.bind"),
+        ("logging-cli-statsd-host-flag", "--statsd-host", "metrics.statsd_host"),
+        ("logging-cli-otel-endpoint-flag", "--otel-endpoint", "metrics.otel_endpoint"),
+    ]
+    for raw, flag, config_path in logging_cli_flag_features:
+        logging_governance_features.append(
+            {
+                "raw": raw,
+                "title": f"Logging CLI flag {flag}",
+                "description": f"The public Logging / observability CLI flag {flag} maps to {config_path}.",
+                "slot": "logging-cli-flag",
+                "status": "implemented",
+                "horizon": "current",
+                "test_path": "tests/test_phase2_cli_config_surface.py",
+                "evidence_path": "docs/review/conformance/flag_contracts.json",
+            }
+        )
+    logging_profile_key_features = [
+        "level",
+        "structured",
+        "access_log",
+        "access_log_file",
+        "access_log_format",
+        "error_log_file",
+        "stream",
+        "use_colors",
+    ]
+    for key in logging_profile_key_features:
+        logging_governance_features.append(
+            {
+                "raw": f"logging-profile-{key.replace('_', '-')}-key",
+                "title": f"Logging profile key {key}",
+                "description": f"File-based logging profiles support the {key} key with fail-closed validation.",
+                "slot": "logging-profile-key",
+                "status": "implemented",
+                "horizon": "current",
+                "test_path": "tests/test_phase9f2_logging_exporter_closure.py",
+                "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
+            }
+        )
+
+    logging_feature_ids: list[str] = []
+    for item in logging_governance_features:
+        feature_id = _feature_id(item["raw"])
+        claim_id = _claim_id(item["raw"])
+        test_id = _test_id("logging", item["raw"])
+        evidence_id = _evidence_id("logging", item["raw"])
+        status = str(item["status"])
+        claim_status = "promoted" if status == "implemented" else "implemented" if status == "partial" else "declared"
+        test_status = "passing" if status in {"implemented", "partial"} else "planned"
+        tier = "T2" if status in {"implemented", "partial"} else "T1"
+        ensure_feature(
+            feature_id=feature_id,
+            title=str(item["title"]),
+            description=str(item["description"]),
+            tier=tier,
+            slot=str(item["slot"]),
+            horizon=str(item["horizon"]),
+            implementation_status=status,
+        )
+        ensure_claim(
+            claim_id=claim_id,
+            title=str(item["title"]),
+            description=str(item["description"]),
+            tier=tier,
+            kind="logging_governance",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = claim_status
+        if claim_status != "promoted" and claim_id in release_claim_ids:
+            release_claim_ids.remove(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Logging evidence {item['title']}",
+            kind="logging_governance",
+            tier=tier,
+            path=str(item["evidence_path"]),
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"Logging governance coverage {item['title']}",
+            status=test_status,
+            kind="pytest" if str(item["test_path"]).startswith("tests/") else "spec-placeholder",
+            path=str(item["test_path"]),
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+        if claim_status == "promoted":
+            release_claim_ids.add(claim_id)
+            release_evidence_ids.add(evidence_id)
+        logging_feature_ids.append(feature_id)
+    link_feature_specs(logging_feature_ids, logging_spec_ids)
+
+    code_style_feature_ids: list[str] = []
+    for raw, title, description in [
+        (
+            "pep8-code-line-length-conformance",
+            "PEP 8 code line length conformance",
+            "Source code line length is governed separately from emitted log record length.",
+        ),
+        (
+            "spacy-style-docstrings",
+            "spaCy-style docstrings",
+            "Public non-trivial APIs use spaCy-style docstring sections where documentation adds signal.",
+        ),
+    ]:
+        feature_id = _feature_id(raw)
+        claim_id = _claim_id(raw)
+        test_id = _test_id("style", raw)
+        evidence_id = _evidence_id("style", raw)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T1",
+            slot="code-style",
+            horizon="explicit",
+            implementation_status="absent",
+        )
+        ensure_claim(
+            claim_id=claim_id,
+            title=title,
+            description=description,
+            tier="T1",
+            kind="style_governance",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = "declared"
+        if claim_id in release_claim_ids:
+            release_claim_ids.remove(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Style evidence {title}",
+            kind="style_governance",
+            tier="T1",
+            path=".ssot/specs/SPEC-2042-code-style-line-length-and-docstrings.yaml",
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"Style governance placeholder {title}",
+            status="planned",
+            kind="spec-placeholder",
+            path=".ssot/specs/SPEC-2042-code-style-line-length-and-docstrings.yaml",
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+        code_style_feature_ids.append(feature_id)
+    link_feature_specs(code_style_feature_ids, ["spc:2042"])
+
     # Governance feature
     governance_feature_id = _feature_id("governance-graph")
     ensure_feature(
@@ -2368,6 +2619,65 @@ def build_registry() -> dict[str, Any]:
     issues[webtransport_datagram_runtime_issue_id]["claim_ids"].append(webtransport_datagram_runtime_claim_id)
     issues[webtransport_datagram_runtime_issue_id]["test_ids"].append(webtransport_datagram_runtime_test_id)
     issues[webtransport_datagram_runtime_issue_id]["evidence_ids"].append(webtransport_datagram_runtime_evidence_id)
+
+    webtransport_extensive_feature_ids = [
+        _feature_id("contract-webtransport-events"),
+        _feature_id("contract-webtransport-scope"),
+        _feature_id("contract-webtransport-session-identity"),
+        _feature_id("contract-webtransport-stream-identity"),
+        _feature_id("webtransport-h3-quic-completion-events"),
+        _feature_id("webtransport-h3-quic-datagram-events"),
+        _feature_id("webtransport-h3-quic-scope"),
+        _feature_id("webtransport-h3-quic-session-events"),
+        _feature_id("webtransport-h3-quic-stream-events"),
+        _feature_id("webtransport-carrier-fail-closed"),
+        _feature_id("webtransport-carrier-normalization"),
+        _feature_id("webtransport-config-toml"),
+        _feature_id("webtransport-env-var"),
+        _feature_id("webtransport-max-datagram-size-flag"),
+        _feature_id("webtransport-max-sessions-flag"),
+        _feature_id("webtransport-max-streams-flag"),
+        _feature_id("webtransport-origin-flag"),
+        _feature_id("webtransport-path-flag"),
+        _feature_id("webtransport-protocol-cli-flag"),
+        _feature_id("webtransport-public-api"),
+        _feature_id("fixture-asgi-webtransport-scope"),
+        _feature_id("fixture-webtransport-protocol"),
+    ]
+    webtransport_extensive_claim_id = _claim_id("webtransport-feature-coverage-extensive")
+    webtransport_extensive_test_id = _test_id("pytest", "tests/test_webtransport_feature_coverage.py")
+    webtransport_extensive_evidence_id = _evidence_id("pytest", "tests/test_webtransport_feature_coverage.py")
+    ensure_claim(
+        claim_id=webtransport_extensive_claim_id,
+        title="WebTransport feature coverage is extensive",
+        description=(
+            "A focused pytest module verifies SSOT linkage, contract event payloads, identity metadata, "
+            "operator configuration surfaces, H3 settings, demo behavior, mTLS gate behavior, and fixture linkage "
+            "for the implemented WebTransport feature set."
+        ),
+        tier="T3",
+        kind="implementation",
+        feature_ids=webtransport_extensive_feature_ids,
+    )
+    ensure_evidence(
+        evidence_id=webtransport_extensive_evidence_id,
+        title="Extensive WebTransport feature coverage pytest evidence",
+        kind="pytest",
+        tier="T3",
+        path="tests/test_webtransport_feature_coverage.py",
+        claim_ids=[webtransport_extensive_claim_id],
+        test_ids=[webtransport_extensive_test_id],
+    )
+    ensure_test(
+        test_id=webtransport_extensive_test_id,
+        title="Extensive WebTransport feature coverage",
+        status="passing",
+        kind="pytest",
+        path="tests/test_webtransport_feature_coverage.py",
+        feature_ids=webtransport_extensive_feature_ids,
+        claim_ids=[webtransport_extensive_claim_id],
+        evidence_ids=[webtransport_extensive_evidence_id],
+    )
 
     for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
         feature_id = _feature_id(raw_feature_id)

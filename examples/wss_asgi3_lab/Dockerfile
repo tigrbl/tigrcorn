@@ -27,4 +27,4 @@ RUN python -m pip install --no-cache-dir --upgrade pip \
 
 EXPOSE 8443/tcp
 
-CMD ["sh", "-c", "python -m examples.wss_asgi3_lab.cert_setup --out /certs --server-name localhost && tigrcorn examples.wss_asgi3_lab.app:app --app-interface asgi3 --host 0.0.0.0 --port 8443 --protocol websocket --http 1.1 --ssl-certfile /certs/server-cert.pem --ssl-keyfile /certs/server-key.pem --websocket-compression permessage-deflate --websocket-max-message-size 1048576 --websocket-ping-interval 20 --websocket-ping-timeout 20"]
+CMD ["sh", "-c", "python -m examples.wss_asgi3_lab.cert_setup --out /certs --server-name localhost && python -m examples.wss_asgi3_lab.run_server & exec python -m examples.wss_asgi3_lab.tls_proxy --listen-host 0.0.0.0 --listen-port 8443 --upstream-host 127.0.0.1 --upstream-port 8000 --certfile /certs/server-cert.pem --keyfile /certs/server-key.pem"]

@@ -27,5 +27,4 @@ RUN python -m pip install --no-cache-dir --upgrade pip \
 
 EXPOSE 8765/tcp
 
-CMD ["tigrcorn", "examples.websocket_uix_demo.app:app", "--app-interface", "asgi3", "--host", "0.0.0.0", "--port", "8765", "--http", "1.1", "--protocol", "websocket", "--websocket-compression", "permessage-deflate", "--lifespan", "on", "--log-level", "info"]
-
+CMD ["python", "-m", "examples.websocket_uix_demo.run_server"]

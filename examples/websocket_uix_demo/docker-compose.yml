@@ -4,8 +4,11 @@ services:
       context: ../..
       dockerfile: examples/websocket_uix_demo/Dockerfile.backend
     image: tigrcorn-ws-asgi3-demo:local
+    command: ["python", "-m", "examples.websocket_uix_demo.run_server"]
     ports:
       - "8765:8765/tcp"
+    volumes:
+      - .:/app/examples/websocket_uix_demo:ro
 
   tigrcorn-ws-uix:
     build:
@@ -15,6 +18,8 @@ services:
     environment:
       TIGRCORN_WS_URL: ws://localhost:8765/ws
     ports:
-      - "8091:8080/tcp"
+      - "18091:8080/tcp"
+    volumes:
+      - ./client:/site:ro
     depends_on:
       - tigrcorn-ws-asgi3

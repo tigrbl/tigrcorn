@@ -24,17 +24,27 @@
         <label>
           Asset path
           <select id="assetPath">
-            <option value="/assets/">/assets/</option>
-            <option value="/assets/site.css">/assets/site.css</option>
-            <option value="/assets/data/config.json">/assets/data/config.json</option>
             <option value="/assets/docs/readme.txt">/assets/docs/readme.txt</option>
+            <option value="/assets/data/config.json">/assets/data/config.json</option>
+            <option value="/assets/site.css">/assets/site.css</option>
+            <option value="/assets/">/assets/</option>
             <option value="/assets/images/pattern.svg">/assets/images/pattern.svg</option>
           </select>
         </label>
+        <div class="range-grid">
+          <label>
+            Range start
+            <input id="rangeStart" inputmode="numeric" value="0">
+          </label>
+          <label>
+            Range end
+            <input id="rangeEnd" inputmode="numeric" value="31">
+          </label>
+        </div>
         <div class="button-row">
           <button id="getBtn">GET</button>
           <button id="headBtn">HEAD</button>
-          <button id="rangeBtn">Range</button>
+          <button id="rangeBtn">Range proof</button>
           <button id="etagBtn">ETag roundtrip</button>
         </div>
       </section>
@@ -49,10 +59,12 @@
 
       <section class="panel output">
         <div class="preview-bar">
-          <h2>Response</h2>
+          <h2>Experiment trace</h2>
           <button id="clearBtn">Clear</button>
         </div>
-        <pre id="output">Ready.</pre>
+        <div id="trace" class="trace">
+          <div class="empty-state">Run Range proof or ETag roundtrip to see the request/response chain.</div>
+        </div>
       </section>
     </main>
 

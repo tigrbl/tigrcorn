@@ -23,20 +23,22 @@ def test_wss_asgi3_compose_declares_server_and_uix_services() -> None:
     assert 'TIGRCORN_WSS_URL: "wss://localhost:8443/ws"' in compose
 
 
-def test_wss_asgi3_dockerfile_uses_tigrcorn_tls_websocket_flags() -> None:
+def test_wss_asgi3_dockerfile_uses_tigrcorn_api_launcher_and_tls_bridge() -> None:
     dockerfile = (EXAMPLE / "Dockerfile").read_text(encoding="utf-8")
 
-    assert "--app-interface" in dockerfile
-    assert "asgi3" in dockerfile
-    assert "--protocol" in dockerfile
-    assert "websocket" in dockerfile
-    assert "--ssl-certfile" in dockerfile
+    assert "run_server" in dockerfile
     assert "cert_setup" in dockerfile
+    assert "tls_proxy" in dockerfile
     assert "/certs/server-cert.pem" in dockerfile
-    assert "--ssl-keyfile" in dockerfile
-    assert "--websocket-compression" in dockerfile
-    assert "permessage-deflate" in dockerfile
     assert "-e pkgs/tigrcorn-certification" in dockerfile
+
+
+def test_python_launcher_enables_websocket_explicitly() -> None:
+    launcher = (EXAMPLE / "run_server.py").read_text(encoding="utf-8")
+
+    assert "websocket=True" in launcher
+    assert '"websocket"' in launcher
+    assert "permessage-deflate" in launcher
 
 
 class WssAsgi3AppTests(IsolatedAsyncioTestCase):

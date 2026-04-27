@@ -8,15 +8,12 @@ services:
       - sh
       - -c
       - >-
-        python -m examples.webtransport_mtls_demo.cert_setup --out /certs --server-name localhost &&
+        python -m examples.h3_asgi3_lab.cert_setup --out /certs --server-name localhost &&
         tigrcorn examples.h3_asgi3_lab.app:app --app-interface asgi3
         --transport udp --host 0.0.0.0 --port 8445
-        --protocol webtransport --http 3
+        --protocol http3 --http 3
         --ssl-certfile /certs/server-cert.pem --ssl-keyfile /certs/server-key.pem
-        --webtransport-max-sessions 16 --webtransport-max-streams 128
-        --webtransport-max-datagram-size 1200
-        --webtransport-origin http://localhost:8091,https://localhost:8091
-        --webtransport-path /wt
+        --alt-svc 'h3=":8445"; ma=60'
     ports:
       - "8445:8445/udp"
     volumes:
@@ -31,6 +28,10 @@ services:
       - python
       - -m
       - examples.h3_asgi3_lab.uix_server
+    environment:
+      TIGRCORN_H3_TARGET_HOST: tigrcorn-h3-asgi3
+      TIGRCORN_H3_TARGET_PORT: "8445"
+      TIGRCORN_H3_SERVER_NAME: localhost
     ports:
       - "8091:8090/tcp"
     volumes:

@@ -67,7 +67,7 @@ h1 {
 
 .controls {
   display: grid;
-  grid-template-columns: minmax(260px, 1.4fr) minmax(220px, 1fr) minmax(380px, auto);
+  grid-template-columns: minmax(260px, 1fr) minmax(140px, auto);
   gap: 12px;
   align-items: end;
 }
@@ -92,12 +92,6 @@ input {
   width: 100%;
   padding: 0 10px;
   background: #ffffff;
-}
-
-.actions {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(82px, 1fr));
-  gap: 8px;
 }
 
 button {
@@ -149,8 +143,4 @@ pre {
     display: grid;
   }
 
-  .actions {
-    grid-template-columns: 1fr 1fr;
-  }
 }
-

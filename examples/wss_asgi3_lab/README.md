@@ -1,6 +1,6 @@
 # Tigrcorn WSS ASGI3 Lab
 
-This example runs a plain ASGI3 application behind Tigrcorn with a TLS WebSocket endpoint and a small browser UIX client.
+This example runs a plain ASGI3 application behind Tigrcorn with a local TLS bridge for the browser-facing WSS endpoint and a small browser UIX client.
 
 Run it with Docker Compose:
 
@@ -29,4 +29,5 @@ The server is intentionally ordinary ASGI3:
 - text frames are echoed as JSON
 - binary frames are counted and reported
 - `/close` sends `websocket.close`
-- Tigrcorn runtime flags enable TLS, WebSocket, permessage-deflate, message limits, and ping settings
+- Tigrcorn's Python runtime API enables WebSocket, permessage-deflate, message limits, and ping settings
+- the demo container terminates local TLS on `8443` and forwards the decrypted connection to Tigrcorn on `127.0.0.1:8000`

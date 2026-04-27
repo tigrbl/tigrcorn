@@ -100,6 +100,12 @@ select {
   font: inherit;
 }
 
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .button-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -135,12 +141,90 @@ iframe {
   background: #ffffff;
 }
 
-pre {
+.trace {
   min-height: 240px;
-  max-height: 420px;
+  display: grid;
+  gap: 12px;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 160px;
+  place-items: center;
+  border: 1px dashed #b8c4d1;
+  border-radius: 6px;
+  color: #536273;
+  text-align: center;
+  padding: 18px;
+}
+
+.trace-title {
+  font-weight: 700;
+  color: #253243;
+}
+
+.step-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.step {
+  min-width: 0;
+  border: 1px solid #d5dde6;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fbfcfe;
+}
+
+.step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #d5dde6;
+  background: #eef5f4;
+}
+
+.step-head span,
+.step-head strong {
+  overflow-wrap: anywhere;
+}
+
+dl {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  background: #d5dde6;
+}
+
+dl div {
+  display: grid;
+  grid-template-columns: minmax(110px, 170px) minmax(0, 1fr);
+  gap: 10px;
+  padding: 9px 12px;
+  background: #ffffff;
+}
+
+dt {
+  color: #536273;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+pre {
+  max-height: 260px;
   overflow: auto;
   margin: 0;
-  border-radius: 6px;
+  border-radius: 0;
   background: #111827;
   color: #d8e7ff;
   padding: 14px;
@@ -166,7 +250,16 @@ pre {
     margin: 16px;
   }
 
+  .range-grid,
+  .step-grid {
+    grid-template-columns: 1fr;
+  }
+
   .output {
     grid-column: auto;
+  }
+
+  dl div {
+    grid-template-columns: 1fr;
   }
 }

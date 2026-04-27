@@ -6,7 +6,6 @@ ENV PYTHONUNBUFFERED=1
 COPY pyproject.toml README.md LICENSE ./
 COPY src ./src
 COPY pkgs ./pkgs
-COPY examples/lifespan ./examples/lifespan
 
 RUN python -m pip install --no-cache-dir --upgrade pip \
     && python -m pip install --no-cache-dir \
@@ -24,6 +23,8 @@ RUN python -m pip install --no-cache-dir --upgrade pip \
       -e pkgs/tigrcorn-compat \
       -e pkgs/tigrcorn-certification \
     && python -m pip install --no-cache-dir --no-deps -e .
+
+COPY examples/lifespan ./examples/lifespan
 
 EXPOSE 8000/tcp
 

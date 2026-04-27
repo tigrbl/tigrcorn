@@ -11,7 +11,7 @@
       <header class="topbar">
         <div>
           <h1>Tigrcorn H3 ASGI3 Lab</h1>
-          <p>ASGI3 over HTTP/3 and WebTransport</p>
+          <p>ASGI3 over HTTP/3 on QUIC</p>
         </div>
         <output id="state" class="state">idle</output>
       </header>
@@ -19,24 +19,19 @@
       <section class="workbench">
         <div class="controls">
           <label>
-            WebTransport endpoint
-            <input id="endpoint" value="https://localhost:8445/wt" />
+            H3 request path
+            <input id="path" value="/inspect?payload=hello-over-h3" />
           </label>
           <label>
             Payload
             <input id="payload" value="hello over h3" />
           </label>
-          <div class="actions">
-            <button id="connect" type="button">Connect</button>
-            <button id="stream" type="button" disabled>Stream</button>
-            <button id="datagram" type="button" disabled>Datagram</button>
-            <button id="close" type="button" disabled>Close</button>
-          </div>
+          <button id="send" type="button">Send H3 Request</button>
         </div>
 
         <section class="readouts">
           <article>
-            <h2>Session</h2>
+            <h2>Request</h2>
             <pre id="session">{}</pre>
           </article>
           <article>
@@ -49,4 +44,3 @@
     <script src="./main.js" type="module"></script>
   </body>
 </html>
-

@@ -17,6 +17,8 @@ python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1
 python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/state').read().decode())"
 ```
 
+Open the UIX console at `http://127.0.0.1:8000/uix/`.
+
 ## Run In Docker
 
 Build and start the example container:
@@ -30,5 +32,7 @@ From another shell:
 ```console
 python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:18081/state').read().decode())"
 ```
+
+Open the UIX console at `http://127.0.0.1:18081/uix/`.
 
 Stop the container with `Ctrl+C`. Tigrcorn will send `lifespan.shutdown`, and the container log will include `lifespan shutdown complete`.

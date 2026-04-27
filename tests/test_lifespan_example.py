@@ -33,6 +33,17 @@ class LifespanExampleTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response["status"], 503)
         self.assertEqual(response["body"], b"not ready\n")
 
+    async def test_lifespan_example_serves_uix_assets(self):
+        module = importlib.reload(importlib.import_module("examples.lifespan.app"))
+
+        index = await self._request(module.app, "/uix/")
+        self.assertEqual(index["status"], 200)
+        self.assertIn(b"Tigrcorn Lifespan UIX", index["body"])
+
+        script = await self._request(module.app, "/uix/main.js")
+        self.assertEqual(script["status"], 200)
+        self.assertIn(b"refreshState", script["body"])
+
     async def _request(self, app, path):
         sent = []
         received = [{"type": "http.request", "body": b"", "more_body": False}]

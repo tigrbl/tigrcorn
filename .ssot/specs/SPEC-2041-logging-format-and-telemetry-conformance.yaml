@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2041"
+number: 2041
+slug: "logging-format-and-telemetry-conformance"
+title: "Logging format and telemetry conformance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn logging formats shall have explicit JSON Lines, PEP 391, RFC 5424, OTEL, and qlog conformance targets."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1034"
+  - "PEP 282"
+  - "PEP 391"
+  - "RFC 5424"
+  - "OpenTelemetry Logs Data Model"
+body: |-
+  # Logging format and telemetry conformance
+
+  Tigrcorn shall track logging standards as separate conformance targets.
+
+  Requirements:
+
+  - Stdlib logging remains the substrate for application log records.
+  - JSON Lines output is one valid structured record per line.
+  - PEP 391 dict logging configuration is tracked independently from the existing lightweight `log_config` profile.
+  - RFC 5424 syslog output is tracked as an explicit, non-default compatibility target.
+  - OTEL logging support is tracked as a log data-model target, distinct from metrics and span exporters.
+  - qlog support is tracked as a QUIC/HTTP3 conformance artifact target with schema and redaction rules.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1034"

@@ -9,7 +9,7 @@ lightweight browser client.
 docker compose -f examples/websocket_uix_demo/docker-compose.yml up --build -d
 ```
 
-Open `http://localhost:8091`.
+Open `http://localhost:18091`.
 
 The ASGI3 backend listens on `http://localhost:8765` and exposes:
 
