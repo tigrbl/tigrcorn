@@ -608,15 +608,15 @@ class HTTP3DatagramHandler:
                                     )
                                 )
                                 session.responded_streams.add(event.stream_id)
-                        if event.stream_id in session.websocket_sessions:
-                            await self._drain_websocket_request_body_locked(session, event.stream_id, request_state, endpoint)
-                        elif event.stream_id in session.connect_tunnels:
-                            await self._drain_connect_request_body_locked(session, event.stream_id, request_state)
-                        elif event.stream_id in session.webtransport_streams:
-                            pass
-                        elif request_state.ready and event.stream_id not in session.responded_streams:
-                            outbound.extend(await self._invoke_http_app(session, event.stream_id, request_state, endpoint))
-                            session.responded_streams.add(event.stream_id)
+                            if event.stream_id in session.websocket_sessions:
+                                await self._drain_websocket_request_body_locked(session, event.stream_id, request_state, endpoint)
+                            elif event.stream_id in session.connect_tunnels:
+                                await self._drain_connect_request_body_locked(session, event.stream_id, request_state)
+                            elif event.stream_id in session.webtransport_streams:
+                                pass
+                            elif request_state.ready and event.stream_id not in session.responded_streams:
+                                outbound.extend(await self._invoke_http_app(session, event.stream_id, request_state, endpoint))
+                                session.responded_streams.add(event.stream_id)
                         outbound.extend(await self._respond_ready_requests(session, endpoint))
                     else:
                         outbound.extend(await self._invoke_custom_quic_app(session, event, endpoint))

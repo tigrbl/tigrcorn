@@ -11,10 +11,18 @@ from examples.webtransport_mtls_demo.server import app
 from tigrcorn.config.load import build_config
 from tigrcorn.constants import DEFAULT_QUIC_SECRET
 from tigrcorn.protocols.http3 import HTTP3ConnectionCore
-from tigrcorn.protocols.http3.codec import SETTING_ENABLE_CONNECT_PROTOCOL, SETTING_ENABLE_WEBTRANSPORT, SETTING_H3_DATAGRAM
+from tigrcorn.protocols.http3.codec import (
+    FRAME_SETTINGS,
+    SETTING_ENABLE_CONNECT_PROTOCOL,
+    SETTING_ENABLE_WEBTRANSPORT,
+    SETTING_H3_DATAGRAM,
+    STREAM_TYPE_CONTROL,
+    encode_frame,
+)
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, generate_self_signed_certificate
+from tigrcorn.utils.bytes import encode_quic_varint
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -190,6 +198,15 @@ class WebTransportMtlsDemoAppTests(unittest.IsolatedAsyncioTestCase):
             )
             core = HTTP3ConnectionCore()
             loop = asyncio.get_running_loop()
+            loop_errors: list[BaseException] = []
+            previous_exception_handler = loop.get_exception_handler()
+
+            def capture_loop_exception(_loop: asyncio.AbstractEventLoop, context: dict[str, object]) -> None:
+                exception = context.get("exception")
+                if isinstance(exception, BaseException):
+                    loop_errors.append(exception)
+
+            loop.set_exception_handler(capture_loop_exception)
             try:
                 sock.sendto(client.start_handshake(), ("127.0.0.1", port))
                 for _ in range(12):
@@ -201,6 +218,11 @@ class WebTransportMtlsDemoAppTests(unittest.IsolatedAsyncioTestCase):
                         sock.sendto(datagram, ("127.0.0.1", port))
                     if client.handshake_driver is not None and client.handshake_driver.complete:
                         break
+
+                control_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
+                control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(FRAME_SETTINGS, b"")
+                sock.sendto(client.send_stream_data(control_stream_id, control_payload, fin=False), ("127.0.0.1", port))
+                await asyncio.sleep(0.05)
 
                 payload = core.get_request(0).encode_request(
                     [
@@ -233,6 +255,8 @@ class WebTransportMtlsDemoAppTests(unittest.IsolatedAsyncioTestCase):
                 assert response_state is not None
                 self.assertIn((b":status", b"200"), response_state.headers)
                 self.assertIn((b"sec-webtransport-http3-draft", b"draft02"), response_state.headers)
+                self.assertEqual(loop_errors, [])
             finally:
+                loop.set_exception_handler(previous_exception_handler)
                 sock.close()
                 await server.close()

@@ -145,6 +145,18 @@ def _feature_impl_status(claim_status: str) -> str:
     return "absent"
 
 
+def _feature_sort_key(row: dict[str, Any]) -> tuple[int, int, str, str]:
+    plan = row.get("plan", {})
+    tier_rank = {"T4": 0, "T3": 1, "T2": 2, "T1": 3, "T0": 4, None: 5}
+    out_of_bounds = plan.get("horizon") == "out_of_bounds"
+    return (
+        1 if out_of_bounds else 0,
+        tier_rank.get(plan.get("target_claim_tier"), 5),
+        str(plan.get("slot") or ""),
+        str(row.get("id") or ""),
+    )
+
+
 def _merge_impl_status(current: str, candidate: str) -> str:
     order = {"absent": 0, "partial": 1, "implemented": 2}
     return current if order[current] >= order[candidate] else candidate
@@ -1154,6 +1166,46 @@ def build_registry() -> dict[str, Any]:
         )
     link_feature_specs(webtransport_feature_ids, webtransport_specs)
 
+    webtransport_datagram_runtime_feature_id = _feature_id("webtransport-h3-quic-datagram-runtime-dispatch")
+    ensure_feature(
+        feature_id=webtransport_datagram_runtime_feature_id,
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch",
+        description=(
+            "Decode HTTP/3 WebTransport QUIC DATAGRAM frames into ASGI "
+            "webtransport.datagram.receive events, dispatch accepted sessions to the application, "
+            "and encode webtransport.datagram.send events back onto QUIC DATAGRAM frames."
+        ),
+        tier="T3",
+        slot="webtransport-runtime",
+        horizon="current",
+        implementation_status="absent",
+    )
+    features[webtransport_datagram_runtime_feature_id]["requires"].append(_feature_id("webtransport-h3-quic-datagram-events"))
+    link_feature_specs([webtransport_datagram_runtime_feature_id], webtransport_specs)
+
+    webtransport_datagram_runtime_issue_id = _issue_id("webtransport-h3-quic-datagram-runtime-dispatch")
+    issues[webtransport_datagram_runtime_issue_id] = {
+        "id": webtransport_datagram_runtime_issue_id,
+        "title": "WebTransport QUIC DATAGRAMs do not reach ASGI applications",
+        "status": "open",
+        "severity": "high",
+        "description": (
+            "The local WebTransport demo accepts HTTP/3 extended CONNECT, but client DATAGRAM payloads "
+            "are not decoded as QUIC DATAGRAM frames, delivered as webtransport.datagram.receive events, "
+            "or acknowledged through webtransport.datagram.send."
+        ),
+        "plan": {
+            "horizon": "current",
+            "slot": "webtransport-runtime",
+        },
+        "feature_ids": [webtransport_datagram_runtime_feature_id],
+        "claim_ids": [],
+        "test_ids": [],
+        "evidence_ids": [],
+        "risk_ids": [],
+        "release_blocking": True,
+    }
+
     webtransport_operator_rows = [
         (
             "webtransport-protocol-cli-flag",
@@ -2010,6 +2062,7 @@ def build_registry() -> dict[str, Any]:
         ("webtransport-h3-quic-session-events", "WebTransport session events"),
         ("webtransport-h3-quic-stream-events", "WebTransport stream events"),
         ("webtransport-h3-quic-datagram-events", "WebTransport datagram events"),
+        ("webtransport-h3-quic-datagram-runtime-dispatch", "WebTransport H3/QUIC DATAGRAM runtime dispatch"),
         ("webtransport-h3-quic-completion-events", "WebTransport completion events"),
         ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation"),
         ("rest-runtime-exclusion", "REST runtime exclusion"),
@@ -2216,6 +2269,47 @@ def build_registry() -> dict[str, Any]:
                 f"evd:{slug}-pytest",
             )
         )
+
+    webtransport_datagram_runtime_claim_id = _claim_id("webtransport-h3-quic-datagram-runtime-dispatch-planned")
+    webtransport_datagram_runtime_test_id = _test_id("pytest", "tests/test_webtransport_datagram_runtime_dispatch.py")
+    webtransport_datagram_runtime_evidence_id = _evidence_id("pytest", "tests/test_webtransport_datagram_runtime_dispatch.py")
+    ensure_claim(
+        claim_id=webtransport_datagram_runtime_claim_id,
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch planned",
+        description=(
+            "The runtime dispatch gap for WebTransport QUIC DATAGRAM receive/send handling is "
+            "explicitly tracked by executable planned tests."
+        ),
+        tier="T3",
+        kind="planned_implementation",
+        feature_ids=[webtransport_datagram_runtime_feature_id],
+    )
+    claims[webtransport_datagram_runtime_claim_id]["status"] = "proposed"
+    release_claim_ids.discard(webtransport_datagram_runtime_claim_id)
+    ensure_evidence(
+        evidence_id=webtransport_datagram_runtime_evidence_id,
+        title="Planned pytest coverage for WebTransport DATAGRAM runtime dispatch",
+        kind="pytest",
+        tier="T3",
+        path="tests/test_webtransport_datagram_runtime_dispatch.py",
+        claim_ids=[webtransport_datagram_runtime_claim_id],
+        test_ids=[webtransport_datagram_runtime_test_id],
+    )
+    release_evidence_ids.discard(webtransport_datagram_runtime_evidence_id)
+    ensure_test(
+        test_id=webtransport_datagram_runtime_test_id,
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch",
+        status="planned",
+        kind="pytest",
+        path="tests/test_webtransport_datagram_runtime_dispatch.py",
+        feature_ids=[webtransport_datagram_runtime_feature_id],
+        claim_ids=[webtransport_datagram_runtime_claim_id],
+        evidence_ids=[webtransport_datagram_runtime_evidence_id],
+    )
+    issues[webtransport_datagram_runtime_issue_id]["claim_ids"].append(webtransport_datagram_runtime_claim_id)
+    issues[webtransport_datagram_runtime_issue_id]["test_ids"].append(webtransport_datagram_runtime_test_id)
+    issues[webtransport_datagram_runtime_issue_id]["evidence_ids"].append(webtransport_datagram_runtime_evidence_id)
+
     for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
         feature_id = _feature_id(raw_feature_id)
         out_of_bounds = features[feature_id]["plan"]["horizon"] == "out_of_bounds"
@@ -2787,6 +2881,7 @@ def build_registry() -> dict[str, Any]:
                 "feat:webtransport-h3-quic-session-events",
                 "feat:webtransport-h3-quic-stream-events",
                 "feat:webtransport-h3-quic-datagram-events",
+                "feat:webtransport-h3-quic-datagram-runtime-dispatch",
                 "feat:webtransport-h3-quic-completion-events",
                 "feat:webtransport-protocol-cli-flag",
                 "feat:webtransport-carrier-normalization",
@@ -2850,7 +2945,7 @@ def build_registry() -> dict[str, Any]:
             "claims_registry_source": _relative(CLAIMS_REGISTRY_PATH),
         },
         "document_id_reservations": package_meta["document_id_reservations"],
-        "features": sorted(features.values(), key=lambda row: row["id"]),
+        "features": sorted(features.values(), key=_feature_sort_key),
         "profiles": sorted(profiles.values(), key=lambda row: row["id"]),
         "tests": sorted(tests.values(), key=lambda row: row["id"]),
         "claims": sorted(claims.values(), key=lambda row: row["id"]),
