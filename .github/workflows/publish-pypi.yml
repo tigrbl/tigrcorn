@@ -27,6 +27,22 @@ jobs:
           python-version: "3.12"
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
+      - name: Install workspace packages
+        run: |
+          python -m pip install \
+            -e pkgs/tigrcorn-core \
+            -e pkgs/tigrcorn-config \
+            -e pkgs/tigrcorn-asgi \
+            -e pkgs/tigrcorn-contract \
+            -e pkgs/tigrcorn-transports \
+            -e pkgs/tigrcorn-protocols \
+            -e pkgs/tigrcorn-http \
+            -e pkgs/tigrcorn-security \
+            -e pkgs/tigrcorn-runtime \
+            -e pkgs/tigrcorn-static \
+            -e pkgs/tigrcorn-observability \
+            -e pkgs/tigrcorn-compat \
+            -e pkgs/tigrcorn-certification
       - name: Install project
         run: python -m pip install -e ".[certification,dev]" build
       - name: Build certification and release metadata

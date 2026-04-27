@@ -1,0 +1,47 @@
+services:
+  tigrcorn-h3-asgi3:
+    build:
+      context: ../..
+      dockerfile: examples/h3_asgi3_lab/Dockerfile
+    image: tigrcorn-h3-asgi3-lab:local
+    command:
+      - sh
+      - -c
+      - >-
+        python -m examples.h3_asgi3_lab.cert_setup --out /certs --server-name localhost &&
+        tigrcorn examples.h3_asgi3_lab.app:app --app-interface asgi3
+        --transport udp --host 0.0.0.0 --port 8445
+        --protocol http3 --http 3
+        --ssl-certfile /certs/server-cert.pem --ssl-keyfile /certs/server-key.pem
+        --quic-secret h3-asgi3-lab-shared-secret
+        --alt-svc 'h3=":8445"; ma=60'
+    ports:
+      - "8445:8445/udp"
+    volumes:
+      - ../../examples:/app/examples:ro
+      - h3-asgi3-certs:/certs
+
+  tigrcorn-h3-uix:
+    build:
+      context: ../..
+      dockerfile: examples/h3_asgi3_lab/Dockerfile
+    image: tigrcorn-h3-asgi3-lab:local
+    command:
+      - python
+      - -m
+      - examples.h3_asgi3_lab.uix_server
+    environment:
+      TIGRCORN_H3_TARGET_HOST: tigrcorn-h3-asgi3
+      TIGRCORN_H3_TARGET_PORT: "8445"
+      TIGRCORN_H3_SERVER_NAME: localhost
+      TIGRCORN_H3_QUIC_SECRET: h3-asgi3-lab-shared-secret
+    ports:
+      - "8091:8090/tcp"
+    volumes:
+      - ../../examples:/app/examples:ro
+      - h3-asgi3-certs:/certs
+    depends_on:
+      - tigrcorn-h3-asgi3
+
+volumes:
+  h3-asgi3-certs:

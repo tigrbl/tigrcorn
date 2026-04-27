@@ -1,21 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.security.tls13.extensions import TransportParameters
-from tigrcorn.security.tls13.handshake import (
-    HandshakeFlight,
-    QuicSessionTicket,
-    QuicTlsHandshakeDriver,
-    QuicTrafficSecrets,
-    TlsAlertError,
-    generate_self_signed_certificate,
-)
+from importlib import import_module as _import_module
+import sys as _sys
 
-__all__ = [
-    'TransportParameters',
-    'HandshakeFlight',
-    'QuicSessionTicket',
-    'QuicTrafficSecrets',
-    'QuicTlsHandshakeDriver',
-    'TlsAlertError',
-    'generate_self_signed_certificate',
-]
+_module = _import_module('tigrcorn_transports.quic.handshake')
+_sys.modules[__name__] = _module

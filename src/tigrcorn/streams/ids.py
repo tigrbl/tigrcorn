@@ -1,5 +1,7 @@
-from tigrcorn.utils.ids import next_id
+﻿from __future__ import annotations
 
+from importlib import import_module as _import_module
+import sys as _sys
 
-def next_stream_id() -> int:
-    return next_id()
+_module = _import_module("tigrcorn_protocols.streams.ids")
+_sys.modules[__name__] = _module

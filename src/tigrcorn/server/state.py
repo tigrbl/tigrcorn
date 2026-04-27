@@ -1,13 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from time import monotonic
+from importlib import import_module as _import_module
+import sys as _sys
 
-from tigrcorn.observability.metrics import Metrics
-
-
-@dataclass(slots=True)
-class ServerState:
-    started_at: float = field(default_factory=monotonic)
-    metrics: Metrics = field(default_factory=Metrics)
-    shutting_down: bool = False
+_module = _import_module('tigrcorn_runtime.server.state')
+_sys.modules[__name__] = _module

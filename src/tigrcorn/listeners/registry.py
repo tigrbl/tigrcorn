@@ -1,15 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.listeners.inproc import InProcListener
-from tigrcorn.listeners.pipe import PipeListener
-from tigrcorn.listeners.tcp import TCPListener
-from tigrcorn.listeners.udp import UDPListener
-from tigrcorn.listeners.unix import UnixListener
+from importlib import import_module as _import_module
+import sys as _sys
 
-LISTENER_TYPES = {
-    "tcp": TCPListener,
-    "udp": UDPListener,
-    "unix": UnixListener,
-    "pipe": PipeListener,
-    "inproc": InProcListener,
-}
+_module = _import_module('tigrcorn_transports.listeners.registry')
+_sys.modules[__name__] = _module

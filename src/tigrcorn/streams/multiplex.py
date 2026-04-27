@@ -1,6 +1,7 @@
-from .base import LogicalStream
+﻿from __future__ import annotations
 
+from importlib import import_module as _import_module
+import sys as _sys
 
-class MultiplexStream(LogicalStream):
-    def __init__(self, stream_id: int) -> None:
-        super().__init__(stream_id=stream_id, multiplexed=True)
+_module = _import_module("tigrcorn_protocols.streams.multiplex")
+_sys.modules[__name__] = _module

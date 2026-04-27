@@ -19,6 +19,7 @@ CLAIMS_REGISTRY_PATH = ROOT / "docs" / "review" / "conformance" / "claims_regist
 RISK_REGISTER_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_REGISTER.json"
 RISK_TRACEABILITY_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_TRACEABILITY.json"
 PYPROJECT_PATH = ROOT / "pyproject.toml"
+PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH = ROOT / "tests" / "fixtures_protocol_scope" / "fixture_manifest.json"
 INIT_NORMALIZED_DIRS = (
     "schemas",
     "adr",
@@ -143,6 +144,18 @@ def _feature_impl_status(claim_status: str) -> str:
     if claim_status == "implemented":
         return "partial"
     return "absent"
+
+
+def _feature_sort_key(row: dict[str, Any]) -> tuple[int, int, str, str]:
+    plan = row.get("plan", {})
+    tier_rank = {"T4": 0, "T3": 1, "T2": 2, "T1": 3, "T0": 4, None: 5}
+    out_of_bounds = plan.get("horizon") == "out_of_bounds"
+    return (
+        1 if out_of_bounds else 0,
+        tier_rank.get(plan.get("target_claim_tier"), 5),
+        str(plan.get("slot") or ""),
+        str(row.get("id") or ""),
+    )
 
 
 def _merge_impl_status(current: str, candidate: str) -> str:
@@ -349,6 +362,11 @@ def _inventory_documents(
         if path.suffix.lower() in {".yaml", ".json"} and load_document_yaml is not None and normalize_document_payload is not None:
             payload = normalize_document_payload(kind, load_document_yaml(path))
             row["title"] = payload.get("title", row["title"])
+            origin = payload.get("origin")
+            if origin:
+                row["origin"] = origin
+                row["managed"] = origin == "ssot-origin"
+                row["immutable"] = origin == "ssot-origin"
             if kind == "adr":
                 row["status"] = payload.get("status", "draft")
                 row["supersedes"] = payload.get("supersedes", [])
@@ -819,6 +837,326 @@ def build_registry() -> dict[str, Any]:
             if claim_status == "promoted":
                 release_evidence_ids.add(evidence_id)
 
+    certification_explicit_surface_feature_ids = [
+        "feat:surface-http2-tls-posture",
+        "feat:surface-https-http11",
+        "feat:surface-https-service-identity",
+        "feat:surface-tcp-tls13-external-peer-interop",
+        "feat:surface-tls13-handshake-messages",
+        "feat:surface-tls13-record-layer",
+        "feat:surface-tls13-shutdown-behavior",
+        "feat:surface-tls13-state-transition",
+        "feat:surface-tls-server-name-indication",
+        "feat:surface-x509-certificate-profiles",
+        "feat:surface-x509-path-validation",
+        "feat:surface-http3-control-plane",
+        "feat:surface-ocsp-policy",
+        "feat:surface-qpack-error-handling",
+        "feat:surface-quic-retry-token-integrity",
+        "feat:surface-quic-tls-mapping",
+        "feat:surface-tls-status-request-policy",
+        "feat:surface-tcp-tls13-backend-control",
+        "feat:surface-package-owned-http-fields",
+        "feat:fail-state-registry",
+        "feat:observability-export-surfaces",
+        "feat:origin-negative-corpora",
+        "feat:qlog-stance",
+        "feat:quic-h3-counters",
+        "feat:quic-negative-corpora",
+    ]
+    explicit_surface_claim_id = "clm:certification-explicit-surfaces-closed"
+    explicit_surface_test_id = "tst:certification-explicit-surfaces-boundary"
+    explicit_surface_evidence_id = "evd:certification-explicit-surfaces-manifest"
+    for feature_id in certification_explicit_surface_feature_ids:
+        feature = features[feature_id]
+        ensure_feature(
+            feature_id=feature_id,
+            title=feature["title"],
+            description=feature["description"],
+            tier=feature["plan"]["target_claim_tier"],
+            slot=feature["plan"]["slot"],
+            horizon="explicit",
+            implementation_status="implemented",
+        )
+    ensure_claim(
+        claim_id=explicit_surface_claim_id,
+        title="Certification explicit surfaces closed",
+        description="The explicit certification surface boundary is implemented through a packaged catalog, machine-readable manifest, release evidence, and executable registry agreement tests.",
+        tier="T4",
+        kind="boundary_closure",
+        feature_ids=certification_explicit_surface_feature_ids,
+    )
+    ensure_evidence(
+        evidence_id=explicit_surface_evidence_id,
+        title="Certification explicit surfaces manifest",
+        kind="boundary_manifest",
+        tier="T4",
+        path="docs/review/conformance/certification_explicit_surfaces.json",
+        claim_ids=[explicit_surface_claim_id],
+        test_ids=[explicit_surface_test_id],
+    )
+    ensure_test(
+        test_id=explicit_surface_test_id,
+        title="Certification explicit surfaces boundary",
+        status="passing",
+        kind="pytest",
+        path="tests/test_certification_explicit_surfaces_boundary.py",
+        feature_ids=certification_explicit_surface_feature_ids,
+        claim_ids=[explicit_surface_claim_id],
+        evidence_ids=[explicit_surface_evidence_id],
+    )
+
+    # Logging governance, configuration, and standards features.
+    logging_spec_ids = ["spc:2040", "spc:2041"]
+    logging_governance_features = [
+        {
+            "raw": "colored-console-logs",
+            "title": "Colored console logs",
+            "description": "Console logging can use ANSI color formatting when explicitly enabled or when TTY detection enables it.",
+            "slot": "logging-console",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_phase1_surface_parity_checkpoint.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
+        },
+        {
+            "raw": "toml-logging-config",
+            "title": "TOML logging configuration",
+            "description": "TOML config files can populate the logging block used by the runtime configuration model.",
+            "slot": "logging-config",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_phase2_cli_config_surface.py",
+            "evidence_path": "pkgs/tigrcorn-config/src/tigrcorn_config/load.py",
+        },
+        {
+            "raw": "default-logging-configuration",
+            "title": "Default logging configuration",
+            "description": "The default logging configuration provides an info-level access-log-enabled baseline with optional color detection.",
+            "slot": "logging-config",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_default_audits.py",
+            "evidence_path": "pkgs/tigrcorn-config/src/tigrcorn_config/model.py",
+        },
+        {
+            "raw": "jsonl-logging-support",
+            "title": "JSON Lines logging support",
+            "description": "Structured log output is tracked as newline-delimited JSON records suitable for JSON Lines consumers.",
+            "slot": "logging-format",
+            "status": "partial",
+            "horizon": "current",
+            "test_path": "tests/test_phase4_operator_surface.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
+        },
+        {
+            "raw": "dict-logging-support-pep-391",
+            "title": "PEP 391 dict logging support",
+            "description": "Dictionary-based stdlib logging configuration is tracked as a future operator compatibility target.",
+            "slot": "logging-standards",
+            "status": "absent",
+            "horizon": "explicit",
+            "test_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+            "evidence_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+        },
+        {
+            "raw": "rfc-5424-logging",
+            "title": "RFC 5424 logging",
+            "description": "Syslog protocol output and message-size behavior are tracked as an explicit non-default conformance target.",
+            "slot": "logging-standards",
+            "status": "absent",
+            "horizon": "explicit",
+            "test_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+            "evidence_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+        },
+        {
+            "raw": "otel-logging-support",
+            "title": "OTEL logging support",
+            "description": "OpenTelemetry log data model support is tracked separately from the existing metrics and lifecycle span exporter.",
+            "slot": "logging-telemetry",
+            "status": "partial",
+            "horizon": "explicit",
+            "test_path": "tests/test_phase9f2_logging_exporter_closure.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/tracing.py",
+        },
+        {
+            "raw": "qlog-logging-support-and-conformance",
+            "title": "qlog logging support and conformance",
+            "description": "QUIC and HTTP/3 qlog artifacts are tracked as protocol conformance logs with schema and redaction rules.",
+            "slot": "logging-qlog",
+            "status": "implemented",
+            "horizon": "current",
+            "test_path": "tests/test_external_interop_runner_matrix.py",
+            "evidence_path": "docs/conformance/qlog_experimental.md",
+        },
+    ]
+    logging_cli_flag_features = [
+        ("logging-cli-log-level-flag", "--log-level", "logging.level"),
+        ("logging-cli-access-log-flag", "--access-log", "logging.access_log"),
+        ("logging-cli-no-access-log-flag", "--no-access-log", "logging.access_log"),
+        ("logging-cli-access-log-file-flag", "--access-log-file", "logging.access_log_file"),
+        ("logging-cli-access-log-format-flag", "--access-log-format", "logging.access_log_format"),
+        ("logging-cli-error-log-file-flag", "--error-log-file", "logging.error_log_file"),
+        ("logging-cli-log-config-flag", "--log-config", "logging.log_config"),
+        ("logging-cli-structured-log-flag", "--structured-log", "logging.structured"),
+        ("logging-cli-use-colors-flag", "--use-colors", "logging.use_colors"),
+        ("logging-cli-no-use-colors-flag", "--no-use-colors", "logging.use_colors"),
+        ("logging-cli-metrics-flag", "--metrics", "metrics.enabled"),
+        ("logging-cli-metrics-bind-flag", "--metrics-bind", "metrics.bind"),
+        ("logging-cli-statsd-host-flag", "--statsd-host", "metrics.statsd_host"),
+        ("logging-cli-otel-endpoint-flag", "--otel-endpoint", "metrics.otel_endpoint"),
+    ]
+    for raw, flag, config_path in logging_cli_flag_features:
+        logging_governance_features.append(
+            {
+                "raw": raw,
+                "title": f"Logging CLI flag {flag}",
+                "description": f"The public Logging / observability CLI flag {flag} maps to {config_path}.",
+                "slot": "logging-cli-flag",
+                "status": "implemented",
+                "horizon": "current",
+                "test_path": "tests/test_phase2_cli_config_surface.py",
+                "evidence_path": "docs/review/conformance/flag_contracts.json",
+            }
+        )
+    logging_profile_key_features = [
+        "level",
+        "structured",
+        "access_log",
+        "access_log_file",
+        "access_log_format",
+        "error_log_file",
+        "stream",
+        "use_colors",
+    ]
+    for key in logging_profile_key_features:
+        logging_governance_features.append(
+            {
+                "raw": f"logging-profile-{key.replace('_', '-')}-key",
+                "title": f"Logging profile key {key}",
+                "description": f"File-based logging profiles support the {key} key with fail-closed validation.",
+                "slot": "logging-profile-key",
+                "status": "implemented",
+                "horizon": "current",
+                "test_path": "tests/test_phase9f2_logging_exporter_closure.py",
+                "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
+            }
+        )
+
+    logging_feature_ids: list[str] = []
+    for item in logging_governance_features:
+        feature_id = _feature_id(item["raw"])
+        claim_id = _claim_id(item["raw"])
+        test_id = _test_id("logging", item["raw"])
+        evidence_id = _evidence_id("logging", item["raw"])
+        status = str(item["status"])
+        claim_status = "promoted" if status == "implemented" else "implemented" if status == "partial" else "declared"
+        test_status = "passing" if status in {"implemented", "partial"} else "planned"
+        tier = "T2" if status in {"implemented", "partial"} else "T1"
+        ensure_feature(
+            feature_id=feature_id,
+            title=str(item["title"]),
+            description=str(item["description"]),
+            tier=tier,
+            slot=str(item["slot"]),
+            horizon=str(item["horizon"]),
+            implementation_status=status,
+        )
+        ensure_claim(
+            claim_id=claim_id,
+            title=str(item["title"]),
+            description=str(item["description"]),
+            tier=tier,
+            kind="logging_governance",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = claim_status
+        if claim_status != "promoted" and claim_id in release_claim_ids:
+            release_claim_ids.remove(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Logging evidence {item['title']}",
+            kind="logging_governance",
+            tier=tier,
+            path=str(item["evidence_path"]),
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"Logging governance coverage {item['title']}",
+            status=test_status,
+            kind="pytest" if str(item["test_path"]).startswith("tests/") else "spec-placeholder",
+            path=str(item["test_path"]),
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+        if claim_status == "promoted":
+            release_claim_ids.add(claim_id)
+            release_evidence_ids.add(evidence_id)
+        logging_feature_ids.append(feature_id)
+    link_feature_specs(logging_feature_ids, logging_spec_ids)
+
+    code_style_feature_ids: list[str] = []
+    for raw, title, description in [
+        (
+            "pep8-code-line-length-conformance",
+            "PEP 8 code line length conformance",
+            "Source code line length is governed separately from emitted log record length.",
+        ),
+        (
+            "spacy-style-docstrings",
+            "spaCy-style docstrings",
+            "Public non-trivial APIs use spaCy-style docstring sections where documentation adds signal.",
+        ),
+    ]:
+        feature_id = _feature_id(raw)
+        claim_id = _claim_id(raw)
+        test_id = _test_id("style", raw)
+        evidence_id = _evidence_id("style", raw)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T1",
+            slot="code-style",
+            horizon="explicit",
+            implementation_status="absent",
+        )
+        ensure_claim(
+            claim_id=claim_id,
+            title=title,
+            description=description,
+            tier="T1",
+            kind="style_governance",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = "declared"
+        if claim_id in release_claim_ids:
+            release_claim_ids.remove(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Style evidence {title}",
+            kind="style_governance",
+            tier="T1",
+            path=".ssot/specs/SPEC-2042-code-style-line-length-and-docstrings.yaml",
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"Style governance placeholder {title}",
+            status="planned",
+            kind="spec-placeholder",
+            path=".ssot/specs/SPEC-2042-code-style-line-length-and-docstrings.yaml",
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+        code_style_feature_ids.append(feature_id)
+    link_feature_specs(code_style_feature_ids, ["spc:2042"])
+
     # Governance feature
     governance_feature_id = _feature_id("governance-graph")
     ensure_feature(
@@ -959,6 +1297,74 @@ def build_registry() -> dict[str, Any]:
         claim_ids=[ssot_authority_claim_id],
         evidence_ids=[ssot_authority_evidence_id],
     )
+
+    package_boundary_feature_ids = [
+        _feature_id("package-workspace-boundaries"),
+        _feature_id("package-boundary-dependency-dag"),
+        _feature_id("tigrcorn-core-extraction-shims"),
+    ]
+    package_boundary_rows = [
+        (
+            package_boundary_feature_ids[0],
+            "Package workspace boundaries",
+            "Declare the publishable monorepo package set while preserving tigrcorn as the umbrella public install.",
+        ),
+        (
+            package_boundary_feature_ids[1],
+            "Package boundary dependency DAG",
+            "Enforce one-way dependency direction from core toward runtime, compatibility, certification, and the umbrella facade.",
+        ),
+        (
+            package_boundary_feature_ids[2],
+            "tigrcorn-core extraction shims",
+            "Extract dependency-light constants, errors, and type aliases to tigrcorn-core while preserving legacy tigrcorn.* imports.",
+        ),
+    ]
+    for feature_id, title, description in package_boundary_rows:
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier="T2",
+            slot="package-boundaries",
+            horizon="current",
+            implementation_status="implemented",
+        )
+    link_feature_specs(package_boundary_feature_ids, ["spc:2038"])
+    for feature_id in package_boundary_feature_ids[1:]:
+        if package_boundary_feature_ids[0] not in features[feature_id]["requires"]:
+            features[feature_id]["requires"].append(package_boundary_feature_ids[0])
+    package_boundary_claim_id = _claim_id("package-workspace-boundaries-implemented")
+    package_boundary_test_id = _test_id("pytest", "tests/test_package_boundaries.py")
+    package_boundary_evidence_id = _evidence_id("pytest", "tests/test_package_boundaries.py")
+    ensure_claim(
+        claim_id=package_boundary_claim_id,
+        title="Package workspace boundaries implemented",
+        description="The workspace package set, dependency DAG, and first core extraction shims are executable and tested.",
+        tier="T2",
+        kind="architecture_boundary",
+        feature_ids=package_boundary_feature_ids,
+    )
+    ensure_evidence(
+        evidence_id=package_boundary_evidence_id,
+        title="Package boundary pytest evidence",
+        kind="pytest",
+        tier="T2",
+        path="tests/test_package_boundaries.py",
+        claim_ids=[package_boundary_claim_id],
+        test_ids=[package_boundary_test_id],
+    )
+    ensure_test(
+        test_id=package_boundary_test_id,
+        title="Package boundary workspace and shim coverage",
+        status="passing",
+        kind="pytest",
+        path="tests/test_package_boundaries.py",
+        feature_ids=package_boundary_feature_ids,
+        claim_ids=[package_boundary_claim_id],
+        evidence_ids=[package_boundary_evidence_id],
+    )
+
     webtransport_feature_ids = [
         _feature_id("webtransport-h3-quic-scope"),
         _feature_id("webtransport-h3-quic-session-events"),
@@ -1011,6 +1417,46 @@ def build_registry() -> dict[str, Any]:
             implementation_status="implemented",
         )
     link_feature_specs(webtransport_feature_ids, webtransport_specs)
+
+    webtransport_datagram_runtime_feature_id = _feature_id("webtransport-h3-quic-datagram-runtime-dispatch")
+    ensure_feature(
+        feature_id=webtransport_datagram_runtime_feature_id,
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch",
+        description=(
+            "Decode HTTP/3 WebTransport QUIC DATAGRAM frames into ASGI "
+            "webtransport.datagram.receive events, dispatch accepted sessions to the application, "
+            "and encode webtransport.datagram.send events back onto QUIC DATAGRAM frames."
+        ),
+        tier="T3",
+        slot="webtransport-runtime",
+        horizon="current",
+        implementation_status="absent",
+    )
+    features[webtransport_datagram_runtime_feature_id]["requires"].append(_feature_id("webtransport-h3-quic-datagram-events"))
+    link_feature_specs([webtransport_datagram_runtime_feature_id], webtransport_specs)
+
+    webtransport_datagram_runtime_issue_id = _issue_id("webtransport-h3-quic-datagram-runtime-dispatch")
+    issues[webtransport_datagram_runtime_issue_id] = {
+        "id": webtransport_datagram_runtime_issue_id,
+        "title": "WebTransport QUIC DATAGRAMs do not reach ASGI applications",
+        "status": "open",
+        "severity": "high",
+        "description": (
+            "The local WebTransport demo accepts HTTP/3 extended CONNECT, but client DATAGRAM payloads "
+            "are not decoded as QUIC DATAGRAM frames, delivered as webtransport.datagram.receive events, "
+            "or acknowledged through webtransport.datagram.send."
+        ),
+        "plan": {
+            "horizon": "current",
+            "slot": "webtransport-runtime",
+        },
+        "feature_ids": [webtransport_datagram_runtime_feature_id],
+        "claim_ids": [],
+        "test_ids": [],
+        "evidence_ids": [],
+        "risk_ids": [],
+        "release_blocking": True,
+    }
 
     webtransport_operator_rows = [
         (
@@ -1109,6 +1555,64 @@ def build_registry() -> dict[str, Any]:
             required_id = _feature_id(required_raw)
             if required_id not in features[feature_id]["requires"]:
                 features[feature_id]["requires"].append(required_id)
+
+    if PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH.exists():
+        fixture_manifest = _load_json(PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH)
+    else:
+        fixture_manifest = {"fixtures": []}
+    protocol_scope_fixture_feature_ids: list[str] = []
+    for fixture in fixture_manifest.get("fixtures", []):
+        feature_id = str(fixture["feature_id"])
+        fixture_id = str(fixture["id"])
+        title = str(fixture["title"])
+        surface_kind = str(fixture["surface_kind"])
+        surface = str(fixture["surface"])
+        fixture_path = str(fixture["fixture_path"])
+        coverage_paths = [str(path) for path in fixture.get("coverage_paths", [])]
+        protocol_scope_fixture_feature_ids.append(feature_id)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=(
+                f"Maintain the {fixture_id} {surface_kind} fixture for {surface} at {fixture_path} "
+                f"with declared coverage paths {', '.join(coverage_paths)}."
+            ),
+            tier="T2",
+            slot="protocol-scope-fixtures",
+            horizon="current",
+            implementation_status="implemented",
+        )
+        link_feature_specs([feature_id], ["spc:2039"])
+        claim_id = _claim_id(f"{fixture_id}-present-and-covered")
+        test_id = _test_id("pytest", f"tests/test_protocol_scope_fixtures.py::{fixture_id}")
+        evidence_id = _evidence_id("pytest", f"tests/test_protocol_scope_fixtures.py::{fixture_id}")
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"{title} is present and covered",
+            description=f"The {fixture_id} fixture exists and has explicit coverage for {surface_kind} surface {surface}.",
+            tier="T2",
+            kind="fixture_coverage",
+            feature_ids=[feature_id],
+        )
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"Fixture coverage pytest evidence for {title}",
+            kind="pytest",
+            tier="T2",
+            path="tests/test_protocol_scope_fixtures.py",
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"{title} fixture presence and coverage",
+            status="passing",
+            kind="pytest",
+            path="tests/test_protocol_scope_fixtures.py",
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
 
     rest_jsonrpc_exclusion_ids = [
         _feature_id("rest-runtime-exclusion"),
@@ -1718,6 +2222,36 @@ def build_registry() -> dict[str, Any]:
         "app-interface-public-api",
         "app-interface-detection-precedence",
         "app-interface-fail-closed-ambiguity",
+        "asgi3-compat-layer",
+        "asgi-extension-bridge",
+        "compat-feature-parity-matrix",
+        "alt-svc-contract-map",
+        "content-coding-contract-map",
+        "early-hints-contract-map",
+        "proxy-normalization-contract-map",
+        "static-delivery-contract-map",
+        "trailers-contract-map",
+        "observability-contract-metadata",
+        "contract-http-scope",
+        "contract-websocket-scope",
+        "contract-lifespan-scope",
+        "contract-webtransport-scope",
+        "contract-http-event-map",
+        "contract-websocket-event-map",
+        "contract-lifespan-event-map",
+        "contract-webtransport-events",
+        "unit-id-propagation",
+        "transport-metadata-model",
+        "tls-metadata-extension",
+        "family-capability-declaration",
+        "binding-legality-validation",
+        "contract-error-semantics",
+        "contract-docs-migration",
+        "contract-examples",
+        "ssot-contract-boundary-sync",
+        "contract-release-evidence",
+        "asgi3-app-compat-suite",
+        "contract-conformance-tests",
     }
     contract_feature_ids = []
     for raw_feature_id, title, description, spec_ids, slot in contract_feature_rows:
@@ -1838,6 +2372,7 @@ def build_registry() -> dict[str, Any]:
         ("webtransport-h3-quic-session-events", "WebTransport session events"),
         ("webtransport-h3-quic-stream-events", "WebTransport stream events"),
         ("webtransport-h3-quic-datagram-events", "WebTransport datagram events"),
+        ("webtransport-h3-quic-datagram-runtime-dispatch", "WebTransport H3/QUIC DATAGRAM runtime dispatch"),
         ("webtransport-h3-quic-completion-events", "WebTransport completion events"),
         ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation"),
         ("rest-runtime-exclusion", "REST runtime exclusion"),
@@ -1911,6 +2446,36 @@ def build_registry() -> dict[str, Any]:
         ("contract-lossy-metadata-rejection", "Contract lossy metadata rejection", "tests/test_contract_lossy_metadata_rejection.py"),
         ("contract-illegal-event-order-rejection", "Contract illegal event order rejection", "tests/test_contract_illegal_event_order_rejection.py"),
         ("contract-invalid-endpoint-metadata-rejection", "Contract invalid endpoint metadata rejection", "tests/test_contract_invalid_endpoint_metadata_rejection.py"),
+        ("asgi3-compat-layer", "ASGI/3 compatibility layer", "tests/test_compat_http_boundary.py"),
+        ("asgi-extension-bridge", "ASGI/3 extension bridge", "tests/test_compat_http_boundary.py"),
+        ("compat-feature-parity-matrix", "Compatibility feature parity matrix", "tests/test_compat_http_boundary.py"),
+        ("alt-svc-contract-map", "Alt-Svc contract map", "tests/test_compat_http_boundary.py"),
+        ("content-coding-contract-map", "Content coding contract map", "tests/test_compat_http_boundary.py"),
+        ("early-hints-contract-map", "Early Hints contract map", "tests/test_compat_http_boundary.py"),
+        ("proxy-normalization-contract-map", "Proxy normalization contract map", "tests/test_compat_http_boundary.py"),
+        ("static-delivery-contract-map", "Static delivery contract map", "tests/test_compat_http_boundary.py"),
+        ("trailers-contract-map", "Trailers contract map", "tests/test_compat_http_boundary.py"),
+        ("observability-contract-metadata", "Observability contract metadata", "tests/test_compat_http_boundary.py"),
+        ("contract-http-scope", "Contract HTTP scope", "tests/test_contract_core_boundary.py"),
+        ("contract-websocket-scope", "Contract WebSocket scope", "tests/test_contract_core_boundary.py"),
+        ("contract-lifespan-scope", "Contract lifespan scope", "tests/test_contract_core_boundary.py"),
+        ("contract-webtransport-scope", "Contract WebTransport scope", "tests/test_contract_core_boundary.py"),
+        ("contract-http-event-map", "Contract HTTP event map", "tests/test_contract_core_boundary.py"),
+        ("contract-websocket-event-map", "Contract WebSocket event map", "tests/test_contract_core_boundary.py"),
+        ("contract-lifespan-event-map", "Contract lifespan event map", "tests/test_contract_core_boundary.py"),
+        ("contract-webtransport-events", "Contract WebTransport events", "tests/test_contract_core_boundary.py"),
+        ("unit-id-propagation", "Unit ID propagation", "tests/test_contract_core_boundary.py"),
+        ("transport-metadata-model", "Transport metadata model", "tests/test_contract_core_boundary.py"),
+        ("tls-metadata-extension", "TLS metadata extension", "tests/test_contract_core_boundary.py"),
+        ("family-capability-declaration", "Family capability declaration", "tests/test_contract_core_boundary.py"),
+        ("binding-legality-validation", "Binding legality validation", "tests/test_contract_core_boundary.py"),
+        ("contract-error-semantics", "Contract error semantics", "tests/test_contract_core_boundary.py"),
+        ("contract-docs-migration", "Contract docs migration", "tests/test_contract_proof_boundary.py"),
+        ("contract-examples", "Contract examples", "tests/test_contract_proof_boundary.py"),
+        ("ssot-contract-boundary-sync", "SSOT contract boundary sync", "tests/test_contract_proof_boundary.py"),
+        ("contract-release-evidence", "Contract release evidence", "tests/test_contract_proof_boundary.py"),
+        ("asgi3-app-compat-suite", "ASGI/3 app compatibility suite", "tests/test_contract_proof_boundary.py"),
+        ("contract-conformance-tests", "Contract conformance tests", "tests/test_contract_proof_boundary.py"),
     ]
     concrete_feature_tests = [
         (
@@ -2014,6 +2579,106 @@ def build_registry() -> dict[str, Any]:
                 f"evd:{slug}-pytest",
             )
         )
+
+    webtransport_datagram_runtime_claim_id = _claim_id("webtransport-h3-quic-datagram-runtime-dispatch-planned")
+    webtransport_datagram_runtime_test_id = _test_id("pytest", "tests/test_webtransport_datagram_runtime_dispatch.py")
+    webtransport_datagram_runtime_evidence_id = _evidence_id("pytest", "tests/test_webtransport_datagram_runtime_dispatch.py")
+    ensure_claim(
+        claim_id=webtransport_datagram_runtime_claim_id,
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch planned",
+        description=(
+            "The runtime dispatch gap for WebTransport QUIC DATAGRAM receive/send handling is "
+            "explicitly tracked by executable planned tests."
+        ),
+        tier="T3",
+        kind="planned_implementation",
+        feature_ids=[webtransport_datagram_runtime_feature_id],
+    )
+    claims[webtransport_datagram_runtime_claim_id]["status"] = "proposed"
+    release_claim_ids.discard(webtransport_datagram_runtime_claim_id)
+    ensure_evidence(
+        evidence_id=webtransport_datagram_runtime_evidence_id,
+        title="Planned pytest coverage for WebTransport DATAGRAM runtime dispatch",
+        kind="pytest",
+        tier="T3",
+        path="tests/test_webtransport_datagram_runtime_dispatch.py",
+        claim_ids=[webtransport_datagram_runtime_claim_id],
+        test_ids=[webtransport_datagram_runtime_test_id],
+    )
+    release_evidence_ids.discard(webtransport_datagram_runtime_evidence_id)
+    ensure_test(
+        test_id=webtransport_datagram_runtime_test_id,
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch",
+        status="planned",
+        kind="pytest",
+        path="tests/test_webtransport_datagram_runtime_dispatch.py",
+        feature_ids=[webtransport_datagram_runtime_feature_id],
+        claim_ids=[webtransport_datagram_runtime_claim_id],
+        evidence_ids=[webtransport_datagram_runtime_evidence_id],
+    )
+    issues[webtransport_datagram_runtime_issue_id]["claim_ids"].append(webtransport_datagram_runtime_claim_id)
+    issues[webtransport_datagram_runtime_issue_id]["test_ids"].append(webtransport_datagram_runtime_test_id)
+    issues[webtransport_datagram_runtime_issue_id]["evidence_ids"].append(webtransport_datagram_runtime_evidence_id)
+
+    webtransport_extensive_feature_ids = [
+        _feature_id("contract-webtransport-events"),
+        _feature_id("contract-webtransport-scope"),
+        _feature_id("contract-webtransport-session-identity"),
+        _feature_id("contract-webtransport-stream-identity"),
+        _feature_id("webtransport-h3-quic-completion-events"),
+        _feature_id("webtransport-h3-quic-datagram-events"),
+        _feature_id("webtransport-h3-quic-scope"),
+        _feature_id("webtransport-h3-quic-session-events"),
+        _feature_id("webtransport-h3-quic-stream-events"),
+        _feature_id("webtransport-carrier-fail-closed"),
+        _feature_id("webtransport-carrier-normalization"),
+        _feature_id("webtransport-config-toml"),
+        _feature_id("webtransport-env-var"),
+        _feature_id("webtransport-max-datagram-size-flag"),
+        _feature_id("webtransport-max-sessions-flag"),
+        _feature_id("webtransport-max-streams-flag"),
+        _feature_id("webtransport-origin-flag"),
+        _feature_id("webtransport-path-flag"),
+        _feature_id("webtransport-protocol-cli-flag"),
+        _feature_id("webtransport-public-api"),
+        _feature_id("fixture-asgi-webtransport-scope"),
+        _feature_id("fixture-webtransport-protocol"),
+    ]
+    webtransport_extensive_claim_id = _claim_id("webtransport-feature-coverage-extensive")
+    webtransport_extensive_test_id = _test_id("pytest", "tests/test_webtransport_feature_coverage.py")
+    webtransport_extensive_evidence_id = _evidence_id("pytest", "tests/test_webtransport_feature_coverage.py")
+    ensure_claim(
+        claim_id=webtransport_extensive_claim_id,
+        title="WebTransport feature coverage is extensive",
+        description=(
+            "A focused pytest module verifies SSOT linkage, contract event payloads, identity metadata, "
+            "operator configuration surfaces, H3 settings, demo behavior, mTLS gate behavior, and fixture linkage "
+            "for the implemented WebTransport feature set."
+        ),
+        tier="T3",
+        kind="implementation",
+        feature_ids=webtransport_extensive_feature_ids,
+    )
+    ensure_evidence(
+        evidence_id=webtransport_extensive_evidence_id,
+        title="Extensive WebTransport feature coverage pytest evidence",
+        kind="pytest",
+        tier="T3",
+        path="tests/test_webtransport_feature_coverage.py",
+        claim_ids=[webtransport_extensive_claim_id],
+        test_ids=[webtransport_extensive_test_id],
+    )
+    ensure_test(
+        test_id=webtransport_extensive_test_id,
+        title="Extensive WebTransport feature coverage",
+        status="passing",
+        kind="pytest",
+        path="tests/test_webtransport_feature_coverage.py",
+        feature_ids=webtransport_extensive_feature_ids,
+        claim_ids=[webtransport_extensive_claim_id],
+        evidence_ids=[webtransport_extensive_evidence_id],
+    )
+
     for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
         feature_id = _feature_id(raw_feature_id)
         out_of_bounds = features[feature_id]["plan"]["horizon"] == "out_of_bounds"
@@ -2333,6 +2998,284 @@ def build_registry() -> dict[str, Any]:
         package_version=package_meta["version"],
         manifest=package_meta["spec_manifest"],
     )
+    planned_boundaries = [
+        {
+            "id": "bnd:contract-core-next",
+            "title": "Contract core next boundary",
+            "status": "frozen",
+            "frozen": True,
+            "feature_ids": [
+                "feat:family-capability-declaration",
+                "feat:contract-http-scope",
+                "feat:contract-lifespan-scope",
+                "feat:contract-websocket-scope",
+                "feat:contract-webtransport-scope",
+                "feat:contract-http-event-map",
+                "feat:contract-lifespan-event-map",
+                "feat:contract-websocket-event-map",
+                "feat:contract-webtransport-events",
+                "feat:unit-id-propagation",
+                "feat:transport-metadata-model",
+                "feat:tls-metadata-extension",
+                "feat:binding-legality-validation",
+                "feat:contract-error-semantics",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:compat-http-next",
+            "title": "Compatibility and HTTP mapping next boundary",
+            "status": "frozen",
+            "frozen": True,
+            "feature_ids": [
+                "feat:asgi3-compat-layer",
+                "feat:asgi-extension-bridge",
+                "feat:compat-feature-parity-matrix",
+                "feat:alt-svc-contract-map",
+                "feat:content-coding-contract-map",
+                "feat:early-hints-contract-map",
+                "feat:proxy-normalization-contract-map",
+                "feat:static-delivery-contract-map",
+                "feat:trailers-contract-map",
+                "feat:observability-contract-metadata",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:contract-proof-next",
+            "title": "Contract proof next boundary",
+            "status": "frozen",
+            "frozen": True,
+            "feature_ids": [
+                "feat:contract-docs-migration",
+                "feat:contract-examples",
+                "feat:ssot-contract-boundary-sync",
+                "feat:contract-release-evidence",
+                "feat:asgi3-app-compat-suite",
+                "feat:contract-conformance-tests",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:certification-explicit-surfaces",
+            "title": "Certification explicit surfaces boundary",
+            "status": "frozen",
+            "frozen": True,
+            "feature_ids": [
+                "feat:surface-http2-tls-posture",
+                "feat:surface-https-http11",
+                "feat:surface-https-service-identity",
+                "feat:surface-tcp-tls13-external-peer-interop",
+                "feat:surface-tls13-handshake-messages",
+                "feat:surface-tls13-record-layer",
+                "feat:surface-tls13-shutdown-behavior",
+                "feat:surface-tls13-state-transition",
+                "feat:surface-tls-server-name-indication",
+                "feat:surface-x509-certificate-profiles",
+                "feat:surface-x509-path-validation",
+                "feat:surface-http3-control-plane",
+                "feat:surface-ocsp-policy",
+                "feat:surface-qpack-error-handling",
+                "feat:surface-quic-retry-token-integrity",
+                "feat:surface-quic-tls-mapping",
+                "feat:surface-tls-status-request-policy",
+                "feat:surface-tcp-tls13-backend-control",
+                "feat:surface-package-owned-http-fields",
+                "feat:fail-state-registry",
+                "feat:observability-export-surfaces",
+                "feat:origin-negative-corpora",
+                "feat:qlog-stance",
+                "feat:quic-h3-counters",
+                "feat:quic-negative-corpora",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-asgi3",
+            "title": "ASGI3 coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:asgi3-compat-layer",
+                "feat:asgi3-endpoint-metadata-extension",
+                "feat:asgi3-hot-path-isolation",
+                "feat:asgi3-security-metadata-extension",
+                "feat:asgi3-stream-datagram-extension",
+                "feat:asgi3-transport-identity-extension",
+                "feat:asgi3-app-compat-suite",
+                "feat:emit-completion-asgi-extension",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-tigr-asgi-contract",
+            "title": "tigr-asgi-contract coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:tigr-asgi-contract-0-1-2-validation",
+                "feat:contract-native-runtime",
+                "feat:contract-app-dispatch",
+                "feat:contract-native-public-api",
+                "feat:family-capability-declaration",
+                "feat:binding-legality-validation",
+                "feat:contract-error-semantics",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-http11",
+            "title": "HTTP/1.1 coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:rfc-9112",
+                "feat:surface-https-http11",
+                "feat:surface-package-owned-http-fields",
+                "feat:content-coding-contract-map",
+                "feat:trailers-contract-map",
+                "feat:early-hints-contract-map",
+                "feat:alt-svc-contract-map",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-http2",
+            "title": "HTTP/2 coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:rfc-7541",
+                "feat:rfc-8441",
+                "feat:rfc-9113",
+                "feat:contract-http2-stream-identity",
+                "feat:surface-http2-runtime-defaults",
+                "feat:surface-http2-tls-posture",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-http3",
+            "title": "HTTP/3 coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:rfc-9114",
+                "feat:rfc-9204",
+                "feat:rfc-9220",
+                "feat:contract-http3-stream-identity",
+                "feat:surface-http3-control-plane",
+                "feat:surface-qpack-error-handling",
+                "feat:quic-h3-counters",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-quic",
+            "title": "QUIC coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:rfc-9000",
+                "feat:rfc-9001",
+                "feat:rfc-9002",
+                "feat:contract-quic-connection-identity",
+                "feat:surface-quic-recovery-send-path",
+                "feat:surface-quic-retry-token-integrity",
+                "feat:surface-quic-tls-mapping",
+                "feat:independent-quic-state-claims",
+                "feat:early-data-admission-policy",
+                "feat:replay-policy",
+                "feat:multi-instance-early-data-policy",
+                "feat:retry-app-visibility",
+                "feat:quic-negative-corpora",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-mtls",
+            "title": "mTLS coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:contract-mtls-peer-metadata",
+                "feat:strict-mtls-origin-profile",
+                "feat:surface-x509-certificate-profiles",
+                "feat:surface-x509-path-validation",
+                "feat:surface-https-service-identity",
+                "feat:surface-tcp-tls13-external-peer-interop",
+                "feat:surface-tls13-handshake-messages",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-websockets",
+            "title": "WebSockets coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:rfc-6455",
+                "feat:rfc-7692",
+                "feat:rfc-8441",
+                "feat:rfc-9220",
+                "feat:contract-websocket-scope",
+                "feat:contract-websocket-event-map",
+                "feat:surface-websocket-accept-contract",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:category-webtransport",
+            "title": "WebTransport coverage category boundary",
+            "status": "draft",
+            "frozen": False,
+            "feature_ids": [
+                "feat:contract-webtransport-scope",
+                "feat:contract-webtransport-events",
+                "feat:contract-webtransport-session-identity",
+                "feat:contract-webtransport-stream-identity",
+                "feat:webtransport-h3-quic-scope",
+                "feat:webtransport-h3-quic-session-events",
+                "feat:webtransport-h3-quic-stream-events",
+                "feat:webtransport-h3-quic-datagram-events",
+                "feat:webtransport-h3-quic-datagram-runtime-dispatch",
+                "feat:webtransport-h3-quic-completion-events",
+                "feat:webtransport-protocol-cli-flag",
+                "feat:webtransport-carrier-normalization",
+                "feat:webtransport-carrier-fail-closed",
+                "feat:webtransport-config-toml",
+                "feat:webtransport-env-var",
+                "feat:webtransport-public-api",
+                "feat:webtransport-max-sessions-flag",
+                "feat:webtransport-max-streams-flag",
+                "feat:webtransport-max-datagram-size-flag",
+                "feat:webtransport-origin-flag",
+                "feat:webtransport-path-flag",
+            ],
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+    ]
+    missing_boundary_features = sorted(
+        feature_id
+        for boundary_row in planned_boundaries
+        for feature_id in boundary_row["feature_ids"]
+        if feature_id not in features
+    )
+    if missing_boundary_features:
+        raise ValueError(f"Planned boundary references unknown features: {missing_boundary_features}")
 
     registry = {
         "schema_version": package_meta["schema_version"],
@@ -2371,7 +3314,7 @@ def build_registry() -> dict[str, Any]:
             "claims_registry_source": _relative(CLAIMS_REGISTRY_PATH),
         },
         "document_id_reservations": package_meta["document_id_reservations"],
-        "features": sorted(features.values(), key=lambda row: row["id"]),
+        "features": sorted(features.values(), key=_feature_sort_key),
         "profiles": sorted(profiles.values(), key=lambda row: row["id"]),
         "tests": sorted(tests.values(), key=lambda row: row["id"]),
         "claims": sorted(claims.values(), key=lambda row: row["id"]),
@@ -2389,7 +3332,8 @@ def build_registry() -> dict[str, Any]:
                 "canonical_registry_source": ".ssot/registry.json",
                 "profile_ids": sorted(profiles),
             }
-        ],
+        ]
+        + planned_boundaries,
         "releases": [
             {
                 "id": release_id,
@@ -2463,7 +3407,7 @@ def ensure_initialized_ssot_tree(version: str) -> None:
 def write_registry(*, check: bool) -> int:
     registry = build_registry()
     REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
-    payload = json.dumps(registry, indent=2, sort_keys=False) + "\n"
+    payload = json.dumps(registry, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
     if check:
         current = REGISTRY_PATH.read_text(encoding="utf-8") if REGISTRY_PATH.exists() else ""

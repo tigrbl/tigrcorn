@@ -1,21 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class CreditWindow:
-    remaining: int
-
-    def consume(self, n: int) -> None:
-        if n < 0:
-            raise ValueError('credit consumption must be non-negative')
-        self.remaining = max(0, self.remaining - n)
-
-    def refill(self, n: int) -> None:
-        if n < 0:
-            raise ValueError('credit refill must be non-negative')
-        self.remaining += n
-
-    def available(self, n: int = 1) -> bool:
-        return self.remaining >= n
+_module = _import_module("tigrcorn_protocols.flow.credits")
+_sys.modules[__name__] = _module

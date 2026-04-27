@@ -2,6 +2,24 @@ version = 1
 revision = 1
 requires-python = ">=3.11"
 
+[manifest]
+members = [
+    "tigrcorn",
+    "tigrcorn-asgi",
+    "tigrcorn-certification",
+    "tigrcorn-compat",
+    "tigrcorn-config",
+    "tigrcorn-contract",
+    "tigrcorn-core",
+    "tigrcorn-http",
+    "tigrcorn-observability",
+    "tigrcorn-protocols",
+    "tigrcorn-runtime",
+    "tigrcorn-security",
+    "tigrcorn-static",
+    "tigrcorn-transports",
+]
+
 [[package]]
 name = "aioquic"
 version = "1.3.0"
@@ -615,63 +633,63 @@ wheels = [
 
 [[package]]
 name = "ssot-cli"
-version = "0.1.6"
+version = "0.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-contracts" },
     { name = "ssot-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/08/fc/ce94eec6f74546b72e199479a717088312eb5b48cd3fa7178b18ee877734/ssot_cli-0.1.6.tar.gz", hash = "sha256:9b62c39e261f64a3780969610a723940211c6e5dc92ea2d34c398d890b558d15", size = 28038 }
+sdist = { url = "https://files.pythonhosted.org/packages/6d/99/e73da476f965a8d8c4305dcbd34a23bbd9190563d9a6796ceca1062f1f10/ssot_cli-0.1.8.tar.gz", hash = "sha256:216b33e6561dbd0cfb412917a4ff8143513230e16fc82da2ba89bf465d7c757f", size = 28426 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/af/f9/3576052566f54051f42171babf28475540307626bca1ad2b35b9656fb656/ssot_cli-0.1.6-py3-none-any.whl", hash = "sha256:d3ec84f4eca9807268cccb6757eaec4ed9217b012e4b2cf81ed778571ce989bd", size = 35581 },
+    { url = "https://files.pythonhosted.org/packages/4b/a7/a75a4b4b07592f84b2fcb25ef82fd048e0315f06bc5949d232702985c29a/ssot_cli-0.1.8-py3-none-any.whl", hash = "sha256:af61701bed0362f7b1d61279acc13def44bd219dfbd2a6c93b7e9f6d3552cb41", size = 36236 },
 ]
 
 [[package]]
 name = "ssot-contracts"
-version = "0.2.11"
+version = "0.2.13"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a2/ff/e72142e80c015f4ed88be3b252fcec94a2349d53e1239c75f0fc018941e7/ssot_contracts-0.2.11.tar.gz", hash = "sha256:698182922fff851523b571536c3452cb37bfaacc0da12c06a15fc88089cc9d7c", size = 24241 }
+sdist = { url = "https://files.pythonhosted.org/packages/69/df/263167aa8032608dc85eb63b52de3ff2a623ba8b78b3d466a6020d8918b9/ssot_contracts-0.2.13.tar.gz", hash = "sha256:bfda10636792816fa9a16cd195b87577ff258705990763fdd23cc8c16e17e178", size = 25031 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/ef/0cdd4f1f4e6b6c566991b87844ec3cba2e3dd66f44396e629d7b3350c36b/ssot_contracts-0.2.11-py3-none-any.whl", hash = "sha256:04e52a4c89cfadafad87edd414545712510a5b5888112027410a69adf11233fe", size = 41793 },
+    { url = "https://files.pythonhosted.org/packages/e9/02/bd4d7db85e775beebadc01c5aa5dcd28114e86145ce49b9305fbf1a64927/ssot_contracts-0.2.13-py3-none-any.whl", hash = "sha256:2829299f1d0a9d4f278c66a949e83eb7b945129caa18e293a96581b6c72c503e", size = 43163 },
 ]
 
 [[package]]
 name = "ssot-core"
-version = "0.2.11"
+version = "0.2.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-contracts" },
     { name = "ssot-views" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/4d/3e80091319747b4c5f274e0e157c7ba4bd330ec505384af50e71925f4637/ssot_core-0.2.11.tar.gz", hash = "sha256:df5e83b310ecb724ea4f42e56982d5a4cfc70cad412570e5697604618517d221", size = 63938 }
+sdist = { url = "https://files.pythonhosted.org/packages/92/aa/a36c8a05d96c3ba72de3c849b033648c3f7a0d49ea5fa926d5338f92949e/ssot_core-0.2.13.tar.gz", hash = "sha256:d501e7ee85ba41b61947cc98658aed4d277a392ef719b2526b557e445a4a1441", size = 67210 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f6/f3/e929be4d6be3a68a39ee4c2f1955a0b127bb8567fa01bfa39615aabd9601/ssot_core-0.2.11-py3-none-any.whl", hash = "sha256:d60beecc3ec6a88bb36998cb7a96bfa6705148efca5dcaaf9c3ce716fbe9b117", size = 88930 },
+    { url = "https://files.pythonhosted.org/packages/84/60/8359f84171cb83fe2da36b70c43343934d4f75772c87eb1e15fd40261bc2/ssot_core-0.2.13-py3-none-any.whl", hash = "sha256:3f9808883403c68c0f1a91b441e194acc26f33dc6de93e773b9c70d849ce0da8", size = 93271 },
 ]
 
 [[package]]
 name = "ssot-registry"
-version = "0.2.11"
+version = "0.2.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-cli" },
     { name = "ssot-contracts" },
     { name = "ssot-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/13/97/d1a1c65237c298087b9e04eee90c1870002e9930fa046613504d85eca13e/ssot_registry-0.2.11.tar.gz", hash = "sha256:c0705122d260c40a1e54058a3f591d1c918b204f3316b3d875f09f8702d3f870", size = 12290 }
+sdist = { url = "https://files.pythonhosted.org/packages/85/bb/0b6d56ac51bc142fefe4abd0aa70917b29b6685123dbbe33fbfdfcbf3d03/ssot_registry-0.2.13.tar.gz", hash = "sha256:118b3c12d9666df1dad9c58841f43b38662cea52b0d2e558516cce0e986981eb", size = 12289 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/53/99fb6372c86fcd651ad8d23421454ab311d3b8b87e57e99589e5582ab5fe/ssot_registry-0.2.11-py3-none-any.whl", hash = "sha256:a8b06ca64254a285e97285b9a28dfc117bb40d77d6136d951273fc1491240eed", size = 6677 },
+    { url = "https://files.pythonhosted.org/packages/f0/4e/855459347d3fb974a6a936e958f36fd0d218659b3ecefdea699f1b7b1ad4/ssot_registry-0.2.13-py3-none-any.whl", hash = "sha256:18c96688a2b39b553741b3da0e0c17f6f946639f728420937863264200673b9f", size = 6676 },
 ]
 
 [[package]]
 name = "ssot-views"
-version = "0.2.11"
+version = "0.2.13"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-contracts" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2f/8c/399cc3b70533a6d8cb8a505b0116e7a5b1755fab7fc237f036942777acc6/ssot_views-0.2.11.tar.gz", hash = "sha256:7cf95ea6d06c8b99e6ba8a7cba816e6884e17fbc957504d1d9c81338166f3d25", size = 7019 }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/9f/c18dde487714c4bad47d9bce5599fc9a69629b134e442d4ba2e2cd91dd1a/ssot_views-0.2.13.tar.gz", hash = "sha256:f5de1456b0c3fa7a4fb4bc635efe320d05b946ed398e8a21330dff471a20ad1e", size = 7020 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1a/ae/bca9416f2cdc5ec507583daaf17f7243147d888b1a3fbeb00f85b3410ebe/ssot_views-0.2.11-py3-none-any.whl", hash = "sha256:0eb854fc65019ef8239988903d12503268ca2cf084978f35c8a68d9e490dc2e7", size = 6721 },
+    { url = "https://files.pythonhosted.org/packages/a6/0e/e7992d134c42c9e43371bce0805be4e0e531f77ae3a7b950e7d2b16066b9/ssot_views-0.2.13-py3-none-any.whl", hash = "sha256:9e3ae7ba58bdfad8bd1ef4cda13e9d09c18617ae7ccdc17cdc395b0f9422de67", size = 6720 },
 ]
 
 [[package]]
@@ -692,6 +710,19 @@ version = "0.3.9"
 source = { editable = "." }
 dependencies = [
     { name = "tigr-asgi-contract" },
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-certification" },
+    { name = "tigrcorn-compat" },
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-contract" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-http" },
+    { name = "tigrcorn-observability" },
+    { name = "tigrcorn-protocols" },
+    { name = "tigrcorn-runtime" },
+    { name = "tigrcorn-security" },
+    { name = "tigrcorn-static" },
+    { name = "tigrcorn-transports" },
 ]
 
 [package.optional-dependencies]
@@ -736,6 +767,11 @@ tls-x509 = [
     { name = "cryptography" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "ssot-registry" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "aioquic", marker = "extra == 'certification'", specifier = ">=1.3.0" },
@@ -755,6 +791,19 @@ requires-dist = [
     { name = "pyyaml", marker = "extra == 'full-featured'", specifier = ">=6.0" },
     { name = "ssot-registry", marker = "extra == 'dev'", specifier = ">=0.1.0" },
     { name = "tigr-asgi-contract", specifier = ">=0.3.2" },
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-certification", editable = "pkgs/tigrcorn-certification" },
+    { name = "tigrcorn-compat", editable = "pkgs/tigrcorn-compat" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-contract", editable = "pkgs/tigrcorn-contract" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-http", editable = "pkgs/tigrcorn-http" },
+    { name = "tigrcorn-observability", editable = "pkgs/tigrcorn-observability" },
+    { name = "tigrcorn-protocols", editable = "pkgs/tigrcorn-protocols" },
+    { name = "tigrcorn-runtime", editable = "pkgs/tigrcorn-runtime" },
+    { name = "tigrcorn-security", editable = "pkgs/tigrcorn-security" },
+    { name = "tigrcorn-static", editable = "pkgs/tigrcorn-static" },
+    { name = "tigrcorn-transports", editable = "pkgs/tigrcorn-transports" },
     { name = "trio", marker = "extra == 'runtime-trio'", specifier = ">=0.25.0" },
     { name = "uvloop", marker = "sys_platform != 'win32' and extra == 'dev'", specifier = ">=0.19.0" },
     { name = "uvloop", marker = "sys_platform != 'win32' and extra == 'full-featured'", specifier = ">=0.19.0" },
@@ -765,6 +814,248 @@ requires-dist = [
     { name = "wsproto", marker = "extra == 'dev'", specifier = ">=1.3.0" },
 ]
 provides-extras = ["tls-x509", "certification", "config-yaml", "compression", "runtime-uvloop", "runtime-trio", "full-featured", "dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ssot-registry", specifier = ">=0.2.13" }]
+
+[[package]]
+name = "tigrcorn-asgi"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-asgi" }
+dependencies = [
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" }]
+
+[[package]]
+name = "tigrcorn-certification"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-certification" }
+dependencies = [
+    { name = "aioquic" },
+    { name = "cryptography" },
+    { name = "h2" },
+    { name = "tigrcorn-compat" },
+    { name = "tigrcorn-runtime" },
+    { name = "websockets" },
+    { name = "wsproto" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aioquic", specifier = ">=1.3.0" },
+    { name = "cryptography", specifier = ">=46.0.0" },
+    { name = "h2", specifier = ">=4.1.0" },
+    { name = "tigrcorn-compat", editable = "pkgs/tigrcorn-compat" },
+    { name = "tigrcorn-runtime", editable = "pkgs/tigrcorn-runtime" },
+    { name = "websockets", specifier = ">=12.0" },
+    { name = "wsproto", specifier = ">=1.3.0" },
+]
+
+[[package]]
+name = "tigrcorn-compat"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-compat" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-runtime" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-runtime", editable = "pkgs/tigrcorn-runtime" },
+]
+
+[[package]]
+name = "tigrcorn-config"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-config" }
+dependencies = [
+    { name = "tigrcorn-core" },
+]
+
+[package.optional-dependencies]
+yaml = [
+    { name = "pyyaml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pyyaml", marker = "extra == 'yaml'", specifier = ">=6.0" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+provides-extras = ["yaml"]
+
+[[package]]
+name = "tigrcorn-contract"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-contract" }
+dependencies = [
+    { name = "tigr-asgi-contract" },
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigr-asgi-contract", specifier = ">=0.3.2" },
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+
+[[package]]
+name = "tigrcorn-core"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-core" }
+
+[[package]]
+name = "tigrcorn-http"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-http" }
+dependencies = [
+    { name = "tigrcorn-core" },
+]
+
+[package.optional-dependencies]
+compression = [
+    { name = "brotli" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "brotli", marker = "extra == 'compression'", specifier = ">=1.1.0" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+provides-extras = ["compression"]
+
+[[package]]
+name = "tigrcorn-observability"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-observability" }
+dependencies = [
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+
+[[package]]
+name = "tigrcorn-protocols"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-protocols" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-http" },
+    { name = "tigrcorn-transports" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-http", editable = "pkgs/tigrcorn-http" },
+    { name = "tigrcorn-transports", editable = "pkgs/tigrcorn-transports" },
+]
+
+[[package]]
+name = "tigrcorn-runtime"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-runtime" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-protocols" },
+    { name = "tigrcorn-security" },
+    { name = "tigrcorn-transports" },
+]
+
+[package.optional-dependencies]
+trio = [
+    { name = "trio" },
+]
+uvloop = [
+    { name = "uvloop", marker = "sys_platform != 'win32'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-protocols", editable = "pkgs/tigrcorn-protocols" },
+    { name = "tigrcorn-security", editable = "pkgs/tigrcorn-security" },
+    { name = "tigrcorn-transports", editable = "pkgs/tigrcorn-transports" },
+    { name = "trio", marker = "extra == 'trio'", specifier = ">=0.25.0" },
+    { name = "uvloop", marker = "sys_platform != 'win32' and extra == 'uvloop'", specifier = ">=0.19.0" },
+]
+provides-extras = ["uvloop", "trio"]
+
+[[package]]
+name = "tigrcorn-security"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-security" }
+dependencies = [
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+]
+
+[package.optional-dependencies]
+x509 = [
+    { name = "cryptography" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cryptography", marker = "extra == 'x509'", specifier = ">=46.0.0" },
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
+provides-extras = ["x509"]
+
+[[package]]
+name = "tigrcorn-static"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-static" }
+dependencies = [
+    { name = "tigrcorn-asgi" },
+    { name = "tigrcorn-core" },
+    { name = "tigrcorn-http" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-asgi", editable = "pkgs/tigrcorn-asgi" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-http", editable = "pkgs/tigrcorn-http" },
+]
+
+[[package]]
+name = "tigrcorn-transports"
+version = "0.3.9"
+source = { editable = "pkgs/tigrcorn-transports" }
+dependencies = [
+    { name = "tigrcorn-config" },
+    { name = "tigrcorn-core" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
+    { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+]
 
 [[package]]
 name = "trio"

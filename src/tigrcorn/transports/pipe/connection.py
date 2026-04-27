@@ -1,19 +1,7 @@
 from __future__ import annotations
 
-import os
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class PipeConnection:
-    path: str
-    read_fd: int
-    write_fd: int | None = None
-
-    def read(self, n: int = 65536) -> bytes:
-        return os.read(self.read_fd, n)
-
-    def write(self, data: bytes) -> int:
-        if self.write_fd is None:
-            raise OSError('pipe is not writable')
-        return os.write(self.write_fd, data)
+_module = _import_module('tigrcorn_transports.pipe.connection')
+_sys.modules[__name__] = _module

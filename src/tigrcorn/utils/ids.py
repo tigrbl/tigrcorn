@@ -1,19 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-import itertools
+from importlib import import_module as _import_module
+import sys as _sys
 
-_counter = itertools.count(1)
-_session_counter = itertools.count(1)
-_stream_counter = itertools.count(1)
-
-
-def next_id() -> int:
-    return next(_counter)
-
-
-def next_session_id() -> int:
-    return next(_session_counter)
-
-
-def next_stream_id() -> int:
-    return next(_stream_counter)
+_module = _import_module("tigrcorn_core.utils.ids")
+_sys.modules[__name__] = _module

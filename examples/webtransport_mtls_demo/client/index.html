@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tigrcorn WebTransport mTLS Lab</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="toolbar">
+        <div>
+          <h1>Tigrcorn WebTransport mTLS Lab</h1>
+          <p>Experiment with Tigrcorn ASGI3 WebTransport in local and strict mTLS modes.</p>
+        </div>
+        <div class="status" id="status">idle</div>
+      </section>
+
+      <section class="controls">
+        <div class="mode-switch" aria-label="Endpoint mode">
+          <button id="local-mode" type="button" data-endpoint="https://localhost:8444/wt">Local WT</button>
+          <button id="mtls-mode" type="button" data-endpoint="https://localhost:8443/wt">Strict mTLS WT</button>
+        </div>
+        <label>
+          Endpoint
+          <input id="endpoint" value="https://localhost:8444/wt" />
+        </label>
+        <label>
+          Payload
+          <input id="payload" value="hello from browser" />
+        </label>
+        <button id="connect">Connect</button>
+        <button id="stream" disabled>Send stream</button>
+        <button id="datagram" disabled>Send datagram</button>
+        <button id="close" disabled>Close</button>
+      </section>
+
+      <section class="panels">
+        <article>
+          <h2>Session</h2>
+          <pre id="session">{}</pre>
+        </article>
+        <article>
+          <h2>Events</h2>
+          <pre id="events"></pre>
+        </article>
+      </section>
+    </main>
+    <script src="./main.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2038"
+number: 2038
+slug: "package-boundaries"
+title: "Package boundaries"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define and test publishable package boundaries before moving implementation out of the umbrella package."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1032"
+body: |-
+  # Package boundaries
+
+  Tigrcorn shall define and test publishable package boundaries before moving implementation out of the umbrella package.
+
+  Requirements:
+
+  - The root project shall declare a workspace containing the target package distributions.
+  - Each target package shall have a package-local `pyproject.toml`, typed import package, and README.
+  - The dependency graph shall be one-way from core toward certification and umbrella compatibility.
+  - `tigrcorn-core` shall be the first extracted implementation package and shall not import inward from `tigrcorn` or higher-level `tigrcorn-*` packages.
+  - Legacy `tigrcorn.constants`, `tigrcorn.errors`, and `tigrcorn.types` imports shall remain compatibility shims while new code can import from `tigrcorn_core`.
+  - Tests shall verify workspace membership, dependency direction, package metadata, importability, and compatibility shims.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1032"

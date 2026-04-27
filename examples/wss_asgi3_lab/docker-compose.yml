@@ -1,0 +1,24 @@
+services:
+  tigrcorn-wss-asgi3:
+    build:
+      context: ../..
+      dockerfile: examples/wss_asgi3_lab/Dockerfile
+    image: tigrcorn-wss-asgi3-lab:local
+    ports:
+      - "8443:8443/tcp"
+
+  tigrcorn-wss-uix:
+    build:
+      context: ../..
+      dockerfile: examples/wss_asgi3_lab/Dockerfile
+    image: tigrcorn-wss-uix-lab:local
+    command:
+      - python
+      - -m
+      - examples.wss_asgi3_lab.client_server
+    environment:
+      TIGRCORN_WSS_URL: "wss://localhost:8443/ws"
+    ports:
+      - "8093:8080/tcp"
+    depends_on:
+      - tigrcorn-wss-asgi3

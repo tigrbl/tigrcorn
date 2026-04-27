@@ -1,9 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class WorkerConfig:
-    processes: int = 1
-    graceful_shutdown_timeout: float = 30.0
+_module = _import_module("tigrcorn_runtime.workers.model")
+_sys.modules[__name__] = _module

@@ -2,11 +2,11 @@
   "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle",
   "bundle_kind": "flag_surface_certification_bundle",
   "generated_at": "2026-03-28T06:47:34.796886+00:00",
-  "public_flag_count": 125,
-  "contract_row_count": 125,
-  "promotion_ready_count": 125,
+  "public_flag_count": 130,
+  "contract_row_count": 130,
+  "promotion_ready_count": 130,
   "runtime_state_counts": {
-    "implemented": 125
+    "implemented": 130
   },
   "families": [
     {
@@ -23,7 +23,7 @@
     },
     {
       "family": "Protocol / transport",
-      "flag_count": 20
+      "flag_count": 25
     },
     {
       "family": "Resource / timeouts / concurrency",

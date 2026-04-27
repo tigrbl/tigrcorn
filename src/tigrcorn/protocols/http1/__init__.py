@@ -1,16 +1,12 @@
-from .parser import ParsedRequest, read_http11_request
-from .serializer import (
-    finalize_chunked_body,
-    serialize_http11_response_chunk,
-    serialize_http11_response_head,
-    serialize_http11_response_whole,
-)
+from __future__ import annotations
 
-__all__ = [
-    "ParsedRequest",
-    "read_http11_request",
-    "serialize_http11_response_head",
-    "serialize_http11_response_whole",
-    "serialize_http11_response_chunk",
-    "finalize_chunked_body",
-]
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_protocols.http1")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

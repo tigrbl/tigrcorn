@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-protocols"
+version = "0.3.9"
+description = "HTTP, WebSocket, lifespan, rawframed, and custom protocol handlers for Tigrcorn."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+dependencies = [
+  "tigrcorn-core==0.3.9",
+  "tigrcorn-config==0.3.9",
+  "tigrcorn-asgi==0.3.9",
+  "tigrcorn-http==0.3.9",
+  "tigrcorn-transports==0.3.9",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+tigrcorn_protocols = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2040"
+number: 2040
+slug: "logging-configuration-surface"
+title: "Logging configuration surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn logging configuration shall be represented as explicit default, CLI, TOML, and logging-profile feature surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1034"
+body: |-
+  # Logging configuration surface
+
+  Tigrcorn shall expose logging configuration through four governed surfaces:
+
+  - Default configuration from `LoggingConfig`.
+  - CLI flags in the public Logging / observability group.
+  - TOML config under the `logging` and `metrics` blocks.
+  - File-based logging profiles loaded by `logging.log_config`.
+
+  Requirements:
+
+  - Each supported CLI flag has a feature row.
+  - Each supported logging-profile key has a feature row.
+  - CLI-provided logging fields override logging-profile fields only when explicitly supplied.
+  - Unsupported logging-profile keys fail closed.
+  - Colorized console behavior is controlled by explicit config or TTY detection.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1034"

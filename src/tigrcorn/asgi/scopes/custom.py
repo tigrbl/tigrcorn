@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.constants import ASGI_SPEC_VERSION, ASGI_VERSION
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def build_custom_scope(scope_type: str, **fields) -> dict:
-    scope = {
-        "type": scope_type,
-        "asgi": {"version": ASGI_VERSION, "spec_version": ASGI_SPEC_VERSION},
-    }
-    scope.update(fields)
-    return scope
+_module = _import_module('tigrcorn_asgi.scopes.custom')
+_sys.modules[__name__] = _module

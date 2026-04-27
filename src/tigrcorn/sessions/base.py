@@ -1,16 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-from dataclasses import dataclass, field
-from time import monotonic
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class BaseSession:
-    session_id: int
-    opened_at: float = field(default_factory=monotonic)
-    protocol: str = 'unknown'
-    closed_at: float | None = None
-
-    def close(self) -> None:
-        if self.closed_at is None:
-            self.closed_at = monotonic()
+_module = _import_module("tigrcorn_protocols.sessions.base")
+_sys.modules[__name__] = _module

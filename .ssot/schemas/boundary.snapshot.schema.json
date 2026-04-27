@@ -1,15 +1,1 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/ssot-registry/boundary.snapshot.schema.json",
-  "type": "object",
-  "required": [
-    "schema_version",
-    "kind",
-    "generated_at",
-    "registry_path",
-    "registry_sha256",
-    "boundary",
-    "features",
-    "summary"
-  ]
-}
+{"$id":"https://example.invalid/ssot-registry/boundary.snapshot.schema.json","$schema":"https://json-schema.org/draft/2020-12/schema","required":["schema_version","kind","generated_at","registry_path","registry_sha256","boundary","features","summary"],"type":"object"}

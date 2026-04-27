@@ -1,22 +1,7 @@
 from __future__ import annotations
 
-from copy import deepcopy
-from typing import Any, Mapping
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def deep_merge(base: Mapping[str, Any], override: Mapping[str, Any]) -> dict[str, Any]:
-    result = deepcopy(dict(base))
-    for key, value in override.items():
-        if isinstance(value, Mapping) and isinstance(result.get(key), Mapping):
-            result[key] = deep_merge(result[key], value)  # type: ignore[arg-type]
-        else:
-            result[key] = deepcopy(value)
-    return result
-
-
-def merge_config_dicts(*sources: Mapping[str, Any] | None) -> dict[str, Any]:
-    merged: dict[str, Any] = {}
-    for source in sources:
-        if source:
-            merged = deep_merge(merged, source)
-    return merged
+_module = _import_module('tigrcorn_config.merge')
+_sys.modules[__name__] = _module
