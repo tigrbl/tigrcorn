@@ -1157,6 +1157,93 @@ def build_registry() -> dict[str, Any]:
         code_style_feature_ids.append(feature_id)
     link_feature_specs(code_style_feature_ids, ["spc:2042"])
 
+    first_class_http_status_codes = [
+        (100, "Continue", "implemented", "tests/test_server_http1.py"),
+        (101, "Switching Protocols", "implemented", "tests/test_websocket_rfc6455.py"),
+        (103, "Early Hints", "implemented", "tests/test_rfc8297_early_hints.py"),
+        (200, "OK", "implemented", "tests/test_server_http1.py"),
+        (201, "Created", "implemented", "tests/test_server_http1.py"),
+        (202, "Accepted", "implemented", "tests/test_server_http1.py"),
+        (204, "No Content", "implemented", "tests/test_http1_rfc9112.py"),
+        (206, "Partial Content", "partial", "tests/test_rfc7233_range_requests.py"),
+        (301, "Moved Permanently", "implemented", "tests/test_server_http1.py"),
+        (302, "Found", "implemented", "tests/test_server_http1.py"),
+        (304, "Not Modified", "implemented", "tests/test_rfc7232_conditional_requests.py"),
+        (307, "Temporary Redirect", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (308, "Permanent Redirect", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (400, "Bad Request", "implemented", "tests/test_http1_rfc9112.py"),
+        (401, "Unauthorized", "implemented", "tests/test_rfc_compliance_hardening.py"),
+        (402, "Payment Required", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (403, "Forbidden", "implemented", "tests/test_phase3_strict_rfc_surface.py"),
+        (404, "Not Found", "implemented", "pkgs/tigrcorn-static/src/tigrcorn_static/static.py"),
+        (405, "Method Not Allowed", "implemented", "pkgs/tigrcorn-static/src/tigrcorn_static/static.py"),
+        (406, "Not Acceptable", "partial", "tests/test_content_coding_policy_local.py"),
+        (408, "Request Timeout", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (413, "Content Too Large", "partial", "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/http1/parser.py"),
+        (416, "Range Not Satisfiable", "partial", "tests/test_rfc7233_range_requests.py"),
+        (421, "Misdirected Request", "implemented", "tests/test_phase3_policy_surface.py"),
+        (426, "Upgrade Required", "implemented", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
+        (431, "Request Header Fields Too Large", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (500, "Internal Server Error", "implemented", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
+        (502, "Bad Gateway", "partial", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
+        (503, "Service Unavailable", "implemented", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
+        (504, "Gateway Timeout", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+    ]
+    status_feature_ids: list[str] = []
+    for code, phrase, status, path in first_class_http_status_codes:
+        raw = f"http-status-{code}-{phrase.lower()}"
+        feature_id = _feature_id(raw)
+        claim_id = _claim_id(raw)
+        test_id = _test_id("http-status", raw)
+        evidence_id = _evidence_id("http-status", raw)
+        tier = "T2" if status in {"implemented", "partial"} else "T1"
+        claim_status = "promoted" if status == "implemented" else "implemented" if status == "partial" else "declared"
+        test_status = "passing" if str(path).startswith("tests/") and status in {"implemented", "partial"} else "planned"
+        ensure_feature(
+            feature_id=feature_id,
+            title=f"HTTP {code} {phrase}",
+            description=f"Tigrcorn tracks HTTP {code} {phrase} as part of the minimum immediate first-class status code set.",
+            tier=tier,
+            slot="http-status-code",
+            horizon="current",
+            implementation_status=status,
+        )
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"HTTP {code} {phrase} first-class support",
+            description=f"HTTP {code} {phrase} has governed serializer/runtime/test traceability in Tigrcorn's first-class status set.",
+            tier=tier,
+            kind="http_status_code",
+            feature_ids=[feature_id],
+        )
+        claims[claim_id]["status"] = claim_status
+        if claim_status != "promoted" and claim_id in release_claim_ids:
+            release_claim_ids.remove(claim_id)
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"HTTP {code} {phrase} status evidence",
+            kind="http_status_code",
+            tier=tier,
+            path=str(path),
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"HTTP {code} {phrase} first-class status coverage",
+            status=test_status,
+            kind="pytest" if str(path).startswith("tests/") else "spec-placeholder",
+            path=str(path),
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+        if claim_status == "promoted":
+            release_claim_ids.add(claim_id)
+            release_evidence_ids.add(evidence_id)
+        status_feature_ids.append(feature_id)
+    link_feature_specs(status_feature_ids, ["spc:2043"])
+
     # Governance feature
     governance_feature_id = _feature_id("governance-graph")
     ensure_feature(

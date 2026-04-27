@@ -22,9 +22,11 @@ class H3Asgi3LabConfigTests(unittest.TestCase):
         self.assertIn("--http 3", compose)
         self.assertIn("--quic-secret h3-asgi3-lab-shared-secret", compose)
         self.assertIn("TIGRCORN_H3_QUIC_SECRET", compose)
+        self.assertNotIn("--ssl-certfile", compose)
         self.assertNotIn("webtransport", compose.lower())
         self.assertIn('"8445:8445/udp"', compose)
         self.assertIn("tigrcorn-h3-uix:", compose)
+        self.assertIn("TIGRCORN_H3_TARGET_HOST: tigrcorn-h3-asgi3", compose)
         self.assertIn("examples.h3_asgi3_lab.uix_server", compose)
         self.assertIn('"8091:8090/tcp"', compose)
 

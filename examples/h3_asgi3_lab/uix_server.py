@@ -10,12 +10,10 @@ from urllib.parse import parse_qs, urlsplit
 
 from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.transports.quic import QuicConnection
-from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver
 
 
 ROOT = Path(__file__).resolve().parent
 CLIENT_ROOT = ROOT / "uix"
-CERT_FILE = Path("/certs/server-cert.pem")
 
 
 async def _issue_h3_get(path: str) -> dict[str, object]:
@@ -26,30 +24,23 @@ async def _issue_h3_get(path: str) -> dict[str, object]:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setblocking(False)
     client = QuicConnection(is_client=True, secret=quic_secret, local_cid=b"h3uix001")
-    client.configure_handshake(
-        QuicTlsHandshakeDriver(
-            is_client=True,
-            server_name=server_name,
-            trusted_certificates=[CERT_FILE.read_bytes()],
-        )
-    )
     core = HTTP3ConnectionCore()
     loop = asyncio.get_running_loop()
     target = (target_host, target_port)
     try:
-        sock.sendto(client.start_handshake(), target)
-        for _ in range(16):
-            data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+        sock.sendto(client.build_initial(), target)
+        saw_initial = False
+        for _ in range(4):
+            try:
+                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
+            except TimeoutError:
+                if saw_initial:
+                    break
+                raise
+            saw_initial = True
             for event in client.receive_datagram(data):
                 if event.kind == "stream":
                     core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-            for datagram in client.take_handshake_datagrams():
-                sock.sendto(datagram, target)
-            if client.handshake_driver is not None and client.handshake_driver.complete:
-                break
-
-        if client.handshake_driver is None or not client.handshake_driver.complete:
-            raise RuntimeError("QUIC TLS handshake did not complete")
 
         request = core.get_request(0).encode_request(
             [

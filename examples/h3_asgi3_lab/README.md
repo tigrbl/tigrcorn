@@ -10,13 +10,15 @@ The lab starts two containers:
 - `tigrcorn-h3-uix`: a lightweight UI that asks its local server to send HTTP/3
   requests to the Tigrcorn service over QUIC and displays the response.
 
-The runtime container generates a short-lived localhost certificate in a shared
-Compose volume. The UI-side probe trusts that certificate when it opens the H3
-QUIC connection from the container network.
+The server and UI-side probe share a demo `--quic-secret`, matching Tigrcorn's
+local HTTP/3 test path for direct QUIC packet protection.
 
 The Compose stack bind-mounts `examples/` into the containers so edits to the
 ASGI3 app and UI are picked up by container recreation without a full image
 rebuild.
+
+The UI probe targets the `tigrcorn-h3-asgi3` Compose service over the internal
+Docker network.
 
 ## Run
 
