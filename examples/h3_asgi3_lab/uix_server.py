@@ -8,7 +8,6 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
-from tigrcorn.constants import DEFAULT_QUIC_SECRET
 from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver
@@ -23,9 +22,10 @@ async def _issue_h3_get(path: str) -> dict[str, object]:
     target_host = os.environ.get("TIGRCORN_H3_TARGET_HOST", "tigrcorn-h3-asgi3")
     target_port = int(os.environ.get("TIGRCORN_H3_TARGET_PORT", "8445"))
     server_name = os.environ.get("TIGRCORN_H3_SERVER_NAME", "localhost")
+    quic_secret = os.environ.get("TIGRCORN_H3_QUIC_SECRET", "h3-asgi3-lab-shared-secret").encode("utf-8")
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setblocking(False)
-    client = QuicConnection(is_client=True, secret=DEFAULT_QUIC_SECRET, local_cid=b"h3uixprobe0001")
+    client = QuicConnection(is_client=True, secret=quic_secret, local_cid=b"h3uix001")
     client.configure_handshake(
         QuicTlsHandshakeDriver(
             is_client=True,

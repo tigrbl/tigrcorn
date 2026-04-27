@@ -14,6 +14,10 @@ The runtime container generates a short-lived localhost certificate in a shared
 Compose volume. The UI-side probe trusts that certificate when it opens the H3
 QUIC connection from the container network.
 
+The Compose stack bind-mounts `examples/` into the containers so edits to the
+ASGI3 app and UI are picked up by container recreation without a full image
+rebuild.
+
 ## Run
 
 ```powershell
