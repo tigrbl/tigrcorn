@@ -15,7 +15,7 @@ What landed:
 Validation rerun for this checkpoint:
 
 - `python -m compileall -q src benchmarks tools`
-- `PYTHONPATH=src pytest -q tests/test_phase3_h1_websocket_operator_surface.py tests/test_http1_parser.py tests/test_http1_hardening_pass.py tests/test_server_websocket.py tests/test_phase2_cli_config_surface.py tests/test_public_api_cli_mtls_surface.py tests/test_public_api_tls_cipher_surface.py tests/test_phase9i_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_phase8_promotion_targets.py`
+- `PYTHONPATH=src pytest -q tests/test_h1_websocket_operator_surface.py tests/test_http1_parser.py tests/test_http1_hardening_pass.py tests/test_server_websocket.py tests/test_cli_config_surface.py tests/test_public_api_cli_mtls_surface.py tests/test_public_api_tls_cipher_surface.py tests/test_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_promotion_targets.py`
 - `PYTHONPATH=src python -c "from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target; ..."`
 
 Observed results:

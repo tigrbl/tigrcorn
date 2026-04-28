@@ -8,7 +8,7 @@ This checkpoint records the mutable-tree Phase 7 negative-certification closure 
 - Generated artifacts now exist at `docs/conformance/fail_state_registry.json`, `docs/conformance/fail_state_registry.md`, `docs/conformance/negative_corpora.json`, `docs/conformance/negative_corpora.md`, `docs/conformance/negative_bundles.json`, `docs/conformance/negative_bundles.md`, and `docs/conformance/negative_bundles/`.
 - The fail-state registry now freezes package-owned behavior for proxy spoofing, early-data downgrade rejection, QUIC transport failures, origin/pathsend rejection, CONNECT anti-abuse posture, TLS/X.509 strict-validation failure, and mixed-topology gate rejection.
 - Generated negative bundles now point to preserved historical release-root artifact trees where they already exist, including the canonical CONNECT relay and OCSP local-validation negative bundles under the `0.3.9` release root.
-- CI now regenerates the Phase 7 artifacts and runs `tests/test_phase7_negative_certification.py`.
+- CI now regenerates the Phase 7 artifacts and runs `tests/test_negative_certification.py`.
 
 ## Claim status
 
@@ -25,8 +25,8 @@ This checkpoint records the mutable-tree Phase 7 negative-certification closure 
 ## Validation used for this checkpoint
 
 - `python tools/cert/negative_surface.py`
-- `python -m unittest tests.test_phase7_negative_certification`
-- `python -m unittest tests.test_release_gates tests.test_phase5_origin_contract tests.test_phase9d1_connect_relay_local_negatives`
+- `python -m unittest tests.test_negative_certification`
+- `python -m unittest tests.test_release_gates tests.test_origin_contract tests.test_connect_relay_local_negatives`
 - `python tools/cert/status.py`
 
 ## Honest limitation

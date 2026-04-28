@@ -21,7 +21,7 @@ This maintenance update applies three repository-level changes requested for the
 ## Validation performed
 
 - `PYTHONPATH=src python tools/create_phase9i_release_assembly_checkpoint.py`
-- `PYTHONPATH=src pytest -q tests/test_phase9i_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_documentation_reconciliation.py tests/test_documentation_truth_normalization_checkpoint.py tests/test_certification_environment_freeze.py tests/test_aioquic_adapter_preflight.py`
+- `PYTHONPATH=src pytest -q tests/test_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_documentation_reconciliation.py tests/test_documentation_truth_normalization_checkpoint.py tests/test_certification_environment_freeze.py tests/test_aioquic_adapter_preflight.py`
 - `python tools/govchk.py scan`
 
 ## Result

@@ -20,7 +20,7 @@ Honest current state after this checkpoint:
 
 Validation performed for this checkpoint:
 
-- `pytest tests/test_phase9a_promotion_contract_freeze.py`
-- `pytest tests/test_phase9_implementation_plan.py`
-- `pytest tests/test_phase8_promotion_targets.py`
+- `pytest tests/test_promotion_contract_freeze.py`
+- `pytest tests/test_certification_delivery_plan.py`
+- `pytest tests/test_promotion_targets.py`
 - `python -m compileall -q src tools tests`

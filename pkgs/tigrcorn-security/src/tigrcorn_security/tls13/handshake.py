@@ -581,7 +581,14 @@ class QuicTlsHandshakeDriver:
         self.complete = False
         self.state = 'client_idle' if is_client else 'server_idle'
 
-        initial_cipher_suite = self.session_ticket.cipher_suite if self.session_ticket is not None and self.session_ticket.cipher_suite in self.supported_cipher_suites else self.supported_cipher_suites[0]
+        initial_cipher_suite = (
+            self.session_ticket.cipher_suite
+            if (
+                self.session_ticket is not None
+                and self.session_ticket.cipher_suite in self.supported_cipher_suites
+            )
+            else self.supported_cipher_suites[0]
+        )
         self._selected_cipher_suite = int(initial_cipher_suite)
         self._cipher_parameters = cipher_suite_parameters(self._selected_cipher_suite)
         self._key_schedule = Tls13KeySchedule(hash_name=self._cipher_parameters.hash_name)

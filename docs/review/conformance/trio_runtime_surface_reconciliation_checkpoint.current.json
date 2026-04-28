@@ -38,11 +38,11 @@
       "passed": true,
       "summary": "37 passed",
       "files": [
-        "tests/test_phase1_surface_parity_checkpoint.py",
-        "tests/test_phase2_cli_config_surface.py",
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+        "tests/test_surface_parity_checkpoint.py",
+        "tests/test_cli_config_surface.py",
+        "tests/test_advanced_protocol_delivery_checkpoint.py",
         "tests/test_trio_runtime_surface_reconciliation_checkpoint.py",
-        "tests/test_phase8_promotion_targets.py",
+        "tests/test_promotion_targets.py",
         "tests/test_release_gates.py"
       ]
     }
@@ -74,7 +74,7 @@
     "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
     "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
     "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_TRIO_RUNTIME_SURFACE_RECONCILIATION_CHECKPOINT.md",
-    "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+    "tests/test_advanced_protocol_delivery_checkpoint.py",
     "tests/test_trio_runtime_surface_reconciliation_checkpoint.py"
   ]
 }

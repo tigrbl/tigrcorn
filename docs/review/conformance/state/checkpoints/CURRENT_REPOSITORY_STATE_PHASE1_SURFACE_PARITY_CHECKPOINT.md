@@ -139,15 +139,15 @@ Primary modified or added modules:
 - `docs/review/conformance/cli_flag_surface.json`
 - `docs/review/conformance/flag_contracts.json`
 - `docs/review/conformance/flag_covering_array.json`
-- `tests/test_phase1_surface_parity_checkpoint.py`
+- `tests/test_surface_parity_checkpoint.py`
 
 ## Focused validation completed in this checkpoint
 
 The following focused validation bundle passed:
 
-- `tests/test_phase1_surface_parity_checkpoint.py`
-- `tests/test_phase2_cli_config_surface.py`
-- `tests/test_phase4_operator_surface.py`
+- `tests/test_surface_parity_checkpoint.py`
+- `tests/test_cli_config_surface.py`
+- `tests/test_operator_surface.py`
 - `tests/test_server_http1.py`
 - `tests/test_server_unix.py`
 - `tests/test_server_websocket.py`

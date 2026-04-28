@@ -23,7 +23,7 @@ This checkpoint records the mutable working-tree stabilization pass that prepare
 
 Targeted local validation in this working tree:
 
-- `python -m unittest tests.test_release_gates tests.test_phase2_cli_config_surface tests.test_documentation_reconciliation tests.test_config_matrix_pytest` -> `OK`
+- `python -m unittest tests.test_release_gates tests.test_cli_config_surface tests.test_documentation_reconciliation tests.test_config_matrix_pytest` -> `OK`
 - `python tools/cert/status.py` -> authoritative release gates `passed=true`, strict release gates `passed=true`, promotion target `passed=true`
 
 ## Honest current state

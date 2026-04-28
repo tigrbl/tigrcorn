@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "bundle_root": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified",
-    "generated_at": "2026-03-19T12:12:16.003241+00:00",
+    "bundle_root": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified",
+    "generated_at": "2026-04-28T09:05:09.099898+00:00",
     "matrix_kind": "minimum-certified-intermediary-proxy",
-    "scope_note": "Reference matrix for the minimum certified intermediary/proxy-adjacent corpus promoted in Phase 5."
+    "scope_note": "Reference matrix for the minimum certified intermediary/proxy-adjacent corpus promoted into the active certification boundary."
   },
   "name": "tigrcorn-minimum-certified-intermediary-proxy",
   "scenarios": [
@@ -46,6 +46,7 @@
         "matrix_kind": "minimum-certified-intermediary-proxy",
         "peer_implementation": "curl",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "curl.http1_client",
         "rfc": [
           "RFC 9112"
         ],
@@ -65,6 +66,10 @@
         },
         "implementation_identity": "curl",
         "implementation_source": "curl project",
+        "metadata": {
+          "wrapper_family": "curl",
+          "wrapper_id": "curl.http1_client"
+        },
         "name": "curl-http1-client",
         "provenance_kind": "third_party_binary",
         "role": "client",
@@ -149,6 +154,7 @@
         "matrix_kind": "minimum-certified-intermediary-proxy",
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "h2.http2_client",
         "rfc": [
           "RFC 9113",
           "RFC 7541"
@@ -168,6 +174,10 @@
         },
         "implementation_identity": "python-h2",
         "implementation_source": "python-hyper/h2",
+        "metadata": {
+          "wrapper_family": "h2",
+          "wrapper_id": "h2.http2_client"
+        },
         "name": "python-h2-http2-client",
         "provenance_kind": "third_party_library",
         "role": "client",
@@ -254,6 +264,7 @@
         "matrix_kind": "minimum-certified-intermediary-proxy",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -283,6 +294,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client",
         "provenance_kind": "third_party_library",
         "role": "client",

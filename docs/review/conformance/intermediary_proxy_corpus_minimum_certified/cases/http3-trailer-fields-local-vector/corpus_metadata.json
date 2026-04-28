@@ -1,9 +1,9 @@
 {
-  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http3-trailer-fields-local-vector",
+  "artifact_dir": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http3-trailer-fields-local-vector",
   "carrier": "http3",
   "corpus_entry_kind": "supplemental_local_vector",
   "corpus_id": "http3-trailer-fields-local-vector",
-  "generated_at": "2026-03-19T12:12:16.001422+00:00",
+  "generated_at": "2026-04-28T09:05:09.071362+00:00",
   "minimum_certified": false,
   "note": "Supplemental local vector retained in the minimum certified corpus until broader third-party intermediary/proxy captures are preserved for this semantic area.",
   "peer": "tigrcorn-fixture",

@@ -28,5 +28,5 @@ Phase 5 should be read as a **broader evidence-promotion checkpoint**:
 
 ## Validation snapshot
 
-- `PYTHONPATH=src:. pytest -q tests/test_phase5_flow_control_bundle.py tests/test_phase5_intermediary_proxy_corpus.py tests/test_release_gates.py` → `8 passed`
+- `PYTHONPATH=src:. pytest -q tests/test_flow_control_bundle.py tests/test_minimum_certified_intermediary_proxy_corpus.py tests/test_release_gates.py` → `8 passed`
 - `evaluate_release_gates('.')` → `passed=True`, `failure_count=0`

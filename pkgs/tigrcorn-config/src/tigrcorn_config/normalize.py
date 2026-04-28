@@ -48,13 +48,26 @@ def normalize_config(config: ServerConfig) -> None:
     config.process.runtime = str(config.process.runtime or 'auto').lower()
     config.http.http_versions = [str(v).replace('http/', '') for v in _ensure_list(config.http.http_versions)] or ["1.1", "2"]
     config.http.content_codings = [str(v).lower() for v in _ensure_list(config.http.content_codings)]
-    config.http.http1_max_incomplete_event_size = int(config.http.max_header_size if config.http.http1_max_incomplete_event_size is None else config.http.http1_max_incomplete_event_size)
+    config.http.http1_max_incomplete_event_size = int(
+        config.http.max_header_size
+        if config.http.http1_max_incomplete_event_size is None
+        else config.http.http1_max_incomplete_event_size
+    )
     config.http.http1_buffer_size = int(config.http.http1_buffer_size or 65_536)
     if config.http.http1_header_read_timeout is not None:
         config.http.http1_header_read_timeout = float(config.http.http1_header_read_timeout)
     config.http.http1_keep_alive = True if config.http.http1_keep_alive is None else bool(config.http.http1_keep_alive)
     config.http.http2_max_concurrent_streams = int(
-        config.scheduler.max_streams if config.http.http2_max_concurrent_streams is None and config.scheduler.max_streams is not None else (128 if config.http.http2_max_concurrent_streams is None else config.http.http2_max_concurrent_streams)
+        config.scheduler.max_streams
+        if (
+            config.http.http2_max_concurrent_streams is None
+            and config.scheduler.max_streams is not None
+        )
+        else (
+            128
+            if config.http.http2_max_concurrent_streams is None
+            else config.http.http2_max_concurrent_streams
+        )
     )
     config.http.http2_max_headers_size = int(config.http.max_header_size if config.http.http2_max_headers_size is None else config.http.http2_max_headers_size)
     config.http.http2_max_frame_size = int(16_384 if config.http.http2_max_frame_size is None else config.http.http2_max_frame_size)

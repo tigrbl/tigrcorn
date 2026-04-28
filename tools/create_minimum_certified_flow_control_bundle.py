@@ -196,7 +196,7 @@ def main() -> int:
             'matrix_kind': 'minimum-certified-flow-control',
             'bundle_root': _rel(FLOW_ROOT),
             'generated_at': datetime.now(timezone.utc).isoformat(),
-            'scope_note': 'Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted in Phase 5.',
+            'scope_note': 'Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted into the active certification boundary.',
         },
         'scenarios': matrix_scenarios,
     })

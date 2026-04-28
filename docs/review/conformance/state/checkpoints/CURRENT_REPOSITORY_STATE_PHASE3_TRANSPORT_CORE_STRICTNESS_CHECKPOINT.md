@@ -69,7 +69,7 @@ The snapshot contains:
 
 Added:
 
-- `tests/test_phase3_transport_core_strictness_checkpoint.py`
+- `tests/test_transport_core_strictness_checkpoint.py`
 
 This checkpoint test file validates that the exported strictness tables exist, that generated artifacts are present, and that representative runtime behaviors still match the exported strictness contracts.
 
@@ -87,7 +87,7 @@ Observed result for the targeted bundle:
 
 Targeted bundle files:
 
-- `tests/test_phase3_transport_core_strictness_checkpoint.py`
+- `tests/test_transport_core_strictness_checkpoint.py`
 - `tests/test_http1_rfc9112.py`
 - `tests/test_http1_hardening_pass.py`
 - `tests/test_http2_rfc9113.py`
@@ -99,7 +99,7 @@ Targeted bundle files:
 - `tests/test_quic_stream_flow_state_machine.py`
 - `tests/test_quic_tls_rfc9001.py`
 - `tests/test_quic_recovery_rfc9002.py`
-- `tests/test_phase3_strict_rfc_surface.py`
+- `tests/test_strict_rfc_surface.py`
 
 ## Known partials and remaining gaps
 

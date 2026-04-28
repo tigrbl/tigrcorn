@@ -35,7 +35,7 @@ def test_ssot_feature_record_tracks_runtime_datagram_dispatch() -> None:
     feature = features[FEATURE_ID]
 
     assert feature["title"] == "WebTransport H3/QUIC DATAGRAM runtime dispatch"
-    assert feature["implementation_status"] == "absent"
+    assert feature["implementation_status"] == "implemented"
     assert feature["plan"]["horizon"] == "current"
     assert feature["plan"]["slot"] == "webtransport-runtime"
     assert "feat:webtransport-h3-quic-datagram-events" in feature["requires"]
@@ -46,9 +46,9 @@ def test_ssot_issue_record_blocks_release_until_runtime_dispatch_exists() -> Non
 
     issue = issues[ISSUE_ID]
 
-    assert issue["status"] == "open"
+    assert issue["status"] == "closed"
     assert issue["severity"] == "high"
-    assert issue["release_blocking"] is True
+    assert issue["release_blocking"] is False
     assert issue["feature_ids"] == [FEATURE_ID]
     assert TEST_ID in issue["test_ids"]
 
@@ -58,7 +58,7 @@ def test_ssot_test_record_links_to_feature_and_planned_pytest_file() -> None:
 
     test = tests[TEST_ID]
 
-    assert test["status"] == "planned"
+    assert test["status"] == "passing"
     assert test["kind"] == "pytest"
     assert test["path"] == "tests/test_webtransport_datagram_runtime_dispatch.py"
     assert test["feature_ids"] == [FEATURE_ID]
@@ -69,28 +69,24 @@ def test_webtransport_settings_advertise_h3_datagram_support() -> None:
     assert SETTING_ENABLE_WEBTRANSPORT == 0x2B603742
 
 
-@pytest.mark.xfail(strict=True, reason="QUIC DATAGRAM frame support is not implemented yet.")
 def test_quic_datagram_frame_constant_is_declared() -> None:
     source = QUIC_STREAMS_PATH.read_text(encoding="utf-8")
 
     assert "FRAME_DATAGRAM = 0x30" in source
 
 
-@pytest.mark.xfail(strict=True, reason="QUIC receive does not emit DATAGRAM frame events yet.")
 def test_quic_receive_emits_single_datagram_event_kind() -> None:
     source = QUIC_CONNECTION_PATH.read_text(encoding="utf-8")
 
     assert "kind='datagram'" in source
 
 
-@pytest.mark.xfail(strict=True, reason="QUIC send-side DATAGRAM frame API is not implemented yet.")
 def test_quic_connection_exposes_datagram_sender() -> None:
     source = QUIC_CONNECTION_PATH.read_text(encoding="utf-8")
 
     assert "def send_datagram_frame(" in source
 
 
-@pytest.mark.xfail(strict=True, reason="Accepted WebTransport CONNECT streams are not dispatched to ASGI yet.")
 def test_webtransport_connect_starts_asgi_session_task() -> None:
     source = H3_HANDLER_PATH.read_text(encoding="utf-8")
 
@@ -99,7 +95,6 @@ def test_webtransport_connect_starts_asgi_session_task() -> None:
     assert "_start_webtransport_app" in source
 
 
-@pytest.mark.xfail(strict=True, reason="Incoming QUIC DATAGRAM frames are not translated to ASGI receive events yet.")
 def test_incoming_datagram_dispatches_asgi_receive_event() -> None:
     source = H3_HANDLER_PATH.read_text(encoding="utf-8")
 
@@ -107,7 +102,6 @@ def test_incoming_datagram_dispatches_asgi_receive_event() -> None:
     assert "datagram_id" in source
 
 
-@pytest.mark.xfail(strict=True, reason="ASGI webtransport.datagram.send events are not encoded as QUIC DATAGRAM frames yet.")
 def test_outgoing_asgi_datagram_send_uses_quic_datagram_frame() -> None:
     source = H3_HANDLER_PATH.read_text(encoding="utf-8")
 
@@ -115,7 +109,6 @@ def test_outgoing_asgi_datagram_send_uses_quic_datagram_frame() -> None:
     assert "send_datagram_frame(" in source
 
 
-@pytest.mark.xfail(strict=True, reason="WebTransport DATAGRAM payload limits are not enforced on runtime dispatch yet.")
 def test_datagram_payload_limit_uses_webtransport_listener_configuration() -> None:
     source = H3_HANDLER_PATH.read_text(encoding="utf-8")
 
@@ -124,7 +117,6 @@ def test_datagram_payload_limit_uses_webtransport_listener_configuration() -> No
     assert "webtransport.datagram.receive" in source
 
 
-@pytest.mark.xfail(strict=True, reason="The demo app currently echoes DATAGRAMs but does not log them for container debugging.")
 def test_demo_server_logs_datagram_receive_and_acknowledgement() -> None:
     source = DEMO_SERVER_PATH.read_text(encoding="utf-8")
 

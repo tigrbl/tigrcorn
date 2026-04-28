@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "bundle_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix",
-    "generated_at": "2026-03-19T12:12:15.884566+00:00",
+    "bundle_root": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix",
+    "generated_at": "2026-04-28T09:05:09.458008+00:00",
     "matrix_kind": "minimum-certified-flow-control",
-    "scope_note": "Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted in Phase 5."
+    "scope_note": "Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted into the active certification boundary."
   },
   "name": "tigrcorn-minimum-certified-flow-control",
   "scenarios": [
@@ -44,6 +44,7 @@
         "matrix_kind": "minimum-certified-flow-control",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -73,6 +74,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client",
         "provenance_kind": "third_party_library",
         "role": "client",
@@ -163,6 +168,7 @@
         "matrix_kind": "minimum-certified-flow-control",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -192,6 +198,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client",
         "provenance_kind": "third_party_library",
         "role": "client",
@@ -282,6 +292,7 @@
         "matrix_kind": "minimum-certified-flow-control",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -311,6 +322,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client",
         "provenance_kind": "third_party_library",
         "role": "client",
@@ -401,6 +416,7 @@
         "matrix_kind": "minimum-certified-flow-control",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -430,6 +446,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client",
         "provenance_kind": "third_party_library",
         "role": "client",
@@ -517,6 +537,7 @@
         "matrix_kind": "minimum-certified-flow-control",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -547,6 +568,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client-goaway-qpack",
         "provenance_kind": "third_party_library",
         "role": "client",
@@ -635,6 +660,7 @@
         "matrix_kind": "minimum-certified-flow-control",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
+        "phase9b_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -665,6 +691,10 @@
         "implementation_identity": "aioquic-http3-client",
         "implementation_source": "aioquic",
         "implementation_version": "optional-runtime",
+        "metadata": {
+          "wrapper_family": "aioquic",
+          "wrapper_id": "aioquic.http3_client"
+        },
         "name": "aioquic-http3-client-goaway-qpack",
         "provenance_kind": "third_party_library",
         "role": "client",

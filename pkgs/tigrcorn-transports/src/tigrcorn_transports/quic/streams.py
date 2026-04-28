@@ -30,6 +30,7 @@ FRAME_PATH_RESPONSE = 0x1B
 FRAME_CONNECTION_CLOSE = 0x1C
 FRAME_CONNECTION_CLOSE_APP = 0x1D
 FRAME_HANDSHAKE_DONE = 0x1E
+FRAME_DATAGRAM = 0x30
 
 _PACKET_SPACE_INITIAL = 'initial'
 _PACKET_SPACE_HANDSHAKE = 'handshake'
@@ -158,6 +159,11 @@ class QuicHandshakeDoneFrame:
 
 
 @dataclass(slots=True)
+class QuicDatagramFrame:
+    data: bytes
+
+
+@dataclass(slots=True)
 class QuicConnectionCloseFrame:
     error_code: int
     frame_type: int = 0
@@ -183,6 +189,7 @@ QuicFrame = (
     | QuicPathChallengeFrame
     | QuicPathResponseFrame
     | QuicHandshakeDoneFrame
+    | QuicDatagramFrame
     | QuicConnectionCloseFrame
     | int
 )
@@ -569,6 +576,7 @@ QUIC_FRAME_TYPE_LABELS: dict[int, str] = {
     FRAME_CONNECTION_CLOSE: 'CONNECTION_CLOSE',
     FRAME_CONNECTION_CLOSE_APP: 'CONNECTION_CLOSE_APP',
     FRAME_HANDSHAKE_DONE: 'HANDSHAKE_DONE',
+    FRAME_DATAGRAM: 'DATAGRAM',
 }
 
 QUIC_PACKET_SPACE_PROHIBITIONS: tuple[dict[str, object], ...] = (
@@ -626,6 +634,7 @@ _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE: dict[str, frozenset[int]] = {
         FRAME_STREAMS_BLOCKED_UNI,
         FRAME_CONNECTION_CLOSE,
         FRAME_CONNECTION_CLOSE_APP,
+        FRAME_DATAGRAM,
     }),
     _PACKET_SPACE_APPLICATION: frozenset({
         FRAME_PADDING,
@@ -651,6 +660,7 @@ _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE: dict[str, frozenset[int]] = {
         FRAME_CONNECTION_CLOSE,
         FRAME_CONNECTION_CLOSE_APP,
         FRAME_HANDSHAKE_DONE,
+        FRAME_DATAGRAM,
     }),
 }
 
@@ -692,13 +702,26 @@ def frame_type_value(frame: QuicFrame) -> int:
         return FRAME_PATH_RESPONSE
     if isinstance(frame, QuicHandshakeDoneFrame):
         return FRAME_HANDSHAKE_DONE
+    if isinstance(frame, QuicDatagramFrame):
+        return FRAME_DATAGRAM
     if isinstance(frame, QuicConnectionCloseFrame):
         return FRAME_CONNECTION_CLOSE_APP if frame.application else FRAME_CONNECTION_CLOSE
     raise TypeError(f'unsupported QUIC frame: {type(frame)!r}')
 
 
-def validate_frame_for_packet_space(frame: QuicFrame, packet_space: str, *, is_client: bool | None = None) -> None:
-    normalized = _PACKET_SPACE_APPLICATION if packet_space == _PACKET_SPACE_ZERO_RTT else packet_space if packet_space in _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE else packet_space
+def validate_frame_for_packet_space(
+    frame: QuicFrame,
+    packet_space: str,
+    *,
+    is_client: bool | None = None,
+) -> None:
+    normalized = (
+        _PACKET_SPACE_APPLICATION
+        if packet_space == _PACKET_SPACE_ZERO_RTT
+        else packet_space
+        if packet_space in _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE
+        else packet_space
+    )
     if packet_space not in _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE:
         raise ProtocolError(f'unknown QUIC packet space: {packet_space}')
     frame_type = frame_type_value(frame)
@@ -800,6 +823,8 @@ def encode_frame(frame: QuicFrame) -> bytes:
         return encode_quic_varint(FRAME_PATH_RESPONSE) + frame.data
     if isinstance(frame, QuicHandshakeDoneFrame):
         return encode_quic_varint(FRAME_HANDSHAKE_DONE)
+    if isinstance(frame, QuicDatagramFrame):
+        return encode_quic_varint(FRAME_DATAGRAM | 0x01) + pack_varbytes(frame.data)
     if isinstance(frame, QuicConnectionCloseFrame):
         reason = frame.reason.encode('utf-8')
         frame_type = FRAME_CONNECTION_CLOSE_APP if frame.application else FRAME_CONNECTION_CLOSE
@@ -916,6 +941,13 @@ def decode_frame(data: bytes, offset: int = 0) -> tuple[QuicFrame, int]:
         return QuicPathResponseFrame(payload), offset
     if frame_type == FRAME_HANDSHAKE_DONE:
         return QuicHandshakeDoneFrame(), offset
+    if frame_type & 0xFE == FRAME_DATAGRAM:
+        if frame_type & 0x01:
+            payload, offset = unpack_varbytes(data, offset)
+        else:
+            payload = data[offset:]
+            offset = len(data)
+        return QuicDatagramFrame(payload), offset
     if frame_type in {FRAME_CONNECTION_CLOSE, FRAME_CONNECTION_CLOSE_APP}:
         error_code, offset = decode_quic_varint(data, offset)
         frame_type_value_field, offset = decode_quic_varint(data, offset)

@@ -130,7 +130,7 @@ Claim posture used in this register:
 - assessment: the current tree appears to have already normalized the underlying HTTP/2 state path, so this now looks more like issue hygiene or test-historical drift than a still-open local protocol defect.
 - recommended disposition: rerun the targeted coverage in the current certification environment, then close or rewrite the issue to describe only any remaining reproducible gap.
 
-### `#19` Fix failing expectation in `tests.test_phase9g_strict_performance_closure`
+### `#19` Fix failing expectation in `tests.test_strict_performance_closure`
 
 - state: open
 - class: test expectation drift

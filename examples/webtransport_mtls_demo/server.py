@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from typing import Any
+
+
+LOGGER = logging.getLogger("tigrcorn.webtransport_demo")
 
 
 def _json_bytes(payload: dict[str, Any]) -> bytes:
@@ -84,6 +88,7 @@ async def _webtransport(scope: dict[str, Any], receive, send) -> None:
             )
         elif event_type == "webtransport.datagram.receive":
             data = event.get("data", b"")
+            LOGGER.info("datagram received", extra={"datagram_id": event.get("datagram_id", "datagram"), "size": len(data)})
             await send(
                 {
                     "type": "webtransport.datagram.send",
@@ -92,6 +97,7 @@ async def _webtransport(scope: dict[str, Any], receive, send) -> None:
                     "data": b"ack:" + data,
                 }
             )
+            LOGGER.info("datagram acknowledged", extra={"datagram_id": event.get("datagram_id", "datagram")})
         elif event_type in {"webtransport.disconnect", "webtransport.close"}:
             break
 

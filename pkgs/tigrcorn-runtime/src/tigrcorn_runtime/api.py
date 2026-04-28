@@ -41,6 +41,41 @@ async def serve(
     pipe_mode: str = "rawframed",
     config: ServerConfig | None = None,
 ) -> None:
+    """Serve an ASGI application until shutdown is requested.
+
+    Args:
+        app: ASGI application callable to run.
+        profile: Optional packaged profile name.
+        app_interface: Application interface selection mode.
+        host: TCP host when the TCP transport is active.
+        port: TCP port when the TCP transport is active.
+        uds: Unix-domain socket path when the Unix transport is active.
+        transport: Listener transport family.
+        lifespan: Lifespan negotiation policy.
+        log_level: Runtime logging level.
+        access_log: Whether access logging is enabled.
+        ssl_certfile: Server certificate file path.
+        ssl_keyfile: Server private key file path.
+        ssl_keyfile_password: Optional private key password.
+        ssl_ca_certs: Optional trust-anchor bundle for peer validation.
+        ssl_require_client_cert: Whether client certificates are required.
+        ssl_ciphers: Optional TLS cipher policy.
+        ssl_crl: Optional certificate revocation list file.
+        http_versions: Enabled HTTP protocol versions.
+        websocket: Whether WebSocket handling is enabled.
+        enable_h2c: Whether cleartext HTTP/2 upgrade is enabled.
+        max_body_size: Optional request-body size cap.
+        protocols: Enabled runtime protocol families.
+        quic_secret: Optional QUIC retry/integrity secret.
+        quic_require_retry: Whether QUIC retry is required.
+        pipe_mode: Pipe listener framing mode.
+        config: Prebuilt server configuration. Other options are used only
+            when this is not supplied.
+
+    Returns:
+        None.
+    """
+
     if config is None:
         config = build_config(
             profile=profile,
@@ -103,6 +138,45 @@ async def serve_import_string(
     factory: bool = False,
     config: ServerConfig | None = None,
 ) -> None:
+    """Load an ASGI application by import string and serve it.
+
+    Args:
+        app_target: Import target such as ``module:app``.
+        profile: Optional packaged profile name.
+        app_interface: Application interface selection mode.
+        host: TCP host when the TCP transport is active.
+        port: TCP port when the TCP transport is active.
+        uds: Unix-domain socket path when the Unix transport is active.
+        transport: Listener transport family.
+        lifespan: Lifespan negotiation policy.
+        log_level: Runtime logging level.
+        access_log: Whether access logging is enabled.
+        ssl_certfile: Server certificate file path.
+        ssl_keyfile: Server private key file path.
+        ssl_keyfile_password: Optional private key password.
+        ssl_ca_certs: Optional trust-anchor bundle for peer validation.
+        ssl_require_client_cert: Whether client certificates are required.
+        ssl_ciphers: Optional TLS cipher policy.
+        ssl_crl: Optional certificate revocation list file.
+        http_versions: Enabled HTTP protocol versions.
+        websocket: Whether WebSocket handling is enabled.
+        enable_h2c: Whether cleartext HTTP/2 upgrade is enabled.
+        max_body_size: Optional request-body size cap.
+        protocols: Enabled runtime protocol families.
+        quic_secret: Optional QUIC retry/integrity secret.
+        quic_require_retry: Whether QUIC retry is required.
+        pipe_mode: Pipe listener framing mode.
+        factory: Whether the import target is an application factory.
+        config: Prebuilt server configuration. Its application target is used
+            when ``app_target`` is not supplied.
+
+    Returns:
+        None.
+
+    Raises:
+        ValueError: If no import target is supplied by arguments or config.
+    """
+
     if config is not None:
         app_target = app_target or config.app.target
         factory = config.app.factory if factory is False else factory
@@ -173,6 +247,42 @@ def run(
     factory: bool = False,
     config: ServerConfig | None = None,
 ) -> None:
+    """Run an ASGI application or import target from synchronous code.
+
+    Args:
+        app: ASGI application callable or import target.
+        profile: Optional packaged profile name.
+        app_interface: Application interface selection mode.
+        host: TCP host when the TCP transport is active.
+        port: TCP port when the TCP transport is active.
+        uds: Unix-domain socket path when the Unix transport is active.
+        transport: Listener transport family.
+        lifespan: Lifespan negotiation policy.
+        log_level: Runtime logging level.
+        access_log: Whether access logging is enabled.
+        ssl_certfile: Server certificate file path.
+        ssl_keyfile: Server private key file path.
+        ssl_keyfile_password: Optional private key password.
+        ssl_ca_certs: Optional trust-anchor bundle for peer validation.
+        ssl_require_client_cert: Whether client certificates are required.
+        ssl_ciphers: Optional TLS cipher policy.
+        ssl_crl: Optional certificate revocation list file.
+        http_versions: Enabled HTTP protocol versions.
+        websocket: Whether WebSocket handling is enabled.
+        enable_h2c: Whether cleartext HTTP/2 upgrade is enabled.
+        max_body_size: Optional request-body size cap.
+        protocols: Enabled runtime protocol families.
+        quic_secret: Optional QUIC retry/integrity secret.
+        quic_require_retry: Whether QUIC retry is required.
+        pipe_mode: Pipe listener framing mode.
+        factory: Whether a string import target is an application factory.
+        config: Prebuilt server configuration. Its process runtime selects
+            the async backend when supplied.
+
+    Returns:
+        None.
+    """
+
     runtime = config.process.runtime if config is not None else 'auto'
     if isinstance(app, str):
         run_coro_with_runtime(

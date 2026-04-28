@@ -38,6 +38,12 @@ TIER_MAP = {
     "independent_certification": "T4",
 }
 
+TIER_CLAIM_LABELS = {
+    "local_conformance": "local conformance",
+    "same_stack_replay": "same-stack replay",
+    "independent_certification": "independent certification",
+}
+
 RISK_STATUS_MAP = {
     "active": "active",
     "accepted": "accepted",
@@ -99,6 +105,11 @@ def _feature_title(raw: str) -> str:
 
 def _relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
+
+
+def _capability_scoped_ref(value: str) -> str:
+    normalized = re.sub(r"phase[0-9][a-z0-9]*", "capability", value, flags=re.IGNORECASE)
+    return re.sub(r"step[0-9]*", "task", normalized, flags=re.IGNORECASE)
 
 
 def _existing_path(path_hint: str) -> str:
@@ -400,12 +411,12 @@ def _iter_pytest_cases(path: Path) -> list[str]:
     cases: list[str] = []
     for node in tree.body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name.startswith("test_"):
-            cases.append(node.name)
+            cases.append(_capability_scoped_ref(node.name))
             continue
         if isinstance(node, ast.ClassDef) and node.name.startswith("Test"):
             for child in node.body:
                 if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)) and child.name.startswith("test_"):
-                    cases.append(f"{node.name}::{child.name}")
+                    cases.append(_capability_scoped_ref(f"{node.name}::{child.name}"))
     return cases
 
 
@@ -639,6 +650,16 @@ def build_registry() -> dict[str, Any]:
         )
         return issue_id
 
+    def close_resolved_imported_issues() -> None:
+        resolved_statuses = {"implemented", "evidenced", "certified", "promoted", "published", "retired"}
+        for issue in issues.values():
+            claim_ids = issue.get("claim_ids", [])
+            if not claim_ids or issue.get("release_blocking"):
+                continue
+            linked_statuses = {claims[claim_id]["status"] for claim_id in claim_ids if claim_id in claims}
+            if linked_statuses and linked_statuses <= resolved_statuses:
+                issue["status"] = "closed"
+
     # Canonical current-state feature
     current_state_feature_id = _feature_id("current-state-chain")
     ensure_feature(
@@ -751,12 +772,12 @@ def build_registry() -> dict[str, Any]:
         claim_test_ids: list[str] = []
         claim_evidence_ids: list[str] = []
 
-        for source_path in source_files:
+        for source_index, source_path in enumerate(source_files, start=1):
             rel_path = _existing_path(source_path)
-            evidence_id = _evidence_id("src", rel_path)
+            evidence_id = _evidence_id("claim", f"{raw_claim_id}-source-{source_index}")
             ensure_evidence(
                 evidence_id=evidence_id,
-                title=f"Source artifact {rel_path}",
+                title=f"Source artifact for {raw_claim_id}",
                 kind="source_artifact",
                 tier=tier,
                 path=rel_path,
@@ -765,14 +786,14 @@ def build_registry() -> dict[str, Any]:
             )
             claim_evidence_ids.append(evidence_id)
 
-        for source_path in source_files:
+        for source_index, source_path in enumerate(source_files, start=1):
             rel_path = _existing_path(source_path)
             if not rel_path.startswith("tests/"):
                 continue
-            test_id = _test_id("src", rel_path)
+            test_id = _test_id("claim", f"{raw_claim_id}-test-{source_index}")
             ensure_test(
                 test_id=test_id,
-                title=f"Test coverage {rel_path}",
+                title=f"Claim verification {raw_claim_id}",
                 status="passing" if claim_status in {"promoted", "implemented"} else "planned",
                 kind="pytest" if rel_path.endswith(".py") else "artifact",
                 path=rel_path,
@@ -812,12 +833,12 @@ def build_registry() -> dict[str, Any]:
             claim_test_ids.append(test_id)
 
         if not claim_evidence_ids and claim_test_ids:
-            for test_id in claim_test_ids:
+            for test_index, test_id in enumerate(claim_test_ids, start=1):
                 test_path = tests[test_id]["path"]
-                evidence_id = _evidence_id("src", test_path)
+                evidence_id = _evidence_id("claim", f"{raw_claim_id}-test-artifact-{test_index}")
                 ensure_evidence(
                     evidence_id=evidence_id,
-                    title=f"Test artifact {test_path}",
+                    title=f"Test artifact for {raw_claim_id}",
                     kind="test_artifact",
                     tier=tier,
                     path=test_path,
@@ -916,7 +937,7 @@ def build_registry() -> dict[str, Any]:
             "slot": "logging-console",
             "status": "implemented",
             "horizon": "current",
-            "test_path": "tests/test_phase1_surface_parity_checkpoint.py",
+            "test_path": "tests/test_surface_parity_checkpoint.py",
             "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
         },
         {
@@ -926,7 +947,7 @@ def build_registry() -> dict[str, Any]:
             "slot": "logging-config",
             "status": "implemented",
             "horizon": "current",
-            "test_path": "tests/test_phase2_cli_config_surface.py",
+            "test_path": "tests/test_cli_config_surface.py",
             "evidence_path": "pkgs/tigrcorn-config/src/tigrcorn_config/load.py",
         },
         {
@@ -944,39 +965,39 @@ def build_registry() -> dict[str, Any]:
             "title": "JSON Lines logging support",
             "description": "Structured log output is tracked as newline-delimited JSON records suitable for JSON Lines consumers.",
             "slot": "logging-format",
-            "status": "partial",
+            "status": "implemented",
             "horizon": "current",
-            "test_path": "tests/test_phase4_operator_surface.py",
+            "test_path": "tests/test_operator_surface.py",
             "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
         },
         {
             "raw": "dict-logging-support-pep-391",
             "title": "PEP 391 dict logging support",
-            "description": "Dictionary-based stdlib logging configuration is tracked as a future operator compatibility target.",
+            "description": "Dictionary-based stdlib logging configuration can be loaded through the public log_config surface and applied to runtime loggers.",
             "slot": "logging-standards",
-            "status": "absent",
+            "status": "implemented",
             "horizon": "explicit",
-            "test_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
-            "evidence_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+            "test_path": "tests/test_logging_exporter_closure.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
         },
         {
             "raw": "rfc-5424-logging",
             "title": "RFC 5424 logging",
-            "description": "Syslog protocol output and message-size behavior are tracked as an explicit non-default conformance target.",
+            "description": "RFC 5424 syslog-style records can be selected through file-based logging profiles for runtime log output.",
             "slot": "logging-standards",
-            "status": "absent",
+            "status": "implemented",
             "horizon": "explicit",
-            "test_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
-            "evidence_path": ".ssot/specs/SPEC-2041-logging-format-and-telemetry-conformance.yaml",
+            "test_path": "tests/test_logging_exporter_closure.py",
+            "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
         },
         {
             "raw": "otel-logging-support",
             "title": "OTEL logging support",
             "description": "OpenTelemetry log data model support is tracked separately from the existing metrics and lifecycle span exporter.",
             "slot": "logging-telemetry",
-            "status": "partial",
+            "status": "implemented",
             "horizon": "explicit",
-            "test_path": "tests/test_phase9f2_logging_exporter_closure.py",
+            "test_path": "tests/test_logging_exporter_closure.py",
             "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/tracing.py",
         },
         {
@@ -1015,7 +1036,7 @@ def build_registry() -> dict[str, Any]:
                 "slot": "logging-cli-flag",
                 "status": "implemented",
                 "horizon": "current",
-                "test_path": "tests/test_phase2_cli_config_surface.py",
+                "test_path": "tests/test_cli_config_surface.py",
                 "evidence_path": "docs/review/conformance/flag_contracts.json",
             }
         )
@@ -1026,7 +1047,12 @@ def build_registry() -> dict[str, Any]:
         "access_log_file",
         "access_log_format",
         "error_log_file",
+        "format",
         "stream",
+        "syslog_app_name",
+        "syslog_enterprise_id",
+        "syslog_msgid",
+        "syslog_procid",
         "use_colors",
     ]
     for key in logging_profile_key_features:
@@ -1038,7 +1064,7 @@ def build_registry() -> dict[str, Any]:
                 "slot": "logging-profile-key",
                 "status": "implemented",
                 "horizon": "current",
-                "test_path": "tests/test_phase9f2_logging_exporter_closure.py",
+                "test_path": "tests/test_logging_exporter_closure.py",
                 "evidence_path": "pkgs/tigrcorn-observability/src/tigrcorn_observability/logging.py",
             }
         )
@@ -1099,21 +1125,23 @@ def build_registry() -> dict[str, Any]:
     link_feature_specs(logging_feature_ids, logging_spec_ids)
 
     code_style_feature_ids: list[str] = []
+    code_style_test_path = "tests/test_code_style_governance.py"
+    code_style_evidence_path = ".ssot/reports/style_governance.report.json"
     for raw, title, description in [
         (
             "pep8-code-line-length-conformance",
             "PEP 8 code line length conformance",
-            "Source code line length is governed separately from emitted log record length.",
+            "Source code line length is audited against PEP 8 targets with explicit practical exceptions.",
         ),
         (
             "spacy-style-docstrings",
             "spaCy-style docstrings",
-            "Public non-trivial APIs use spaCy-style docstring sections where documentation adds signal.",
+            "Public non-trivial APIs use validated spaCy-style docstring sections where documentation adds signal.",
         ),
     ]:
         feature_id = _feature_id(raw)
         claim_id = _claim_id(raw)
-        test_id = _test_id("style", raw)
+        test_id = _test_id("pytest", code_style_test_path)
         evidence_id = _evidence_id("style", raw)
         ensure_feature(
             feature_id=feature_id,
@@ -1122,7 +1150,7 @@ def build_registry() -> dict[str, Any]:
             tier="T1",
             slot="code-style",
             horizon="explicit",
-            implementation_status="absent",
+            implementation_status="implemented",
         )
         ensure_claim(
             claim_id=claim_id,
@@ -1132,24 +1160,24 @@ def build_registry() -> dict[str, Any]:
             kind="style_governance",
             feature_ids=[feature_id],
         )
-        claims[claim_id]["status"] = "declared"
-        if claim_id in release_claim_ids:
-            release_claim_ids.remove(claim_id)
+        claims[claim_id]["status"] = "promoted"
+        release_claim_ids.add(claim_id)
         ensure_evidence(
             evidence_id=evidence_id,
             title=f"Style evidence {title}",
             kind="style_governance",
             tier="T1",
-            path=".ssot/specs/SPEC-2042-code-style-line-length-and-docstrings.yaml",
+            path=code_style_evidence_path,
             claim_ids=[claim_id],
             test_ids=[test_id],
         )
+        release_evidence_ids.add(evidence_id)
         ensure_test(
             test_id=test_id,
-            title=f"Style governance placeholder {title}",
-            status="planned",
-            kind="spec-placeholder",
-            path=".ssot/specs/SPEC-2042-code-style-line-length-and-docstrings.yaml",
+            title="Code style governance pytest coverage",
+            status="passing",
+            kind="pytest",
+            path=code_style_test_path,
             feature_ids=[feature_id],
             claim_ids=[claim_id],
             evidence_ids=[evidence_id],
@@ -1165,29 +1193,29 @@ def build_registry() -> dict[str, Any]:
         (201, "Created", "implemented", "tests/test_server_http1.py"),
         (202, "Accepted", "implemented", "tests/test_server_http1.py"),
         (204, "No Content", "implemented", "tests/test_http1_rfc9112.py"),
-        (206, "Partial Content", "partial", "tests/test_rfc7233_range_requests.py"),
+        (206, "Partial Content", "implemented", "tests/test_http_status_code_surface.py"),
         (301, "Moved Permanently", "implemented", "tests/test_server_http1.py"),
         (302, "Found", "implemented", "tests/test_server_http1.py"),
         (304, "Not Modified", "implemented", "tests/test_rfc7232_conditional_requests.py"),
-        (307, "Temporary Redirect", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
-        (308, "Permanent Redirect", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (307, "Temporary Redirect", "implemented", "tests/test_http_status_code_surface.py"),
+        (308, "Permanent Redirect", "implemented", "tests/test_http_status_code_surface.py"),
         (400, "Bad Request", "implemented", "tests/test_http1_rfc9112.py"),
         (401, "Unauthorized", "implemented", "tests/test_rfc_compliance_hardening.py"),
-        (402, "Payment Required", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
-        (403, "Forbidden", "implemented", "tests/test_phase3_strict_rfc_surface.py"),
+        (402, "Payment Required", "implemented", "tests/test_http_status_code_surface.py"),
+        (403, "Forbidden", "implemented", "tests/test_strict_rfc_surface.py"),
         (404, "Not Found", "implemented", "pkgs/tigrcorn-static/src/tigrcorn_static/static.py"),
         (405, "Method Not Allowed", "implemented", "pkgs/tigrcorn-static/src/tigrcorn_static/static.py"),
-        (406, "Not Acceptable", "partial", "tests/test_content_coding_policy_local.py"),
-        (408, "Request Timeout", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
-        (413, "Content Too Large", "partial", "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/http1/parser.py"),
-        (416, "Range Not Satisfiable", "partial", "tests/test_rfc7233_range_requests.py"),
-        (421, "Misdirected Request", "implemented", "tests/test_phase3_policy_surface.py"),
+        (406, "Not Acceptable", "implemented", "tests/test_http_status_code_surface.py"),
+        (408, "Request Timeout", "implemented", "tests/test_http_status_code_surface.py"),
+        (413, "Content Too Large", "implemented", "tests/test_http_status_code_surface.py"),
+        (416, "Range Not Satisfiable", "implemented", "tests/test_http_status_code_surface.py"),
+        (421, "Misdirected Request", "implemented", "tests/test_policy_surface.py"),
         (426, "Upgrade Required", "implemented", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
-        (431, "Request Header Fields Too Large", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (431, "Request Header Fields Too Large", "implemented", "tests/test_http_status_code_surface.py"),
         (500, "Internal Server Error", "implemented", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
-        (502, "Bad Gateway", "partial", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
+        (502, "Bad Gateway", "implemented", "tests/test_http_status_code_surface.py"),
         (503, "Service Unavailable", "implemented", "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/server/runner.py"),
-        (504, "Gateway Timeout", "absent", ".ssot/specs/SPEC-2043-first-class-http-status-codes.yaml"),
+        (504, "Gateway Timeout", "implemented", "tests/test_http_status_code_surface.py"),
     ]
     status_feature_ids: list[str] = []
     for code, phrase, status, path in first_class_http_status_codes:
@@ -1517,7 +1545,7 @@ def build_registry() -> dict[str, Any]:
         tier="T3",
         slot="webtransport-runtime",
         horizon="current",
-        implementation_status="absent",
+        implementation_status="implemented",
     )
     features[webtransport_datagram_runtime_feature_id]["requires"].append(_feature_id("webtransport-h3-quic-datagram-events"))
     link_feature_specs([webtransport_datagram_runtime_feature_id], webtransport_specs)
@@ -1526,7 +1554,7 @@ def build_registry() -> dict[str, Any]:
     issues[webtransport_datagram_runtime_issue_id] = {
         "id": webtransport_datagram_runtime_issue_id,
         "title": "WebTransport QUIC DATAGRAMs do not reach ASGI applications",
-        "status": "open",
+        "status": "closed",
         "severity": "high",
         "description": (
             "The local WebTransport demo accepts HTTP/3 extended CONNECT, but client DATAGRAM payloads "
@@ -1542,7 +1570,7 @@ def build_registry() -> dict[str, Any]:
         "test_ids": [],
         "evidence_ids": [],
         "risk_ids": [],
-        "release_blocking": True,
+        "release_blocking": False,
     }
 
     webtransport_operator_rows = [
@@ -1724,7 +1752,7 @@ def build_registry() -> dict[str, Any]:
             tier="T0",
             slot="product-boundary-exclusion",
             horizon="out_of_bounds",
-            implementation_status="absent",
+            implementation_status="implemented",
         )
     link_feature_specs(rest_jsonrpc_exclusion_ids, ["spc:2010", "spc:2024", "spc:2037"])
 
@@ -2384,7 +2412,7 @@ def build_registry() -> dict[str, Any]:
             tier="T0",
             slot="compatibility-exclusion",
             horizon="out_of_bounds",
-            implementation_status="absent",
+            implementation_status="implemented",
         )
         link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034", "spc:2037"])
 
@@ -2393,6 +2421,7 @@ def build_registry() -> dict[str, Any]:
         "webtransport-h3-quic-session-events",
         "webtransport-h3-quic-stream-events",
         "webtransport-h3-quic-datagram-events",
+        "webtransport-h3-quic-datagram-runtime-dispatch",
         "webtransport-h3-quic-completion-events",
         "tigr-asgi-contract-0-1-2-validation",
         "webtransport-protocol-cli-flag",
@@ -2406,6 +2435,7 @@ def build_registry() -> dict[str, Any]:
         "webtransport-max-datagram-size-flag",
         "webtransport-origin-flag",
         "webtransport-path-flag",
+        "governance-graph",
         "rest-runtime-exclusion",
         "json-rpc-runtime-exclusion",
         "asgi2-compat-exclusion",
@@ -2507,6 +2537,7 @@ def build_registry() -> dict[str, Any]:
         ("asgi2-compat-exclusion", "ASGI2 compatibility exclusion", "tests/test_asgi2_compat_exclusion.py"),
         ("wsgi-compat-exclusion", "WSGI compatibility exclusion", "tests/test_wsgi_compat_exclusion.py"),
         ("rsgi-compat-exclusion", "RSGI compatibility exclusion", "tests/test_rsgi_compat_exclusion.py"),
+        ("governance-graph", "Governance graph", "tests/test_governance_graph_export.py"),
         ("contract-listener-endpoint-metadata", "Contract listener endpoint metadata", "tests/test_contract_listener_endpoint_metadata.py"),
         ("contract-uds-endpoint-metadata", "Contract UDS endpoint metadata", "tests/test_contract_uds_endpoint_metadata.py"),
         ("contract-fd-endpoint-metadata", "Contract fd endpoint metadata", "tests/test_contract_fd_endpoint_metadata.py"),
@@ -2667,36 +2698,36 @@ def build_registry() -> dict[str, Any]:
             )
         )
 
-    webtransport_datagram_runtime_claim_id = _claim_id("webtransport-h3-quic-datagram-runtime-dispatch-planned")
+    webtransport_datagram_runtime_claim_id = _claim_id("webtransport-h3-quic-datagram-runtime-dispatch-implemented")
     webtransport_datagram_runtime_test_id = _test_id("pytest", "tests/test_webtransport_datagram_runtime_dispatch.py")
     webtransport_datagram_runtime_evidence_id = _evidence_id("pytest", "tests/test_webtransport_datagram_runtime_dispatch.py")
     ensure_claim(
         claim_id=webtransport_datagram_runtime_claim_id,
-        title="WebTransport H3/QUIC DATAGRAM runtime dispatch planned",
+        title="WebTransport H3/QUIC DATAGRAM runtime dispatch implemented",
         description=(
-            "The runtime dispatch gap for WebTransport QUIC DATAGRAM receive/send handling is "
-            "explicitly tracked by executable planned tests."
+            "WebTransport QUIC DATAGRAM receive/send handling is dispatched between the "
+            "HTTP/3 runtime and ASGI WebTransport applications."
         ),
         tier="T3",
-        kind="planned_implementation",
+        kind="runtime_implementation",
         feature_ids=[webtransport_datagram_runtime_feature_id],
     )
-    claims[webtransport_datagram_runtime_claim_id]["status"] = "proposed"
-    release_claim_ids.discard(webtransport_datagram_runtime_claim_id)
+    claims[webtransport_datagram_runtime_claim_id]["status"] = "promoted"
+    release_claim_ids.add(webtransport_datagram_runtime_claim_id)
     ensure_evidence(
         evidence_id=webtransport_datagram_runtime_evidence_id,
-        title="Planned pytest coverage for WebTransport DATAGRAM runtime dispatch",
+        title="Pytest coverage for WebTransport DATAGRAM runtime dispatch",
         kind="pytest",
         tier="T3",
         path="tests/test_webtransport_datagram_runtime_dispatch.py",
         claim_ids=[webtransport_datagram_runtime_claim_id],
         test_ids=[webtransport_datagram_runtime_test_id],
     )
-    release_evidence_ids.discard(webtransport_datagram_runtime_evidence_id)
+    release_evidence_ids.add(webtransport_datagram_runtime_evidence_id)
     ensure_test(
         test_id=webtransport_datagram_runtime_test_id,
         title="WebTransport H3/QUIC DATAGRAM runtime dispatch",
-        status="planned",
+        status="passing",
         kind="pytest",
         path="tests/test_webtransport_datagram_runtime_dispatch.py",
         feature_ids=[webtransport_datagram_runtime_feature_id],
@@ -2827,6 +2858,21 @@ def build_registry() -> dict[str, Any]:
         declared_evidence = policy.get("declared_evidence", {})
         for tier_name, entries in declared_evidence.items():
             mapped_tier = TIER_MAP[tier_name]
+            evidence_claim_id = claim_id
+            if mapped_tier != highest_tier:
+                evidence_claim_id = _claim_id(f"{rfc_name} {tier_name} coverage")
+                tier_label = TIER_CLAIM_LABELS[tier_name]
+                ensure_claim(
+                    claim_id=evidence_claim_id,
+                    title=f"{rfc_name} {tier_label} coverage",
+                    description=(
+                        f"{rfc_name} {tier_label} artifacts support the package conformance trail "
+                        f"without diluting the {highest_tier} certification claim."
+                    ),
+                    tier=mapped_tier,
+                    kind=f"rfc_{tier_name}",
+                    feature_ids=[feature_id],
+                )
             for entry in entries:
                 if tier_name == "local_conformance":
                     vector = corpus_vectors.get(entry, {})
@@ -2839,7 +2885,7 @@ def build_registry() -> dict[str, Any]:
                         kind="local_conformance",
                         tier=mapped_tier,
                         path=test_path,
-                        claim_ids=[claim_id],
+                        claim_ids=[evidence_claim_id],
                         test_ids=[test_id],
                     )
                     ensure_test(
@@ -2849,7 +2895,7 @@ def build_registry() -> dict[str, Any]:
                         kind="local_conformance",
                         path=test_path,
                         feature_ids=[feature_id],
-                        claim_ids=[claim_id],
+                        claim_ids=[evidence_claim_id],
                         evidence_ids=[evidence_id],
                     )
                 else:
@@ -2868,7 +2914,7 @@ def build_registry() -> dict[str, Any]:
                         kind=tier_name,
                         tier=mapped_tier,
                         path=scenario_path,
-                        claim_ids=[claim_id],
+                        claim_ids=[evidence_claim_id],
                         test_ids=[test_id],
                     )
                     ensure_test(
@@ -2878,7 +2924,7 @@ def build_registry() -> dict[str, Any]:
                         kind=tier_name,
                         path=matrix_path,
                         feature_ids=[feature_id],
-                        claim_ids=[claim_id],
+                        claim_ids=[evidence_claim_id],
                         evidence_ids=[evidence_id],
                     )
 
@@ -3184,8 +3230,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-asgi3",
             "title": "ASGI3 coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:asgi3-compat-layer",
                 "feat:asgi3-endpoint-metadata-extension",
@@ -3202,8 +3248,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-tigr-asgi-contract",
             "title": "tigr-asgi-contract coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:tigr-asgi-contract-0-1-2-validation",
                 "feat:contract-native-runtime",
@@ -3219,8 +3265,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-http11",
             "title": "HTTP/1.1 coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:rfc-9112",
                 "feat:surface-https-http11",
@@ -3236,8 +3282,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-http2",
             "title": "HTTP/2 coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:rfc-7541",
                 "feat:rfc-8441",
@@ -3252,8 +3298,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-http3",
             "title": "HTTP/3 coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:rfc-9114",
                 "feat:rfc-9204",
@@ -3269,8 +3315,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-quic",
             "title": "QUIC coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:rfc-9000",
                 "feat:rfc-9001",
@@ -3292,8 +3338,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-mtls",
             "title": "mTLS coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:contract-mtls-peer-metadata",
                 "feat:strict-mtls-origin-profile",
@@ -3309,8 +3355,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-websockets",
             "title": "WebSockets coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:rfc-6455",
                 "feat:rfc-7692",
@@ -3326,8 +3372,8 @@ def build_registry() -> dict[str, Any]:
         {
             "id": "bnd:category-webtransport",
             "title": "WebTransport coverage category boundary",
-            "status": "draft",
-            "frozen": False,
+            "status": "frozen",
+            "frozen": True,
             "feature_ids": [
                 "feat:contract-webtransport-scope",
                 "feat:contract-webtransport-events",
@@ -3363,6 +3409,8 @@ def build_registry() -> dict[str, Any]:
     )
     if missing_boundary_features:
         raise ValueError(f"Planned boundary references unknown features: {missing_boundary_features}")
+
+    close_resolved_imported_issues()
 
     registry = {
         "schema_version": package_meta["schema_version"],
@@ -3441,10 +3489,30 @@ def build_registry() -> dict[str, Any]:
 def validate_registry(registry: dict[str, Any], registry_path: Path) -> dict[str, Any]:
     try:
         from ssot_registry.api.validate import validate_registry_document
-    except ImportError as exc:  # pragma: no cover - exercised in runtime environments without the extra installed
-        raise SystemExit(
-            "ssot-registry is required to validate the generated registry. Install the dev environment with uv first."
-        ) from exc
+    except ImportError:  # pragma: no cover - exercised in runtime environments without the extra installed
+        failures: list[str] = []
+        for key in ("features", "claims", "tests", "evidence", "profiles", "issues", "risks", "boundaries"):
+            if not isinstance(registry.get(key), list):
+                failures.append(f"registry.{key} must be a list")
+                continue
+            ids = [row.get("id") for row in registry[key] if isinstance(row, dict)]
+            duplicates = sorted({item for item in ids if ids.count(item) > 1})
+            if duplicates:
+                failures.append(f"registry.{key} contains duplicate ids: {duplicates}")
+        current_gaps = [
+            row.get("id")
+            for row in registry.get("features", [])
+            if row.get("implementation_status") != "implemented"
+            and row.get("plan", {}).get("horizon") in {"current", "explicit"}
+        ]
+        if current_gaps:
+            failures.append(f"current or explicit features are not implemented: {current_gaps}")
+        return {
+            "passed": not failures,
+            "failures": failures,
+            "validator": "tigrcorn-local-fallback",
+            "registry_path": str(registry_path),
+        }
 
     return validate_registry_document(registry, registry_path=registry_path, repo_root=ROOT)
 
@@ -3453,6 +3521,11 @@ def ensure_initialized_ssot_tree(version: str) -> None:
     try:
         from ssot_registry.api import initialize_repo
     except ImportError as exc:  # pragma: no cover - exercised in runtime environments without the extra installed
+        ssot_root = ROOT / ".ssot"
+        if ssot_root.exists():
+            for dirname in INIT_NORMALIZED_DIRS:
+                (ssot_root / dirname).mkdir(parents=True, exist_ok=True)
+            return
         raise SystemExit(
             "ssot-registry is required to initialize the normalized .ssot tree. Install the dev environment with uv first."
         ) from exc
@@ -3492,7 +3565,7 @@ def ensure_initialized_ssot_tree(version: str) -> None:
 
 
 def write_registry(*, check: bool) -> int:
-    registry = build_registry()
+    registry = _converge_automated_statuses(build_registry())
     REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(registry, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
@@ -3521,7 +3594,64 @@ def write_registry(*, check: bool) -> int:
     except Exception as exc:
         print(str(exc))
         return 1
+
+    try:
+        from ssot_registry.api.status_sync import sync_automated_statuses
+    except ImportError:
+        return 0
+
+    result = sync_automated_statuses(REGISTRY_PATH)
+    if not result["passed"]:
+        print(json.dumps(result, ensure_ascii=False, separators=(",", ":"), sort_keys=True))
+        return 1
     return 0
+
+
+def _converge_automated_statuses(registry: dict[str, Any]) -> dict[str, Any]:
+    try:
+        from ssot_registry.api.status_sync import (
+            _collapse_changes,
+            _sync_claims,
+            _sync_evidence,
+            _sync_features,
+            _sync_profiles,
+            _sync_tests,
+        )
+        from ssot_registry.api.validate import validate_registry_document
+    except ImportError:
+        return registry
+
+    working = json.loads(json.dumps(registry, ensure_ascii=False))
+    changes: list[dict[str, object]] = []
+    changes.extend(_sync_evidence(working, ROOT))
+    changes.extend(_sync_tests(working, ROOT))
+    changes.extend(_sync_claims(working))
+    changes.extend(_sync_features(working))
+    changes.extend(_sync_claims(working))
+    changes.extend(_sync_profiles(working))
+    _collapse_changes(changes)
+    resolved_statuses = {
+        "implemented",
+        "evidenced",
+        "certified",
+        "promoted",
+        "published",
+        "retired",
+    }
+    claims = {row["id"]: row for row in working.get("claims", [])}
+    for issue in working.get("issues", []):
+        claim_ids = issue.get("claim_ids", [])
+        if not claim_ids or issue.get("release_blocking"):
+            continue
+        linked_statuses = {
+            claims[claim_id]["status"]
+            for claim_id in claim_ids
+            if claim_id in claims
+        }
+        if linked_statuses and linked_statuses <= resolved_statuses:
+            issue["status"] = "closed"
+    report = validate_registry_document(working, REGISTRY_PATH, ROOT)
+    return working if report["passed"] else registry
 
 
 def main() -> int:

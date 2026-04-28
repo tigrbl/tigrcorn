@@ -125,7 +125,7 @@ Primary modified or added modules:
 - `src/tigrcorn/protocols/http2/handler.py`
 - `src/tigrcorn/protocols/http3/handler.py`
 - `src/tigrcorn/protocols/http2/handler.py`
-- `tests/test_phase2_entity_semantics_checkpoint.py`
+- `tests/test_entity_semantics_checkpoint.py`
 - `examples/http_entity_static/app.py`
 - `examples/http_entity_static/client_http1.py`
 - `docs/review/conformance/PHASE2_CORE_HTTP_ENTITY_SEMANTICS_CHECKPOINT.md`
@@ -135,8 +135,8 @@ Primary modified or added modules:
 
 The following focused validation bundle passed:
 
-- `tests/test_phase1_surface_parity_checkpoint.py`
-- `tests/test_phase2_entity_semantics_checkpoint.py`
+- `tests/test_surface_parity_checkpoint.py`
+- `tests/test_entity_semantics_checkpoint.py`
 - `tests/test_http1_hardening_pass.py`
 - `tests/test_http_content_coding_rfc9110.py`
 - `tests/test_response_trailers_rfc9110.py`

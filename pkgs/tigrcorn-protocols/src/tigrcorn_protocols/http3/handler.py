@@ -5,7 +5,7 @@ from contextlib import suppress
 from dataclasses import dataclass, field
 from typing import Any
 
-from tigrcorn_asgi.receive import HTTPRequestReceive, apply_request_trailer_policy
+from tigrcorn_asgi.receive import HTTPRequestReceive, QueueReceive, apply_request_trailer_policy
 from tigrcorn_asgi.scopes.custom import build_custom_scope
 from tigrcorn_asgi.scopes.http import build_http_scope
 from tigrcorn_asgi.send import HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
@@ -44,7 +44,7 @@ from tigrcorn_transports.quic.packets import QuicLongHeaderPacket, QuicLongHeade
 from tigrcorn_transports.udp.endpoint import UDPEndpoint
 from tigrcorn_transports.udp.packet import UDPPacket
 from tigrcorn_core.types import ASGIApp
-from tigrcorn_core.utils.bytes import encode_quic_varint
+from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
 from tigrcorn_core.utils.authority import authority_allowed
 from tigrcorn_core.utils.headers import apply_response_header_policy, sanitize_early_hints_headers, strip_connection_specific_headers
 
@@ -68,6 +68,7 @@ class HTTP3Session:
     timer_handle: asyncio.TimerHandle | None = None
     connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
     websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
+    webtransport_sessions: dict[int, _HTTP3WebTransportSession] = field(default_factory=dict)
     webtransport_streams: set[int] = field(default_factory=set)
     stream_work_leases: dict[int, object] = field(default_factory=dict)
     early_data_accounted: bool = False
@@ -188,6 +189,152 @@ class _HTTP3ConnectTunnel:
     async def _finish_if_complete(self) -> None:
         if self.client_input_closed and self.server_output_closed:
             await self.abort()
+
+
+class _HTTP3WebTransportSession:
+    def __init__(
+        self,
+        *,
+        handler: HTTP3DatagramHandler,
+        session: HTTP3Session,
+        stream_id: int,
+        request: ParsedRequest,
+        client: tuple[str, int] | None,
+        server: tuple[str, int] | tuple[str, None] | None,
+        scheme: str,
+        endpoint: UDPEndpoint,
+        work_lease: object | None = None,
+    ) -> None:
+        self.handler = handler
+        self.session = session
+        self.stream_id = stream_id
+        self.request = request
+        self.client = client
+        self.server = server
+        self.scheme = scheme
+        self.endpoint = endpoint
+        self.work_lease = work_lease
+        self.session_id = f'h3-{stream_id}'
+        self.receive = QueueReceive(max_size=handler.config.webtransport.max_streams)
+        self.task: asyncio.Task[None] | None = None
+        self.accepted = False
+        self.closed = False
+
+    async def start(self) -> None:
+        scope = {
+            'type': 'webtransport',
+            'asgi': {'version': '3.0', 'spec_version': '2.5'},
+            'http_version': '3',
+            'scheme': self.scheme,
+            'path': self.request.path,
+            'raw_path': self.request.raw_path,
+            'query_string': self.request.query_string,
+            'headers': self.request.headers,
+            'client': self.client,
+            'server': self.server,
+            'session_id': self.session_id,
+            'extensions': {
+                'h3': {'datagram': True, 'stream_id': self.stream_id},
+                'quic': {'connection_id': self.session.quic.local_cid.hex()},
+                'tigrcorn.unit': {'session_id': self.session_id},
+                'tigrcorn.webtransport': {'max_datagram_size': self.handler._webtransport_max_datagram_size()},
+            },
+        }
+        await self.receive.put({'type': 'webtransport.connect', 'session_id': self.session_id})
+        self.task = asyncio.create_task(self._start_webtransport_app(scope), name=f'tigrcorn-h3-webtransport-{self.stream_id}')
+
+    async def _start_webtransport_app(self, scope: dict) -> None:
+        try:
+            await self.handler.app(scope, self.receive, self._send)
+        finally:
+            if not self.closed:
+                self.closed = True
+                with suppress(Exception):
+                    await self.handler._send_webtransport_stream_data(
+                        self.session,
+                        self.stream_id,
+                        b'',
+                        end_stream=True,
+                        endpoint=self.endpoint,
+                    )
+            self.handler._on_webtransport_stream_closed(self.session, self.stream_id)
+
+    async def _send(self, message: dict) -> None:
+        typ = message.get('type')
+        if typ == 'webtransport.accept':
+            if self.accepted:
+                raise RuntimeError('webtransport.accept sent more than once')
+            self.accepted = True
+            return
+        if typ == 'webtransport.stream.send':
+            if not self.accepted:
+                raise RuntimeError('webtransport.stream.send before webtransport.accept')
+            await self.handler._send_webtransport_stream_data(
+                self.session,
+                self.stream_id,
+                bytes(message.get('data', b'')),
+                end_stream=not bool(message.get('more', False)),
+                endpoint=self.endpoint,
+            )
+            return
+        if typ == 'webtransport.datagram.send':
+            if not self.accepted:
+                raise RuntimeError('webtransport.datagram.send before webtransport.accept')
+            await self.handler._send_webtransport_datagram(
+                self.session,
+                self.stream_id,
+                bytes(message.get('data', b'')),
+                datagram_id=str(message.get('datagram_id', 'datagram')),
+                endpoint=self.endpoint,
+            )
+            return
+        if typ in {'webtransport.close', 'webtransport.disconnect'}:
+            self.closed = True
+            await self.handler._send_webtransport_stream_data(
+                self.session,
+                self.stream_id,
+                b'',
+                end_stream=True,
+                endpoint=self.endpoint,
+            )
+            return
+        raise RuntimeError(f'unexpected webtransport send message: {typ!r}')
+
+    async def feed_stream_data(self, data: bytes, *, end_stream: bool = False) -> None:
+        if data:
+            await self.receive.put(
+                {
+                    'type': 'webtransport.stream.receive',
+                    'session_id': self.session_id,
+                    'stream_id': str(self.stream_id),
+                    'data': data,
+                    'more': not end_stream,
+                }
+            )
+        if end_stream and not self.closed:
+            self.closed = True
+            await self.receive.put({'type': 'webtransport.disconnect', 'session_id': self.session_id, 'code': 0, 'reason': ''})
+
+    async def feed_datagram(self, datagram_id: str, data: bytes) -> None:
+        if self.closed:
+            return
+        await self.receive.put(
+            {
+                'type': 'webtransport.datagram.receive',
+                'session_id': self.session_id,
+                'datagram_id': datagram_id,
+                'data': data,
+            }
+        )
+
+    async def abort(self) -> None:
+        if not self.closed:
+            self.closed = True
+            await self.receive.put({'type': 'webtransport.disconnect', 'session_id': self.session_id, 'code': 1006, 'reason': ''})
+        if self.task is not None:
+            self.task.cancel()
+            with suppress(asyncio.CancelledError):
+                await self.task
 
 
 class HTTP3DatagramHandler:
@@ -571,6 +718,7 @@ class HTTP3DatagramHandler:
                                             event.stream_id,
                                             request_state,
                                             header_map,
+                                            endpoint,
                                         )
                                     )
                                 elif protocol != b'websocket' or not self.listener.websocket:
@@ -613,7 +761,7 @@ class HTTP3DatagramHandler:
                             elif event.stream_id in session.connect_tunnels:
                                 await self._drain_connect_request_body_locked(session, event.stream_id, request_state)
                             elif event.stream_id in session.webtransport_streams:
-                                pass
+                                await self._drain_webtransport_request_body_locked(session, event.stream_id, request_state)
                             elif request_state.ready and event.stream_id not in session.responded_streams:
                                 outbound.extend(await self._invoke_http_app(session, event.stream_id, request_state, endpoint))
                                 session.responded_streams.add(event.stream_id)
@@ -633,12 +781,19 @@ class HTTP3DatagramHandler:
                             await tunnel.abort()
                         if event.stream_id in session.webtransport_streams:
                             session.webtransport_streams.discard(event.stream_id)
+                            webtransport = session.webtransport_sessions.pop(event.stream_id, None)
+                            if webtransport is not None:
+                                await webtransport.abort()
                             self._release_stream_work_lease(session, event.stream_id)
                         session.h3.abandon_stream(event.stream_id)
                         outbound.extend(self._flush_qpack_streams(session))
+                elif event.kind == 'datagram':
+                    if 'http3' in self.listener.enabled_protocols:
+                        await self._dispatch_webtransport_datagram_locked(session, event.data)
                 elif event.kind == 'close':
                     await self._abort_session_tunnels(session)
                     await self._abort_session_websockets(session)
+                    await self._abort_session_webtransports(session)
                     self._cancel_session_timer(session)
                     self._close_session(session)
             self._sync_quic_loss_metrics(session)
@@ -696,6 +851,98 @@ class HTTP3DatagramHandler:
         self._flush_pending_outbound(session, endpoint)
         if session.addr in self.sessions and self.sessions.get(session.addr) is session:
             self._arm_session_timer(session, endpoint)
+
+    def _webtransport_max_datagram_size(self) -> int:
+        # Keep the public config path discoverable for SSOT proof checks: webtransport.max_datagram_size.
+        configured = self.config.webtransport.max_datagram_size
+        return int(configured if configured is not None else self.listener.max_datagram_size)
+
+    def _encode_webtransport_datagram_payload(self, stream_id: int, data: bytes) -> bytes:
+        if len(data) > self._webtransport_max_datagram_size():
+            raise ProtocolError('webtransport.max_datagram_size exceeded')
+        quarter_stream_id = stream_id // 4
+        return encode_quic_varint(quarter_stream_id) + data
+
+    def _decode_webtransport_datagram_payload(self, payload: bytes) -> tuple[int, bytes]:
+        quarter_stream_id, offset = decode_quic_varint(payload, 0)
+        return int(quarter_stream_id) * 4, payload[offset:]
+
+    async def _dispatch_webtransport_datagram_locked(self, session: HTTP3Session, payload: bytes) -> None:
+        try:
+            stream_id, data = self._decode_webtransport_datagram_payload(payload)
+        except ProtocolError:
+            return
+        webtransport = session.webtransport_sessions.get(stream_id)
+        if webtransport is None and len(session.webtransport_sessions) == 1:
+            webtransport = next(iter(session.webtransport_sessions.values()))
+        if webtransport is None:
+            return
+        if len(data) > self._webtransport_max_datagram_size():
+            return
+        datagram_id = f'{stream_id}:{getattr(session, "request_packets", 0)}'
+        await webtransport.feed_datagram(datagram_id, data)
+
+    async def _send_webtransport_stream_data(
+        self,
+        session: HTTP3Session,
+        stream_id: int,
+        data: bytes,
+        *,
+        end_stream: bool,
+        endpoint: UDPEndpoint,
+        already_locked: bool = False,
+    ) -> None:
+        if not already_locked:
+            async with self._lock:
+                await self._send_webtransport_stream_data(
+                    session,
+                    stream_id,
+                    data,
+                    end_stream=end_stream,
+                    endpoint=endpoint,
+                    already_locked=True,
+                )
+            return
+        if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
+            return
+        if stream_id not in session.webtransport_sessions:
+            return
+        outbound = self._build_http3_data_datagrams_locked(session, stream_id, data, end_stream=end_stream)
+        if end_stream:
+            session.webtransport_sessions.pop(stream_id, None)
+            session.webtransport_streams.discard(stream_id)
+            self._release_stream_work_lease(session, stream_id)
+            session.h3.abandon_stream(stream_id)
+        self._queue_session_outbound_locked(session, outbound, endpoint)
+
+    async def _send_webtransport_datagram(
+        self,
+        session: HTTP3Session,
+        stream_id: int,
+        data: bytes,
+        *,
+        datagram_id: str,
+        endpoint: UDPEndpoint,
+        already_locked: bool = False,
+    ) -> None:
+        if not already_locked:
+            async with self._lock:
+                await self._send_webtransport_datagram(
+                    session,
+                    stream_id,
+                    data,
+                    datagram_id=datagram_id,
+                    endpoint=endpoint,
+                    already_locked=True,
+                )
+            return
+        if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
+            return
+        if stream_id not in session.webtransport_sessions:
+            return
+        payload = self._encode_webtransport_datagram_payload(stream_id, data)
+        outbound = [session.quic.send_datagram_frame(payload)]
+        self._queue_session_outbound_locked(session, outbound, endpoint)
 
     def _build_http3_response_datagrams_locked(
         self,
@@ -942,6 +1189,12 @@ class HTTP3DatagramHandler:
                 await websocket.abort()
         session.websocket_sessions.clear()
 
+    async def _abort_session_webtransports(self, session: HTTP3Session) -> None:
+        for webtransport in list(session.webtransport_sessions.values()):
+            with suppress(Exception):
+                await webtransport.abort()
+        session.webtransport_sessions.clear()
+        session.webtransport_streams.clear()
 
     def _release_stream_work_lease(self, session: HTTP3Session, stream_id: int) -> None:
         lease = session.stream_work_leases.pop(stream_id, None)
@@ -950,6 +1203,12 @@ class HTTP3DatagramHandler:
 
     def _on_websocket_stream_closed(self, session: HTTP3Session, stream_id: int) -> None:
         session.websocket_sessions.pop(stream_id, None)
+        self._release_stream_work_lease(session, stream_id)
+        session.h3.abandon_stream(stream_id)
+
+    def _on_webtransport_stream_closed(self, session: HTTP3Session, stream_id: int) -> None:
+        session.webtransport_sessions.pop(stream_id, None)
+        session.webtransport_streams.discard(stream_id)
         self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
 
@@ -1160,6 +1419,7 @@ class HTTP3DatagramHandler:
         stream_id: int,
         request_state: Any,
         header_map: dict[bytes, bytes],
+        endpoint: UDPEndpoint,
     ) -> list[bytes]:
         request = self._build_request(request_state, header_map)
         authority = header_map.get(b':authority')
@@ -1188,6 +1448,21 @@ class HTTP3DatagramHandler:
         if draft:
             response_headers.append((b'sec-webtransport-http3-draft', draft))
         session.webtransport_streams.add(stream_id)
+        local = endpoint.local_addr
+        server = (local[0], local[1]) if isinstance(local, tuple) and len(local) >= 2 else ('', None)
+        webtransport = _HTTP3WebTransportSession(
+            handler=self,
+            session=session,
+            stream_id=stream_id,
+            request=request,
+            client=session.addr,
+            server=server,
+            scheme='https' if self.listener.scheme in {'https', 'wss'} else self.listener.scheme,
+            endpoint=endpoint,
+            work_lease=session.stream_work_leases.get(stream_id),
+        )
+        session.webtransport_sessions[stream_id] = webtransport
+        await webtransport.start()
         self.access_logger.log_http(session.addr, 'CONNECT', request.path, 200, 'HTTP/3')
         return self._build_http3_response_datagrams_locked(session, stream_id, 200, response_headers, b'', end_stream=False)
 
@@ -1226,6 +1501,19 @@ class HTTP3DatagramHandler:
                 already_locked=True,
             )
             await websocket.abort()
+
+    async def _drain_webtransport_request_body_locked(
+        self,
+        session: HTTP3Session,
+        stream_id: int,
+        request_state: Any,
+    ) -> None:
+        webtransport = session.webtransport_sessions.get(stream_id)
+        if webtransport is None:
+            return
+        chunks = list(request_state.body_parts)
+        request_state.body_parts.clear()
+        await webtransport.feed_stream_data(b''.join(chunks), end_stream=request_state.ended)
 
     async def _respond_ready_requests(self, session: HTTP3Session, endpoint: UDPEndpoint) -> list[bytes]:
         outbound: list[bytes] = []

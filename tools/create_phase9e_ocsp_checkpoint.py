@@ -318,7 +318,7 @@ def _local_validation_vectors() -> list[dict[str, Any]]:
                 'request_count': server.count('POST', '/ocsp-good'),
                 'expected_request_count': 1,
             },
-            'source_tests': ['tests/test_phase9e_ocsp_local_validation.py::test_good_ocsp_response_is_cached_for_client_auth'],
+            'source_tests': ['tests/test_ocsp_local_validation.py::test_good_ocsp_response_is_cached_for_client_auth'],
         })
 
         # stale response require failure
@@ -332,7 +332,7 @@ def _local_validation_vectors() -> list[dict[str, Any]]:
             'id': 'ocsp-stale-response-require-fails',
             'passed': stale_error is not None and 'revocation status could not be established' in stale_error,
             'result': {'error': stale_error},
-            'source_tests': ['tests/test_phase9e_ocsp_local_validation.py::test_stale_ocsp_response_fails_in_require_mode'],
+            'source_tests': ['tests/test_ocsp_local_validation.py::test_stale_ocsp_response_fails_in_require_mode'],
         })
 
         # revoked client cert require failure
@@ -346,7 +346,7 @@ def _local_validation_vectors() -> list[dict[str, Any]]:
             'id': 'ocsp-revoked-client-certificate-fails',
             'passed': revoked_error is not None and 'revoked' in revoked_error,
             'result': {'error': revoked_error},
-            'source_tests': ['tests/test_phase9e_ocsp_local_validation.py::test_revoked_client_certificate_fails_in_require_mode'],
+            'source_tests': ['tests/test_ocsp_local_validation.py::test_revoked_client_certificate_fails_in_require_mode'],
         })
 
     unavailable_factory = CertificateFactory()
@@ -379,7 +379,7 @@ def _local_validation_vectors() -> list[dict[str, Any]]:
         'id': 'ocsp-unreachable-soft-fail-vs-require',
         'passed': soft_ok and require_error is not None and 'OCSP http://127.0.0.1:9/unreachable' in require_error,
         'result': {'soft_fail_passed': soft_ok, 'require_error': require_error},
-        'source_tests': ['tests/test_phase9e_ocsp_local_validation.py::test_unreachable_responder_soft_fail_and_require_modes_diverge'],
+        'source_tests': ['tests/test_ocsp_local_validation.py::test_unreachable_responder_soft_fail_and_require_modes_diverge'],
     })
     return vectors
 

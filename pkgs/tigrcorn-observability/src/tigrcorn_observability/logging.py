@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 import logging
+import logging.config
+import socket
 from logging import Logger
 from pathlib import Path
 from typing import Any, Mapping
@@ -21,7 +23,12 @@ _ALLOWED_PROFILE_KEYS = {
     'access_log_file',
     'access_log_format',
     'error_log_file',
+    'format',
     'stream',
+    'syslog_app_name',
+    'syslog_enterprise_id',
+    'syslog_msgid',
+    'syslog_procid',
     'use_colors',
 }
 
@@ -34,9 +41,15 @@ class ResolvedLoggingConfig:
     access_log_file: str | None = None
     access_log_format: str | None = None
     error_log_file: str | None = None
+    format: str = 'default'
     stream: bool = True
+    syslog_app_name: str = 'tigrcorn'
+    syslog_enterprise_id: int = 32473
+    syslog_msgid: str = '-'
+    syslog_procid: str = '-'
     use_colors: bool | None = None
     log_config: str | None = None
+    dict_config: dict[str, Any] | None = None
     explicit_fields: tuple[str, ...] = ()
 
 
@@ -71,6 +84,62 @@ class ColorFormatter(logging.Formatter):
         if not color:
             return message
         return f'{color}{message}{self._RESET}'
+
+
+class RFC5424Formatter(logging.Formatter):
+    _SEVERITY = {
+        logging.DEBUG: 7,
+        logging.INFO: 6,
+        logging.WARNING: 4,
+        logging.ERROR: 3,
+        logging.CRITICAL: 2,
+    }
+
+    def __init__(
+        self,
+        *,
+        app_name: str = 'tigrcorn',
+        procid: str = '-',
+        msgid: str = '-',
+        enterprise_id: int = 32473,
+    ) -> None:
+        super().__init__()
+        self.app_name = app_name or '-'
+        self.procid = procid or '-'
+        self.msgid = msgid or '-'
+        self.enterprise_id = enterprise_id
+        self.hostname = socket.gethostname() or '-'
+
+    def format(self, record: logging.LogRecord) -> str:
+        timestamp = self.formatTime(record, '%Y-%m-%dT%H:%M:%S%z')
+        if timestamp.endswith('+0000'):
+            timestamp = timestamp[:-5] + 'Z'
+        priority = 8 + self._SEVERITY.get(record.levelno, 6)
+        structured_data = self._structured_data(record)
+        return (
+            f'<{priority}>1 {timestamp} {self._nil_safe(self.hostname)} '
+            f'{self._nil_safe(self.app_name)} {self._nil_safe(self.procid)} '
+            f'{self._nil_safe(self.msgid)} {structured_data} {record.getMessage()}'
+        )
+
+    def _structured_data(self, record: logging.LogRecord) -> str:
+        pairs: list[str] = []
+        for key in ('event', 'peer', 'method', 'path', 'proto', 'status', 'result', 'trace_id', 'span_id'):
+            value = getattr(record, key, None)
+            if value is not None:
+                pairs.append(f'{key}="{self._escape_param(str(value))}"')
+        if not pairs:
+            return '-'
+        return f'[tigrcorn@{self.enterprise_id} {" ".join(pairs)}]'
+
+    @staticmethod
+    def _escape_param(value: str) -> str:
+        return value.replace('\\', '\\\\').replace('"', '\\"').replace(']', '\\]')
+
+    @staticmethod
+    def _nil_safe(value: str) -> str:
+        cleaned = str(value).strip()
+        return cleaned if cleaned else '-'
 
 
 class CloseAfterEmitFileHandler(logging.Handler):
@@ -139,6 +208,8 @@ def load_logging_profile(path: str | Path) -> dict[str, Any]:
         payload = dict(payload['logging'])
     if not isinstance(payload, Mapping):
         raise LoggingConfigError('log_config must resolve to a mapping or a top-level logging mapping')
+    if 'version' in payload:
+        return {'dict_config': dict(payload)}
     unknown = sorted(set(payload) - _ALLOWED_PROFILE_KEYS)
     if unknown:
         raise LoggingConfigError(f'log_config contains unsupported keys: {unknown}')
@@ -146,10 +217,25 @@ def load_logging_profile(path: str | Path) -> dict[str, Any]:
     for key, value in payload.items():
         if key in {'structured', 'access_log', 'stream', 'use_colors'}:
             result[key] = _coerce_profile_bool(key, value)
-        elif key in {'level', 'access_log_file', 'access_log_format', 'error_log_file'}:
+        elif key in {
+            'level',
+            'access_log_file',
+            'access_log_format',
+            'error_log_file',
+            'format',
+            'syslog_app_name',
+            'syslog_procid',
+            'syslog_msgid',
+        }:
             if value is not None and not isinstance(value, str):
                 raise LoggingConfigError(f'logging profile {key!r} must be a string or null')
             result[key] = value
+        elif key == 'syslog_enterprise_id':
+            if not isinstance(value, int) or value <= 0:
+                raise LoggingConfigError("logging profile 'syslog_enterprise_id' must be a positive integer")
+            result[key] = value
+    if result.get('format') not in {None, 'default', 'json', 'rfc5424'}:
+        raise LoggingConfigError("logging profile 'format' must be one of default, json, or rfc5424")
     return result
 
 
@@ -167,7 +253,15 @@ def resolve_logging_config(level: str = 'info', *, config: Any | None = None) ->
                 setattr(resolved, key, value)
         resolved.log_config = str(log_config_path)
 
-    source_fields = ('level', 'structured', 'access_log', 'access_log_file', 'access_log_format', 'error_log_file', 'use_colors')
+    source_fields = (
+        'level',
+        'structured',
+        'access_log',
+        'access_log_file',
+        'access_log_format',
+        'error_log_file',
+        'use_colors',
+    )
     if not log_config_path:
         for field_name in source_fields:
             value = getattr(config, field_name, getattr(resolved, field_name))
@@ -188,7 +282,15 @@ def validate_logging_contract(config: Any | None) -> None:
         resolve_logging_config(getattr(config, 'level', 'info'), config=config)
 
 
-def _stream_formatter(*, structured: bool, use_colors: bool) -> logging.Formatter:
+def _stream_formatter(*, resolved: ResolvedLoggingConfig, use_colors: bool) -> logging.Formatter:
+    if resolved.format == 'rfc5424':
+        return RFC5424Formatter(
+            app_name=resolved.syslog_app_name,
+            procid=resolved.syslog_procid,
+            msgid=resolved.syslog_msgid,
+            enterprise_id=resolved.syslog_enterprise_id,
+        )
+    structured = resolved.structured or resolved.format == 'json'
     if structured:
         return JSONFormatter()
     if use_colors:
@@ -197,6 +299,14 @@ def _stream_formatter(*, structured: bool, use_colors: bool) -> logging.Formatte
 
 
 def configure_logging(level: str = 'info', *, config: Any | None = None) -> logging.Logger:
+    resolved = resolve_logging_config(level, config=config)
+    if resolved.dict_config is not None:
+        logging.config.dictConfig(resolved.dict_config)
+        logger = logging.getLogger('tigrcorn')
+        if 'level' in resolved.explicit_fields:
+            logger.setLevel(_coerce_level(resolved.level))
+        return logger
+
     logger = logging.getLogger('tigrcorn')
     for handler in list(logger.handlers):
         logger.removeHandler(handler)
@@ -205,7 +315,6 @@ def configure_logging(level: str = 'info', *, config: Any | None = None) -> logg
         except Exception:
             pass
 
-    resolved = resolve_logging_config(level, config=config)
     logger.setLevel(_coerce_level(resolved.level))
     logger.propagate = False
 
@@ -215,10 +324,10 @@ def configure_logging(level: str = 'info', *, config: Any | None = None) -> logg
         if enable_colors is None:
             stream = getattr(stream_handler, 'stream', None)
             enable_colors = bool(getattr(stream, 'isatty', lambda: False)())
-        stream_handler.setFormatter(_stream_formatter(structured=resolved.structured, use_colors=bool(enable_colors)))
+        stream_handler.setFormatter(_stream_formatter(resolved=resolved, use_colors=bool(enable_colors)))
         logger.addHandler(stream_handler)
 
-    file_formatter: logging.Formatter = JSONFormatter() if resolved.structured else logging.Formatter('%(asctime)s %(levelname)s %(name)s %(message)s')
+    file_formatter: logging.Formatter = _stream_formatter(resolved=resolved, use_colors=False)
     if resolved.access_log_file:
         logger.addHandler(_file_handler(resolved.access_log_file, file_formatter))
     if resolved.error_log_file and resolved.error_log_file != resolved.access_log_file:
@@ -226,7 +335,7 @@ def configure_logging(level: str = 'info', *, config: Any | None = None) -> logg
 
     if not logger.handlers:
         stream_handler = logging.StreamHandler()
-        stream_handler.setFormatter(_stream_formatter(structured=resolved.structured, use_colors=False))
+        stream_handler.setFormatter(_stream_formatter(resolved=resolved, use_colors=False))
         logger.addHandler(stream_handler)
 
     return logger

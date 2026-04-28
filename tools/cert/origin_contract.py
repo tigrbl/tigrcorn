@@ -50,7 +50,7 @@ def _render_origin_md(payload: dict[str, Any]) -> str:
     lines = [
         '# Origin Contract',
         '',
-        'This file is generated from the package-owned Phase 5 origin metadata.',
+        'This file is generated from the package-owned origin metadata.',
         '',
         '## Public surface',
         '',
@@ -108,7 +108,7 @@ def _render_negative_md(payload: dict[str, Any]) -> str:
     lines = [
         '# Origin Negative Corpus',
         '',
-        'This file is generated from the package-owned Phase 5 origin metadata.',
+        'This file is generated from the package-owned origin metadata.',
         '',
         '| Case | Surface | Request path | Expected status | Expected outcome |',
         '|---|---|---|---|---|',
@@ -124,7 +124,7 @@ def _render_operator_md(payload: dict[str, Any]) -> str:
     lines = [
         '# Static Origin Operator Guide',
         '',
-        'This file is generated from the package-owned Phase 5 origin metadata and the public CLI parser.',
+        'This file is generated from the package-owned origin metadata and the public CLI parser.',
         '',
         '## Operator controls',
         '',

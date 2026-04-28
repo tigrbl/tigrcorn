@@ -43,6 +43,7 @@ from tigrcorn_transports.quic.streams import (
     QuicConnectionCloseFrame,
     QuicCryptoFrame,
     QuicDataBlockedFrame,
+    QuicDatagramFrame,
     QuicHandshakeDoneFrame,
     QuicMaxDataFrame,
     QuicMaxStreamDataFrame,
@@ -1346,6 +1347,12 @@ class QuicConnection:
         self._maybe_queue_max_stream_credit(stream_id)
         return packet
 
+    def send_datagram_frame(self, data: bytes) -> bytes:
+        if len(data) > self.max_datagram_size:
+            raise ProtocolError('QUIC DATAGRAM payload exceeds max_datagram_size')
+        self.state = 'established'
+        return self._encode_short([QuicDatagramFrame(data=bytes(data))])
+
     def send_early_stream_data(self, stream_id: int, data: bytes, *, fin: bool = False) -> bytes:
         stream_state = self.streams.ensure_send_stream(stream_id)
         self._prepare_stream_window(stream_id)
@@ -2057,6 +2064,11 @@ class QuicConnection:
                 self.address_validated = True
                 self.recovery.discard_space(PACKET_SPACE_HANDSHAKE)
                 events.append(QuicEvent(kind='handshake_done', packet_space=packet_space, detail=frame))
+                continue
+            if isinstance(frame, QuicDatagramFrame):
+                ack_eliciting_received = True
+                self.state = 'established'
+                events.append(QuicEvent(kind='datagram', data=frame.data, packet_number=packet_number, packet_space=packet_space, detail=frame))
                 continue
             if isinstance(frame, QuicResetStreamFrame):
                 ack_eliciting_received = True

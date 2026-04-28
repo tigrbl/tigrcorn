@@ -66,10 +66,9 @@ IMPLEMENTED_WEBTRANSPORT_FEATURE_IDS = {
     "feat:webtransport-public-api",
     "feat:fixture-asgi-webtransport-scope",
     "feat:fixture-webtransport-protocol",
-}
-PLANNED_WEBTRANSPORT_FEATURE_IDS = {
     "feat:webtransport-h3-quic-datagram-runtime-dispatch",
 }
+PLANNED_WEBTRANSPORT_FEATURE_IDS: set[str] = set()
 
 
 def _registry() -> dict[str, object]:
@@ -98,14 +97,14 @@ def test_ssot_marks_current_webtransport_features_implemented() -> None:
         assert feature["lifecycle"]["stage"] == "active"
 
 
-def test_ssot_keeps_datagram_runtime_dispatch_open_until_runtime_exists() -> None:
+def test_ssot_closes_datagram_runtime_dispatch_after_runtime_exists() -> None:
     feature = _rows_by_id("features")["feat:webtransport-h3-quic-datagram-runtime-dispatch"]
     issue = _rows_by_id("issues")["iss:webtransport-h3-quic-datagram-runtime-dispatch"]
 
-    assert feature["implementation_status"] == "absent"
+    assert feature["implementation_status"] == "implemented"
     assert feature["plan"]["slot"] == "webtransport-runtime"
-    assert issue["status"] == "open"
-    assert issue["release_blocking"] is True
+    assert issue["status"] == "closed"
+    assert issue["release_blocking"] is False
 
 
 def test_each_webtransport_feature_has_at_least_one_ssot_test() -> None:

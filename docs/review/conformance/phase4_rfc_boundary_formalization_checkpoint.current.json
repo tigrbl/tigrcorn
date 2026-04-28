@@ -29,13 +29,13 @@
         "tests/test_conformance_corpus.py",
         "tests/test_rfc_applicability_and_competitor_status.py",
         "tests/test_certification_policy_alignment.py",
-        "tests/test_phase2_rfc_boundary_formalization_checkpoint.py",
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py",
+        "tests/test_rfc7232_7233_boundary_formalization.py",
+        "tests/test_advanced_protocol_delivery_checkpoint.py",
         "tests/test_rfc8297_early_hints.py",
         "tests/test_rfc7838_alt_svc.py",
-        "tests/test_phase4_rfc_boundary_formalization_checkpoint.py",
+        "tests/test_rfc8297_7838_boundary_formalization.py",
         "tests/test_release_gates.py",
-        "tests/test_phase9i_release_assembly_checkpoint.py"
+        "tests/test_release_assembly_checkpoint.py"
       ]
     },
     "authoritative_release_gates_passed": true,

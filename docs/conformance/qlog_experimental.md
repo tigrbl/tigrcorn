@@ -1,6 +1,6 @@
 # Experimental qlog Contract
 
-This file is generated from the package-owned Phase 6 observability metadata.
+This file is generated from the package-owned observability metadata.
 
 - `schema_version`: `tigrcorn.qlog.experimental.v1`
 - `stability`: `experimental`

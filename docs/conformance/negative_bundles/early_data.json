@@ -7,7 +7,7 @@
       "id": "required-early-data-downgrade",
       "preserved_artifacts": [],
       "tests": [
-        "tests/test_phase4_quic_surface.py::Phase4QuicSurfaceTests::test_http3_handler_require_policy_triggers_too_early_on_resumed_downgrade"
+        "tests/test_quic_surface.py::Phase4QuicSurfaceTests::test_http3_handler_require_policy_triggers_too_early_on_resumed_downgrade"
       ]
     }
   ],

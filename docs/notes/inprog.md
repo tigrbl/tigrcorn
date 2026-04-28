@@ -90,7 +90,7 @@ The new short-path governance tree is now in place. The previous root current-st
 - `src/tigrcorn/config/negative_surface.py` is now the canonical metadata source for fail-state actions, adversarial corpora, and expected-outcome bundle preservation
 - fail-state behavior for proxy, early-data, QUIC, origin, CONNECT relay, TLS/X.509, and mixed-topology gate failures is now frozen as explicit package-owned registry rows instead of being inferred from scattered tests
 - generated negative bundles now link current-tree expected outcomes to preserved historical release-root negative artifacts where those artifacts already exist
-- local CI now regenerates the Phase 7 artifacts and runs `tests/test_phase7_negative_certification.py` as part of the canonical repository validation path
+- local CI now regenerates the Phase 7 artifacts and runs `tests/test_negative_certification.py` as part of the canonical repository validation path
 - GitHub-side required-check enforcement for the Phase 7 parity tests still depends on the remote ruleset activation noted in the Phase 0 checkpoint
 
 ## Phase 8 follow-on

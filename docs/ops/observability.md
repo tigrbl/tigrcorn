@@ -1,6 +1,6 @@
 # Observability Operator Guide
 
-This file is generated from the package-owned Phase 6 observability metadata and the public CLI parser.
+This file is generated from the package-owned observability metadata and the public CLI parser.
 
 ## Export adapters
 

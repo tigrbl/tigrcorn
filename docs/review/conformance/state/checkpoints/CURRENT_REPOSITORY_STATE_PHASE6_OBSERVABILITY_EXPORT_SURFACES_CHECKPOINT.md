@@ -11,7 +11,7 @@ This checkpoint records the mutable-tree Phase 6 observability closure work.
 - `src/tigrcorn/transports/quic/connection.py` now preserves package-owned loss/PTO totals so the runtime can surface them as stable operator counters.
 - `src/tigrcorn/compat/interop_runner.py` now emits observer qlog files with explicit experimental/version markers and endpoint / connection-id redaction.
 - Generated artifacts now exist at `docs/conformance/metrics_schema.json`, `docs/conformance/metrics_schema.md`, `docs/conformance/qlog_experimental.json`, `docs/conformance/qlog_experimental.md`, and `docs/ops/observability.md`.
-- CI now regenerates the Phase 6 artifacts and runs `tests/test_phase6_observability_surface.py` together with `tests/test_phase9f2_logging_exporter_closure.py`.
+- CI now regenerates the Phase 6 artifacts and runs `tests/test_observability_surface.py` together with `tests/test_phase9f2_logging_exporter_closure.py`.
 
 ## Claim status
 
@@ -28,7 +28,7 @@ This checkpoint records the mutable-tree Phase 6 observability closure work.
 ## Validation used for this checkpoint
 
 - `python tools/cert/observability_surface.py`
-- `python -m unittest tests.test_phase6_observability_surface`
+- `python -m unittest tests.test_observability_surface`
 - `python -m unittest tests.test_phase9f2_logging_exporter_closure`
 - `python -m compileall -q src tools`
 

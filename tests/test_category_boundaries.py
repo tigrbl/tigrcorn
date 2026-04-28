@@ -24,8 +24,8 @@ def test_category_boundaries_exist_with_explicit_feature_scope() -> None:
     assert CATEGORY_BOUNDARY_IDS <= set(boundaries)
     for boundary_id in CATEGORY_BOUNDARY_IDS:
         boundary = boundaries[boundary_id]
-        assert boundary["status"] == "draft"
-        assert boundary["frozen"] is False
+        assert boundary["status"] == "frozen"
+        assert boundary["frozen"] is True
         assert boundary["canonical_registry_source"] == ".ssot/registry.json"
         assert boundary["feature_ids"], boundary_id
         assert set(boundary["feature_ids"]) <= features

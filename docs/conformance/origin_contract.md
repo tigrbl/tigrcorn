@@ -1,6 +1,6 @@
 # Origin Contract
 
-This file is generated from the package-owned Phase 5 origin metadata.
+This file is generated from the package-owned origin metadata.
 
 ## Public surface
 
