@@ -573,7 +573,7 @@ EXPECTED_PENDING_SCENARIO_IDS: set[str] = set()"""
     path.write_text(text, encoding='utf-8')
 
     # Phase9I checkpoint test
-    path = ROOT / 'tests/test_phase9i_release_assembly_checkpoint.py'
+    path = ROOT / 'tests/test_release_assembly_checkpoint.py'
     text = path.read_text(encoding='utf-8')
     text = text.replace("assert status['current_state']['current_package_version'] == '0.3.6'", "assert status['current_state']['current_package_version'] == '0.3.9'")
     text = text.replace("assert status['release_assembly']['version_bump_performed'] is False", "assert status['release_assembly']['version_bump_performed'] is True")

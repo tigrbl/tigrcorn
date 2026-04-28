@@ -17,7 +17,7 @@ Implementation changes:
 Validation run for this fix:
 
 - `python -m compileall -q src benchmarks tools`
-- `PYTHONPATH=src pytest -q tests/test_phase9i_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_certification_environment_freeze.py tests/test_aioquic_adapter_preflight.py`
+- `PYTHONPATH=src pytest -q tests/test_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_certification_environment_freeze.py tests/test_aioquic_adapter_preflight.py`
 
 Result:
 

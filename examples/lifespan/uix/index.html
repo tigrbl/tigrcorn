@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn Lifespan UIX</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">ASGI3 lifecycle</p>
+          <h1>Tigrcorn Lifespan Console</h1>
+        </div>
+        <div id="ready-pill" class="ready-pill offline">checking</div>
+      </header>
+
+      <section class="metrics" aria-label="Lifecycle counters">
+        <article>
+          <span>Startup</span>
+          <strong id="startup-count">0</strong>
+        </article>
+        <article>
+          <span>Shutdown</span>
+          <strong id="shutdown-count">0</strong>
+        </article>
+        <article>
+          <span>Requests</span>
+          <strong id="request-count">0</strong>
+        </article>
+        <article>
+          <span>Uptime</span>
+          <strong id="uptime">0s</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <section class="panel state-panel">
+          <div class="panel-head">
+            <h2>Runtime State</h2>
+            <button id="refresh" type="button" aria-label="Refresh state">Refresh</button>
+          </div>
+          <pre id="state-output">{}</pre>
+        </section>
+
+        <section class="panel event-panel">
+          <div class="panel-head">
+            <h2>Event Trail</h2>
+            <label class="toggle">
+              <input id="autopoll" type="checkbox" checked>
+              <span>Auto</span>
+            </label>
+          </div>
+          <ol id="event-list"></ol>
+        </section>
+      </section>
+    </main>
+    <script src="./main.js"></script>
+  </body>
+</html>

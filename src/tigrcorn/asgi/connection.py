@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-from tigrcorn.types import Receive, Scope, Send
-
-
-@dataclass(slots=True)
-class ASGIConnection:
-    scope: Scope
-    receive: Receive
-    send: Send
+_module = _import_module('tigrcorn_asgi.connection')
+_sys.modules[__name__] = _module

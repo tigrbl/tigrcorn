@@ -1,8 +1,7 @@
-from .model import ServerConfig
-from .normalize import normalize_config
+from __future__ import annotations
 
+from importlib import import_module as _import_module
+import sys as _sys
 
-def default_config() -> ServerConfig:
-    config = ServerConfig()
-    normalize_config(config)
-    return config
+_module = _import_module('tigrcorn_config.defaults')
+_sys.modules[__name__] = _module

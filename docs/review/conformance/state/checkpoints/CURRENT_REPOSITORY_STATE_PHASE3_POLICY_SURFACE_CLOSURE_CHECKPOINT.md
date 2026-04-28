@@ -27,5 +27,5 @@ Validation executed for this checkpoint:
 - `python tools/cert/default_audits.py`
 - `python tools/cert/policy_surface.py`
 - `python -m compileall -q src tools`
-- `python -m unittest tests.test_default_audits tests.test_phase3_policy_surface tests.test_phase3_strict_rfc_surface tests.test_phase7_flag_surface_truth_reconciliation tests.test_release_gates tests.test_phase2_cli_config_surface tests.test_documentation_reconciliation tests.test_config_matrix_pytest tests.test_profile_resolution`
+- `python -m unittest tests.test_default_audits tests.test_policy_surface tests.test_strict_rfc_surface tests.test_flag_surface_truth_reconciliation tests.test_release_gates tests.test_cli_config_surface tests.test_documentation_reconciliation tests.test_config_matrix_pytest tests.test_profile_resolution`
 - `python tools/cert/status.py`

@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.constants import ASGI_SPEC_VERSION, ASGI_VERSION
-from tigrcorn.types import Scope
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def build_lifespan_scope() -> Scope:
-    return {
-        "type": "lifespan",
-        "asgi": {"version": ASGI_VERSION, "spec_version": ASGI_SPEC_VERSION},
-        "state": {},
-    }
+_module = _import_module('tigrcorn_asgi.scopes.lifespan')
+_sys.modules[__name__] = _module

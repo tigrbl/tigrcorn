@@ -1,13 +1,7 @@
 from __future__ import annotations
 
-from .uvicorn import CompatProfile
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-HYPERCORN_COMPAT = CompatProfile(
-    server_name='hypercorn',
-    boundary='ASGI3 callable(scope, receive, send)',
-    http1=True,
-    http2=True,
-    websocket=True,
-    lifespan=True,
-)
+_module = _import_module('tigrcorn_compat.hypercorn')
+_sys.modules[__name__] = _module

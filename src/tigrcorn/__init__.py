@@ -1,4 +1,7 @@
 from .version import __version__
+from ._workspace import ensure_workspace_package_paths
+
+ensure_workspace_package_paths()
 
 __all__ = [
     "__version__",

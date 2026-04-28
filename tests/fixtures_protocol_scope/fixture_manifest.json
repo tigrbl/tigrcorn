@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "spec_id": "spc:2039",
+  "fixtures": [
+    {
+      "id": "fixture-asgi-http-scope",
+      "feature_id": "feat:fixture-asgi-http-scope",
+      "title": "ASGI HTTP scope fixture",
+      "surface_kind": "scope",
+      "surface": "http",
+      "fixture_path": "examples/echo_http/app.py",
+      "coverage_paths": ["tests/test_http1_parser.py", "tests/test_http3_server.py"],
+      "coverage_terms": ["http"]
+    },
+    {
+      "id": "fixture-asgi-websocket-scope",
+      "feature_id": "feat:fixture-asgi-websocket-scope",
+      "title": "ASGI WebSocket scope fixture",
+      "surface_kind": "scope",
+      "surface": "websocket",
+      "fixture_path": "examples/websocket_echo/app.py",
+      "coverage_paths": ["tests/test_websocket_rfc6455.py", "tests/test_websocket_rfc7692.py"],
+      "coverage_terms": ["websocket"]
+    },
+    {
+      "id": "fixture-asgi-lifespan-scope",
+      "feature_id": "feat:fixture-asgi-lifespan-scope",
+      "title": "ASGI lifespan scope fixture",
+      "surface_kind": "scope",
+      "surface": "lifespan",
+      "fixture_path": "examples/lifespan/app.py",
+      "coverage_paths": ["tests/test_lifespan.py"],
+      "coverage_terms": ["lifespan"]
+    },
+    {
+      "id": "fixture-asgi-webtransport-scope",
+      "feature_id": "feat:fixture-asgi-webtransport-scope",
+      "title": "ASGI WebTransport scope fixture",
+      "surface_kind": "scope",
+      "surface": "webtransport",
+      "fixture_path": "examples/webtransport_mtls_demo/server.py",
+      "coverage_paths": ["tests/test_webtransport_mtls_demo.py", "tests/test_webtransport_datagram_runtime_dispatch.py"],
+      "coverage_terms": ["webtransport"]
+    },
+    {
+      "id": "fixture-tigrcorn-custom-scope",
+      "feature_id": "feat:fixture-tigrcorn-custom-scope",
+      "title": "Tigrcorn custom scope fixture",
+      "surface_kind": "scope",
+      "surface": "tigrcorn.custom",
+      "fixture_path": "tests/fixtures_pkg/appmod.py",
+      "coverage_paths": ["tests/test_prebuffered_reader_and_custom.py", "tests/test_quic_custom_server.py"],
+      "coverage_terms": ["custom"]
+    },
+    {
+      "id": "fixture-http1-protocol",
+      "feature_id": "feat:fixture-http1-protocol",
+      "title": "HTTP/1.1 protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "http1",
+      "fixture_path": "tests/fixtures_pkg/interop_http_client.py",
+      "coverage_paths": ["tests/test_http1_parser.py", "tests/test_http1_rfc9112.py"],
+      "coverage_terms": ["http1", "http11"]
+    },
+    {
+      "id": "fixture-http2-protocol",
+      "feature_id": "feat:fixture-http2-protocol",
+      "title": "HTTP/2 protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "http2",
+      "fixture_path": "tests/fixtures_pkg/external_h2_http_client.py",
+      "coverage_paths": ["tests/test_http2_rfc9113.py", "tests/test_http2_server_push_surface.py"],
+      "coverage_terms": ["http2"]
+    },
+    {
+      "id": "fixture-http3-protocol",
+      "feature_id": "feat:fixture-http3-protocol",
+      "title": "HTTP/3 protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "http3",
+      "fixture_path": "tests/fixtures_pkg/external_http3_client.py",
+      "coverage_paths": ["tests/test_http3_server.py", "tests/test_quic_http3.py"],
+      "coverage_terms": ["http3"]
+    },
+    {
+      "id": "fixture-quic-protocol",
+      "feature_id": "feat:fixture-quic-protocol",
+      "title": "QUIC protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "quic",
+      "fixture_path": "tests/fixtures_pkg/interop_quic_client.py",
+      "coverage_paths": ["tests/test_quic_custom_server.py", "tests/test_quic_primitives.py"],
+      "coverage_terms": ["quic"]
+    },
+    {
+      "id": "fixture-websocket-protocol",
+      "feature_id": "feat:fixture-websocket-protocol",
+      "title": "WebSocket protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "websocket",
+      "fixture_path": "tests/fixtures_pkg/external_websocket_client.py",
+      "coverage_paths": ["tests/test_websocket_frames.py", "tests/test_websocket_rfc6455.py"],
+      "coverage_terms": ["websocket"]
+    },
+    {
+      "id": "fixture-webtransport-protocol",
+      "feature_id": "feat:fixture-webtransport-protocol",
+      "title": "WebTransport protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "webtransport",
+      "fixture_path": "examples/webtransport_mtls_demo/server.py",
+      "coverage_paths": ["tests/test_webtransport_mtls_demo.py", "tests/test_webtransport_datagram_runtime_dispatch.py"],
+      "coverage_terms": ["webtransport"]
+    },
+    {
+      "id": "fixture-rawframed-custom-protocol",
+      "feature_id": "feat:fixture-rawframed-custom-protocol",
+      "title": "Raw-framed custom protocol fixture",
+      "surface_kind": "protocol",
+      "surface": "rawframed",
+      "fixture_path": "tests/fixtures_pkg/appmod.py",
+      "coverage_paths": ["tests/test_prebuffered_reader_and_custom.py", "tests/test_quic_custom_server.py"],
+      "coverage_terms": ["rawframed", "custom"]
+    }
+  ]
+}

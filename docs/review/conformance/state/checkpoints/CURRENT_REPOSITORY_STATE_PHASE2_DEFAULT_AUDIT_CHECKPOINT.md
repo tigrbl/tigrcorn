@@ -32,6 +32,6 @@ Local validation used for this checkpoint:
 
 - `python tools/cert/default_audits.py`
 - `python tools/cert/profile_bundles.py`
-- `python -m unittest tests.test_default_audits tests.test_profile_resolution tests.test_release_gates tests.test_phase2_cli_config_surface tests.test_documentation_reconciliation`
+- `python -m unittest tests.test_default_audits tests.test_profile_resolution tests.test_release_gates tests.test_cli_config_surface tests.test_documentation_reconciliation`
 - `python -m compileall -q src tools`
 - `python tools/cert/status.py`

@@ -91,7 +91,7 @@ Primary modified or added modules:
 - `examples/PHASE4_PROTOCOL_PAIRING.md`
 - `docs/review/conformance/phase4_advanced_delivery/*`
 - `docs/review/conformance/phase4_advanced_protocol_delivery_checkpoint.current.json`
-- `tests/test_phase4_advanced_protocol_delivery_checkpoint.py`
+- `tests/test_advanced_protocol_delivery_checkpoint.py`
 
 ## Validation
 
@@ -106,10 +106,10 @@ Targeted validation completed green in this checkpoint:
 
 Focused bundle files:
 
-- `tests/test_phase1_surface_parity_checkpoint.py`
-- `tests/test_phase2_entity_semantics_checkpoint.py`
-- `tests/test_phase3_transport_core_strictness_checkpoint.py`
-- `tests/test_phase4_advanced_protocol_delivery_checkpoint.py`
+- `tests/test_surface_parity_checkpoint.py`
+- `tests/test_entity_semantics_checkpoint.py`
+- `tests/test_transport_core_strictness_checkpoint.py`
+- `tests/test_advanced_protocol_delivery_checkpoint.py`
 - `tests/test_http1_hardening_pass.py`
 - `tests/test_server_http1.py`
 - `tests/test_server_http2.py`

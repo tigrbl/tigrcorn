@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
 
-from tools.ssot_sync import build_registry
+from tools.ssot_sync import _converge_automated_statuses, build_registry
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +24,7 @@ INIT_DIRS = (
 
 def test_committed_ssot_registry_is_current() -> None:
     committed = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
-    generated = build_registry()
+    generated = _converge_automated_statuses(build_registry())
     assert committed == generated
 
 
@@ -64,6 +65,51 @@ def test_ssot_registry_tracks_all_repo_local_adrs_specs_profiles_and_test_module
         assert path.relative_to(ROOT).as_posix() in test_paths
 
 
+def test_ssot_pytest_inventory_uses_capability_scoped_references() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    lifecycle_label = re.compile(r"phase[0-9][a-z0-9]*|step[0-9]*", re.IGNORECASE)
+
+    scoped_rows = [
+        row
+        for family in ("tests", "evidence")
+        for row in registry[family]
+        if str(row.get("kind", "")).startswith("pytest")
+    ]
+
+    offenders = [
+        (row["id"], row.get("title", ""), row.get("path", ""))
+        for row in scoped_rows
+        if lifecycle_label.search(" ".join(str(row.get(key, "")) for key in ("id", "title", "path")))
+    ]
+    assert offenders == []
+
+
+def test_ssot_current_entities_avoid_lifecycle_label_references() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    lifecycle_label = re.compile(r"\b(phase|step)[-_ ]?\d*\w*\b", re.IGNORECASE)
+    families = (
+        "features",
+        "profiles",
+        "claims",
+        "tests",
+        "evidence",
+        "issues",
+        "risks",
+        "boundaries",
+        "releases",
+    )
+    fields = ("id", "title", "path", "description", "summary", "name")
+
+    offenders = [
+        (family, row.get("id"), field, str(row.get(field, "")))
+        for family in families
+        for row in registry[family]
+        for field in fields
+        if lifecycle_label.search(str(row.get(field, "")))
+    ]
+    assert offenders == []
+
+
 def test_committed_ssot_registry_validates_with_ssot_registry() -> None:
     ssot = pytest.importorskip("ssot_registry.api.validate")
     registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
@@ -94,7 +140,7 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
 
     for feature_id in {"feat:rest-runtime-exclusion", "feat:json-rpc-runtime-exclusion"}:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "absent"
+        assert feature["implementation_status"] == "implemented"
         assert feature["plan"]["horizon"] == "out_of_bounds"
         assert "spc:2010" in feature["spec_ids"]
 
@@ -118,6 +164,65 @@ def test_ssot_declares_app_interface_selection_surfaces() -> None:
         assert feature["plan"]["horizon"] == "current"
         assert feature["plan"]["slot"] == "app-interface-selection"
         assert "spc:2035" in feature["spec_ids"]
+
+
+def test_ssot_declares_first_class_http_status_code_set() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    specs = {row["id"]: row for row in registry["specs"]}
+    features = {row["id"]: row for row in registry["features"]}
+    tests = {row["id"]: row for row in registry["tests"]}
+
+    expected_codes = {
+        100,
+        101,
+        103,
+        200,
+        201,
+        202,
+        204,
+        206,
+        301,
+        302,
+        304,
+        307,
+        308,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        408,
+        413,
+        416,
+        421,
+        426,
+        431,
+        500,
+        502,
+        503,
+        504,
+    }
+    assert "spc:2043" in specs
+    for code in expected_codes:
+        matching_features = [
+            feature
+            for feature in features.values()
+            if feature["id"].startswith(f"feat:http-status-{code}-")
+        ]
+        assert len(matching_features) == 1
+        feature = matching_features[0]
+        assert feature["plan"]["slot"] == "http-status-code"
+        assert feature["plan"]["horizon"] == "current"
+        assert "spc:2043" in feature["spec_ids"]
+        matching_tests = [
+            test
+            for test in tests.values()
+            if test["id"].startswith(f"tst:http-status-http-status-{code}-")
+        ]
+        assert len(matching_tests) == 1
+        assert feature["id"] in matching_tests[0]["feature_ids"]
 
 
 def test_ssot_links_concrete_contract_app_interface_tests_to_features() -> None:

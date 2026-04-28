@@ -1,13 +1,7 @@
 from __future__ import annotations
 
+from importlib import import_module as _import_module
+import sys as _sys
 
-def http_request(body: bytes = b"", more_body: bool = False) -> dict:
-    return {"type": "http.request", "body": body, "more_body": more_body}
-
-
-def http_request_trailers(trailers: list[tuple[bytes, bytes]]) -> dict:
-    return {"type": "http.request.trailers", "trailers": trailers}
-
-
-def http_disconnect() -> dict:
-    return {"type": "http.disconnect"}
+_module = _import_module('tigrcorn_asgi.events.http')
+_sys.modules[__name__] = _module

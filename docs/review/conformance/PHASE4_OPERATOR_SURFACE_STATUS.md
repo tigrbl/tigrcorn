@@ -60,13 +60,13 @@ This checkpoint lands the Phase 4 operator-surface implementation.
 
 Focused validation performed for this checkpoint:
 
-- `tests/test_phase4_operator_surface.py`
-- `tests/test_phase2_cli_config_surface.py`
+- `tests/test_operator_surface.py`
+- `tests/test_cli_config_surface.py`
 - `tests/test_observability_workers.py`
 - `tests/test_cli_and_asgi3.py`
 - `tests/test_config_matrix.py`
 - `tests/test_release_gates.py`
-- `tests/test_phase3_strict_rfc_surface.py`
+- `tests/test_strict_rfc_surface.py`
 - `tests/test_server_http1.py`
 - `tests/test_server_http2.py`
 - `tests/test_server_websocket.py`

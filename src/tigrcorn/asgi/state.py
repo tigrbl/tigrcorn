@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class ConnectionState:
-    started: bool = False
-    closed: bool = False
+_module = _import_module('tigrcorn_asgi.state')
+_sys.modules[__name__] = _module

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-runtime"
+version = "0.3.9"
+description = "Server runner, app loading, bootstrap, lifecycle, and worker runtime for Tigrcorn."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+dependencies = [
+  "tigrcorn-core==0.3.9",
+  "tigrcorn-config==0.3.9",
+  "tigrcorn-asgi==0.3.9",
+  "tigrcorn-transports==0.3.9",
+  "tigrcorn-protocols==0.3.9",
+  "tigrcorn-security==0.3.9",
+]
+
+[project.optional-dependencies]
+uvloop = ["uvloop>=0.19.0; platform_system != 'Windows'"]
+trio = ["trio>=0.25.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+tigrcorn_runtime = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

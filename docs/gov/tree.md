@@ -11,7 +11,7 @@ The repository root is intentionally narrow.
 Mutable root files are limited to:
 
 - `README.md`
-- `AGENTS.md`
+- `.codex/AGENTS.md`
 - `CONTRIBUTING.md`
 - `CODE_OF_CONDUCT.md`
 - `RELEASE_NOTES_*.md`
@@ -98,7 +98,7 @@ Allowed states:
 ## Recommended top-level reading order
 
 1. `README.md`
-2. `AGENTS.md`
+2. `.codex/AGENTS.md`
 3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 4. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 5. `docs/review/conformance/BOUNDARY_NON_GOALS.md`

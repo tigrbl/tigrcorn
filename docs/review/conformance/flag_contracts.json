@@ -175,7 +175,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip",
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip",
         "tests/test_app_loader.py::AppLoaderTests::test_load_app_from_current_working_directory_without_app_dir",
         "tests/test_app_loader.py::AppLoaderTests::test_load_factory_from_current_working_directory_without_app_dir"
       ],
@@ -233,7 +233,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "boolean + repeatable globs/paths"
@@ -289,7 +289,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "boolean + repeatable globs/paths"
@@ -345,7 +345,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "boolean + repeatable globs/paths"
@@ -401,7 +401,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "boolean + repeatable globs/paths"
@@ -460,7 +460,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "workers positive integer",
@@ -520,7 +520,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "workers positive integer",
@@ -575,7 +575,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "runtime in {auto, asyncio, uvloop}"
@@ -638,7 +638,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "workers positive integer",
@@ -693,7 +693,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "positive float startup timeout"
@@ -749,7 +749,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
       ],
       "validation_rules": [
         "config file path",
@@ -803,7 +803,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "optional env-file bootstrap path"
@@ -859,7 +859,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
       ],
       "validation_rules": [
         "config file path",
@@ -979,7 +979,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "workers positive integer",
@@ -1039,7 +1039,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "workers positive integer",
@@ -1118,7 +1118,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1198,7 +1198,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1282,7 +1282,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1362,7 +1362,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1442,7 +1442,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1522,7 +1522,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1602,7 +1602,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1682,7 +1682,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1762,7 +1762,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1848,7 +1848,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -1928,7 +1928,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -2008,7 +2008,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "listener kinds validated",
@@ -2064,7 +2064,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "only valid on unix listeners"
@@ -2118,7 +2118,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "only valid on unix listeners"
@@ -2172,7 +2172,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "only valid on unix listeners",
@@ -2250,8 +2250,8 @@
         "release_note": "Phase 2 static-delivery checkpoint wires server-native static mounts and standard ASGI pathsend-backed file delivery."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags",
-        "tests/test_phase2_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags",
+        "tests/test_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
       ],
       "validation_rules": [
         "route string"
@@ -2328,8 +2328,8 @@
         "release_note": "Phase 2 static-delivery checkpoint wires server-native static mounts and standard ASGI pathsend-backed file delivery."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase2_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
       ],
       "validation_rules": [
         "path string"
@@ -2404,7 +2404,7 @@
         "release_note": "Phase 2 static-delivery checkpoint wires server-native static mounts and standard ASGI pathsend-backed file delivery."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -2465,7 +2465,7 @@
         "release_note": "Phase 2 static-delivery checkpoint wires server-native static mounts and standard ASGI pathsend-backed file delivery."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -2540,7 +2540,7 @@
         "release_note": "Phase 2 static-delivery checkpoint wires server-native static mounts and standard ASGI pathsend-backed file delivery."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "string or null"
@@ -2615,8 +2615,8 @@
         "release_note": "Phase 2 static-delivery checkpoint wires server-native static mounts and standard ASGI pathsend-backed file delivery."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase2_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
       ],
       "validation_rules": [
         "non-negative integer or null"
@@ -2847,8 +2847,8 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context"
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context"
       ],
       "validation_rules": [
         "encrypted key password requires ssl_keyfile",
@@ -3060,7 +3060,7 @@
           ],
           "required_state_transition": "parse_only -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new TLS cipher-policy negotiation tests"
           ]
         },
@@ -3108,10 +3108,10 @@
         "release_note": "Phase 9F1 closes --ssl-ciphers by wiring package-owned TLS and QUIC cipher-suite selection to the resolved public allowlist."
       },
       "unit_tests": [
-        "tests/test_phase9f1_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_cli_and_config_runtime_fields_resolve_ssl_ciphers",
-        "tests/test_phase9f1_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_invalid_ssl_cipher_expressions_fail_fast",
-        "tests/test_phase9f1_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_tcp_tls_negotiated_suite_changes_with_configured_allowlist",
-        "tests/test_phase9f1_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_quic_tls_negotiated_suite_changes_with_configured_allowlist",
+        "tests/test_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_cli_and_config_runtime_fields_resolve_ssl_ciphers",
+        "tests/test_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_invalid_ssl_cipher_expressions_fail_fast",
+        "tests/test_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_tcp_tls_negotiated_suite_changes_with_configured_allowlist",
+        "tests/test_tls_cipher_policy_closure.py::Phase9F1TLSCipherPolicyTests::test_quic_tls_negotiated_suite_changes_with_configured_allowlist",
         "tests/test_public_api_tls_cipher_surface.py::PublicAPITLSCipherSurfaceTests::test_serve_forwards_ssl_ciphers",
         "tests/test_public_api_tls_cipher_surface.py::PublicCLITLSCipherSurfaceTests::test_cli_main_forwards_ssl_ciphers"
       ],
@@ -3752,8 +3752,8 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected"
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected"
       ],
       "validation_rules": [
         "local CRL file must exist",
@@ -3923,7 +3923,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "root_path empty or leading /"
@@ -3998,7 +3998,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "root_path empty or leading /"
@@ -4073,7 +4073,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "root_path empty or leading /"
@@ -4131,7 +4131,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "root_path empty or leading /"
@@ -4190,7 +4190,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "root_path empty or leading /"
@@ -4245,7 +4245,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -4300,7 +4300,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -4356,7 +4356,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "repeatable name:value syntax"
@@ -4413,7 +4413,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "repeatable/comma-separated host or authority allowlist"
@@ -4468,7 +4468,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4523,7 +4523,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4578,7 +4578,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4633,7 +4633,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4688,7 +4688,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4743,7 +4743,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4790,7 +4790,7 @@
           ],
           "required_state_transition": "parse_only -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new logging precedence tests"
           ]
         },
@@ -4826,7 +4826,7 @@
         "release_note": "Phase 9F2 closes this observability flag by wiring runtime logging/exporter behavior and deployment-profile coverage."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4881,7 +4881,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -4933,7 +4933,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "colorized stream logging toggle"
@@ -4985,7 +4985,7 @@
         "release_note": "Phase 1 surface parity checkpoint wires this runtime surface and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase1_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
+        "tests/test_surface_parity_checkpoint.py::Phase1SurfaceParityCheckpointTests::test_parser_and_namespace_map_new_phase1_flags"
       ],
       "validation_rules": [
         "colorized stream logging toggle"
@@ -5040,7 +5040,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -5095,7 +5095,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -5156,7 +5156,7 @@
           ],
           "required_state_transition": "parse_only -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new StatsD exporter tests"
           ]
         },
@@ -5193,7 +5193,7 @@
         "release_note": "Phase 9F2 closes this observability flag by wiring runtime logging/exporter behavior and deployment-profile coverage."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -5253,7 +5253,7 @@
           ],
           "required_state_transition": "parse_only -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new OTEL exporter contract tests"
           ]
         },
@@ -5291,7 +5291,7 @@
         "release_note": "Phase 9F2 closes this observability flag by wiring runtime logging/exporter behavior and deployment-profile coverage."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "validation_rules": [
         "path/string/bool parsing"
@@ -5379,7 +5379,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -5467,7 +5467,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -5555,7 +5555,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -5643,7 +5643,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -5714,7 +5714,7 @@
           ],
           "required_state_transition": "parse_only -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new overload and admission-control tests"
           ]
         },
@@ -5765,11 +5765,11 @@
         "release_note": "Phase 9F3 closes --limit-concurrency as a real global in-flight admission cap enforced across HTTP/1.1, HTTP/2, HTTP/3, CONNECT, and WebSocket admission paths."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_scheduler_limit_concurrency_is_real_global_inflight_cap",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http11_limit_concurrency_returns_503_on_second_request",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http2_limit_concurrency_returns_503_on_second_stream",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http3_websocket_admission_returns_503_when_limit_reached"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_scheduler_limit_concurrency_is_real_global_inflight_cap",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http11_limit_concurrency_returns_503_on_second_request",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http2_limit_concurrency_returns_503_on_second_stream",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http3_websocket_admission_returns_503_when_limit_reached"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -5857,7 +5857,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -5945,7 +5945,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6033,7 +6033,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6121,7 +6121,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6209,7 +6209,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6301,8 +6301,8 @@
         "release_note": "Phase 3 adds an HTTP/1.1 request-head incomplete-event cap with CLI/config/env/docs parity."
       },
       "unit_tests": [
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_parser_applies_incomplete_event_cap"
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_parser_applies_incomplete_event_cap"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6394,8 +6394,8 @@
         "release_note": "Phase 3 adds an HTTP/1.1 buffer-size control for request-head/body incremental reads."
       },
       "unit_tests": [
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_buffer_size_controls_streaming_request_chunks"
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_buffer_size_controls_streaming_request_chunks"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6484,8 +6484,8 @@
         "release_note": "Phase 3 adds a dedicated HTTP/1.1 request-head read-timeout control."
       },
       "unit_tests": [
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_header_read_timeout_tightens_generic_timeout"
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_header_read_timeout_tightens_generic_timeout"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6568,8 +6568,8 @@
         "release_note": "Phase 3 adds an explicit HTTP/1.1 keep-alive enable/disable contract."
       },
       "unit_tests": [
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_parser_accepts_phase3_flags",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_keep_alive_disable_forces_connection_close"
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_parser_accepts_phase3_flags",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_keep_alive_disable_forces_connection_close"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -6652,8 +6652,8 @@
         "release_note": "Phase 3 adds an explicit HTTP/1.1 keep-alive disable form that forces Connection: close behavior."
       },
       "unit_tests": [
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_parser_accepts_phase3_flags",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_keep_alive_disable_forces_connection_close"
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_parser_accepts_phase3_flags",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_http11_keep_alive_disable_forces_connection_close"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -6744,9 +6744,9 @@
         "release_note": "Phase 4 adds a dedicated HTTP/2 max-concurrent-streams control and advertises it in local SETTINGS."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6837,9 +6837,9 @@
         "release_note": "Phase 4 adds a dedicated HTTP/2 max-headers-size control and advertises it in local SETTINGS."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -6930,9 +6930,9 @@
         "release_note": "Phase 4 adds a dedicated HTTP/2 max-frame-size control and advertises it in local SETTINGS."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
       ],
       "validation_rules": [
         "integer in RFC 9113 frame-size range 16384..16777215"
@@ -7023,9 +7023,9 @@
         "release_note": "Phase 4 adds an adaptive HTTP/2 receive-window policy that can grow connection and stream targets while preserving flow-control legality."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_adaptive_window_growth_emits_window_updates"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_adaptive_window_growth_emits_window_updates"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -7116,7 +7116,7 @@
         "release_note": "Phase 4 adds the disable form for adaptive HTTP/2 receive-window growth."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_adaptive_window_disable_form_is_respected"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_adaptive_window_disable_form_is_respected"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -7207,9 +7207,9 @@
         "release_note": "Phase 4 adds explicit HTTP/2 connection receive-window sizing and emits the matching stream-0 WINDOW_UPDATE increment."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_initial_connection_window_emits_stream_zero_window_update"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_initial_connection_window_emits_stream_zero_window_update"
       ],
       "validation_rules": [
         "integer in RFC 9113 flow-control range 65535..2147483647"
@@ -7300,9 +7300,9 @@
         "release_note": "Phase 4 adds explicit HTTP/2 initial stream receive-window sizing and advertises it in local SETTINGS."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
       ],
       "validation_rules": [
         "integer in RFC 9113 flow-control range 1..2147483647"
@@ -7393,9 +7393,9 @@
         "release_note": "Phase 4 adds HTTP/2 connection keepalive scheduling through periodic PING frames."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_keepalive_sends_ping_then_closes_on_timeout"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_keepalive_sends_ping_then_closes_on_timeout"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -7486,9 +7486,9 @@
         "release_note": "Phase 4 adds HTTP/2 keepalive timeout enforcement for unacknowledged connection PING probes."
       },
       "unit_tests": [
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_keepalive_sends_ping_then_closes_on_timeout"
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_parser_accepts_phase4_flags",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_keepalive_sends_ping_then_closes_on_timeout"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -7576,7 +7576,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -7668,9 +7668,9 @@
         "release_note": "Phase 3 adds a WebSocket inbound queue limit across HTTP/1.1, HTTP/2, and HTTP/3 carriers."
       },
       "unit_tests": [
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_queue_receive_honors_max_size",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_websocket_handlers_receive_queue_size_from_config"
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_queue_receive_honors_max_size",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_websocket_handlers_receive_queue_size_from_config"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -7740,7 +7740,7 @@
           ],
           "required_state_transition": "partially_wired -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new websocket keepalive behavior tests"
           ]
         },
@@ -7795,10 +7795,10 @@
         "release_note": "Phase 9F3 closes --websocket-ping-interval by turning KeepAlivePolicy into a live outbound ping scheduler across HTTP/1.1, HTTP/2, and HTTP/3 WebSocket carriers."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http11_websocket_keepalive_sends_ping_then_closes_on_timeout",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http2_websocket_keepalive_sends_ping_then_closes_on_timeout",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http3_websocket_keepalive_sends_ping_then_closes_on_timeout"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http11_websocket_keepalive_sends_ping_then_closes_on_timeout",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http2_websocket_keepalive_sends_ping_then_closes_on_timeout",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http3_websocket_keepalive_sends_ping_then_closes_on_timeout"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -7868,7 +7868,7 @@
           ],
           "required_state_transition": "partially_wired -> implemented",
           "required_unit_tests": [
-            "tests/test_phase2_cli_config_surface.py",
+            "tests/test_cli_config_surface.py",
             "new websocket timeout/close tests"
           ]
         },
@@ -7923,10 +7923,10 @@
         "release_note": "Phase 9F3 closes --websocket-ping-timeout by enforcing deterministic timeout-based WebSocket closes and observable keepalive metrics across HTTP/1.1, HTTP/2, and HTTP/3 carriers."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http11_websocket_keepalive_sends_ping_then_closes_on_timeout",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http2_websocket_keepalive_sends_ping_then_closes_on_timeout",
-        "tests/test_phase9f3_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http3_websocket_keepalive_sends_ping_then_closes_on_timeout"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http11_websocket_keepalive_sends_ping_then_closes_on_timeout",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http2_websocket_keepalive_sends_ping_then_closes_on_timeout",
+        "tests/test_concurrency_keepalive_closure.py::Phase9F3ConcurrencyKeepaliveClosureTests::test_http3_websocket_keepalive_sends_ping_then_closes_on_timeout"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -8014,7 +8014,7 @@
         "release_note": "Runtime surface is wired enough for row-level contracting, but promotion still depends on the composite strict program."
       },
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "validation_rules": [
         "positive numeric values"
@@ -8133,8 +8133,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -8258,8 +8258,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -8387,8 +8387,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -8522,8 +8522,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -8647,8 +8647,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -8775,8 +8775,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -8904,8 +8904,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -9029,8 +9029,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -9158,8 +9158,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -9287,8 +9287,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -9351,7 +9351,7 @@
         "release_note": "Phase 4 advanced delivery wires Alt-Svc advertisement controls and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
+        "tests/test_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
       ],
       "validation_rules": [
         "repeatable Alt-Svc field values",
@@ -9416,7 +9416,7 @@
         "release_note": "Phase 4 advanced delivery wires Alt-Svc advertisement controls and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
+        "tests/test_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -9480,7 +9480,7 @@
         "release_note": "Phase 4 advanced delivery wires Alt-Svc advertisement controls and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
+        "tests/test_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -9542,7 +9542,7 @@
         "release_note": "Phase 4 advanced delivery wires Alt-Svc advertisement controls and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
+        "tests/test_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
       ],
       "validation_rules": [
         "non-negative integer"
@@ -9604,7 +9604,7 @@
         "release_note": "Phase 4 advanced delivery wires Alt-Svc advertisement controls and preserves row-level contract coverage."
       },
       "unit_tests": [
-        "tests/test_phase4_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
+        "tests/test_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3"
       ],
       "validation_rules": [
         "boolean toggle"
@@ -9735,8 +9735,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -9856,8 +9856,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -9977,8 +9977,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -10113,8 +10113,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",
@@ -10558,8 +10558,8 @@
       },
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
       ],
       "validation_rules": [
         "enum values",

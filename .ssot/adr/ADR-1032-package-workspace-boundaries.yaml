@@ -1,0 +1,38 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1032"
+number: 1032
+slug: "package-workspace-boundaries"
+title: "Split Tigrcorn into governed workspace packages"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall remain a stable umbrella package while implementation migrates into governed workspace packages with one-way dependencies."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1032 - Package workspace boundaries
+
+  Decision: Tigrcorn shall remain a stable umbrella package while implementation migrates into governed workspace packages with one-way dependencies.
+
+  The monolithic package shape makes long-term protocol, transport, runtime, compatibility, and certification work harder to evolve independently. The project shall use a monorepo workspace so implementation can be split into publishable packages without forcing separate repositories.
+
+  Package ownership:
+
+  - `tigrcorn-core` owns dependency-light constants, exceptions, and type aliases.
+  - `tigrcorn-config`, `tigrcorn-http`, and `tigrcorn-asgi` own reusable lower-layer surfaces.
+  - `tigrcorn-contract`, `tigrcorn-transports`, and `tigrcorn-security` own runtime-adjacent adapters and primitives.
+  - `tigrcorn-protocols`, `tigrcorn-static`, and `tigrcorn-observability` own feature families above those primitives.
+  - `tigrcorn-runtime` composes server runtime behavior.
+  - `tigrcorn-compat` and `tigrcorn-certification` remain leaf packages.
+  - `tigrcorn` remains the umbrella public install and compatibility facade.
+
+  Consequences:
+
+  - Lower layers must not import higher layers.
+  - Optional dependencies belong to the package that owns the optional surface.
+  - Existing public `tigrcorn.*` imports remain stable through compatibility shims during migration.
+  - New implementation work shall target the package that owns the capability.

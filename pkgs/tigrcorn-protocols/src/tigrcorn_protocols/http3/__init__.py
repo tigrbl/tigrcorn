@@ -1,0 +1,82 @@
+from .codec import (
+    H3_FRAME_UNEXPECTED,
+    H3_ID_ERROR,
+    H3_MESSAGE_ERROR,
+    H3_MISSING_SETTINGS,
+    H3_REQUEST_INCOMPLETE,
+    H3_SETTINGS_ERROR,
+    HTTP3ConnectionError,
+    HTTP3Frame,
+    HTTP3StreamError,
+    QPACK_DECODER_STREAM_ERROR,
+    QPACK_DECOMPRESSION_FAILED,
+    QPACK_ENCODER_STREAM_ERROR,
+    decode_frame,
+    decode_settings,
+    encode_frame,
+    encode_settings,
+    parse_frames,
+)
+from .qpack import (
+    FieldLine,
+    QpackBlocked,
+    QpackDecoder,
+    QpackDecoderStreamError,
+    QpackDecompressionFailed,
+    QpackEncoder,
+    QpackEncoderStreamError,
+    decode_field_section,
+    encode_field_section,
+)
+from .state import HTTP3BlockedSection, HTTP3ConnectionState, HTTP3PushPromiseState, HTTP3RequestState, HTTP3UniStreamState
+from .streams import HTTP3ConnectionCore, HTTP3RequestStream
+
+__all__ = [
+    'HTTP3Frame',
+    'FieldLine',
+    'QpackBlocked',
+    'QpackDecompressionFailed',
+    'QpackEncoderStreamError',
+    'QpackDecoderStreamError',
+    'QpackDecoder',
+    'QpackEncoder',
+    'HTTP3ConnectionError',
+    'HTTP3StreamError',
+    'HTTP3BlockedSection',
+    'HTTP3PushPromiseState',
+    'HTTP3ConnectionState',
+    'HTTP3RequestState',
+    'HTTP3UniStreamState',
+    'HTTP3ConnectionCore',
+    'HTTP3RequestStream',
+    'HTTP3DatagramHandler',
+    'HTTP3Session',
+    'encode_frame',
+    'decode_frame',
+    'parse_frames',
+    'encode_settings',
+    'decode_settings',
+    'encode_field_section',
+    'decode_field_section',
+    'H3_FRAME_UNEXPECTED',
+    'H3_ID_ERROR',
+    'H3_MESSAGE_ERROR',
+    'H3_MISSING_SETTINGS',
+    'H3_REQUEST_INCOMPLETE',
+    'H3_SETTINGS_ERROR',
+    'QPACK_DECOMPRESSION_FAILED',
+    'QPACK_ENCODER_STREAM_ERROR',
+    'QPACK_DECODER_STREAM_ERROR',
+]
+
+
+def __getattr__(name: str):
+    if name in {"HTTP3DatagramHandler", "HTTP3Session"}:
+        from .handler import HTTP3DatagramHandler, HTTP3Session
+
+        mapping = {
+            "HTTP3DatagramHandler": HTTP3DatagramHandler,
+            "HTTP3Session": HTTP3Session,
+        }
+        return mapping[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

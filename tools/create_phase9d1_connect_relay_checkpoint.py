@@ -165,12 +165,12 @@ def _create_local_negative_bundle() -> None:
         shutil.rmtree(LOCAL_NEGATIVE_ROOT)
     LOCAL_NEGATIVE_ROOT.mkdir(parents=True, exist_ok=True)
     vectors = [
-        ('http11-connect-policy-deny', True, ['tests/test_phase3_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_connect_policy_deny_and_allowlist']),
-        ('http11-connect-allowlist-rejection', True, ['tests/test_phase3_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_connect_policy_deny_and_allowlist']),
-        ('http2-connect-policy-deny', True, ['tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream']),
-        ('http2-connect-allowlist-rejection', True, ['tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream']),
-        ('http3-connect-policy-deny', True, ['tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream']),
-        ('http3-connect-allowlist-rejection', True, ['tests/test_phase9d1_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream']),
+        ('http11-connect-policy-deny', True, ['tests/test_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_connect_policy_deny_and_allowlist']),
+        ('http11-connect-allowlist-rejection', True, ['tests/test_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_connect_policy_deny_and_allowlist']),
+        ('http2-connect-policy-deny', True, ['tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream']),
+        ('http2-connect-allowlist-rejection', True, ['tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream']),
+        ('http3-connect-policy-deny', True, ['tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream']),
+        ('http3-connect-allowlist-rejection', True, ['tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream']),
     ]
     scenarios = []
     for vector_id, passed, source_tests in vectors:

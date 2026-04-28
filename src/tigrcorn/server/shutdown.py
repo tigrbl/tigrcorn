@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-import asyncio
-from contextlib import suppress
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-async def graceful_cancel(task: asyncio.Task | None) -> None:
-    if task is None:
-        return
-    task.cancel()
-    with suppress(asyncio.CancelledError):
-        await task
+_module = _import_module('tigrcorn_runtime.server.shutdown')
+_sys.modules[__name__] = _module

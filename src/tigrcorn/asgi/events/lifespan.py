@@ -1,9 +1,7 @@
 from __future__ import annotations
 
+from importlib import import_module as _import_module
+import sys as _sys
 
-def lifespan_startup() -> dict:
-    return {"type": "lifespan.startup"}
-
-
-def lifespan_shutdown() -> dict:
-    return {"type": "lifespan.shutdown"}
+_module = _import_module('tigrcorn_asgi.events.lifespan')
+_sys.modules[__name__] = _module

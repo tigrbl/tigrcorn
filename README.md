@@ -16,7 +16,7 @@
 <a href="docs/review/conformance/CERTIFICATION_BOUNDARY.md"><img alt="authoritative boundary green" src="https://img.shields.io/badge/authoritative_boundary-green-1f883d"></a>
 <a href="docs/review/conformance/STRICT_PROFILE_TARGET.md"><img alt="strict profile green" src="https://img.shields.io/badge/strict_profile-green-1f883d"></a>
 <a href="docs/review/conformance/releases/0.3.9/release-0.3.9/"><img alt="promotion green" src="https://img.shields.io/badge/promotion-green-1f883d"></a>
-<a href="AGENTS.md"><img alt="agents documented" src="https://img.shields.io/badge/agents-documented-6f42c1"></a>
+<a href=".codex/AGENTS.md"><img alt="agents documented" src="https://img.shields.io/badge/agents-documented-6f42c1"></a>
 </p>
 
 <p align="center"><strong>Package</strong><br>
@@ -56,10 +56,13 @@
 
 Tigrcorn is an ASGI3 server for teams that want modern transport and protocol support, explicit operator controls, and a public Python API that matches the shipped runtime. It implements HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSockets, TLS handling, static delivery, and release checks inside the project, with operator docs and current-state material kept alongside the code.
 
+Most users should start with **Quick start**, **Protocol and feature map**, and **CLI usage**. Maintainers should use the SSOT, governance, and conformance links when changing claimed support, release boundaries, or certification evidence.
+
 
 ## Table of contents
 
 - [Legend](#legend)
+- [Choose your path](#choose-your-path)
 - [Quick start](#quick-start)
 - [Why teams pick Tigrcorn](#why-teams-pick-tigrcorn)
 - [What Tigrcorn provides](#what-tigrcorn-provides)
@@ -92,6 +95,17 @@ Use this legend for the badges, status tables, and scope markers in this README.
 | `runtime-auto`, `runtime-asyncio`, `runtime-uvloop` | documented runtime modes in the current public surface |
 
 The top badge groups use plain language labels where possible. The protocol and feature tables use `C-RFC`, `C-OP`, and `O` as compact scope markers.
+
+## Choose your path
+
+| Goal | Start with | Then use |
+|---|---|---|
+| Run Tigrcorn as an ASGI server | [Quick start](#quick-start) | `docs/ops/cli.md`, `docs/ops/profiles.md` |
+| Configure production behavior | `docs/ops/cli.md` | `docs/ops/defaults.md`, `docs/ops/observability.md`, `docs/ops/policies.md` |
+| Build on Tigrcorn from Python | [Public API and embedding usage](#public-api-and-embedding-usage) | `docs/ops/public.md`, `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
+| Understand protocol and feature support | [Protocol and feature map](#protocol-and-feature-map) | `docs/protocols/`, `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `.ssot/registry.json` |
+| Change runtime behavior | `.codex/AGENTS.md` | `docs/gov/authoring.md`, `tests/`, `tools/ssot_sync.py` |
+| Change claimed support or release truth | `.ssot/registry.json` | `.ssot/adr/`, `.ssot/specs/`, `docs/review/conformance/` |
 
 ## Quick start
 
@@ -128,7 +142,7 @@ run("examples.echo_http.app:app", host="127.0.0.1", port=8000)
 ```
 
 For complete operator recipes, use `docs/ops/cli.md`. For public imports and lifecycle details, use `docs/ops/public.md` and `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
-For the blessed safe deployment profiles, use `docs/ops/profiles.md` and the generated `profiles/*.profile.json` artifacts.
+For the blessed safe deployment profiles, use `docs/ops/profiles.md` and the packaged `src/tigrcorn/profiles/*.profile.json` artifacts.
 
 ## Why teams pick Tigrcorn
 
@@ -201,6 +215,8 @@ python -m pip install -e ".[full-featured]"
 The authoritative optional dependency reference is `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`. TLS/X.509 operations rely on the optional `tigrcorn[tls-x509]` extra.
 
 ## Protocol and feature map
+
+This section is a public support snapshot. It keeps protocol and feature details visible in the README, but it does not replace the deeper truth surfaces. Use `C-RFC` for current certified protocol claims, `C-OP` for current operator/API surfaces, and `O` for intentionally out-of-scope behavior. When changing claimed support, update `.ssot/registry.json`, the related ADR/SPEC/feature/claim/test/evidence rows, and the conformance boundary together.
 
 > **Legend:** `C-RFC` = inside the current certified RFC boundary · `C-OP` = inside the public/operator surface · `O` = outside the current scope
 
@@ -578,7 +594,7 @@ Read next:
 
 ## Where to look
 
-| If you are… | Start here | Then go to |
+| If you are... | Start here | Then go to |
 |---|---|---|
 | Launching Tigrcorn as an operator | `docs/ops/cli.md` | `docs/review/conformance/DEPLOYMENT_PROFILES.md` |
 | Embedding Tigrcorn in another process | `docs/ops/public.md` | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
@@ -589,7 +605,7 @@ Read next:
 | Comparing Tigrcorn with peer servers | `docs/comp/rfc.md` | `docs/comp/cli.md`, `docs/comp/ops.md`, `docs/comp/oob.md` |
 | Writing or maintaining docs | `docs/gov/authoring.md` | `CONTRIBUTING.md`, `docs/gov/tree.md`, `docs/gov/mut.md` |
 | Working on release or promotion | `docs/gov/release.md` | `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md` |
-| Acting as an agent or automation | `AGENTS.md` | `tools/govchk.py` |
+| Acting as an agent or automation | `.codex/AGENTS.md` | `tools/govchk.py` |
 
 ## Governance and maintainer workflow
 
@@ -597,7 +613,7 @@ Maintainer and authoring guidance lives in:
 
 - `docs/gov/authoring.md`
 - `CONTRIBUTING.md`
-- `AGENTS.md`
+- `.codex/AGENTS.md`
 - `docs/gov/release.md`
 
 The short version:

@@ -327,7 +327,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `path string` |
 | Deployment profiles | `http1_baseline` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip` |
 | Interop scenarios | — |
 | Performance profiles | — |
 
@@ -343,7 +343,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `boolean + repeatable globs/paths` |
 | Deployment profiles | `worker_prefork_proxy` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags` |
 | Interop scenarios | — |
 | Performance profiles | — |
 
@@ -359,7 +359,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `workers positive integer`, `worker_class in supported set`, `runtime in {auto, asyncio, uvloop}`, `healthcheck timeout positive float` |
 | Deployment profiles | `worker_prefork_proxy`, `fd_inherited_worker` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags` |
 | Interop scenarios | — |
 | Performance profiles | `worker_scale` |
 
@@ -375,7 +375,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `config file path`, `env prefix string`, `optional env-file bootstrap` |
 | Deployment profiles | `http1_baseline` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file` |
 | Interop scenarios | — |
 | Performance profiles | — |
 
@@ -414,7 +414,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | RFC 9112, RFC 9113, RFC 9114, RFC 9000, RFC 9001 |
 | Validation rules | `listener kinds validated`, `ports in range`, `paths/FDs typed`, `unix socket ownership controls only apply to unix listeners` |
 | Deployment profiles | `http1_baseline`, `http2_tls`, `http3_quic`, `fd_inherited_worker`, `unix_socket_proxy`, `custom_pipe_rawframed` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels` |
 | Interop scenarios | — |
 | Performance profiles | `http1_baseline`, `http3_clean` |
 
@@ -437,7 +437,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `route string`, `path string`, `boolean toggle`, `string or null`, `non-negative integer or null` |
 | Deployment profiles | `http1_baseline`, `http2_tls`, `http3_quic` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags`, `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels`, `tests/test_phase2_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags`, `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels`, `tests/test_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string` |
 | Interop scenarios | — |
 | Performance profiles | — |
 
@@ -461,7 +461,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | RFC 8446, RFC 5280, RFC 6960, RFC 7301 |
 | Validation rules | `cert/key pairing`, `encrypted key password requires ssl_keyfile`, `CA required for client cert mode`, `OCSP mode enum`, `ocsp max age positive`, `CRL mode enum`, `local CRL path exists and parses`, `revocation fetch toggle` |
 | Deployment profiles | `http2_tls`, `http3_quic`, `http3_quic_mtls`, `tls_ocsp_strict` |
-| Unit tests | `tests/test_public_api_cli_mtls_surface.py::PublicRunAndCLIClientCertificateSurfaceTests::test_cli_main_forwards_client_certificate_options`, `tests/test_config_matrix.py::ConfigMatrixTests::test_udp_client_auth_is_accepted_with_a_trust_store`, `tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl`, `tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context`, `tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected` |
+| Unit tests | `tests/test_public_api_cli_mtls_surface.py::PublicRunAndCLIClientCertificateSurfaceTests::test_cli_main_forwards_client_certificate_options`, `tests/test_config_matrix.py::ConfigMatrixTests::test_udp_client_auth_is_accepted_with_a_trust_store`, `tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl`, `tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context`, `tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected` |
 | Interop scenarios | `http3-server-aioquic-client-mtls`, `tls-server-ocsp-validation-openssl-client` |
 | Performance profiles | `tls_handshake` |
 
@@ -477,7 +477,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `root_path empty or leading /`, `default headers use name:value syntax`, `server names repeatable / comma-separated allowlist` |
 | Deployment profiles | `http1_proxy`, `unix_socket_proxy` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels` |
 | Interop scenarios | — |
 | Performance profiles | — |
 
@@ -500,7 +500,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | — |
 | Validation rules | `path/string/bool parsing`, `optional colorized stream logging toggle` |
 | Deployment profiles | `http1_baseline` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags` |
 | Interop scenarios | — |
 | Performance profiles | — |
 
@@ -523,7 +523,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | RFC 9110, RFC 9112, RFC 9113, RFC 9114, RFC 6455, RFC 8441, RFC 9220 |
 | Validation rules | `positive numeric values` |
 | Deployment profiles | `http1_baseline`, `http2_tls`, `http3_quic`, `websocket_http11` |
-| Unit tests | `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels`, `tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels`, `tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels`, `tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings` |
+| Unit tests | `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels`, `tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels`, `tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels`, `tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings` |
 | Interop scenarios | — |
 | Performance profiles | `http1_baseline`, `http2_multiplexing`, `http3_clean`, `websocket_echo` |
 
@@ -546,7 +546,7 @@ The rows below mirror the current public flag truth in `docs/review/conformance/
 | RFC targets | RFC 9112, RFC 9113, RFC 9114, RFC 9000, RFC 9001, RFC 9002, RFC 6455, RFC 7692, RFC 8441, RFC 9220, RFC 9110 §9.3.6, RFC 9110 §6.5, RFC 9110 §8 |
 | Validation rules | `enum values`, `positive numeric values` |
 | Deployment profiles | `http1_baseline`, `http2_cleartext`, `http2_tls`, `http3_quic`, `websocket_http11_permessage_deflate`, `connect_http11`, `trailers_http11`, `content_coding_http11`, `custom_pipe_rawframed`, `websocket_http2_permessage_deflate`, `websocket_http3_permessage_deflate`, `connect_http2`, `connect_http3`, `trailers_http2`, `trailers_http3`, `content_coding_http2`, `content_coding_http3` |
-| Unit tests | `tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser`, `tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels`, `tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config` |
+| Unit tests | `tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser`, `tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels`, `tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config` |
 | Interop scenarios | `websocket-http11-server-websockets-client-permessage-deflate`, `http11-connect-relay-curl-client`, `http11-trailer-fields-curl-client`, `http11-content-coding-curl-client`, `http3-server-aioquic-client-post-retry`, `http3-server-aioquic-client-post-zero-rtt`, `websocket-http2-server-h2-client-permessage-deflate`, `websocket-http3-server-aioquic-client-permessage-deflate`, `http2-connect-relay-h2-client`, `http3-connect-relay-aioquic-client`, `http2-trailer-fields-h2-client`, `http3-trailer-fields-aioquic-client`, `http2-content-coding-curl-client`, `http3-content-coding-aioquic-client` |
 | Performance profiles | `http1_baseline`, `http2_multiplexing`, `http3_clean`, `websocket_compressed`, `websocket_compression`, `connect_tunnel`, `trailers_under_load`, `content_coding_under_load` |
 

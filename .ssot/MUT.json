@@ -1,5 +1,1 @@
-{
-  "state": "mutable",
-  "scope": "repo_ssot_root",
-  "reason": "Repo-local canonical machine-readable registry and derived validation outputs."
-}
+{"reason":"Repo-local canonical machine-readable registry and derived validation outputs.","scope":"repo_ssot_root","state":"mutable"}

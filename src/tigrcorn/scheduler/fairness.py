@@ -1,21 +1,7 @@
 from __future__ import annotations
 
-from collections import deque
-from dataclasses import dataclass, field
-from typing import Generic, TypeVar
+from importlib import import_module as _import_module
+import sys as _sys
 
-T = TypeVar('T')
-
-
-@dataclass(slots=True)
-class FairnessPolicy(Generic[T]):
-    round_robin: bool = True
-    _queue: deque[T] = field(default_factory=deque)
-
-    def push(self, item: T) -> None:
-        self._queue.append(item)
-
-    def pop(self) -> T | None:
-        if not self._queue:
-            return None
-        return self._queue.popleft()
+_module = _import_module("tigrcorn_protocols.scheduler.fairness")
+_sys.modules[__name__] = _module

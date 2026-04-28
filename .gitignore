@@ -1,3 +1,4 @@
 *.pyc
 /src/tigrcorn.egg-info
+/pkgs/*/src/*.egg-info
 /.tmp

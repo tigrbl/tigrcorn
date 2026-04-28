@@ -1,18 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.asgi.events.custom import stream_receive, stream_send
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def adapt_scope(scope: dict) -> dict:
-    adapted = dict(scope)
-    adapted.setdefault('extensions', {})
-    adapted['extensions'].setdefault('tigrcorn.custom', {})
-    return adapted
-
-
-def adapt_inbound(payload: bytes, *, more_data: bool = False) -> dict:
-    return stream_receive(payload, more_data=more_data)
-
-
-def adapt_outbound(payload: bytes, *, more_data: bool = False) -> dict:
-    return stream_send(payload, more_data=more_data)
+_module = _import_module('tigrcorn_protocols.custom.adapters')
+_sys.modules[__name__] = _module

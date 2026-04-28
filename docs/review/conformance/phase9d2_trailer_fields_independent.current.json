@@ -73,7 +73,7 @@
     },
     "local_positive_tests": [
       "tests/test_trailers_rfc9110.py",
-      "tests/test_phase3_strict_rfc_surface.py",
+      "tests/test_strict_rfc_surface.py",
       "tests/test_trailer_policy_strict_local.py",
       "tests/test_response_trailers_rfc9110.py"
     ],

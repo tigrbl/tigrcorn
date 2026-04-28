@@ -1,6 +1,6 @@
 # Metrics Schema
 
-This file is generated from the package-owned Phase 6 observability metadata.
+This file is generated from the package-owned observability metadata.
 
 ## Transport counters
 

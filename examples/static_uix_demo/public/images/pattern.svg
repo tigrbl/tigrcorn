@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" role="img" aria-label="Static asset pattern">
+  <rect width="640" height="280" fill="#f8fafc"/>
+  <path d="M0 226 C120 164 192 260 320 196 C442 134 512 188 640 112 L640 280 L0 280 Z" fill="#0f766e"/>
+  <path d="M0 150 C110 96 214 176 340 106 C466 36 544 78 640 24" fill="none" stroke="#2563eb" stroke-width="18"/>
+  <circle cx="120" cy="74" r="38" fill="#f97316"/>
+  <circle cx="512" cy="184" r="28" fill="#111827"/>
+</svg>

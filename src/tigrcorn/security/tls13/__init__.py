@@ -1,95 +1,12 @@
-from .extensions import (
-    CIPHER_TLS_AES_128_GCM_SHA256,
-    CIPHER_TLS_AES_256_GCM_SHA384,
-    GROUP_SECP256R1,
-    GROUP_X25519,
-    QUIC_EARLY_DATA_SENTINEL,
-    SIG_RSA_PKCS1_SHA256,
-    SIG_ECDSA_SECP256R1_SHA256,
-    SIG_ED25519,
-    SIG_RSA_PSS_PSS_SHA256,
-    SIG_RSA_PSS_RSAE_SHA256,
-    SUPPORTED_CERTIFICATE_SIGNATURE_SCHEMES,
-    SUPPORTED_CIPHER_SUITES,
-    SUPPORTED_GROUPS,
-    SUPPORTED_SIGNATURE_SCHEMES,
-    ExtensionType,
-    CipherSuiteParameters,
-    OfferedPsks,
-    PskIdentity,
-    TlsExtension,
-    TransportParameters,
-    cipher_suite_name,
-    cipher_suite_parameters,
-    format_cipher_suite_allowlist,
-    parse_cipher_suite_allowlist,
-)
-from .key_schedule import Tls13KeySchedule, TrafficSecrets
-from .messages import *
-from .transcript import HandshakeTranscript
+from __future__ import annotations
 
-__all__ = [
-    'CIPHER_TLS_AES_128_GCM_SHA256',
-    'CIPHER_TLS_AES_256_GCM_SHA384',
-    'GROUP_SECP256R1',
-    'GROUP_X25519',
-    'QUIC_EARLY_DATA_SENTINEL',
-    'SIG_RSA_PKCS1_SHA256',
-    'SIG_ECDSA_SECP256R1_SHA256',
-    'SIG_ED25519',
-    'SIG_RSA_PSS_RSAE_SHA256',
-    'SIG_RSA_PSS_PSS_SHA256',
-    'SUPPORTED_CERTIFICATE_SIGNATURE_SCHEMES',
-    'SUPPORTED_CIPHER_SUITES',
-    'SUPPORTED_GROUPS',
-    'SUPPORTED_SIGNATURE_SCHEMES',
-    'ExtensionType',
-    'CipherSuiteParameters',
-    'OfferedPsks',
-    'PskIdentity',
-    'TlsExtension',
-    'TransportParameters',
-    'cipher_suite_name',
-    'cipher_suite_parameters',
-    'format_cipher_suite_allowlist',
-    'parse_cipher_suite_allowlist',
-    'HandshakeTranscript',
-    'Tls13KeySchedule',
-    'TrafficSecrets',
-    'HandshakeFlight',
-    'QuicTlsHandshakeDriver',
-    'QuicSessionTicket',
-    'QuicTrafficSecrets',
-    'TlsAlertError',
-    'generate_self_signed_certificate',
-]
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_security.tls13")
+__all__ = list(getattr(_module, "__all__", ()))
 
 
 def __getattr__(name: str):
-    if name in {
-        'HandshakeFlight',
-        'QuicSessionTicket',
-        'QuicTlsHandshakeDriver',
-        'QuicTrafficSecrets',
-        'TlsAlertError',
-        'generate_self_signed_certificate',
-    }:
-        from .handshake import (
-            HandshakeFlight,
-            QuicSessionTicket,
-            QuicTlsHandshakeDriver,
-            QuicTrafficSecrets,
-            TlsAlertError,
-            generate_self_signed_certificate,
-        )
-
-        mapping = {
-            'HandshakeFlight': HandshakeFlight,
-            'QuicSessionTicket': QuicSessionTicket,
-            'QuicTlsHandshakeDriver': QuicTlsHandshakeDriver,
-            'QuicTrafficSecrets': QuicTrafficSecrets,
-            'TlsAlertError': TlsAlertError,
-            'generate_self_signed_certificate': generate_self_signed_certificate,
-        }
-        return mapping[name]
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    return getattr(_module, name)

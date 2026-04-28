@@ -1,16 +1,12 @@
-from .codec import FrameBuffer, FrameWriter, HTTP2Frame
-from .handler import HTTP2ConnectionHandler
-from .hpack import decode_header_block, encode_header_block
-from .state import H2ConnectionState, H2StreamLifecycle, H2StreamState
+from __future__ import annotations
 
-__all__ = [
-    "HTTP2Frame",
-    "FrameBuffer",
-    "FrameWriter",
-    "HTTP2ConnectionHandler",
-    "encode_header_block",
-    "decode_header_block",
-    "H2ConnectionState",
-    "H2StreamState",
-    "H2StreamLifecycle",
-]
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_protocols.http2")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

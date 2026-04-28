@@ -919,7 +919,7 @@
         "docs/ops/defaults.md",
         "DEFAULT_AUDIT.json",
         "tests/test_default_audits.py",
-        "tests/test_phase2_cli_config_surface.py"
+        "tests/test_cli_config_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "public_flag_contract",
@@ -949,7 +949,7 @@
         "src/tigrcorn/protocols/http3/handler.py",
         "docs/conformance/early_data_contract.json",
         "docs/conformance/early_data_contract.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_early_data",
@@ -978,7 +978,7 @@
         "docs/conformance/early_data_contract.json",
         "docs/conformance/early_data_contract.md",
         "tests/test_tls13_engine_upgrade.py",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_early_data",
@@ -1004,7 +1004,7 @@
         "src/tigrcorn/config/quic_surface.py",
         "docs/conformance/early_data_contract.json",
         "docs/conformance/early_data_contract.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_early_data",
@@ -1032,7 +1032,7 @@
         "src/tigrcorn/config/quic_surface.py",
         "docs/conformance/early_data_contract.json",
         "docs/conformance/early_data_contract.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_retry_behavior",
@@ -1058,7 +1058,7 @@
         "docs/review/conformance/external_matrix.release.json",
         "docs/conformance/quic_state.json",
         "docs/conformance/quic_state.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_state",
@@ -1084,7 +1084,7 @@
         "docs/review/conformance/external_matrix.release.json",
         "docs/conformance/quic_state.json",
         "docs/conformance/quic_state.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_state",
@@ -1110,7 +1110,7 @@
         "docs/review/conformance/external_matrix.release.json",
         "docs/conformance/quic_state.json",
         "docs/conformance/quic_state.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_state",
@@ -1136,7 +1136,7 @@
         "docs/review/conformance/external_matrix.release.json",
         "docs/conformance/quic_state.json",
         "docs/conformance/quic_state.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_state",
@@ -1162,7 +1162,7 @@
         "docs/review/conformance/external_matrix.release.json",
         "docs/conformance/quic_state.json",
         "docs/conformance/quic_state.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_state",
@@ -1188,7 +1188,7 @@
         "docs/review/conformance/external_matrix.release.json",
         "docs/conformance/quic_state.json",
         "docs/conformance/quic_state.md",
-        "tests/test_phase4_quic_surface.py"
+        "tests/test_quic_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "quic_state",
@@ -1218,7 +1218,7 @@
         "docs/conformance/origin_negatives.json",
         "docs/conformance/origin_negatives.md",
         "docs/ops/origin.md",
-        "tests/test_phase5_origin_contract.py"
+        "tests/test_origin_contract.py"
       ],
       "status": "implemented_in_tree",
       "surface": "origin_delivery",
@@ -1250,7 +1250,7 @@
         "docs/conformance/origin_negatives.json",
         "docs/conformance/origin_negatives.md",
         "docs/ops/origin.md",
-        "tests/test_phase5_origin_contract.py",
+        "tests/test_origin_contract.py",
         "tests/test_rfc7232_conditional_requests.py",
         "tests/test_rfc7233_range_requests.py"
       ],
@@ -1283,8 +1283,8 @@
         "docs/conformance/origin_negatives.json",
         "docs/conformance/origin_negatives.md",
         "docs/ops/origin.md",
-        "tests/test_phase2_static_delivery_surface.py",
-        "tests/test_phase5_origin_contract.py"
+        "tests/test_static_delivery_surface.py",
+        "tests/test_origin_contract.py"
       ],
       "status": "implemented_in_tree",
       "surface": "origin_delivery",
@@ -1297,7 +1297,7 @@
       "boundary_status": "current_in_bounds_claim",
       "claim_kind": "implemented_claim",
       "class": "operator_surface",
-      "current_evidence": "docs/conformance/metrics_schema.json, docs/conformance/metrics_schema.md, tests/test_phase6_observability_surface.py",
+      "current_evidence": "docs/conformance/metrics_schema.json, docs/conformance/metrics_schema.md, tests/test_observability_surface.py",
       "feature_refs": [
         "QUIC/H3 counters"
       ],
@@ -1317,7 +1317,7 @@
       "boundary_status": "current_in_bounds_claim",
       "claim_kind": "implemented_claim",
       "class": "operator_surface",
-      "current_evidence": "docs/conformance/metrics_schema.json, docs/ops/observability.md, tests/test_phase6_observability_surface.py, tests/test_phase9f2_logging_exporter_closure.py",
+      "current_evidence": "docs/conformance/metrics_schema.json, docs/ops/observability.md, tests/test_logging_exporter_closure.py",
       "feature_refs": [
         "Observability export surfaces"
       ],
@@ -1337,7 +1337,7 @@
       "boundary_status": "current_in_bounds_claim",
       "claim_kind": "implemented_claim",
       "class": "operator_surface",
-      "current_evidence": "docs/conformance/qlog_experimental.json, docs/conformance/qlog_experimental.md, tests/test_phase6_observability_surface.py",
+      "current_evidence": "docs/conformance/qlog_experimental.json, docs/conformance/qlog_experimental.md, tests/test_observability_surface.py",
       "feature_refs": [
         "qlog stance"
       ],
@@ -1357,7 +1357,7 @@
       "boundary_status": "current_in_bounds_claim",
       "claim_kind": "implemented_claim",
       "class": "governance_support",
-      "current_evidence": "docs/conformance/fail_state_registry.json, docs/conformance/fail_state_registry.md, tests/test_phase7_negative_certification.py",
+      "current_evidence": "docs/conformance/fail_state_registry.json, docs/conformance/fail_state_registry.md, tests/test_negative_certification.py",
       "feature_refs": [
         "Fail-state registry"
       ],
@@ -1377,7 +1377,7 @@
       "boundary_status": "current_in_bounds_claim",
       "claim_kind": "implemented_claim",
       "class": "certification_support",
-      "current_evidence": "docs/conformance/negative_corpora.json, docs/conformance/negative_corpora.md, tests/test_phase7_negative_certification.py",
+      "current_evidence": "docs/conformance/negative_corpora.json, docs/conformance/negative_corpora.md, tests/test_negative_certification.py",
       "feature_refs": [
         "QUIC negative corpora",
         "Origin negative corpora"
@@ -1401,7 +1401,7 @@
       "boundary_status": "current_in_bounds_claim",
       "claim_kind": "implemented_claim",
       "class": "certification_support",
-      "current_evidence": "docs/conformance/negative_bundles.json, docs/conformance/negative_bundles.md, docs/conformance/negative_bundles/, tests/test_phase7_negative_certification.py",
+      "current_evidence": "docs/conformance/negative_bundles.json, docs/conformance/negative_bundles.md, docs/conformance/negative_bundles/, tests/test_negative_certification.py",
       "feature_refs": [
         "QUIC negative corpora",
         "Origin negative corpora"
@@ -1757,7 +1757,7 @@
         "tools/cert/policy_surface.py",
         "docs/conformance/proxy_contract.json",
         "docs/conformance/proxy_contract.md",
-        "tests/test_phase3_policy_surface.py"
+        "tests/test_policy_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "proxy_normalization",
@@ -1785,7 +1785,7 @@
         "tools/cert/policy_surface.py",
         "docs/conformance/proxy_contract.json",
         "docs/conformance/proxy_contract.md",
-        "tests/test_phase3_policy_surface.py"
+        "tests/test_policy_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "proxy_normalization",
@@ -1813,7 +1813,7 @@
         "tools/cert/policy_surface.py",
         "docs/conformance/proxy_contract.json",
         "docs/conformance/proxy_contract.md",
-        "tests/test_phase3_policy_surface.py"
+        "tests/test_policy_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "proxy_normalization",
@@ -1840,7 +1840,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "connect_relay",
@@ -1867,7 +1867,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "trailers",
@@ -1894,7 +1894,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "content_coding",
@@ -1919,7 +1919,7 @@
         "src/tigrcorn/config/env.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase3_policy_surface.py"
+        "tests/test_policy_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "http2_h2c",
@@ -1943,7 +1943,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "tls_alpn_policy",
@@ -1967,7 +1967,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "tls_revocation_policy",
@@ -1992,7 +1992,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase3_strict_rfc_surface.py"
+        "tests/test_strict_rfc_surface.py"
       ],
       "status": "implemented_in_tree",
       "surface": "websocket_compression",
@@ -2017,7 +2017,7 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "runtime_limits_timeouts",
@@ -2042,8 +2042,8 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase3_policy_surface.py",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_policy_surface.py",
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "websocket_keepalive",
@@ -2068,8 +2068,8 @@
         "src/tigrcorn/config/policy_surface.py",
         "docs/ops/policies.md",
         "docs/conformance/policy_surface.json",
-        "tests/test_phase3_policy_surface.py",
-        "tests/test_phase7_flag_surface_truth_reconciliation.py"
+        "tests/test_policy_surface.py",
+        "tests/test_flag_surface_truth_reconciliation.py"
       ],
       "status": "implemented_in_tree",
       "surface": "runtime_admission_control",

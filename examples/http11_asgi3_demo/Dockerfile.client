@@ -1,0 +1,11 @@
+FROM python:3.13-slim AS client
+
+WORKDIR /client
+ENV PYTHONUNBUFFERED=1
+
+COPY examples/http11_asgi3_demo/client_server.py ./examples/http11_asgi3_demo/client_server.py
+COPY examples/http11_asgi3_demo/client ./examples/http11_asgi3_demo/client
+
+EXPOSE 8080/tcp
+
+CMD ["python", "-m", "examples.http11_asgi3_demo.client_server"]

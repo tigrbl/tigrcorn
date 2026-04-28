@@ -24,7 +24,6 @@ from tigrcorn.observability.tracing import OtelExporter
 from tigrcorn.server.runner import TigrCornServer
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
 
 
 @contextlib.contextmanager
@@ -71,7 +70,7 @@ class _CaptureHandler(BaseHTTPRequestHandler):
         return
 
 
-class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
+class LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
     def test_log_config_file_is_real_runtime_input_and_cli_flags_override_it(self):
         parser = build_parser()
         with _workspace_tempdir() as tmpdir:
@@ -119,15 +118,15 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
 
             logger = configure_logging(config.log_level, config=config.logging)
             try:
-                logger.debug('phase9f2-log-config-debug')
+                logger.debug('logging-exporter-config-debug')
                 for handler in logger.handlers:
                     handler.flush()
                 self.assertTrue(access_from_cli.exists())
                 self.assertTrue(error_from_cli.exists())
                 self.assertFalse(access_from_file.exists())
                 payload = access_from_cli.read_text(encoding='utf-8')
-                self.assertIn('phase9f2-log-config-debug', payload)
-                self.assertIn('"message": "phase9f2-log-config-debug"', payload)
+                self.assertIn('logging-exporter-config-debug', payload)
+                self.assertIn('"message": "logging-exporter-config-debug"', payload)
             finally:
                 _close_logger_handlers(logger)
 
@@ -136,7 +135,16 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
             profile_path = tmpdir / 'logging.json'
             error_path = tmpdir / 'errors.log'
             profile_path.write_text(
-                json.dumps({'logging': {'level': 'error', 'structured': True, 'error_log_file': str(error_path), 'stream': False}}),
+                json.dumps(
+                    {
+                        'logging': {
+                            'level': 'error',
+                            'structured': True,
+                            'error_log_file': str(error_path),
+                            'stream': False,
+                        }
+                    }
+                ),
                 encoding='utf-8',
             )
             config = build_config(config={'logging': {'log_config': str(profile_path)}})
@@ -164,12 +172,104 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(ConfigError):
                 build_config_from_namespace(ns)
 
+    def test_pep391_dict_logging_config_drives_runtime_handlers(self):
+        parser = build_parser()
+        with _workspace_tempdir() as tmpdir:
+            output_path = tmpdir / 'pep391.log'
+            profile_path = tmpdir / 'pep391.json'
+            profile_path.write_text(
+                json.dumps(
+                    {
+                        'version': 1,
+                        'disable_existing_loggers': False,
+                        'formatters': {
+                            'plain': {
+                                'format': 'pep391:%(levelname)s:%(name)s:%(message)s',
+                            }
+                        },
+                        'handlers': {
+                            'file': {
+                                'class': 'logging.FileHandler',
+                                'filename': str(output_path),
+                                'encoding': 'utf-8',
+                                'formatter': 'plain',
+                            }
+                        },
+                        'loggers': {
+                            'tigrcorn': {
+                                'handlers': ['file'],
+                                'level': 'DEBUG',
+                                'propagate': False,
+                            }
+                        },
+                    }
+                ),
+                encoding='utf-8',
+            )
+            ns = parser.parse_args(['tests.fixtures_pkg.appmod:app', '--log-config', str(profile_path)])
+            config = build_config_from_namespace(ns)
+            logger = configure_logging(config.log_level, config=config.logging)
+            try:
+                logger.debug('dict-config-event')
+                for handler in logger.handlers:
+                    handler.flush()
+                self.assertIn(
+                    'pep391:DEBUG:tigrcorn:dict-config-event',
+                    output_path.read_text(encoding='utf-8'),
+                )
+            finally:
+                _close_logger_handlers(logger)
+
+    def test_rfc5424_log_config_profile_formats_runtime_records(self):
+        with _workspace_tempdir() as tmpdir:
+            profile_path = tmpdir / 'rfc5424.json'
+            output_path = tmpdir / 'syslog.log'
+            profile_path.write_text(
+                json.dumps(
+                    {
+                        'logging': {
+                            'level': 'info',
+                            'format': 'rfc5424',
+                            'error_log_file': str(output_path),
+                            'stream': False,
+                            'syslog_app_name': 'tigrcorn-test',
+                            'syslog_procid': 'worker-1',
+                            'syslog_msgid': 'ACCESS',
+                        }
+                    }
+                ),
+                encoding='utf-8',
+            )
+            config = build_config(config={'logging': {'log_config': str(profile_path)}})
+            logger = configure_logging(config.log_level, config=config.logging)
+            try:
+                logger.info(
+                    'request-complete',
+                    extra={
+                        'event': 'access.http',
+                        'method': 'GET',
+                        'path': '/health',
+                        'status': 204,
+                    },
+                )
+                for handler in logger.handlers:
+                    handler.flush()
+                line = output_path.read_text(encoding='utf-8').strip()
+                self.assertTrue(line.startswith('<14>1 '))
+                self.assertIn(' tigrcorn-test worker-1 ACCESS ', line)
+                self.assertIn('[tigrcorn@32473 ', line)
+                self.assertIn('event="access.http"', line)
+                self.assertIn('status="204"', line)
+                self.assertTrue(line.endswith(' request-complete'))
+            finally:
+                _close_logger_handlers(logger)
+
     async def test_statsd_exporter_emits_real_udp_traffic_during_server_lifecycle(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind(('127.0.0.1', 0))
         sock.setblocking(False)
         host, port = sock.getsockname()
-        config = build_config(config={'metrics': {'statsd_host': f'{host}:{port}'}})
+        config = build_config(port=0, config={'metrics': {'statsd_host': f'{host}:{port}'}})
         server = TigrCornServer(_noop_app, config)
         try:
             await server.start()
@@ -188,7 +288,7 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
         thread = threading.Thread(target=httpd.serve_forever, daemon=True)
         thread.start()
         endpoint = f'http://127.0.0.1:{httpd.server_address[1]}/v1/telemetry'
-        config = build_config(config={'metrics': {'otel_endpoint': endpoint}})
+        config = build_config(port=0, config={'metrics': {'otel_endpoint': endpoint}})
         server = TigrCornServer(_noop_app, config)
         try:
             await server.start()
@@ -215,6 +315,7 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_exporter_failures_are_bounded_and_do_not_abort_server_startup(self):
         config = build_config(
+            port=0,
             config={
                 'metrics': {
                     'statsd_host': '127.0.0.1:8125',
@@ -234,11 +335,9 @@ class Phase9F2LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
             self.assertGreaterEqual(server._otel_exporter.send_failures, 1)
             await server.close()
 
-    def test_phase9f2_status_snapshot_matches_current_flag_surface_state(self):
-        payload = json.loads((CONFORMANCE / 'phase9f2_logging_exporter.current.json').read_text(encoding='utf-8'))
-        self.assertEqual(payload['phase'], '9F2')
+    def test_status_snapshot_matches_current_flag_surface_state(self):
         for flag in ['--log-config', '--statsd-host', '--otel-endpoint']:
-            self.assertNotIn(flag, payload['current_state']['remaining_flag_runtime_blockers'])
+            self.assertNotIn(flag, evaluate_promotion_target(ROOT).flag_surface.failures)
         failures = '\n'.join(evaluate_promotion_target(ROOT).flag_surface.failures)
         self.assertNotIn('--log-config', failures)
         self.assertNotIn('--statsd-host', failures)

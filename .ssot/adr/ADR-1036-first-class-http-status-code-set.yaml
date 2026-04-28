@@ -1,0 +1,71 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1036"
+number: 1036
+slug: "first-class-http-status-code-set"
+title: "Adopt a minimum first-class HTTP status code set"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall track a minimum immediate set of first-class HTTP status codes from 100 through 599, including 402 Payment Required."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "HTTP Semantics"
+  - "SPEC-2043"
+body: |-
+  # ADR 1036 - First-class HTTP status code set
+
+  Decision: Tigrcorn shall maintain a minimum immediate set of first-class HTTP
+  status codes across informational, success, redirection, client-error, and
+  server-error classes.
+
+  First-class status support means the status code is explicitly represented in
+  the SSOT, has a named reason phrase in runtime serialization or a planned
+  runtime target, and has a traceable test row. Tigrcorn-originated responses
+  shall have concrete runtime behavior; application-originated responses shall
+  serialize correctly without depending on application-specific reason text.
+
+  The minimum immediate set is:
+
+  - 100 Continue
+  - 101 Switching Protocols
+  - 103 Early Hints
+  - 200 OK
+  - 201 Created
+  - 202 Accepted
+  - 204 No Content
+  - 206 Partial Content
+  - 301 Moved Permanently
+  - 302 Found
+  - 304 Not Modified
+  - 307 Temporary Redirect
+  - 308 Permanent Redirect
+  - 400 Bad Request
+  - 401 Unauthorized
+  - 402 Payment Required
+  - 403 Forbidden
+  - 404 Not Found
+  - 405 Method Not Allowed
+  - 406 Not Acceptable
+  - 408 Request Timeout
+  - 413 Content Too Large
+  - 416 Range Not Satisfiable
+  - 421 Misdirected Request
+  - 426 Upgrade Required
+  - 431 Request Header Fields Too Large
+  - 500 Internal Server Error
+  - 502 Bad Gateway
+  - 503 Service Unavailable
+  - 504 Gateway Timeout
+
+  Consequences:
+
+  - Unknown valid HTTP status codes may still pass through numerically, but they
+    are not first-class until represented by SSOT rows and tests.
+  - Runtime-originated error paths should use the most specific listed code
+    rather than collapsing limit, timeout, and negotiation failures into 400.
+  - Serializer reason phrases must not fall back to an incorrect phrase for any
+    first-class code.

@@ -1,0 +1,17 @@
+services:
+  tigrcorn-lifespan:
+    build:
+      context: ../..
+      dockerfile: examples/lifespan/Dockerfile
+    image: tigrcorn-lifespan-example:local
+    ports:
+      - "18081:8000/tcp"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2).read()"
+      interval: 5s
+      timeout: 3s
+      retries: 10

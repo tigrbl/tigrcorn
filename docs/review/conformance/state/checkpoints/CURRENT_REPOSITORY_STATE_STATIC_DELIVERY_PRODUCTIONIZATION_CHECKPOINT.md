@@ -62,9 +62,9 @@ Primary code paths updated:
 
 Targeted pytest bundle:
 
-- `tests/test_phase1_surface_parity_checkpoint.py`
-- `tests/test_phase2_entity_semantics_checkpoint.py`
-- `tests/test_phase4_advanced_protocol_delivery_checkpoint.py`
+- `tests/test_surface_parity_checkpoint.py`
+- `tests/test_entity_semantics_checkpoint.py`
+- `tests/test_advanced_protocol_delivery_checkpoint.py`
 - `tests/test_static_delivery_productionization_checkpoint.py`
 - `tests/test_server_http1.py`
 - `tests/test_server_http2.py`

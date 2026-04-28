@@ -516,8 +516,8 @@ Close the remaining gap where the strict performance target is documented more s
 
 - `src/tigrcorn/compat/release_gates.py`
 - `tests/test_release_gates.py`
-- `tests/test_phase6_performance_harness.py`
-- `tests/test_phase8_promotion_targets.py`
+- `tests/test_performance_harness.py`
+- `tests/test_promotion_targets.py`
 - `docs/review/conformance/promotion_gate.target.json`
 
 ### Exit criteria

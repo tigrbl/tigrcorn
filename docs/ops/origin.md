@@ -1,6 +1,6 @@
 # Static Origin Operator Guide
 
-This file is generated from the package-owned Phase 5 origin metadata and the public CLI parser.
+This file is generated from the package-owned origin metadata and the public CLI parser.
 
 ## Operator controls
 

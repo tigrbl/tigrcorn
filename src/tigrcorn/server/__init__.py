@@ -1,9 +1,12 @@
-__all__ = ["TigrCornServer"]
+from __future__ import annotations
+
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_runtime.server")
+__all__ = list(getattr(_module, "__all__", ()))
 
 
 def __getattr__(name: str):
-    if name == "TigrCornServer":
-        from .runner import TigrCornServer
-
-        return TigrCornServer
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    return getattr(_module, name)

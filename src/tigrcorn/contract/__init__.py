@@ -1,73 +1,12 @@
 from __future__ import annotations
 
-from .classification import BindingClassification, classify_binding, runtime_interface_available
-from .events import (
-    CompletionLevel,
-    CompletionStatus,
-    datagram_receive,
-    datagram_send,
-    emit_complete,
-    stream_receive,
-    stream_send,
-    validate_event_order,
-    webtransport_accept,
-    webtransport_close,
-    webtransport_connect,
-    webtransport_datagram_receive,
-    webtransport_datagram_send,
-    webtransport_disconnect,
-    webtransport_stream_receive,
-    webtransport_stream_send,
-)
-from .metadata import (
-    ConnectionIdentity,
-    EndpointMetadata,
-    SecurityMetadata,
-    StreamIdentity,
-    asgi3_extensions,
-    datagram_identity,
-    endpoint_metadata,
-    require_lossless_metadata,
-    security_metadata,
-    stream_identity,
-    transport_identity,
-    validate_endpoint_metadata,
-)
-from .scopes import SUPPORTED_SCOPE_TYPES, contract_scope, validate_scope
+from __future__ import annotations
 
-__all__ = [
-    "BindingClassification",
-    "CompletionLevel",
-    "CompletionStatus",
-    "ConnectionIdentity",
-    "EndpointMetadata",
-    "SUPPORTED_SCOPE_TYPES",
-    "SecurityMetadata",
-    "StreamIdentity",
-    "asgi3_extensions",
-    "classify_binding",
-    "contract_scope",
-    "datagram_identity",
-    "datagram_receive",
-    "datagram_send",
-    "emit_complete",
-    "endpoint_metadata",
-    "require_lossless_metadata",
-    "runtime_interface_available",
-    "security_metadata",
-    "stream_identity",
-    "stream_receive",
-    "stream_send",
-    "transport_identity",
-    "validate_endpoint_metadata",
-    "validate_event_order",
-    "validate_scope",
-    "webtransport_accept",
-    "webtransport_close",
-    "webtransport_connect",
-    "webtransport_datagram_receive",
-    "webtransport_datagram_send",
-    "webtransport_disconnect",
-    "webtransport_stream_receive",
-    "webtransport_stream_send",
-]
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_contract")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

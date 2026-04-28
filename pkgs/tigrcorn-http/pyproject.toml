@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-http"
+version = "0.3.9"
+description = "HTTP utility surfaces for Tigrcorn."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+dependencies = ["tigrcorn-core==0.3.9"]
+
+[project.optional-dependencies]
+compression = ["brotli>=1.1.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+tigrcorn_http = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

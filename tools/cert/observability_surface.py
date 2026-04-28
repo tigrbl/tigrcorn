@@ -45,7 +45,7 @@ def _render_metrics_md(payload: dict[str, Any]) -> str:
     lines = [
         '# Metrics Schema',
         '',
-        'This file is generated from the package-owned Phase 6 observability metadata.',
+        'This file is generated from the package-owned observability metadata.',
         '',
     ]
     for family, metrics in payload['metrics_schema']['families'].items():
@@ -70,7 +70,7 @@ def _render_qlog_md(payload: dict[str, Any]) -> str:
     lines = [
         '# Experimental qlog Contract',
         '',
-        'This file is generated from the package-owned Phase 6 observability metadata.',
+        'This file is generated from the package-owned observability metadata.',
         '',
         f"- `schema_version`: `{qlog['schema_version']}`",
         f"- `stability`: `{qlog['stability']}`",
@@ -95,7 +95,7 @@ def _render_operator_md(payload: dict[str, Any]) -> str:
     lines = [
         '# Observability Operator Guide',
         '',
-        'This file is generated from the package-owned Phase 6 observability metadata and the public CLI parser.',
+        'This file is generated from the package-owned observability metadata and the public CLI parser.',
         '',
         '## Export adapters',
         '',
