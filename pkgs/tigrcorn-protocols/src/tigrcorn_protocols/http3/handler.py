@@ -328,9 +328,7 @@ class _HTTP3WebTransportSession:
         )
 
     async def abort(self) -> None:
-        if not self.closed:
-            self.closed = True
-            await self.receive.put({'type': 'webtransport.disconnect', 'session_id': self.session_id, 'code': 1006, 'reason': ''})
+        self.closed = True
         if self.task is not None:
             self.task.cancel()
             with suppress(asyncio.CancelledError):
@@ -468,6 +466,17 @@ class HTTP3DatagramHandler:
             self.sessions_by_local_cid.pop(session.quic.local_cid, None)
             if self.metrics is not None:
                 self.metrics.quic_session_closed()
+
+    async def close(self) -> None:
+        async with self._lock:
+            for session in list(self.sessions.values()):
+                self._cancel_session_timer(session)
+                await self._abort_session_tunnels(session)
+                await self._abort_session_websockets(session)
+                await self._abort_session_webtransports(session)
+                self._close_session(session)
+            self.sessions.clear()
+            self.sessions_by_local_cid.clear()
 
     def _fire_session_timer(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
         transport = getattr(endpoint, 'transport', None)
@@ -677,6 +686,7 @@ class HTTP3DatagramHandler:
                             outbound.append(session.quic.close(error_code=exc.error_code, reason=str(exc), application=True))
                             await self._abort_session_tunnels(session)
                             await self._abort_session_websockets(session)
+                            await self._abort_session_webtransports(session)
                             self._cancel_session_timer(session)
                             self._close_session(session)
                             break
@@ -685,6 +695,7 @@ class HTTP3DatagramHandler:
                             outbound.append(session.quic.close(error_code=H3_GENERAL_PROTOCOL_ERROR, reason=str(exc), application=True))
                             await self._abort_session_tunnels(session)
                             await self._abort_session_websockets(session)
+                            await self._abort_session_webtransports(session)
                             self._cancel_session_timer(session)
                             self._close_session(session)
                             break

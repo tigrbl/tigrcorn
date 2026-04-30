@@ -58,9 +58,9 @@
       "title": "HTTP/1.1 protocol fixture",
       "surface_kind": "protocol",
       "surface": "http1",
-      "fixture_path": "tests/fixtures_pkg/interop_http_client.py",
-      "coverage_paths": ["tests/test_http1_parser.py", "tests/test_http1_rfc9112.py"],
-      "coverage_terms": ["http1", "http11"]
+      "fixture_path": "tests/fixtures_third_party/h11_http1_client.py",
+      "coverage_paths": ["tests/test_h11_http1_probe_fixture.py", "tests/test_http1_rfc9112.py"],
+      "coverage_terms": ["h11", "http11"]
     },
     {
       "id": "fixture-http2-protocol",
@@ -68,9 +68,9 @@
       "title": "HTTP/2 protocol fixture",
       "surface_kind": "protocol",
       "surface": "http2",
-      "fixture_path": "tests/fixtures_pkg/external_h2_http_client.py",
-      "coverage_paths": ["tests/test_http2_rfc9113.py", "tests/test_http2_server_push_surface.py"],
-      "coverage_terms": ["http2"]
+      "fixture_path": "tests/fixtures_third_party/h2_http2_client.py",
+      "coverage_paths": ["tests/test_h2_http2_probe_fixture.py", "tests/test_http2_rfc9113.py"],
+      "coverage_terms": ["h2", "http2"]
     },
     {
       "id": "fixture-http3-protocol",
@@ -78,9 +78,9 @@
       "title": "HTTP/3 protocol fixture",
       "surface_kind": "protocol",
       "surface": "http3",
-      "fixture_path": "tests/fixtures_pkg/external_http3_client.py",
-      "coverage_paths": ["tests/test_http3_server.py", "tests/test_quic_http3.py"],
-      "coverage_terms": ["http3"]
+      "fixture_path": "tests/fixtures_third_party/h3_http3_client.py",
+      "coverage_paths": ["tests/test_h3_http3_probe_fixture.py", "tests/test_quic_http3.py"],
+      "coverage_terms": ["h3", "http3"]
     },
     {
       "id": "fixture-quic-protocol",
@@ -98,9 +98,9 @@
       "title": "WebSocket protocol fixture",
       "surface_kind": "protocol",
       "surface": "websocket",
-      "fixture_path": "tests/fixtures_pkg/external_websocket_client.py",
-      "coverage_paths": ["tests/test_websocket_frames.py", "tests/test_websocket_rfc6455.py"],
-      "coverage_terms": ["websocket"]
+      "fixture_path": "tests/fixtures_third_party/ws_wss_client.py",
+      "coverage_paths": ["tests/test_ws_wss_probe_fixture.py", "tests/test_websocket_rfc6455.py"],
+      "coverage_terms": ["websocket", "wss"]
     },
     {
       "id": "fixture-webtransport-protocol",

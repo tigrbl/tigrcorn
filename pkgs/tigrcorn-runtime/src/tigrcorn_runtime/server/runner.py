@@ -59,6 +59,7 @@ class TigrCornServer:
         self.state = ServerState()
         self.lifespan = LifespanManager(app, mode=config.lifespan)
         self._listeners: list[TCPListener | UDPListener | UnixListener | PipeListener | InProcListener] = []
+        self._datagram_handlers: list[HTTP3DatagramHandler] = []
         self._should_exit = asyncio.Event()
         self._started = False
         self._metrics_server: asyncio.AbstractServer | None = None
@@ -154,6 +155,10 @@ class TigrCornServer:
                 with suppress(Exception):
                     await listener.close()
             self._listeners.clear()
+            for handler in self._datagram_handlers:
+                with suppress(Exception):
+                    await handler.close()
+            self._datagram_handlers.clear()
             with suppress(Exception):
                 await asyncio.wait_for(self.scheduler.close(), timeout=self.config.http.shutdown_timeout)
             with suppress(Exception):
@@ -199,6 +204,7 @@ class TigrCornServer:
                 scheduler=self.scheduler,
                 metrics=self.state.metrics,
             )
+            self._datagram_handlers.append(h3_handler)
 
             async def udp_handler(packet, endpoint) -> None:
                 sessions_before = len(h3_handler.sessions)
