@@ -1,7 +1,7 @@
 {
   "bundles": {
     "independent_certification": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
-    "minimum_certified_flow_control": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix",
+    "minimum_certified_flow_control": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix",
     "mixed": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix",
     "provisional_all_surfaces_gap_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-all-surfaces-gap-bundle",
     "provisional_flow_control_gap_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-flow-control-gap-bundle",

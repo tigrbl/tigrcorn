@@ -105,7 +105,7 @@ def _write_json(path: Path, payload):
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding='utf-8')
 
 def _rel(path: Path) -> str:
-    return str(path.relative_to(ROOT))
+    return path.relative_to(ROOT).as_posix()
 
 def main() -> int:
     vectors = {v['name']: v for v in _load_json(CORPUS_PATH).get('vectors', [])}

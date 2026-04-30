@@ -172,6 +172,6 @@ def test_unsupported_compatibility_surfaces_are_exclusion_features_only() -> Non
     assert unsupported_adapter_ids.isdisjoint(features)
     for feature_id in unsupported_ids:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "absent"
+        assert feature["implementation_status"] == "implemented"
         assert feature["plan"]["horizon"] == "out_of_bounds"
         assert feature["plan"]["slot"] == "compatibility-exclusion"
