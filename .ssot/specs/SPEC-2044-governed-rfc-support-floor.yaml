@@ -11,7 +11,11 @@ tags: []
 summary: "Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Clarify supplemental deep RFC coverage requirements."
+    at: "2026-04-30T17:06:43Z"
 references:
   - "adr:1037"
   - "docs/review/conformance/certification_boundary.json"
@@ -19,14 +23,21 @@ references:
   - "tools/ssot_sync.py"
 body: |-
   Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim.
-
+  
   Scope:
   - QUIC: RFC 9000, RFC 9001, RFC 9002, RFC 9221, RFC 9308, RFC 9312.
   - HTTP/3 and QPACK: RFC 9114, RFC 9114 Section 10.9, RFC 9204, RFC 9297.
   - HTTP/2 and WebSocket extended CONNECT: RFC 9113, RFC 8441, RFC 9220.
   - TLS and early data: RFC 8446, RFC 8470.
   - URI and trailers: RFC 3986 and RFC 9110 Section 6.5.
-
+  
+  Supplemental deep coverage:
+  - RFC 9000, RFC 9001, RFC 9002, RFC 9114, RFC 8446, RFC 9221, RFC 9297, RFC 8470, RFC 9114 Section 10.9, RFC 3986, RFC 9308, and RFC 9312 shall each have an additive local_conformance corpus vector with a deep coverage RFC key.
+  - Deep coverage RFC keys shall use the `<rfc>-deep` form, except RFC 9114 Section 10.9 which shall use `9114-section-10-9-deep`.
+  - Deep coverage vectors shall point to `tests/test_governed_rfc_deep_coverage.py`.
+  - Deep coverage vectors shall attach to the same governed RFC feature and claim chain as the corresponding base RFC vector.
+  - Supplemental deep vectors shall not replace base vectors, lower the required evidence tier, or weaken independent certification requirements.
+  
   Requirements:
   - The certification boundary shall list every scoped target in required_rfcs.
   - required_rfc_evidence shall declare a highest evidence tier for every scoped target.
@@ -34,6 +45,7 @@ body: |-
   - tools/ssot_sync.py shall generate one feature per scoped RFC target and link it to this SPEC.
   - Generated RFC feature rows shall remain current, implemented, and target T2 or stronger.
   - Generated RFC claim rows shall remain promoted with tier T2 or stronger.
+  - Supplemental deep coverage vectors shall generate T2 or stronger SSOT tests and evidence while preserving current, implemented, active feature status and linkage to this SPEC.
   - Tests shall fail if any scoped target loses its feature, SPEC link, claim floor, or local conformance evidence.
 spec_kind: "normative"
 adr_ids:

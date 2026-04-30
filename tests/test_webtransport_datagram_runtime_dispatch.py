@@ -10,7 +10,8 @@ from tigrcorn.protocols.http3.codec import SETTING_ENABLE_WEBTRANSPORT, SETTING_
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
-H3_HANDLER_PATH = ROOT / "pkgs" / "tigrcorn-protocols" / "src" / "tigrcorn_protocols" / "http3" / "handler.py"
+H3_HANDLER_CORE_PATH = ROOT / "pkgs" / "tigrcorn-protocols" / "src" / "tigrcorn_protocols" / "http3" / "handler" / "core.py"
+H3_WEBTRANSPORT_PATH = ROOT / "pkgs" / "tigrcorn-protocols" / "src" / "tigrcorn_protocols" / "http3" / "handler" / "webtransport.py"
 QUIC_STREAMS_PATH = ROOT / "pkgs" / "tigrcorn-transports" / "src" / "tigrcorn_transports" / "quic" / "streams.py"
 QUIC_CONNECTION_PATH = ROOT / "pkgs" / "tigrcorn-transports" / "src" / "tigrcorn_transports" / "quic" / "connection.py"
 DEMO_SERVER_PATH = ROOT / "examples" / "webtransport_mtls_demo" / "server.py"
@@ -27,6 +28,10 @@ def _registry() -> dict[str, object]:
 def _by_id(rows: object) -> dict[str, dict[str, object]]:
     assert isinstance(rows, list)
     return {str(row["id"]): row for row in rows if isinstance(row, dict)}
+
+
+def _h3_handler_source() -> str:
+    return H3_HANDLER_CORE_PATH.read_text(encoding="utf-8") + "\n" + H3_WEBTRANSPORT_PATH.read_text(encoding="utf-8")
 
 
 def test_ssot_feature_record_tracks_runtime_datagram_dispatch() -> None:
@@ -88,7 +93,7 @@ def test_quic_connection_exposes_datagram_sender() -> None:
 
 
 def test_webtransport_connect_starts_asgi_session_task() -> None:
-    source = H3_HANDLER_PATH.read_text(encoding="utf-8")
+    source = _h3_handler_source()
 
     assert "asyncio.create_task" in source
     assert "webtransport.connect" in source
@@ -96,25 +101,32 @@ def test_webtransport_connect_starts_asgi_session_task() -> None:
 
 
 def test_incoming_datagram_dispatches_asgi_receive_event() -> None:
-    source = H3_HANDLER_PATH.read_text(encoding="utf-8")
+    source = _h3_handler_source()
 
     assert "webtransport.datagram.receive" in source
     assert "datagram_id" in source
 
 
 def test_outgoing_asgi_datagram_send_uses_quic_datagram_frame() -> None:
-    source = H3_HANDLER_PATH.read_text(encoding="utf-8")
+    source = _h3_handler_source()
 
     assert "webtransport.datagram.send" in source
     assert "send_datagram_frame(" in source
 
 
 def test_datagram_payload_limit_uses_webtransport_listener_configuration() -> None:
-    source = H3_HANDLER_PATH.read_text(encoding="utf-8")
+    source = _h3_handler_source()
 
     assert "webtransport.max_datagram_size" in source
     assert "max_datagram_size" in source
     assert "webtransport.datagram.receive" in source
+
+
+def test_webtransport_connect_fin_does_not_force_disconnect() -> None:
+    source = H3_WEBTRANSPORT_PATH.read_text(encoding="utf-8")
+
+    assert "feed_connect_stream_data" in source
+    assert "disconnect_on_end=False" in source
 
 
 def test_demo_server_logs_datagram_receive_and_acknowledgement() -> None:

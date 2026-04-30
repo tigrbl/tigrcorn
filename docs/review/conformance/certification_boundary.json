@@ -83,7 +83,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "http3-server-surface"
+          "http3-server-surface",
+          "http3-request-control-strictness-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post",
@@ -109,7 +110,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "quic-packet-codec"
+          "quic-packet-codec",
+          "quic-packet-space-legality-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post-retry",
@@ -129,7 +131,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "quic-tls-initial-vectors"
+          "quic-tls-initial-vectors",
+          "quic-tls-protection-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post-mtls",
@@ -147,7 +150,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "quic-recovery"
+          "quic-recovery",
+          "quic-recovery-edge-cases-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post-retry",
@@ -194,7 +198,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "quic-datagram-frame"
+          "quic-datagram-frame",
+          "quic-datagram-frame-deep"
         ]
       }
     },
@@ -248,7 +253,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "http-datagram-h3-carrier"
+          "http-datagram-h3-carrier",
+          "http-datagram-h3-carrier-deep"
         ]
       }
     },
@@ -256,7 +262,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "tls13-package-subsystem"
+          "tls13-package-subsystem",
+          "tls13-quic-handshake-rejection-deep"
         ],
         "independent_certification": [
           "http2-tls-server-curl-client",
@@ -269,7 +276,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "http-early-data-policy"
+          "http-early-data-policy",
+          "http-early-data-policy-deep"
         ]
       }
     },
@@ -277,7 +285,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "uri-generic-syntax-request-target"
+          "uri-generic-syntax-request-target",
+          "uri-generic-syntax-request-target-deep"
         ]
       }
     },
@@ -285,7 +294,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "quic-applicability-profile"
+          "quic-applicability-profile",
+          "quic-applicability-profile-deep"
         ]
       }
     },
@@ -293,7 +303,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "quic-manageability-observability"
+          "quic-manageability-observability",
+          "quic-manageability-observability-deep"
         ]
       }
     },
@@ -301,7 +312,8 @@
       "highest_required_evidence_tier": "local_conformance",
       "declared_evidence": {
         "local_conformance": [
-          "http3-early-data-section-10-9"
+          "http3-early-data-section-10-9",
+          "http3-early-data-section-10-9-deep"
         ]
       }
     },

@@ -95,17 +95,22 @@ async def probe_wt_stream(
     async def receive_once():
         nonlocal datagrams_received
         states = []
+        stream_events = []
         data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65536), timeout=timeout)
         datagrams_received += 1
         for event in client.receive_datagram(data):
             quic_events.append(event.kind)
             if event.kind == "stream":
-                state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+                stream_events.append(event)
+                try:
+                    state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+                except Exception:
+                    state = None
                 if state is not None:
                     states.append((event.stream_id, state))
         for datagram in client.take_handshake_datagrams():
             send(datagram)
-        return states
+        return states, stream_events
 
     try:
         send(client.start_handshake())
@@ -145,7 +150,8 @@ async def probe_wt_stream(
 
         response_state = None
         for _attempt in range(12):
-            for candidate_stream_id, candidate in await receive_once():
+            states, _stream_events = await receive_once()
+            for candidate_stream_id, candidate in states:
                 if candidate_stream_id == stream_id and candidate.received_initial_headers:
                     response_state = candidate
                     break
@@ -154,23 +160,28 @@ async def probe_wt_stream(
         if response_state is None:
             raise RuntimeError("webtransport probe did not receive CONNECT response headers")
 
-        send(client.send_stream_data(stream_id, encode_frame(0x0, payload), fin=True))
+        child_stream_id = 4
+        child_payload = encode_quic_varint(0x41) + encode_quic_varint(stream_id) + payload
+        send(client.send_stream_data(child_stream_id, child_payload, fin=True))
+        child_body = bytearray()
+        child_fin = False
         for _attempt in range(12):
-            for candidate_stream_id, candidate in await receive_once():
-                if candidate_stream_id == stream_id and (candidate.body or candidate.ended):
-                    response_state = candidate
-                    break
-            if response_state.body or response_state.ended:
+            _states, stream_events = await receive_once()
+            for event in stream_events:
+                if event.kind == "stream" and event.stream_id == child_stream_id:
+                    child_body.extend(event.data)
+                    child_fin = child_fin or event.fin
+            if child_body or child_fin:
                 break
 
         header_map = {name.lower(): value for name, value in response_state.headers}
         return WebTransportStreamProbeResult(
-            stream_id=stream_id,
+            stream_id=child_stream_id,
             status=int(header_map.get(b":status", b"0")),
             headers=tuple(response_state.headers),
-            body=response_state.body,
+            body=bytes(child_body),
             received_initial_headers=response_state.received_initial_headers,
-            ended=response_state.ended,
+            ended=child_fin,
             remote_settings=dict(core.state.remote_settings),
             quic_events=tuple(quic_events),
             datagrams_sent=datagrams_sent,

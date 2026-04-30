@@ -178,6 +178,68 @@ def _issue_id(raw: str) -> str:
     return _bounded_id("iss", _slug(raw))
 
 
+TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS = (
+    "feat:tigr-asgi-contract-0-1-2-validation",
+    "feat:contract-native-runtime",
+    "feat:contract-app-dispatch",
+    "feat:contract-native-public-api",
+    "feat:family-capability-declaration",
+    "feat:binding-legality-validation",
+    "feat:contract-error-semantics",
+)
+
+QUIC_CATEGORY_FEATURE_IDS = (
+    "feat:rfc-9000",
+    "feat:rfc-9001",
+    "feat:rfc-9002",
+    "feat:contract-quic-connection-identity",
+    "feat:surface-quic-recovery-send-path",
+    "feat:surface-quic-retry-token-integrity",
+    "feat:surface-quic-tls-mapping",
+    "feat:independent-quic-state-claims",
+    "feat:early-data-admission-policy",
+    "feat:replay-policy",
+    "feat:multi-instance-early-data-policy",
+    "feat:retry-app-visibility",
+    "feat:quic-negative-corpora",
+)
+
+WEBTRANSPORT_CATEGORY_FEATURE_IDS = (
+    "feat:contract-webtransport-scope",
+    "feat:contract-webtransport-events",
+    "feat:contract-webtransport-session-identity",
+    "feat:contract-webtransport-stream-identity",
+    "feat:webtransport-h3-quic-scope",
+    "feat:webtransport-h3-quic-session-events",
+    "feat:webtransport-h3-quic-stream-events",
+    "feat:webtransport-h3-quic-datagram-events",
+    "feat:webtransport-h3-quic-datagram-runtime-dispatch",
+    "feat:webtransport-h3-quic-completion-events",
+    "feat:webtransport-protocol-cli-flag",
+    "feat:webtransport-carrier-normalization",
+    "feat:webtransport-carrier-fail-closed",
+    "feat:webtransport-config-toml",
+    "feat:webtransport-env-var",
+    "feat:webtransport-public-api",
+    "feat:webtransport-max-sessions-flag",
+    "feat:webtransport-max-streams-flag",
+    "feat:webtransport-max-datagram-size-flag",
+    "feat:webtransport-origin-flag",
+    "feat:webtransport-path-flag",
+)
+
+T4_CATEGORY_FEATURE_IDS = frozenset(TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS) | frozenset(QUIC_CATEGORY_FEATURE_IDS)
+WEBTRANSPORT_T3_FEATURE_IDS = frozenset(WEBTRANSPORT_CATEGORY_FEATURE_IDS)
+
+
+def _governed_target_tier(feature_id: str, tier: str) -> str:
+    if feature_id in WEBTRANSPORT_T3_FEATURE_IDS:
+        return "T3"
+    if feature_id in T4_CATEGORY_FEATURE_IDS:
+        return "T4"
+    return tier
+
+
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -453,6 +515,7 @@ def build_registry() -> dict[str, Any]:
         horizon: str = "current",
         implementation_status: str = "implemented",
     ) -> None:
+        tier = _governed_target_tier(feature_id, tier)
         row = features.setdefault(
             feature_id,
             {
@@ -1566,6 +1629,32 @@ def build_registry() -> dict[str, Any]:
             "slot": "webtransport-runtime",
         },
         "feature_ids": [webtransport_datagram_runtime_feature_id],
+        "claim_ids": [],
+        "test_ids": [],
+        "evidence_ids": [],
+        "risk_ids": [],
+        "release_blocking": False,
+    }
+
+    webtransport_bidi_context_issue_id = _issue_id("webtransport-bidi-stream-context-misclassification")
+    issues[webtransport_bidi_context_issue_id] = {
+        "id": webtransport_bidi_context_issue_id,
+        "title": "WebTransport child bidi streams are parsed as HTTP/3 requests",
+        "status": "closed",
+        "severity": "high",
+        "description": (
+            "Once an HTTP/3 extended CONNECT session is established for WebTransport, Tigrcorn still routes all "
+            "new bidirectional QUIC streams through the HTTP/3 request parser. Browser-created child streams are "
+            "therefore not dispatched as WebTransport stream events for the active session context."
+        ),
+        "plan": {
+            "horizon": "current",
+            "slot": "webtransport-runtime",
+        },
+        "feature_ids": [
+            _feature_id("webtransport-h3-quic-stream-events"),
+            _feature_id("contract-webtransport-stream-identity"),
+        ],
         "claim_ids": [],
         "test_ids": [],
         "evidence_ids": [],
@@ -2738,6 +2827,52 @@ def build_registry() -> dict[str, Any]:
     issues[webtransport_datagram_runtime_issue_id]["test_ids"].append(webtransport_datagram_runtime_test_id)
     issues[webtransport_datagram_runtime_issue_id]["evidence_ids"].append(webtransport_datagram_runtime_evidence_id)
 
+    webtransport_bidi_context_test_id = _test_id("pytest", "tests/test_webtransport_bidi_stream_context.py")
+    webtransport_bidi_context_claim_id = _claim_id("webtransport-bidi-stream-context-respected")
+    webtransport_bidi_context_evidence_id = _evidence_id("pytest", "tests/test_webtransport_bidi_stream_context.py")
+    ensure_claim(
+        claim_id=webtransport_bidi_context_claim_id,
+        title="WebTransport child bidi stream context is respected",
+        description=(
+            "Active WebTransport sessions shall claim browser-created child bidirectional QUIC streams and dispatch "
+            "them as WebTransport stream events instead of parsing them as ordinary HTTP/3 requests."
+        ),
+        tier="T3",
+        kind="runtime_implementation",
+        feature_ids=[
+            _feature_id("webtransport-h3-quic-stream-events"),
+            _feature_id("contract-webtransport-stream-identity"),
+        ],
+    )
+    claims[webtransport_bidi_context_claim_id]["status"] = "promoted"
+    release_claim_ids.add(webtransport_bidi_context_claim_id)
+    ensure_evidence(
+        evidence_id=webtransport_bidi_context_evidence_id,
+        title="Pytest coverage for WebTransport child bidi stream context",
+        kind="pytest",
+        tier="T3",
+        path="tests/test_webtransport_bidi_stream_context.py",
+        claim_ids=[webtransport_bidi_context_claim_id],
+        test_ids=[webtransport_bidi_context_test_id],
+    )
+    release_evidence_ids.add(webtransport_bidi_context_evidence_id)
+    ensure_test(
+        test_id=webtransport_bidi_context_test_id,
+        title="WebTransport child bidi stream context",
+        status="passing",
+        kind="pytest",
+        path="tests/test_webtransport_bidi_stream_context.py",
+        feature_ids=[
+            _feature_id("webtransport-h3-quic-stream-events"),
+            _feature_id("contract-webtransport-stream-identity"),
+        ],
+        claim_ids=[webtransport_bidi_context_claim_id],
+        evidence_ids=[webtransport_bidi_context_evidence_id],
+    )
+    issues[webtransport_bidi_context_issue_id]["claim_ids"].append(webtransport_bidi_context_claim_id)
+    issues[webtransport_bidi_context_issue_id]["test_ids"].append(webtransport_bidi_context_test_id)
+    issues[webtransport_bidi_context_issue_id]["evidence_ids"].append(webtransport_bidi_context_evidence_id)
+
     webtransport_extensive_feature_ids = [
         _feature_id("contract-webtransport-events"),
         _feature_id("contract-webtransport-scope"),
@@ -2800,6 +2935,7 @@ def build_registry() -> dict[str, Any]:
     for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
         feature_id = _feature_id(raw_feature_id)
         out_of_bounds = features[feature_id]["plan"]["horizon"] == "out_of_bounds"
+        concrete_tier = "T4" if feature_id in T4_CATEGORY_FEATURE_IDS else "T3"
         ensure_claim(
             claim_id=claim_id,
             title=f"{title} {'exclusion verified' if out_of_bounds else 'implemented'}",
@@ -2808,7 +2944,7 @@ def build_registry() -> dict[str, Any]:
                 if out_of_bounds
                 else f"Executable tests verify feature {feature_id}."
             ),
-            tier="T3",
+            tier=concrete_tier,
             kind="boundary_exclusion" if out_of_bounds else "implementation",
             feature_ids=[feature_id],
         )
@@ -2816,7 +2952,7 @@ def build_registry() -> dict[str, Any]:
             evidence_id=evidence_id,
             title=f"Pytest evidence for {title}",
             kind="pytest",
-            tier="T3",
+            tier=concrete_tier,
             path=path,
             claim_ids=[claim_id],
             test_ids=[test_id],
@@ -2928,6 +3064,67 @@ def build_registry() -> dict[str, Any]:
                         claim_ids=[evidence_claim_id],
                         evidence_ids=[evidence_id],
                     )
+
+    def ensure_category_tier_claim(
+        *,
+        raw: str,
+        title: str,
+        description: str,
+        tier: str,
+        feature_ids: tuple[str, ...],
+    ) -> None:
+        claim_id = _claim_id(raw)
+        test_id = _test_id("pytest", raw)
+        evidence_id = _evidence_id("pytest", raw)
+        ensure_claim(
+            claim_id=claim_id,
+            title=title,
+            description=description,
+            tier=tier,
+            kind="category_tier_floor",
+            feature_ids=list(feature_ids),
+        )
+        ensure_evidence(
+            evidence_id=evidence_id,
+            title=f"{title} pytest evidence",
+            kind="pytest",
+            tier=tier,
+            path="tests/test_category_boundaries.py",
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+        )
+        ensure_test(
+            test_id=test_id,
+            title=title,
+            status="passing",
+            kind="pytest",
+            path="tests/test_category_boundaries.py",
+            feature_ids=list(feature_ids),
+            claim_ids=[claim_id],
+            evidence_ids=[evidence_id],
+        )
+
+    ensure_category_tier_claim(
+        raw="tigr-asgi-contract-category-t4-support",
+        title="tigr-asgi-contract category supports T4 claims",
+        description="The tigr-asgi-contract category boundary features are governed at the T4 target claim tier.",
+        tier="T4",
+        feature_ids=TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS,
+    )
+    ensure_category_tier_claim(
+        raw="quic-category-t4-support",
+        title="QUIC category supports T4 claims",
+        description="The QUIC category boundary features are governed at the T4 target claim tier.",
+        tier="T4",
+        feature_ids=QUIC_CATEGORY_FEATURE_IDS,
+    )
+    ensure_category_tier_claim(
+        raw="webtransport-category-t3-floor",
+        title="WebTransport category remains T3",
+        description="The WebTransport category boundary features are governed at the T3 target claim tier.",
+        tier="T3",
+        feature_ids=WEBTRANSPORT_CATEGORY_FEATURE_IDS,
+    )
 
     profile_feature_id = _feature_id("deployment-profiles")
     profile_claim_id = _claim_id("deployment-profiles")
@@ -3251,15 +3448,7 @@ def build_registry() -> dict[str, Any]:
             "title": "tigr-asgi-contract coverage category boundary",
             "status": "frozen",
             "frozen": True,
-            "feature_ids": [
-                "feat:tigr-asgi-contract-0-1-2-validation",
-                "feat:contract-native-runtime",
-                "feat:contract-app-dispatch",
-                "feat:contract-native-public-api",
-                "feat:family-capability-declaration",
-                "feat:binding-legality-validation",
-                "feat:contract-error-semantics",
-            ],
+            "feature_ids": list(TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS),
             "canonical_registry_source": ".ssot/registry.json",
             "profile_ids": [],
         },
@@ -3318,21 +3507,7 @@ def build_registry() -> dict[str, Any]:
             "title": "QUIC coverage category boundary",
             "status": "frozen",
             "frozen": True,
-            "feature_ids": [
-                "feat:rfc-9000",
-                "feat:rfc-9001",
-                "feat:rfc-9002",
-                "feat:contract-quic-connection-identity",
-                "feat:surface-quic-recovery-send-path",
-                "feat:surface-quic-retry-token-integrity",
-                "feat:surface-quic-tls-mapping",
-                "feat:independent-quic-state-claims",
-                "feat:early-data-admission-policy",
-                "feat:replay-policy",
-                "feat:multi-instance-early-data-policy",
-                "feat:retry-app-visibility",
-                "feat:quic-negative-corpora",
-            ],
+            "feature_ids": list(QUIC_CATEGORY_FEATURE_IDS),
             "canonical_registry_source": ".ssot/registry.json",
             "profile_ids": [],
         },
@@ -3375,29 +3550,7 @@ def build_registry() -> dict[str, Any]:
             "title": "WebTransport coverage category boundary",
             "status": "frozen",
             "frozen": True,
-            "feature_ids": [
-                "feat:contract-webtransport-scope",
-                "feat:contract-webtransport-events",
-                "feat:contract-webtransport-session-identity",
-                "feat:contract-webtransport-stream-identity",
-                "feat:webtransport-h3-quic-scope",
-                "feat:webtransport-h3-quic-session-events",
-                "feat:webtransport-h3-quic-stream-events",
-                "feat:webtransport-h3-quic-datagram-events",
-                "feat:webtransport-h3-quic-datagram-runtime-dispatch",
-                "feat:webtransport-h3-quic-completion-events",
-                "feat:webtransport-protocol-cli-flag",
-                "feat:webtransport-carrier-normalization",
-                "feat:webtransport-carrier-fail-closed",
-                "feat:webtransport-config-toml",
-                "feat:webtransport-env-var",
-                "feat:webtransport-public-api",
-                "feat:webtransport-max-sessions-flag",
-                "feat:webtransport-max-streams-flag",
-                "feat:webtransport-max-datagram-size-flag",
-                "feat:webtransport-origin-flag",
-                "feat:webtransport-path-flag",
-            ],
+            "feature_ids": list(WEBTRANSPORT_CATEGORY_FEATURE_IDS),
             "canonical_registry_source": ".ssot/registry.json",
             "profile_ids": [],
         },

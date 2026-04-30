@@ -350,6 +350,7 @@ class QuicConnection:
         self.retire_connection_ids: list[int] = []
         self.handshake_driver: QuicTlsHandshakeDriver | None = None
         self._pending_handshake_datagrams: list[bytes] = []
+        self._pending_auto_resets: list[tuple[int, int]] = []
         self.bytes_received = 0
         self.bytes_sent = 0
         self.address_validated = is_client
@@ -1483,9 +1484,19 @@ class QuicConnection:
         return self._queue_handshake_payload(payload)
 
     def take_handshake_datagrams(self) -> list[bytes]:
+        while self._pending_auto_resets:
+            stream_id, error_code = self._pending_auto_resets.pop(0)
+            self._pending_handshake_datagrams.append(self.reset_stream(stream_id, error_code))
         items = list(self._pending_handshake_datagrams)
         self._pending_handshake_datagrams.clear()
         return items
+
+    def suppress_pending_reset(self, stream_id: int) -> None:
+        self._pending_auto_resets = [
+            (pending_stream_id, error_code)
+            for pending_stream_id, error_code in self._pending_auto_resets
+            if pending_stream_id != stream_id
+        ]
 
     def take_pending_datagrams(self) -> list[bytes]:
         return self.take_handshake_datagrams() + self.drain_scheduled_datagrams()
@@ -2083,7 +2094,7 @@ class QuicConnection:
                 stream_state = self.streams.ensure_send_stream(frame.stream_id)
                 stream_state.mark_stop_sending(frame.error_code)
                 if not stream_state.send_terminal:
-                    self._pending_handshake_datagrams.append(self.reset_stream(frame.stream_id, frame.error_code))
+                    self._pending_auto_resets.append((frame.stream_id, frame.error_code))
                 events.append(QuicEvent(kind='stop_sending', stream_id=frame.stream_id, packet_space=packet_space, detail=frame))
                 continue
             if isinstance(frame, QuicConnectionCloseFrame):

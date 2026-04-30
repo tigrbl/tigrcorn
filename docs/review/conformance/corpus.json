@@ -50,6 +50,13 @@
       "fixture": "tests/test_tls13_engine_upgrade.py"
     },
     {
+      "name": "tls13-quic-handshake-rejection-deep",
+      "protocol": "tls13",
+      "rfc": "8446-deep",
+      "description": "TLS 1.3 QUIC handshake rejection paths for ALPN, early_data, and pre-shared key constraints.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "tls-alpn-negotiation",
       "protocol": "tls13-alpn",
       "rfc": "7301",
@@ -78,6 +85,13 @@
       "fixture": "tests/test_quic_packets_rfc9000.py"
     },
     {
+      "name": "quic-packet-space-legality-deep",
+      "protocol": "quic-transport",
+      "rfc": "9000-deep",
+      "description": "QUIC packet-space legality for DATAGRAM, PATH_CHALLENGE, and application close frame restrictions.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "quic-tls-initial-vectors",
       "protocol": "quic-tls",
       "rfc": "9001",
@@ -85,11 +99,25 @@
       "fixture": "tests/test_quic_tls_rfc9001.py"
     },
     {
+      "name": "quic-tls-protection-deep",
+      "protocol": "quic-tls",
+      "rfc": "9001-deep",
+      "description": "QUIC-TLS retry integrity, packet protection key separation, and key update derivation checks.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "quic-recovery",
       "protocol": "quic-recovery",
       "rfc": "9002",
       "description": "RTT tracking, ACK processing, PTO, congestion, and packet-threshold/time-threshold loss behavior.",
       "fixture": "tests/test_quic_recovery_rfc9002.py"
+    },
+    {
+      "name": "quic-recovery-edge-cases-deep",
+      "protocol": "quic-recovery",
+      "rfc": "9002-deep",
+      "description": "QUIC recovery edge behavior for max_ack_delay, PTO backoff, and persistent congestion.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
     },
     {
       "name": "http-connect-relay",
@@ -120,6 +148,13 @@
       "fixture": "tests/test_http3_rfc9114.py"
     },
     {
+      "name": "http3-request-control-strictness-deep",
+      "protocol": "http3",
+      "rfc": "9114-deep",
+      "description": "HTTP/3 request pseudo-header strictness and SETTINGS validation including H3 DATAGRAM.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "qpack-dynamic-state",
       "protocol": "http3-qpack",
       "rfc": "9204",
@@ -132,6 +167,13 @@
       "rfc": "9221",
       "description": "QUIC DATAGRAM frame encoding, decoding, and application packet-space allowance.",
       "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "quic-datagram-frame-deep",
+      "protocol": "quic-datagram",
+      "rfc": "9221-deep",
+      "description": "QUIC DATAGRAM length-present and length-absent decoding with packet-space validation.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
     },
     {
       "name": "http3-websocket-extended-connect",
@@ -148,11 +190,25 @@
       "fixture": "tests/test_governed_rfc_support_floor.py"
     },
     {
+      "name": "http-datagram-h3-carrier-deep",
+      "protocol": "http3-datagram",
+      "rfc": "9297-deep",
+      "description": "HTTP Datagram over HTTP/3 carrier payload mapping and WebTransport datagram size limits.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "http-early-data-policy",
       "protocol": "http-early-data",
       "rfc": "8470",
       "description": "HTTP early-data admission policy and 425 Too Early downgrade behavior.",
       "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "http-early-data-policy-deep",
+      "protocol": "http-early-data",
+      "rfc": "8470-deep",
+      "description": "HTTP early-data policy rejection path that emits 425 before application dispatch.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
     },
     {
       "name": "http3-early-data-section-10-9",
@@ -162,11 +218,25 @@
       "fixture": "tests/test_governed_rfc_support_floor.py"
     },
     {
+      "name": "http3-early-data-section-10-9-deep",
+      "protocol": "http3-early-data",
+      "rfc": "9114-section-10-9-deep",
+      "description": "HTTP/3 early-data resumed downgrade behavior that returns 425 Too Early before ASGI dispatch.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "uri-generic-syntax-request-target",
       "protocol": "uri",
       "rfc": "3986",
       "description": "URI generic syntax preservation for path, query, and authority-form request targets.",
       "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "uri-generic-syntax-request-target-deep",
+      "protocol": "uri",
+      "rfc": "3986-deep",
+      "description": "URI generic syntax preservation for encoded path, query bytes, and CONNECT authority form.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
     },
     {
       "name": "quic-applicability-profile",
@@ -176,11 +246,25 @@
       "fixture": "tests/test_governed_rfc_support_floor.py"
     },
     {
+      "name": "quic-applicability-profile-deep",
+      "protocol": "quic-applicability",
+      "rfc": "9308-deep",
+      "description": "QUIC applicability profile coverage for retry, idle timeout, datagram size, migration, and early data.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
+    },
+    {
       "name": "quic-manageability-observability",
       "protocol": "quic-manageability",
       "rfc": "9312",
       "description": "QUIC manageability observability through stable counters and redacted qlog artifacts.",
       "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "quic-manageability-observability-deep",
+      "protocol": "quic-manageability",
+      "rfc": "9312-deep",
+      "description": "QUIC manageability coverage for counters and redacted qlog observability artifacts.",
+      "fixture": "tests/test_governed_rfc_deep_coverage.py"
     },
     {
       "name": "http-conditional-requests",
