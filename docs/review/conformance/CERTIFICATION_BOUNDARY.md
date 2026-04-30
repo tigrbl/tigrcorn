@@ -45,11 +45,18 @@ The current required RFC surface remains:
 - RFC 9002
 - RFC 7541
 - RFC 9204
+- RFC 9221
 - RFC 6455
 - RFC 7692
 - RFC 8441
 - RFC 9220
+- RFC 9297
 - RFC 8446
+- RFC 8470
+- RFC 3986
+- RFC 9308
+- RFC 9312
+- RFC 9114 Section 10.9
 - RFC 9110 §9.3.6 (CONNECT)
 - RFC 9110 §6.5 (trailers)
 - RFC 9110 §8 (content coding)
@@ -105,6 +112,13 @@ The package-owned TCP/TLS condition is satisfied in this working tree.
 The current machine-readable policy intentionally keeps the following RFC surfaces at `local_conformance` in the current release gate:
 
 - RFC 7692
+- RFC 9221
+- RFC 9297
+- RFC 8470
+- RFC 3986
+- RFC 9308
+- RFC 9312
+- RFC 9114 Section 10.9
 - RFC 9110 §9.3.6 (CONNECT)
 - RFC 9110 §6.5 (trailers)
 - RFC 9110 §8 (content coding)

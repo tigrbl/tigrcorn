@@ -1,0 +1,40 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2044"
+number: 2044
+slug: "governed-rfc-support-floor"
+title: "Governed RFC support floor"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "adr:1037"
+  - "docs/review/conformance/certification_boundary.json"
+  - "docs/review/conformance/corpus.json"
+  - "tools/ssot_sync.py"
+body: |-
+  Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim.
+
+  Scope:
+  - QUIC: RFC 9000, RFC 9001, RFC 9002, RFC 9221, RFC 9308, RFC 9312.
+  - HTTP/3 and QPACK: RFC 9114, RFC 9114 Section 10.9, RFC 9204, RFC 9297.
+  - HTTP/2 and WebSocket extended CONNECT: RFC 9113, RFC 8441, RFC 9220.
+  - TLS and early data: RFC 8446, RFC 8470.
+  - URI and trailers: RFC 3986 and RFC 9110 Section 6.5.
+
+  Requirements:
+  - The certification boundary shall list every scoped target in required_rfcs.
+  - required_rfc_evidence shall declare a highest evidence tier for every scoped target.
+  - Every scoped target shall resolve to at least one local_conformance corpus vector.
+  - tools/ssot_sync.py shall generate one feature per scoped RFC target and link it to this SPEC.
+  - Generated RFC feature rows shall remain current, implemented, and target T2 or stronger.
+  - Generated RFC claim rows shall remain promoted with tier T2 or stronger.
+  - Tests shall fail if any scoped target loses its feature, SPEC link, claim floor, or local conformance evidence.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1037"

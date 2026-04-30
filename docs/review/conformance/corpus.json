@@ -127,11 +127,60 @@
       "fixture": "tests/test_qpack_completion.py"
     },
     {
+      "name": "quic-datagram-frame",
+      "protocol": "quic-datagram",
+      "rfc": "9221",
+      "description": "QUIC DATAGRAM frame encoding, decoding, and application packet-space allowance.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
       "name": "http3-websocket-extended-connect",
       "protocol": "http3-websocket",
       "rfc": "9220",
       "description": "Extended CONNECT bootstrap and framed WebSocket data over an HTTP/3 request stream.",
       "fixture": "tests/test_http3_websocket_rfc9220.py"
+    },
+    {
+      "name": "http-datagram-h3-carrier",
+      "protocol": "http3-datagram",
+      "rfc": "9297",
+      "description": "HTTP Datagram over HTTP/3 carrier settings and WebTransport datagram payload mapping.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "http-early-data-policy",
+      "protocol": "http-early-data",
+      "rfc": "8470",
+      "description": "HTTP early-data admission policy and 425 Too Early downgrade behavior.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "http3-early-data-section-10-9",
+      "protocol": "http3-early-data",
+      "rfc": "9114-section-10-9",
+      "description": "HTTP/3 early-data handling and 425 Too Early policy for resumed downgraded requests.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "uri-generic-syntax-request-target",
+      "protocol": "uri",
+      "rfc": "3986",
+      "description": "URI generic syntax preservation for path, query, and authority-form request targets.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "quic-applicability-profile",
+      "protocol": "quic-applicability",
+      "rfc": "9308",
+      "description": "QUIC applicability profile guardrails for transport parameters, migration, early data, and datagrams.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
+    },
+    {
+      "name": "quic-manageability-observability",
+      "protocol": "quic-manageability",
+      "rfc": "9312",
+      "description": "QUIC manageability observability through stable counters and redacted qlog artifacts.",
+      "fixture": "tests/test_governed_rfc_support_floor.py"
     },
     {
       "name": "http-conditional-requests",

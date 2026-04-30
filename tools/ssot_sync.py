@@ -2845,6 +2845,7 @@ def build_registry() -> dict[str, Any]:
             tier=highest_tier,
             slot="authoritative-boundary",
         )
+        link_feature_specs([feature_id], ["spc:2044"])
         claim_id = _claim_id(rfc_name)
         ensure_claim(
             claim_id=claim_id,

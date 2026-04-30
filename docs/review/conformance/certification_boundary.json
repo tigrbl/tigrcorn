@@ -30,11 +30,18 @@
     "RFC 9002",
     "RFC 7541",
     "RFC 9204",
+    "RFC 9221",
     "RFC 6455",
     "RFC 7692",
     "RFC 8441",
     "RFC 9220",
+    "RFC 9297",
     "RFC 8446",
+    "RFC 8470",
+    "RFC 3986",
+    "RFC 9308",
+    "RFC 9312",
+    "RFC 9114 Section 10.9",
     "RFC 9110 \u00a79.3.6",
     "RFC 9110 \u00a76.5",
     "RFC 9110 \u00a78",
@@ -183,6 +190,14 @@
         ]
       }
     },
+    "RFC 9221": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "quic-datagram-frame"
+        ]
+      }
+    },
     "RFC 6455": {
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
@@ -229,6 +244,14 @@
         ]
       }
     },
+    "RFC 9297": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-datagram-h3-carrier"
+        ]
+      }
+    },
     "RFC 8446": {
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
@@ -239,6 +262,46 @@
           "http2-tls-server-curl-client",
           "http2-tls-server-h2-client",
           "http3-server-openssl-quic-handshake"
+        ]
+      }
+    },
+    "RFC 8470": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-early-data-policy"
+        ]
+      }
+    },
+    "RFC 3986": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "uri-generic-syntax-request-target"
+        ]
+      }
+    },
+    "RFC 9308": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "quic-applicability-profile"
+        ]
+      }
+    },
+    "RFC 9312": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "quic-manageability-observability"
+        ]
+      }
+    },
+    "RFC 9114 Section 10.9": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http3-early-data-section-10-9"
         ]
       }
     },
