@@ -5,6 +5,7 @@ from importlib import metadata as importlib_metadata
 
 import tigr_asgi_contract as contract
 from tigrcorn.contract import (
+    SUPPORTED_SCOPE_TYPES,
     asgi3_extensions,
     classify_binding,
     contract_scope,
@@ -178,14 +179,18 @@ class ContractClosureAssertions(unittest.TestCase):
 
     def assert_contract_validation_surface(self) -> None:
         self.assertEqual(importlib_metadata.version("tigr-asgi-contract"), contract.CONTRACT_VERSION)
-        self.assertEqual({item.value for item in contract.ScopeType}, {"http", "websocket", "lifespan", "webtransport"})
+        peer_scope_types = {item.value for item in contract.ScopeType}
+        self.assertLessEqual(peer_scope_types, set(SUPPORTED_SCOPE_TYPES))
         self.assertIn("webtransport", {item.value for item in contract.Binding})
         self.assertIn("datagram", {item.value for item in contract.Family})
         self.assertEqual(
             {item.value for item in contract.EmitCompletionLevel},
             {"accepted_by_runtime", "flushed_to_transport"},
         )
-        for scope_type in ("http", "websocket", "lifespan", "tigrcorn.stream", "tigrcorn.datagram"):
+        for scope_type in peer_scope_types | {"tigrcorn.stream", "tigrcorn.datagram"}:
+            if scope_type == "webtransport":
+                validate_scope({"type": scope_type, "path": "/wt", "extensions": {"h3": {}, "quic": {}}})
+                continue
             validate_scope({"type": scope_type})
         with self.assertRaises(ProtocolError):
             validate_scope({"type": "rest"})

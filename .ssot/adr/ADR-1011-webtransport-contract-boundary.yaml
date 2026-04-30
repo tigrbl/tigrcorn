@@ -12,7 +12,12 @@ summary: "Decision: Tigrcorn shall implement first-class WebTransport over HTTP/
 supersedes: []
 superseded_by: []
 status_notes: []
-references: []
+references:
+  - "W3C WebTransport Working Draft 25 March 2026: https://www.w3.org/TR/2026/WD-webtransport-20260325/"
+  - "W3C WebTransport latest published version: https://www.w3.org/TR/webtransport/"
+  - "IETF draft-ietf-webtrans-http3 WebTransport over HTTP/3: https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/"
+  - "MDN WebTransport API overview: https://developer.mozilla.org/en-US/docs/Web/API/WebTransport_API"
+  - "MDN WebTransport interface reference: https://developer.mozilla.org/en-US/docs/Web/API/WebTransport"
 body: |-
   # ADR 1011 - WebTransport contract boundary
   
@@ -21,5 +26,7 @@ body: |-
   The authoritative product boundary is the `.ssot` registry. Human-readable docs are projections and do not win conflicts with `.ssot/registry.json`.
   
   WebTransport is in bounds because it is a transport/protocol/application-hosting target that sits directly on the package-owned QUIC and HTTP/3 stack.
+  
+  The boundary tracks the W3C WebTransport API model as the external API semantics reference and the IETF WEBTRANS HTTP/3 draft family as the carrier-protocol reference while those documents remain work in progress. MDN WebTransport documentation is tracked as an informative implementation and browser-behavior reference for developer-facing examples, terminology, and compatibility notes.
   
   REST and JSON-RPC are out of bounds for Tigrcorn's runtime. They are application or framework bindings above ASGI HTTP. Tigrcorn may validate contract metadata that classifies HTTP traffic, but it shall not implement REST or JSON-RPC product runtimes.

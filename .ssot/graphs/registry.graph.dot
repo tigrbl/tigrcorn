@@ -733,6 +733,9 @@ digraph ssot_registry {
   "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules" [label="tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules\\n(test)"];
   "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-is-external-peer-dependency" [label="tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-is-external-peer-dependency\\n(test)"];
   "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-peer-version-matches-installed-surface" [label="tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-peer-version-matches-installed-surface\\n(test)"];
+  "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-event-helpers-cover-peer-transport-event-surface" [label="tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-event-helpers-cover-peer-transport-event-surface\\n(test)"];
+  "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-runtime-emits-every-peer-scope-type" [label="tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-runtime-emits-every-peer-scope-type\\n(test)"];
+  "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-supports-scope-types-used-by-peer-prot-22d7a400db" [label="tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-supports-scope-types-used-by-peer-prot-22d7a400db\\n(test)"];
   "tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-docs-and-status-exist" [label="tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-docs-and-status-exist\\n(test)"];
   "tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-independent-bundle-still-validates" [label="tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-independent-bundle-still-validates\\n(test)"];
   "tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-release-root-contains-trailer-artifa-7149584ef7" [label="tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-release-root-contains-trailer-artifa-7149584ef7\\n(test)"];
@@ -3776,6 +3779,9 @@ digraph ssot_registry {
   "feat:tigr-asgi-contract-peer-validation" -> "tst:pytest-tigr-asgi-contract-category-t4-support" [label="COVERED_BY"];
   "feat:tigr-asgi-contract-peer-validation" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-is-external-peer-dependency" [label="COVERED_BY"];
   "feat:tigr-asgi-contract-peer-validation" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-peer-version-matches-installed-surface" [label="COVERED_BY"];
+  "feat:tigr-asgi-contract-peer-validation" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-runtime-emits-every-peer-scope-type" [label="COVERED_BY"];
+  "feat:tigr-asgi-contract-peer-validation" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-supports-scope-types-used-by-peer-prot-22d7a400db" [label="COVERED_BY"];
+  "feat:tigr-asgi-contract-peer-validation" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-event-helpers-cover-peer-transport-event-surface" [label="COVERED_BY"];
   "feat:app-interface-cli-flag" -> "spc:2035" [label="SPECIFIED_BY"];
   "feat:app-interface-cli-flag" -> "spc:2008" [label="SPECIFIED_BY"];
   "feat:app-interface-cli-flag" -> "spc:2013" [label="SPECIFIED_BY"];
@@ -7359,6 +7365,9 @@ digraph ssot_registry {
   "tst:tigr-asgi-contract-peer-validation" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="VERIFIES"];
   "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-is-external-peer-dependency" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="VERIFIES"];
   "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-peer-version-matches-installed-surface" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="VERIFIES"];
+  "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-runtime-emits-every-peer-scope-type" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="VERIFIES"];
+  "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-supports-scope-types-used-by-peer-prot-22d7a400db" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="VERIFIES"];
+  "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-event-helpers-cover-peer-transport-event-surface" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="VERIFIES"];
   "evd:tigr-asgi-contract-peer-validation-pytest" -> "clm:tigr-asgi-contract-peer-validation-implemented" [label="SUPPORTS"];
   "clm:tls-metadata-extension-implemented" -> "feat:tls-metadata-extension" [label="ASSERTS"];
   "tst:tls-metadata-extension" -> "clm:tls-metadata-extension-implemented" [label="VERIFIES"];
@@ -8294,6 +8303,9 @@ digraph ssot_registry {
   "evd:pytest-tests-test-ssot-registry-py" -> "tst:pytest-case-tests-test-ssot-registry-py-test-ssot-registry-tracks-all-repo-local-adrs-specs-profiles-and-test-modules" [label="DERIVES_FROM"];
   "evd:tigr-asgi-contract-peer-validation-pytest" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-is-external-peer-dependency" [label="DERIVES_FROM"];
   "evd:tigr-asgi-contract-peer-validation-pytest" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigr-asgi-contract-peer-version-matches-installed-surface" [label="DERIVES_FROM"];
+  "evd:tigr-asgi-contract-peer-validation-pytest" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-event-helpers-cover-peer-transport-event-surface" [label="DERIVES_FROM"];
+  "evd:tigr-asgi-contract-peer-validation-pytest" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-runtime-emits-every-peer-scope-type" [label="DERIVES_FROM"];
+  "evd:tigr-asgi-contract-peer-validation-pytest" -> "tst:pytest-case-tests-test-tigr-asgi-contract-peer-validation-py-test-tigrcorn-supports-scope-types-used-by-peer-prot-22d7a400db" [label="DERIVES_FROM"];
   "evd:pytest-file-tests-test-trailer-fields-independent-closure-py" -> "tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-docs-and-status-exist" [label="DERIVES_FROM"];
   "evd:pytest-file-tests-test-trailer-fields-independent-closure-py" -> "tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-independent-bundle-still-validates" [label="DERIVES_FROM"];
   "evd:pytest-file-tests-test-trailer-fields-independent-closure-py" -> "tst:pytest-case-tests-test-trailer-fields-independent-closure-py-test-capability-release-root-contains-trailer-artifa-7149584ef7" [label="DERIVES_FROM"];

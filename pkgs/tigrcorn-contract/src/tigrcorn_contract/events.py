@@ -90,6 +90,23 @@ def http_response_body(unit_id: str, *, body: bytes = b"", more_body: bool = Fal
     return _event("http.response.body", unit_id=_require_unit_id(unit_id), body=body, more_body=more_body)
 
 
+def http_response_pathsend(
+    unit_id: str,
+    *,
+    path: str,
+    headers: list[tuple[bytes, bytes]] | None = None,
+    stat_result: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if not path:
+        raise ProtocolError("pathsend event requires path")
+    event = _event("http.response.pathsend", unit_id=_require_unit_id(unit_id), path=path)
+    if headers is not None:
+        event["headers"] = headers
+    if stat_result is not None:
+        event["stat_result"] = stat_result
+    return event
+
+
 def websocket_connect(unit_id: str) -> dict[str, Any]:
     return _event("websocket.connect", unit_id=_require_unit_id(unit_id))
 
@@ -113,6 +130,14 @@ def websocket_accept(unit_id: str, *, subprotocol: str | None = None) -> dict[st
     return event
 
 
+def websocket_disconnect(unit_id: str, *, code: int = 1005, reason: str = "") -> dict[str, Any]:
+    return _event("websocket.disconnect", unit_id=_require_unit_id(unit_id), code=code, reason=reason)
+
+
+def websocket_close(unit_id: str, *, code: int = 1000, reason: str = "") -> dict[str, Any]:
+    return _event("websocket.close", unit_id=_require_unit_id(unit_id), code=code, reason=reason)
+
+
 def lifespan_startup(unit_id: str) -> dict[str, Any]:
     return _event("lifespan.startup", unit_id=_require_unit_id(unit_id))
 
@@ -121,12 +146,20 @@ def lifespan_startup_complete(unit_id: str) -> dict[str, Any]:
     return _event("lifespan.startup.complete", unit_id=_require_unit_id(unit_id))
 
 
+def lifespan_startup_failed(unit_id: str, *, message: str) -> dict[str, Any]:
+    return _event("lifespan.startup.failed", unit_id=_require_unit_id(unit_id), message=message)
+
+
 def lifespan_shutdown(unit_id: str) -> dict[str, Any]:
     return _event("lifespan.shutdown", unit_id=_require_unit_id(unit_id))
 
 
 def lifespan_shutdown_complete(unit_id: str) -> dict[str, Any]:
     return _event("lifespan.shutdown.complete", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_shutdown_failed(unit_id: str, *, message: str) -> dict[str, Any]:
+    return _event("lifespan.shutdown.failed", unit_id=_require_unit_id(unit_id), message=message)
 
 
 def map_contract_event(binding: str, subevent: str) -> str:
