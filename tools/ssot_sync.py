@@ -179,7 +179,7 @@ def _issue_id(raw: str) -> str:
 
 
 TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS = (
-    "feat:tigr-asgi-contract-0-1-2-validation",
+    "feat:tigr-asgi-contract-peer-validation",
     "feat:contract-native-runtime",
     "feat:contract-app-dispatch",
     "feat:contract-native-public-api",
@@ -1549,7 +1549,7 @@ def build_registry() -> dict[str, Any]:
         _feature_id("webtransport-h3-quic-stream-events"),
         _feature_id("webtransport-h3-quic-datagram-events"),
         _feature_id("webtransport-h3-quic-completion-events"),
-        _feature_id("tigr-asgi-contract-0-1-2-validation"),
+        _feature_id("tigr-asgi-contract-peer-validation"),
     ]
     webtransport_specs = ["spc:2010", "spc:2003", "spc:2004", "spc:2037"]
     webtransport_rows = [
@@ -1580,8 +1580,8 @@ def build_registry() -> dict[str, Any]:
         ),
         (
             webtransport_feature_ids[5],
-            "tigr-asgi-contract 0.1.2 validation",
-            "Validate Tigrcorn's supported native contract and ASGI/3 compatibility surface against tigr-asgi-contract 0.1.2 without adopting product-layer REST or JSON-RPC runtimes.",
+            "tigr-asgi-contract peer validation",
+            "Validate Tigrcorn's supported native contract and ASGI/3 compatibility surface against the installed tigr-asgi-contract peer package without adopting product-layer REST or JSON-RPC runtimes.",
         ),
     ]
     for feature_id, title, description in webtransport_rows:
@@ -2512,7 +2512,7 @@ def build_registry() -> dict[str, Any]:
         "webtransport-h3-quic-datagram-events",
         "webtransport-h3-quic-datagram-runtime-dispatch",
         "webtransport-h3-quic-completion-events",
-        "tigr-asgi-contract-0-1-2-validation",
+        "tigr-asgi-contract-peer-validation",
         "webtransport-protocol-cli-flag",
         "webtransport-carrier-normalization",
         "webtransport-carrier-fail-closed",
@@ -2580,7 +2580,7 @@ def build_registry() -> dict[str, Any]:
         ("webtransport-h3-quic-datagram-events", "WebTransport datagram events"),
         ("webtransport-h3-quic-datagram-runtime-dispatch", "WebTransport H3/QUIC DATAGRAM runtime dispatch"),
         ("webtransport-h3-quic-completion-events", "WebTransport completion events"),
-        ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation"),
+        ("tigr-asgi-contract-peer-validation", "tigr-asgi-contract peer validation"),
         ("rest-runtime-exclusion", "REST runtime exclusion"),
         ("json-rpc-runtime-exclusion", "JSON-RPC runtime exclusion"),
         ("asgi2-compat-exclusion", "ASGI2 compatibility exclusion"),
@@ -2600,7 +2600,7 @@ def build_registry() -> dict[str, Any]:
         ("webtransport-h3-quic-stream-events", "WebTransport H3/QUIC stream events", "tests/test_webtransport_h3_quic_stream_events.py"),
         ("webtransport-h3-quic-datagram-events", "WebTransport H3/QUIC datagram events", "tests/test_webtransport_h3_quic_datagram_events.py"),
         ("webtransport-h3-quic-completion-events", "WebTransport H3/QUIC completion events", "tests/test_webtransport_h3_quic_completion_events.py"),
-        ("tigr-asgi-contract-0-1-2-validation", "tigr-asgi-contract 0.1.2 validation", "tests/test_tigr_asgi_contract_0_1_2_validation.py"),
+        ("tigr-asgi-contract-peer-validation", "tigr-asgi-contract peer validation", "tests/test_tigr_asgi_contract_peer_validation.py"),
         ("webtransport-protocol-cli-flag", "WebTransport protocol CLI flag", "tests/test_webtransport_operator_surface.py"),
         ("webtransport-carrier-normalization", "WebTransport carrier normalization", "tests/test_webtransport_operator_surface.py"),
         ("webtransport-carrier-fail-closed", "WebTransport carrier fail-closed validation", "tests/test_webtransport_operator_surface.py"),

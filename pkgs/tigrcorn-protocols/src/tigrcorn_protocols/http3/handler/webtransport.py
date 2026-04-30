@@ -157,6 +157,7 @@ class _HTTP3WebTransportSession:
     async def feed_connect_stream_data(self, data: bytes, *, end_stream: bool = False) -> None:
         if self.closed:
             return
+        await self.feed_stream_data(data, end_stream=end_stream, disconnect_on_end=False)
         if end_stream:
             self.connect_stream_ended = True
 

@@ -132,7 +132,7 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
         "feat:webtransport-h3-quic-datagram-events",
         "feat:webtransport-h3-quic-completion-events",
         "feat:contract-webtransport-stream-identity",
-        "feat:tigr-asgi-contract-0-1-2-validation",
+        "feat:tigr-asgi-contract-peer-validation",
     }:
         feature = features[feature_id]
         assert feature["implementation_status"] == "implemented"

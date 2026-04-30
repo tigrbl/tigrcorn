@@ -71,7 +71,7 @@ def test_closed_contract_features_have_passing_executable_tests() -> None:
         "feat:webtransport-h3-quic-stream-events",
         "feat:webtransport-h3-quic-datagram-events",
         "feat:webtransport-h3-quic-completion-events",
-        "feat:tigr-asgi-contract-0-1-2-validation",
+        "feat:tigr-asgi-contract-peer-validation",
         "feat:generic-stream-runtime",
         "feat:generic-datagram-runtime",
         "feat:stream-backpressure-mapping",
