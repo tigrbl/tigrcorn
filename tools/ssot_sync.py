@@ -192,6 +192,7 @@ QUIC_CATEGORY_FEATURE_IDS = (
     "feat:rfc-9000",
     "feat:rfc-9001",
     "feat:rfc-9002",
+    "feat:quic-streams",
     "feat:contract-quic-connection-identity",
     "feat:surface-quic-recovery-send-path",
     "feat:surface-quic-retry-token-integrity",
@@ -2505,6 +2506,23 @@ def build_registry() -> dict[str, Any]:
         )
         link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034", "spc:2037"])
 
+    quic_streams_feature_id = _feature_id("quic-streams")
+    ensure_feature(
+        feature_id=quic_streams_feature_id,
+        title="QUIC streams",
+        description=(
+            "Model raw QUIC bidirectional and unidirectional stream state, stream IDs, flow control, "
+            "reset handling, STOP_SENDING handling, and stream-limit credit recycling as a first-class transport feature."
+        ),
+        tier="T4",
+        slot="quic-transport-streams",
+        horizon="current",
+        implementation_status="implemented",
+    )
+    link_feature_specs([quic_streams_feature_id], ["spc:2004", "spc:2022"])
+    if "feat:rfc-9000" not in features[quic_streams_feature_id]["requires"]:
+        features[quic_streams_feature_id]["requires"].append("feat:rfc-9000")
+
     closed_test_feature_ids = set(implemented_contract_app_interface_features) | {
         "webtransport-h3-quic-scope",
         "webtransport-h3-quic-session-events",
@@ -2716,6 +2734,14 @@ def build_registry() -> dict[str, Any]:
             "tst:compat-dispatch-selection",
             "clm:compat-dispatch-selection-implemented",
             "evd:compat-dispatch-selection-pytest",
+        ),
+        (
+            "quic-streams",
+            "QUIC streams state machine",
+            "tests/test_quic_stream_flow_state_machine.py",
+            "tst:quic-streams-state-machine",
+            "clm:quic-streams-implemented",
+            "evd:quic-streams-state-machine-pytest",
         ),
         (
             "asgi3-hot-path-isolation",
