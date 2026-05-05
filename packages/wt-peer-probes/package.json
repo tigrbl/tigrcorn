@@ -1,0 +1,33 @@
+{
+  "name": "@tigrcorn/wt-peer-probes",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Browser peer probes for validating tigrcorn WebTransport support across Chromium, Firefox, WebKit/Safari, and mobile peers.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "probe:playwright": "playwright test",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "keywords": [
+    "tigrcorn",
+    "webtransport",
+    "webtransport-probe",
+    "quic",
+    "http3",
+    "peer-probe"
+  ],
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  }
+}

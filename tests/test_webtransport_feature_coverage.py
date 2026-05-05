@@ -64,6 +64,7 @@ IMPLEMENTED_WEBTRANSPORT_FEATURE_IDS = {
     "feat:webtransport-path-flag",
     "feat:webtransport-protocol-cli-flag",
     "feat:webtransport-public-api",
+    "feat:webtransport-peer-probe-npm-package",
     "feat:fixture-asgi-webtransport-scope",
     "feat:fixture-webtransport-protocol",
     "feat:webtransport-h3-quic-datagram-runtime-dispatch",

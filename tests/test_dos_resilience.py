@@ -3,11 +3,33 @@ from __future__ import annotations
 import asyncio
 
 from tigrcorn.availability import DOS_WARNING_EVENT, dos_warning
+from tigrcorn.protocols.http1.parser import read_http11_request_head
 from tigrcorn.protocols.http3.codec import H3_EXCESSIVE_LOAD, HTTP3StreamError
 from tigrcorn.protocols.http3.streams import HTTP3ConnectionCore
+from tigrcorn.protocols.websocket.frames import OP_BINARY, parse_frame_bytes, serialize_frame
 from tigrcorn.scheduler.cancellation import cancel_many_bounded
 from tigrcorn.scheduler.tasks import TaskSet
+from tigrcorn.errors import ProtocolError
 import pytest
+
+
+class _LimitedHeadReader:
+    def __init__(self, payload: bytes) -> None:
+        self.payload = payload
+
+    async def readuntil_limited(
+        self,
+        separator: bytes,
+        *,
+        limit: int,
+        read_chunk_size: int | None = None,
+    ) -> bytes:
+        if len(self.payload) > limit:
+            raise asyncio.LimitOverrunError(
+                "request head exceeds configured HTTP/1.1 request-head limit",
+                consumed=len(self.payload),
+            )
+        return self.payload
 
 
 def test_http3_request_parse_buffer_exhaustion_fails_closed() -> None:
@@ -20,6 +42,57 @@ def test_http3_request_parse_buffer_exhaustion_fails_closed() -> None:
     request = core.get_request(0)
     assert request.state.abandoned is True
     assert request.state.parse_buffer == bytearray()
+
+
+async def _exercise_http11_request_head_limit_fails_closed() -> None:
+    payload = b"GET / HTTP/1.1\r\nHost: example.test\r\nX-Fill: " + (b"a" * 64) + b"\r\n\r\n"
+    reader = _LimitedHeadReader(payload)
+
+    with pytest.raises(ProtocolError, match="request head exceeds configured HTTP/1.1 request-head limit"):
+        await read_http11_request_head(
+            reader,
+            max_header_size=32,
+            max_incomplete_event_size=32,
+            buffer_size=8,
+        )
+
+
+def test_http11_request_head_limit_fails_closed() -> None:
+    asyncio.run(_exercise_http11_request_head_limit_fails_closed())
+
+
+async def _exercise_websocket_upgrade_request_head_limit_fails_closed() -> None:
+    payload = (
+        b"GET /ws HTTP/1.1\r\n"
+        b"Host: example.test\r\n"
+        b"Connection: Upgrade\r\n"
+        b"Upgrade: websocket\r\n"
+        b"Sec-WebSocket-Version: 13\r\n"
+        b"Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n"
+        b"X-Fill: "
+        + (b"a" * 64)
+        + b"\r\n\r\n"
+    )
+    reader = _LimitedHeadReader(payload)
+
+    with pytest.raises(ProtocolError, match="request head exceeds configured HTTP/1.1 request-head limit"):
+        await read_http11_request_head(
+            reader,
+            max_header_size=96,
+            max_incomplete_event_size=96,
+            buffer_size=8,
+        )
+
+
+def test_websocket_upgrade_request_head_limit_fails_closed() -> None:
+    asyncio.run(_exercise_websocket_upgrade_request_head_limit_fails_closed())
+
+
+def test_websocket_oversized_frame_fails_before_payload_acceptance() -> None:
+    frame = serialize_frame(OP_BINARY, b"x" * 5, mask=True)
+
+    with pytest.raises(ProtocolError, match="websocket frame exceeds configured max payload size"):
+        parse_frame_bytes(frame, expect_masked=True, max_payload_size=4)
 
 
 async def _cancellation_resistant_task(release: asyncio.Event) -> None:
@@ -97,6 +170,7 @@ def test_dos_resilience_is_governed_in_generated_ssot() -> None:
     evidence = {row["id"]: row for row in registry["evidence"]}
     specs = {row["id"]: row for row in registry["specs"]}
     boundaries = {row["id"]: row for row in registry["boundaries"]}
+    profiles = {row["id"]: row for row in registry["profiles"]}
 
     feature = features["feat:dos-resilience-runtime"]
     assert feature["implementation_status"] == "implemented"
@@ -108,4 +182,27 @@ def test_dos_resilience_is_governed_in_generated_ssot() -> None:
     assert claims["clm:dos-resilience-runtime-implemented"]["tier"] == "T3"
     assert tests["tst:dos-resilience-runtime"]["path"] == "tests/test_dos_resilience.py"
     assert evidence["evd:dos-resilience-runtime-pytest"]["path"] == "tests/test_dos_resilience.py"
-    assert boundaries["bnd:availability-abuse-resilience"]["feature_ids"] == ["feat:dos-resilience-runtime"]
+    assert features["feat:h11-oversized-request-head-rejection"]["implementation_status"] == "implemented"
+    assert "tst:h11-oversized-request-head-rejection" in features[
+        "feat:h11-oversized-request-head-rejection"
+    ]["test_ids"]
+    assert tests["tst:h11-oversized-request-head-rejection"]["path"] == "tests/test_dos_resilience.py"
+    assert features["feat:websocket-oversized-upgrade-head-rejection"]["implementation_status"] == "implemented"
+    assert "tst:websocket-oversized-upgrade-head-rejection" in features[
+        "feat:websocket-oversized-upgrade-head-rejection"
+    ]["test_ids"]
+    assert tests["tst:websocket-oversized-upgrade-head-rejection"]["path"] == "tests/test_dos_resilience.py"
+    assert profiles["prf:denial-of-service-resilience"]["feature_ids"] == [
+        "feat:dos-resilience-runtime",
+        "feat:h11-oversized-request-head-rejection",
+        "feat:websocket-oversized-upgrade-head-rejection",
+    ]
+    assert profiles["prf:denial-of-service-resilience"]["claim_tier"] == "T3"
+    assert boundaries["bnd:availability-abuse-resilience"]["feature_ids"] == [
+        "feat:dos-resilience-runtime",
+        "feat:h11-oversized-request-head-rejection",
+        "feat:websocket-oversized-upgrade-head-rejection",
+    ]
+    assert boundaries["bnd:availability-abuse-resilience"]["profile_ids"] == [
+        "prf:denial-of-service-resilience"
+    ]

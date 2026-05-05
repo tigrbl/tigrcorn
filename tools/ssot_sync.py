@@ -227,6 +227,7 @@ WEBTRANSPORT_CATEGORY_FEATURE_IDS = (
     "feat:webtransport-max-datagram-size-flag",
     "feat:webtransport-origin-flag",
     "feat:webtransport-path-flag",
+    "feat:webtransport-peer-probe-npm-package",
 )
 
 T4_CATEGORY_FEATURE_IDS = frozenset(TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS) | frozenset(QUIC_CATEGORY_FEATURE_IDS)
@@ -2523,6 +2524,25 @@ def build_registry() -> dict[str, Any]:
     if "feat:rfc-9000" not in features[quic_streams_feature_id]["requires"]:
         features[quic_streams_feature_id]["requires"].append("feat:rfc-9000")
 
+    wt_peer_probe_feature_id = _feature_id("webtransport-peer-probe-npm-package")
+    ensure_feature(
+        feature_id=wt_peer_probe_feature_id,
+        title="WebTransport peer probe npm package",
+        description=(
+            "Ship the @tigrcorn/wt-peer-probes npm package for browser peer validation of "
+            "Tigrcorn WebTransport readiness, bidirectional streams, unidirectional streams, "
+            "datagrams, and close behavior."
+        ),
+        tier="T2",
+        slot="webtransport-peer-probes",
+        horizon="current",
+        implementation_status="implemented",
+    )
+    link_feature_specs([wt_peer_probe_feature_id], ["spc:2010", "spc:2039"])
+    for required_id in ("feat:webtransport-h3-quic-scope", "feat:webtransport-public-api"):
+        if required_id not in features[wt_peer_probe_feature_id]["requires"]:
+            features[wt_peer_probe_feature_id]["requires"].append(required_id)
+
     closed_test_feature_ids = set(implemented_contract_app_interface_features) | {
         "webtransport-h3-quic-scope",
         "webtransport-h3-quic-session-events",
@@ -2542,6 +2562,7 @@ def build_registry() -> dict[str, Any]:
         "webtransport-max-datagram-size-flag",
         "webtransport-origin-flag",
         "webtransport-path-flag",
+        "webtransport-peer-probe-npm-package",
         "governance-graph",
         "rest-runtime-exclusion",
         "json-rpc-runtime-exclusion",
@@ -2630,6 +2651,7 @@ def build_registry() -> dict[str, Any]:
         ("webtransport-max-datagram-size-flag", "WebTransport max datagram size flag", "tests/test_webtransport_operator_surface.py"),
         ("webtransport-origin-flag", "WebTransport origin flag", "tests/test_webtransport_operator_surface.py"),
         ("webtransport-path-flag", "WebTransport path flag", "tests/test_webtransport_operator_surface.py"),
+        ("webtransport-peer-probe-npm-package", "WebTransport peer probe npm package", "tests/test_wt_peer_probe_package.py"),
         ("generic-stream-runtime", "Generic stream runtime", "tests/test_contract_generic_stream_runtime.py"),
         ("generic-datagram-runtime", "Generic datagram runtime", "tests/test_contract_generic_datagram_runtime.py"),
         ("stream-backpressure-mapping", "Stream backpressure mapping", "tests/test_contract_stream_backpressure_mapping.py"),
@@ -3197,6 +3219,93 @@ def build_registry() -> dict[str, Any]:
         claim_ids=[dos_resilience_claim_id],
         evidence_ids=[dos_resilience_evidence_id],
     )
+    dos_probe_rows = [
+        {
+            "feature_id": "feat:h11-oversized-request-head-rejection",
+            "claim_id": "clm:h11-oversized-request-head-rejection-implemented",
+            "test_id": "tst:h11-oversized-request-head-rejection",
+            "evidence_id": "evd:h11-oversized-request-head-rejection-pytest",
+            "title": "H11 oversized request-head rejection",
+            "description": (
+                "HTTP/1.1 request-head parsing rejects oversized header blocks before request acceptance."
+            ),
+            "claim_title": "H11 oversized request-head rejection implemented",
+            "claim_description": (
+                "The h11 request-head probe verifies the configured request-head byte ceiling fails closed "
+                "with a ProtocolError before the oversized request is accepted."
+            ),
+            "spec_ids": ["spc:2050", "spc:2003"],
+        },
+        {
+            "feature_id": "feat:websocket-oversized-upgrade-head-rejection",
+            "claim_id": "clm:websocket-oversized-upgrade-head-rejection-implemented",
+            "test_id": "tst:websocket-oversized-upgrade-head-rejection",
+            "evidence_id": "evd:websocket-oversized-upgrade-head-rejection-pytest",
+            "title": "WebSocket oversized upgrade-head rejection",
+            "description": (
+                "WebSocket upgrade request-head parsing rejects oversized handshake header blocks before upgrade acceptance."
+            ),
+            "claim_title": "WebSocket oversized upgrade-head rejection implemented",
+            "claim_description": (
+                "The WebSocket upgrade request-head probe verifies the configured request-head byte ceiling fails closed "
+                "before an oversized upgrade request can reach WebSocket admission."
+            ),
+            "spec_ids": ["spc:2050", "spc:2003", "spc:2004"],
+        },
+    ]
+    for row in dos_probe_rows:
+        ensure_feature(
+            feature_id=row["feature_id"],
+            title=row["title"],
+            description=row["description"],
+            tier="T3",
+            slot="availability-resilience",
+        )
+        link_feature_specs([row["feature_id"]], row["spec_ids"])
+        ensure_claim(
+            claim_id=row["claim_id"],
+            title=row["claim_title"],
+            description=row["claim_description"],
+            tier="T3",
+            kind="availability_abuse_resilience",
+            feature_ids=[row["feature_id"]],
+        )
+        ensure_evidence(
+            evidence_id=row["evidence_id"],
+            title=f"{row['title']} pytest evidence",
+            kind="pytest",
+            tier="T3",
+            path="tests/test_dos_resilience.py",
+            claim_ids=[row["claim_id"]],
+            test_ids=[row["test_id"]],
+        )
+        ensure_test(
+            test_id=row["test_id"],
+            title=row["title"],
+            status="passing",
+            kind="pytest",
+            path="tests/test_dos_resilience.py",
+            feature_ids=[row["feature_id"]],
+            claim_ids=[row["claim_id"]],
+            evidence_ids=[row["evidence_id"]],
+        )
+    availability_abuse_feature_ids = [
+        dos_resilience_feature_id,
+        "feat:h11-oversized-request-head-rejection",
+        "feat:websocket-oversized-upgrade-head-rejection",
+    ]
+    ensure_profile(
+        profile_id="prf:denial-of-service-resilience",
+        title="Denial-of-service resilience profile",
+        description=(
+            "Availability-abuse posture that groups the governed DoS runtime, h11 oversized request-head "
+            "rejection, and WebSocket oversized upgrade-head rejection features."
+        ),
+        kind="capability",
+        feature_ids=availability_abuse_feature_ids,
+        profile_ids=[],
+        claim_tier="T3",
+    )
 
     profile_feature_id = _feature_id("deployment-profiles")
     profile_claim_id = _claim_id("deployment-profiles")
@@ -3631,9 +3740,9 @@ def build_registry() -> dict[str, Any]:
             "title": "Availability abuse and DoS resilience boundary",
             "status": "frozen",
             "frozen": True,
-            "feature_ids": ["feat:dos-resilience-runtime"],
+            "feature_ids": availability_abuse_feature_ids,
             "canonical_registry_source": ".ssot/registry.json",
-            "profile_ids": [],
+            "profile_ids": ["prf:denial-of-service-resilience"],
         },
     ]
     missing_boundary_features = sorted(

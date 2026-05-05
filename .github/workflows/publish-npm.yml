@@ -1,0 +1,35 @@
+name: publish-npm
+
+on:
+  push:
+    tags:
+      - "v*"
+  release:
+    types: [prereleased, published]
+  workflow_dispatch:
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+          registry-url: https://registry.npmjs.org
+      - name: Install npm workspace
+        run: npm install
+      - name: Typecheck npm packages
+        run: npm run typecheck
+      - name: Build npm packages
+        run: npm run build
+      - name: Test npm packages
+        run: npm test
+      - name: Publish npm packages
+        run: npm publish --workspace packages/wt-peer-probes --access public --provenance
