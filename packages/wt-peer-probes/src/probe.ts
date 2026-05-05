@@ -20,7 +20,7 @@ async function timeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> 
 }
 
 function newReport(opts: Required<Pick<WTPeerProbeOptions, "peerId" | "wtUrl">>): WTPeerProbeReport {
-  return {
+  const report: WTPeerProbeReport = {
     probe: "tigrcorn.wt.peer",
     version: 1,
     peerId: opts.peerId,
@@ -28,7 +28,6 @@ function newReport(opts: Required<Pick<WTPeerProbeOptions, "peerId" | "wtUrl">>)
     wtUrl: opts.wtUrl,
     userAgent: navigator.userAgent,
     platform: navigator.platform,
-    browserHints: browserHints(),
     stages: {
       api: "fail",
       ready: "skip",
@@ -41,6 +40,11 @@ function newReport(opts: Required<Pick<WTPeerProbeOptions, "peerId" | "wtUrl">>)
     errors: {},
     ok: false,
   };
+  const hints = browserHints();
+  if (hints !== undefined) {
+    report.browserHints = hints;
+  }
+  return report;
 }
 
 export async function runTigrcornWTPeerProbe(opts: WTPeerProbeOptions): Promise<WTPeerProbeReport> {
@@ -166,7 +170,11 @@ async function probeUnidi(wt: WebTransport, runId: string, peerId: string, timeo
 
     const ackReader = serverStream.value.getReader();
     try {
-      const ack = await timeout(ackReader.read(), timeoutMs, "unidi ack read");
+      const ack = await timeout(
+        ackReader.read(),
+        timeoutMs,
+        "unidi ack read",
+      ) as ReadableStreamReadResult<Uint8Array>;
       const body = ack.value ? JSON.parse(dec.decode(ack.value)) : null;
 
       if (body?.id !== id || body?.type !== "probe.unidi.ack") {

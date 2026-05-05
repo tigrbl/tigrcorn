@@ -20,8 +20,10 @@ def test_wt_peer_probe_package_is_part_of_npm_workspace() -> None:
     package = _json(PACKAGE_JSON)
 
     assert "packages/*" in root_package["workspaces"]
+    assert (PACKAGE_ROOT / "package-lock.json").is_file()
     assert package["name"] == "@tigrcorn/wt-peer-probes"
     assert package["private"] is False
+    assert package["files"] == ["dist", "README.md", "examples/browser.html"]
     assert package["exports"]["."]["import"] == "./dist/index.js"
     assert package["exports"]["."]["types"] == "./dist/index.d.ts"
 
@@ -51,19 +53,30 @@ def test_wt_peer_probe_playwright_matrix_is_peer_based() -> None:
 
 def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     reusable = yaml.safe_load((ROOT / ".github" / "workflows" / "_reusable-ci.yml").read_text(encoding="utf-8"))
-    publish = yaml.safe_load((ROOT / ".github" / "workflows" / "publish-npm.yml").read_text(encoding="utf-8"))
+    publish = yaml.safe_load((ROOT / ".github" / "workflows" / "publish-wt-peer-probes.yml").read_text(encoding="utf-8"))
 
     assert "validate-npm" in reusable["jobs"]
     steps = reusable["jobs"]["validate-npm"]["steps"]
-    commands = [step.get("run", "") for step in steps]
-    assert "npm install" in commands
-    assert "npm run typecheck" in commands
-    assert "npm run build" in commands
-    assert "npm test" in commands
+    uses = [step.get("uses", "") for step in steps]
+    ci_action = next(step for step in steps if step.get("uses") == "cobycloud/actions/actions/setup-node-project@main")
+    assert "cobycloud/actions/actions/setup-node-project@main" in uses
+    assert ci_action["with"]["working-directory"] == "packages/wt-peer-probes"
+    assert ci_action["with"]["install-command"] == "npm ci --workspaces=false"
+    assert ci_action["with"]["build-command"] == "npm run build --workspaces=false"
+    assert ci_action["with"]["test-command"] == "npm test --workspaces=false"
 
-    publish_steps = publish["jobs"]["publish-npm"]["steps"]
-    publish_commands = [step.get("run", "") for step in publish_steps]
-    assert "npm publish --workspace packages/wt-peer-probes --access public --provenance" in publish_commands
+    assert {"ci", "github-release", "npmjs"} <= set(publish["jobs"])
+    release_steps = publish["jobs"]["github-release"]["steps"]
+    npm_steps = publish["jobs"]["npmjs"]["steps"]
+    release_action = next(step for step in release_steps if step.get("uses") == "cobycloud/actions/actions/github-release@main")
+    npm_action = next(step for step in npm_steps if step.get("uses") == "cobycloud/actions/actions/npm-publish@main")
+    assert release_action["with"]["files"] == ".artifacts/wt-peer-probes/*.tgz"
+    assert npm_action["with"]["package-directory"] == "packages/wt-peer-probes"
+    assert npm_action["with"]["scope"] == "@tigrcorn"
+    assert npm_action["with"]["install-command"] == "npm ci --workspaces=false"
+    assert npm_action["with"]["build-command"] == "npm run build --workspaces=false"
+    assert npm_action["with"]["test-command"] == "npm test --workspaces=false"
+    assert npm_action["with"]["provenance"] == "true"
 
 
 def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:

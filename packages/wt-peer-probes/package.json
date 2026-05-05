@@ -4,6 +4,11 @@
   "private": false,
   "type": "module",
   "description": "Browser peer probes for validating tigrcorn WebTransport support across Chromium, Firefox, WebKit/Safari, and mobile peers.",
+  "files": [
+    "dist",
+    "README.md",
+    "examples/browser.html"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -11,8 +16,11 @@
     }
   },
   "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "prebuild": "npm run clean",
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run --passWithNoTests",
+    "prepack": "npm run build",
+    "test": "npm run typecheck",
     "probe:playwright": "playwright test",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

@@ -114,16 +114,11 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Set up Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - name: Validate WebTransport peer probe package
+        uses: cobycloud/actions/actions/setup-node-project@main
         with:
           node-version: "22"
-          registry-url: https://registry.npmjs.org
-      - name: Install npm workspace
-        run: npm install
-      - name: Typecheck npm packages
-        run: npm run typecheck
-      - name: Build npm packages
-        run: npm run build
-      - name: Test npm packages
-        run: npm test
+          working-directory: packages/wt-peer-probes
+          install-command: npm ci --workspaces=false
+          build-command: npm run build --workspaces=false
+          test-command: npm test --workspaces=false
