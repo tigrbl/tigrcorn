@@ -5,15 +5,32 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tigrcorn-asgi"
 version = "0.3.9"
-description = "ASGI scopes, events, channels, extensions, and connection state for Tigrcorn."
+description = "ASGI3 scope, event, receive/send, and extension primitives for the Tigrcorn Python web server."
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "Apache-2.0"}
+license = {file = "LICENSE"}
 authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+keywords = ["tigrcorn", "asgi", "asgi3", "scopes", "events", "extensions", "python-web-server"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
 dependencies = ["tigrcorn-core==0.3.9"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
 tigrcorn_asgi = ["py.typed"]

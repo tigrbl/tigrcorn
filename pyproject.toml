@@ -5,25 +5,29 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tigrcorn"
 version = "0.3.9"
-description = "ASGI3-compatible transport server with a transport-agnostic core and stdlib-only implementation."
+description = "ASGI3 Python web server with built-in HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, TLS, and certification tooling."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}
 authors = [
   {name = "Jacob Stewart", email = "jacob@swarmauri.com"}
 ]
-keywords = ["asgi", "server", "http", "websocket", "http2", "http3", "quic", "uvicorn", "hypercorn"]
+keywords = ["asgi", "asgi3", "server", "http", "http1", "http2", "http3", "quic", "websocket", "webtransport", "tls", "python-web-server", "uvicorn-alternative", "hypercorn-alternative"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Framework :: AsyncIO",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Networking",
+  "Typing :: Typed",
 ]
 dependencies = [
     "tigrcorn-core==0.3.9",

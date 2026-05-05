@@ -52,6 +52,87 @@ def test_package_pyprojects_match_boundary_manifest() -> None:
         assert (package_file.parent / "py.typed").is_file(), boundary.import_name
 
 
+def test_package_metadata_is_searchable_typed_and_license_file_based() -> None:
+    required_classifiers = {
+        "Development Status :: 3 - Alpha",
+        "Framework :: AsyncIO",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Typing :: Typed",
+    }
+    root_license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
+    metadata_roots = [ROOT] + [ROOT / "pkgs" / distribution for distribution in workspace_distributions()]
+
+    for package_root in metadata_roots:
+        pyproject = _load_pyproject(package_root / "pyproject.toml")
+        project = pyproject["project"]
+        description = project["description"]
+        keywords = project["keywords"]
+        classifiers = set(project["classifiers"])
+
+        assert project["license"] == {"file": "LICENSE"}
+        assert pyproject["tool"]["setuptools"]["license-files"] == ["LICENSE"]
+        assert (package_root / "LICENSE").read_text(encoding="utf-8") == root_license_text
+        assert "Apache License" in root_license_text and "Version 2.0" in root_license_text
+        assert 70 <= len(description) <= 180, project["name"]
+        assert any(term in description.lower() for term in ("asgi", "http", "server", "websocket", "webtransport", "quic"))
+        assert len(keywords) >= 6, project["name"]
+        assert "tigrcorn" in keywords or project["name"] == "tigrcorn"
+        assert required_classifiers <= classifiers, project["name"]
+
+
+def test_readmes_are_release_quality_package_pages() -> None:
+    pypi_urls = {
+        "tigrcorn": "https://pypi.org/project/tigrcorn/",
+        **{
+            distribution: f"https://pypi.org/project/{distribution}/"
+            for distribution in workspace_distributions()
+        },
+    }
+    root_readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert root_readme.startswith('<div align="center">')
+    assert "<h1>Tigrcorn</h1>" in root_readme.split("</div>", 1)[0]
+
+    for boundary in PACKAGE_BOUNDARIES:
+        package_root = ROOT / "pkgs" / boundary.distribution
+        readme = (package_root / "README.md").read_text(encoding="utf-8")
+        pyproject = _load_pyproject(package_root / "pyproject.toml")
+        keywords = pyproject["project"]["keywords"]
+
+        assert readme.startswith('<div align="center">'), boundary.distribution
+        assert f"<h1>{boundary.distribution}</h1>" in readme
+        assert pyproject["project"]["description"] in readme
+        assert f"https://img.shields.io/pypi/v/{boundary.distribution}?label=PyPI" in readme
+        assert 'href="LICENSE"' in readme
+        assert "license-Apache%202.0" in readme
+        for python_version in ("3.11", "3.12", "3.13"):
+            assert f"python-{python_version}" in readme
+        assert "typed-py.typed" in readme
+        assert f"src/{boundary.import_name}/py.typed" in readme
+        assert f"pip install {boundary.distribution}" in readme
+        assert f"import {boundary.import_name}" in readme
+        assert pypi_urls[boundary.distribution] in readme
+        for package_name, url in pypi_urls.items():
+            assert f"[{package_name}]({url})" in readme
+        keyword_hits = [
+            keyword
+            for keyword in keywords
+            if keyword.lower().replace("-", " ") in readme.lower().replace("-", " ")
+        ]
+        assert len(keyword_hits) >= 3, (boundary.distribution, keyword_hits)
+        assert len(readme.splitlines()) >= 45, boundary.distribution
+        assert "Package Graph" in readme
+        assert "Use It When" in readme
+        assert "What It Owns" in readme
+
+
 def test_extracted_core_is_importable_and_compat_shims_preserve_old_surface() -> None:
     from tigrcorn.constants import H2_PREFACE as shim_preface
     from tigrcorn.errors import ProtocolError as ShimProtocolError
