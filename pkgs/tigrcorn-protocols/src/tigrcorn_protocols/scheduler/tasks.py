@@ -4,6 +4,8 @@ import asyncio
 from contextlib import suppress
 from dataclasses import dataclass, field
 
+from tigrcorn_protocols.scheduler.cancellation import CancellationResult, cancel_many_bounded
+
 
 @dataclass(slots=True)
 class TaskSet:
@@ -19,6 +21,9 @@ class TaskSet:
         for task in list(self.tasks):
             with suppress(asyncio.CancelledError):
                 await task
+
+    async def cancel_all_bounded(self, *, timeout: float) -> CancellationResult:
+        return await cancel_many_bounded(list(self.tasks), timeout=timeout)
 
 
 async def cancel_tasks(tasks: list[asyncio.Task]) -> None:

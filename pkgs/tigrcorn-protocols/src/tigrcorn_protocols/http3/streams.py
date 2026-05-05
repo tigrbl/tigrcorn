@@ -12,6 +12,7 @@ from tigrcorn_protocols.http3.codec import (
     FRAME_PUSH_PROMISE,
     FRAME_SETTINGS,
     H3_CLOSED_CRITICAL_STREAM,
+    H3_EXCESSIVE_LOAD,
     H3_FRAME_ERROR,
     H3_FRAME_UNEXPECTED,
     H3_GENERAL_PROTOCOL_ERROR,
@@ -57,6 +58,7 @@ from tigrcorn_protocols.http3.state import (
 from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
 
 HTTP3_STREAM_PRESSURE_CERTIFICATION_SCOPES: tuple[str, ...] = ('stream-level-backpressure', 'connection-level-backpressure', 'goaway-pressure')
+DEFAULT_HTTP3_REQUEST_PARSE_BUFFER_LIMIT = 65_536
 
 
 def supported_http3_stream_pressure_certification_scopes() -> tuple[str, ...]:
@@ -121,6 +123,7 @@ class HTTP3RequestStream:
     qpack_decoder: QpackDecoder | None = None
     connection_state: HTTP3ConnectionState | None = None
     role: str | None = None
+    parse_buffer_limit: int = DEFAULT_HTTP3_REQUEST_PARSE_BUFFER_LIMIT
 
     def encode_request(self, headers: list[tuple[bytes, bytes]], body: bytes = b'') -> bytes:
         raw = bytearray()
@@ -156,6 +159,19 @@ class HTTP3RequestStream:
 
     def _queue_blocked_section(self, *, kind: str, payload: bytes, push_id: int | None = None) -> None:
         self.state.blocked_header_sections.append(HTTP3BlockedSection(kind=kind, payload=payload, push_id=push_id))
+
+    def _enforce_parse_buffer_limit(self) -> None:
+        if self.parse_buffer_limit <= 0:
+            return
+        observed = len(self.state.parse_buffer)
+        if observed <= self.parse_buffer_limit:
+            return
+        self.abandon()
+        raise HTTP3StreamError(
+            'HTTP/3 request stream parse buffer limit exceeded',
+            error_code=H3_EXCESSIVE_LOAD,
+            stream_id=self.state.stream_id,
+        )
 
     def _enforce_field_section_size(self, headers: list[tuple[bytes, bytes]]) -> None:
         limit = self._max_field_section_size()
@@ -302,6 +318,7 @@ class HTTP3RequestStream:
         return False
 
     def _process_parse_buffer(self) -> None:
+        self._enforce_parse_buffer_limit()
         offset = 0
         data = bytes(self.state.parse_buffer)
         while offset < len(data):
@@ -316,6 +333,7 @@ class HTTP3RequestStream:
         remaining = data[offset:]
         self.state.parse_buffer.clear()
         self.state.parse_buffer.extend(remaining)
+        self._enforce_parse_buffer_limit()
 
     def _finalize_complete_message(self) -> None:
         if not self.state.ended:
@@ -374,6 +392,7 @@ class HTTP3RequestStream:
         if self.state.abandoned:
             return self.state
         self.state.parse_buffer.extend(payload)
+        self._enforce_parse_buffer_limit()
         if fin:
             self.state.ended = True
         self._process_parse_buffer()
@@ -389,6 +408,7 @@ class HTTP3ConnectionCore:
     requests: dict[int, HTTP3RequestStream] = field(default_factory=dict)
     qpack_encoder: QpackEncoder = field(default_factory=QpackEncoder)
     qpack_decoder: QpackDecoder = field(default_factory=QpackDecoder)
+    max_request_parse_buffer_size: int = DEFAULT_HTTP3_REQUEST_PARSE_BUFFER_LIMIT
 
     def _update_request_codecs(self) -> None:
         for request in self.requests.values():
@@ -450,6 +470,7 @@ class HTTP3ConnectionCore:
                 qpack_decoder=self.qpack_decoder,
                 connection_state=self.state,
                 role=self.role,
+                parse_buffer_limit=self.max_request_parse_buffer_size,
             ),
         )
 

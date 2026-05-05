@@ -3126,6 +3126,52 @@ def build_registry() -> dict[str, Any]:
         feature_ids=WEBTRANSPORT_CATEGORY_FEATURE_IDS,
     )
 
+    dos_resilience_feature_id = "feat:dos-resilience-runtime"
+    dos_resilience_claim_id = "clm:dos-resilience-runtime-implemented"
+    dos_resilience_test_id = "tst:dos-resilience-runtime"
+    dos_resilience_evidence_id = "evd:dos-resilience-runtime-pytest"
+    ensure_feature(
+        feature_id=dos_resilience_feature_id,
+        title="DoS resilience runtime",
+        description=(
+            "Availability-sensitive protocol state is bounded, teardown has a bounded cancellation helper, "
+            "and DoS warning signals are emitted through a stable observability event shape."
+        ),
+        tier="T3",
+        slot="availability-resilience",
+    )
+    link_feature_specs([dos_resilience_feature_id], ["spc:2050", "spc:2003", "spc:2004", "spc:2010"])
+    ensure_claim(
+        claim_id=dos_resilience_claim_id,
+        title="DoS resilience runtime implemented",
+        description=(
+            "Executable adversarial tests verify HTTP/3 parse-buffer exhaustion fails closed, "
+            "cancellation-resistant teardown is bounded, and DoS warning telemetry is structured."
+        ),
+        tier="T3",
+        kind="availability_abuse_resilience",
+        feature_ids=[dos_resilience_feature_id],
+    )
+    ensure_evidence(
+        evidence_id=dos_resilience_evidence_id,
+        title="DoS resilience runtime pytest evidence",
+        kind="pytest",
+        tier="T3",
+        path="tests/test_dos_resilience.py",
+        claim_ids=[dos_resilience_claim_id],
+        test_ids=[dos_resilience_test_id],
+    )
+    ensure_test(
+        test_id=dos_resilience_test_id,
+        title="DoS resilience runtime",
+        status="passing",
+        kind="pytest",
+        path="tests/test_dos_resilience.py",
+        feature_ids=[dos_resilience_feature_id],
+        claim_ids=[dos_resilience_claim_id],
+        evidence_ids=[dos_resilience_evidence_id],
+    )
+
     profile_feature_id = _feature_id("deployment-profiles")
     profile_claim_id = _claim_id("deployment-profiles")
     profile_test_id = _test_id("src", "tests/test_profile_resolution.py")
@@ -3551,6 +3597,15 @@ def build_registry() -> dict[str, Any]:
             "status": "frozen",
             "frozen": True,
             "feature_ids": list(WEBTRANSPORT_CATEGORY_FEATURE_IDS),
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:availability-abuse-resilience",
+            "title": "Availability abuse and DoS resilience boundary",
+            "status": "frozen",
+            "frozen": True,
+            "feature_ids": ["feat:dos-resilience-runtime"],
             "canonical_registry_source": ".ssot/registry.json",
             "profile_ids": [],
         },
