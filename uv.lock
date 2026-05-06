@@ -714,7 +714,7 @@ wheels = [
 
 [[package]]
 name = "tigrcorn"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "." }
 dependencies = [
     { name = "tigr-asgi-contract" },
@@ -854,7 +854,7 @@ dev = [
 
 [[package]]
 name = "tigrcorn-asgi"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-asgi" }
 dependencies = [
     { name = "tigrcorn-core" },
@@ -865,7 +865,7 @@ requires-dist = [{ name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" }]
 
 [[package]]
 name = "tigrcorn-certification"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-certification" }
 dependencies = [
     { name = "aioquic" },
@@ -890,7 +890,7 @@ requires-dist = [
 
 [[package]]
 name = "tigrcorn-compat"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-compat" }
 dependencies = [
     { name = "tigrcorn-asgi" },
@@ -907,7 +907,7 @@ requires-dist = [
 
 [[package]]
 name = "tigrcorn-config"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-config" }
 dependencies = [
     { name = "tigrcorn-core" },
@@ -927,7 +927,7 @@ provides-extras = ["yaml"]
 
 [[package]]
 name = "tigrcorn-contract"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-contract" }
 dependencies = [
     { name = "tigr-asgi-contract" },
@@ -944,12 +944,12 @@ requires-dist = [
 
 [[package]]
 name = "tigrcorn-core"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-core" }
 
 [[package]]
 name = "tigrcorn-http"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-http" }
 dependencies = [
     { name = "tigrcorn-core" },
@@ -969,7 +969,7 @@ provides-extras = ["compression"]
 
 [[package]]
 name = "tigrcorn-observability"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-observability" }
 dependencies = [
     { name = "tigrcorn-config" },
@@ -984,7 +984,7 @@ requires-dist = [
 
 [[package]]
 name = "tigrcorn-protocols"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-protocols" }
 dependencies = [
     { name = "tigrcorn-asgi" },
@@ -1005,7 +1005,7 @@ requires-dist = [
 
 [[package]]
 name = "tigrcorn-runtime"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-runtime" }
 dependencies = [
     { name = "tigrcorn-asgi" },
@@ -1039,7 +1039,7 @@ provides-extras = ["uvloop", "trio"]
 
 [[package]]
 name = "tigrcorn-security"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-security" }
 dependencies = [
     { name = "tigrcorn-config" },
@@ -1061,7 +1061,7 @@ provides-extras = ["x509"]
 
 [[package]]
 name = "tigrcorn-static"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-static" }
 dependencies = [
     { name = "tigrcorn-asgi" },
@@ -1078,7 +1078,7 @@ requires-dist = [
 
 [[package]]
 name = "tigrcorn-transports"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 source = { editable = "pkgs/tigrcorn-transports" }
 dependencies = [
     { name = "tigrcorn-config" },

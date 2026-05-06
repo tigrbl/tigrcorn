@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-certification"
-version = "0.3.16.dev2"
+version = "0.3.16.dev3"
 description = "Certification and release-gate tooling for Tigrcorn HTTP/3, QUIC, WebSocket, WebTransport, and ASGI conformance evidence."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -28,8 +28,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-compat==0.3.16.dev2",
-  "tigrcorn-runtime==0.3.16.dev2",
+  "tigrcorn-compat==0.3.16.dev3",
+  "tigrcorn-runtime==0.3.16.dev3",
   "cryptography>=46.0.0",
   "aioquic>=1.3.0",
   "h2>=4.1.0",
