@@ -401,6 +401,8 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           packages-dir: dist
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
   publish-python-pypi:
     name: python-pypi-publish
@@ -422,6 +424,8 @@ jobs:
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
         with:
           packages-dir: dist
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
           skip-existing: true
 
   wt-peer-probes-ci:
