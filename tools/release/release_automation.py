@@ -6,7 +6,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -399,9 +398,8 @@ def validate_release_targets(plan_path: Path, *, github: bool, pypi: bool, npmjs
     print(f"Release target validation passed for: {', '.join(selected) or 'none'}")
 
 
-def create_github_releases(plan_path: Path) -> None:
+def create_github_tags(plan_path: Path) -> None:
     plan = json.loads(read(plan_path))
-    head = git_output(["rev-parse", "HEAD"])
     created_tags: list[str] = []
     for release in plan["github_releases"]:
         tag = release["tag"]
@@ -418,46 +416,6 @@ def create_github_releases(plan_path: Path) -> None:
         created_tags.append(tag)
     if created_tags:
         run(["git", "push", "origin", *created_tags])
-
-    for release in plan["github_releases"]:
-        tag = release["tag"]
-        is_prerelease = "dev" in release["version"] or bool(plan["prerelease"])
-        body = (
-            f'Automated {release["kind"]} release for `{release["name"]}`.\n\n'
-            f'- version: `{release["version"]}`\n'
-            f'- manifest: `{release["path"]}`\n'
-            f'- semver action: `{plan["semver"]}`\n'
-        )
-        with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False) as notes:
-            notes.write(body)
-            notes_path = notes.name
-        try:
-            existing = subprocess.run(
-                ["gh", "release", "view", tag],
-                cwd=ROOT,
-                text=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            if existing.returncode == 0:
-                raise RuntimeError(f"GitHub release {tag} already exists")
-            command = [
-                "gh",
-                "release",
-                "create",
-                tag,
-                "--title",
-                tag,
-                "--notes-file",
-                notes_path,
-                "--target",
-                head,
-            ]
-            if is_prerelease:
-                command.append("--prerelease")
-            run(command)
-        finally:
-            Path(notes_path).unlink(missing_ok=True)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -479,7 +437,7 @@ def main(argv: list[str] | None = None) -> int:
     validate_targets.add_argument("--pypi", action="store_true")
     validate_targets.add_argument("--npmjs", action="store_true")
 
-    gh = subparsers.add_parser("create-github-releases")
+    gh = subparsers.add_parser("create-github-tags")
     gh.add_argument("--summary", type=Path, required=True)
 
     args = parser.parse_args(argv)
@@ -504,10 +462,8 @@ def main(argv: list[str] | None = None) -> int:
             npmjs=args.npmjs,
         )
         return 0
-    if args.command == "create-github-releases":
-        if not os.environ.get("GH_TOKEN") and not os.environ.get("GITHUB_TOKEN"):
-            raise RuntimeError("GH_TOKEN or GITHUB_TOKEN is required")
-        create_github_releases(args.summary)
+    if args.command == "create-github-tags":
+        create_github_tags(args.summary)
         return 0
     raise AssertionError(args.command)
 

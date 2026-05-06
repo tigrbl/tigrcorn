@@ -52,7 +52,7 @@ def test_release_plan_rejects_unknown_selection() -> None:
         build_plan("patch", write_changes=False, packages="does-not-exist")
 
 
-def test_create_github_releases_marks_dev_tags_as_prereleases(
+def test_create_github_tags_pushes_tags_without_creating_releases(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     summary = tmp_path / "release-plan.json"
@@ -87,12 +87,11 @@ def test_create_github_releases_marks_dev_tags_as_prereleases(
             return _Completed(1)
         return _Completed(0)
 
-    monkeypatch.setattr(release_automation, "git_output", lambda args: "deadbeef")
     monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: calls.append(args))
     monkeypatch.setattr(release_automation.subprocess, "run", fake_subprocess_run)
 
-    release_automation.create_github_releases(summary)
+    release_automation.create_github_tags(summary)
 
-    release_commands = [call for call in calls if call[:3] == ["gh", "release", "create"]]
-    assert release_commands
-    assert "--prerelease" in release_commands[0]
+    assert ["git", "tag", "-a", "tigrcorn==0.3.16.dev1", "-m", "tigrcorn==0.3.16.dev1"] in calls
+    assert ["git", "push", "origin", "tigrcorn==0.3.16.dev1"] in calls
+    assert not [call for call in calls if call[:3] == ["gh", "release", "create"]]

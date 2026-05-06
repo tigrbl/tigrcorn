@@ -27,7 +27,8 @@ def test_release_auto_artifacts_are_generated_and_aligned():
     assert evidence_ix['promotion_ready'] is True
     assert claim_rep['implemented_count'] > 0
     assert risk_stat['blocking_open_count'] == 0
-    assert relnotes['release_notes'].startswith('RELEASE_NOTES_')
+    assert Path(relnotes['release_notes']).name.startswith('RELEASE_NOTES_')
+    assert Path(relnotes['release_notes']).parent.as_posix() == 'docs/release-notes'
 
 
 def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
@@ -43,7 +44,9 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert '- wt-peer-probes' in workflow
     assert 'environment: testpypi' in workflow
     assert 'environment: pypi' in workflow
-    assert 'secrets.PYPI_API_TOKEN' in workflow
+    assert 'secrets.PYPI_API_TOKEN' not in workflow
+    assert 'create-github-tags' in workflow
+    assert 'create-github-releases' not in workflow
     assert 'secrets.NPM_API_TOKEN' in workflow
     assert 'pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b' in workflow
     assert 'actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26' in workflow
@@ -59,5 +62,6 @@ def test_release_pages_and_docs_pipeline_are_declared():
     workflow = _text('.github/workflows/docs.yml')
     assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' in workflow
     assert 'actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128' in workflow
+    assert 'continue-on-error: true' in workflow
     assert 'environment:' in workflow
     assert 'github-pages' in workflow

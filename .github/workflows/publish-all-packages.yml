@@ -395,8 +395,6 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           packages-dir: dist
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
 
   publish-python-pypi:
     name: python-pypi-publish
@@ -418,8 +416,6 @@ jobs:
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
         with:
           packages-dir: dist
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
           skip-existing: true
 
   wt-peer-probes-ci:
@@ -498,8 +494,8 @@ jobs:
           path: packages/wt-peer-probes/playwright-report/
           if-no-files-found: ignore
 
-  create-github-releases:
-    name: create-github-releases
+  create-github-tags:
+    name: create-github-tags
     needs: prepare-release
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.gh_release }}
     runs-on: ubuntu-latest
@@ -523,13 +519,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Create tags and GitHub releases
-        run: python tools/release/release_automation.py create-github-releases --summary release-plan.json
+      - name: Create GitHub release tags
+        run: python tools/release/release_automation.py create-github-tags --summary release-plan.json
 
   publish-wt-peer-probes-github-release:
     name: wt-peer-probes-github-release
-    needs: [prepare-release, create-github-releases, wt-peer-probes-ci, wt-peer-probes-browser-tests]
-    if: ${{ always() && (needs.create-github-releases.result == 'success' || needs.create-github-releases.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes'))) }}
+    needs: [prepare-release, create-github-tags, wt-peer-probes-ci, wt-peer-probes-browser-tests]
+    if: ${{ always() && (needs.create-github-tags.result == 'success' || needs.create-github-tags.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes'))) }}
     runs-on: ubuntu-latest
     environment: github-release
     permissions:
@@ -600,8 +596,8 @@ jobs:
 
   publish-python-github-release:
     name: python-github-release
-    needs: [prepare-release, create-github-releases, python-dist, publish-wt-peer-probes-github-release]
-    if: ${{ always() && needs.python-dist.result == 'success' && (needs.create-github-releases.result == 'success' || needs.create-github-releases.result == 'skipped') && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
+    needs: [prepare-release, create-github-tags, python-dist, publish-wt-peer-probes-github-release]
+    if: ${{ always() && needs.python-dist.result == 'success' && (needs.create-github-tags.result == 'success' || needs.create-github-tags.result == 'skipped') && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
