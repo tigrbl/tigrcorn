@@ -47,6 +47,9 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert 'secrets.PYPI_API_TOKEN' not in workflow
     assert 'create-github-tags' in workflow
     assert 'create-github-releases' not in workflow
+    assert 'github_releases = plan.get("github_releases", [])' in workflow
+    assert 'python_release_tag={python_tag}' in workflow
+    assert 'needs.prepare-release.result == \'success\'' in workflow
     assert 'secrets.NPM_API_TOKEN' in workflow
     assert 'pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b' in workflow
     assert 'actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26' in workflow

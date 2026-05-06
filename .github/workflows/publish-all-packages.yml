@@ -210,8 +210,11 @@ jobs:
           plan = json.loads(Path("release-plan.json").read_text(encoding="utf-8"))
           python_releases = plan.get("python", [])
           npm_releases = plan.get("npm", [])
+          github_releases = plan.get("github_releases", [])
           root = next((row for row in python_releases if row["name"] == "tigrcorn"), python_releases[0] if python_releases else None)
           npm = next((row for row in npm_releases if row["name"] == "@tigrcorn/wt-peer-probes"), npm_releases[0] if npm_releases else None)
+          python_tag = next((row["tag"] for row in github_releases if root and row["name"] == root["name"]), "")
+          npm_tag = next((row["tag"] for row in github_releases if npm and row["name"] == npm["name"]), "")
           version = root["version"] if root else ""
           npm_version = npm["version"] if npm else ""
           if root and root["name"] == "tigrcorn":
@@ -222,8 +225,8 @@ jobs:
           print(f"npm_version={npm_version}")
           print(f"release_notes={release_notes}")
           print(f"prerelease={str(bool(plan.get('prerelease'))).lower()}")
-          print(f"python_release_tag={root['tag'] if root else ''}")
-          print(f"npm_release_tag={npm['tag'] if npm else ''}")
+          print(f"python_release_tag={python_tag}")
+          print(f"npm_release_tag={npm_tag}")
           PY
           echo "commit_sha=${commit_sha}" >> "$GITHUB_OUTPUT"
 
@@ -525,7 +528,7 @@ jobs:
   publish-wt-peer-probes-github-release:
     name: wt-peer-probes-github-release
     needs: [prepare-release, create-github-tags, wt-peer-probes-ci, wt-peer-probes-browser-tests]
-    if: ${{ always() && (needs.create-github-tags.result == 'success' || needs.create-github-tags.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes'))) }}
+    if: ${{ always() && needs.prepare-release.result == 'success' && (needs.create-github-tags.result == 'success' || needs.create-github-tags.result == 'skipped') && needs.wt-peer-probes-ci.result == 'success' && needs.wt-peer-probes-browser-tests.result == 'success' && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes'))) }}
     runs-on: ubuntu-latest
     environment: github-release
     permissions:
@@ -597,7 +600,7 @@ jobs:
   publish-python-github-release:
     name: python-github-release
     needs: [prepare-release, create-github-tags, python-dist, publish-wt-peer-probes-github-release]
-    if: ${{ always() && needs.python-dist.result == 'success' && (needs.create-github-tags.result == 'success' || needs.create-github-tags.result == 'skipped') && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
+    if: ${{ always() && needs.prepare-release.result == 'success' && needs.python-dist.result == 'success' && (needs.create-github-tags.result == 'success' || needs.create-github-tags.result == 'skipped') && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
