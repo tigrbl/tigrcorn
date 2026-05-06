@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-observability"
-version = "0.3.16.dev3"
+version = "0.3.16.dev4"
 description = "Logging, metrics, tracing, DoS warning events, and release-evidence metadata for the Tigrcorn Python web server."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,8 +27,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.16.dev3",
-  "tigrcorn-config==0.3.16.dev3",
+  "tigrcorn-core==0.3.16.dev4",
+  "tigrcorn-config==0.3.16.dev4",
 ]
 
 [tool.setuptools]

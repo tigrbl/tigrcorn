@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-protocols"
-version = "0.3.16.dev3"
+version = "0.3.16.dev4"
 description = "Protocol handlers for Tigrcorn HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, lifespan, and ASGI3 traffic."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -28,11 +28,11 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.16.dev3",
-  "tigrcorn-config==0.3.16.dev3",
-  "tigrcorn-asgi==0.3.16.dev3",
-  "tigrcorn-http==0.3.16.dev3",
-  "tigrcorn-transports==0.3.16.dev3",
+  "tigrcorn-core==0.3.16.dev4",
+  "tigrcorn-config==0.3.16.dev4",
+  "tigrcorn-asgi==0.3.16.dev4",
+  "tigrcorn-http==0.3.16.dev4",
+  "tigrcorn-transports==0.3.16.dev4",
 ]
 
 [tool.setuptools]
