@@ -236,6 +236,7 @@ jobs:
           packages-dir: dist
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
 
   wt-peer-probes-ci:
     name: wt-peer-probes-ci
@@ -330,7 +331,7 @@ jobs:
           name: ${{ github.ref_name }}
           body_path: RELEASE_NOTES_0.3.15.md
           files: .artifacts/wt-peer-probes/*.tgz
-          draft: false
+          draft: ${{ github.event_name == 'workflow_dispatch' && inputs.package_selection == 'all' }}
           prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}
           make_latest: legacy
 
@@ -377,8 +378,8 @@ jobs:
 
   publish-python-github-release:
     name: python-github-release
-    needs: python-dist
-    if: ${{ github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes') }}
+    needs: [python-dist, publish-wt-peer-probes-github-release]
+    if: ${{ always() && needs.python-dist.result == 'success' && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -401,19 +402,3 @@ jobs:
             .artifacts/release-assets/*
           draft: false
           prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}
-
-  deploy-release-pages:
-    name: deploy-release-pages
-    needs: python-dist
-    if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.pypi_publish || inputs.gh_release) && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes') }}
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    permissions:
-      pages: write
-      id-token: write
-    steps:
-      - name: Deploy pages
-        id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
