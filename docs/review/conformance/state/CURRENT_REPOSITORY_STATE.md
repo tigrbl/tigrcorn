@@ -347,10 +347,10 @@ The current working tree now also carries the Phase 9 automated-release control-
 What changed in this working tree:
 
 - `tools/cert/release_auto.py` now generates package-owned release automation artifacts at `docs/conformance/claim_rep.json`, `docs/conformance/claim_rep.md`, `docs/conformance/risk_stat.json`, `docs/conformance/risk_stat.md`, `docs/conformance/evidence_ix.json`, `docs/conformance/evidence_ix.md`, `docs/conformance/release_auto.json`, `docs/conformance/relnotes.json`, `docs/conformance/relnotes.md`, and `.artifacts/pages/`
-- `.github/workflows/publish-pypi.yml` now builds distributions once in `staging`, reuses the same built `dist/` artifact for TestPyPI and PyPI publication jobs, attests the built distributions, attaches generated release evidence assets to GitHub releases, and deploys a release-evidence Pages bundle
+- `.github/workflows/publish-all-packages.yml` now builds selected Python distributions in `staging`, supports `workflow_dispatch` checkboxes for GitHub Release, PyPI, and npmjs publication, provides a package-selection dropdown for all packages, Tigrcorn Python packages, probes, or one named package, attests built Python distributions, attaches generated release evidence and selected package assets to GitHub releases, and deploys a release-evidence Pages bundle
 - `.github/workflows/docs.yml` now regenerates and deploys the release-evidence Pages site for the mutable documentation surface
 - `scripts/ci/validate.sh` and the reusable CI workflow now regenerate and retain the Phase 9 release-automation artifacts as part of the canonical mutable-tree validation path
-- `docs/governance/release_auto.md` now documents the package-owned release automation contract, OIDC/trusted-publishing posture, artifact promotion path, and honesty boundary for remote publication claims
+- `docs/governance/release_auto.md` now documents the package-owned release automation contract, token-secret publication posture, artifact promotion path, and honesty boundary for remote publication claims
 
 What is honestly true after this checkpoint:
 
@@ -361,6 +361,6 @@ What is honestly true after this checkpoint:
 
 What is not yet proven by this working tree alone:
 
-- no local repository edit can truthfully prove that TestPyPI or PyPI trusted publishers are already registered and accepted remotely
+- no local repository edit can truthfully prove that the configured PyPI/npm tokens are present, scoped correctly, and accepted remotely
 - no local repository edit can truthfully prove that a tagged GitHub Actions run has already published packages, deployed Pages, emitted attestations, or attached release assets on GitHub
 - the frozen canonical `0.3.9` release root has not been regenerated or superseded with the new mutable Phase 9 release-automation artifacts

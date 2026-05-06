@@ -16,7 +16,7 @@ The next-target program for the current repository line is:
 2. keep the current authoritative boundary green while doing so
 3. convert promoted candidate rows into package-owned implemented and certified claims
 4. make repository governance cleanliness and remote automation verification part of release discipline
-5. close the remote GitHub/TestPyPI/PyPI control-plane gap honestly rather than treating local workflow files as sufficient proof
+5. close the remote GitHub/TestPyPI/PyPI/npmjs control-plane gap honestly rather than treating local workflow files as sufficient proof
 
 This program is intentionally narrower than a boundary expansion. RFC 9218, RFC 9111, RFC 9530, RFC 9421, JOSE/COSE, Trio runtime support, parser/backend pluggability, WebSocket engine pluggability, and alternate app-interface families remain out of scope unless the boundary docs change first.
 
@@ -57,7 +57,7 @@ This program is intentionally narrower than a boundary expansion. RFC 9218, RFC 
   - GitHub required checks and rulesets
   - protected environments
   - Pages deployment
-  - TestPyPI and PyPI trusted publishing
+  - TestPyPI, PyPI, and npmjs token-backed publishing
   - release asset attachment
   - artifact attestations
   - CodeQL and Dependabot policy activation
@@ -91,7 +91,7 @@ The next-target program is complete only when the external systems themselves sh
 - active branch/tag protections and required checks
 - active protected environments
 - successful Pages deployment
-- successful trusted-publisher registration and package publication
+- successful publication-token configuration and package publication
 - successful release asset attachment
 - successful artifact attestations
 

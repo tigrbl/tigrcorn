@@ -1693,7 +1693,7 @@
       "id": "TC-CERT-AUTOMATED-RELEASE-PIPELINE",
       "required_evidence_tier": "local_conformance",
       "source_files": [
-        ".github/workflows/publish-pypi.yml",
+        ".github/workflows/publish-all-packages.yml",
         ".github/workflows/docs.yml",
         "tools/cert/release_auto.py",
         "docs/governance/release_auto.md",
@@ -1701,23 +1701,23 @@
       ],
       "status": "implemented_in_tree",
       "surface": "automated_release_pipeline",
-      "text": "The mutable tree defines a build-once release pipeline that promotes the same distributions through release automation jobs and generates package-owned release evidence artifacts."
+      "text": "The mutable tree defines a selected-package release pipeline that promotes selected Python and probe package artifacts through release automation jobs and generates package-owned release evidence artifacts."
     },
     {
       "boundary_status": "in_bounds_current_surface",
       "claim_kind": "implementation_claim",
       "class": "certification_support",
       "current_evidence": "local_conformance",
-      "id": "TC-CERT-TRUSTED-PUBLISHING-OIDC",
+      "id": "TC-CERT-TOKEN-BASED-PUBLISHING",
       "required_evidence_tier": "local_conformance",
       "source_files": [
-        ".github/workflows/publish-pypi.yml",
+        ".github/workflows/publish-all-packages.yml",
         "docs/governance/release_auto.md",
         "tests/test_p9_auto.py"
       ],
       "status": "implemented_in_tree",
-      "surface": "trusted_publishing",
-      "text": "TestPyPI and PyPI publication jobs are defined through OIDC-based trusted publishing rather than local credentials and rebuild-driven uploads."
+      "surface": "token_based_publishing",
+      "text": "TestPyPI, PyPI, and npmjs publication jobs are defined through repository secrets named PYPI_API_TOKEN and NPM_API_TOKEN while retaining shared build artifacts instead of rebuild-driven uploads."
     },
     {
       "boundary_status": "in_bounds_current_surface",
@@ -1727,7 +1727,7 @@
       "id": "TC-CERT-RELEASE-EVIDENCE-ATTACHMENTS",
       "required_evidence_tier": "local_conformance",
       "source_files": [
-        ".github/workflows/publish-pypi.yml",
+        ".github/workflows/publish-all-packages.yml",
         "docs/conformance/claim_rep.json",
         "docs/conformance/risk_stat.json",
         "docs/conformance/evidence_ix.json",

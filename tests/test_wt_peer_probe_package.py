@@ -68,7 +68,7 @@ def test_wt_peer_probe_playwright_matrix_is_peer_based() -> None:
 
 def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     reusable = yaml.safe_load((ROOT / ".github" / "workflows" / "_reusable-ci.yml").read_text(encoding="utf-8"))
-    publish = yaml.safe_load((ROOT / ".github" / "workflows" / "publish-wt-peer-probes.yml").read_text(encoding="utf-8"))
+    publish = yaml.safe_load((ROOT / ".github" / "workflows" / "publish-all-packages.yml").read_text(encoding="utf-8"))
 
     assert "validate-npm" in reusable["jobs"]
     assert "validate-wt-peer-probes" in reusable["jobs"]
@@ -84,19 +84,36 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     assert peer_action["with"]["browser-install-command"] == "npx playwright install --with-deps chromium firefox webkit"
     assert peer_action["with"]["test-command"] == "npm run test:peer-api -- --reporter=line"
 
-    assert {"ci", "peer-browser-tests", "github-release", "npmjs"} <= set(publish["jobs"])
-    publish_peer_steps = publish["jobs"]["peer-browser-tests"]["steps"]
-    release_steps = publish["jobs"]["github-release"]["steps"]
-    npm_steps = publish["jobs"]["npmjs"]["steps"]
+    triggers = publish.get("on") or publish.get(True)
+    workflow_dispatch = triggers["workflow_dispatch"]["inputs"]
+    assert {"gh_release", "pypi_publish", "npmjs_publish", "package_selection"} <= set(workflow_dispatch)
+    assert {"all", "tigrcorn core packages", "probes", "wt-peer-probes"} <= set(workflow_dispatch["package_selection"]["options"])
+
+    assert {
+        "wt-peer-probes-ci",
+        "wt-peer-probes-browser-tests",
+        "publish-wt-peer-probes-github-release",
+        "publish-wt-peer-probes-npmjs",
+    } <= set(publish["jobs"])
+    publish_peer_steps = publish["jobs"]["wt-peer-probes-browser-tests"]["steps"]
+    release_steps = publish["jobs"]["publish-wt-peer-probes-github-release"]["steps"]
+    npm_steps = publish["jobs"]["publish-wt-peer-probes-npmjs"]["steps"]
     publish_peer_action = next(step for step in publish_peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@main")
     release_action = next(step for step in release_steps if step.get("uses") == "cobycloud/actions/actions/github-release@main")
     npm_action = next(step for step in npm_steps if step.get("uses") == "cobycloud/actions/actions/npm-publish@main")
-    assert publish["jobs"]["github-release"]["needs"] == ["ci", "peer-browser-tests"]
-    assert publish["jobs"]["npmjs"]["needs"] == ["ci", "peer-browser-tests"]
+    assert publish["jobs"]["publish-wt-peer-probes-github-release"]["needs"] == [
+        "wt-peer-probes-ci",
+        "wt-peer-probes-browser-tests",
+    ]
+    assert publish["jobs"]["publish-wt-peer-probes-npmjs"]["needs"] == [
+        "wt-peer-probes-ci",
+        "wt-peer-probes-browser-tests",
+    ]
     assert publish_peer_action["with"]["test-command"] == "npm run test:peer-api -- --reporter=line"
     assert release_action["with"]["files"] == ".artifacts/wt-peer-probes/*.tgz"
     assert npm_action["with"]["package-directory"] == "packages/wt-peer-probes"
     assert npm_action["with"]["scope"] == "@tigrcorn"
+    assert npm_action["with"]["npm-token"] == "${{ secrets.NPM_API_TOKEN }}"
     assert npm_action["with"]["install-command"] == "npm ci --workspaces=false"
     assert npm_action["with"]["build-command"] == "npm run build --workspaces=false"
     assert npm_action["with"]["test-command"] == "npm test --workspaces=false"

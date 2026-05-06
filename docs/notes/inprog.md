@@ -106,9 +106,9 @@ The new short-path governance tree is now in place. The previous root current-st
 
 - generated release-automation truth now lives in `docs/conformance/claim_rep.json`, `docs/conformance/risk_stat.json`, `docs/conformance/evidence_ix.json`, `docs/conformance/release_auto.json`, `docs/conformance/relnotes.json`, and `.artifacts/pages/`
 - `tools/cert/release_auto.py` is now the canonical generator for release claim/risk/evidence summaries, generated release-note metadata, and the release-evidence Pages bundle
-- `.github/workflows/publish-pypi.yml` now builds distributions once in `staging`, reuses the same artifact for TestPyPI and PyPI publishing through OIDC trusted publishing, attests the built distributions, attaches release evidence assets, and deploys the release-evidence Pages bundle
+- `.github/workflows/publish-all-packages.yml` now builds selected Python distributions in `staging`, supports all Python packages, probes, or one named package from `workflow_dispatch`, publishes through the configured `PYPI_API_TOKEN` / `NPM_API_TOKEN` secrets, attests built Python distributions, attaches selected package and release evidence assets, and deploys the release-evidence Pages bundle
 - `.github/workflows/docs.yml` now also regenerates and deploys the release-evidence Pages site for the mutable docs surface
-- the mutable working tree now contains the automated release pipeline contract, but remote GitHub environment approval, trusted publisher registration on TestPyPI/PyPI, GitHub Pages activation, and observed successful tagged runs still remain external facts that must be verified on those systems before they can be claimed as completed publication
+- the mutable working tree now contains the automated release pipeline contract, but remote GitHub environment approval, PyPI/npm secret configuration, GitHub Pages activation, and observed successful tagged runs still remain external facts that must be verified on those systems before they can be claimed as completed publication
 
 ## Phase 10 follow-on
 
