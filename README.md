@@ -23,7 +23,9 @@
 
 <p align="center"><strong>Package</strong><br>
 <a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/tigrcorn?label=PyPI"></a>
-<a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI downloads" src="https://img.shields.io/badge/downloads-PyPI-blue"></a>
+<a href="https://pypistats.org/packages/tigrcorn"><img alt="PyPI downloads per month" src="https://img.shields.io/pypi/dm/tigrcorn?label=downloads%2Fmonth"></a>
+<a href="https://pypistats.org/packages/tigrcorn"><img alt="PyPI downloads per week" src="https://img.shields.io/pypi/dw/tigrcorn?label=downloads%2Fweek"></a>
+<a href="https://pypistats.org/packages/tigrcorn"><img alt="PyPI downloads per day" src="https://img.shields.io/pypi/dd/tigrcorn?label=downloads%2Fday"></a>
 <a href="LICENSE"><img alt="license Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
 <a href="pyproject.toml"><img alt="Python 3.11 supported" src="https://img.shields.io/badge/python-3.11-3776ab"></a>
 <a href="pyproject.toml"><img alt="Python 3.12 supported" src="https://img.shields.io/badge/python-3.12-3776ab"></a>
