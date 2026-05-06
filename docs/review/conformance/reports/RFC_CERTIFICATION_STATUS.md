@@ -22,7 +22,7 @@ Step 9 promotion is now complete:
 
 - `pyproject.toml` now reports version `0.3.9`
 - the canonical authoritative release root is now `docs/review/conformance/releases/0.3.9/release-0.3.9`
-- the release notes now live in `RELEASE_NOTES_0.3.9.md`
+- the release notes now live in `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 - the promoted release remains green under the authoritative boundary, the strict target, and the composite promotion target
 
 ## Phase 9I release assembly
@@ -36,4 +36,4 @@ Step 9 then promoted that validated root to the canonical release and aligned th
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`
 - `docs/review/conformance/phase9i_release_assembly.current.json`
 - `docs/review/conformance/phase9_release_promotion.current.json`
-- `RELEASE_NOTES_0.3.9.md`
+- `docs/release-notes/RELEASE_NOTES_0.3.9.md`

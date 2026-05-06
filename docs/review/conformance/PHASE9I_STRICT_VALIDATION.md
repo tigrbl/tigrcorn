@@ -14,4 +14,4 @@ The preserved strict validation bundle remains green, and the subsequent Step 9 
 
 ## Promoted release note
 
-The canonical release notes now live in `RELEASE_NOTES_0.3.9.md`.
+The canonical release notes now live in `docs/release-notes/RELEASE_NOTES_0.3.9.md`.

@@ -604,7 +604,7 @@ Read next:
 | Embedding Tigrcorn in another process | `docs/ops/public.md` | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
 | Working on static or delivery behavior | `docs/ops/public.md` | `examples/http_entity_static/app.py` |
 | Reviewing current repository truth | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` | `docs/review/conformance/current_state_chain.current.json` |
-| Reviewing the promoted release root | `docs/review/conformance/releases/0.3.9/release-0.3.9/` | `RELEASE_NOTES_0.3.9.md` |
+| Reviewing the promoted release root | `docs/review/conformance/releases/0.3.9/release-0.3.9/` | `docs/release-notes/RELEASE_NOTES_0.3.9.md` |
 | Reviewing the boundary or current scope | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
 | Comparing Tigrcorn with peer servers | `docs/comp/rfc.md` | `docs/comp/cli.md`, `docs/comp/ops.md`, `docs/comp/oob.md` |
 | Writing or maintaining docs | `docs/gov/authoring.md` | `CONTRIBUTING.md`, `docs/gov/tree.md`, `docs/gov/mut.md` |

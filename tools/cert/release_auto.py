@@ -8,6 +8,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / 'src'
+RELEASE_NOTES_DIR = 'docs/release-notes'
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
@@ -99,7 +100,7 @@ def _release_auto(version: str, release_root: Path) -> dict[str, Any]:
         'schema_version': 1,
         'version': version,
         'release_root': str(release_root.relative_to(ROOT)).replace('\\', '/'),
-        'release_notes': f'RELEASE_NOTES_{version}.md',
+        'release_notes': f'{RELEASE_NOTES_DIR}/RELEASE_NOTES_{version}.md',
         'authoritative_boundary_passed': authoritative.passed,
         'promotion_target_passed': promotion.passed,
         'strict_target_passed': promotion.strict_target_boundary.passed,
@@ -134,7 +135,7 @@ def _build_pages(version: str, release_auto: dict[str, Any]) -> None:
     <h1>tigrcorn {html.escape(version)} release evidence</h1>
     <p>Generated from the package-owned release automation metadata.</p>
     <ul>
-      <li><a href="RELEASE_NOTES_{html.escape(version)}.md">Release notes</a></li>
+      <li><a href="docs/release-notes/RELEASE_NOTES_{html.escape(version)}.md">Release notes</a></li>
       <li><a href="docs/conformance/evidence_ix.md">Evidence index</a></li>
       <li><a href="docs/conformance/claim_rep.md">Claim report</a></li>
       <li><a href="docs/conformance/risk_stat.md">Risk status</a></li>
@@ -193,7 +194,7 @@ def generate() -> None:
         'Generated Release Notes',
         [
             f"version: `{version}`",
-            f"release notes source: `RELEASE_NOTES_{version}.md`",
+            f"release notes source: `{RELEASE_NOTES_DIR}/RELEASE_NOTES_{version}.md`",
             f"authoritative boundary passed: `{release_auto['authoritative_boundary_passed']}`",
             f"strict target passed: `{release_auto['strict_target_passed']}`",
             f"promotion target passed: `{release_auto['promotion_target_passed']}`",
@@ -204,7 +205,7 @@ def generate() -> None:
         {
             'schema_version': 1,
             'version': version,
-            'release_notes': f'RELEASE_NOTES_{version}.md',
+            'release_notes': f'{RELEASE_NOTES_DIR}/RELEASE_NOTES_{version}.md',
             'generated_summary': release_auto,
         },
     )

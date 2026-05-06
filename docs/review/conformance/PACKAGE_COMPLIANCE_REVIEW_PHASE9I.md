@@ -13,7 +13,7 @@ The authoritative boundary is green. The strict target is green, and the composi
 - documentation target: `True`
 - current package version: `0.3.9`
 - canonical authoritative release root: `docs/review/conformance/releases/0.3.9/release-0.3.9`
-- release notes: `RELEASE_NOTES_0.3.9.md`
+- release notes: `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 
 ## What is complete
 

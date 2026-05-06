@@ -67,12 +67,12 @@ Use short, purpose-scoped folders:
 - `docs/architecture/` — system architecture docs
 - `docs/adr/` — design decisions
 - `docs/review/` — conformance, state, reports, delivery notes, release artifacts
+- `docs/release-notes/` - maintained release notes
 
 Root remains intentionally narrow. Root documentation is limited to package entrypoints and community entrypoints such as:
 
 - `README.md`
 - `.codex/AGENTS.md`
-- `RELEASE_NOTES_*.md`
 - `CONTRIBUTING.md`
 - `CODE_OF_CONDUCT.md`
 

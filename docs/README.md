@@ -19,6 +19,7 @@ Folder map:
 - `architecture/` — architecture descriptions
 - `adr/` — architecture decisions
 - `notes/` — mutable work/notes
+- `release-notes/` - maintained release notes
 - `review/` — conformance, state, release, and review artifacts
 
 When in doubt, start with the current-state docs under `docs/review/conformance/state/` and then follow the relevant folder README.

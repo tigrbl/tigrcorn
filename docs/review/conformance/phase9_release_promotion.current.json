@@ -9,7 +9,7 @@
     "promotion_target_passed": true,
     "current_package_version": "0.3.9",
     "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
-    "release_notes": "RELEASE_NOTES_0.3.9.md",
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md",
     "version_bump_performed": true,
     "release_notes_promoted": true,
     "remaining_administrative_work": []
@@ -30,7 +30,7 @@
     "README.md",
     "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
     "docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md",
-    "RELEASE_NOTES_0.3.9.md",
+    "docs/release-notes/RELEASE_NOTES_0.3.9.md",
     "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
     "docs/review/conformance/certification_boundary.json",
     "docs/review/conformance/README.md",

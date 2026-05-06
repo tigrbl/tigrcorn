@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs/release-notes",
+  "reason": "Release notes are maintained under docs instead of the repository root."
+}

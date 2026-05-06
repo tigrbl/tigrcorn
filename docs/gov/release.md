@@ -50,7 +50,7 @@ Promotion status is not a fourth evidence tier; it is the result of the release-
 7. run strict target if applicable
 8. run `evaluate_promotion_target('.')`
 9. refresh release-root `manifest.json`, `bundle_index.json`, `bundle_summary.json`
-10. update `RELEASE_NOTES_*.md`
+10. update `docs/release-notes/RELEASE_NOTES_*.md`
 11. update versioned release root
 12. freeze the new versioned root with `MUT.json`
 13. leave old promoted roots immutable

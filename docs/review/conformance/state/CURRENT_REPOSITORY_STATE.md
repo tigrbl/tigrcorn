@@ -19,7 +19,7 @@ What is now true:
 
 - the 0.3.9 release root is now the canonical authoritative release root
 - the public package version is now `0.3.9`
-- the release notes now live in `RELEASE_NOTES_0.3.9.md`
+- the release notes now live in `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 - the authoritative boundary remains green
 - the strict target is green under the canonical 0.3.9 release root
 - the flag surface is green
@@ -49,7 +49,7 @@ Primary documentation for the current promoted state now lives in:
 - `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`
 - `docs/review/conformance/PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
 - `docs/review/conformance/phase9_release_promotion.current.json`
-- `RELEASE_NOTES_0.3.9.md`
+- `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 - `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 - `docs/review/conformance/phase9i_release_assembly.current.json`
 - `docs/review/conformance/release_gate_status.current.json`
@@ -71,7 +71,7 @@ This checkpoint completes the Step 9 administrative promotion work:
 
 - `pyproject.toml` now reports version `0.3.9`
 - the canonical authoritative release root is now `docs/review/conformance/releases/0.3.9/release-0.3.9/`
-- release notes now live in `RELEASE_NOTES_0.3.9.md`
+- release notes now live in `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 - the current-state docs and machine-readable snapshots now truthfully report the strict-target green state under the canonical promoted release
 
 

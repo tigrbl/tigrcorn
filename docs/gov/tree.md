@@ -14,7 +14,6 @@ Mutable root files are limited to:
 - `.codex/AGENTS.md`
 - `CONTRIBUTING.md`
 - `CODE_OF_CONDUCT.md`
-- `RELEASE_NOTES_*.md`
 - build/config roots such as `pyproject.toml`, `Makefile`, `.gitignore`, `LICENSE`
 
 The repo also carries one allowed root metadata directory:
@@ -41,6 +40,7 @@ New mutable docs land in short, purpose-scoped folders:
 - `docs/review/` — review and conformance material
 - `docs/protocols/` — protocol-specific technical docs
 - `docs/architecture/` — architecture explanations
+- `docs/release-notes/` - maintained release notes
 
 Each mutable folder should carry:
 

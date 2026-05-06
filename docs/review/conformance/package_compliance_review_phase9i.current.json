@@ -34,13 +34,13 @@
     "canonical_phase4_example_tree": "examples/advanced_delivery/",
     "current_package_version": "0.3.9",
     "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
-    "release_notes": "RELEASE_NOTES_0.3.9.md",
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md",
     "version_bump_performed": true,
     "release_notes_promoted": true
   },
   "files_updated_by_review": [
     "README.md",
-    "RELEASE_NOTES_0.3.9.md",
+    "docs/release-notes/RELEASE_NOTES_0.3.9.md",
     "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
     "docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md",
     "docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md",

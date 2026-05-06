@@ -134,9 +134,8 @@ jobs:
             python -m build --outdir dist "$package_dir"
           done < .artifacts/python-package-paths.txt
 
-          for file in RELEASE_NOTES_*.md; do
+          for file in docs/release-notes/RELEASE_NOTES_*.md; do
             [[ -e "$file" ]] && cp "$file" .artifacts/release-assets/
-            [[ -e "$file" ]] && cp "$file" .artifacts/pages/
           done
 
           for file in \
@@ -329,7 +328,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          body_path: RELEASE_NOTES_0.3.15.md
+          body_path: docs/release-notes/RELEASE_NOTES_0.3.15.md
           files: .artifacts/wt-peer-probes/*.tgz
           draft: ${{ github.event_name == 'workflow_dispatch' && inputs.package_selection == 'all' }}
           prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}

@@ -21,7 +21,7 @@ RELEASE_ROOT_TEXT = 'docs/review/conformance/releases/0.3.9/release-0.3.9'
 INDEPENDENT_ROOT = f'{RELEASE_ROOT_TEXT}/tigrcorn-independent-certification-release-matrix'
 SAME_STACK_ROOT = f'{RELEASE_ROOT_TEXT}/tigrcorn-same-stack-replay-matrix'
 MIXED_ROOT = f'{RELEASE_ROOT_TEXT}/tigrcorn-mixed-compatibility-release-matrix'
-RELEASE_NOTES = 'RELEASE_NOTES_0.3.9.md'
+RELEASE_NOTES = 'docs/release-notes/RELEASE_NOTES_0.3.9.md'
 PROMOTION_MD = CONFORMANCE / 'PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md'
 PROMOTION_JSON = CONFORMANCE / 'phase9_release_promotion.current.json'
 DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md'
@@ -230,7 +230,7 @@ def update_root_bundle_metadata() -> None:
 
     readme_path = RELEASE_ROOT / 'README.md'
     readme_text = readme_path.read_text(encoding='utf-8')
-    new_readme = """# Release 0.3.9 canonical release root\n\nThis directory is the canonical 0.3.9 release root.\n\nIt contains:\n\n- `tigrcorn-independent-certification-release-matrix/`\n- `tigrcorn-same-stack-replay-matrix/`\n- `tigrcorn-mixed-compatibility-release-matrix/`\n- `tigrcorn-flag-surface-certification-bundle/`\n- `tigrcorn-operator-surface-certification-bundle/`\n- `tigrcorn-performance-certification-bundle/`\n- `tigrcorn-certification-environment-bundle/`\n- `tigrcorn-aioquic-adapter-preflight-bundle/`\n- `tigrcorn-strict-validation-bundle/`\n- the preserved local negative / behavior / validation bundles created during Phases 9C–9E\n\nCurrent truth:\n\n- the release root is assembled\n- the release root is **canonical**\n- the authoritative boundary is green under this canonical 0.3.9 release root\n- the strict target is green\n- the composite promotion target is green\n- the public package version is `0.3.9`\n- the release notes live in `RELEASE_NOTES_0.3.9.md`\n"""
+    new_readme = """# Release 0.3.9 canonical release root\n\nThis directory is the canonical 0.3.9 release root.\n\nIt contains:\n\n- `tigrcorn-independent-certification-release-matrix/`\n- `tigrcorn-same-stack-replay-matrix/`\n- `tigrcorn-mixed-compatibility-release-matrix/`\n- `tigrcorn-flag-surface-certification-bundle/`\n- `tigrcorn-operator-surface-certification-bundle/`\n- `tigrcorn-performance-certification-bundle/`\n- `tigrcorn-certification-environment-bundle/`\n- `tigrcorn-aioquic-adapter-preflight-bundle/`\n- `tigrcorn-strict-validation-bundle/`\n- the preserved local negative / behavior / validation bundles created during Phases 9C–9E\n\nCurrent truth:\n\n- the release root is assembled\n- the release root is **canonical**\n- the authoritative boundary is green under this canonical 0.3.9 release root\n- the strict target is green\n- the composite promotion target is green\n- the public package version is `0.3.9`\n- the release notes live in `docs/release-notes/RELEASE_NOTES_0.3.9.md`\n"""
     readme_path.write_text(new_readme, encoding='utf-8')
 
 
@@ -390,7 +390,7 @@ def create_release_notes_and_promotion_docs(authoritative_passed: bool, strict_p
             'README.md',
             'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
             'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
-            'RELEASE_NOTES_0.3.9.md',
+            'docs/release-notes/RELEASE_NOTES_0.3.9.md',
             'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
             'docs/review/conformance/certification_boundary.json',
             'docs/review/conformance/README.md',
@@ -483,7 +483,7 @@ def update_status_jsons(authoritative_report: Any, strict_report: Any, promotion
         'README.md',
         'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
         'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
-        'RELEASE_NOTES_0.3.9.md',
+        'docs/release-notes/RELEASE_NOTES_0.3.9.md',
         'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
         'docs/review/conformance/certification_boundary.json',
         'docs/review/conformance/README.md',
