@@ -50,7 +50,7 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert 'softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe' in workflow
     assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' in workflow
     assert 'actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128' in workflow
-    assert 'cobycloud/actions/actions/npm-publish@master' in workflow
+    assert 'npm publish --access public --provenance' in workflow
     assert 'download-artifact' in workflow
     assert 'packages-dir: dist' in workflow
     assert 'python -m build --outdir dist "$package_dir"' in workflow

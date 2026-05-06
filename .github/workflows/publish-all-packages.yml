@@ -1,9 +1,6 @@
 name: publish-all-packages
 
 on:
-  push:
-    tags:
-      - "v*"
   release:
     types: [prereleased, published]
   workflow_dispatch:
@@ -132,7 +129,7 @@ jobs:
       - name: Build certification and release metadata
         shell: bash
         run: |
-          ./scripts/ci/validate.sh
+          bash ./scripts/ci/validate.sh
           while IFS= read -r package_dir; do
             python -m build --outdir dist "$package_dir"
           done < .artifacts/python-package-paths.txt
@@ -196,7 +193,7 @@ jobs:
   publish-python-testpypi:
     name: python-testpypi-publish
     needs: python-dist
-    if: ${{ github.event_name != 'workflow_dispatch' || (inputs.pypi_publish && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes') }}
+    if: ${{ github.event_name == 'release' && github.event.release.prerelease && (github.event_name != 'workflow_dispatch' || (inputs.pypi_publish && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     environment: testpypi
     permissions:
@@ -209,7 +206,7 @@ jobs:
           name: python-dist-${{ github.sha }}
           path: dist
       - name: Publish Python distributions to TestPyPI
-        if: github.event_name != 'release' || github.event.release.prerelease || github.event.action == 'published'
+        if: github.event_name == 'release' && github.event.release.prerelease
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
         with:
           repository-url: https://test.pypi.org/legacy/
@@ -219,7 +216,7 @@ jobs:
 
   publish-python-pypi:
     name: python-pypi-publish
-    needs: publish-python-testpypi
+    needs: python-dist
     if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.pypi_publish && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) && (github.event_name != 'release' || github.event.release.prerelease == false) }}
     runs-on: ubuntu-latest
     environment: pypi
@@ -233,7 +230,7 @@ jobs:
           name: python-dist-${{ github.sha }}
           path: dist
       - name: Publish Python distributions to PyPI
-        if: github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == false
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == false)
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
         with:
           packages-dir: dist
@@ -250,14 +247,21 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Validate WebTransport peer probe package
-        uses: cobycloud/actions/actions/setup-node-project@master
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-          working-directory: packages/wt-peer-probes
-          install-command: npm ci --workspaces=false
-          build-command: npm run build --workspaces=false
-          test-command: npm test --workspaces=false
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
+      - name: Test WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm test --workspaces=false
       - name: Pack WebTransport peer probe package
         working-directory: packages/wt-peer-probes
         run: npm pack
@@ -277,15 +281,28 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Validate browser WebTransport peer API probes
-        uses: cobycloud/actions/actions/playwright-ci@master
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-          working-directory: packages/wt-peer-probes
-          install-command: npm ci --workspaces=false
-          browser-install-command: npx playwright install --with-deps chromium firefox webkit
-          test-command: npm run test:peer-api -- --reporter=line
-          artifact-name: wt-peer-probes-playwright-${{ github.sha }}
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Install Playwright browsers
+        working-directory: packages/wt-peer-probes
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Validate browser WebTransport peer API probes
+        working-directory: packages/wt-peer-probes
+        run: npm run test:peer-api -- --reporter=line
+      - name: Upload WebTransport peer probe Playwright report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wt-peer-probes-playwright-${{ github.sha }}
+          path: packages/wt-peer-probes/playwright-report/
+          if-no-files-found: ignore
 
   publish-wt-peer-probes-github-release:
     name: wt-peer-probes-github-release
@@ -304,16 +321,15 @@ jobs:
           name: wt-peer-probes-${{ github.sha }}
           path: .artifacts/wt-peer-probes
       - name: Create or update GitHub release with probe package
-        uses: cobycloud/actions/actions/github-release@master
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
         with:
-          tag-name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          body-path: RELEASE_NOTES_0.3.11.md
+          body_path: RELEASE_NOTES_0.3.12.md
           files: .artifacts/wt-peer-probes/*.tgz
-          draft: "false"
+          draft: false
           prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}
-          make-latest: legacy
-          token: ${{ github.token }}
+          make_latest: legacy
 
   publish-wt-peer-probes-npmjs:
     name: wt-peer-probes-npmjs-publish
@@ -327,19 +343,34 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Publish WebTransport peer probe package
-        uses: cobycloud/actions/actions/npm-publish@master
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-          package-directory: packages/wt-peer-probes
-          scope: "@tigrcorn"
-          npm-token: ${{ secrets.NPM_API_TOKEN }}
-          install-command: npm ci --workspaces=false
-          build-command: npm run build --workspaces=false
-          test-command: npm test --workspaces=false
-          access: public
-          provenance: "true"
-          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
+      - name: Test WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm test --workspaces=false
+      - name: Publish WebTransport peer probe package to npm dry run
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        working-directory: packages/wt-peer-probes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_API_TOKEN }}
+        run: npm publish --access public --provenance --dry-run
+      - name: Publish WebTransport peer probe package to npm
+        if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
+        working-directory: packages/wt-peer-probes
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_API_TOKEN }}
+        run: npm publish --access public --provenance
 
   publish-python-github-release:
     name: python-github-release

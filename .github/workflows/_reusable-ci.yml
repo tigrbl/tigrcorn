@@ -44,7 +44,7 @@ jobs:
       - name: Validate tree
         uses: ./.github/actions/ci-shell
         with:
-          command: ./scripts/ci/validate.sh
+          command: bash ./scripts/ci/validate.sh
       - name: Upload validation artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -114,14 +114,21 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Validate WebTransport peer probe package
-        uses: cobycloud/actions/actions/setup-node-project@master
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-          working-directory: packages/wt-peer-probes
-          install-command: npm ci --workspaces=false
-          build-command: npm run build --workspaces=false
-          test-command: npm test --workspaces=false
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
+      - name: Test WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm test --workspaces=false
 
   validate-wt-peer-probes:
     name: validate-wt-peer-probes
@@ -132,12 +139,25 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Validate browser WebTransport peer API probes
-        uses: cobycloud/actions/actions/playwright-ci@master
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
-          working-directory: packages/wt-peer-probes
-          install-command: npm ci --workspaces=false
-          browser-install-command: npx playwright install --with-deps chromium firefox webkit
-          test-command: npm run test:peer-api -- --reporter=line
-          artifact-name: wt-peer-probes-playwright-${{ github.sha }}
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Install Playwright browsers
+        working-directory: packages/wt-peer-probes
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Validate browser WebTransport peer API probes
+        working-directory: packages/wt-peer-probes
+        run: npm run test:peer-api -- --reporter=line
+      - name: Upload WebTransport peer probe Playwright report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wt-peer-probes-playwright-${{ github.sha }}
+          path: packages/wt-peer-probes/playwright-report/
+          if-no-files-found: ignore

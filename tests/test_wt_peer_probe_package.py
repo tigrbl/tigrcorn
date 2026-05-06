@@ -74,15 +74,30 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     assert "validate-wt-peer-probes" in reusable["jobs"]
     steps = reusable["jobs"]["validate-npm"]["steps"]
     peer_steps = reusable["jobs"]["validate-wt-peer-probes"]["steps"]
-    ci_action = next(step for step in steps if step.get("uses") == "cobycloud/actions/actions/setup-node-project@master")
-    peer_action = next(step for step in peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@master")
-    assert ci_action["with"]["working-directory"] == "packages/wt-peer-probes"
-    assert ci_action["with"]["install-command"] == "npm ci --workspaces=false"
-    assert ci_action["with"]["build-command"] == "npm run build --workspaces=false"
-    assert ci_action["with"]["test-command"] == "npm test --workspaces=false"
-    assert peer_action["with"]["working-directory"] == "packages/wt-peer-probes"
-    assert peer_action["with"]["browser-install-command"] == "npx playwright install --with-deps chromium firefox webkit"
-    assert peer_action["with"]["test-command"] == "npm run test:peer-api -- --reporter=line"
+    assert any(step.get("uses") == "actions/setup-node@v4" for step in steps)
+    assert any(step.get("uses") == "actions/setup-node@v4" for step in peer_steps)
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm ci --workspaces=false"
+        for step in steps
+    )
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm run build --workspaces=false"
+        for step in steps
+    )
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm test --workspaces=false"
+        for step in steps
+    )
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes"
+        and step.get("run") == "npx playwright install --with-deps chromium firefox webkit"
+        for step in peer_steps
+    )
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes"
+        and step.get("run") == "npm run test:peer-api -- --reporter=line"
+        for step in peer_steps
+    )
 
     triggers = publish.get("on") or publish.get(True)
     workflow_dispatch = triggers["workflow_dispatch"]["inputs"]
@@ -98,9 +113,7 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     publish_peer_steps = publish["jobs"]["wt-peer-probes-browser-tests"]["steps"]
     release_steps = publish["jobs"]["publish-wt-peer-probes-github-release"]["steps"]
     npm_steps = publish["jobs"]["publish-wt-peer-probes-npmjs"]["steps"]
-    publish_peer_action = next(step for step in publish_peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@master")
-    release_action = next(step for step in release_steps if step.get("uses") == "cobycloud/actions/actions/github-release@master")
-    npm_action = next(step for step in npm_steps if step.get("uses") == "cobycloud/actions/actions/npm-publish@master")
+    release_action = next(step for step in release_steps if step.get("uses") == "softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe")
     assert publish["jobs"]["publish-wt-peer-probes-github-release"]["needs"] == [
         "wt-peer-probes-ci",
         "wt-peer-probes-browser-tests",
@@ -109,15 +122,28 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
         "wt-peer-probes-ci",
         "wt-peer-probes-browser-tests",
     ]
-    assert publish_peer_action["with"]["test-command"] == "npm run test:peer-api -- --reporter=line"
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes"
+        and step.get("run") == "npm run test:peer-api -- --reporter=line"
+        for step in publish_peer_steps
+    )
     assert release_action["with"]["files"] == ".artifacts/wt-peer-probes/*.tgz"
-    assert npm_action["with"]["package-directory"] == "packages/wt-peer-probes"
-    assert npm_action["with"]["scope"] == "@tigrcorn"
-    assert npm_action["with"]["npm-token"] == "${{ secrets.NPM_API_TOKEN }}"
-    assert npm_action["with"]["install-command"] == "npm ci --workspaces=false"
-    assert npm_action["with"]["build-command"] == "npm run build --workspaces=false"
-    assert npm_action["with"]["test-command"] == "npm test --workspaces=false"
-    assert npm_action["with"]["provenance"] == "true"
+    assert any(step.get("uses") == "actions/setup-node@v4" for step in npm_steps)
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm ci --workspaces=false"
+        for step in npm_steps
+    )
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm run build --workspaces=false"
+        for step in npm_steps
+    )
+    assert any(
+        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm test --workspaces=false"
+        for step in npm_steps
+    )
+    publish_step = next(step for step in npm_steps if step.get("run") == "npm publish --access public --provenance")
+    assert publish_step["working-directory"] == "packages/wt-peer-probes"
+    assert publish_step["env"]["NODE_AUTH_TOKEN"] == "${{ secrets.NPM_API_TOKEN }}"
 
 
 def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:
