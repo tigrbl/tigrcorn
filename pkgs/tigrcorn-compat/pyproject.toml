@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-compat"
-version = "0.3.16.dev4"
+version = "0.3.16.dev5"
 description = "Compatibility and interoperability helpers for Tigrcorn ASGI3 conformance, external peers, and Python web server release gates."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,9 +27,9 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.16.dev4",
-  "tigrcorn-asgi==0.3.16.dev4",
-  "tigrcorn-runtime==0.3.16.dev4",
+  "tigrcorn-core==0.3.16.dev5",
+  "tigrcorn-asgi==0.3.16.dev5",
+  "tigrcorn-runtime==0.3.16.dev5",
 ]
 
 [tool.setuptools]
