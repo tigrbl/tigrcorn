@@ -74,8 +74,8 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     assert "validate-wt-peer-probes" in reusable["jobs"]
     steps = reusable["jobs"]["validate-npm"]["steps"]
     peer_steps = reusable["jobs"]["validate-wt-peer-probes"]["steps"]
-    ci_action = next(step for step in steps if step.get("uses") == "cobycloud/actions/actions/setup-node-project@main")
-    peer_action = next(step for step in peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@main")
+    ci_action = next(step for step in steps if step.get("uses") == "cobycloud/actions/actions/setup-node-project@master")
+    peer_action = next(step for step in peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@master")
     assert ci_action["with"]["working-directory"] == "packages/wt-peer-probes"
     assert ci_action["with"]["install-command"] == "npm ci --workspaces=false"
     assert ci_action["with"]["build-command"] == "npm run build --workspaces=false"
@@ -98,9 +98,9 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     publish_peer_steps = publish["jobs"]["wt-peer-probes-browser-tests"]["steps"]
     release_steps = publish["jobs"]["publish-wt-peer-probes-github-release"]["steps"]
     npm_steps = publish["jobs"]["publish-wt-peer-probes-npmjs"]["steps"]
-    publish_peer_action = next(step for step in publish_peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@main")
-    release_action = next(step for step in release_steps if step.get("uses") == "cobycloud/actions/actions/github-release@main")
-    npm_action = next(step for step in npm_steps if step.get("uses") == "cobycloud/actions/actions/npm-publish@main")
+    publish_peer_action = next(step for step in publish_peer_steps if step.get("uses") == "cobycloud/actions/actions/playwright-ci@master")
+    release_action = next(step for step in release_steps if step.get("uses") == "cobycloud/actions/actions/github-release@master")
+    npm_action = next(step for step in npm_steps if step.get("uses") == "cobycloud/actions/actions/npm-publish@master")
     assert publish["jobs"]["publish-wt-peer-probes-github-release"]["needs"] == [
         "wt-peer-probes-ci",
         "wt-peer-probes-browser-tests",

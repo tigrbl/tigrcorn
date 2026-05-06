@@ -122,9 +122,11 @@ jobs:
       - name: Install workspace packages
         shell: bash
         run: |
+          args=()
           while IFS= read -r package_dir; do
-            python -m pip install -e "$package_dir"
+            args+=("-e" "$package_dir")
           done < .artifacts/python-workspace-package-paths.txt
+          python -m pip install "${args[@]}"
       - name: Install project
         run: python -m pip install -e ".[certification,dev]"
       - name: Build certification and release metadata
@@ -249,7 +251,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Validate WebTransport peer probe package
-        uses: cobycloud/actions/actions/setup-node-project@main
+        uses: cobycloud/actions/actions/setup-node-project@master
         with:
           node-version: "22"
           working-directory: packages/wt-peer-probes
@@ -276,7 +278,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Validate browser WebTransport peer API probes
-        uses: cobycloud/actions/actions/playwright-ci@main
+        uses: cobycloud/actions/actions/playwright-ci@master
         with:
           node-version: "22"
           working-directory: packages/wt-peer-probes
@@ -302,7 +304,7 @@ jobs:
           name: wt-peer-probes-${{ github.sha }}
           path: .artifacts/wt-peer-probes
       - name: Create or update GitHub release with probe package
-        uses: cobycloud/actions/actions/github-release@main
+        uses: cobycloud/actions/actions/github-release@master
         with:
           tag-name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
@@ -326,7 +328,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Publish WebTransport peer probe package
-        uses: cobycloud/actions/actions/npm-publish@main
+        uses: cobycloud/actions/actions/npm-publish@master
         with:
           node-version: "22"
           package-directory: packages/wt-peer-probes
