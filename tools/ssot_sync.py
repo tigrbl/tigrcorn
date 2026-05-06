@@ -20,6 +20,7 @@ RISK_REGISTER_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_REGISTER.jso
 RISK_TRACEABILITY_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_TRACEABILITY.json"
 PYPROJECT_PATH = ROOT / "pyproject.toml"
 PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH = ROOT / "tests" / "fixtures_protocol_scope" / "fixture_manifest.json"
+OPTIONAL_PERFORMANCE_COMPARISON_DOC_PATH = ROOT / "docs" / "review" / "performance" / "PERFORMANCE_OPTIONAL_COMPARISONS.md"
 INIT_NORMALIZED_DIRS = (
     "schemas",
     "adr",
@@ -31,6 +32,39 @@ INIT_NORMALIZED_DIRS = (
     "cache",
 )
 MAX_NORMALIZED_ID_LENGTH = 128
+
+OPTIONAL_PERFORMANCE_COMPARISON_ROWS = (
+    {
+        "matrix_path": "docs/review/performance/runtime_comparison_matrix.json",
+        "feature_id": "feat:perf-runtime-loop-comparison",
+        "claim_id": "clm:perf-runtime-loop-comparison",
+        "test_id": "tst:perf-runtime-loop-comparison",
+        "test_path": "tests/test_runtime_performance_matrix.py",
+        "title": "Optional runtime loop comparison benchmark",
+        "description": "Optional package-owned comparison benchmark for auto, asyncio, and uvloop runtime loop modes without changing the strict performance release matrix.",
+        "slot": "performance-comparison-runtime",
+    },
+    {
+        "matrix_path": "docs/review/performance/aioquic_comparison_matrix.json",
+        "feature_id": "feat:perf-http3-peer-aioquic-comparison",
+        "claim_id": "clm:perf-http3-peer-aioquic-comparison",
+        "test_id": "tst:perf-http3-peer-aioquic-comparison",
+        "test_path": "tests/test_aioquic_performance_matrix.py",
+        "title": "Optional HTTP/3 aioquic peer comparison benchmark",
+        "description": "Optional package-owned comparison benchmark for Tigrcorn and aioquic HTTP/3 request preparation without changing the strict performance release matrix.",
+        "slot": "performance-comparison-http3-peer",
+    },
+    {
+        "matrix_path": "docs/review/performance/websocket_peer_comparison_matrix.json",
+        "feature_id": "feat:perf-websocket-peer-comparison",
+        "claim_id": "clm:perf-websocket-peer-comparison",
+        "test_id": "tst:perf-websocket-peer-comparison",
+        "test_path": "tests/test_websocket_peer_performance_matrix.py",
+        "title": "Optional WebSocket peer comparison benchmark",
+        "description": "Optional package-owned comparison benchmark for Tigrcorn, wsproto, and websockets frame roundtrip behavior without changing the strict performance release matrix.",
+        "slot": "performance-comparison-websocket-peer",
+    },
+)
 
 TIER_MAP = {
     "local_conformance": "T2",
@@ -117,6 +151,34 @@ def _existing_path(path_hint: str) -> str:
     if path.exists():
         return path_hint
     return "docs/review/conformance/corpus.json"
+
+
+def _matrix_profile_ids(matrix: dict[str, Any]) -> list[str]:
+    return [str(row.get("profile_id", "")) for row in matrix.get("profiles", []) if row.get("profile_id")]
+
+
+def _matrix_deployment_profiles(matrix: dict[str, Any]) -> list[str]:
+    return sorted(
+        {
+            str(row.get("deployment_profile", ""))
+            for row in matrix.get("profiles", [])
+            if row.get("deployment_profile")
+        }
+    )
+
+
+def _matrix_threshold_keys(matrix: dict[str, Any]) -> list[str]:
+    keys: set[str] = set()
+    for row in matrix.get("profiles", []):
+        keys.update(dict(row.get("thresholds", {})).keys())
+    return sorted(keys)
+
+
+def _matrix_budget_keys(matrix: dict[str, Any]) -> list[str]:
+    keys: set[str] = set()
+    for row in matrix.get("profiles", []):
+        keys.update(dict(row.get("relative_regression_budget", {})).keys())
+    return sorted(keys)
 
 
 def _plan_horizon(boundary_status: str, status: str) -> str:
@@ -576,12 +638,13 @@ def build_registry() -> dict[str, Any]:
         tier: str,
         kind: str,
         feature_ids: list[str],
+        status: str = "promoted",
     ) -> None:
         if claim_id not in claims:
             claims[claim_id] = {
                 "id": claim_id,
                 "title": title,
-                "status": "promoted",
+                "status": status,
                 "tier": tier,
                 "kind": kind,
                 "description": description,
@@ -589,11 +652,15 @@ def build_registry() -> dict[str, Any]:
                 "test_ids": [],
                 "evidence_ids": [],
             }
+        else:
+            claims[claim_id]["status"] = status
         for feature_id in feature_ids:
             if feature_id not in claims[claim_id]["feature_ids"]:
                 claims[claim_id]["feature_ids"].append(feature_id)
         if claims[claim_id]["status"] == "promoted":
             release_claim_ids.add(claim_id)
+        elif claim_id in release_claim_ids:
+            release_claim_ids.remove(claim_id)
         for feature_id in feature_ids:
             feature = features[feature_id]
             if claim_id not in feature["claim_ids"]:
@@ -651,6 +718,7 @@ def build_registry() -> dict[str, Any]:
         path: str,
         claim_ids: list[str],
         test_ids: list[str],
+        include_in_release: bool = True,
     ) -> None:
         row = evidence.setdefault(
             evidence_id,
@@ -665,7 +733,10 @@ def build_registry() -> dict[str, Any]:
                 "test_ids": [],
             },
         )
-        release_evidence_ids.add(evidence_id)
+        if include_in_release:
+            release_evidence_ids.add(evidence_id)
+        elif evidence_id in release_evidence_ids:
+            release_evidence_ids.remove(evidence_id)
         for claim_id in claim_ids:
             if claim_id not in row["claim_ids"]:
                 row["claim_ids"].append(claim_id)
@@ -3637,6 +3708,91 @@ def build_registry() -> dict[str, Any]:
                 evidence_ids=linked_evidence_ids,
             )
 
+    optional_performance_feature_ids: list[str] = []
+    for row in OPTIONAL_PERFORMANCE_COMPARISON_ROWS:
+        matrix_path = ROOT / row["matrix_path"]
+        matrix = _load_json(matrix_path)
+        profile_ids = _matrix_profile_ids(matrix)
+        deployment_profiles = _matrix_deployment_profiles(matrix)
+        threshold_keys = _matrix_threshold_keys(matrix)
+        budget_keys = _matrix_budget_keys(matrix)
+        feature_id = str(row["feature_id"])
+        claim_id = str(row["claim_id"])
+        test_id = str(row["test_id"])
+        baseline_root = str(matrix["baseline_artifact_root"])
+        current_root = str(matrix["current_artifact_root"])
+
+        optional_performance_feature_ids.append(feature_id)
+
+        ensure_feature(
+            feature_id=feature_id,
+            title=str(row["title"]),
+            description=(
+                f"{row['description']} Matrix `{matrix['matrix_name']}` defines the executable comparison surface "
+                f"for profiles {', '.join(profile_ids)}."
+            ),
+            tier="T2",
+            slot=str(row["slot"]),
+            horizon="explicit",
+        )
+        ensure_claim(
+            claim_id=claim_id,
+            title=f"{row['title']} tracked",
+            description=(
+                f"Optional comparison matrix `{matrix['matrix_name']}` is defined in-repo, executable through the "
+                f"performance harness, preserves baseline root `{baseline_root}` and current root `{current_root}`, "
+                f"targets deployment profiles {', '.join(deployment_profiles)}, and declares threshold keys "
+                f"{', '.join(threshold_keys)} plus regression budget keys {', '.join(budget_keys)}."
+            ),
+            tier="T2",
+            kind="performance_comparison",
+            feature_ids=[feature_id],
+            status="implemented",
+        )
+        matrix_evidence_id = _evidence_id("performance-matrix", row["matrix_path"])
+        baseline_evidence_id = _evidence_id("performance-baseline-root", baseline_root)
+        current_evidence_id = _evidence_id("performance-current-root", current_root)
+        ensure_evidence(
+            evidence_id=matrix_evidence_id,
+            title=f"Optional performance matrix {row['matrix_path']}",
+            kind="performance_matrix",
+            tier="T2",
+            path=str(row["matrix_path"]),
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+            include_in_release=False,
+        )
+        ensure_evidence(
+            evidence_id=baseline_evidence_id,
+            title=f"Optional performance baseline root {baseline_root}",
+            kind="performance_artifact_root",
+            tier="T2",
+            path=baseline_root,
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+            include_in_release=False,
+        )
+        ensure_evidence(
+            evidence_id=current_evidence_id,
+            title=f"Optional performance current root {current_root}",
+            kind="performance_artifact_root",
+            tier="T2",
+            path=current_root,
+            claim_ids=[claim_id],
+            test_ids=[test_id],
+            include_in_release=False,
+        )
+        ensure_test(
+            test_id=test_id,
+            title=f"{row['title']} coverage",
+            status="passing",
+            kind="pytest",
+            path=str(row["test_path"]),
+            feature_ids=[feature_id],
+            claim_ids=[claim_id],
+            evidence_ids=[matrix_evidence_id, baseline_evidence_id, current_evidence_id],
+        )
+
     promoted_claim_ids = {claim_id for claim_id, row in claims.items() if row.get("status") == "promoted"}
     boundary_feature_ids = sorted(
         feature_id
@@ -3878,6 +4034,15 @@ def build_registry() -> dict[str, Any]:
             "status": "frozen",
             "frozen": True,
             "feature_ids": list(WEBTRANSPORT_CATEGORY_FEATURE_IDS),
+            "canonical_registry_source": ".ssot/registry.json",
+            "profile_ids": [],
+        },
+        {
+            "id": "bnd:performance-comparison-optional",
+            "title": "Optional performance comparison boundary",
+            "status": "frozen",
+            "frozen": True,
+            "feature_ids": optional_performance_feature_ids,
             "canonical_registry_source": ".ssot/registry.json",
             "profile_ids": [],
         },

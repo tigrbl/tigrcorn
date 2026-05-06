@@ -1,0 +1,128 @@
+{
+  "baseline_artifact_root": "docs/review/performance/artifacts/runtime_comparison_baseline",
+  "current_artifact_root": "docs/review/performance/artifacts/runtime_comparison_current",
+  "matrix_name": "tigrcorn-runtime-comparison-matrix",
+  "metadata": {
+    "note": "optional component-regression matrix for comparing public runtime modes without changing the strict release-gate matrix",
+    "purpose": "runtime mode comparison for auto, asyncio, and uvloop",
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ],
+    "lane_definitions": {
+      "component_regression": "same-stack runtime comparison profiles"
+    }
+  },
+  "profiles": [
+    {
+      "profile_id": "runtime_auto",
+      "family": "Runtime",
+      "description": "Runtime scheduler fanout with auto runtime selection.",
+      "driver": "runtime_scheduler",
+      "deployment_profile": "http1_baseline",
+      "lane": "component_regression",
+      "correctness_required": true,
+      "hot_path": false,
+      "iterations": 12,
+      "warmups": 2,
+      "units_per_iteration": 256,
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_scheduler_rejections": 0,
+        "max_protocol_stalls": 0
+      },
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.75,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "absolute_p99_slack_ms": 2.0,
+        "absolute_p99_9_slack_ms": 4.0,
+        "absolute_cpu_slack_seconds": 0.05,
+        "absolute_rss_slack_kib": 4096.0
+      },
+      "driver_config": {
+        "runtime": "auto",
+        "task_fanout": 256,
+        "yield_count": 4,
+        "payload_size": 64
+      }
+    },
+    {
+      "profile_id": "runtime_asyncio",
+      "family": "Runtime",
+      "description": "Runtime scheduler fanout with explicit asyncio runtime.",
+      "driver": "runtime_scheduler",
+      "deployment_profile": "http1_baseline",
+      "lane": "component_regression",
+      "correctness_required": true,
+      "hot_path": false,
+      "iterations": 12,
+      "warmups": 2,
+      "units_per_iteration": 256,
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_scheduler_rejections": 0,
+        "max_protocol_stalls": 0
+      },
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.75,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "absolute_p99_slack_ms": 2.0,
+        "absolute_p99_9_slack_ms": 4.0,
+        "absolute_cpu_slack_seconds": 0.05,
+        "absolute_rss_slack_kib": 4096.0
+      },
+      "driver_config": {
+        "runtime": "asyncio",
+        "task_fanout": 256,
+        "yield_count": 4,
+        "payload_size": 64
+      }
+    },
+    {
+      "profile_id": "runtime_uvloop",
+      "family": "Runtime",
+      "description": "Runtime scheduler fanout with explicit uvloop runtime.",
+      "driver": "runtime_scheduler",
+      "deployment_profile": "http1_baseline",
+      "lane": "component_regression",
+      "certification_platforms": [
+        "linux-x86_64-cpython3.11"
+      ],
+      "correctness_required": true,
+      "hot_path": false,
+      "iterations": 12,
+      "warmups": 2,
+      "units_per_iteration": 256,
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_scheduler_rejections": 0,
+        "max_protocol_stalls": 0
+      },
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.75,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "absolute_p99_slack_ms": 2.0,
+        "absolute_p99_9_slack_ms": 4.0,
+        "absolute_cpu_slack_seconds": 0.05,
+        "absolute_rss_slack_kib": 4096.0
+      },
+      "driver_config": {
+        "runtime": "uvloop",
+        "task_fanout": 256,
+        "yield_count": 4,
+        "payload_size": 64
+      }
+    }
+  ]
+}

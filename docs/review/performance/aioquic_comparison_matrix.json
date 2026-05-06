@@ -1,0 +1,89 @@
+{
+  "baseline_artifact_root": "docs/review/performance/artifacts/aioquic_comparison_baseline",
+  "current_artifact_root": "docs/review/performance/artifacts/aioquic_comparison_current",
+  "matrix_name": "tigrcorn-aioquic-comparison-matrix",
+  "metadata": {
+    "note": "optional component-regression matrix for comparing aioquic request-preparation work against Tigrcorn's own HTTP/3 plus QUIC path",
+    "purpose": "same-host backend comparison for aioquic versus the current Tigrcorn implementation",
+    "certification_platforms": [
+      "linux-x86_64-cpython3.11"
+    ],
+    "lane_definitions": {
+      "component_regression": "same-stack backend comparison profiles"
+    }
+  },
+  "profiles": [
+    {
+      "profile_id": "http3_prepare_tigrcorn",
+      "family": "HTTP3",
+      "description": "Tigrcorn HTTP/3 request preparation over the package-owned QUIC path.",
+      "driver": "http3_peer_prepare",
+      "deployment_profile": "http3_quic",
+      "lane": "component_regression",
+      "correctness_required": true,
+      "hot_path": false,
+      "iterations": 20,
+      "warmups": 3,
+      "units_per_iteration": 1,
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_scheduler_rejections": 0,
+        "max_protocol_stalls": 0
+      },
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.75,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "absolute_p99_slack_ms": 2.0,
+        "absolute_p99_9_slack_ms": 4.0,
+        "absolute_cpu_slack_seconds": 0.05,
+        "absolute_rss_slack_kib": 4096.0
+      },
+      "driver_config": {
+        "backend": "tigrcorn",
+        "host": "example.com",
+        "path": "/interop",
+        "body": "hello-http3-peer"
+      }
+    },
+    {
+      "profile_id": "http3_prepare_aioquic",
+      "family": "HTTP3",
+      "description": "aioquic HTTP/3 request preparation over aioquic's QUIC path.",
+      "driver": "http3_peer_prepare",
+      "deployment_profile": "http3_quic",
+      "lane": "component_regression",
+      "correctness_required": true,
+      "hot_path": false,
+      "iterations": 20,
+      "warmups": 3,
+      "units_per_iteration": 1,
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "min_throughput_ops_per_sec": 1.0,
+        "max_scheduler_rejections": 0,
+        "max_protocol_stalls": 0
+      },
+      "relative_regression_budget": {
+        "max_p99_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.75,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "absolute_p99_slack_ms": 2.0,
+        "absolute_p99_9_slack_ms": 4.0,
+        "absolute_cpu_slack_seconds": 0.05,
+        "absolute_rss_slack_kib": 4096.0
+      },
+      "driver_config": {
+        "backend": "aioquic",
+        "host": "example.com",
+        "path": "/interop",
+        "body": "hello-http3-peer"
+      }
+    }
+  ]
+}

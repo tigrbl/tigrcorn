@@ -22,8 +22,11 @@ from .drivers_operator import (
     reload_overhead_driver,
     worker_scaleout_driver,
 )
+from .drivers_peer import http3_peer_prepare_driver
+from .drivers_runtime import runtime_scheduler_driver
 from .drivers_semantic import connect_relay_driver, content_coding_driver, trailers_driver
 from .drivers_tls import alpn_negotiation_driver, mtls_handshake_driver, ocsp_strict_driver, tls_handshake_driver
+from .drivers_ws_peer import websocket_peer_frame_driver
 from .drivers_websocket import (
     ws_fanout_driver,
     ws_http11_deflate_driver,
@@ -65,6 +68,9 @@ _DRIVER_REGISTRY: dict[str, Callable[..., dict]] = {
     'worker_scaleout': worker_scaleout_driver,
     'graceful_drain': graceful_drain_driver,
     'reload_overhead': reload_overhead_driver,
+    'runtime_scheduler': runtime_scheduler_driver,
+    'http3_peer_prepare': http3_peer_prepare_driver,
+    'websocket_peer_frame': websocket_peer_frame_driver,
 }
 
 

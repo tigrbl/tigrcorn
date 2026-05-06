@@ -20,7 +20,7 @@
       "risk_id": "R-TRACEABILITY-GOVERNANCE-GAP",
       "severity": "high",
       "status": "mitigated_in_tree",
-      "summary": "Phase 8 closes this by generating risk and traceability graphs and making release gates validate them.",
+      "summary": "This is mitigated by generating risk and traceability graphs and making release gates validate them.",
       "test_refs": [
         "tests/test_p8_gov.py::test_risk_traceability_graph_is_resolved_and_green"
       ],
@@ -68,7 +68,7 @@
       "risk_id": "R-RFC9651-REFERENCE-DRIFT",
       "severity": "high",
       "status": "mitigated_in_tree",
-      "summary": "Phase 8 replaces active predecessor-baseline language with RFC 9651 and lints for stale active references.",
+      "summary": "This is mitigated by replacing active predecessor-baseline language with RFC 9651 and linting for stale active references.",
       "test_refs": [
         "tests/test_p8_sf.py::test_stale_predecessor_references_are_linted_outside_allowlist"
       ],
