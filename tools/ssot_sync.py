@@ -3293,13 +3293,27 @@ def build_registry() -> dict[str, Any]:
         dos_resilience_feature_id,
         "feat:h11-oversized-request-head-rejection",
         "feat:websocket-oversized-upgrade-head-rejection",
+        "feat:quic-streams",
+        "feat:stream-backpressure-mapping",
+        "feat:datagram-flow-control-mapping",
+        "feat:webtransport-max-sessions-flag",
+        "feat:webtransport-max-streams-flag",
+        "feat:webtransport-max-datagram-size-flag",
+        "feat:surface-quic-retry-token-integrity",
+        "feat:retry-app-visibility",
+        "feat:http-status-408-request-timeout",
+        "feat:http-status-504-gateway-timeout",
+        "feat:connect-policy",
+        "feat:content-coding-policy",
+        "feat:content-coding-contract-map",
     ]
     ensure_profile(
         profile_id="prf:denial-of-service-resilience",
         title="Denial-of-service resilience profile",
         description=(
             "Availability-abuse posture that groups the governed DoS runtime, h11 oversized request-head "
-            "rejection, and WebSocket oversized upgrade-head rejection features."
+            "rejection, WebSocket oversized upgrade-head rejection, flow-control, timeout, retry, resource "
+            "limit, CONNECT, and content-coding features."
         ),
         kind="capability",
         feature_ids=availability_abuse_feature_ids,
