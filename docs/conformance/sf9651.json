@@ -18,7 +18,7 @@
       "docs/notes/issue_mat.md",
       "docs/notes/issue_reg.md",
       "docs/notes/risk_reg.md",
-      "src/tigrcorn/config/governance_surface.py",
+      "pkgs/tigrcorn-config/src/tigrcorn_config/governance_surface.py",
       "tests/test_p8_sf.py",
       "tools/cert/governance_surface.py"
     ],
@@ -30,7 +30,7 @@
       "docs/notes/issue_mat.md",
       "docs/notes/issue_reg.md",
       "docs/notes/risk_reg.md",
-      "src/tigrcorn/config/governance_surface.py",
+      "pkgs/tigrcorn-config/src/tigrcorn_config/governance_surface.py",
       "tools/cert/governance_surface.py"
     ],
     "forbidden_reference": "RFC 8941",

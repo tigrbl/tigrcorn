@@ -30,7 +30,10 @@ def _scan_stale_rfc8941_references(allowlist: set[str]) -> dict[str, Any]:
         relative = path.relative_to(ROOT).as_posix()
         if relative.startswith('docs/review/conformance/releases/'):
             continue
-        text = path.read_text(encoding='utf-8')
+        try:
+            text = path.read_text(encoding='utf-8')
+        except UnicodeDecodeError:
+            continue
         if 'RFC 8941' not in text and 'rfc8941' not in text.lower():
             continue
         checked.append(relative)
