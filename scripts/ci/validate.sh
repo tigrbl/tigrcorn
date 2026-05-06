@@ -16,16 +16,16 @@ python tools/govchk.py scan
 python -m compileall -q src benchmarks tools
 python -m pytest -q \
   tests/test_default_audits.py \
-  tests/test_phase4_quic_surface.py \
-  tests/test_phase5_origin_contract.py \
-  tests/test_phase6_observability_surface.py \
-  tests/test_phase7_negative_certification.py \
-  tests/test_phase9f2_logging_exporter_closure.py \
-  tests/test_phase3_policy_surface.py \
-  tests/test_phase3_strict_rfc_surface.py \
-  tests/test_phase7_flag_surface_truth_reconciliation.py \
+  tests/test_quic_surface.py \
+  tests/test_origin_contract.py \
+  tests/test_observability_surface.py \
+  tests/test_negative_certification.py \
+  tests/test_logging_exporter_closure.py \
+  tests/test_policy_surface.py \
+  tests/test_strict_rfc_surface.py \
+  tests/test_flag_surface_truth_reconciliation.py \
   tests/test_release_gates.py \
-  tests/test_phase2_cli_config_surface.py \
+  tests/test_cli_config_surface.py \
   tests/test_documentation_reconciliation.py \
   tests/test_config_matrix_pytest.py \
   tests/test_profile_resolution.py \

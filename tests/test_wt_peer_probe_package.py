@@ -30,6 +30,7 @@ def test_wt_peer_probe_package_is_part_of_npm_workspace() -> None:
     assert (PACKAGE_ROOT / "package-lock.json").is_file()
     assert package["name"] == "@tigrcorn/wt-peer-probes"
     assert package["private"] is False
+    assert package["repository"]["url"] == "https://github.com/tigrbl/tigrcorn"
     assert package["files"] == ["dist", "README.md", "examples/browser.html"]
     assert package["exports"]["."]["import"] == "./dist/index.js"
     assert package["exports"]["."]["types"] == "./dist/index.d.ts"

@@ -328,7 +328,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          body_path: RELEASE_NOTES_0.3.13.md
+          body_path: RELEASE_NOTES_0.3.14.md
           files: .artifacts/wt-peer-probes/*.tgz
           draft: false
           prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}

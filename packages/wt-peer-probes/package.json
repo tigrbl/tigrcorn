@@ -1,9 +1,13 @@
 {
   "name": "@tigrcorn/wt-peer-probes",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "type": "module",
   "description": "Browser peer probes for validating tigrcorn WebTransport support across Chromium, Firefox, WebKit/Safari, and mobile peers.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tigrbl/tigrcorn"
+  },
   "files": [
     "dist",
     "README.md",
