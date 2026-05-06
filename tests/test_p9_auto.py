@@ -51,6 +51,8 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert 'python_release_tag={python_tag}' in workflow
     assert 'REL_{version}.md' in workflow
     assert 'needs.prepare-release.result == \'success\'' in workflow
+    assert 'Check out prepared release commit' in workflow
+    assert 'draft: ${{ github.event_name == \'workflow_dispatch\' && needs.prepare-release.outputs.prerelease == \'true\' }}' in workflow
     assert 'secrets.NPM_API_TOKEN' in workflow
     assert 'pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b' in workflow
     assert 'actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26' in workflow
