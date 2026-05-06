@@ -76,7 +76,6 @@ This program is intentionally narrower than a boundary expansion. RFC 9218, RFC 
 The current tree uses explicit grandfathered exemptions for legacy mutable support files whose names exceed the post-migration limits, including:
 
 - `LEGACY_UNITTEST_INVENTORY.json`
-- `docs/reference/risk_register.schema.json`
 - `assets/tigrcorn_brand_frag_light.png`
 - `assets/tigrcorn_brand_frag_dark.png`
 

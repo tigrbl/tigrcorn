@@ -121,39 +121,7 @@ def generate() -> None:
         'stale_reference_lint': sf_lint,
     }
 
-    risk_register = {
-        'schema_version': 1,
-        'register_owner': 'tigrcorn-maintainers',
-        'policy_doc': 'docs/governance/RISK_REGISTER_POLICY.md',
-        'release_gate_policy': 'open blocking risks fail closed',
-        'register': payload['risk_register'],
-    }
-    risk_traceability = {
-        'schema_version': 1,
-        'claim_graph_source': 'docs/review/conformance/claims_registry.json',
-        'risk_register_source': 'docs/conformance/risk/RISK_REGISTER.json',
-        'test_policy_doc': 'docs/governance/TEST_STYLE_POLICY.md',
-        'default_audit_policy_doc': 'docs/governance/DEFAULT_AUDIT_POLICY.md',
-        'legacy_unittest_inventory': 'LEGACY_UNITTEST_INVENTORY.json',
-        'interop_retention_bundles': payload['interop_retention_bundles'],
-        'performance_retention_bundles': payload['performance_retention_bundles'],
-        'risks': [
-            {
-                'risk_id': row['risk_id'],
-                'status': row['status'],
-                'release_gate_blocking': row['release_gate_blocking'],
-                'claim_refs': row['claim_refs'],
-                'test_refs': row['test_refs'],
-                'evidence_refs': row['evidence_refs'],
-            }
-            for row in payload['risk_register']
-        ],
-        'structured_fields_bundle': 'docs/conformance/sf9651.json',
-    }
-
     _write_json(ROOT / 'LEGACY_UNITTEST_INVENTORY.json', legacy_inventory)
-    _write_json(ROOT / 'docs' / 'conformance' / 'risk' / 'RISK_REGISTER.json', risk_register)
-    _write_json(ROOT / 'docs' / 'conformance' / 'risk' / 'RISK_TRACEABILITY.json', risk_traceability)
     _write_json(ROOT / 'docs' / 'conformance' / 'sf9651.json', sf_bundle)
     _write_json(ROOT / 'docs' / 'conformance' / 'interop_retention.json', payload['interop_retention_bundles'])
     _write_json(ROOT / 'docs' / 'conformance' / 'perf_retention.json', payload['performance_retention_bundles'])

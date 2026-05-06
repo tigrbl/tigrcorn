@@ -4,13 +4,13 @@ This checkpoint documents the dual-boundary strict-promotion program.
 
 ## Current machine-readable result
 
-- authoritative boundary: `True`
+- authoritative boundary: `False`
 - strict target boundary: `True`
 - flag surface: `True`
 - operator surface: `True`
 - performance target: `True`
 - documentation / claim consistency: `True`
-- composite promotion gate: `True`
+- composite promotion gate: `False`
 
 ## Current blockers
 

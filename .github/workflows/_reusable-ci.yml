@@ -93,7 +93,6 @@ jobs:
             docs/conformance/release_auto.json
             docs/conformance/relnotes.json
             docs/conformance/relnotes.md
-            docs/conformance/risk/
             docs/ops/profiles.md
             docs/ops/defaults.md
             docs/ops/policies.md

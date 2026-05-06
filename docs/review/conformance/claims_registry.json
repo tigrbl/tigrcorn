@@ -4,7 +4,7 @@
   "canonical_feature_source": "docs/notes/feature_reg.md",
   "canonical_issue_matrix_source": "docs/notes/issue_mat.md",
   "canonical_issue_source": "docs/notes/issue_reg.md",
-  "canonical_risk_source": "docs/notes/risk_reg.md",
+  "canonical_risk_source": ".ssot/registry.json",
   "certification_evidence_tiers": [
     "local_conformance",
     "same_stack_replay",
@@ -1437,8 +1437,7 @@
       "source_files": [
         "src/tigrcorn/config/governance_surface.py",
         "tools/cert/governance_surface.py",
-        "docs/conformance/risk/RISK_REGISTER.json",
-        "docs/conformance/risk/RISK_TRACEABILITY.json",
+        ".ssot/registry.json",
         "tests/test_p8_gov.py"
       ],
       "status": "implemented_in_tree",
@@ -1497,7 +1496,7 @@
         "src/tigrcorn/compat/release_gates.py",
         "docs/conformance/interop_retention.json",
         "docs/conformance/perf_retention.json",
-        "docs/conformance/risk/RISK_TRACEABILITY.json",
+        ".ssot/registry.json",
         "tests/test_p8_gov.py"
       ],
       "status": "implemented_in_tree",
@@ -1571,9 +1570,7 @@
       ],
       "source_files": [
         "docs/governance/RISK_REGISTER_POLICY.md",
-        "docs/reference/risk_register.schema.json",
-        "docs/conformance/risk/RISK_REGISTER.json",
-        "docs/conformance/risk/RISK_TRACEABILITY.json",
+        ".ssot/registry.json",
         "tests/test_p8_gov.py"
       ],
       "status": "implemented_in_tree",
@@ -1621,8 +1618,7 @@
       ],
       "source_files": [
         "src/tigrcorn/compat/release_gates.py",
-        "docs/conformance/risk/RISK_REGISTER.json",
-        "docs/conformance/risk/RISK_TRACEABILITY.json",
+        ".ssot/registry.json",
         "LEGACY_UNITTEST_INVENTORY.json",
         "tests/test_p8_gov.py"
       ],
@@ -1649,7 +1645,7 @@
       "source_files": [
         "docs/conformance/interop_retention.json",
         "docs/conformance/interop_retention.md",
-        "docs/conformance/risk/RISK_TRACEABILITY.json",
+        ".ssot/registry.json",
         "tests/test_p8_gov.py"
       ],
       "spec_refs": [
@@ -1675,7 +1671,7 @@
       "source_files": [
         "docs/conformance/perf_retention.json",
         "docs/conformance/perf_retention.md",
-        "docs/conformance/risk/RISK_TRACEABILITY.json",
+        ".ssot/registry.json",
         "tests/test_p8_gov.py"
       ],
       "spec_refs": [

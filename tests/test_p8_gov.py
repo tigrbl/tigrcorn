@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from tigrcorn.compat.release_gates import evaluate_release_gates
+from tools.ssot_sync import build_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -15,21 +16,25 @@ def _load_json(relative_path: str):
 
 
 def test_risk_traceability_graph_is_resolved_and_green():
-    register = _load_json('docs/conformance/risk/RISK_REGISTER.json')
-    traceability = _load_json('docs/conformance/risk/RISK_TRACEABILITY.json')
     claims = _load_json('docs/review/conformance/claims_registry.json')
+    registry = build_registry()
 
     claim_ids = {row['id'] for row in claims['current_and_candidate_claims']}
-    register_ids = {row['risk_id'] for row in register['register']}
-    traceability_ids = {row['risk_id'] for row in traceability['risks']}
+    risks = registry['risks']
+    risk_ids = {row['source_risk_id'] for row in risks}
 
-    assert register_ids == traceability_ids
-    assert traceability['structured_fields_bundle'] == 'docs/conformance/sf9651.json'
-    for row in traceability['risks']:
-        assert set(row['claim_refs']) <= claim_ids
-        for test_ref in row['test_refs']:
+    assert risk_ids == {
+        'R-TRACEABILITY-GOVERNANCE-GAP',
+        'R-TEST-STYLE-DRIFT',
+        'R-RFC9651-REFERENCE-DRIFT',
+        'R-RELEASE-EVIDENCE-RETENTION',
+    }
+    for row in risks:
+        traceability = row['traceability_refs']
+        assert set(traceability['claim_refs']) <= claim_ids
+        for test_ref in traceability['test_refs']:
             assert (ROOT / test_ref.split('::', 1)[0]).exists()
-        for evidence_ref in row['evidence_refs']:
+        for evidence_ref in traceability['evidence_refs']:
             assert (ROOT / evidence_ref).exists()
 
 

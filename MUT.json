@@ -8,7 +8,6 @@
   "legacy_exempt_prefixes": [
     "LEGACY_UNITTEST_INVENTORY.json",
     "docs/review/conformance/",
-    "docs/reference/risk_register.schema.json",
     "examples/advanced_protocol_delivery/",
     "docs/LIFECYCLE_AND_EMBEDDED_SERVER.md",
     "examples/http_entity_static/",

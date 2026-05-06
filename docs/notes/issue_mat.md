@@ -117,5 +117,5 @@ These are mutable planning work items derived from the roadmap bands. They are n
 Each `RM-*` planning row above maps one-to-one to:
 
 - an `F-*` roadmap feature row in `docs/notes/feature_reg.md`
-- one or more grouped `R-*` rows in `docs/notes/risk_reg.md`
+- one or more SSOT `R-*` rows in `.ssot/registry.json`
 - a `TC-ROADMAP-*` candidate claim row in `docs/review/conformance/claims_registry.json`

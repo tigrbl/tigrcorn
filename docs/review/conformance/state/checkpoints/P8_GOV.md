@@ -8,9 +8,7 @@ What was added:
 
 - governance authority docs under `docs/governance/`
 - ADRs `.ssot/adr/ADR-1007-gov-auth.md` and `.ssot/adr/ADR-1008-gate-graph.md`
-- `docs/reference/risk_register.schema.json`
-- `docs/conformance/risk/RISK_REGISTER.json`
-- `docs/conformance/risk/RISK_TRACEABILITY.json`
+- `.ssot/registry.json`
 - `LEGACY_UNITTEST_INVENTORY.json`
 - `docs/conformance/sf9651.json` and `docs/conformance/sf9651.md`
 - `docs/conformance/interop_retention.json` and `docs/conformance/perf_retention.json`

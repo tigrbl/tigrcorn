@@ -16,8 +16,6 @@ REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
 BOUNDARY_PATH = ROOT / "docs" / "review" / "conformance" / "certification_boundary.json"
 CURRENT_STATE_CHAIN_PATH = ROOT / "docs" / "review" / "conformance" / "current_state_chain.current.json"
 CLAIMS_REGISTRY_PATH = ROOT / "docs" / "review" / "conformance" / "claims_registry.json"
-RISK_REGISTER_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_REGISTER.json"
-RISK_TRACEABILITY_PATH = ROOT / "docs" / "conformance" / "risk" / "RISK_TRACEABILITY.json"
 PYPROJECT_PATH = ROOT / "pyproject.toml"
 PROTOCOL_SCOPE_FIXTURE_MANIFEST_PATH = ROOT / "tests" / "fixtures_protocol_scope" / "fixture_manifest.json"
 OPTIONAL_PERFORMANCE_COMPARISON_DOC_PATH = ROOT / "docs" / "review" / "performance" / "PERFORMANCE_OPTIONAL_COMPARISONS.md"
@@ -63,6 +61,87 @@ OPTIONAL_PERFORMANCE_COMPARISON_ROWS = (
         "title": "Optional WebSocket peer comparison benchmark",
         "description": "Optional package-owned comparison benchmark for Tigrcorn, wsproto, and websockets frame roundtrip behavior without changing the strict performance release matrix.",
         "slot": "performance-comparison-websocket-peer",
+    },
+)
+
+GOVERNED_RISK_ROWS = (
+    {
+        "risk_id": "R-TRACEABILITY-GOVERNANCE-GAP",
+        "title": "Risk, claim, test, and evidence linkage can drift without machine-readable ownership.",
+        "severity": "high",
+        "status": "mitigated_in_tree",
+        "release_gate_blocking": False,
+        "owner": "tigrcorn-maintainers",
+        "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",
+        "feature_refs": ["F-P8-RISK-TRACEABILITY"],
+        "claim_refs": [
+            "TC-ROADMAP-P8-RISK-TRACEABILITY",
+            "TC-GOV-RISK-REGISTER-TRACEABILITY",
+            "TC-CERT-RELEASE-GATE-GRAPH",
+        ],
+        "test_refs": [
+            "tests/test_p8_gov.py::test_risk_traceability_graph_is_resolved_and_green",
+        ],
+        "evidence_refs": [
+            ".ssot/registry.json",
+        ],
+        "summary": "This is mitigated by generating SSOT risk, claim, test, and evidence links and making release gates validate them.",
+        "issue_refs": [],
+    },
+    {
+        "risk_id": "R-TEST-STYLE-DRIFT",
+        "title": "New forward tests could continue to enter as unittest instead of pytest.",
+        "severity": "medium",
+        "status": "controlled_with_inventory",
+        "release_gate_blocking": False,
+        "owner": "tigrcorn-maintainers",
+        "policy_doc": "docs/governance/TEST_STYLE_POLICY.md",
+        "feature_refs": ["F-P8-PYTEST-FORWARD"],
+        "claim_refs": ["TC-ROADMAP-P8-PYTEST-FORWARD", "TC-GOV-TEST-STYLE-POLICY"],
+        "test_refs": [
+            "tests/test_p8_gov.py::test_legacy_unittest_inventory_is_explicit_and_no_unexpected_files_exist",
+        ],
+        "evidence_refs": ["LEGACY_UNITTEST_INVENTORY.json", "docs/governance/TEST_STYLE_POLICY.md"],
+        "summary": "Pytest is the only forward runner in CI, while legacy unittest files are frozen behind an approved inventory.",
+        "issue_refs": [],
+    },
+    {
+        "risk_id": "R-RFC9651-REFERENCE-DRIFT",
+        "title": "Structured-fields references can drift back to obsolete predecessor wording.",
+        "severity": "high",
+        "status": "mitigated_in_tree",
+        "release_gate_blocking": False,
+        "owner": "tigrcorn-maintainers",
+        "policy_doc": "docs/governance/DEFAULT_AUDIT_POLICY.md",
+        "feature_refs": ["F-P8-RFC9651-BASELINE"],
+        "claim_refs": ["TC-ROADMAP-P8-RFC9651-BASELINE", "TC-SPEC-STRUCTURED-FIELDS-RFC9651"],
+        "test_refs": [
+            "tests/test_p8_sf.py::test_stale_predecessor_references_are_linted_outside_allowlist",
+        ],
+        "evidence_refs": ["docs/conformance/sf9651.json", "docs/conformance/sf9651.md"],
+        "summary": "This is mitigated by replacing active predecessor-baseline language with RFC 9651 and linting for stale active references.",
+        "issue_refs": [],
+    },
+    {
+        "risk_id": "R-RELEASE-EVIDENCE-RETENTION",
+        "title": "Interop and performance bundles could drift out of the release gate if they are treated as informal side artifacts.",
+        "severity": "high",
+        "status": "mitigated_in_tree",
+        "release_gate_blocking": False,
+        "owner": "tigrcorn-maintainers",
+        "policy_doc": "docs/governance/RISK_REGISTER_POLICY.md",
+        "feature_refs": ["F-P8-RELEASE-GATED-EVIDENCE"],
+        "claim_refs": [
+            "TC-ROADMAP-P8-RELEASE-GATED-EVIDENCE",
+            "TC-CERT-INTEROP-RETENTION-BUNDLES",
+            "TC-CERT-PERFORMANCE-RETENTION-BUNDLES",
+        ],
+        "test_refs": [
+            "tests/test_p8_gov.py::test_retention_bundles_point_to_existing_release_inputs",
+        ],
+        "evidence_refs": ["docs/conformance/interop_retention.json", "docs/conformance/perf_retention.json"],
+        "summary": "The mutable tree now carries explicit retained-bundle manifests that point at canonical release-root evidence and performance inputs.",
+        "issue_refs": [],
     },
 )
 
@@ -560,8 +639,6 @@ def build_registry() -> dict[str, Any]:
     boundary = _load_json(BOUNDARY_PATH)
     current_state_chain = _load_json(CURRENT_STATE_CHAIN_PATH)
     claims_registry = _load_json(CLAIMS_REGISTRY_PATH)
-    risk_register = _load_json(RISK_REGISTER_PATH)
-    risk_traceability = _load_json(RISK_TRACEABILITY_PATH)
     package_meta = _load_ssot_package_metadata()
     version = _load_version()
 
@@ -1428,7 +1505,7 @@ def build_registry() -> dict[str, Any]:
         slot="governance",
     )
 
-    for row in risk_register.get("register", []):
+    for row in GOVERNED_RISK_ROWS:
         risk_key = str(row.get("risk_id", ""))
         if not risk_key:
             continue
@@ -1443,7 +1520,7 @@ def build_registry() -> dict[str, Any]:
                 ensure_claim(
                     claim_id=claim_id,
                     title=str(raw_claim_id),
-                    description=f"Governance claim tracked through risk register row {risk_key}.",
+                    description=f"Governance claim tracked through SSOT risk row {risk_key}.",
                     tier="T2",
                     kind="governance_support",
                     feature_ids=[governance_feature_id],
@@ -1487,10 +1564,6 @@ def build_registry() -> dict[str, Any]:
                 if evidence_id not in tests[test_id]["evidence_ids"]:
                     tests[test_id]["evidence_ids"].append(evidence_id)
 
-        traceability_row = next(
-            (item for item in risk_traceability.get("risks", []) if item.get("risk_id") == risk_key),
-            {},
-        )
         risk_id = f"rsk:{_slug(risk_key)}"
         risks[risk_id] = {
             "id": risk_id,
@@ -1506,9 +1579,15 @@ def build_registry() -> dict[str, Any]:
             "release_blocking": bool(row.get("release_gate_blocking", False)),
             "source_risk_id": risk_key,
             "policy_doc": row.get("policy_doc"),
-            "traceability_refs": traceability_row,
+            "traceability_refs": {
+                "risk_id": risk_key,
+                "claim_refs": list(row.get("claim_refs", [])),
+                "test_refs": list(row.get("test_refs", [])),
+                "evidence_refs": list(row.get("evidence_refs", [])),
+                "issue_refs": list(row.get("issue_refs", [])),
+            },
         }
-        for issue_ref in traceability_row.get("issue_refs", []):
+        for issue_ref in row.get("issue_refs", []):
             issue_id = ensure_issue(raw_ref=str(issue_ref))
             risks[risk_id]["issue_ids"].append(issue_id)
             if risk_id not in issues[issue_id]["risk_ids"]:

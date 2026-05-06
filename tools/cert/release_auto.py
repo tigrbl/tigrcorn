@@ -53,8 +53,8 @@ def _claim_report(version: str) -> dict[str, Any]:
 
 
 def _risk_status(version: str) -> dict[str, Any]:
-    payload = _load_json(ROOT / 'docs' / 'conformance' / 'risk' / 'RISK_REGISTER.json')
-    rows = payload['register']
+    payload = _load_json(ROOT / '.ssot' / 'registry.json')
+    rows = payload['risks']
     severity_counts: dict[str, int] = {}
     status_counts: dict[str, int] = {}
     blocking_open = 0

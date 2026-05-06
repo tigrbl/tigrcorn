@@ -29,7 +29,6 @@
     "govchk_scan_required_in_ci": true,
     "legacy_exempt_prefixes_added": [
       "LEGACY_UNITTEST_INVENTORY.json",
-      "docs/reference/risk_register.schema.json",
       "assets/tigrcorn_brand_frag_light.png",
       "assets/tigrcorn_brand_frag_dark.png"
     ]

@@ -100,7 +100,7 @@ Use this wave only if the repo chooses more in-bound work after `0.3.9`.
 | TLS peer-certification program | OpenSSL 3.5+ external peer harness, curl/OpenSSL peer rows, preserved stderr/stdout artifacts, negative corpus against strict external peers | fits current certification/evidence surface and strengthens the package-owned TCP/TLS claim |
 | Observability | QUIC/H3 counters, structured logs, telemetry exports, experimental qlog stance | fits current operator surface if claim language stays bounded |
 | Negative certification | proxy, early-data, QUIC, origin, CONNECT, TLS/X.509 negative corpora | fits current certification/evidence surface |
-| Governance and release discipline | risk register, traceability, preserved interop bundles, perf artifact discipline, structured-fields hygiene | fits current governance/release surface |
+| Governance and release discipline | SSOT risk rows, traceability, preserved interop bundles, perf artifact discipline, structured-fields hygiene | fits current governance/release surface |
 
 ### Ordered protocol-family queue
 
@@ -310,7 +310,7 @@ The roadmap rows in this matrix are synchronized across the mutable working regi
 
 - `F-*` feature identities live in `docs/notes/feature_reg.md`
 - `RM-*` planning work items live in `docs/notes/issue_mat.md` and `docs/notes/issue_reg.md`
-- grouped `R-*` risks live in `docs/notes/risk_reg.md`
+- SSOT `R-*` risks live in `.ssot/registry.json`
 - machine-readable `TC-ROADMAP-*` candidate claims live in `docs/review/conformance/claims_registry.json`
 
 This linkage is planning-only and does not widen the active certified boundary.
@@ -350,7 +350,7 @@ The following roadmap rows are the explicit candidate feature matrix for future 
 | `P7` | Negative certification | Fail-state registry | in-bounds candidate | freeze expected reject/close/abort/log/metric behavior per risky surface | safe failure must become claimable | negative-cert registry | assertion coverage tests | wave 6 |
 | `P7` | Negative certification | Proxy/early-data/QUIC corpora | in-bounds candidate | preserve adversarial suites for spoofing, replay, Retry, migration, malformed tokens, amplification pressure | proves security behavior, not just happy paths | attack corpora, expected outcomes | negative suites with preserved evidence | wave 6 |
 | `P7` | Negative certification | Origin/CONNECT/TLS/topology corpora | in-bounds candidate | preserve traversal, relay abuse, X.509 failure, and mixed-topology negative suites | closes the works-locally-only gap | corpora, expected outcomes, evidence bundles | traversal, open relay, wrong EKU/SAN, mixed-topology tests | wave 6 |
-| `P8` | Governance plus promotion discipline | Risk register plus traceability | in-bounds candidate | make risk objects machine-readable and linked to claims/tests/evidence | governance must become auditable, not prose | `RISK_REGISTER*`, `RISK_TRACEABILITY.json`, schema/docs | schema, ID uniqueness, referential integrity, blocking-risk tests | parallel with `P2`-`P7`, required before promotion |
+| `P8` | Governance plus promotion discipline | SSOT risk rows plus traceability | in-bounds candidate | make risk objects machine-readable and linked to claims/tests/evidence | governance must become auditable, not prose | `.ssot/registry.json`, policy/docs | schema, ID uniqueness, referential integrity, blocking-risk tests | parallel with `P2`-`P7`, required before promotion |
 | `P8` | Governance plus promotion discipline | Pytest-only forward motion | in-bounds candidate | make `pytest` the sole forward runner and contain legacy `unittest` under inventory | stops test-style drift | `TEST_STYLE_POLICY.md`, `LEGACY_UNITTEST_INVENTORY.json` | no new unittest imports/classes, mirror-exists tests | parallel with `P2`-`P7` |
 | `P8` | Governance plus promotion discipline | Release-gated evidence plus interop plus perf | in-bounds candidate | preserve evidence bundles, interop bundles, and performance artifacts as release inputs | claims must be replayable and durable | boundary manifests, interop bundles, perf bundles | release-gate suite, artifact retention checks | before any strong promotion language |
 | `P8` | Spec hygiene | RFC 9651 structured-fields baseline | in-bounds candidate | move structured-fields behavior and claims to RFC 9651 rather than RFC 8941 | standards baseline already changed | SFV conformance tests, dependency review, claim sync | round-trip/canonical serialization tests, stale-reference lint | parallel, but must finish before promotion |

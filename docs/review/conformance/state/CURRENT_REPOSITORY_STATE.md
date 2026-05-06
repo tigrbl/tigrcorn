@@ -318,9 +318,8 @@ The current working tree now also carries the Phase 8 certification control-plan
 
 What changed in this working tree:
 
-- `docs/governance/DEFAULT_AUDIT_POLICY.md`, `docs/governance/RISK_REGISTER_POLICY.md`, and `docs/governance/TEST_STYLE_POLICY.md` now define package-owned governance authority for generated defaults, risk ownership, and pytest-forward validation
-- `docs/reference/risk_register.schema.json` now defines the machine-readable schema for the release-gated risk register
-- generated Phase 8 artifacts now exist at `docs/conformance/risk/RISK_REGISTER.json`, `docs/conformance/risk/RISK_TRACEABILITY.json`, `LEGACY_UNITTEST_INVENTORY.json`, `docs/conformance/sf9651.json`, `docs/conformance/sf9651.md`, `docs/conformance/interop_retention.json`, `docs/conformance/interop_retention.md`, `docs/conformance/perf_retention.json`, and `docs/conformance/perf_retention.md`
+- `docs/governance/DEFAULT_AUDIT_POLICY.md`, `docs/governance/RISK_REGISTER_POLICY.md`, and `docs/governance/TEST_STYLE_POLICY.md` now define package-owned governance authority for generated defaults, SSOT risk ownership, and pytest-forward validation
+- generated Phase 8 artifacts now exist at `.ssot/registry.json`, `LEGACY_UNITTEST_INVENTORY.json`, `docs/conformance/sf9651.json`, `docs/conformance/sf9651.md`, `docs/conformance/interop_retention.json`, `docs/conformance/interop_retention.md`, `docs/conformance/perf_retention.json`, and `docs/conformance/perf_retention.md`
 - `src/tigrcorn/http/structured_fields.py` now provides package-owned RFC 9651 parsing and serialization helpers with explicit registry-aware top-level dispatch for the tracked structured field families
 - `src/tigrcorn/compat/release_gates.py` now consumes the claim/risk/test/evidence graph and fails closed on open blocking risks, missing retained evidence inputs, or unexpected new unittest-bearing files outside the approved legacy inventory
 - `scripts/ci/validate.sh` now uses `python -m pytest` as the canonical forward runner, while legacy unittest-bearing modules remain contained by the generated inventory instead of being treated as the forward style

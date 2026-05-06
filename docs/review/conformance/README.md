@@ -166,9 +166,7 @@ The Phase 8 governance and spec-hygiene surface is documented in:
 - `docs/governance/DEFAULT_AUDIT_POLICY.md`
 - `docs/governance/RISK_REGISTER_POLICY.md`
 - `docs/governance/TEST_STYLE_POLICY.md`
-- `docs/reference/risk_register.schema.json`
-- `docs/conformance/risk/RISK_REGISTER.json`
-- `docs/conformance/risk/RISK_TRACEABILITY.json`
+- `.ssot/registry.json`
 - `LEGACY_UNITTEST_INVENTORY.json`
 - `docs/conformance/sf9651.md`
 - `docs/conformance/sf9651.json`

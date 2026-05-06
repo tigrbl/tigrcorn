@@ -256,4 +256,4 @@ The roadmap now adds 33 mutable planning work items. They are backlog candidates
 
 ## Roadmap synchronization note
 
-The roadmap-derived `RM-*` planning rows in this register are synchronized with `F-*` feature rows in `docs/notes/feature_reg.md`, grouped `R-*` risk rows in `docs/notes/risk_reg.md`, and machine-readable `TC-ROADMAP-*` candidate claims in `docs/review/conformance/claims_registry.json`.
+The roadmap-derived `RM-*` planning rows in this register are synchronized with `F-*` feature rows in `docs/notes/feature_reg.md`, SSOT `R-*` risk rows in `.ssot/registry.json`, and machine-readable `TC-ROADMAP-*` candidate claims in `docs/review/conformance/claims_registry.json`.

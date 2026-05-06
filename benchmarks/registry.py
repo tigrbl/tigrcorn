@@ -11,6 +11,15 @@ from .drivers_http import (
     http3_clean_driver,
     http3_loss_driver,
 )
+from .drivers_vegeta import (
+    vegeta_http11_constant_rate_driver,
+    vegeta_http11_recovery_pattern_driver,
+    vegeta_http11_step_rate_driver,
+)
+from .drivers_wrk2 import (
+    wrk2_http11_constant_rate_driver,
+    wrk2_http11_step_rate_driver,
+)
 from .drivers_operator import (
     graceful_drain_driver,
     logging_off_driver,
@@ -71,6 +80,11 @@ _DRIVER_REGISTRY: dict[str, Callable[..., dict]] = {
     'runtime_scheduler': runtime_scheduler_driver,
     'http3_peer_prepare': http3_peer_prepare_driver,
     'websocket_peer_frame': websocket_peer_frame_driver,
+    'wrk2_http11_constant_rate': wrk2_http11_constant_rate_driver,
+    'wrk2_http11_step_rate': wrk2_http11_step_rate_driver,
+    'vegeta_http11_constant_rate': vegeta_http11_constant_rate_driver,
+    'vegeta_http11_step_rate': vegeta_http11_step_rate_driver,
+    'vegeta_http11_recovery_pattern': vegeta_http11_recovery_pattern_driver,
 }
 
 

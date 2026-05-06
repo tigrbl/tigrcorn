@@ -15,8 +15,6 @@ DEFAULT_STRICT_TARGET_BOUNDARY_PATH = Path('docs/review/conformance/certificatio
 DEFAULT_PROMOTION_TARGET_PATH = Path('docs/review/conformance/promotion_gate.target.json')
 DEFAULT_TLS_WRAPPER_PATH = Path('src/tigrcorn/security/tls.py')
 DEFAULT_CLAIMS_REGISTRY_PATH = Path('docs/review/conformance/claims_registry.json')
-DEFAULT_RISK_REGISTER_PATH = Path('docs/conformance/risk/RISK_REGISTER.json')
-DEFAULT_RISK_TRACEABILITY_PATH = Path('docs/conformance/risk/RISK_TRACEABILITY.json')
 DEFAULT_LEGACY_UNITTEST_INVENTORY_PATH = Path('LEGACY_UNITTEST_INVENTORY.json')
 DEFAULT_SSOT_REGISTRY_PATH = Path('.ssot/registry.json')
 VALID_EVIDENCE_TIERS = ('local_conformance', 'same_stack_replay', 'independent_certification')
@@ -1170,12 +1168,10 @@ def _evaluate_governance_graph(*, source_root: Path, checked_files: list[str]) -
     failures: list[str] = []
     ssot_registry_path = source_root / DEFAULT_SSOT_REGISTRY_PATH
     claims_path = source_root / DEFAULT_CLAIMS_REGISTRY_PATH
-    risk_register_path = source_root / DEFAULT_RISK_REGISTER_PATH
-    risk_traceability_path = source_root / DEFAULT_RISK_TRACEABILITY_PATH
     legacy_inventory_path = source_root / DEFAULT_LEGACY_UNITTEST_INVENTORY_PATH
-    checked_files.extend(str(path) for path in (ssot_registry_path, claims_path, risk_register_path, risk_traceability_path, legacy_inventory_path))
+    checked_files.extend(str(path) for path in (ssot_registry_path, claims_path, legacy_inventory_path))
 
-    for path in (ssot_registry_path, claims_path, risk_register_path, risk_traceability_path, legacy_inventory_path):
+    for path in (ssot_registry_path, claims_path, legacy_inventory_path):
         if not path.exists():
             failures.append(f'missing governance graph input: {path}')
     if failures:
@@ -1210,47 +1206,50 @@ def _evaluate_governance_graph(*, source_root: Path, checked_files: list[str]) -
 
     claims_payload = _load_json_payload(claims_path)
     claim_ids = {str(row.get('id', '')) for row in claims_payload.get('current_and_candidate_claims', []) if isinstance(row, Mapping)}
-
-    register_payload = _load_json_payload(risk_register_path)
-    traceability_payload = _load_json_payload(risk_traceability_path)
+    ssot_claim_ids = {str(row.get('id', '')) for row in ssot_payload.get('claims', []) if isinstance(row, Mapping)}
     inventory_payload = _load_json_payload(legacy_inventory_path)
 
-    register_rows = register_payload.get('register', [])
-    traceability_rows = traceability_payload.get('risks', [])
-    if not isinstance(register_rows, list) or not isinstance(traceability_rows, list):
-        failures.append('risk register or risk traceability payload is malformed')
+    risk_rows = ssot_payload.get('risks', [])
+    if not isinstance(risk_rows, list):
+        failures.append('ssot registry risk payload is malformed')
         return failures
 
-    register_ids = {str(row.get('risk_id', '')) for row in register_rows if isinstance(row, Mapping)}
-    traceability_ids = {str(row.get('risk_id', '')) for row in traceability_rows if isinstance(row, Mapping)}
-    if register_ids != traceability_ids:
-        failures.append('risk register and risk traceability files disagree on declared risk ids')
-
     open_blocking_statuses = {'open', 'active', 'unmitigated', 'planned'}
-    for row in register_rows:
+    for row in risk_rows:
         if not isinstance(row, Mapping):
             continue
-        if bool(row.get('release_gate_blocking', False)) and str(row.get('status', '')).strip().lower() in open_blocking_statuses:
-            failures.append(f'blocking risk {row.get("risk_id")} remains open with status={row.get("status")!r}')
-
-    for row in traceability_rows:
-        if not isinstance(row, Mapping):
+        risk_id = str(row.get('source_risk_id', row.get('id', '')))
+        if bool(row.get('release_blocking', False)) and str(row.get('status', '')).strip().lower() in open_blocking_statuses:
+            failures.append(f'blocking risk {risk_id} remains open with status={row.get("status")!r}')
+        for claim_ref in row.get('claim_ids', []):
+            claim_ref = str(claim_ref)
+            if claim_ref not in ssot_claim_ids:
+                failures.append(f'ssot risk row {risk_id} references unknown normalized claim {claim_ref!r}')
+        traceability = row.get('traceability_refs', {})
+        if not isinstance(traceability, Mapping):
+            failures.append(f'ssot risk row {risk_id} has malformed traceability_refs')
             continue
-        risk_id = str(row.get('risk_id', ''))
-        for claim_ref in row.get('claim_refs', []):
+        for claim_ref in traceability.get('claim_refs', []):
             if str(claim_ref) not in claim_ids:
-                failures.append(f'risk traceability row {risk_id} references unknown claim {claim_ref!r}')
-        for test_ref in row.get('test_refs', []):
+                failures.append(f'ssot risk row {risk_id} references unknown claim {claim_ref!r}')
+        for test_ref in traceability.get('test_refs', []):
             test_path = source_root / Path(str(test_ref).split('::', 1)[0])
             if not test_path.exists():
-                failures.append(f'risk traceability row {risk_id} references missing test {test_ref!r}')
-        for evidence_ref in row.get('evidence_refs', []):
+                failures.append(f'ssot risk row {risk_id} references missing test {test_ref!r}')
+        for evidence_ref in traceability.get('evidence_refs', []):
             evidence_path = source_root / Path(str(evidence_ref))
             if not evidence_path.exists():
-                failures.append(f'risk traceability row {risk_id} references missing evidence {evidence_ref!r}')
+                failures.append(f'ssot risk row {risk_id} references missing evidence {evidence_ref!r}')
 
-    for group_name in ('interop_retention_bundles', 'performance_retention_bundles'):
-        for row in traceability_payload.get(group_name, []):
+    for group_name, path in (
+        ('interop_retention_bundles', source_root / 'docs/conformance/interop_retention.json'),
+        ('performance_retention_bundles', source_root / 'docs/conformance/perf_retention.json'),
+    ):
+        retention_rows = _load_json_payload(path)
+        if not isinstance(retention_rows, list):
+            failures.append(f'{group_name} payload is malformed')
+            continue
+        for row in retention_rows:
             if not isinstance(row, Mapping):
                 failures.append(f'{group_name} contains a malformed row')
                 continue
@@ -1336,8 +1335,6 @@ __all__ = [
     'DEFAULT_SAME_STACK_MATRIX_PATH',
     'DEFAULT_STRICT_TARGET_BOUNDARY_PATH',
     'DEFAULT_PROMOTION_TARGET_PATH',
-    'DEFAULT_RISK_REGISTER_PATH',
-    'DEFAULT_RISK_TRACEABILITY_PATH',
     'DEFAULT_SSOT_REGISTRY_PATH',
     'PromotionSectionReport',
     'PromotionTargetError',

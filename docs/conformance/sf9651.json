@@ -9,15 +9,13 @@
   "schema_version": 1,
   "stale_reference_lint": {
     "allowed_paths": [
-      "docs/conformance/risk/RISK_REGISTER.json",
-      "docs/conformance/risk/RISK_TRACEABILITY.json",
+      ".ssot/registry.json",
       "docs/conformance/sf9651.json",
       "docs/conformance/sf9651.md",
       "docs/notes/feat_matrix.md",
       "docs/notes/feature_reg.md",
       "docs/notes/issue_mat.md",
       "docs/notes/issue_reg.md",
-      "docs/notes/risk_reg.md",
       "pkgs/tigrcorn-config/src/tigrcorn_config/governance_surface.py",
       "tests/test_p8_sf.py",
       "tools/cert/governance_surface.py"
@@ -29,7 +27,6 @@
       "docs/notes/feature_reg.md",
       "docs/notes/issue_mat.md",
       "docs/notes/issue_reg.md",
-      "docs/notes/risk_reg.md",
       "pkgs/tigrcorn-config/src/tigrcorn_config/governance_surface.py",
       "tools/cert/governance_surface.py"
     ],

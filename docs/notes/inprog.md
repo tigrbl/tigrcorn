@@ -95,7 +95,7 @@ The new short-path governance tree is now in place. The previous root current-st
 
 ## Phase 8 follow-on
 
-- generated governance truth now lives in `docs/conformance/risk/RISK_REGISTER.json`, `docs/conformance/risk/RISK_TRACEABILITY.json`, `LEGACY_UNITTEST_INVENTORY.json`, `docs/conformance/sf9651.json`, `docs/conformance/interop_retention.json`, and `docs/conformance/perf_retention.json`
+- generated governance truth now lives in `.ssot/registry.json`, `LEGACY_UNITTEST_INVENTORY.json`, `docs/conformance/sf9651.json`, `docs/conformance/interop_retention.json`, and `docs/conformance/perf_retention.json`
 - `src/tigrcorn/config/governance_surface.py` is now the canonical metadata source for the release-gated risk graph, retained evidence inputs, stale structured-fields reference lint, and approved legacy unittest inventory
 - `src/tigrcorn/http/structured_fields.py` is now the package-owned RFC 9651 helper surface for deterministic structured-field parsing and serialization used by the Phase 8 conformance bundle
 - `src/tigrcorn/compat/release_gates.py` now fails closed when the governance graph is missing, when open blocking risk rows remain, or when new unittest-bearing files appear outside the approved legacy inventory
