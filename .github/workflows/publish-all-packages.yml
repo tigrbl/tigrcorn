@@ -218,7 +218,10 @@ jobs:
           version = root["version"] if root else ""
           npm_version = npm["version"] if npm else ""
           if root and root["name"] == "tigrcorn":
-              release_notes = f"docs/release-notes/RELEASE_NOTES_{version}.md"
+              note_name = f"RELEASE_NOTES_{version}.md"
+              if len(note_name) > 24:
+                  note_name = f"REL_{version}.md"
+              release_notes = f"docs/release-notes/{note_name}"
           else:
               release_notes = "docs/release-notes/RELEASE_NOTES_0.3.15.md"
           print(f"version={version}")

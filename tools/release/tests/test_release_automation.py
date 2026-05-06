@@ -52,6 +52,12 @@ def test_release_plan_rejects_unknown_selection() -> None:
         build_plan("patch", write_changes=False, packages="does-not-exist")
 
 
+def test_release_notes_filename_stays_within_governance_limit() -> None:
+    assert release_automation.release_notes_filename("0.3.15") == "RELEASE_NOTES_0.3.15.md"
+    assert release_automation.release_notes_filename("0.3.16.dev1") == "REL_0.3.16.dev1.md"
+    assert len(release_automation.release_notes_filename("0.3.16.dev1")) <= 24
+
+
 def test_create_github_tags_pushes_tags_without_creating_releases(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

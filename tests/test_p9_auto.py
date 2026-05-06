@@ -27,7 +27,7 @@ def test_release_auto_artifacts_are_generated_and_aligned():
     assert evidence_ix['promotion_ready'] is True
     assert claim_rep['implemented_count'] > 0
     assert risk_stat['blocking_open_count'] == 0
-    assert Path(relnotes['release_notes']).name.startswith('RELEASE_NOTES_')
+    assert Path(relnotes['release_notes']).name.startswith(('RELEASE_NOTES_', 'REL_'))
     assert Path(relnotes['release_notes']).parent.as_posix() == 'docs/release-notes'
 
 
@@ -49,6 +49,7 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert 'create-github-releases' not in workflow
     assert 'github_releases = plan.get("github_releases", [])' in workflow
     assert 'python_release_tag={python_tag}' in workflow
+    assert 'REL_{version}.md' in workflow
     assert 'needs.prepare-release.result == \'success\'' in workflow
     assert 'secrets.NPM_API_TOKEN' in workflow
     assert 'pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b' in workflow

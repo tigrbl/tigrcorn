@@ -22,6 +22,7 @@ PY_VERSION_RE = re.compile(r'(?m)^(__version__\s*=\s*)"([^"]+)"')
 PACKAGE_SPLIT_RE = re.compile(r"[\s,]+")
 PYTHON_VERSION_FILE = ROOT / "pkgs" / "tigrcorn-core" / "src" / "tigrcorn_core" / "version.py"
 RELEASE_NOTES_DIR = ROOT / "docs" / "release-notes"
+RELEASE_NOTES_NAME_LIMIT = 24
 
 
 @dataclass(frozen=True)
@@ -218,8 +219,15 @@ def update_npm_lock(manifest: Path, new_version: str) -> list[str]:
     return []
 
 
+def release_notes_filename(version: str) -> str:
+    name = f"RELEASE_NOTES_{version}.md"
+    if len(name) <= RELEASE_NOTES_NAME_LIMIT:
+        return name
+    return f"REL_{version}.md"
+
+
 def ensure_release_notes(version: str, plan_releases: list[dict[str, str]]) -> list[str]:
-    path = RELEASE_NOTES_DIR / f"RELEASE_NOTES_{version}.md"
+    path = RELEASE_NOTES_DIR / release_notes_filename(version)
     if path.exists():
         return []
     path.parent.mkdir(parents=True, exist_ok=True)
