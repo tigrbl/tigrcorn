@@ -44,15 +44,198 @@ on:
           - tigrcorn-static
           - tigrcorn-transports
           - wt-peer-probes
+      semver:
+        description: Version action used by the prepare-release job.
+        type: choice
+        required: true
+        default: patch
+        options:
+          - patch
+          - minor
+          - finalize
       dry_run:
         description: Run npm publish in dry-run mode.
         type: boolean
         required: false
         default: false
 
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: publish-all-packages-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
+  release-gates:
+    name: release-gates
+    uses: ./.github/workflows/_reusable-ci.yml
+
+  prepare-release:
+    name: prepare-release
+    needs: release-gates
+    if: ${{ needs.release-gates.result == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+      version: ${{ steps.commit.outputs.version }}
+      npm_version: ${{ steps.commit.outputs.npm_version }}
+      release_notes: ${{ steps.commit.outputs.release_notes }}
+      prerelease: ${{ steps.commit.outputs.prerelease }}
+      python_release_tag: ${{ steps.commit.outputs.python_release_tag }}
+      npm_release_tag: ${{ steps.commit.outputs.npm_release_tag }}
+    steps:
+      - name: Validate target selection
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.gh_release && !inputs.pypi_publish && !inputs.npmjs_publish }}
+        run: |
+          echo "Select at least one publish target: gh_release, pypi_publish, or npmjs_publish." >&2
+          exit 1
+
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: "3.12"
+
+      - name: Install release tooling
+        run: python -m pip install --upgrade pip uv
+
+      - name: Compute and apply version plan
+        shell: bash
+        env:
+          SEMVER: ${{ inputs.semver || 'finalize' }}
+          PACKAGE_SELECTION: ${{ inputs.package_selection || 'all' }}
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            python tools/release/release_automation.py bump \
+              --semver "${SEMVER}" \
+              --packages "${PACKAGE_SELECTION}" \
+              --summary release-plan.json \
+              --write
+          else
+            python tools/release/release_automation.py current --summary release-plan.json
+          fi
+
+      - name: Validate release targets are new
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          targets=()
+          if [[ "${{ inputs.gh_release }}" == "true" ]]; then
+            targets+=(--github)
+          fi
+          if [[ "${{ inputs.pypi_publish }}" == "true" ]]; then
+            targets+=(--pypi)
+          fi
+          if [[ "${{ inputs.npmjs_publish }}" == "true" ]]; then
+            targets+=(--npmjs)
+          fi
+          python tools/release/release_automation.py validate-release-targets \
+            --summary release-plan.json \
+            "${targets[@]}"
+
+      - name: Refresh Python lockfile
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if python - <<'PY'
+          import json
+          plan = json.load(open("release-plan.json", encoding="utf-8"))
+          raise SystemExit(0 if plan.get("python") else 1)
+          PY
+          then
+            uv lock
+          fi
+
+      - name: Commit version updates
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          planned_changes="$(python - <<'PY'
+          import json
+          with open("release-plan.json", encoding="utf-8") as handle:
+              plan = json.load(handle)
+          print(len(plan.get("changed_files", [])))
+          PY
+          )"
+          echo "Release plan changed files: ${planned_changes}"
+          git status --short
+
+          commit_created=false
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] && ! git diff --quiet; then
+            git add pyproject.toml uv.lock pkgs packages docs/release-notes
+            if ! git diff --cached --quiet; then
+              git commit -m "release: prepare ${{ inputs.semver }} package versions"
+              commit_created=true
+              git push origin HEAD:${{ github.ref_name }}
+            fi
+          fi
+
+          commit_sha="$(git rev-parse HEAD)"
+          if [[ "${planned_changes}" -gt 0 && "${commit_created}" != "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "Release plan expected version changes, but no semver bump commit was created." >&2
+            exit 1
+          fi
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            git fetch origin "${{ github.ref_name }}"
+            remote_sha="$(git rev-parse "origin/${{ github.ref_name }}")"
+            if [[ "${remote_sha}" != "${commit_sha}" ]]; then
+              echo "Prepared release commit was not pushed to origin/${{ github.ref_name }}." >&2
+              echo "prepared=${commit_sha}" >&2
+              echo "remote=${remote_sha}" >&2
+              exit 1
+            fi
+          fi
+
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          plan = json.loads(Path("release-plan.json").read_text(encoding="utf-8"))
+          python_releases = plan.get("python", [])
+          npm_releases = plan.get("npm", [])
+          root = next((row for row in python_releases if row["name"] == "tigrcorn"), python_releases[0] if python_releases else None)
+          npm = next((row for row in npm_releases if row["name"] == "@tigrcorn/wt-peer-probes"), npm_releases[0] if npm_releases else None)
+          version = root["version"] if root else ""
+          npm_version = npm["version"] if npm else ""
+          if root and root["name"] == "tigrcorn":
+              release_notes = f"docs/release-notes/RELEASE_NOTES_{version}.md"
+          else:
+              release_notes = "docs/release-notes/RELEASE_NOTES_0.3.15.md"
+          print(f"version={version}")
+          print(f"npm_version={npm_version}")
+          print(f"release_notes={release_notes}")
+          print(f"prerelease={str(bool(plan.get('prerelease'))).lower()}")
+          print(f"python_release_tag={root['tag'] if root else ''}")
+          print(f"npm_release_tag={npm['tag'] if npm else ''}")
+          PY
+          echo "commit_sha=${commit_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload release plan
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-plan
+          path: release-plan.json
+
   python-dist:
     name: python-dist
+    needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.pypi_publish || inputs.gh_release) && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes') }}
     runs-on: ubuntu-latest
     environment: staging
@@ -65,6 +248,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Python
         uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
         with:
@@ -239,6 +424,7 @@ jobs:
 
   wt-peer-probes-ci:
     name: wt-peer-probes-ci
+    needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.npmjs_publish || inputs.gh_release) && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     environment: ci
@@ -247,6 +433,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -273,6 +461,7 @@ jobs:
 
   wt-peer-probes-browser-tests:
     name: wt-peer-probes-browser-tests
+    needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.npmjs_publish || inputs.gh_release) && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     environment: ci
@@ -281,6 +470,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -307,10 +498,38 @@ jobs:
           path: packages/wt-peer-probes/playwright-report/
           if-no-files-found: ignore
 
+  create-github-releases:
+    name: create-github-releases
+    needs: prepare-release
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.gh_release }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check out prepared release commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download release plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: release-plan
+          path: .
+      - name: Configure Git tag identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Create tags and GitHub releases
+        run: python tools/release/release_automation.py create-github-releases --summary release-plan.json
+
   publish-wt-peer-probes-github-release:
     name: wt-peer-probes-github-release
-    needs: [wt-peer-probes-ci, wt-peer-probes-browser-tests]
-    if: ${{ github.event_name != 'workflow_dispatch' || (inputs.gh_release && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
+    needs: [prepare-release, create-github-releases, wt-peer-probes-ci, wt-peer-probes-browser-tests]
+    if: ${{ always() && (needs.create-github-releases.result == 'success' || needs.create-github-releases.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes'))) }}
     runs-on: ubuntu-latest
     environment: github-release
     permissions:
@@ -318,6 +537,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Download WebTransport peer probe tarball
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -326,17 +547,17 @@ jobs:
       - name: Create or update GitHub release with probe package
         uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
         with:
-          tag_name: ${{ github.ref_name }}
-          name: ${{ github.ref_name }}
-          body_path: docs/release-notes/RELEASE_NOTES_0.3.15.md
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.npm_release_tag || github.ref_name }}
+          name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.npm_release_tag || github.ref_name }}
+          body_path: ${{ needs.prepare-release.outputs.release_notes }}
           files: .artifacts/wt-peer-probes/*.tgz
           draft: ${{ github.event_name == 'workflow_dispatch' && inputs.package_selection == 'all' }}
-          prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.prerelease == 'true' || github.event_name == 'release' && github.event.release.prerelease }}
           make_latest: legacy
 
   publish-wt-peer-probes-npmjs:
     name: wt-peer-probes-npmjs-publish
-    needs: [wt-peer-probes-ci, wt-peer-probes-browser-tests]
+    needs: [prepare-release, wt-peer-probes-ci, wt-peer-probes-browser-tests]
     if: ${{ github.event_name != 'workflow_dispatch' || (inputs.npmjs_publish && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     environment: npm
@@ -346,6 +567,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -377,8 +600,8 @@ jobs:
 
   publish-python-github-release:
     name: python-github-release
-    needs: [python-dist, publish-wt-peer-probes-github-release]
-    if: ${{ always() && needs.python-dist.result == 'success' && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
+    needs: [prepare-release, create-github-releases, python-dist, publish-wt-peer-probes-github-release]
+    if: ${{ always() && needs.python-dist.result == 'success' && (needs.create-github-releases.result == 'success' || needs.create-github-releases.result == 'skipped') && (needs.publish-wt-peer-probes-github-release.result == 'success' || needs.publish-wt-peer-probes-github-release.result == 'skipped') && (github.event_name != 'workflow_dispatch' || (inputs.gh_release && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -396,8 +619,11 @@ jobs:
       - name: Attach Python package and release evidence assets
         uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
         with:
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.python_release_tag || github.ref_name }}
+          name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.python_release_tag || github.ref_name }}
+          body_path: ${{ needs.prepare-release.outputs.release_notes }}
           files: |
             dist/*
             .artifacts/release-assets/*
           draft: false
-          prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.prerelease == 'true' || github.event_name == 'release' && github.event.release.prerelease }}
