@@ -35,6 +35,7 @@
     "assets/tigrcorn_brand_frag_light.png",
     "assets/tigrcorn_brand_frag_dark.png",
     "pkgs/",
+    "packages/",
     ".ssot/"
   ]
 }

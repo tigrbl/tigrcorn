@@ -293,6 +293,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: packages/wt-peer-probes
         run: npx playwright install --with-deps chromium firefox webkit
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
       - name: Validate browser WebTransport peer API probes
         working-directory: packages/wt-peer-probes
         run: npm run test:peer-api -- --reporter=line
@@ -325,7 +328,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          body_path: RELEASE_NOTES_0.3.12.md
+          body_path: RELEASE_NOTES_0.3.13.md
           files: .artifacts/wt-peer-probes/*.tgz
           draft: false
           prerelease: ${{ github.event_name == 'release' && github.event.release.prerelease }}
