@@ -1,6 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 test("tigrcorn WebTransport peer probe", async ({ page, baseURL }, testInfo) => {
+  test.skip(
+    process.env.TIGRCORN_WT_LIVE !== "1",
+    "Set TIGRCORN_WT_LIVE=1 with a live Tigrcorn WebTransport endpoint to run the network probe.",
+  );
+
   const wtUrl = process.env.TIGRCORN_WT_URL ?? `${baseURL}/__tigrcorn/probe/wt`;
   const reportUrl = process.env.TIGRCORN_WT_REPORT_URL ?? `${baseURL}/__tigrcorn/probe/wt/report`;
 

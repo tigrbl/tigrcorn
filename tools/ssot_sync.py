@@ -205,6 +205,14 @@ QUIC_CATEGORY_FEATURE_IDS = (
     "feat:quic-negative-corpora",
 )
 
+WT_PEER_BROWSER_FEATURES = (
+    ("chromium", "Chromium", "Chromium browser peer WebTransport API interoperability"),
+    ("firefox", "Firefox", "Firefox browser peer WebTransport API interoperability"),
+    ("webkit", "WebKit/Safari", "WebKit and Safari browser peer WebTransport API interoperability"),
+    ("mobile-chrome", "Mobile Chrome", "Mobile Chrome browser peer WebTransport API interoperability"),
+    ("mobile-safari", "Mobile Safari", "Mobile Safari browser peer WebTransport API interoperability"),
+)
+
 WEBTRANSPORT_CATEGORY_FEATURE_IDS = (
     "feat:contract-webtransport-scope",
     "feat:contract-webtransport-events",
@@ -227,7 +235,9 @@ WEBTRANSPORT_CATEGORY_FEATURE_IDS = (
     "feat:webtransport-max-datagram-size-flag",
     "feat:webtransport-origin-flag",
     "feat:webtransport-path-flag",
+    "feat:webtransport-peer-apis",
     "feat:webtransport-peer-probe-npm-package",
+    *(f"feat:webtransport-peer-probe-{browser_id}" for browser_id, _title, _description in WT_PEER_BROWSER_FEATURES),
 )
 
 T4_CATEGORY_FEATURE_IDS = frozenset(TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS) | frozenset(QUIC_CATEGORY_FEATURE_IDS)
@@ -2524,6 +2534,65 @@ def build_registry() -> dict[str, Any]:
     if "feat:rfc-9000" not in features[quic_streams_feature_id]["requires"]:
         features[quic_streams_feature_id]["requires"].append("feat:rfc-9000")
 
+    wt_peer_browser_test_path = "packages/wt-peer-probes/tests/wt-peer-api-protocol.playwright.spec.ts"
+    wt_peer_apis_feature_id = _feature_id("webtransport-peer-apis")
+    wt_peer_apis_claim_id = _claim_id("webtransport-peer-apis-implemented")
+    wt_peer_apis_test_id = "tst:webtransport-peer-apis"
+    wt_peer_apis_evidence_id = "evd:webtransport-peer-apis-playwright"
+    ensure_feature(
+        feature_id=wt_peer_apis_feature_id,
+        title="WebTransport peer APIs",
+        description=(
+            "Umbrella feature for browser-executed WebTransport peer APIs used to validate "
+            "Tigrcorn readiness, bidirectional stream, unidirectional stream, datagram, and close "
+            "interoperability from real browser API surfaces."
+        ),
+        tier="T3",
+        slot="webtransport-peer-probes",
+        horizon="current",
+        implementation_status="implemented",
+    )
+    link_feature_specs([wt_peer_apis_feature_id], ["spc:2010", "spc:2039"])
+    for required_id in (
+        "feat:webtransport-h3-quic-scope",
+        "feat:webtransport-h3-quic-stream-events",
+        "feat:webtransport-h3-quic-datagram-events",
+        "feat:webtransport-public-api",
+    ):
+        if required_id not in features[wt_peer_apis_feature_id]["requires"]:
+            features[wt_peer_apis_feature_id]["requires"].append(required_id)
+    ensure_claim(
+        claim_id=wt_peer_apis_claim_id,
+        title="WebTransport peer APIs implemented",
+        description=(
+            "The Playwright peer API protocol workload validates the browser-executed "
+            "WebTransport peer API contract across Chromium, Firefox, WebKit/Safari, mobile Chrome, "
+            "and mobile Safari projects."
+        ),
+        tier="T3",
+        kind="peer_api_interoperability",
+        feature_ids=[wt_peer_apis_feature_id],
+    )
+    ensure_evidence(
+        evidence_id=wt_peer_apis_evidence_id,
+        title="WebTransport peer APIs Playwright evidence",
+        kind="playwright",
+        tier="T3",
+        path=wt_peer_browser_test_path,
+        claim_ids=[wt_peer_apis_claim_id],
+        test_ids=[wt_peer_apis_test_id],
+    )
+    ensure_test(
+        test_id=wt_peer_apis_test_id,
+        title="WebTransport peer APIs browser protocol matrix",
+        status="passing",
+        kind="playwright",
+        path=wt_peer_browser_test_path,
+        feature_ids=[wt_peer_apis_feature_id],
+        claim_ids=[wt_peer_apis_claim_id],
+        evidence_ids=[wt_peer_apis_evidence_id],
+    )
+
     wt_peer_probe_feature_id = _feature_id("webtransport-peer-probe-npm-package")
     ensure_feature(
         feature_id=wt_peer_probe_feature_id,
@@ -2539,9 +2608,70 @@ def build_registry() -> dict[str, Any]:
         implementation_status="implemented",
     )
     link_feature_specs([wt_peer_probe_feature_id], ["spc:2010", "spc:2039"])
-    for required_id in ("feat:webtransport-h3-quic-scope", "feat:webtransport-public-api"):
+    for required_id in (wt_peer_apis_feature_id, "feat:webtransport-h3-quic-scope", "feat:webtransport-public-api"):
         if required_id not in features[wt_peer_probe_feature_id]["requires"]:
             features[wt_peer_probe_feature_id]["requires"].append(required_id)
+
+    for browser_id, browser_title, browser_description in WT_PEER_BROWSER_FEATURES:
+        browser_feature_id = _feature_id(f"webtransport-peer-probe-{browser_id}")
+        browser_claim_id = _claim_id(f"webtransport-peer-probe-{browser_id}-implemented")
+        browser_test_id = _test_id("webtransport-peer-probe", browser_id)
+        browser_evidence_id = _evidence_id("webtransport-peer-probe", browser_id)
+        ensure_feature(
+            feature_id=browser_feature_id,
+            title=f"WebTransport peer probe: {browser_title}",
+            description=(
+                f"{browser_description} is verified through the @tigrcorn/wt-peer-probes "
+                "Playwright peer API harness. The runnable peer test exercises Tigrcorn's "
+                "WebTransport ready, bidirectional stream, unidirectional stream, datagram, "
+                "and close protocol messages through the browser WebTransport API surface."
+            ),
+            tier="T3",
+            slot="webtransport-peer-probes",
+            horizon="current",
+            implementation_status="implemented",
+        )
+        link_feature_specs([browser_feature_id], ["spc:2010", "spc:2039"])
+        for required_id in (
+            wt_peer_apis_feature_id,
+            wt_peer_probe_feature_id,
+            "feat:webtransport-h3-quic-scope",
+            "feat:webtransport-h3-quic-stream-events",
+            "feat:webtransport-h3-quic-datagram-events",
+        ):
+            if required_id not in features[browser_feature_id]["requires"]:
+                features[browser_feature_id]["requires"].append(required_id)
+        ensure_claim(
+            claim_id=browser_claim_id,
+            title=f"{browser_title} WebTransport peer probe implemented",
+            description=(
+                f"The {browser_title} Playwright project executes the peer API protocol harness "
+                "and verifies the browser can drive Tigrcorn WebTransport bidi, unidi, datagram, "
+                "ready, and close semantics through the package entrypoint."
+            ),
+            tier="T3",
+            kind="peer_api_interoperability",
+            feature_ids=[browser_feature_id],
+        )
+        ensure_evidence(
+            evidence_id=browser_evidence_id,
+            title=f"{browser_title} WebTransport peer probe Playwright evidence",
+            kind="playwright",
+            tier="T3",
+            path=wt_peer_browser_test_path,
+            claim_ids=[browser_claim_id],
+            test_ids=[browser_test_id],
+        )
+        ensure_test(
+            test_id=browser_test_id,
+            title=f"{browser_title} WebTransport peer API protocol probe",
+            status="passing",
+            kind="playwright",
+            path=wt_peer_browser_test_path,
+            feature_ids=[browser_feature_id],
+            claim_ids=[browser_claim_id],
+            evidence_ids=[browser_evidence_id],
+        )
 
     closed_test_feature_ids = set(implemented_contract_app_interface_features) | {
         "webtransport-h3-quic-scope",
@@ -2562,7 +2692,9 @@ def build_registry() -> dict[str, Any]:
         "webtransport-max-datagram-size-flag",
         "webtransport-origin-flag",
         "webtransport-path-flag",
+        "webtransport-peer-apis",
         "webtransport-peer-probe-npm-package",
+        *(f"webtransport-peer-probe-{browser_id}" for browser_id, _title, _description in WT_PEER_BROWSER_FEATURES),
         "governance-graph",
         "rest-runtime-exclusion",
         "json-rpc-runtime-exclusion",

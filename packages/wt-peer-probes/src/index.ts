@@ -5,4 +5,4 @@ export type {
   WTPeerProbeStages,
 } from "./types";
 
-export { runTigrcornWTPeerProbe } from "./probe";
+export { runTigrcornWTPeerProbe } from "./probe.js";

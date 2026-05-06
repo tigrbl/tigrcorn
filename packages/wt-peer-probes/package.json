@@ -22,6 +22,7 @@
     "prepack": "npm run build",
     "test": "npm run typecheck",
     "probe:playwright": "playwright test",
+    "test:peer-api": "playwright test tests/wt-peer-api-protocol.playwright.spec.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "keywords": [

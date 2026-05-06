@@ -51,9 +51,28 @@ jobs:
           name: wt-peer-probes-${{ github.sha }}
           path: packages/wt-peer-probes/tigrcorn-wt-peer-probes-*.tgz
 
+  peer-browser-tests:
+    name: peer-browser-tests
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate browser WebTransport peer API probes
+        uses: cobycloud/actions/actions/playwright-ci@main
+        with:
+          node-version: "22"
+          working-directory: packages/wt-peer-probes
+          install-command: npm ci --workspaces=false
+          browser-install-command: npx playwright install --with-deps chromium firefox webkit
+          test-command: npm run test:peer-api -- --reporter=line
+          artifact-name: wt-peer-probes-playwright-${{ github.sha }}
+
   github-release:
     name: gh-release
-    needs: ci
+    needs: [ci, peer-browser-tests]
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.create_github_release }}
     runs-on: ubuntu-latest
     environment: github-release
@@ -81,7 +100,7 @@ jobs:
 
   npmjs:
     name: npmjs-publish
-    needs: ci
+    needs: [ci, peer-browser-tests]
     if: ${{ github.event_name != 'workflow_dispatch' || inputs.publish_to_npmjs }}
     runs-on: ubuntu-latest
     environment: npm
