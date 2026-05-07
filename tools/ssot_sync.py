@@ -2667,6 +2667,286 @@ def build_registry() -> dict[str, Any]:
         )
         link_feature_specs([feature_id], ["spc:2012", "spc:2026", "spc:2027", "spc:2034", "spc:2037"])
 
+    implementation_surface_rows = [
+        (
+            "http1-parser-owned",
+            "HTTP/1.1 package-owned parser",
+            (
+                "Package-owned HTTP/1.1 request parsing implemented by tigrcorn_protocols.http1.parser "
+                "instead of a selectable h11 or httptools runtime backend."
+            ),
+            "T2",
+            "http1-parser-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "http1-parser-h11-peer-fixture",
+            "HTTP/1.1 h11 peer fixture surface",
+            (
+                "Third-party h11 peer fixtures are preserved for HTTP/1.1 probing and interoperability checks, "
+                "but h11 is not the Tigrcorn runtime parser backend."
+            ),
+            "T1",
+            "http1-peer-h11",
+            "current",
+            "implemented",
+        ),
+        (
+            "http1-parser-httptools-selector",
+            "HTTP/1.1 httptools selector surface",
+            (
+                "Public httptools parser/backend selection is outside the current Tigrcorn product boundary; "
+                "the package exposes no runtime selector equivalent."
+            ),
+            "T0",
+            "http1-parser-selector",
+            "out_of_bounds",
+            "absent",
+        ),
+        (
+            "http2-connection-handler-owned",
+            "HTTP/2 package-owned connection handler",
+            (
+                "Package-owned HTTP/2 connection handling implemented by "
+                "tigrcorn_protocols.http2.handler.HTTP2ConnectionHandler."
+            ),
+            "T3",
+            "http2-handler-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "http2-connection-state-owned",
+            "HTTP/2 package-owned connection state",
+            (
+                "Package-owned HTTP/2 connection state implemented by "
+                "tigrcorn_protocols.http2.state.H2ConnectionState."
+            ),
+            "T3",
+            "http2-state-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "http3-connection-core-owned",
+            "HTTP/3 package-owned connection core",
+            (
+                "Package-owned HTTP/3 connection core implemented by "
+                "tigrcorn_protocols.http3.streams.HTTP3ConnectionCore."
+            ),
+            "T4",
+            "http3-core-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "http3-connection-state-owned",
+            "HTTP/3 package-owned connection state",
+            (
+                "Package-owned HTTP/3 connection state implemented by "
+                "tigrcorn_protocols.http3.state.HTTP3ConnectionState."
+            ),
+            "T4",
+            "http3-state-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "quic-connection-owned",
+            "QUIC package-owned connection",
+            (
+                "Package-owned QUIC connection transport implemented by "
+                "tigrcorn_transports.quic.connection.QuicConnection."
+            ),
+            "T4",
+            "quic-connection-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "websocket-handler-owned",
+            "WebSocket package-owned connection handler",
+            (
+                "Package-owned WebSocket connection handling implemented by "
+                "tigrcorn_protocols.websocket.handler.WebSocketConnectionHandler."
+            ),
+            "T3",
+            "websocket-handler-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "websocket-h2-session-owned",
+            "WebSocket over HTTP/2 package-owned session",
+            (
+                "Package-owned RFC 8441 session handling implemented by "
+                "tigrcorn_protocols.http2.websocket.H2WebSocketSession."
+            ),
+            "T3",
+            "websocket-h2-session-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "websocket-h3-session-owned",
+            "WebSocket over HTTP/3 package-owned session",
+            (
+                "Package-owned RFC 9220 session handling implemented by "
+                "tigrcorn_protocols.http3.websocket.H3WebSocketSession."
+            ),
+            "T3",
+            "websocket-h3-session-owned",
+            "current",
+            "implemented",
+        ),
+        (
+            "runtime-loop-auto",
+            "Auto runtime loop",
+            (
+                "Supported runtime loop mode that prefers uvloop when installed and otherwise falls back to asyncio "
+                "through tigrcorn_runtime.server.bootstrap.run_coro_with_runtime."
+            ),
+            "T2",
+            "runtime-loop-auto",
+            "current",
+            "implemented",
+        ),
+        (
+            "runtime-loop-asyncio",
+            "Asyncio runtime loop",
+            (
+                "Supported runtime loop mode implemented directly on Python asyncio through "
+                "tigrcorn_runtime.server.bootstrap.run_coro_with_runtime."
+            ),
+            "T2",
+            "runtime-loop-asyncio",
+            "current",
+            "implemented",
+        ),
+        (
+            "runtime-loop-uvloop",
+            "Uvloop runtime loop",
+            (
+                "Supported optional runtime loop mode implemented through uvloop integration in "
+                "tigrcorn_runtime.server.bootstrap.run_coro_with_runtime."
+            ),
+            "T2",
+            "runtime-loop-uvloop",
+            "current",
+            "implemented",
+        ),
+        (
+            "runtime-loop-trio",
+            "Trio runtime loop",
+            (
+                "Trio is retained only as a reserved dependency path and is not a supported runtime loop in the "
+                "current Tigrcorn boundary."
+            ),
+            "T0",
+            "runtime-loop-trio",
+            "out_of_bounds",
+            "absent",
+        ),
+        (
+            "worker-class-local",
+            "Local worker class",
+            (
+                "Supported in-process worker class selected by the default worker_class=local server runtime posture."
+            ),
+            "T2",
+            "worker-local",
+            "current",
+            "implemented",
+        ),
+        (
+            "worker-class-process-supervisor",
+            "Process worker supervisor",
+            (
+                "Supported multi-process worker supervision implemented by "
+                "tigrcorn_runtime.server.supervisor.ServerSupervisor and "
+                "tigrcorn_runtime.workers.supervisor.WorkerSupervisor."
+            ),
+            "T2",
+            "worker-process-supervisor",
+            "current",
+            "implemented",
+        ),
+        (
+            "worker-class-process-worker",
+            "Process worker implementation",
+            (
+                "Supported process worker implementation provided by "
+                "tigrcorn_runtime.workers.process.ProcessWorker."
+            ),
+            "T2",
+            "worker-process",
+            "current",
+            "implemented",
+        ),
+        (
+            "worker-reloader-polling",
+            "Polling child-process reloader",
+            (
+                "Supported development reloader implemented by "
+                "tigrcorn_runtime.server.reloader.PollingReloader."
+            ),
+            "T1",
+            "worker-reloader",
+            "current",
+            "implemented",
+        ),
+        (
+            "websocket-package-websockets-peer",
+            "websockets peer package surface",
+            (
+                "The third-party websockets package is supported as certification and interoperability tooling for "
+                "independent WebSocket peer coverage, not as a selectable Tigrcorn server engine."
+            ),
+            "T1",
+            "websocket-peer-websockets",
+            "current",
+            "implemented",
+        ),
+        (
+            "websocket-package-wsproto-peer",
+            "wsproto peer package surface",
+            (
+                "The third-party wsproto package is supported as certification and interoperability tooling for "
+                "independent WebSocket peer coverage, not as a selectable Tigrcorn server engine."
+            ),
+            "T1",
+            "websocket-peer-wsproto",
+            "current",
+            "implemented",
+        ),
+        (
+            "websocket-package-websockets-sansio",
+            "websockets-sansio package surface",
+            (
+                "Public websockets-sansio engine selection is outside the current Tigrcorn boundary and no supported "
+                "selector surface is exposed."
+            ),
+            "T0",
+            "websocket-engine-selector",
+            "out_of_bounds",
+            "absent",
+        ),
+    ]
+    implementation_surface_feature_ids = []
+    for raw_feature_id, title, description, tier, slot, horizon, implementation_status in implementation_surface_rows:
+        feature_id = _feature_id(raw_feature_id)
+        implementation_surface_feature_ids.append(feature_id)
+        ensure_feature(
+            feature_id=feature_id,
+            title=title,
+            description=description,
+            tier=tier,
+            slot=slot,
+            horizon=horizon,
+            implementation_status=implementation_status,
+        )
+
     quic_streams_feature_id = _feature_id("quic-streams")
     ensure_feature(
         feature_id=quic_streams_feature_id,
