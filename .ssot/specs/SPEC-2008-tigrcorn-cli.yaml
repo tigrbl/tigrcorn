@@ -3,8 +3,8 @@ kind: "spec"
 id: "spc:2008"
 number: 2008
 slug: "tigrcorn-cli"
-title: "CLI"
-status: "accepted"
+title: "Content"
+status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
@@ -49,7 +49,4 @@ body: |-
   - Public protocol and tuning flags shall fail closed on invalid enum values, invalid numeric values, or invalid WebTransport carrier state.
   - Hidden experimental flags are not part of the public certified CLI surface unless explicitly declared by feature rows.
 spec_kind: "local-policy"
-adr_ids:
-  - "adr:1002"
-  - "adr:1011"
-  - "adr:1023"
+adr_ids: []

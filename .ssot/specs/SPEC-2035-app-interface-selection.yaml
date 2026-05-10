@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:2035"
 number: 2035
 slug: "app-interface-selection"
-title: "Application interface selection"
+title: "Content"
 status: "draft"
 origin: "repo-local"
 decision_date: null

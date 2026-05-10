@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:2004"
 number: 2004
 slug: "quic"
-title: "QUIC"
+title: "Content"
 status: "draft"
 origin: "repo-local"
 decision_date: null

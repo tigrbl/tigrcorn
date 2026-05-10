@@ -1,18 +1,3 @@
-schema_version: "0.2.0"
-kind: "adr"
-id: "adr:0615"
-number: 615
-slug: "downstream-assurance-language-ceilings"
-title: "Downstream assurance-language ceilings for feature target claim tiers"
-status: "accepted"
-origin: "ssot-origin"
-decision_date: null
-tags: []
-summary: "SSOT downstream repositories use feature target claim tiers, linked claims, tests, and evidence to describe what a system can responsibly claim about a feature. The shared `T0` through `T4` tiers describe assurance strength, but downstream reports, release notes, README content, generated summaries, and certification artifacts also need a common language ceiling so weakly evidenced features are not described with stronger assurance language than their proof chains support."
-supersedes: []
-superseded_by: []
-status_notes: []
-references: []
 body: |-
   ## Context
   
@@ -60,3 +45,18 @@ body: |-
   Downstream projects may adopt stricter vocabulary, additional review gates, or domain-specific phrasing, but they must not permit stronger assurance wording than the feature's passing proof chain supports.
   
   Reviewers and automation should treat over-strong assurance language as a policy defect even when the underlying feature is implemented.
+decision_date: null
+id: "adr:0615"
+kind: "adr"
+number: 615
+origin: "ssot-origin"
+references: []
+schema_version: "0.2.0"
+slug: "downstream-assurance-language-ceilings"
+status: "accepted"
+status_notes: []
+summary: "SSOT downstream repositories use feature target claim tiers, linked claims, tests, and evidence to describe what a system can responsibly claim about a feature. The shared `T0` through `T4` tiers describe assurance strength, but downstream reports, release notes, README content, generated summaries, and certification artifacts also need a common language ceiling so weakly evidenced features are not described with stronger assurance language than their proof chains support."
+superseded_by: []
+supersedes: []
+tags: []
+title: "Downstream assurance-language ceilings for feature target claim tiers"

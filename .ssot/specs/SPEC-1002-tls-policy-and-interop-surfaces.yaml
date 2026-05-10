@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:1002"
 number: 1002
 slug: "tls-policy-and-interop-surfaces"
-title: "TLS policy and interoperability surfaces"
+title: "Purpose"
 status: "draft"
 origin: "repo-local"
 decision_date: null

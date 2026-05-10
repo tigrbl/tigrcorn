@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:1001"
 number: 1001
 slug: "governance-issue-traceability"
-title: "governance issue traceability"
+title: "Purpose"
 status: "draft"
 origin: "repo-local"
 decision_date: null

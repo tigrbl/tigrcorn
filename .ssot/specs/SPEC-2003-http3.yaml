@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:2003"
 number: 2003
 slug: "http3"
-title: "HTTP/3"
+title: "Content"
 status: "draft"
 origin: "repo-local"
 decision_date: null

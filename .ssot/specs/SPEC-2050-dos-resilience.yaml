@@ -3,12 +3,12 @@ kind: "spec"
 id: "spc:2050"
 number: 2050
 slug: "dos-resilience"
-title: "DoS resilience and availability abuse contract"
-status: "accepted"
+title: "Content"
+status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrcorn shall bound availability-sensitive protocol state and emit explicit DoS warning signals for resource exhaustion or protocol misuse."
+summary: "Tigrcorn treats DoS warnings as runtime indications that resource exhaustion or protocol misuse can degrade service availability."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -17,23 +17,20 @@ references:
   - "SPEC-2010 WebTransport contract target"
 body: |-
   ## Content
-
+  
   # DoS resilience and availability abuse contract
-
+  
   Tigrcorn treats DoS warnings as runtime indications that resource exhaustion or protocol misuse can degrade service availability.
-
+  
   ## Required behavior
-
+  
   - HTTP/3 request parse buffers must have an explicit bounded ceiling and fail closed with H3_EXCESSIVE_LOAD when exceeded.
   - Cancellation paths used by shutdown and teardown must have a bounded helper so cancellation-resistant tasks cannot block closure indefinitely.
   - DoS warning signals must use a stable event name and structured attributes for surface, reason, action, resource, limit, and observed value.
   - Queue saturation, protocol stalls, stream-credit exhaustion, forced aborts, and shutdown timeout handling must remain testable as availability-abuse evidence.
-
+  
   ## Boundary
-
+  
   This contract governs package-owned runtime posture. It does not replace external network rate limiting, L4/L7 firewalling, or application-owned expensive-endpoint policy.
 spec_kind: "local-policy"
-adr_ids:
-  - "adr:1003"
-  - "adr:1011"
-  - "adr:1023"
+adr_ids: []

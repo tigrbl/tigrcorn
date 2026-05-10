@@ -3,12 +3,12 @@ kind: "spec"
 id: "spc:2044"
 number: 2044
 slug: "governed-rfc-support-floor"
-title: "Governed RFC support floor"
-status: "accepted"
+title: "SPEC-2044-governed-rfc-support-floor"
+status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim, including the HTTP/1.1 messaging and framing surface defined by RFC 9112."
+summary: "Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -49,6 +49,5 @@ body: |-
   - Generated RFC claim rows shall remain promoted with tier T2 or stronger.
   - Supplemental deep coverage vectors shall generate T2 or stronger SSOT tests and evidence while preserving current, implemented, active feature status and linkage to this SPEC.
   - Tests shall fail if any scoped target loses its feature, SPEC link, claim floor, or local conformance evidence.
-spec_kind: "normative"
-adr_ids:
-  - "adr:1037"
+spec_kind: "local-policy"
+adr_ids: []

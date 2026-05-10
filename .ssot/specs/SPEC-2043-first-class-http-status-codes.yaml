@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrcorn shall track a minimum immediate first-class HTTP status code set from 100 through 599, including 402 Payment Required."
+summary: "Tigrcorn shall track the minimum immediate first-class HTTP status code set as"
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -17,12 +17,12 @@ references:
   - "HTTP Semantics"
 body: |-
   # First-class HTTP status codes
-
+  
   Tigrcorn shall track the minimum immediate first-class HTTP status code set as
   explicit SSOT features with linked test rows.
-
+  
   Requirements:
-
+  
   - The first-class set shall include status codes 100, 101, 103, 200, 201, 202,
     204, 206, 301, 302, 304, 307, 308, 400, 401, 402, 403, 404, 405, 406, 408,
     413, 416, 421, 426, 431, 500, 502, 503, and 504.
@@ -38,5 +38,4 @@ body: |-
   - 402 Payment Required is part of the immediate governed set even though the
     runtime does not currently originate it.
 spec_kind: "local-policy"
-adr_ids:
-  - "adr:1036"
+adr_ids: []

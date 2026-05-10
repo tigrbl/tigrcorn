@@ -1,17 +1,17 @@
-schema_version: "0.1.0"
-kind: "adr"
-id: "adr:0605"
-number: 605
-slug: "claim-status-vs-tier"
-title: "Claim status and claim tier are orthogonal"
-status: "draft"
-origin: "ssot-origin"
-decision_date: null
-tags: []
-summary: "Claim status expresses lifecycle progression. Claim tier expresses assurance strength."
-supersedes: []
-superseded_by: []
-status_notes: []
-references: []
 body: |-
   Claim status expresses lifecycle progression. Claim tier expresses assurance strength.
+decision_date: null
+id: "adr:0605"
+kind: "adr"
+number: 605
+origin: "ssot-origin"
+references: []
+schema_version: "0.1.0"
+slug: "claim-status-vs-tier"
+status: "draft"
+status_notes: []
+summary: "Claim status expresses lifecycle progression. Claim tier expresses assurance strength."
+superseded_by: []
+supersedes: []
+tags: []
+title: "Claim status and claim tier are orthogonal"

@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:2009"
 number: 2009
 slug: "rfc8785-jcs"
-title: "RFC 8785 JSON Canonicalization Scheme"
+title: "Purpose"
 status: "draft"
 origin: "repo-local"
 decision_date: null

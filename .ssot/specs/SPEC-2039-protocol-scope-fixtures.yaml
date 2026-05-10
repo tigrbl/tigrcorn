@@ -16,11 +16,11 @@ references:
   - "ADR-1033"
 body: |-
   # Protocol and scope fixtures
-
+  
   Tigrcorn shall maintain one named fixture feature for every supported protocol and scope type.
-
+  
   Requirements:
-
+  
   - The fixture inventory shall be machine-readable and live in the test tree.
   - The fixture inventory shall include fixture id, feature id, surface kind, surface name, fixture path, and coverage paths.
   - Supported protocol fixtures shall cover HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, and raw-framed/custom protocol behavior.
@@ -29,5 +29,4 @@ body: |-
   - Every fixture feature shall have a pytest test row that verifies fixture presence and coverage.
   - Fixture coverage tests shall verify that fixture artifacts exist and that each fixture has at least one existing coverage path.
 spec_kind: "local-policy"
-adr_ids:
-  - "adr:1033"
+adr_ids: []

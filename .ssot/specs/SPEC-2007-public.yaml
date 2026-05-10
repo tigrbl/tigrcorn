@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:2007"
 number: 2007
 slug: "public"
-title: "Public operator and programmatic surface reference"
+title: "Content"
 status: "draft"
 origin: "repo-local"
 decision_date: null

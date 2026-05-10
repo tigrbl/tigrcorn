@@ -3,7 +3,7 @@ kind: "spec"
 id: "spc:2005"
 number: 2005
 slug: "websocket"
-title: "WebSocket"
+title: "Content"
 status: "draft"
 origin: "repo-local"
 decision_date: null

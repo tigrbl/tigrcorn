@@ -3,8 +3,8 @@ kind: "spec"
 id: "spc:2010"
 number: 2010
 slug: "webtransport-contract"
-title: "WebTransport contract target"
-status: "accepted"
+title: "Content"
+status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
@@ -73,6 +73,4 @@ body: |-
   
   Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
 spec_kind: "local-policy"
-adr_ids:
-  - "adr:1011"
-  - "adr:1023"
+adr_ids: []
