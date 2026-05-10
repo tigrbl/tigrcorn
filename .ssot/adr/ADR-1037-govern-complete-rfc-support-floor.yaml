@@ -8,7 +8,7 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Decision: Tigrcorn shall govern and support every RFC target requested for the QUIC, TLS, HTTP/2, HTTP/3, WebSocket, WebTransport, early-data, trailer, URI, applicability, and manageability support floor. Every governed target shall have at least a T2 local-conformance claim."
+summary: "Decision: Tigrcorn shall govern and support every RFC target requested for the HTTP/1.1, QUIC, TLS, HTTP/2, HTTP/3, WebSocket, WebTransport, early-data, trailer, URI, applicability, and manageability support floor. Every governed target shall have at least a T2 local-conformance claim."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -21,6 +21,7 @@ references:
   - "RFC 9000"
   - "RFC 9001"
   - "RFC 9002"
+  - "RFC 9112"
   - "RFC 9113"
   - "RFC 9114"
   - "RFC 9114 Section 10.9"
@@ -31,9 +32,9 @@ references:
   - "RFC 9308"
   - "RFC 9312"
 body: |-
-  Decision: Tigrcorn shall govern and support every RFC target requested for the QUIC, TLS, HTTP/2, HTTP/3, WebSocket, WebTransport, early-data, trailer, URI, applicability, and manageability support floor.
+  Decision: Tigrcorn shall govern and support every RFC target requested for the HTTP/1.1, QUIC, TLS, HTTP/2, HTTP/3, WebSocket, WebTransport, early-data, trailer, URI, applicability, and manageability support floor.
 
-  The governed support floor includes RFC 9000, RFC 9001, RFC 9002, RFC 9114, RFC 9204, RFC 9221, RFC 9312, RFC 9308, RFC 8446, RFC 8470, RFC 9114 Section 10.9, RFC 9297, RFC 9220, RFC 3986, RFC 8441, RFC 9113, and the existing trailer-field target RFC 9110 Section 6.5.
+  The governed support floor includes RFC 9112 for HTTP/1.1 messaging and framing; RFC 9000, RFC 9001, RFC 9002, RFC 9114, RFC 9204, RFC 9221, RFC 9312, RFC 9308, RFC 8446, RFC 8470, RFC 9114 Section 10.9, RFC 9297, RFC 9220, RFC 3986, RFC 8441, RFC 9113; and the existing trailer-field target RFC 9110 Section 6.5.
 
   Consequences:
   - Each target must remain inside docs/review/conformance/certification_boundary.json.

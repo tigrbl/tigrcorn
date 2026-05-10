@@ -8,7 +8,7 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim."
+summary: "Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim, including the HTTP/1.1 messaging and framing surface defined by RFC 9112."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -25,6 +25,7 @@ body: |-
   Tigrcorn shall keep the requested RFC support floor in the authoritative boundary. Each target shall be represented as a governed feature, supported at the current package boundary, and backed by at least a T2 local-conformance claim.
   
   Scope:
+  - HTTP/1.1 messaging and framing: RFC 9112.
   - QUIC: RFC 9000, RFC 9001, RFC 9002, RFC 9221, RFC 9308, RFC 9312.
   - HTTP/3 and QPACK: RFC 9114, RFC 9114 Section 10.9, RFC 9204, RFC 9297.
   - HTTP/2 and WebSocket extended CONNECT: RFC 9113, RFC 8441, RFC 9220.
@@ -42,6 +43,7 @@ body: |-
   - The certification boundary shall list every scoped target in required_rfcs.
   - required_rfc_evidence shall declare a highest evidence tier for every scoped target.
   - Every scoped target shall resolve to at least one local_conformance corpus vector.
+  - RFC 9112 shall remain represented as the governed HTTP/1.1 target, not a generic HTTP/1 label, across the authoritative boundary and generated RFC feature surface.
   - tools/ssot_sync.py shall generate one feature per scoped RFC target and link it to this SPEC.
   - Generated RFC feature rows shall remain current, implemented, and target T2 or stronger.
   - Generated RFC claim rows shall remain promoted with tier T2 or stronger.

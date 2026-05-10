@@ -567,8 +567,32 @@ class HTTP2ConnectionHandler:
         state = self.streams.find(stream_id)
         if state is None or state.dispatched or not state.headers_complete:
             return
+        protocol = self._extended_connect_protocol(state.headers)
         is_ws = self._is_extended_connect_websocket(state.headers)
         is_connect = self._is_generic_connect_tunnel(state.headers)
+        if protocol is not None and (protocol != b"websocket" or not self.config.websocket.enabled):
+            request = self._build_request(state)
+            if not self._admit_stream_work(stream_id):
+                await self._send_response(stream_id, 503, [(b"content-type", b"text/plain")], b"scheduler overloaded")
+                self.access_logger.log_http(self.client, request.method, request.path, 503, "HTTP/2")
+                self._release_stream_work_lease(stream_id)
+                self._cancel_stream(stream_id)
+                self.streams.close(stream_id)
+                self._maybe_finish_after_goaway()
+                return
+            state.dispatched = True
+            await self._send_response(
+                stream_id,
+                501,
+                [(b"content-type", b"text/plain")],
+                b"unsupported extended connect protocol",
+            )
+            self.access_logger.log_http(self.client, request.method, request.path, 501, "HTTP/2")
+            self._release_stream_work_lease(stream_id)
+            self._cancel_stream(stream_id)
+            self.streams.close(stream_id)
+            self._maybe_finish_after_goaway()
+            return
         if not is_ws and not is_connect and not state.end_stream_received:
             return
         if not self._admit_stream_work(stream_id):
@@ -673,13 +697,18 @@ class HTTP2ConnectionHandler:
     def _pseudo_headers(self, headers: list[tuple[bytes, bytes]]) -> dict[bytes, bytes]:
         return {k: v for k, v in headers if k.startswith(b":")}
 
-    def _is_extended_connect_websocket(self, headers: list[tuple[bytes, bytes]]) -> bool:
+    def _extended_connect_protocol(self, headers: list[tuple[bytes, bytes]]) -> bytes | None:
         pseudo = self._pseudo_headers(headers)
-        return pseudo.get(b":method") == b"CONNECT" and pseudo.get(b":protocol") == b"websocket"
+        if pseudo.get(b":method") != b"CONNECT":
+            return None
+        return pseudo.get(b":protocol")
+
+    def _is_extended_connect_websocket(self, headers: list[tuple[bytes, bytes]]) -> bool:
+        return self._extended_connect_protocol(headers) == b"websocket"
 
     def _is_generic_connect_tunnel(self, headers: list[tuple[bytes, bytes]]) -> bool:
         pseudo = self._pseudo_headers(headers)
-        return pseudo.get(b":method") == b"CONNECT" and pseudo.get(b":protocol") is None
+        return pseudo.get(b":method") == b"CONNECT" and self._extended_connect_protocol(headers) is None
     def _release_stream_work_lease(self, stream_id: int) -> None:
         lease = self.stream_work_leases.pop(stream_id, None)
         if lease is not None:

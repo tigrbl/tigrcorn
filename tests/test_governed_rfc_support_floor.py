@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TIER_RANK = {'T0': 0, 'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4}
 ACCEPTED_CLAIM_STATUSES = {'asserted', 'implemented', 'evidenced', 'certified', 'promoted', 'published'}
 RFC_FEATURES = {
+    'RFC 9112': 'feat:rfc-9112',
     'RFC 9000': 'feat:rfc-9000',
     'RFC 9001': 'feat:rfc-9001',
     'RFC 9002': 'feat:rfc-9002',
