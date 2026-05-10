@@ -36,6 +36,20 @@
       "fixture": "tests/test_websocket_rfc7692.py"
     },
     {
+      "name": "websocket-subprotocol-registry-semantics",
+      "protocol": "websocket-subprotocol",
+      "rfc": "7936",
+      "description": "Case-sensitive WebSocket subprotocol token preservation and exact-match acceptance semantics.",
+      "fixture": "tests/test_websocket_rfc7936.py"
+    },
+    {
+      "name": "websocket-well-known-uri",
+      "protocol": "websocket-uri",
+      "rfc": "8307",
+      "description": "Well-known WebSocket URI path preservation and carrier-parity handling for ws and wss targets.",
+      "fixture": "tests/test_websocket_rfc8307.py"
+    },
+    {
       "name": "http2-websocket-extended-connect",
       "protocol": "http2-websocket",
       "rfc": "8441",

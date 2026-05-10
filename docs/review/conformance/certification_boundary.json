@@ -33,6 +33,8 @@
     "RFC 9221",
     "RFC 6455",
     "RFC 7692",
+    "RFC 7936",
+    "RFC 8307",
     "RFC 8441",
     "RFC 9220",
     "RFC 9297",
@@ -215,10 +217,31 @@
       }
     },
     "RFC 7692": {
-      "highest_required_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
           "websocket-permessage-deflate"
+        ],
+        "independent_certification": [
+          "websocket-http11-server-websockets-client-permessage-deflate",
+          "websocket-http2-server-h2-client-permessage-deflate",
+          "websocket-http3-server-aioquic-client-permessage-deflate"
+        ]
+      }
+    },
+    "RFC 7936": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-subprotocol-registry-semantics"
+        ]
+      }
+    },
+    "RFC 8307": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-well-known-uri"
         ]
       }
     },

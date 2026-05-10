@@ -4378,6 +4378,8 @@ def build_registry() -> dict[str, Any]:
             "feature_ids": [
                 "feat:rfc-6455",
                 "feat:rfc-7692",
+                "feat:rfc-7936",
+                "feat:rfc-8307",
                 "feat:rfc-8441",
                 "feat:rfc-9220",
                 "feat:contract-websocket-scope",

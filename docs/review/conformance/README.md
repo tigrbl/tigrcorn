@@ -70,8 +70,8 @@ The canonical 0.3.9 release root is also **strict-target certifiably fully RFC c
 
 The remaining broader items are explicitly outside the current authoritative blocker set:
 
-- RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 remain intentionally bounded at `local_conformance` in the current authoritative machine-readable policy
-- the stricter all-surfaces-independent overlay for those surfaces now also passes
+- RFC 7936, RFC 8307, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 remain intentionally bounded at `local_conformance` in the current authoritative machine-readable policy
+- RFC 7692 now passes the stricter all-surfaces-independent overlay, while RFC 7936 and RFC 8307 remain governed local-conformance WebSocket adjuncts
 - the provisional all-surfaces and flow-control bundles remain non-certifying historical review aids
 - the historical intermediary / proxy seed corpus improves repository completeness and remains preserved
 - a minimum certified intermediary / proxy-adjacent corpus now exists under `intermediary_proxy_corpus_minimum_certified/`, but it is still intentionally narrower than a full multi-hop intermediary certification program

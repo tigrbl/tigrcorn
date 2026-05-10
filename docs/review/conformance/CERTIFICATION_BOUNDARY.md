@@ -48,6 +48,8 @@ The current required RFC surface remains:
 - RFC 9221
 - RFC 6455
 - RFC 7692
+- RFC 7936
+- RFC 8307
 - RFC 8441
 - RFC 9220
 - RFC 9297
@@ -111,7 +113,8 @@ The package-owned TCP/TLS condition is satisfied in this working tree.
 
 The current machine-readable policy intentionally keeps the following RFC surfaces at `local_conformance` in the current release gate:
 
-- RFC 7692
+- RFC 7936
+- RFC 8307
 - RFC 9221
 - RFC 9297
 - RFC 8470

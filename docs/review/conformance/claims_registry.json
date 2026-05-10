@@ -2255,7 +2255,9 @@
         "id": "websocket_http11",
         "spec_refs": [
           "RFC 6455",
-          "RFC 7692"
+          "RFC 7692",
+          "RFC 7936",
+          "RFC 8307"
         ]
       },
       {
@@ -2263,7 +2265,9 @@
         "id": "websocket_http2",
         "spec_refs": [
           "RFC 8441",
-          "RFC 7692"
+          "RFC 7692",
+          "RFC 7936",
+          "RFC 8307"
         ]
       },
       {
@@ -2271,7 +2275,9 @@
         "id": "websocket_http3",
         "spec_refs": [
           "RFC 9220",
-          "RFC 7692"
+          "RFC 7692",
+          "RFC 7936",
+          "RFC 8307"
         ]
       },
       {
@@ -2446,8 +2452,20 @@
       },
       {
         "family": "websocket_compression",
-        "highest_required_evidence_tier": "local_conformance",
+        "highest_required_evidence_tier": "independent_certification",
         "id": "RFC-7692",
+        "standards_body": "IETF"
+      },
+      {
+        "family": "websocket_subprotocol",
+        "highest_required_evidence_tier": "local_conformance",
+        "id": "RFC-7936",
+        "standards_body": "IETF"
+      },
+      {
+        "family": "websocket_uri",
+        "highest_required_evidence_tier": "local_conformance",
+        "id": "RFC-8307",
         "standards_body": "IETF"
       },
       {

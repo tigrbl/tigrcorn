@@ -13,6 +13,8 @@ This build implements WebSocket handling across the HTTP/1.1, HTTP/2, and HTTP/3
 - fragmented-message tracking with aggregate message-size enforcement
 - HTTP denial responses before upgrade acceptance
 - permessage-deflate negotiation and RSV1 handling on the HTTP/1.1, HTTP/2, and HTTP/3 paths
+- case-sensitive subprotocol token preservation and exact-match acceptance semantics
+- well-known WebSocket URI handling for `/.well-known/...` targets across supported carriers
 - RFC 8441 WebSocket bootstrap on the HTTP/2 carrier
 - RFC 9220 WebSocket bootstrap on the HTTP/3 carrier
 
@@ -20,12 +22,12 @@ This build implements WebSocket handling across the HTTP/1.1, HTTP/2, and HTTP/3
 
 The canonical package-wide target for WebSocket is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.
 
-- **local conformance** — `tests/test_websocket_rfc6455.py`, `tests/test_websocket_rfc7692.py`, `tests/test_http2_websocket_rfc8441.py`, and `tests/test_http3_websocket_rfc9220.py`
-- **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical `0.3.9` same-stack bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/`
-- **independent certification** — the canonical independent matrix at `docs/review/conformance/external_matrix.release.json`
+- **local conformance** - `tests/test_websocket_rfc6455.py`, `tests/test_websocket_rfc7692.py`, `tests/test_websocket_rfc7936.py`, `tests/test_websocket_rfc8307.py`, `tests/test_http2_websocket_rfc8441.py`, and `tests/test_http3_websocket_rfc9220.py`
+- **same-stack replay** - `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical `0.3.9` same-stack bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/`
+- **independent certification** - the canonical independent matrix at `docs/review/conformance/external_matrix.release.json`
 
 ## Current certification status
 
-HTTP/1.1 WebSocket, RFC 8441 WebSocket-over-HTTP/2, and RFC 9220 WebSocket-over-HTTP/3 all now have preserved passing third-party artifacts in the canonical independent release bundle.
+HTTP/1.1 WebSocket, RFC 7692 permessage-deflate, RFC 8441 WebSocket-over-HTTP/2, and RFC 9220 WebSocket-over-HTTP/3 all now have preserved passing third-party artifacts in the canonical independent release bundle.
 
-RFC 7692 across carriers is handled explicitly by the authoritative boundary rather than by narrative implication. The current release gate intentionally keeps RFC 7692 at `local_conformance`, so it is not an independent-certification blocker in the current bundle. A stricter all-surfaces-independent profile would still need additional third-party permessage-deflate artifacts. The package-owned TCP/TLS condition is satisfied separately, and the authoritative RFC 9220 requirement is now closed.
+RFC 7936 and RFC 8307 are governed as local-conformance WebSocket adjuncts. Their current proof surfaces are `tests/test_websocket_rfc7936.py` and `tests/test_websocket_rfc8307.py`.

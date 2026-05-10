@@ -32,6 +32,8 @@
     "RFC 9204",
     "RFC 6455",
     "RFC 7692",
+    "RFC 7936",
+    "RFC 8307",
     "RFC 8441",
     "RFC 9220",
     "RFC 8446",
@@ -206,6 +208,22 @@
         ]
       },
       "highest_required_evidence_tier": "independent_certification"
+    },
+    "RFC 7936": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-subprotocol-registry-semantics"
+        ]
+      }
+    },
+    "RFC 8307": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-well-known-uri"
+        ]
+      }
     },
     "RFC 8441": {
       "highest_required_evidence_tier": "independent_certification",
