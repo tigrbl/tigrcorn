@@ -63,6 +63,7 @@ class H2StreamState:
     receive_window_target: int = DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE]
     receive_consumed_since_update: int = 0
     buffered_body_size: int = 0
+    expected_content_length: int | None = None
     header_block_bytes: int = 0
     current_header_block_is_trailers: bool = False
     opened: bool = False

@@ -1,0 +1,15 @@
+RFC 9113 HTTP/2 gap regressions
+Date: 2026-05-10
+Command:
+uv run pytest tests/test_http2_rfc9113_gap_regressions.py -q
+
+Result:
+......                                                                   [100%]
+6 passed in 0.33s
+
+Covered behaviors:
+- content-length mismatch rejection
+- malformed field-value rejection
+- Host and :authority mismatch rejection
+- malformed request-target rejection
+- unsafe server-push method rejection

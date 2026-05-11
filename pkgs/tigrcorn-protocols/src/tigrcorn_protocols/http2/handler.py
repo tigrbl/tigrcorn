@@ -384,12 +384,43 @@ class HTTP2ConnectionHandler:
         for name, value in headers:
             if any(65 <= byte <= 90 for byte in name):
                 raise ProtocolError("uppercase header field name forbidden in HTTP/2")
+            self._validate_field_value(value)
             if name.startswith(b":"):
                 raise ProtocolError("trailer pseudo-header forbidden in HTTP/2")
             if name in {b"connection", b"upgrade", b"proxy-connection", b"transfer-encoding"}:
                 raise ProtocolError("connection-specific header forbidden in HTTP/2")
             if name == b"te" and value.lower() != b"trailers":
                 raise ProtocolError("invalid TE header for HTTP/2")
+
+    def _validate_field_value(self, value: bytes) -> None:
+        if any(byte in {0x00, 0x0A, 0x0D} for byte in value):
+            raise ProtocolError("invalid HTTP/2 header field value")
+        if value[:1] in {b" ", b"\t"} or value[-1:] in {b" ", b"\t"}:
+            raise ProtocolError("invalid HTTP/2 header field value")
+
+    def _parse_content_length(self, headers: list[tuple[bytes, bytes]]) -> int | None:
+        values: list[bytes] = []
+        for name, value in headers:
+            if name.lower() != b"content-length":
+                continue
+            for part in value.split(b","):
+                parsed = part.strip()
+                if not parsed:
+                    raise ProtocolError("invalid content-length header")
+                values.append(parsed)
+        if not values:
+            return None
+        parsed_value: int | None = None
+        for value in values:
+            if not value.isdigit():
+                raise ProtocolError("invalid content-length header")
+            current = int(value)
+            if parsed_value is None:
+                parsed_value = current
+                continue
+            if parsed_value != current:
+                raise ProtocolError("conflicting content-length values")
+        return parsed_value
 
     async def _handle_headers(self, frame: HTTP2Frame) -> None:
         if frame.stream_id == 0:
@@ -541,6 +572,11 @@ class HTTP2ConnectionHandler:
             if state.buffered_body_size + len(payload) > self.config.max_body_size:
                 raise ProtocolError("request body exceeds configured max_body_size")
             state.append_body(payload)
+            if (
+                state.expected_content_length is not None
+                and state.buffered_body_size > state.expected_content_length
+            ):
+                raise ProtocolError("request body exceeds content-length")
         await self._maybe_replenish_receive_credit(frame.stream_id, len(payload))
         if frame.flags & FLAG_END_STREAM:
             state.receive_end_stream()
@@ -558,6 +594,7 @@ class HTTP2ConnectionHandler:
         else:
             state.headers = headers
             state.headers_complete = True
+            state.expected_content_length = self._parse_content_length(headers)
         state.header_fragments.clear()
         state.header_block_bytes = 0
         state.awaiting_continuation = False
@@ -764,6 +801,8 @@ class HTTP2ConnectionHandler:
             method_text = method.decode("ascii", "strict").upper()
         else:
             method_text = str(method).upper()
+        if method_text not in {"GET", "HEAD"}:
+            raise ProtocolError("HTTP/2 server push requires a safe cacheable method")
         authority = message.get("authority")
         if authority is None:
             authority_bytes = pseudo.get(b":authority", b"")
@@ -1107,9 +1146,11 @@ class HTTP2ConnectionHandler:
         pseudo_seen: set[bytes] = set()
         regular_seen = False
         allowed_pseudo = {b":method", b":scheme", b":authority", b":path", b":protocol"}
+        host_values: list[bytes] = []
         for name, value in headers:
             if any(65 <= byte <= 90 for byte in name):
                 raise ProtocolError("uppercase header field name forbidden in HTTP/2")
+            self._validate_field_value(value)
             if name.startswith(b":"):
                 if regular_seen:
                     raise ProtocolError("pseudo-header after regular header")
@@ -1124,10 +1165,22 @@ class HTTP2ConnectionHandler:
                     raise ProtocolError("connection-specific header forbidden in HTTP/2")
                 if name == b"te" and value.lower() != b"trailers":
                     raise ProtocolError("invalid TE header for HTTP/2")
+                if name == b"host":
+                    host_values.append(value)
         if b":method" not in pseudo_seen:
             raise ProtocolError("missing :method pseudo-header")
-        method = dict(headers).get(b":method", b"GET")
-        protocol = dict(headers).get(b":protocol")
+        pseudo_headers = {name: value for name, value in headers if name.startswith(b":")}
+        method = pseudo_headers.get(b":method", b"GET")
+        protocol = pseudo_headers.get(b":protocol")
+        authority = pseudo_headers.get(b":authority")
+        if authority is not None and b"@" in authority:
+            raise ProtocolError("userinfo is forbidden in :authority")
+        if host_values:
+            normalized_hosts = {value.lower() for value in host_values}
+            if len(normalized_hosts) != 1:
+                raise ProtocolError("conflicting host header values")
+            if authority is not None and next(iter(normalized_hosts)) != authority.lower():
+                raise ProtocolError("host header must match :authority")
         if protocol is not None:
             if method != b"CONNECT":
                 raise ProtocolError("extended CONNECT requires CONNECT method")
@@ -1150,15 +1203,26 @@ class HTTP2ConnectionHandler:
         pseudo = {k: v for k, v in state.headers if k.startswith(b":")}
         headers = [(k, v) for k, v in state.headers if not k.startswith(b":")]
         method = pseudo.get(b":method", b"GET").decode("ascii", "strict")
+        if state.expected_content_length is not None:
+            observed = len(state.body)
+            if observed > state.expected_content_length:
+                raise ProtocolError("request body exceeds content-length")
+            if state.end_stream_received and observed != state.expected_content_length:
+                raise ProtocolError("request body does not match content-length")
         if method.upper() == "CONNECT" and pseudo.get(b":protocol") != b"websocket":
             target = pseudo.get(b":authority", b"").decode("ascii", "strict")
             path = target
             raw_path = target.encode("ascii", "strict")
             query_string = b""
         else:
-            target = pseudo.get(b":path", b"/").decode("ascii", "strict")
+            target_bytes = pseudo.get(b":path", b"")
+            if not target_bytes:
+                raise ProtocolError("empty :path pseudo-header")
+            target = target_bytes.decode("ascii", "strict")
             split = urlsplit(target)
-            path = split.path or "/"
+            if not split.path:
+                raise ProtocolError("malformed request target")
+            path = split.path
             raw_path = path.encode("utf-8")
             query_string = split.query.encode("ascii")
         return ParsedRequest(
