@@ -1,5 +1,10 @@
 <div align="center">
 <h1>tigrcorn-config</h1>
+<img
+  src="https://raw.githubusercontent.com/Tigrbl/tigrcorn/master/assets/tigrcorn_logo.png"
+  alt="Tigrcorn tiger-unicorn logo"
+  width="140"
+/>
 
 <p><strong>Typed configuration models, profiles, environment loading, and validation for the Tigrcorn ASGI/HTTP server stack.</strong></p>
 

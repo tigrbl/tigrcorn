@@ -1,5 +1,10 @@
 <div align="center">
 <h1>tigrcorn-certification</h1>
+<img
+  src="https://raw.githubusercontent.com/Tigrbl/tigrcorn/master/assets/tigrcorn_logo.png"
+  alt="Tigrcorn tiger-unicorn logo"
+  width="140"
+/>
 
 <p><strong>Certification and release-gate tooling for Tigrcorn HTTP/3, QUIC, WebSocket, WebTransport, and ASGI conformance evidence.</strong></p>
 

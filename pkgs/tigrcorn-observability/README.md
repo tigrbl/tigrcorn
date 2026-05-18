@@ -1,5 +1,10 @@
 <div align="center">
 <h1>tigrcorn-observability</h1>
+<img
+  src="https://raw.githubusercontent.com/Tigrbl/tigrcorn/master/assets/tigrcorn_logo.png"
+  alt="Tigrcorn tiger-unicorn logo"
+  width="140"
+/>
 
 <p><strong>Logging, metrics, tracing, DoS warning events, and release-evidence metadata for the Tigrcorn Python web server.</strong></p>
 

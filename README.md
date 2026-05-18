@@ -3,8 +3,9 @@
 <h1>Tigrcorn</h1>
 
 <img
-  src="https://github.com/Tigrbl/tigrcorn/blob/68c5baadd745555de1c6bee70d9b9f3763a7ed3c/assets/tigrcorn_brand_frag_light.png?raw=1"
-  alt="Tigrcorn light branding fragment"
+  src="https://raw.githubusercontent.com/Tigrbl/tigrcorn/master/assets/tigrcorn_logo.png"
+  alt="Tigrcorn tiger-unicorn logo"
+  width="220"
 />
 
 > ASGI3 server with built-in HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, TLS, static delivery, and release validation.
@@ -23,9 +24,9 @@
 
 <p align="center"><strong>Package</strong><br>
 <a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/tigrcorn?label=PyPI"></a>
-<a href="https://pypistats.org/packages/tigrcorn"><img alt="PyPI downloads per month" src="https://img.shields.io/pypi/dm/tigrcorn?label=downloads%2Fmonth"></a>
-<a href="https://pypistats.org/packages/tigrcorn"><img alt="PyPI downloads per week" src="https://img.shields.io/pypi/dw/tigrcorn?label=downloads%2Fweek"></a>
-<a href="https://pypistats.org/packages/tigrcorn"><img alt="PyPI downloads per day" src="https://img.shields.io/pypi/dd/tigrcorn?label=downloads%2Fday"></a>
+<a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per month" src="https://static.pepy.tech/badge/tigrcorn/month"></a>
+<a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per week" src="https://static.pepy.tech/badge/tigrcorn/week"></a>
+<a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per day" src="https://static.pepy.tech/badge/tigrcorn/day"></a>
 <a href="LICENSE"><img alt="license Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
 <a href="pyproject.toml"><img alt="Python 3.11 supported" src="https://img.shields.io/badge/python-3.11-3776ab"></a>
 <a href="pyproject.toml"><img alt="Python 3.12 supported" src="https://img.shields.io/badge/python-3.12-3776ab"></a>

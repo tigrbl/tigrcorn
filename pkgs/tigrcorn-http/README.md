@@ -1,5 +1,10 @@
 <div align="center">
 <h1>tigrcorn-http</h1>
+<img
+  src="https://raw.githubusercontent.com/Tigrbl/tigrcorn/master/assets/tigrcorn_logo.png"
+  alt="Tigrcorn tiger-unicorn logo"
+  width="140"
+/>
 
 <p><strong>HTTP utilities for Tigrcorn headers, entity tags, content coding, range requests, and Python web server responses.</strong></p>
 

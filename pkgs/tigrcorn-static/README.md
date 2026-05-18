@@ -1,5 +1,10 @@
 <div align="center">
 <h1>tigrcorn-static</h1>
+<img
+  src="https://raw.githubusercontent.com/Tigrbl/tigrcorn/master/assets/tigrcorn_logo.png"
+  alt="Tigrcorn tiger-unicorn logo"
+  width="140"
+/>
 
 <p><strong>Static file origin, file-send, validators, ranges, and cache-aware HTTP responses for the Tigrcorn ASGI server.</strong></p>
 
