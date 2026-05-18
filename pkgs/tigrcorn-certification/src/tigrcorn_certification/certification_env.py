@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
-SUPPORTED_PYTHON_VERSIONS: tuple[str, ...] = ('3.11', '3.12')
+SUPPORTED_PYTHON_VERSIONS: tuple[str, ...] = ('3.10', '3.11', '3.12', '3.13', '3.14')
 REQUIRED_IMPORTS: tuple[str, ...] = ('aioquic', 'h2', 'websockets', 'wsproto')
 REQUIRED_EXTRAS: tuple[str, ...] = ('certification', 'dev')
 SAFE_ENV_KEYS: tuple[str, ...] = (

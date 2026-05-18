@@ -61,9 +61,11 @@ def test_package_metadata_is_searchable_typed_and_license_file_based() -> None:
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Typing :: Typed",
     }
@@ -112,7 +114,7 @@ def test_readmes_are_release_quality_package_pages() -> None:
         assert f"https://img.shields.io/pypi/v/{boundary.distribution}?label=PyPI" in readme
         assert 'href="LICENSE"' in readme
         assert "license-Apache%202.0" in readme
-        for python_version in ("3.11", "3.12", "3.13"):
+        for python_version in ("3.10", "3.11", "3.12", "3.13", "3.14"):
             assert f"python-{python_version}" in readme
         assert "typed-py.typed" in readme
         assert f"src/{boundary.import_name}/py.typed" in readme

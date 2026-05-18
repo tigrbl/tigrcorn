@@ -7,7 +7,7 @@ name = "tigrcorn-static"
 version = "0.3.16.dev5"
 description = "Static file origin, file-send, validators, ranges, and cache-aware HTTP responses for the Tigrcorn ASGI server."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10,<3.15"
 license = {file = "LICENSE"}
 authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
 keywords = ["tigrcorn", "static-files", "file-send", "http-origin", "etag", "range-requests", "asgi"]
@@ -19,9 +19,11 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",

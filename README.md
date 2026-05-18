@@ -28,8 +28,11 @@
 <a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per week" src="https://static.pepy.tech/badge/tigrcorn/week"></a>
 <a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per day" src="https://static.pepy.tech/badge/tigrcorn/day"></a>
 <a href="LICENSE"><img alt="license Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
+<a href="pyproject.toml"><img alt="Python 3.10 supported" src="https://img.shields.io/badge/python-3.10-3776ab"></a>
 <a href="pyproject.toml"><img alt="Python 3.11 supported" src="https://img.shields.io/badge/python-3.11-3776ab"></a>
 <a href="pyproject.toml"><img alt="Python 3.12 supported" src="https://img.shields.io/badge/python-3.12-3776ab"></a>
+<a href="pyproject.toml"><img alt="Python 3.13 supported" src="https://img.shields.io/badge/python-3.13-3776ab"></a>
+<a href="pyproject.toml"><img alt="Python 3.14 supported" src="https://img.shields.io/badge/python-3.14-3776ab"></a>
 <a href="docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md"><img alt="runtime auto supported" src="https://img.shields.io/badge/runtime-auto-0a7f5a"></a>
 <a href="docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md"><img alt="runtime asyncio supported" src="https://img.shields.io/badge/runtime-asyncio-0a7f5a"></a>
 <a href="docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md"><img alt="runtime uvloop supported" src="https://img.shields.io/badge/runtime-uvloop-0a7f5a"></a>
