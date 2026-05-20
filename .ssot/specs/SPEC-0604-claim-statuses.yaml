@@ -1,4 +1,18 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0604"
+number: 604
+slug: "claim-statuses"
+title: "Claim statuses"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Supported statuses:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   Supported statuses:
   - `proposed`
@@ -11,19 +25,5 @@ body: |-
   - `published`
   - `blocked`
   - `retired`
-decision_date: null
-id: "spc:0604"
-kind: "spec"
-number: 604
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "claim-statuses"
 spec_kind: "normative"
-status: "draft"
-status_notes: []
-summary: "Supported statuses:"
-superseded_by: []
-supersedes: []
-tags: []
-title: "Claim statuses"
+adr_ids: []

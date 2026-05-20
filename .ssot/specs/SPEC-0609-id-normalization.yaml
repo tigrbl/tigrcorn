@@ -1,4 +1,18 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0609"
+number: 609
+slug: "id-normalization"
+title: "ID normalization"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Grammar:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   Grammar:
   
@@ -16,19 +30,5 @@ body: |-
   - `rsk:`
   - `bnd:`
   - `rel:`
-decision_date: null
-id: "spc:0609"
-kind: "spec"
-number: 609
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "id-normalization"
 spec_kind: "normative"
-status: "draft"
-status_notes: []
-summary: "Grammar:"
-superseded_by: []
-supersedes: []
-tags: []
-title: "ID normalization"
+adr_ids: []

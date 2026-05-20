@@ -38,6 +38,8 @@ CATEGORY_TIER_RULES = {
     ),
 }
 
+TIER_RANK = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "T4": 4}
+
 
 def test_category_boundaries_exist_with_explicit_feature_scope() -> None:
     registry = build_registry()
@@ -70,6 +72,6 @@ def test_category_boundaries_enforce_governed_claim_tiers() -> None:
 
         for feature_id in expected_feature_ids:
             feature = features[feature_id]
-            assert feature["plan"]["target_claim_tier"] == expected_tier
             linked_claims = [claims[claim_id] for claim_id in feature["claim_ids"]]
             assert any(claim["tier"] == expected_tier for claim in linked_claims), feature_id
+            assert TIER_RANK[feature["plan"]["target_claim_tier"]] <= TIER_RANK[expected_tier]

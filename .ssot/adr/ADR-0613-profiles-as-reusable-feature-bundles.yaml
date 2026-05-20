@@ -1,3 +1,18 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0613"
+number: 613
+slug: "profiles-as-reusable-feature-bundles"
+title: "Profiles are reusable feature bundles with derived pass status"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The registry needed an entity between atomic features and release boundaries:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   ## Context
   
@@ -24,18 +39,3 @@ body: |-
   1. feature `plan.target_claim_tier`,
   2. profile `claim_tier`,
   3. no tier => failing evaluation.
-decision_date: null
-id: "adr:0613"
-kind: "adr"
-number: 613
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "profiles-as-reusable-feature-bundles"
-status: "accepted"
-status_notes: []
-summary: "The registry needed an entity between atomic features and release boundaries:"
-superseded_by: []
-supersedes: []
-tags: []
-title: "Profiles are reusable feature bundles with derived pass status"

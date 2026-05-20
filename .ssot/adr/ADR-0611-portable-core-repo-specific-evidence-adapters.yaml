@@ -1,17 +1,17 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0611"
+number: 611
+slug: "portable-core-repo-specific-evidence-adapters"
+title: "Portable SSOT core with repo-specific evidence adapters"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The SSOT core contract governs and validates the registry graph. Repository-specific evidence generation is implemented outside the core (or through adapters) per repository."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   The SSOT core contract governs and validates the registry graph. Repository-specific evidence generation is implemented outside the core (or through adapters) per repository.
-decision_date: null
-id: "adr:0611"
-kind: "adr"
-number: 611
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "portable-core-repo-specific-evidence-adapters"
-status: "draft"
-status_notes: []
-summary: "The SSOT core contract governs and validates the registry graph. Repository-specific evidence generation is implemented outside the core (or through adapters) per repository."
-superseded_by: []
-supersedes: []
-tags: []
-title: "Portable SSOT core with repo-specific evidence adapters"

@@ -1,26 +1,33 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0608"
+number: 608
+slug: "gates-and-fences"
+title: "Gates and fences"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The system enforces:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   The system enforces:
   - claim closure guards
+  - claim tier promotion gates
   - certification gates
   - promotion gates
   - publication fences
   - lifecycle guards
   - boundary freezing
   - release-blocking issue and risk fences
-decision_date: null
-id: "spc:0608"
-kind: "spec"
-number: 608
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "gates-and-fences"
+  
+  Claim tier promotion gates are a first-class gate family. They determine whether a claim may be treated as valid at `T1`, `T2`, `T3`, or `T4`; claim closure guards only determine whether linked support is coherent and passing.
+  
+  `SPEC-0625` defines the machine-actionable claim tier gate contract. `SPEC-0626` defines the external validation evidence contract used by `T4`.
 spec_kind: "normative"
-status: "draft"
-status_notes: []
-summary: "The system enforces:"
-superseded_by: []
-supersedes: []
-tags: []
-title: "Gates and fences"
+adr_ids:
+  - "adr:0608"
+  - "adr:0625"

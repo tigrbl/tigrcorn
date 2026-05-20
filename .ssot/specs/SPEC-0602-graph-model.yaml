@@ -1,4 +1,18 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0602"
+number: 602
+slug: "graph-model"
+title: "Graph model"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The authored registry is entity-centric JSON."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   The authored registry is entity-centric JSON.
   The graph export is derived and consists of nodes and typed edges.
@@ -13,19 +27,5 @@ body: |-
   - `AFFECTS`
   - `PUBLISHES`
   - `INCLUDES`
-decision_date: null
-id: "spc:0602"
-kind: "spec"
-number: 602
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "graph-model"
 spec_kind: "normative"
-status: "draft"
-status_notes: []
-summary: "The authored registry is entity-centric JSON."
-superseded_by: []
-supersedes: []
-tags: []
-title: "Graph model"
+adr_ids: []

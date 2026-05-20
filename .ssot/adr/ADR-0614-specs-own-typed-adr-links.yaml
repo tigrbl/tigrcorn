@@ -1,0 +1,17 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0614"
+number: 614
+slug: "specs-own-typed-adr-links"
+title: "SPECs own typed ADR links"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "SPEC documents own typed ADR references. Features continue to reference SPECs only. Feature-to-ADR visibility is derived transitively through feature.spec_ids -> spec.adr_ids. This is a breaking schema-model change that requires a schema_version bump and migration support."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  SPEC documents own typed ADR references. Features continue to reference SPECs only. Feature-to-ADR visibility is derived transitively through feature.spec_ids -> spec.adr_ids. This is a breaking schema-model change that requires a schema_version bump and migration support.

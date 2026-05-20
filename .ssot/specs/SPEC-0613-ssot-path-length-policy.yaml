@@ -1,4 +1,18 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0613"
+number: 613
+slug: "ssot-path-length-policy"
+title: "SSOT path-length policy"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This specification defines path and filename limits for artifacts stored under `.ssot/`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   ## Scope
   
@@ -19,19 +33,5 @@ body: |-
   ## Enforcement
   
   Validation MUST fail when either rule is violated.
-decision_date: null
-id: "spc:0613"
-kind: "spec"
-number: 613
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "ssot-path-length-policy"
 spec_kind: "normative"
-status: "draft"
-status_notes: []
-summary: "This specification defines path and filename limits for artifacts stored under `.ssot/`."
-superseded_by: []
-supersedes: []
-tags: []
-title: "SSOT path-length policy"
+adr_ids: []

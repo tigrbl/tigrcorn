@@ -1,17 +1,17 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0601"
+number: 601
+slug: "features-are-targetable-units"
+title: "Features are the targetable units"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Features are the only targetable implementation units. There is no separate `targets[]` section."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   Features are the only targetable implementation units. There is no separate `targets[]` section.
-decision_date: null
-id: "adr:0601"
-kind: "adr"
-number: 601
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "features-are-targetable-units"
-status: "draft"
-status_notes: []
-summary: "Features are the only targetable implementation units. There is no separate `targets[]` section."
-superseded_by: []
-supersedes: []
-tags: []
-title: "Features are the targetable units"

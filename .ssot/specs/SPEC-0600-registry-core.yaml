@@ -1,4 +1,18 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0600"
+number: 600
+slug: "registry-core"
+title: "Registry core"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "`repo.kind` is required and MUST be one of:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   ## Repository Discriminator
   
@@ -6,6 +20,7 @@ body: |-
   
   - `ssot-core`
   - `ssot-origin`
+  - `extension-pack`
   - `repo-local`
   
   ## Top Level Sections
@@ -41,7 +56,14 @@ body: |-
   
   - `ssot-core`
   - `ssot-origin`
+  - `extension-pack`
   - `repo-local`
+  
+  Provenance SHALL distinguish authority from distribution. In particular:
+  
+  - `origin` identifies who governs the document truth surface
+  - packaging or installability does not by itself imply `ssot-origin`
+  - packaged extension catalogs SHALL remain `origin: extension-pack`
   
   SPEC `kind` is a non-provenance label and MUST be one of:
   
@@ -49,19 +71,5 @@ body: |-
   - `operational`
   - `governance`
   - `local-policy`
-decision_date: null
-id: "spc:0600"
-kind: "spec"
-number: 600
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "registry-core"
 spec_kind: "normative"
-status: "draft"
-status_notes: []
-summary: "`repo.kind` is required and MUST be one of:"
-superseded_by: []
-supersedes: []
-tags: []
-title: "Registry core"
+adr_ids: []

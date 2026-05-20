@@ -1,0 +1,132 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0624"
+number: 624
+slug: "ssot-definitions"
+title: "SSOT definitions"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This SPEC defines baseline SSOT vocabulary for authored documents, registry entities, generated projections, CLI output, evidence artifacts, release gates, and downstream conformance work."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This SPEC defines baseline SSOT vocabulary for authored documents, registry entities, generated projections, CLI output, evidence artifacts, release gates, and downstream conformance work.
+  
+  ## Definition Authority
+  
+  Defined terms in this SPEC SHALL govern SSOT interpretation unless a more specific accepted SPEC explicitly narrows a term for its own stated scope.
+  
+  README files, generated reports, graph exports, CLI summaries, examples, comments, and downstream prose SHALL NOT override definitions in this SPEC.
+  
+  Undefined terms retain their ordinary technical meaning. Undefined terms SHALL NOT create conformance, certification, release, implementation, or evidence obligations by implication.
+  
+  ## Core Terms
+  
+  `SSOT` means the governed single source of truth composed of authored documents, canonical registry state, linked proof artifacts, and generated projections derived from those sources.
+  
+  `Canonical` means authoritative for a declared scope.
+  
+  `Derived` means produced from canonical state and not independently authoritative unless an accepted SPEC declares otherwise.
+  
+  `Governed` means tracked by an SSOT document, registry entity, proof artifact, lifecycle state, or release gate.
+  
+  `Origin` means the authority or package family that owns or contributed a governed document or registry row.
+  
+  ## Document Terms
+  
+  `Authored Document` means a human-authored ADR or SPEC under `.ssot/adr` or `.ssot/specs`.
+  
+  `ADR` means a governed architecture decision record that captures context, decision, consequences, status, and lineage.
+  
+  `SPEC` means a governed specification defining normative, operational, governance, or local-policy requirements.
+  
+  `Normative` means required for conformance when expressed through mandatory language or accepted governing state.
+  
+  `Draft` means proposed or planning-stage governance that is not binding unless another accepted rule explicitly references it for a limited purpose.
+  
+  `Accepted` means approved governance that is binding for its declared scope.
+  
+  `Supersession` means explicit lineage where one governed document replaces or narrows another through `supersedes` and `superseded_by` metadata or an accepted scoped-narrowing statement.
+  
+  ## Registry Terms
+  
+  `Registry` means `.ssot/registry.json`, the canonical machine-readable entity graph for the current checkout.
+  
+  `Entity` means a registry object with a stable governed ID.
+  
+  `Entity ID` means the stable normalized identifier for a governed entity.
+  
+  `Relationship` means a governed link between entities, such as feature-to-claim, claim-to-evidence, spec-to-ADR, boundary-to-feature, or release-to-boundary membership.
+  
+  ## Entity Terms
+  
+  `Feature` means a targetable unit of implementation, planning, verification, conformance, or release scope.
+  
+  `Issue` means a plannable work item tracked by the SSOT registry.
+  
+  `Claim` means a governed assertion about scope, behavior, conformance, assurance, or release readiness.
+  
+  `Test` means a governed verification target or execution record linked to features, claims, or evidence.
+  
+  `Evidence` means a governed artifact, record, report, command result, or proof item supporting one or more claims or tests.
+  
+  `Profile` means a reusable feature bundle with derived evaluation state.
+  
+  `Boundary` means a scoped set of features or profiles used for delivery, assurance, certification, release, or closure.
+  
+  `Release` means a governed publication or promotion unit tied to boundaries, claims, evidence, certification, promotion, or publication state.
+  
+  `Risk` means a governed uncertainty, hazard, exposure, or accepted exception tracked for mitigation, acceptance, or retirement.
+  
+  ## Lifecycle Terms
+  
+  `Implementation Status` means the governed feature implementation state, such as absent, partial, implemented, or out-of-bounds when supported by the active schema.
+  
+  `Lifecycle Status` means the governed workflow state for an entity, document, claim, test, evidence item, boundary, or release.
+  
+  `Planned` means governed but not yet implemented, passing, evidenced, certified, promoted, or published.
+  
+  `Out-of-Bounds` means explicitly tracked but excluded from current implementation or conformance scope by governed disposition.
+  
+  `Retired` means no longer active for forward-looking closure decisions while remaining traceable historical governance.
+  
+  ## Proof Terms
+  
+  `Proof Chain` means the linked path from feature or release scope through claims, tests, evidence, and applicable gates.
+  
+  `Conformance` means satisfaction of governed requirements by linked registry state, tests, claims, and evidence.
+  
+  `Certification` means a governed assertion that a boundary or release satisfies required checks for its declared scope.
+  
+  `Claim Tier` means the assurance strength required or provided by a claim, such as inventory-level or evidence-backed assurance.
+  
+  `Evidence Tier` means the strength or trust level of evidence supporting a claim or test.
+  
+  `Passing` means the governed verification state required by the relevant test, profile, boundary, or release rule.
+  
+  `Fail-Closed` means unresolved, missing, ambiguous, stale, insufficient, or projection-only proof prevents a gate from passing.
+  
+  ## Projection Terms
+  
+  `Projection` means a generated or derived view of canonical SSOT state, such as exports, graphs, reports, tables, snapshots, or CLI summaries.
+  
+  `Report` means a generated or authored artifact summarizing governed state, validation results, evidence, release readiness, or conformance posture.
+  
+  `Snapshot` means a point-in-time governed or derived capture of registry, boundary, release, source, or evidence state.
+  
+  ## Downstream Terms
+  
+  `Downstream Repository` means a repository consuming SSOT-origin governance, packages, templates, conformance tests, or generated artifacts.
+  
+  `Extension Pack` means a package or catalog source that contributes governed documents, templates, entities, or policy surfaces to an SSOT repository.
+  
+  `Local Policy` means repository-specific governance that may narrow or strengthen baseline SSOT behavior without weakening upstream requirements.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0622"

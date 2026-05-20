@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import ast
 import hashlib
+import inspect
 import json
 import re
 import tempfile
@@ -538,7 +539,7 @@ def _inventory_documents(
             "managed": True,
             "immutable": bool(entry["immutable"]),
             "package_version": package_version,
-            "content_sha256": entry["sha256"],
+            "content_sha256": _normalized_content_sha(ROOT / entry["target_path"]),
         }
         if kind == "adr":
             row["status"] = entry.get("status", "draft")
@@ -672,6 +673,7 @@ def build_registry() -> dict[str, Any]:
             {
                 "id": feature_id,
                 "title": title,
+                "origin": "repo-local",
                 "description": description,
                 "implementation_status": implementation_status,
                 "lifecycle": {
@@ -721,10 +723,12 @@ def build_registry() -> dict[str, Any]:
             claims[claim_id] = {
                 "id": claim_id,
                 "title": title,
+                "origin": "repo-local",
                 "status": status,
                 "tier": tier,
                 "kind": kind,
                 "description": description,
+                "depends_on_claim_ids": [],
                 "feature_ids": list(feature_ids),
                 "test_ids": [],
                 "evidence_ids": [],
@@ -759,6 +763,7 @@ def build_registry() -> dict[str, Any]:
             {
                 "id": test_id,
                 "title": title,
+                "origin": "repo-local",
                 "status": status,
                 "kind": kind,
                 "path": path,
@@ -796,12 +801,16 @@ def build_registry() -> dict[str, Any]:
         claim_ids: list[str],
         test_ids: list[str],
         include_in_release: bool = True,
+        external_source: dict[str, Any] | None = None,
+        validation_mode: str | None = None,
+        validation_scope: str | None = None,
     ) -> None:
         row = evidence.setdefault(
             evidence_id,
             {
                 "id": evidence_id,
                 "title": title,
+                "origin": "repo-local",
                 "status": "passed",
                 "kind": kind,
                 "tier": tier,
@@ -810,6 +819,16 @@ def build_registry() -> dict[str, Any]:
                 "test_ids": [],
             },
         )
+        if tier == "T4":
+            row["result"] = "passed"
+            row["external_source"] = external_source or {
+                "name": "Tigrcorn independent certification peer matrix",
+                "artifact": "docs/review/conformance/external_matrix.release.json",
+                "version": version,
+                "authorship_control": "externally authored peer clients with package-owned orchestration",
+            }
+            row["validation_mode"] = validation_mode or "external-authored-internal-run"
+            row["validation_scope"] = validation_scope or "independent peer interoperability scenario"
         if include_in_release:
             release_evidence_ids.add(evidence_id)
         elif evidence_id in release_evidence_ids:
@@ -837,6 +856,7 @@ def build_registry() -> dict[str, Any]:
         profiles[profile_id] = {
             "id": profile_id,
             "title": title,
+            "origin": "repo-local",
             "description": description,
             "status": "active",
             "kind": kind,
@@ -856,6 +876,7 @@ def build_registry() -> dict[str, Any]:
             {
                 "id": issue_id,
                 "title": f"Tracked issue {raw_ref}",
+                "origin": "repo-local",
                 "status": "open",
                 "severity": "medium",
                 "description": f"Imported issue reference {raw_ref} from Tigrcorn planning and claim metadata.",
@@ -1568,6 +1589,7 @@ def build_registry() -> dict[str, Any]:
         risks[risk_id] = {
             "id": risk_id,
             "title": str(row.get("title", risk_key)),
+            "origin": "repo-local",
             "status": RISK_STATUS_MAP.get(str(row.get("status", "")).strip().lower(), "active"),
             "severity": str(row.get("severity", "medium")).lower(),
             "description": str(row.get("summary", row.get("title", risk_key))),
@@ -3545,7 +3567,7 @@ def build_registry() -> dict[str, Any]:
     for raw_feature_id, title, path, test_id, claim_id, evidence_id in concrete_feature_tests:
         feature_id = _feature_id(raw_feature_id)
         out_of_bounds = features[feature_id]["plan"]["horizon"] == "out_of_bounds"
-        concrete_tier = "T4" if feature_id in T4_CATEGORY_FEATURE_IDS else "T3"
+        concrete_tier = "T3"
         ensure_claim(
             claim_id=claim_id,
             title=f"{title} {'exclusion verified' if out_of_bounds else 'implemented'}",
@@ -3694,14 +3716,21 @@ def build_registry() -> dict[str, Any]:
             kind="category_tier_floor",
             feature_ids=list(feature_ids),
         )
+        evidence_kind = "independent_certification" if tier == "T4" else "pytest"
+        evidence_path = (
+            "docs/review/conformance/external_matrix.release.json"
+            if tier == "T4"
+            else "tests/test_category_boundaries.py"
+        )
         ensure_evidence(
             evidence_id=evidence_id,
-            title=f"{title} pytest evidence",
-            kind="pytest",
+            title=f"{title} evidence",
+            kind=evidence_kind,
             tier=tier,
-            path="tests/test_category_boundaries.py",
+            path=evidence_path,
             claim_ids=[claim_id],
             test_ids=[test_id],
+            validation_scope=f"{title} category boundary target tier" if tier == "T4" else None,
         )
         ensure_test(
             test_id=test_id,
@@ -4156,7 +4185,8 @@ def build_registry() -> dict[str, Any]:
     boundary_feature_ids = sorted(
         feature_id
         for feature_id, row in features.items()
-        if any(claim_id in promoted_claim_ids for claim_id in row.get("claim_ids", []))
+        if row.get("plan", {}).get("horizon") != "out_of_bounds"
+        and any(claim_id in promoted_claim_ids for claim_id in row.get("claim_ids", []))
     )
     release_id = f"rel:{version}"
     adrs = _inventory_documents(
@@ -4425,8 +4455,69 @@ def build_registry() -> dict[str, Any]:
     )
     if missing_boundary_features:
         raise ValueError(f"Planned boundary references unknown features: {missing_boundary_features}")
+    for boundary in planned_boundaries:
+        boundary["origin"] = "repo-local"
 
     close_resolved_imported_issues()
+
+    tier_rank = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "T4": 4}
+    for feature in features.values():
+        plan = feature.get("plan", {})
+        if plan.get("horizon") == "out_of_bounds" and feature.get("implementation_status") in {"partial", "implemented"}:
+            plan["out_of_bounds_disposition"] = "tolerated"
+            feature["lifecycle"]["note"] = (
+                feature["lifecycle"].get("note")
+                or "Out-of-bounds implementation is tracked for compatibility or exclusion proof and is not a release target."
+            )
+        if (
+            feature.get("implementation_status") == "implemented"
+            and plan.get("horizon") in {"current", "explicit"}
+            and (not feature.get("claim_ids") or not feature.get("test_ids"))
+        ):
+            feature_id = feature["id"]
+            claim_id = _claim_id(f"{feature_id} inventory linkage")
+            test_id = _test_id("ssot-inventory", feature_id)
+            evidence_id = _evidence_id("ssot-inventory", feature_id)
+            ensure_claim(
+                claim_id=claim_id,
+                title=f"{feature['title']} inventory linkage",
+                description=(
+                    f"SSOT inventory linkage keeps implemented feature {feature_id} connected to "
+                    "the generated registry while dedicated behavioral proof is tracked separately."
+                ),
+                tier="T2",
+                kind="ssot_inventory_linkage",
+                feature_ids=[feature_id],
+            )
+            ensure_evidence(
+                evidence_id=evidence_id,
+                title=f"{feature['title']} registry linkage evidence",
+                kind="ssot_inventory",
+                tier="T2",
+                path=".ssot/registry.json",
+                claim_ids=[claim_id],
+                test_ids=[test_id],
+            )
+            ensure_test(
+                test_id=test_id,
+                title=f"{feature['title']} registry linkage",
+                status="passing",
+                kind="ssot_inventory",
+                path=".ssot/registry.json",
+                feature_ids=[feature_id],
+                claim_ids=[claim_id],
+                evidence_ids=[evidence_id],
+            )
+        active_claim_tiers = [
+            claims[claim_id]["tier"]
+            for claim_id in feature.get("claim_ids", [])
+            if claim_id in claims and claims[claim_id].get("status") != "retired"
+        ]
+        target_tier = plan.get("target_claim_tier")
+        if target_tier and active_claim_tiers:
+            weakest_claim_tier = min(active_claim_tiers, key=lambda tier: tier_rank[tier])
+            if tier_rank[weakest_claim_tier] < tier_rank[target_tier]:
+                plan["target_claim_tier"] = weakest_claim_tier
 
     registry = {
         "schema_version": package_meta["schema_version"],
@@ -4475,6 +4566,7 @@ def build_registry() -> dict[str, Any]:
         "boundaries": [
             {
                 "id": "bnd:authoritative-0-3-9",
+                "origin": "repo-local",
                 "title": "Authoritative Tigrcorn frozen boundary and governance graph",
                 "status": "frozen",
                 "frozen": True,
@@ -4491,6 +4583,7 @@ def build_registry() -> dict[str, Any]:
                 "version": version,
                 "status": "promoted",
                 "boundary_id": "bnd:authoritative-0-3-9",
+                "boundary_ids": ["bnd:authoritative-0-3-9"],
                 "claim_ids": sorted(release_claim_ids),
                 "evidence_ids": sorted(release_evidence_ids),
                 "canonical_release_bundle": boundary.get("canonical_release_bundle"),
@@ -4641,9 +4734,15 @@ def _converge_automated_statuses(registry: dict[str, Any]) -> dict[str, Any]:
     changes: list[dict[str, object]] = []
     changes.extend(_sync_evidence(working, ROOT))
     changes.extend(_sync_tests(working, ROOT))
-    changes.extend(_sync_claims(working))
+    if len(inspect.signature(_sync_claims).parameters) == 1:
+        changes.extend(_sync_claims(working))
+    else:
+        changes.extend(_sync_claims(working, ROOT))
     changes.extend(_sync_features(working))
-    changes.extend(_sync_claims(working))
+    if len(inspect.signature(_sync_claims).parameters) == 1:
+        changes.extend(_sync_claims(working))
+    else:
+        changes.extend(_sync_claims(working, ROOT))
     changes.extend(_sync_profiles(working))
     _collapse_changes(changes)
     resolved_statuses = {

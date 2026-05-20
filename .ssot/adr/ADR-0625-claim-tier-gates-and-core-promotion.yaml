@@ -1,0 +1,44 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0625"
+number: 625
+slug: "claim-tier-gates-and-core-promotion"
+title: "Claim Tier Gates Govern Core Promotion"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Claim tiers are used by features, profiles, releases, reports, and downstream assurance language. If tiers can be raised by label alone, downstream outputs can overstate assurance even when tests and evidence exist."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  Claim tiers are used by features, profiles, releases, reports, and downstream assurance language. If tiers can be raised by label alone, downstream outputs can overstate assurance even when tests and evidence exist.
+  
+  Optional orchestration extensions may later coordinate work, but tier semantics must be enforceable by core `ssot-registry` without those extensions.
+  
+  ## Decision
+  
+  Claim tier promotion is governed by machine-actionable tier gates in core `ssot-registry`.
+  
+  `T1` means project-verified direct behavior. `T2` means robust project verification. `T3` means release, boundary, or profile certification. `T4` means external validation authority.
+  
+  Claim closure remains separate from tier promotion. Closure checks whether linked features, tests, and evidence are coherent and passing. Tier gates check whether the requested assurance tier is semantically valid.
+  
+  Operators may use an explicit override path where policy allows it, but bypasses must be visible in results or reports and must not silently convert weak evidence into stronger assurance.
+  
+  ## Rejected Alternatives
+  
+  - Treating evidence tier labels as sufficient for claim promotion.
+  - Treating `T2` as merely more repeatable `T1`.
+  - Treating `T3` as a `T2` claim with a release id.
+  - Treating `T4` as internal self-attestation.
+  
+  ## Consequences
+  
+  Core CLI, API, validation, and status synchronization can enforce assurance semantics before optional orchestration extensions exist.
+  
+  Downstream repositories can rely on the tier ladder without adopting any optional orchestration model.

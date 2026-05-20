@@ -1,0 +1,39 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0619"
+number: 619
+slug: "governed-source-snapshot-contract"
+title: "Governed Source Snapshot Contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:03Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft contract.
+  
+  ## Contract
+  
+  A governed source snapshot records a release id, path policy mode, included paths, excluded paths, file SHA-256 hashes, generated timestamp, registry path, registry hash, and deterministic source root hash.
+  
+  ## Path Policy Modes
+  
+  The proposed modes are ssot-only, declared, governed, and full-repo. The default should be declared or governed. Full-repo mode is explicit opt-in only.
+  
+  ## Validation
+  
+  Validation recomputes file hashes, rejects missing governed files, enforces canonical ordering, and recomputes the root hash.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0618"
+  - "adr:0619"

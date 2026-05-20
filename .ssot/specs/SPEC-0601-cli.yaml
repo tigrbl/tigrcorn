@@ -1,4 +1,18 @@
-adr_ids: []
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0601"
+number: 601
+slug: "cli"
+title: "CLI"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Primary distribution: `ssot-cli`"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
 body: |-
   Primary distribution: `ssot-cli`
   
@@ -26,6 +40,11 @@ body: |-
   - `ssot-registry release revoke`
   - `ssot-registry graph export`
   
+  Root metadata flags:
+  - `ssot --version`, `ssot-cli --version`, and `ssot-registry --version` SHALL print the installed CLI package version and exit successfully without requiring a subcommand.
+  - The reported version SHALL be resolved from installed Python package metadata for `ssot-cli`.
+  - Root version handling SHALL run before subcommand dispatch so it works even though normal CLI execution requires a subcommand.
+  
   ADR and SPEC authoring commands SHALL support two body source flags:
   - `--body`
   - `--body-file`
@@ -36,19 +55,16 @@ body: |-
   - create and update commands SHALL reject requests that provide both `--body` and `--body-file`
   
   CLI body flags SHALL map directly onto the corresponding runtime document mutation inputs.
-decision_date: null
-id: "spc:0601"
-kind: "spec"
-number: 601
-origin: "ssot-origin"
-references: []
-schema_version: "0.1.0"
-slug: "cli"
+  
+  Entity create and update commands for `feature`, `test`, `issue`, `boundary`, `profile`, `claim`, `evidence`, `risk`, and `release` SHALL also support two body source flags:
+  - `--body`
+  - `--body-file`
+  
+  Entity CLI source-selection rules:
+  - entity `create` commands MAY omit both `--body` and `--body-file`
+  - entity `update` commands MAY omit both `--body` and `--body-file`
+  - entity `create` and `update` commands SHALL reject requests that provide both `--body` and `--body-file`
+  - when `--body` is provided, the entity row `body` field SHALL be set from the inline UTF-8 text
+  - when `--body-file` is provided, the entity row `body` field SHALL be set from the referenced UTF-8 text file
 spec_kind: "operational"
-status: "draft"
-status_notes: []
-summary: "Primary distribution: `ssot-cli`"
-superseded_by: []
-supersedes: []
-tags: []
-title: "CLI"
+adr_ids: []
