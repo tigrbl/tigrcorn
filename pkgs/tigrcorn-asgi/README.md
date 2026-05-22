@@ -8,6 +8,8 @@
 
 <p><strong>ASGI3 scope, event, receive/send, and extension primitives for the Tigrcorn Python web server.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-asgi/"><img alt="PyPI version for tigrcorn-asgi" src="https://img.shields.io/pypi/v/tigrcorn-asgi?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-asgi/"><img alt="tigrcorn-asgi package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

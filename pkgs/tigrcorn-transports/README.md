@@ -8,6 +8,8 @@
 
 <p><strong>TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transport primitives for the Tigrcorn server stack.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-transports/"><img alt="PyPI version for tigrcorn-transports" src="https://img.shields.io/pypi/v/tigrcorn-transports?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-transports/"><img alt="tigrcorn-transports package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

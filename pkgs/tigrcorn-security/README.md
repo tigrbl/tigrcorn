@@ -8,6 +8,8 @@
 
 <p><strong>TLS 1.3, mTLS, X.509, ALPN, OCSP, CRL, and certificate policy surfaces for the Tigrcorn Python web server.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-security/"><img alt="PyPI version for tigrcorn-security" src="https://img.shields.io/pypi/v/tigrcorn-security?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-security/"><img alt="tigrcorn-security package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

@@ -8,6 +8,8 @@
 
 <p><strong>HTTP utilities for Tigrcorn headers, entity tags, content coding, range requests, and Python web server responses.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-http/"><img alt="PyPI version for tigrcorn-http" src="https://img.shields.io/pypi/v/tigrcorn-http?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-http/"><img alt="tigrcorn-http package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

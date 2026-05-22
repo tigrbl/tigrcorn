@@ -8,6 +8,8 @@
 
 <p><strong>Certification and release-gate tooling for Tigrcorn HTTP/3, QUIC, WebSocket, WebTransport, and ASGI conformance evidence.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-certification/"><img alt="PyPI version for tigrcorn-certification" src="https://img.shields.io/pypi/v/tigrcorn-certification?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-certification/"><img alt="tigrcorn-certification package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

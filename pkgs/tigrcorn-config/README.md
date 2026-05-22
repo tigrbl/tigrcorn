@@ -8,6 +8,8 @@
 
 <p><strong>Typed configuration models, profiles, environment loading, and validation for the Tigrcorn ASGI/HTTP server stack.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-config/"><img alt="PyPI version for tigrcorn-config" src="https://img.shields.io/pypi/v/tigrcorn-config?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-config/"><img alt="tigrcorn-config package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

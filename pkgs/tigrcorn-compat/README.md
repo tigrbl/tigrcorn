@@ -8,6 +8,8 @@
 
 <p><strong>Compatibility and interoperability helpers for Tigrcorn ASGI3 conformance, external peers, and Python web server release gates.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-compat/"><img alt="PyPI version for tigrcorn-compat" src="https://img.shields.io/pypi/v/tigrcorn-compat?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-compat/"><img alt="tigrcorn-compat package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

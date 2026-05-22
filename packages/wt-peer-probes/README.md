@@ -1,5 +1,7 @@
 # tigrcorn WebTransport Peer Probes
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 Browser peer probes for validating tigrcorn WebTransport support directly, without capability discovery.
 
 ## Probe contract

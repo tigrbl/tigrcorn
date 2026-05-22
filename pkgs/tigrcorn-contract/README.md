@@ -8,6 +8,8 @@
 
 <p><strong>tigr-asgi-contract adapters and runtime-boundary classification for Tigrcorn ASGI3, WebSocket, and WebTransport surfaces.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-contract/"><img alt="PyPI version for tigrcorn-contract" src="https://img.shields.io/pypi/v/tigrcorn-contract?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-contract/"><img alt="tigrcorn-contract package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>

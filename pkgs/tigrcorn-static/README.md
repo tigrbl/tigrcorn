@@ -8,6 +8,8 @@
 
 <p><strong>Static file origin, file-send, validators, ranges, and cache-aware HTTP responses for the Tigrcorn ASGI server.</strong></p>
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
+
 <a href="https://pypi.org/project/tigrcorn-static/"><img alt="PyPI version for tigrcorn-static" src="https://img.shields.io/pypi/v/tigrcorn-static?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-static/"><img alt="tigrcorn-static package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
