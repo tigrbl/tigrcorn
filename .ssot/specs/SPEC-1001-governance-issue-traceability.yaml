@@ -1,9 +1,9 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:1001"
 number: 1001
 slug: "governance-issue-traceability"
-title: "Purpose"
+title: "Governance issue traceability"
 status: "draft"
 origin: "repo-local"
 decision_date: null

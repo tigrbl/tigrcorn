@@ -1,9 +1,9 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2003"
 number: 2003
 slug: "http3"
-title: "Content"
+title: "HTTP/3"
 status: "draft"
 origin: "repo-local"
 decision_date: null

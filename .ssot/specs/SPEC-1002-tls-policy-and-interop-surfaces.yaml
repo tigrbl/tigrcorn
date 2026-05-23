@@ -1,9 +1,9 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:1002"
 number: 1002
 slug: "tls-policy-and-interop-surfaces"
-title: "Purpose"
+title: "TLS policy and interop surfaces"
 status: "draft"
 origin: "repo-local"
 decision_date: null

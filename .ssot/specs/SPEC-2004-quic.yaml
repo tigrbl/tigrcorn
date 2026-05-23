@@ -1,9 +1,9 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2004"
 number: 2004
 slug: "quic"
-title: "Content"
+title: "QUIC"
 status: "draft"
 origin: "repo-local"
 decision_date: null

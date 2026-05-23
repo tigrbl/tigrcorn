@@ -1,9 +1,9 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2007"
 number: 2007
 slug: "public"
-title: "Content"
+title: "Public surface"
 status: "draft"
 origin: "repo-local"
 decision_date: null

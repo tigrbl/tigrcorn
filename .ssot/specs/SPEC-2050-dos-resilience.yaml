@@ -1,9 +1,9 @@
-schema_version: "0.2.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2050"
 number: 2050
 slug: "dos-resilience"
-title: "Content"
+title: "DoS resilience"
 status: "draft"
 origin: "repo-local"
 decision_date: null
@@ -12,9 +12,7 @@ summary: "Tigrcorn treats DoS warnings as runtime indications that resource exha
 supersedes: []
 superseded_by: []
 status_notes: []
-references:
-  - "ADR-1003 scheduler and backpressure are separate concerns"
-  - "SPEC-2010 WebTransport contract target"
+references: []
 body: |-
   ## Content
   

@@ -1,9 +1,9 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2035"
 number: 2035
 slug: "app-interface-selection"
-title: "Content"
+title: "Application interface selection"
 status: "draft"
 origin: "repo-local"
 decision_date: null
@@ -12,11 +12,7 @@ summary: "Tigrcorn shall provide an explicit operator and programmatic selector 
 supersedes: []
 superseded_by: []
 status_notes: []
-references:
-  - "ADR-1012"
-  - "ADR-1013"
-  - "ADR-1014"
-  - "ADR-1027"
+references: []
 body: |-
   ## Content
   
