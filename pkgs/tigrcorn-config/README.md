@@ -19,35 +19,82 @@
 
 <p align="center"><a href="https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json"><img alt="SSOT governed" src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg"></a> <a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
 
-
 ## Install
 
-~~~bash
+```bash
+uv add tigrcorn-config
+```
+
+```bash
 pip install tigrcorn-config
-~~~
+```
 
 Use the aggregate [tigrcorn](https://pypi.org/project/tigrcorn/) distribution when you want the full ASGI3 Python web server stack. Install <code>tigrcorn-config</code> directly when you want only this package boundary and its declared dependencies.
 
 ## What It Owns
 
-<code>tigrcorn-config</code> owns server configuration models, normalization, validation, profiles, and environment or file loading. Its import package is <code>tigrcorn_config</code>, and its declared package dependencies are: tigrcorn-core.
+<code>tigrcorn-config</code> owns config models, normalization, validation, profiles, and env and file loading. Its import package is <code>tigrcorn_config</code>, and its declared package dependencies are: tigrcorn-core.
 
-This package page is written for developers searching for Tigrcorn ASGI3 server components, Python web server packages, HTTP/3 and QUIC support, WebSocket and WebTransport runtime surfaces, typed package boundaries, and Apache 2.0 licensed infrastructure.
+This package page is written for developers searching for Tigrcorn ASGI3 server components, Python web server packages, HTTP/3 and QUIC support, WebSocket and WebTransport-adjacent surfaces, and Apache 2.0 licensed infrastructure.
+
+## Why Use This?
+
+Use <code>tigrcorn-config</code> when you want the config layer as a direct install target instead of the full server bundle. It lets application, operator, or certification workflows depend on this boundary explicitly while keeping the broader Tigrcorn runtime assembled from smaller repo-owned package surfaces.
+
+## FAQ
+
+### What does this package export?
+
+The package exports through the <code>tigrcorn_config</code> namespace and keeps the root <code>tigrcorn</code> package as the compatibility umbrella.
+
+### Which boundary does this package own?
+
+It is the package boundary for config models, normalization, validation, profiles, and env and file loading in the Tigrcorn package graph.
+
+### How does this package fit into the runtime stack?
+
+It owns typed configuration, profile resolution, defaults, and environment or file loading so runtime, transports, and security packages can consume one normalized config surface.
+
+## Features
+
+- Owns config models, normalization, validation, profiles, and env and file loading inside the Tigrcorn split-package architecture.
+- Publishes the <code>tigrcorn_config</code> import surface for named public helpers and entrypoints.
+- Declared runtime dependencies: tigrcorn-core.
+- Optional dependency surface: PyYAML.
+- Supports Python 3.10, 3.11, 3.12, 3.13, and 3.14.
 
 ## Use It When
 
-Use <code>tigrcorn-config</code> when you need validated Tigrcorn server configuration for ASGI, HTTP, QUIC, TLS, workers, or profile-driven deployments. It is part of Tigrcorn's split-package architecture, so it can be installed independently while remaining linked to the rest of the Tigrcorn package family on PyPI.
+Use <code>tigrcorn-config</code> when you need config-level behavior without pulling the entire server stack into the import surface. It is part of Tigrcorn's split-package architecture, so it can be installed independently while remaining linked to the rest of the Tigrcorn package family on PyPI.
 
 ## Import Surface
 
-~~~python
-import tigrcorn_config
+```python
+from tigrcorn_config import build_config, config_to_dict
 
-print(tigrcorn_config.__name__)
-~~~
+config = build_config()
+print(config_to_dict(config)["host"])
+```
+
+Namespace discovery starts with `import tigrcorn_config`.
 
 The package exposes its supported public surface through the <code>tigrcorn_config</code> namespace. The root [tigrcorn](https://pypi.org/project/tigrcorn/) package keeps compatibility shims for users who install the full server distribution.
 
+## Related Packages
+
+- [tigrcorn-core](https://pypi.org/project/tigrcorn-core/)
+- [tigrcorn](https://pypi.org/project/tigrcorn/)
+
 ## Package Graph
 
-[tigrcorn](https://pypi.org/project/tigrcorn/) | [tigrcorn-core](https://pypi.org/project/tigrcorn-core/) | [tigrcorn-config](https://pypi.org/project/tigrcorn-config/) | [tigrcorn-asgi](https://pypi.org/project/tigrcorn-asgi/) | [tigrcorn-contract](https://pypi.org/project/tigrcorn-contract/) | [tigrcorn-transports](https://pypi.org/project/tigrcorn-transports/) | [tigrcorn-protocols](https://pypi.org/project/tigrcorn-protocols/) | [tigrcorn-http](https://pypi.org/project/tigrcorn-http/) | [tigrcorn-security](https://pypi.org/project/tigrcorn-security/) | [tigrcorn-runtime](https://pypi.org/project/tigrcorn-runtime/) | [tigrcorn-static](https://pypi.org/project/tigrcorn-static/) | [tigrcorn-observability](https://pypi.org/project/tigrcorn-observability/) | [tigrcorn-compat](https://pypi.org/project/tigrcorn-compat/) | [tigrcorn-certification](https://pypi.org/project/tigrcorn-certification/)
+[tigrcorn-core](https://pypi.org/project/tigrcorn-core/) | [tigrcorn-config](https://pypi.org/project/tigrcorn-config/) | [tigrcorn-http](https://pypi.org/project/tigrcorn-http/) | [tigrcorn-asgi](https://pypi.org/project/tigrcorn-asgi/) | [tigrcorn-contract](https://pypi.org/project/tigrcorn-contract/) | [tigrcorn-transports](https://pypi.org/project/tigrcorn-transports/) | [tigrcorn-security](https://pypi.org/project/tigrcorn-security/) | [tigrcorn-protocols](https://pypi.org/project/tigrcorn-protocols/) | [tigrcorn-static](https://pypi.org/project/tigrcorn-static/) | [tigrcorn-observability](https://pypi.org/project/tigrcorn-observability/) | [tigrcorn-runtime](https://pypi.org/project/tigrcorn-runtime/) | [tigrcorn-compat](https://pypi.org/project/tigrcorn-compat/) | [tigrcorn-certification](https://pypi.org/project/tigrcorn-certification/)
+
+## Best Practices
+
+- Resolve one normalized config surface early and pass it downward instead of reparsing environment variables in multiple layers.
+- Treat blessed profiles and public defaults as the operator contract when documenting runtime behavior.
+- Add new config surfaces here before wiring them into runtime, transports, or security packages.
+
+## License
+
+Apache-2.0

@@ -19,35 +19,82 @@
 
 <p align="center"><a href="https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json"><img alt="SSOT governed" src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg"></a> <a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
 
-
 ## Install
 
-~~~bash
+```bash
+uv add tigrcorn-core
+```
+
+```bash
 pip install tigrcorn-core
-~~~
+```
 
 Use the aggregate [tigrcorn](https://pypi.org/project/tigrcorn/) distribution when you want the full ASGI3 Python web server stack. Install <code>tigrcorn-core</code> directly when you want only this package boundary and its declared dependencies.
 
 ## What It Owns
 
-<code>tigrcorn-core</code> owns constants, base errors, shared types, and dependency-light utility primitives. Its import package is <code>tigrcorn_core</code>, and its declared package dependencies are: none.
+<code>tigrcorn-core</code> owns constants, errors, types, and utils primitives. Its import package is <code>tigrcorn_core</code>, and its declared package dependencies are: none.
 
-This package page is written for developers searching for Tigrcorn ASGI3 server components, Python web server packages, HTTP/3 and QUIC support, WebSocket and WebTransport runtime surfaces, typed package boundaries, and Apache 2.0 licensed infrastructure.
+This package page is written for developers searching for Tigrcorn ASGI3 server components, Python web server packages, HTTP/3 and QUIC support, WebSocket and WebTransport-adjacent surfaces, and Apache 2.0 licensed infrastructure.
+
+## Why Use This?
+
+Use <code>tigrcorn-core</code> when you want the core layer as a direct install target instead of the full server bundle. It lets application, operator, or certification workflows depend on this boundary explicitly while keeping the broader Tigrcorn runtime assembled from smaller repo-owned package surfaces.
+
+## FAQ
+
+### What does this package export?
+
+The package exports through the <code>tigrcorn_core</code> namespace and keeps the root <code>tigrcorn</code> package as the compatibility umbrella.
+
+### Which boundary does this package own?
+
+It is the package boundary for constants, errors, types, and utils primitives in the Tigrcorn package graph.
+
+### What does this package intentionally avoid?
+
+It stays dependency-light and infrastructure-neutral so every higher Tigrcorn package can reuse shared constants, types, and core errors without pulling in HTTP, TLS, protocol, or runtime stacks.
+
+## Features
+
+- Owns constants, errors, types, and utils primitives inside the Tigrcorn split-package architecture.
+- Publishes the <code>tigrcorn_core</code> import surface for named public helpers and entrypoints.
+- Declared runtime dependencies: none.
+- Optional dependency surface: none.
+- Supports Python 3.10, 3.11, 3.12, 3.13, and 3.14.
 
 ## Use It When
 
-Use <code>tigrcorn-core</code> when you need stable Tigrcorn primitives without pulling runtime, protocol, transport, security, compatibility, or certification packages. It is part of Tigrcorn's split-package architecture, so it can be installed independently while remaining linked to the rest of the Tigrcorn package family on PyPI.
+Use <code>tigrcorn-core</code> when you need core-level behavior without pulling the entire server stack into the import surface. It is part of Tigrcorn's split-package architecture, so it can be installed independently while remaining linked to the rest of the Tigrcorn package family on PyPI.
 
 ## Import Surface
 
-~~~python
+```python
 import tigrcorn_core
 
-print(tigrcorn_core.__name__)
-~~~
+print(tigrcorn_core.DEFAULT_HOST)
+print(tigrcorn_core.DEFAULT_PORT)
+```
 
 The package exposes its supported public surface through the <code>tigrcorn_core</code> namespace. The root [tigrcorn](https://pypi.org/project/tigrcorn/) package keeps compatibility shims for users who install the full server distribution.
 
+## Related Packages
+
+- [tigrcorn](https://pypi.org/project/tigrcorn/)
+- [tigrcorn-config](https://pypi.org/project/tigrcorn-config/)
+- [tigrcorn-http](https://pypi.org/project/tigrcorn-http/)
+- [tigrcorn-asgi](https://pypi.org/project/tigrcorn-asgi/)
+
 ## Package Graph
 
-[tigrcorn](https://pypi.org/project/tigrcorn/) | [tigrcorn-core](https://pypi.org/project/tigrcorn-core/) | [tigrcorn-config](https://pypi.org/project/tigrcorn-config/) | [tigrcorn-asgi](https://pypi.org/project/tigrcorn-asgi/) | [tigrcorn-contract](https://pypi.org/project/tigrcorn-contract/) | [tigrcorn-transports](https://pypi.org/project/tigrcorn-transports/) | [tigrcorn-protocols](https://pypi.org/project/tigrcorn-protocols/) | [tigrcorn-http](https://pypi.org/project/tigrcorn-http/) | [tigrcorn-security](https://pypi.org/project/tigrcorn-security/) | [tigrcorn-runtime](https://pypi.org/project/tigrcorn-runtime/) | [tigrcorn-static](https://pypi.org/project/tigrcorn-static/) | [tigrcorn-observability](https://pypi.org/project/tigrcorn-observability/) | [tigrcorn-compat](https://pypi.org/project/tigrcorn-compat/) | [tigrcorn-certification](https://pypi.org/project/tigrcorn-certification/)
+[tigrcorn-core](https://pypi.org/project/tigrcorn-core/) | [tigrcorn-config](https://pypi.org/project/tigrcorn-config/) | [tigrcorn-http](https://pypi.org/project/tigrcorn-http/) | [tigrcorn-asgi](https://pypi.org/project/tigrcorn-asgi/) | [tigrcorn-contract](https://pypi.org/project/tigrcorn-contract/) | [tigrcorn-transports](https://pypi.org/project/tigrcorn-transports/) | [tigrcorn-security](https://pypi.org/project/tigrcorn-security/) | [tigrcorn-protocols](https://pypi.org/project/tigrcorn-protocols/) | [tigrcorn-static](https://pypi.org/project/tigrcorn-static/) | [tigrcorn-observability](https://pypi.org/project/tigrcorn-observability/) | [tigrcorn-runtime](https://pypi.org/project/tigrcorn-runtime/) | [tigrcorn-compat](https://pypi.org/project/tigrcorn-compat/) | [tigrcorn-certification](https://pypi.org/project/tigrcorn-certification/)
+
+## Best Practices
+
+- Keep this package at the bottom of new dependency chains.
+- Import protocol, runtime, or security behavior from higher packages instead of backfilling it here.
+- Use the exported constants and error types instead of cloning parallel primitives in downstream packages.
+
+## License
+
+Apache-2.0
