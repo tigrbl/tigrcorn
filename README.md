@@ -27,15 +27,10 @@
 
 <p align="center"><strong>Package</strong><br>
 <a href="https://pypi.org/project/tigrcorn/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/tigrcorn?label=PyPI"></a>
-<a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per month" src="https://static.pepy.tech/badge/tigrcorn/month"></a>
-<a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per week" src="https://static.pepy.tech/badge/tigrcorn/week"></a>
-<a href="https://pepy.tech/project/tigrcorn"><img alt="PyPI downloads per day" src="https://static.pepy.tech/badge/tigrcorn/day"></a>
+<a href="https://pepy.tech/project/tigrcorn"><img alt="Downloads for tigrcorn" src="https://static.pepy.tech/badge/tigrcorn"></a>
+<a href="https://github.com/tigrbl/tigrcorn/blob/master/README.md"><img alt="Hits for tigrcorn README" src="https://hits.sh/github.com/tigrbl/tigrcorn/blob/master/README.md.svg?label=hits"></a>
 <a href="LICENSE"><img alt="license Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-525252"></a>
-<a href="pyproject.toml"><img alt="Python 3.10 supported" src="https://img.shields.io/badge/python-3.10-3776ab"></a>
-<a href="pyproject.toml"><img alt="Python 3.11 supported" src="https://img.shields.io/badge/python-3.11-3776ab"></a>
-<a href="pyproject.toml"><img alt="Python 3.12 supported" src="https://img.shields.io/badge/python-3.12-3776ab"></a>
-<a href="pyproject.toml"><img alt="Python 3.13 supported" src="https://img.shields.io/badge/python-3.13-3776ab"></a>
-<a href="pyproject.toml"><img alt="Python 3.14 supported" src="https://img.shields.io/badge/python-3.14-3776ab"></a>
+<a href="pyproject.toml"><img alt="Python 3.10 | 3.11 | 3.12 | 3.13 | 3.14 supported" src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab"></a>
 <a href="docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md"><img alt="runtime auto supported" src="https://img.shields.io/badge/runtime-auto-0a7f5a"></a>
 <a href="docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md"><img alt="runtime asyncio supported" src="https://img.shields.io/badge/runtime-asyncio-0a7f5a"></a>
 <a href="docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md"><img alt="runtime uvloop supported" src="https://img.shields.io/badge/runtime-uvloop-0a7f5a"></a>
@@ -229,7 +224,7 @@ The authoritative optional dependency reference is `docs/review/conformance/OPTI
 
 This section is a public support snapshot. It keeps protocol and feature details visible in the README, but it does not replace the deeper truth surfaces. Use `C-RFC` for current certified protocol claims, `C-OP` for current operator/API surfaces, and `O` for intentionally out-of-scope behavior. When changing claimed support, update `.ssot/registry.json`, the related ADR/SPEC/feature/claim/test/evidence rows, and the conformance boundary together.
 
-> **Legend:** `C-RFC` = inside the current certified RFC boundary · `C-OP` = inside the public/operator surface · `O` = outside the current scope
+> **Legend:** `C-RFC` = inside the current certified RFC boundary Â· `C-OP` = inside the public/operator surface Â· `O` = outside the current scope
 
 ### Core protocol, transport, and delivery
 

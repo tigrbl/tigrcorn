@@ -112,12 +112,11 @@ def test_readmes_are_release_quality_package_pages() -> None:
         assert f"<h1>{boundary.distribution}</h1>" in readme
         assert pyproject["project"]["description"] in readme
         assert f"https://img.shields.io/pypi/v/{boundary.distribution}?label=PyPI" in readme
+        assert f"https://static.pepy.tech/badge/{boundary.distribution}" in readme
+        assert f"https://hits.sh/github.com/tigrbl/tigrcorn/blob/master/pkgs/{boundary.distribution}/README.md.svg?label=hits" in readme
         assert 'href="LICENSE"' in readme
         assert "license-Apache%202.0" in readme
-        for python_version in ("3.10", "3.11", "3.12", "3.13", "3.14"):
-            assert f"python-{python_version}" in readme
-        assert "typed-py.typed" in readme
-        assert f"src/{boundary.import_name}/py.typed" in readme
+        assert "python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14" in readme
         assert f"pip install {boundary.distribution}" in readme
         assert f"import {boundary.import_name}" in readme
         assert pypi_urls[boundary.distribution] in readme

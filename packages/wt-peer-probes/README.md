@@ -2,6 +2,8 @@
 
 [![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/jzvrbEtTtt)
 
+[![Hits for wt-peer-probes README](https://hits.sh/github.com/tigrbl/tigrcorn/blob/master/packages/wt-peer-probes/README.md.svg?label=hits)](https://github.com/tigrbl/tigrcorn/blob/master/packages/wt-peer-probes/README.md)
+
 [![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
 
 Browser peer probes for validating tigrcorn WebTransport support directly, without capability discovery.
