@@ -22,7 +22,6 @@
 <a href="https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md"><img alt="authoritative boundary green" src="https://img.shields.io/badge/authoritative_boundary-green-1f883d"></a>
 <a href="https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/STRICT_PROFILE_TARGET.md"><img alt="strict profile green" src="https://img.shields.io/badge/strict_profile-green-1f883d"></a>
 <a href="https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/releases/0.3.9/release-0.3.9"><img alt="promotion green" src="https://img.shields.io/badge/promotion-green-1f883d"></a>
-<a href="https://github.com/tigrbl/tigrcorn/blob/master/.codex/AGENTS.md"><img alt="agents documented" src="https://img.shields.io/badge/agents-documented-6f42c1"></a>
 </p>
 
 <p align="center"><strong>Package</strong><br>
@@ -60,7 +59,7 @@
 
 ---
 
-Tigrcorn is an ASGI3 server for teams that want modern transport and protocol support, explicit operator controls, and a public Python API that matches the shipped runtime. It implements HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSockets, TLS handling, static delivery, and release checks inside the project, with operator docs and current-state material kept alongside the code.
+Tigrcorn is an ASGI3 server for Python teams building APIs, edge services, internal platforms, and protocol-heavy applications that need modern transport support without giving up operational control. It implements HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSockets, TLS handling, static delivery, and release checks inside the project, with operator docs and current-state material kept alongside the code.
 
 Most users should start with **Quick start**, **Protocol and feature map**, and **CLI usage**. Maintainers should use the SSOT, governance, and conformance links when changing claimed support, release boundaries, or certification evidence.
 
@@ -81,9 +80,6 @@ Most users should start with **Quick start**, **Protocol and feature map**, and 
 - [Status at a glance](#status-at-a-glance)
 - [Validation and promotion](#validation-and-promotion)
 - [Where to look](#where-to-look)
-- [Governance and maintainer workflow](#governance-and-maintainer-workflow)
-- [Current-state and historical planning](#current-state-and-historical-planning)
-- [Certification environment freeze](#certification-environment-freeze)
 - [Contributing, conduct, and community norms](#contributing-conduct-and-community-norms)
 - [Footnotes](#footnotes)
 
@@ -95,24 +91,23 @@ Use this legend for the badges, status tables, and scope markers in this README.
 |---|---|
 | `C-RFC` | included in Tigrcorn's current certified RFC boundary |
 | `C-OP` | included in Tigrcorn's current public operator/API surface |
-| `O` | outside Tigrcorn's current documented scope |
+| `OOB` | outside Tigrcorn's current documented boundary and shipped surface |
 | `green` | the referenced repo contract or evaluation target is currently passing |
 | `canonical` | the referenced document is the current mutable source of truth |
 | `repo_line` | the active repository release line represented by this checkout |
 | `runtime-auto`, `runtime-asyncio`, `runtime-uvloop` | documented runtime modes in the current public surface |
 
-The top badge groups use plain language labels where possible. The protocol and feature tables use `C-RFC`, `C-OP`, and `O` as compact scope markers.
+The top badge groups use plain language labels where possible. The protocol and feature tables use `C-RFC`, `C-OP`, and `OOB` as compact scope markers.
 
 ## Choose your path
 
 | Goal | Start with | Then use |
 |---|---|---|
-| Run Tigrcorn as an ASGI server | [Quick start](#quick-start) | `docs/ops/cli.md`, `docs/ops/profiles.md` |
-| Configure production behavior | `docs/ops/cli.md` | `docs/ops/defaults.md`, `docs/ops/observability.md`, `docs/ops/policies.md` |
-| Build on Tigrcorn from Python | [Public API and embedding usage](#public-api-and-embedding-usage) | `docs/ops/public.md`, `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
-| Understand protocol and feature support | [Protocol and feature map](#protocol-and-feature-map) | `docs/protocols/`, `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `.ssot/registry.json` |
-| Change runtime behavior | `.codex/AGENTS.md` | `docs/gov/authoring.md`, `tests/`, `tools/ssot_sync.py` |
-| Change claimed support or release truth | `.ssot/registry.json` | `.ssot/adr/`, `.ssot/specs/`, `docs/review/conformance/` |
+| Run Tigrcorn as an ASGI server | [Quick start](#quick-start) | [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md), [deployment profiles](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/profiles.md) |
+| Configure production behavior | [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md) | [defaults](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/defaults.md), [observability](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/observability.md), [policies](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/policies.md) |
+| Build on Tigrcorn from Python | [Public API and embedding usage](#public-api-and-embedding-usage) | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md), [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
+| Understand protocol and feature support | [Protocol and feature map](#protocol-and-feature-map) | [protocol docs](https://github.com/tigrbl/tigrcorn/tree/master/docs/protocols/), [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md), [`.ssot/registry.json`](https://github.com/tigrbl/tigrcorn/blob/master/.ssot/registry.json) |
+| Review release and conformance status | [Status at a glance](#status-at-a-glance) | [Validation and promotion](#validation-and-promotion), [conformance docs](https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/) |
 
 ## Quick start
 
@@ -148,8 +143,8 @@ from tigrcorn import run
 run("examples.echo_http.app:app", host="127.0.0.1", port=8000)
 ```
 
-For complete operator recipes, use `docs/ops/cli.md`. For public imports and lifecycle details, use `docs/ops/public.md` and `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
-For the blessed safe deployment profiles, use `docs/ops/profiles.md` and the packaged `src/tigrcorn/profiles/*.profile.json` artifacts.
+For complete operator recipes, use [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md). For public imports and lifecycle details, use [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) and [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md).
+For the blessed safe deployment profiles, use [deployment profiles](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/profiles.md) and the [packaged profile artifacts](https://github.com/tigrbl/tigrcorn/tree/master/src/tigrcorn/profiles/).
 
 ## Why teams pick Tigrcorn
 
@@ -157,21 +152,21 @@ For the blessed safe deployment profiles, use `docs/ops/profiles.md` and the pac
 - **Operator features that matter in deployment.** Listener binding, TLS and QUIC controls, workers, reload, structured logging, metrics, proxy normalization, content-coding policy, CONNECT policy, Early Hints, Alt-Svc, and static delivery are part of the public surface.
 - **A public Python API for applications and hosts.** `run`, `serve`, `serve_import_string`, `EmbeddedServer`, `StaticFilesApp`, and the config helpers are documented as importable entrypoints.
 - **Static delivery and entity semantics built into the package.** Static mounting, precompressed sidecars, conditional requests, range requests, and response-path helpers are available without a separate static server wrapper.
-- **Release and promotion checks in the repo.** `evaluate_release_gates` and `evaluate_promotion_target` are shipped APIs, and the repo preserves current-state and promoted-release material under `docs/review/conformance/`.
+- **Release and promotion checks in the repo.** `evaluate_release_gates` and `evaluate_promotion_target` are shipped APIs, and the repo preserves current-state and promoted-release material under [conformance docs](https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/).
 
 ## What Tigrcorn provides
 
 | Area | What you get | Primary docs |
 |---|---|---|
-| Server runtime | ASGI3 execution over HTTP/1.1, HTTP/2, HTTP/3, QUIC, and WebSockets | `docs/protocols/`, `examples/` |
-| Security | TLS 1.3 controls, ALPN, certificate validation, OCSP, CRL handling | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
-| Delivery | static files, ETag/conditional handling, range support, content coding, Early Hints, Alt-Svc | `docs/ops/public.md`, `docs/review/conformance/DEPLOYMENT_PROFILES.md` |
-| Operations | listeners, workers, reload, metrics, logging, proxy normalization, timeouts and resource controls | `docs/ops/cli.md` |
-| Embedding | `run`, `serve`, `serve_import_string`, `EmbeddedServer`, lifecycle hooks | `docs/ops/public.md`, `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
-| Config | typed config model, config-file loading, env loading, merge from CLI/env/file/defaults | `docs/ops/public.md`, `docs/ops/cli.md` |
-| Blessed profiles | generated safe deployment profiles plus profile conformance bundles | `docs/ops/profiles.md`, `docs/conformance/profile_bundles.json` |
-| Release checks | release-gate and promotion-target evaluators | `docs/gov/release.md`, `docs/ops/public.md` |
-| Current-state and release records | canonical current-state docs plus frozen promoted roots | `docs/review/conformance/state/`, `docs/review/conformance/releases/` |
+| Server runtime | ASGI3 execution over HTTP/1.1, HTTP/2, HTTP/3, QUIC, and WebSockets | [protocol docs](https://github.com/tigrbl/tigrcorn/tree/master/docs/protocols/), [examples](https://github.com/tigrbl/tigrcorn/tree/master/examples/) |
+| Security | TLS 1.3 controls, ALPN, certificate validation, OCSP, CRL handling | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) |
+| Delivery | static files, ETag/conditional handling, range support, content coding, Early Hints, Alt-Svc | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md), [deployment profiles reference](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/DEPLOYMENT_PROFILES.md) |
+| Operations | listeners, workers, reload, metrics, logging, proxy normalization, timeouts and resource controls | [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md) |
+| Embedding | `run`, `serve`, `serve_import_string`, `EmbeddedServer`, lifecycle hooks | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md), [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
+| Config | typed config model, config-file loading, env loading, merge from CLI/env/file/defaults | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md), [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md) |
+| Blessed profiles | generated safe deployment profiles plus profile conformance bundles | [deployment profiles](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/profiles.md), [profile bundles JSON](https://github.com/tigrbl/tigrcorn/blob/master/docs/conformance/profile_bundles.json) |
+| Release checks | release-gate and promotion-target evaluators | [release workflow guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/release.md), [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) |
+| Current-state and release records | canonical current-state docs plus frozen promoted roots | [state docs index](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/state/README.md), [release roots](https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/releases/) |
 
 ## Published packages
 
@@ -246,38 +241,38 @@ python -m pip install -e ".[runtime-uvloop]"
 python -m pip install -e ".[full-featured]"
 ```
 
-The authoritative optional dependency reference is `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`. TLS/X.509 operations rely on the optional `tigrcorn[tls-x509]` extra.
+The authoritative optional dependency reference is [optional dependency surface](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md). TLS/X.509 operations rely on the optional `tigrcorn[tls-x509]` extra.
 
 ## Protocol and feature map
 
-This section is a public support snapshot. It keeps protocol and feature details visible in the README, but it does not replace the deeper truth surfaces. Use `C-RFC` for current certified protocol claims, `C-OP` for current operator/API surfaces, and `O` for intentionally out-of-scope behavior. When changing claimed support, update `.ssot/registry.json`, the related ADR/SPEC/feature/claim/test/evidence rows, and the conformance boundary together.
+This section is a public support snapshot. It keeps protocol and feature details visible in the README while making Tigrcorn's depth, feature surface, and domain coverage explicit. Use `C-RFC` for current certified protocol claims, `C-OP` for current operator/API surfaces, and `OOB` for intentionally out-of-boundary behavior.
 
-> **Legend:** `C-RFC` = inside the current certified RFC boundary Â· `C-OP` = inside the public/operator surface Â· `O` = outside the current scope
+> **Legend:** `C-RFC` = inside the current certified RFC boundary Â· `C-OP` = inside the public/operator surface Â· `OOB` = outside the current scope
 
 ### Core protocol, transport, and delivery
 
 | Category | Surface | Status | Primary docs |
 |---|---|---|---|
-| HTTP | HTTP/1.1 (`RFC 9112`) | `C-RFC` | `docs/protocols/http1.md` |
-| HTTP | HTTP/2 (`RFC 9113`) | `C-RFC` | `docs/protocols/http2.md` |
-| HTTP | HTTP/3 (`RFC 9114`) | `C-RFC` | `docs/protocols/http3.md` |
-| QUIC | QUIC transport (`RFC 9000`, `RFC 9001`, `RFC 9002`) | `C-RFC` | `docs/protocols/quic.md` |
-| WebSocket | RFC 6455 / RFC 8441 / RFC 9220 carriers | `C-RFC` | `docs/protocols/websocket.md` |
-| Delivery | CONNECT relay, trailer fields, content coding | `C-RFC` | `docs/review/conformance/DEPLOYMENT_PROFILES.md` |
-| Delivery | Conditional requests, range requests, Early Hints, bounded Alt-Svc | `C-RFC` | `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` |
-| Security | TLS 1.3, ALPN, X.509, OCSP, CRL | `C-RFC` | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
+| HTTP | HTTP/1.1 (`RFC 9112`) | `C-RFC` | [HTTP/1.1 docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/protocols/http1.md) |
+| HTTP | HTTP/2 (`RFC 9113`) | `C-RFC` | [HTTP/2 docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/protocols/http2.md) |
+| HTTP | HTTP/3 (`RFC 9114`) | `C-RFC` | [HTTP/3 docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/protocols/http3.md) |
+| QUIC | QUIC transport (`RFC 9000`, `RFC 9001`, `RFC 9002`) | `C-RFC` | [QUIC docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/protocols/quic.md) |
+| WebSocket | RFC 6455 / RFC 8441 / RFC 9220 carriers | `C-RFC` | [WebSocket docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/protocols/websocket.md) |
+| Delivery | CONNECT relay, trailer fields, content coding | `C-RFC` | [deployment profiles reference](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/DEPLOYMENT_PROFILES.md) |
+| Delivery | Conditional requests, range requests, Early Hints, bounded Alt-Svc | `C-RFC` | [RFC applicability and competitor status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md) |
+| Security | TLS 1.3, ALPN, X.509, OCSP, CRL | `C-RFC` | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) |
 
 ### Operator and public API surface
 
 | Category | Surface | Status | Primary docs |
 |---|---|---|---|
-| CLI | `tigrcorn`, `python -m tigrcorn`, `tigrcorn-interop` | `C-OP` | `docs/ops/cli.md` |
-| Config | `build_config`, `build_config_from_namespace`, `build_config_from_sources` | `C-OP` | `docs/ops/public.md` |
-| Embedding | `EmbeddedServer`, lifecycle hooks, public lifecycle contract | `C-OP` | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
-| Static | `StaticFilesApp`, `mount_static_app`, static route flags | `C-OP` | `docs/ops/public.md` |
-| Operations | reload, workers, runtime selection, metrics, logging, proxy normalization | `C-OP` | `docs/ops/cli.md` |
-| Release | `evaluate_release_gates`, `evaluate_promotion_target` | `C-OP` | `docs/ops/public.md`, `docs/gov/release.md` |
-| Custom transports | pipe / inproc / rawframed / custom | `C-OP` with boundary notes | `docs/protocols/custom-transports.md`, `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
+| CLI | `tigrcorn`, `python -m tigrcorn`, `tigrcorn-interop` | `C-OP` | [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md) |
+| Config | `build_config`, `build_config_from_namespace`, `build_config_from_sources` | `C-OP` | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) |
+| Embedding | `EmbeddedServer`, lifecycle hooks, public lifecycle contract | `C-OP` | [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
+| Static | `StaticFilesApp`, `mount_static_app`, static route flags | `C-OP` | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) |
+| Operations | reload, workers, runtime selection, metrics, logging, proxy normalization | `C-OP` | [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md) |
+| Release | `evaluate_release_gates`, `evaluate_promotion_target` | `C-OP` | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md), [release workflow guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/release.md) |
+| Custom transports | pipe / inproc / rawframed / custom | `C-OP` with boundary notes | [custom transport docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/protocols/custom-transports.md), [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
 
 ## CLI usage
 
@@ -285,12 +280,12 @@ The main command is `tigrcorn`. The public module entrypoint is `python -m tigrc
 
 For complete operator coverage, use:
 
-- `docs/ops/cli.md`
-- `docs/review/conformance/CLI_FLAG_SURFACE.md`
-- `docs/review/conformance/cli_flag_surface.json`
-- `docs/review/conformance/DEPLOYMENT_PROFILES.md`
-- `docs/review/conformance/cli_help.current.txt`
-- `docs/review/conformance/tigrcorn_interop_help.current.txt`
+- [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md)
+- [CLI flag surface](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CLI_FLAG_SURFACE.md)
+- [CLI flag surface JSON](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/cli_flag_surface.json)
+- [deployment profiles reference](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/DEPLOYMENT_PROFILES.md)
+- [current CLI help snapshot](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/cli_help.current.txt)
+- [current interop help snapshot](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/tigrcorn_interop_help.current.txt)
 
 ### Config precedence
 
@@ -298,7 +293,7 @@ For complete operator coverage, use:
 CLI > env > config file > defaults
 ```
 
-That precedence is implemented by `build_config_from_sources` and documented in `docs/gov/code.md`.
+That precedence is implemented by `build_config_from_sources` and documented in [code governance](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/code.md).
 
 ### Common launch patterns
 
@@ -425,11 +420,11 @@ tigrcorn-interop \
   --output ./artifacts/interop
 ```
 
-Use `docs/review/conformance/external_matrix.current_release.json` for the current-release bundle contract and `docs/review/conformance/external_matrix.same_stack_replay.json` for same-stack replay coverage.
+Use [current-release external matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.current_release.json) for the current-release bundle contract and [same-stack replay matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.same_stack_replay.json) for same-stack replay coverage.
 
 ## Public API and embedding usage
 
-The public import surface is documented in full in `docs/ops/public.md`. Lifecycle guarantees for embedded use live in `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`.
+The public import surface is documented in full in [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md). Lifecycle guarantees for embedded use live in [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md).
 
 ### Public import map
 
@@ -552,44 +547,44 @@ print(promotion_report.passed)
 
 | Runtime | Status | Source |
 |---|---|---|
-| `auto` | supported | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
-| `asyncio` | supported | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
-| `uvloop` | supported | `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md` |
-| `trio` | reserved dependency path, not supported | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
+| `auto` | supported | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) |
+| `asyncio` | supported | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) |
+| `uvloop` | supported | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md), [optional dependency surface](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md) |
+| `trio` | reserved dependency path, not supported | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
 
 ### Out-of-boundary families
 
 | Family | Current location |
 |---|---|
-| Trio as a supported runtime family | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
-| WSGI / ASGI2 / RSGI compatibility layers | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
-| Parser pluggability | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
-| WebSocket engine pluggability | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
-| RFC 9111 caching | `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` |
-| RFC 9530 digest fields | `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` |
-| RFC 9421 message signatures | `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` |
-| JOSE / COSE layers | `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md` |
+| Trio as a supported runtime family | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
+| WSGI / ASGI2 / RSGI compatibility layers | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
+| Parser pluggability | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
+| WebSocket engine pluggability | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
+| RFC 9111 caching | [RFC applicability and competitor status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md) |
+| RFC 9530 digest fields | [RFC applicability and competitor status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md) |
+| RFC 9421 message signatures | [RFC applicability and competitor status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md) |
+| JOSE / COSE layers | [RFC applicability and competitor status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md) |
 
 ## Status at a glance
 
 | Topic | Current source of truth |
 |---|---|
 | Repo line | `0.3.16.dev5` in `pyproject.toml` and the shipped facade import surface |
-| Current state | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` |
-| Canonical machine-readable registry | `.ssot/registry.json` |
-| Current-state chain | `docs/review/conformance/CURRENT_STATE_CHAIN.md`, `docs/review/conformance/current_state_chain.current.json` |
-| Authoritative boundary | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` |
-| Strict profile | `docs/review/conformance/STRICT_PROFILE_TARGET.md` |
-| Canonical promoted root | `docs/review/conformance/releases/0.3.9/release-0.3.9/` |
-| Operator docs | `docs/ops/README.md`, `docs/ops/cli.md`, `docs/ops/public.md` |
-| Lifecycle and embedding contract | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
-| Optional dependency truth | `docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md`, `docs/review/conformance/optional_dependency_surface.current.json` |
-| External evidence inputs | `external_matrix.same_stack_replay.json`, `external_matrix.release.json`, `external_matrix.current_release.json` |
-| Planning and promotion checkpoints | `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`, `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md` |
+| Current state | [current repository state](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md) |
+| Canonical machine-readable registry | [`.ssot/registry.json`](https://github.com/tigrbl/tigrcorn/blob/master/.ssot/registry.json) |
+| Current-state chain | [current-state chain](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CURRENT_STATE_CHAIN.md), [current-state chain JSON](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/current_state_chain.current.json) |
+| Authoritative boundary | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) |
+| Strict profile | [strict profile target](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/STRICT_PROFILE_TARGET.md) |
+| Canonical promoted root | [canonical promoted root](https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/releases/0.3.9/release-0.3.9/) |
+| Operator docs | [operator docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/README.md), [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md), [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) |
+| Lifecycle and embedding contract | [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
+| Optional dependency truth | [optional dependency surface](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md), [optional dependency surface JSON](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/optional_dependency_surface.current.json) |
+| External evidence inputs | [same-stack replay matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.same_stack_replay.json), [release external matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.release.json), [current-release external matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.current_release.json) |
+| Planning and promotion checkpoints | [Phase 9 implementation plan](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md), [Phase 9A promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md) |
 
 ### Current repository claim
 
-Under `docs/review/conformance/CERTIFICATION_BOUNDARY.md`, the package is **certifiably fully RFC compliant under the authoritative certification boundary**. The canonical promoted root at `docs/review/conformance/releases/0.3.9/release-0.3.9/` is **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.[^boundary]
+Under [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md), the package is **certifiably fully RFC compliant under the authoritative certification boundary**. The canonical promoted root at [canonical promoted root](https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/releases/0.3.9/release-0.3.9/) is **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.[^boundary]
 
 ## Validation and promotion
 
@@ -620,107 +615,35 @@ PY
 
 Read next:
 
-- `docs/gov/release.md`
-- `docs/review/conformance/RELEASE_GATE_STATUS.md`
-- `docs/review/conformance/STRICT_PROFILE_TARGET.md`
-- `docs/review/conformance/FLAG_CERTIFICATION_TARGET.md`
-- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
+- [release workflow guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/release.md)
+- [release gate status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RELEASE_GATE_STATUS.md)
+- [strict profile target](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/STRICT_PROFILE_TARGET.md)
+- [flag certification target](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/FLAG_CERTIFICATION_TARGET.md)
+- [Phase 9A promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md)
 
 ## Where to look
 
 | If you are... | Start here | Then go to |
 |---|---|---|
-| Launching Tigrcorn as an operator | `docs/ops/cli.md` | `docs/review/conformance/DEPLOYMENT_PROFILES.md` |
-| Embedding Tigrcorn in another process | `docs/ops/public.md` | `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md` |
-| Working on static or delivery behavior | `docs/ops/public.md` | `examples/http_entity_static/app.py` |
-| Reviewing current repository truth | `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md` | `docs/review/conformance/current_state_chain.current.json` |
-| Reviewing the promoted release root | `docs/review/conformance/releases/0.3.9/release-0.3.9/` | `docs/release-notes/RELEASE_NOTES_0.3.9.md` |
-| Reviewing the boundary or current scope | `docs/review/conformance/CERTIFICATION_BOUNDARY.md` | `docs/review/conformance/BOUNDARY_NON_GOALS.md` |
-| Comparing Tigrcorn with peer servers | `docs/comp/rfc.md` | `docs/comp/cli.md`, `docs/comp/ops.md`, `docs/comp/oob.md` |
-| Writing or maintaining docs | `docs/gov/authoring.md` | `CONTRIBUTING.md`, `docs/gov/tree.md`, `docs/gov/mut.md` |
-| Working on release or promotion | `docs/gov/release.md` | `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md` |
-| Acting as an agent or automation | `.codex/AGENTS.md` | `tools/govchk.py` |
-
-## Governance and maintainer workflow
-
-Maintainer and authoring guidance lives in:
-
-- `docs/gov/authoring.md`
-- `CONTRIBUTING.md`
-- `.codex/AGENTS.md`
-- `docs/gov/release.md`
-
-The short version:
-
-1. update code and tests together
-2. update machine-readable truth together with human docs
-3. keep current-state pointers current
-4. create new preserved artifacts for promotion-relevant changes instead of editing a frozen release root
-
-Useful governance checks:
-
-```bash
-python tools/govchk.py state README.md
-python tools/govchk.py state docs/review/conformance/releases/0.3.9
-python tools/govchk.py scan
-```
-
-Repository cleanliness is governed by `MUT.json`, `docs/gov/tree.md`, `docs/gov/mut.md`, `docs/gov/code.md`, and ADR `.ssot/adr/ADR-1005-doc-gov.md`.
-
-## Current-state and historical planning
-
-For current repository truth, start with:
-
-- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
-- `docs/review/conformance/state/README.md`
-- `docs/review/conformance/CURRENT_STATE_CHAIN.md`
-- `docs/review/conformance/current_state_chain.current.json`
-
-For planning and promotion history, use:
-
-- `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`
-- `docs/review/conformance/phase9_implementation_plan.current.json`
-- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
-- `docs/review/conformance/phase9a_promotion_contract.current.json`
-- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
-- `docs/review/conformance/phase9a_execution_backlog.current.json`
-- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
-- `docs/review/conformance/phase9i_release_assembly.current.json`
-- `docs/review/conformance/RFC_APPLICABILITY_AND_COMPETITOR_STATUS.md`
-- `docs/review/conformance/state/checkpoints/`
-
-These files explain how the repository got to the current promoted state without replacing the canonical current-state pointer.
-
-## Certification environment freeze
-
-The certification environment freeze documents the install contract and runtime prerequisites for the strict release workflow.
-
-Start with:
-
-- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`
-- `docs/review/conformance/certification_environment_freeze.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
-- `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
-- `.github/workflows/phase9-certification-release.yml`
-- `tools/run_phase9_release_workflow.py`
-
-Frozen install command:
-
-```bash
-python -m pip install -e ".[certification,dev]"
-```
-
-The freeze distinguishes the authoritative release-workflow contract from the observed local editing environment.[^freeze]
+| Launching Tigrcorn as an operator | [CLI docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/cli.md) | [deployment profiles reference](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/DEPLOYMENT_PROFILES.md) |
+| Embedding Tigrcorn in another process | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) | [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
+| Working on static or delivery behavior | [public API docs](https://github.com/tigrbl/tigrcorn/blob/master/docs/ops/public.md) | [static delivery example](https://github.com/tigrbl/tigrcorn/blob/master/examples/http_entity_static/app.py) |
+| Reviewing current repository truth | [current repository state](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md) | [current-state chain JSON](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/current_state_chain.current.json) |
+| Reviewing the promoted release root | [canonical promoted root](https://github.com/tigrbl/tigrcorn/tree/master/docs/review/conformance/releases/0.3.9/release-0.3.9/) | [release notes 0.3.9](https://github.com/tigrbl/tigrcorn/blob/master/docs/release-notes/RELEASE_NOTES_0.3.9.md) |
+| Reviewing the boundary or current scope | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
+| Comparing Tigrcorn with peer servers | [RFC comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/rfc.md) | [CLI comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/cli.md), [operations comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/ops.md), [out-of-bound comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/oob.md) |
+| Writing or maintaining docs | [authoring guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/authoring.md) | [`CONTRIBUTING.md`](https://github.com/tigrbl/tigrcorn/blob/master/CONTRIBUTING.md), [tree rules](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/tree.md), [mutability rules](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/mut.md) |
+| Working on release or promotion | [release workflow guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/release.md) | [Phase 9A promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md) |
 
 ## Contributing, conduct, and community norms
 
-- `CONTRIBUTING.md` explains how to make changes without drifting from the boundary, tests, current-state chain, or release evidence.
-- `CODE_OF_CONDUCT.md` defines participation expectations and reporting guidance.
-- `docs/gov/authoring.md` explains how maintainers and authors should update the repository without creating truth conflicts.
-- `docs/gov/tree.md` and `docs/gov/mut.md` explain where new files belong and which trees are frozen.
+- [`CONTRIBUTING.md`](https://github.com/tigrbl/tigrcorn/blob/master/CONTRIBUTING.md) explains how to make changes without drifting from the boundary, tests, current-state chain, or release evidence.
+- [`CODE_OF_CONDUCT.md`](https://github.com/tigrbl/tigrcorn/blob/master/CODE_OF_CONDUCT.md) defines participation expectations and reporting guidance.
+- [authoring guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/authoring.md) explains how maintainers and authors should update the repository without creating truth conflicts.
+- [tree rules](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/tree.md) and [mutability rules](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/mut.md) explain where new files belong and which trees are frozen.
 
 ## Footnotes
 
-[^boundary]: Certification language in this repository is scoped by `docs/review/conformance/CERTIFICATION_BOUNDARY.md` and `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`. The current package claim and the promoted-root claim are related, but they are not the same statement.
+[^boundary]: Certification language in this repository is scoped by [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) and [current repository state](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md). The current package claim and the promoted-root claim are related, but they are not the same statement.
 
 [^freeze]: The freeze preserves the release-workflow contract even when the local working environment is missing a certification dependency such as `aioquic`.

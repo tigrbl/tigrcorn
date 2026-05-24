@@ -381,3 +381,25 @@ Do not keep mutating released evidence in place.
 - source: `src/tigrcorn/`
 - tests: `tests/`
 - tools: `tools/`
+
+## Public README exclusions
+
+The public `README.md` and `PYPI_README.md` are customer-facing and developer-facing feature documents first.
+
+Keep agent-only workflow detail out of those surfaces when it is primarily about:
+
+- Codex or automation execution paths
+- SSOT mutation mechanics
+- frozen release-root repair procedures
+- certification-environment assembly steps
+- path-by-path governance authoring instructions
+
+Place that material here instead, or in the deeper governance and conformance docs below:
+
+- `docs/gov/authoring.md`
+- `docs/gov/release.md`
+- `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
+- `docs/review/conformance/CURRENT_STATE_CHAIN.md`
+- `docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md`
+- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/releases/0.3.9/release-0.3.9/`
