@@ -13,6 +13,9 @@
 ---
 </div>
 
+<p align="center"><a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
+
+
 <p align="center"><strong>Release status</strong><br>
 <a href="docs/review/conformance/releases/0.3.9/release-0.3.9/"><img alt="repo line 0.3.9" src="https://img.shields.io/badge/repo_line-0.3.9-2f7ed8"></a>
 <a href="docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md"><img alt="current state canonical" src="https://img.shields.io/badge/current_state-canonical-0969da"></a>

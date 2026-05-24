@@ -22,6 +22,9 @@
 <a href="https://pypi.org/project/tigrcorn-config/"><img alt="config role package" src="https://img.shields.io/badge/role-config-0a7f5a"></a>
 </div>
 
+<p align="center"><a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
+
+
 ## Install
 
 ~~~bash
