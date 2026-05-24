@@ -8,8 +8,6 @@
 
 <p><strong>Protocol handlers for Tigrcorn HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, lifespan, and ASGI3 traffic.</strong></p>
 
-[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
-
 <a href="https://pypi.org/project/tigrcorn-protocols/"><img alt="PyPI version for tigrcorn-protocols" src="https://img.shields.io/pypi/v/tigrcorn-protocols?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-protocols/"><img alt="tigrcorn-protocols package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="https://pepy.tech/project/tigrcorn-protocols"><img alt="Downloads for tigrcorn-protocols" src="https://static.pepy.tech/badge/tigrcorn-protocols"></a>
@@ -19,7 +17,7 @@
 <a href="https://pypi.org/project/tigrcorn-protocols/"><img alt="protocols role package" src="https://img.shields.io/badge/role-protocols-0a7f5a"></a>
 </div>
 
-<p align="center"><a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
+<p align="center"><a href="https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json"><img alt="SSOT governed" src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg"></a> <a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
 
 
 ## Install

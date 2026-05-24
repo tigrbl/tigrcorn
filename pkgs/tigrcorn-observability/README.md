@@ -8,8 +8,6 @@
 
 <p><strong>Logging, metrics, tracing, DoS warning events, and release-evidence metadata for the Tigrcorn Python web server.</strong></p>
 
-[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
-
 <a href="https://pypi.org/project/tigrcorn-observability/"><img alt="PyPI version for tigrcorn-observability" src="https://img.shields.io/pypi/v/tigrcorn-observability?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-observability/"><img alt="tigrcorn-observability package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="https://pepy.tech/project/tigrcorn-observability"><img alt="Downloads for tigrcorn-observability" src="https://static.pepy.tech/badge/tigrcorn-observability"></a>
@@ -19,7 +17,7 @@
 <a href="https://pypi.org/project/tigrcorn-observability/"><img alt="observability role package" src="https://img.shields.io/badge/role-observability-0a7f5a"></a>
 </div>
 
-<p align="center"><a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
+<p align="center"><a href="https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json"><img alt="SSOT governed" src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg"></a> <a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
 
 
 ## Install

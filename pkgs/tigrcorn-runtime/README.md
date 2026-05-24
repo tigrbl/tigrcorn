@@ -8,8 +8,6 @@
 
 <p><strong>Server runner, app loading, lifecycle hooks, workers, reload, and embedded runtime for the Tigrcorn ASGI3 web server.</strong></p>
 
-[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json)
-
 <a href="https://pypi.org/project/tigrcorn-runtime/"><img alt="PyPI version for tigrcorn-runtime" src="https://img.shields.io/pypi/v/tigrcorn-runtime?label=PyPI"></a>
 <a href="https://pypi.org/project/tigrcorn-runtime/"><img alt="tigrcorn-runtime package on PyPI" src="https://img.shields.io/badge/package-PyPI-blue"></a>
 <a href="https://pepy.tech/project/tigrcorn-runtime"><img alt="Downloads for tigrcorn-runtime" src="https://static.pepy.tech/badge/tigrcorn-runtime"></a>
@@ -19,7 +17,7 @@
 <a href="https://pypi.org/project/tigrcorn-runtime/"><img alt="runtime role package" src="https://img.shields.io/badge/role-runtime-0a7f5a"></a>
 </div>
 
-<p align="center"><a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
+<p align="center"><a href="https://github.com/Tigrbl/tigrcorn/blob/master/.ssot/registry.json"><img alt="SSOT governed" src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg"></a> <a href="https://discord.gg/jzvrbEtTtt"><img alt="Discord" src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&amp;logoColor=white"></a></p>
 
 
 ## Install
