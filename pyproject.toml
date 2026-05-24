@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "tigrcorn"
 version = "0.3.16.dev5"
 description = "ASGI3 Python web server with built-in HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, TLS, and certification tooling."
-readme = "README.md"
+readme = "PYPI_README.md"
 requires-python = ">=3.10,<3.15"
 license = {file = "LICENSE"}
 authors = [

@@ -118,26 +118,26 @@ npm run test:peer-api
 
 | Package | Owns |
 | --- | --- |
-| [`tigrcorn`](https://pypi.org/project/tigrcorn/) | aggregate distribution and compatibility umbrella |
-| [`tigrcorn-core`](https://pypi.org/project/tigrcorn-core/) | constants, errors, types, and shared utils |
-| [`tigrcorn-config`](https://pypi.org/project/tigrcorn-config/) | config models, validation, profiles, env and file loading |
-| [`tigrcorn-http`](https://pypi.org/project/tigrcorn-http/) | entity tags, headers, conditional requests, ranges, and HTTP helpers |
-| [`tigrcorn-asgi`](https://pypi.org/project/tigrcorn-asgi/) | ASGI send and receive adapters and response materialization |
-| [`tigrcorn-contract`](https://pypi.org/project/tigrcorn-contract/) | event ordering, scope validation, and ASGI contract helpers |
-| [`tigrcorn-transports`](https://pypi.org/project/tigrcorn-transports/) | TCP, UDP, Unix, pipe, and transport machinery |
-| [`tigrcorn-security`](https://pypi.org/project/tigrcorn-security/) | TLS, ALPN, X.509, OCSP, and CRL handling |
-| [`tigrcorn-protocols`](https://pypi.org/project/tigrcorn-protocols/) | HTTP/1.1, HTTP/2, HTTP/3, QUIC, sessions, streams, and schedulers |
-| [`tigrcorn-static`](https://pypi.org/project/tigrcorn-static/) | static delivery and route mounting |
-| [`tigrcorn-observability`](https://pypi.org/project/tigrcorn-observability/) | metrics and logging surfaces |
-| [`tigrcorn-runtime`](https://pypi.org/project/tigrcorn-runtime/) | app loading, runner, workers, reload, embedding, and CLI |
-| [`tigrcorn-compat`](https://pypi.org/project/tigrcorn-compat/) | root-namespace shims and promotion helpers |
-| [`tigrcorn-certification`](https://pypi.org/project/tigrcorn-certification/) | release gates, strict promotion checks, and external evidence rails |
+| [`tigrcorn`](https://github.com/tigrbl/tigrcorn/blob/master/README.md) | aggregate distribution and compatibility umbrella |
+| [`tigrcorn-core`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-core/README.md) | constants, errors, types, and shared utils |
+| [`tigrcorn-config`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-config/README.md) | config models, validation, profiles, env and file loading |
+| [`tigrcorn-http`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-http/README.md) | entity tags, headers, conditional requests, ranges, and HTTP helpers |
+| [`tigrcorn-asgi`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-asgi/README.md) | ASGI send and receive adapters and response materialization |
+| [`tigrcorn-contract`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-contract/README.md) | event ordering, scope validation, and ASGI contract helpers |
+| [`tigrcorn-transports`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-transports/README.md) | TCP, UDP, Unix, pipe, and transport machinery |
+| [`tigrcorn-security`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-security/README.md) | TLS, ALPN, X.509, OCSP, and CRL handling |
+| [`tigrcorn-protocols`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-protocols/README.md) | HTTP/1.1, HTTP/2, HTTP/3, QUIC, sessions, streams, and schedulers |
+| [`tigrcorn-static`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-static/README.md) | static delivery and route mounting |
+| [`tigrcorn-observability`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-observability/README.md) | metrics and logging surfaces |
+| [`tigrcorn-runtime`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-runtime/README.md) | app loading, runner, workers, reload, embedding, and CLI |
+| [`tigrcorn-compat`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-compat/README.md) | root-namespace shims and promotion helpers |
+| [`tigrcorn-certification`](https://github.com/tigrbl/tigrcorn/blob/master/pkgs/tigrcorn-certification/README.md) | release gates, strict promotion checks, and external evidence rails |
 
 ### npm packages
 
 | Package | Owns |
 | --- | --- |
-| [`@tigrcorn/wt-peer-probes`](https://www.npmjs.com/package/@tigrcorn/wt-peer-probes) | browser-side WebTransport probe execution and Playwright peer validation |
+| [`@tigrcorn/wt-peer-probes`](https://github.com/tigrbl/tigrcorn/blob/master/packages/wt-peer-probes/README.md) | browser-side WebTransport probe execution and Playwright peer validation |
 
 ## Usage by Workflow
 
