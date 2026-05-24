@@ -15,6 +15,9 @@ def _load_pyproject(path: Path) -> dict:
     return tomllib.loads(path.read_text(encoding="utf-8"))
 
 
+WORKSPACE_VERSION = _load_pyproject(ROOT / "pyproject.toml")["project"]["version"]
+
+
 def test_workspace_declares_all_target_packages() -> None:
     root_pyproject = _load_pyproject(ROOT / "pyproject.toml")
     members = root_pyproject["tool"]["uv"]["workspace"]["members"]
@@ -40,11 +43,11 @@ def test_package_pyprojects_match_boundary_manifest() -> None:
         pyproject = _load_pyproject(ROOT / "pkgs" / boundary.distribution / "pyproject.toml")
         project = pyproject["project"]
         assert project["name"] == boundary.distribution
-        assert project["version"] == "0.3.9"
+        assert project["version"] == WORKSPACE_VERSION
         declared_dependencies = set(project.get("dependencies", []))
         for dependency in boundary.depends_on:
             if dependency.startswith("tigrcorn-"):
-                assert f"{dependency}==0.3.9" in declared_dependencies
+                assert f"{dependency}=={WORKSPACE_VERSION}" in declared_dependencies
             else:
                 assert any(item.startswith(dependency) for item in declared_dependencies)
         package_file = ROOT / "pkgs" / boundary.distribution / "src" / boundary.import_name / "__init__.py"
