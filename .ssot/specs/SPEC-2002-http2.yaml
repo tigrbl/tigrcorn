@@ -39,6 +39,15 @@ body: |-
   - per-stream request dispatch onto the ASGI boundary
   - generic CONNECT tunnel relay integration on the HTTP/2 carrier
   
+  ## Planned Closure For The Generic HTTP/2 Request Streaming Gap
+  
+  - generic HTTP/2 request dispatch shall start after request HEADERS are complete and valid rather than waiting for request `END_STREAM`
+  - generic request bodies shall be delivered to the app incrementally as ordered receive events instead of only as a fully buffered body
+  - request trailers shall remain available after the final streamed request-body event on the generic HTTP path
+  - same-stream request/response interleaving shall be supported when the app emits response body before request end
+  - receive-side flow-control replenishment for streamed request bodies shall be driven by application consumption of queued backlog rather than ingress alone
+  - per-stream and connection-level backlog shall remain bounded and fail closed when limits are exceeded
+  
   ## Release Evidence Shipped With This Archive
   
   Historical preserved evidence remains bundled:
@@ -53,4 +62,6 @@ body: |-
   
   The documentation for the HTTP/2 carrier is aligned with the implemented code and the committed release bundle. HPACK dynamic state, RFC 8441, TLS hosting, and CONNECT relay are all represented in preserved and current evidence.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1003"
+  - "adr:1012"

@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2037"
 number: 2037
@@ -12,14 +12,7 @@ summary: "Tigrcorn shall define the required verification matrix for certifying 
 supersedes: []
 superseded_by: []
 status_notes: []
-references:
-  - "ADR-1018"
-  - "ADR-1022"
-  - "ADR-1023"
-  - "ADR-1024"
-  - "ADR-1025"
-  - "ADR-1026"
-  - "ADR-1028"
+references: []
 body: |-
   # Contract runtime closure test matrix
   
@@ -30,6 +23,8 @@ body: |-
   - Every WebTransport closure feature shall have positive scope/session/stream/datagram/completion tests and negative ordering, metadata, and unsupported-carrier tests.
   - Every generic stream and datagram feature shall have capability, identity, lifecycle, carrier-semantics, and flow-control tests.
   - Every completion feature shall verify buffering, flush, transport handoff, acknowledgement, unsupported-level rejection, and ASGI/3 extension exposure where compatibility is selected.
+  - Generic HTTP/2 request streaming closure shall include positive tests for early dispatch on HEADERS completion, ordered multi-event request delivery, trailer delivery after the final request-body event, and same-stream request/response interleaving.
+  - Generic HTTP/2 request streaming closure shall include negative or hardening tests for slow-consumer backlog limits, premature receive-credit replenishment, closed-stream cleanup, and cross-stream fairness under multiplexed load.
   - REST, JSON-RPC, and SSE classification tests shall prove metadata classification without runtime ownership.
   - REST and JSON-RPC runtime exclusion tests shall prove no public API, CLI flag, config mode, or dispatch path enables those runtimes.
   - ASGI2, WSGI, and RSGI exclusion tests shall prove those interfaces are not supported product interfaces and are rejected unless a future explicit adapter feature is created.
@@ -40,4 +35,6 @@ body: |-
   
   A closure feature is certifiably complete only when its positive tests, negative tests, SSOT feature links, claims, evidence rows, and release-boundary status all agree.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1003"
+  - "adr:1012"

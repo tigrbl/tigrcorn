@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2031"
 number: 2031
@@ -12,9 +12,7 @@ summary: "Tigrcorn shall map backpressure and flow-control behavior into contrac
 supersedes: []
 superseded_by: []
 status_notes: []
-references:
-  - "ADR-1018"
-  - "ADR-1024"
+references: []
 body: |-
   # Backpressure and flow-control mapping
   
@@ -26,5 +24,10 @@ body: |-
   - Emission APIs report completion levels that match the actual carrier guarantee.
   - ASGI/3 compatibility exposes additional flow-control metadata only through extensions.
   - Tests cover stalled consumers, closed streams, buffered sends, and transport handoff.
+  - For request-streaming carriers, receive-side transport credit and application-visible backlog shall be tracked separately.
+  - HTTP/2 request-body `WINDOW_UPDATE` behavior shall be tied to drained application-visible backlog or explicit backlog release, not only to bytes accepted from the socket.
+  - Flow-control replenishment shall remain bounded at both the stream and connection level so a slow consumer on one stream cannot turn multiplexing into unbounded buffering.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1003"
+  - "adr:1012"

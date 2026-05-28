@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "adr"
 id: "adr:1003"
 number: 1003
@@ -14,8 +14,14 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  # ADR 1003 — scheduler and backpressure are separate concerns
+  # ADR 1003 - scheduler and backpressure are separate concerns
   
   Decision: concurrency and flow control belong in explicit scheduler and flow modules.
   
   Reason: protocol handlers should not encode ad-hoc concurrency policy.
+  
+  Additional rule for streaming carriers:
+  
+  - receive-side transport credit and application-visible backlog are separate concerns and shall not be collapsed into a single ingress-only counter
+  - a carrier that exposes request-body streaming shall replenish receive-side credit from application consumption or explicit backlog release, not merely from bytes accepted off the socket
+  - HTTP/2 request streaming and same-stream request/response interleaving shall therefore use bounded per-stream backlog plus consumption-driven `WINDOW_UPDATE` behavior
