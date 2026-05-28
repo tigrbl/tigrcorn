@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "adr"
 id: "adr:1024"
 number: 1024
@@ -11,17 +11,25 @@ tags: []
 summary: "Decision: Tigrcorn shall model streams and datagrams as first-class runtime families."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Updated to validate stream and datagram labels against the contract classification matrix."
+    at: "2026-05-27T17:27:39Z"
 references: []
 body: |-
   # ADR 1024 - Stream and datagram runtime
-
+  
   Decision: Tigrcorn shall model streams and datagrams as first-class runtime families.
-
+  
   Stream and datagram behavior is not only an implementation detail of QUIC. It must be visible in contract scopes, events, capabilities, flow control, and evidence.
-
+  
   Consequences:
-
+  
   - QUIC and WebTransport implementations share one family model.
   - ASGI3 compatibility must expose these families through extensions or reject them.
   - Backpressure and datagram loss semantics require dedicated tests.
+  
+  ## Classification update
+  
+  Stream and datagram runtime labels shall validate against the contract event classification matrix. A stream event must declare or derive whether it is bidirectional, client-to-server unidirectional, or server-to-client unidirectional before it can be classified as `duplex`, `client_stream`, or `server_stream`.

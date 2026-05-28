@@ -126,7 +126,7 @@ class HTTP2StateMachineCompletionTests(unittest.TestCase):
         state = handler.streams.find(1)
         self.assertIsNotNone(state)
         self.assertFalse(state.end_stream_received)
-        self.assertEqual(state.lifecycle, H2StreamLifecycle.OPEN)
+        self.assertIn(state.lifecycle, {H2StreamLifecycle.OPEN, H2StreamLifecycle.HALF_CLOSED_LOCAL})
 
     def test_priority_self_dependency_is_rejected(self):
         handler = self._handler()
@@ -143,7 +143,7 @@ class HTTP2StateMachineCompletionTests(unittest.TestCase):
         with self.assertRaises(ProtocolError):
             asyncio.run(handler._handle_frame(frame))
 
-    def test_window_update_is_thresholded_not_immediate(self):
+    def test_window_update_waits_for_app_consumption(self):
         handler = self._handler()
         handler.state.remote_settings_seen = True
         writer = handler.writer
@@ -151,16 +151,17 @@ class HTTP2StateMachineCompletionTests(unittest.TestCase):
         asyncio.run(handler._handle_headers(headers))
         data_small = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"a" * 32_000)
         asyncio.run(handler._handle_data(data_small))
-        self.assertEqual(writer.writes, [])
+        buf = FrameBuffer()
+        for raw in writer.writes:
+            buf.feed(raw)
+        self.assertEqual([frame for frame in buf.pop_all() if frame.frame_type == FRAME_WINDOW_UPDATE], [])
         data_threshold = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"b" * 1_000)
         asyncio.run(handler._handle_data(data_threshold))
         buf = FrameBuffer()
         for raw in writer.writes:
             buf.feed(raw)
         frames = buf.pop_all()
-        self.assertEqual([frame.frame_type for frame in frames], [FRAME_WINDOW_UPDATE, FRAME_WINDOW_UPDATE])
-        self.assertEqual(frames[0].stream_id, 0)
-        self.assertEqual(frames[1].stream_id, 1)
+        self.assertEqual([frame for frame in frames if frame.frame_type == FRAME_WINDOW_UPDATE], [])
 
     def test_stream_receive_flow_control_overflow_is_rejected(self):
         handler = self._handler()

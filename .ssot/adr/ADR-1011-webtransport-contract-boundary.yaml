@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "adr"
 id: "adr:1011"
 number: 1011
@@ -11,13 +11,16 @@ tags: []
 summary: "Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 and QUIC as an in-bound product target."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "W3C WebTransport Working Draft 25 March 2026: https://www.w3.org/TR/2026/WD-webtransport-20260325/"
-  - "W3C WebTransport latest published version: https://www.w3.org/TR/webtransport/"
-  - "IETF draft-ietf-webtrans-http3 WebTransport over HTTP/3: https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/"
-  - "MDN WebTransport API overview: https://developer.mozilla.org/en-US/docs/Web/API/WebTransport_API"
-  - "MDN WebTransport interface reference: https://developer.mozilla.org/en-US/docs/Web/API/WebTransport"
+status_notes:
+  -
+    at: "2026-05-27T17:27:12Z"
+    note: "Updated to require native WebTransport lane separation."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated WebTransport boundary to keep app framing above lane transport facts."
+    at: "2026-05-27T17:58:38Z"
+references: []
 body: |-
   # ADR 1011 - WebTransport contract boundary
   
@@ -30,3 +33,9 @@ body: |-
   The boundary tracks the W3C WebTransport API model as the external API semantics reference and the IETF WEBTRANS HTTP/3 draft family as the carrier-protocol reference while those documents remain work in progress. MDN WebTransport documentation is tracked as an informative implementation and browser-behavior reference for developer-facing examples, terminology, and compatibility notes.
   
   REST and JSON-RPC are out of bounds for Tigrcorn's runtime. They are application or framework bindings above ASGI HTTP. Tigrcorn may validate contract metadata that classifies HTTP traffic, but it shall not implement REST or JSON-RPC product runtimes.
+  
+  ## Classification update
+  
+  WebTransport projection shall distinguish native lanes under one session: session lifecycle, bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams. Message-shaped application payloads may be inner framing on a stream or datagram, but `message` is not a peer native WebTransport transport lane.
+  
+  Tigrcorn owns WebTransport lane transport facts such as session identity, stream identity, stream direction, datagram capability, and close/error metadata. Application-level message framing inside a WebTransport stream or datagram remains a higher-layer concern unless separately governed in Tigrcorn.

@@ -58,6 +58,7 @@ class H2StreamState:
     closed: bool = False
     websocket_session: object | None = None
     connect_tunnel: object | None = None
+    request_receive: object | None = None
     send_window: FlowWindow = field(default_factory=lambda: FlowWindow(DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE]))
     receive_window: FlowWindow = field(default_factory=lambda: FlowWindow(DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE]))
     receive_window_target: int = DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE]

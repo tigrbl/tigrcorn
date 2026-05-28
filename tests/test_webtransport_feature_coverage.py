@@ -160,6 +160,7 @@ def test_webtransport_contract_stream_events_preserve_session_stream_and_payload
         "type": "webtransport.stream.receive",
         "session_id": "s1",
         "stream_id": "st1",
+        "stream_direction": "bidi",
         "data": b"abc",
         "more": True,
     }
@@ -167,6 +168,7 @@ def test_webtransport_contract_stream_events_preserve_session_stream_and_payload
         "type": "webtransport.stream.send",
         "session_id": "s1",
         "stream_id": "st1",
+        "stream_direction": "bidi",
         "data": b"xyz",
         "more": False,
     }
@@ -346,7 +348,7 @@ def test_webtransport_demo_app_echoes_stream_payloads() -> None:
     sent: list[dict[str, object]] = []
     events = iter(
         [
-            {"type": "webtransport.stream.receive", "session_id": "s1", "stream_id": "st1", "data": b"payload"},
+            {"type": "webtransport.stream.receive", "session_id": "s1", "stream_id": "st1", "stream_direction": "bidi", "data": b"payload"},
             {"type": "webtransport.close", "session_id": "s1"},
         ]
     )
@@ -369,7 +371,7 @@ def test_webtransport_demo_app_echoes_stream_payloads() -> None:
         )
     )
 
-    assert {"type": "webtransport.stream.send", "session_id": "s1", "stream_id": "st1", "data": b"echo:payload", "more": False} in sent
+    assert {"type": "webtransport.stream.send", "session_id": "s1", "stream_id": "st1", "stream_direction": "bidi", "data": b"echo:payload", "more": False} in sent
 
 
 def test_webtransport_demo_app_echoes_datagram_payloads() -> None:

@@ -82,6 +82,7 @@ async def _webtransport(scope: dict[str, Any], receive, send) -> None:
                     "type": "webtransport.stream.send",
                     "session_id": event.get("session_id", session_id),
                     "stream_id": stream_id,
+                    "stream_direction": event.get("stream_direction", "bidi"),
                     "data": b"echo:" + data,
                     "more": False,
                 }

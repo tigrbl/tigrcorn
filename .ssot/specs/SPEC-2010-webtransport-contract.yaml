@@ -16,6 +16,14 @@ status_notes:
     at: "2026-04-26T05:47:33Z"
     note: "WebTransport operator activation and tuning semantics are now governed."
     status: "accepted"
+  -
+    at: "2026-05-27T17:41:11Z"
+    note: "Updated WebTransport contract with native lane separation."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated WebTransport contract to separate lane facts from inner app framing semantics."
+    at: "2026-05-27T18:11:52Z"
 references: []
 body: |-
   ## Content
@@ -31,10 +39,11 @@ body: |-
   - Contract `webtransport` scope construction.
   - `webtransport.connect` and `webtransport.accept` session admission.
   - `webtransport.disconnect` and `webtransport.close` session termination.
-  - `webtransport.stream.receive` and `webtransport.stream.send` stream events.
+  - Native WebTransport lane separation for session lifecycle, bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams.
+  - `webtransport.stream.receive` and `webtransport.stream.send` stream events with stream id and stream direction metadata.
   - `webtransport.datagram.receive` and `webtransport.datagram.send` datagram events when QUIC DATAGRAM support is enabled.
-  - `transport.emit.complete` completion signaling for session, stream, datagram, and message emission paths.
-  - Contract validation against the SSOT-declared tigr-asgi-contract schema target.
+  - `transport.emit.complete` completion signaling for session, stream, and datagram emission paths.
+  - Contract validation against the SSOT-declared tigr-asgi-contract schema target and classification matrix.
   - ASGI/3 exposure only through documented Tigrcorn extensions when compatibility is explicitly selected.
   
   ## W3C WebTransport alignment
@@ -42,7 +51,11 @@ body: |-
   - Session termination shall preserve the W3C WebTransport `close()` / `closed` model: clean closes carry a close code and reason, while failed transport closure is observable as an error path.
   - Stream termination shall preserve the W3C send/receive split: writable close maps to a FIN-style send close, writable abort maps to aborting/resetting the send direction, and readable cancel maps to aborting the receive direction.
   - Bidirectional stream handling shall treat each direction independently and shall not collapse stream close into session close.
+  - Unidirectional stream handling shall preserve initiator and direction rather than reducing the lane to generic server streaming.
   - Datagram support shall remain capability-gated on QUIC DATAGRAM and HTTP/3 carrier support.
+  - Message-shaped application payloads are inner stream or datagram framing concerns. They are not a peer native WebTransport transport lane.
+  - Tigrcorn owns WebTransport lane facts such as session identity, stream identity, stream direction, datagram capability, close/error metadata, and carrier capability gates.
+  - Tigrcorn does not own application-level message framing semantics inside WebTransport stream or datagram payloads unless separately governed.
   - W3C API concepts are tracked as interoperability semantics; Tigrcorn's public runtime contract remains the repo-local `webtransport.*` event surface declared in this SPEC and linked feature rows.
   - MDN examples and browser-support notes may be used to shape examples, operator docs, and test descriptions, but conformance requirements must trace to the W3C/IETF references and SSOT feature rows.
   
@@ -62,4 +75,7 @@ body: |-
   
   Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1011"
+  - "adr:1020"
+  - "adr:1024"

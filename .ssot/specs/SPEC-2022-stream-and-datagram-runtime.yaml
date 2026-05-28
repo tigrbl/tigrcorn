@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2022"
 number: 2022
@@ -11,9 +11,12 @@ tags: []
 summary: "Tigrcorn shall model stream and datagram behavior as contract-native runtime families."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1024"
+status_notes:
+  -
+    status: "draft"
+    note: "Updated stream and datagram validation against contract classification matrix."
+    at: "2026-05-27T17:41:02Z"
+references: []
 body: |-
   # Stream and datagram runtime
   
@@ -23,7 +26,11 @@ body: |-
   
   - Native scopes declare stream and datagram capabilities where supported.
   - Stream events preserve stream identity, direction, close state, and flow-control state.
+  - WebTransport stream events declare or derive whether the stream is bidirectional, client-to-server unidirectional, or server-to-client unidirectional.
+  - Stream labels validate against the contract classification matrix before they are exposed as `duplex`, `client_stream`, or `server_stream`.
   - Datagram events preserve unit identity, payload, and delivery semantics supported by the carrier.
+  - Datagram labels validate against the contract classification matrix before they are exposed as `family=datagram`.
   - ASGI/3 compatibility exposes these families only through documented extensions.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1024"

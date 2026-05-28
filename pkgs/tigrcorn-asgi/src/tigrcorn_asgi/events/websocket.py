@@ -6,11 +6,11 @@ def websocket_connect() -> dict:
 
 
 def websocket_receive_text(text: str) -> dict:
-    return {"type": "websocket.receive", "text": text, "bytes": None}
+    return {"type": "websocket.receive", "text": text, "bytes": None, "framing": "text"}
 
 
 def websocket_receive_bytes(data: bytes) -> dict:
-    return {"type": "websocket.receive", "text": None, "bytes": data}
+    return {"type": "websocket.receive", "text": None, "bytes": data, "framing": "bytes"}
 
 
 def websocket_disconnect(code: int = 1005, reason: str = "") -> dict:

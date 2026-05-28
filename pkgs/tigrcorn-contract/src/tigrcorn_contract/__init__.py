@@ -75,6 +75,15 @@ from .metadata import (
     unit_identity,
     validate_endpoint_metadata,
 )
+from .projection import (
+    EventProjection,
+    ScopeProjection,
+    project_event_classification,
+    project_receive_event,
+    project_scope_classification,
+    project_send_event,
+    validate_projected_event,
+)
 from .scopes import SUPPORTED_SCOPE_TYPES, contract_scope, validate_scope
 
 __all__ = [
@@ -88,6 +97,8 @@ __all__ = [
     "HTTPFeatureContractMap",
     "SUPPORTED_SCOPE_TYPES",
     "SecurityMetadata",
+    "EventProjection",
+    "ScopeProjection",
     "StreamIdentity",
     "UnitIdentity",
     "alt_svc_contract_map",
@@ -120,6 +131,10 @@ __all__ = [
     "map_contract_event",
     "observability_contract_metadata",
     "proxy_normalization_contract_map",
+    "project_event_classification",
+    "project_receive_event",
+    "project_scope_classification",
+    "project_send_event",
     "require_lossless_metadata",
     "runtime_interface_available",
     "security_metadata",
@@ -133,6 +148,7 @@ __all__ = [
     "validate_binding_legality",
     "validate_endpoint_metadata",
     "validate_event_order",
+    "validate_projected_event",
     "validate_scope",
     "websocket_accept",
     "websocket_close",

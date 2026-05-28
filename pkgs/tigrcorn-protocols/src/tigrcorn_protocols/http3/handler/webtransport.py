@@ -56,6 +56,20 @@ class _HTTP3WebTransportSession:
             "client": self.client,
             "server": self.server,
             "session_id": self.session_id,
+            "ext": {
+                "transport": {
+                    "binding": "webtransport",
+                    "alpn": "h3",
+                    "secure": self.scheme in {"https", "wss"},
+                    "quic": {"connection_id": self.session.quic.local_cid.hex()},
+                },
+                "webtransport": {
+                    "supports_bidi_streams": True,
+                    "supports_uni_streams": True,
+                    "supports_datagrams": True,
+                    "session_id": self.session_id,
+                },
+            },
             "extensions": {
                 "h3": {"datagram": True, "stream_id": self.stream_id},
                 "quic": {"connection_id": self.session.quic.local_cid.hex()},
@@ -97,6 +111,9 @@ class _HTTP3WebTransportSession:
         if typ == "webtransport.stream.send":
             if not self.accepted:
                 raise RuntimeError("webtransport.stream.send before webtransport.accept")
+            stream_direction = str(message.get("stream_direction", "bidi"))
+            if stream_direction not in {"bidi", "server_to_client"}:
+                raise RuntimeError("webtransport.stream.send requires bidi or server_to_client stream_direction")
             target_stream_id = int(message.get("stream_id", self.stream_id))
             await self.handler._send_webtransport_stream_data(
                 self.session,
@@ -106,6 +123,8 @@ class _HTTP3WebTransportSession:
                 endpoint=self.endpoint,
             )
             return
+        if typ and str(typ).startswith("webtransport.message."):
+            raise RuntimeError("webtransport message is not a native WebTransport lane")
         if typ == "webtransport.datagram.send":
             if not self.accepted:
                 raise RuntimeError("webtransport.datagram.send before webtransport.accept")
@@ -136,20 +155,24 @@ class _HTTP3WebTransportSession:
         end_stream: bool = False,
         disconnect_on_end: bool = True,
         stream_id: int | None = None,
+        stream_direction: str = "bidi",
+        framing: str | None = None,
     ) -> None:
         if self.closed:
             return
         event_stream_id = str(self.stream_id if stream_id is None else stream_id)
         if data:
-            await self.receive.put(
-                {
-                    "type": "webtransport.stream.receive",
-                    "session_id": self.session_id,
-                    "stream_id": event_stream_id,
-                    "data": data,
-                    "more": not end_stream,
-                }
-            )
+            event = {
+                "type": "webtransport.stream.receive",
+                "session_id": self.session_id,
+                "stream_id": event_stream_id,
+                "stream_direction": stream_direction,
+                "data": data,
+                "more": not end_stream,
+            }
+            if framing is not None:
+                event["framing"] = framing
+            await self.receive.put(event)
         if end_stream and disconnect_on_end and not self.closed:
             self.closed = True
             await self.receive.put({"type": "webtransport.disconnect", "session_id": self.session_id, "code": 0, "reason": ""})
@@ -157,24 +180,25 @@ class _HTTP3WebTransportSession:
     async def feed_connect_stream_data(self, data: bytes, *, end_stream: bool = False) -> None:
         if self.closed:
             return
-        await self.feed_stream_data(data, end_stream=end_stream, disconnect_on_end=False)
+        await self.feed_stream_data(data, end_stream=end_stream, disconnect_on_end=False, stream_direction="bidi")
         if end_stream:
             self.connect_stream_ended = True
 
     def note_connect_stream_stopped(self) -> None:
         self.connect_stream_ended = True
 
-    async def feed_datagram(self, datagram_id: str, data: bytes) -> None:
+    async def feed_datagram(self, datagram_id: str, data: bytes, *, framing: str | None = None) -> None:
         if self.closed:
             return
-        await self.receive.put(
-            {
-                "type": "webtransport.datagram.receive",
-                "session_id": self.session_id,
-                "datagram_id": datagram_id,
-                "data": data,
-            }
-        )
+        event = {
+            "type": "webtransport.datagram.receive",
+            "session_id": self.session_id,
+            "datagram_id": datagram_id,
+            "data": data,
+        }
+        if framing is not None:
+            event["framing"] = framing
+        await self.receive.put(event)
 
     async def abort(self) -> None:
         self.closed = True

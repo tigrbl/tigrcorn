@@ -56,6 +56,11 @@ def _project_dependencies(path: Path) -> set[str]:
     return set(project.get("dependencies", []))
 
 
+def _project_version(path: Path) -> str:
+    project = tomllib.loads(path.read_text(encoding="utf-8"))["project"]
+    return str(project["version"])
+
+
 def _request(
     *,
     method: str = "GET",
@@ -191,7 +196,7 @@ def test_tigr_asgi_contract_is_external_peer_dependency() -> None:
     assert "tigr-asgi-contract" in boundary.depends_on
     assert "tigr-asgi-contract" not in PACKAGE_BY_DISTRIBUTION
     assert any(dependency.startswith("tigr-asgi-contract>=") for dependency in contract_dependencies)
-    assert "tigrcorn-contract==0.3.9" in umbrella_dependencies
+    assert f"tigrcorn-contract=={_project_version(ROOT / 'pkgs' / 'tigrcorn-contract' / 'pyproject.toml')}" in umbrella_dependencies
     assert any(dependency.startswith("tigr-asgi-contract>=") for dependency in umbrella_dependencies)
 
 

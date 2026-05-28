@@ -111,16 +111,38 @@ def websocket_connect(unit_id: str) -> dict[str, Any]:
     return _event("websocket.connect", unit_id=_require_unit_id(unit_id))
 
 
-def websocket_receive(unit_id: str, *, text: str | None = None, bytes_: bytes | None = None) -> dict[str, Any]:
+def _derive_framing(*, text: str | None = None, bytes_: bytes | None = None, framing: str | None = None) -> str:
+    if framing is not None:
+        return framing
+    if text is not None:
+        return "text"
+    if bytes_ is not None:
+        return "bytes"
+    raise ProtocolError("cannot derive framing without text or bytes")
+
+
+def websocket_receive(
+    unit_id: str,
+    *,
+    text: str | None = None,
+    bytes_: bytes | None = None,
+    framing: str | None = None,
+) -> dict[str, Any]:
     if text is None and bytes_ is None:
         raise ProtocolError("websocket receive requires text or bytes")
-    return _event("websocket.receive", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_)
+    return _event("websocket.receive", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_, framing=_derive_framing(text=text, bytes_=bytes_, framing=framing))
 
 
-def websocket_send(unit_id: str, *, text: str | None = None, bytes_: bytes | None = None) -> dict[str, Any]:
+def websocket_send(
+    unit_id: str,
+    *,
+    text: str | None = None,
+    bytes_: bytes | None = None,
+    framing: str | None = None,
+) -> dict[str, Any]:
     if text is None and bytes_ is None:
         raise ProtocolError("websocket send requires text or bytes")
-    return _event("websocket.send", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_)
+    return _event("websocket.send", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_, framing=_derive_framing(text=text, bytes_=bytes_, framing=framing))
 
 
 def websocket_accept(unit_id: str, *, subprotocol: str | None = None) -> dict[str, Any]:
@@ -211,20 +233,62 @@ def webtransport_close(session_id: str, *, code: int = 0, reason: str = "") -> d
     return _event("webtransport.close", session_id=session_id, code=code, reason=reason)
 
 
-def webtransport_stream_receive(session_id: str, stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
-    return _event("webtransport.stream.receive", session_id=session_id, stream_id=stream_id, data=data, more=more)
+def webtransport_stream_receive(
+    session_id: str,
+    stream_id: str,
+    data: bytes,
+    *,
+    stream_direction: str = "bidi",
+    framing: str | None = None,
+    more: bool = False,
+) -> dict[str, Any]:
+    event = _event(
+        "webtransport.stream.receive",
+        session_id=session_id,
+        stream_id=stream_id,
+        stream_direction=stream_direction,
+        data=data,
+        more=more,
+    )
+    if framing is not None:
+        event["framing"] = framing
+    return event
 
 
-def webtransport_stream_send(session_id: str, stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
-    return _event("webtransport.stream.send", session_id=session_id, stream_id=stream_id, data=data, more=more)
+def webtransport_stream_send(
+    session_id: str,
+    stream_id: str,
+    data: bytes,
+    *,
+    stream_direction: str = "bidi",
+    framing: str | None = None,
+    more: bool = False,
+) -> dict[str, Any]:
+    event = _event(
+        "webtransport.stream.send",
+        session_id=session_id,
+        stream_id=stream_id,
+        stream_direction=stream_direction,
+        data=data,
+        more=more,
+    )
+    if framing is not None:
+        event["framing"] = framing
+    return event
 
 
-def webtransport_datagram_receive(session_id: str, datagram_id: str, data: bytes) -> dict[str, Any]:
-    return _event("webtransport.datagram.receive", session_id=session_id, datagram_id=datagram_id, data=data)
+def webtransport_datagram_receive(session_id: str, datagram_id: str, data: bytes, *, framing: str | None = None) -> dict[str, Any]:
+    event = _event("webtransport.datagram.receive", session_id=session_id, datagram_id=datagram_id, data=data)
+    if framing is not None:
+        event["framing"] = framing
+    return event
 
 
-def webtransport_datagram_send(session_id: str, datagram_id: str, data: bytes) -> dict[str, Any]:
-    return _event("webtransport.datagram.send", session_id=session_id, datagram_id=datagram_id, data=data)
+def webtransport_datagram_send(session_id: str, datagram_id: str, data: bytes, *, framing: str | None = None) -> dict[str, Any]:
+    event = _event("webtransport.datagram.send", session_id=session_id, datagram_id=datagram_id, data=data)
+    if framing is not None:
+        event["framing"] = framing
+    return event
 
 
 def emit_complete(

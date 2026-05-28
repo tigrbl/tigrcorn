@@ -54,6 +54,57 @@ class HTTPRequestReceive:
         return http_disconnect()
 
 
+class HTTP2QueuedRequestReceive:
+    """Queue-backed HTTP/2 request body with consumption-driven flow credit."""
+
+    def __init__(
+        self,
+        *,
+        trailers: list[tuple[bytes, bytes]] | None = None,
+        trailer_policy: str = 'pass',
+        on_body_consumed: Callable[[int], Awaitable[None]] | None = None,
+    ) -> None:
+        self._queue: asyncio.Queue[Message] = asyncio.Queue()
+        self._trailers = apply_request_trailer_policy(list(trailers or ()), trailer_policy)
+        self._on_body_consumed = on_body_consumed
+        self._body_complete = False
+        self._sent_trailers = False
+        self._disconnected = False
+
+    @property
+    def body_complete(self) -> bool:
+        return self._body_complete
+
+    async def put_body(self, body: bytes, *, more_body: bool) -> None:
+        if self._body_complete:
+            return
+        if not more_body:
+            self._body_complete = True
+        await self._queue.put(http_request(body, more_body))
+
+    async def finish_body(self) -> None:
+        if not self._body_complete:
+            await self.put_body(b'', more_body=False)
+
+    async def put_trailers(self, trailers: list[tuple[bytes, bytes]]) -> None:
+        self._trailers = apply_request_trailer_policy(trailers, 'pass')
+
+    async def __call__(self) -> Message:
+        if self._disconnected:
+            return http_disconnect()
+        if not self._body_complete or not self._queue.empty():
+            message = await self._queue.get()
+            body = message.get('body', b'')
+            if body and self._on_body_consumed is not None:
+                await self._on_body_consumed(len(body))
+            return message
+        if self._trailers and not self._sent_trailers:
+            self._sent_trailers = True
+            return http_request_trailers(self._trailers)
+        self._disconnected = True
+        return http_disconnect()
+
+
 class HTTPStreamingRequestReceive:
     """Reader-backed HTTP/1.1 request body exposed incrementally as ASGI events."""
 

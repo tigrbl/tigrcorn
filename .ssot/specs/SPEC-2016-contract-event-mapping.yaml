@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2016"
 number: 2016
@@ -8,22 +8,35 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrcorn shall define event mapping between contract events and ASGI/3 compatibility events."
+summary: "Tigrcorn shall define event mapping between runtime traffic, canonical contract events, and ASGI/3 compatibility events."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1017"
+status_notes:
+  -
+    at: "2026-05-27T17:40:45Z"
+    note: "Updated event mapping with canonical event channel classification attributes."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated event mapping to preserve framing metadata without owning app payload interpretation."
+    at: "2026-05-27T18:11:22Z"
+references: []
 body: |-
   # Contract event mapping
   
-  Tigrcorn shall define event mapping between contract events and ASGI/3 compatibility events.
+  Tigrcorn shall define event mapping between runtime traffic, canonical contract events, and ASGI/3 compatibility events.
   
   Requirements:
   
-  - ASGI/3 HTTP, WebSocket, and lifespan events map into contract event records.
+  - ASGI/3 HTTP, WebSocket, and lifespan events map into contract event records using canonical event names.
   - Contract events with standard ASGI/3 equivalents map back to standard ASGI/3 events.
   - Contract events without standard ASGI/3 equivalents require documented extension events or rejection.
+  - Tigrcorn maps each event through `event + channel + scope_type + binding + family + exchange + direction` classification metadata.
+  - `channel` records whether the event traversed ASGI `receive` or `send`; peer-flow `direction` remains separate semantic metadata.
+  - Tigrcorn preserves selected framing, selected WebSocket subprotocol, and WebTransport lane framing hints when they are available as metadata.
+  - Preserved framing metadata does not make Tigrcorn responsible for REST, JSON-RPC, NDJSON, or WebTransport inner app payload interpretation unless a separate Tigrcorn runtime contract explicitly says so.
+  - Tigrcorn must not emit a required `subsurface` or duplicate event-name field merely to restate the selected lane.
   - Illegal event order and illegal event type combinations fail validation.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1017"

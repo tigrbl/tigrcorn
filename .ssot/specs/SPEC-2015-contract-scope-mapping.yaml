@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.6.0"
 kind: "spec"
 id: "spc:2015"
 number: 2015
@@ -12,9 +12,12 @@ summary: "Tigrcorn shall define scope mapping between `tigr-asgi-contract` and A
 supersedes:
   - "spc:2006"
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1016"
+status_notes:
+  -
+    status: "draft"
+    note: "Updated scope mapping to broad contract scope types plus metadata extensions."
+    at: "2026-05-27T17:40:36Z"
+references: []
 body: |-
   # Contract scope mapping
   
@@ -22,9 +25,12 @@ body: |-
   
   Requirements:
   
-  - Contract `http`, `websocket`, and `lifespan` scopes map to standard ASGI/3 scope types.
+  - Contract `http`, `websocket`, `webtransport`, and `lifespan` scopes map to the broad governed contract scope types.
+  - HTTP/1.1, HTTP/2, HTTP/3, TLS, mTLS, ALPN, QUIC, and WebTransport capability facts are exposed as scope metadata or extension metadata, not as additional ASGI scope types.
   - Contract `webtransport` maps to the native contract path and only to ASGI/3 through documented extensions.
   - Contract metadata that has no ASGI/3 field maps through the extension bridge or fails closed.
   - Custom ad hoc scope types are not the compatibility mechanism.
+  - Missing metadata must remain distinguishable from unsupported metadata.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1016"
