@@ -126,6 +126,7 @@ def _normalized_binding(binding: str | None, scope_type: str) -> str:
             normalized = "jsonrpc"
         if normalized in _BINDING_ALIASES:
             return _BINDING_ALIASES[normalized]
+        raise ProtocolError(f"unsupported binding for classification: {binding!r}")
     if scope_type == "http":
         return "rest"
     if scope_type == "websocket":
@@ -153,7 +154,7 @@ def _capability(scope: dict[str, Any], gate: str) -> bool:
     legacy = extensions.get("tigrcorn.webtransport", {}) if isinstance(extensions, dict) else {}
     if isinstance(legacy, dict) and gate in legacy:
         return bool(legacy[gate])
-    return True
+    return False
 
 
 def _derive_framing(event: dict[str, Any]) -> str | None:
@@ -206,6 +207,19 @@ def _row_to_projection(row: Any) -> EventProjection:
     )
 
 
+def _projection_key(projection: EventProjection) -> tuple[str, str, str, str, str, str, str, tuple[str, ...]]:
+    return (
+        projection.event,
+        projection.channel,
+        projection.scope_type,
+        projection.binding,
+        projection.family,
+        projection.exchange,
+        projection.direction,
+        projection.allowed_framings,
+    )
+
+
 def _fallback_classify(scope: dict[str, Any], channel: str, event: dict[str, Any]) -> EventProjection:
     if channel not in {"receive", "send"}:
         raise ProtocolError(f"unsupported ASGI contract channel: {channel!r}")
@@ -216,19 +230,23 @@ def _fallback_classify(scope: dict[str, Any], channel: str, event: dict[str, Any
             continue
         if row.scope_type != scope_projection.scope_type or row.binding != scope_projection.binding:
             continue
+        missing = [field for field in row.required_payload_fields if field not in event]
+        if missing:
+            raise ProtocolError(f"event {event_type!r} missing required fields: {missing!r}")
         if row.stream_direction is not None and event.get("stream_direction") != row.stream_direction:
             continue
         if any(not _capability(scope, gate) for gate in row.capability_gates):
             continue
-        missing = [field for field in row.required_payload_fields if field not in event]
-        if missing:
-            raise ProtocolError(f"event {event_type!r} missing required fields: {missing!r}")
         framing = _derive_framing(event)
         if framing is not None:
             if framing not in _FRAMINGS:
                 raise ProtocolError(f"unsupported framing: {framing!r}")
             if row.allowed_framings and framing not in row.allowed_framings:
                 raise ProtocolError(f"framing {framing!r} is illegal for {event_type!r}")
+            if framing == "jsonrpc" and event.get("jsonrpc_complete") is not True:
+                raise ProtocolError("jsonrpc framing requires jsonrpc_complete=True")
+            if framing == "ndjson" and event.get("jsonrpc_complete") is True:
+                raise ProtocolError("ndjson framing must not claim jsonrpc_complete")
         return _row_to_projection(row)
     raise ProtocolError(f"no contract classification for {channel}:{event_type}")
 
@@ -243,7 +261,11 @@ def project_event_classification(scope: dict[str, Any], channel: str, event: dic
             row = _contract_classify_event(scope, channel, event_type, event)
             if _contract_validate_event_payload is not None and not _contract_validate_event_payload(event_type, event, row):
                 raise ProtocolError(f"event payload failed contract validation: {event_type!r}")
-            return _row_to_projection(row)
+            contract_projection = _row_to_projection(row)
+            fallback_projection = _fallback_classify(scope, channel, event)
+            if _projection_key(contract_projection) != _projection_key(fallback_projection):
+                raise ProtocolError(f"contract classification drift for {channel}:{event_type}")
+            return contract_projection
         except Exception as exc:
             raise ProtocolError(str(exc)) from exc
     return _fallback_classify(scope, channel, event)

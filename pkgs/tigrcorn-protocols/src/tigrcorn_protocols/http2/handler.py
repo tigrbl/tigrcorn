@@ -1037,6 +1037,8 @@ class HTTP2ConnectionHandler:
         except Exception:
             if not response_started and self.streams.find(stream_id) is not None:
                 await self._send_response(stream_id, 500, [(b"content-type", b"text/plain")], b"internal server error")
+            elif response_started and not response_complete and self.streams.find(stream_id) is not None:
+                await self._send_stream_data(stream_id, b"", end_stream=True)
             return 500
         finally:
             if state.request_receive is receive:

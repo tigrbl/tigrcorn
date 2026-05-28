@@ -53,7 +53,7 @@ def test_projection_api_exports_scope_transport_metadata_without_subsurface():
         (scope("websocket", "websocket"), "send", websocket_send("ws-1", bytes_=b"hello"), ("message", "duplex", "server_to_client")),
         (scope("webtransport", "webtransport"), "receive", {"type": "webtransport.connect", "session_id": "s1"}, ("session", "unary", "client_to_server")),
         (scope("webtransport", "webtransport"), "send", {"type": "webtransport.accept", "session_id": "s1"}, ("session", "unary", "server_to_client")),
-        (scope("webtransport", "webtransport"), "receive", webtransport_stream_receive("s1", "st1", b"a", stream_direction="bidi", framing="jsonrpc"), ("stream", "duplex", "client_to_server")),
+        (scope("webtransport", "webtransport"), "receive", {**webtransport_stream_receive("s1", "st1", b"a", stream_direction="bidi", framing="jsonrpc"), "jsonrpc_complete": True}, ("stream", "duplex", "client_to_server")),
         (scope("webtransport", "webtransport"), "receive", webtransport_stream_receive("s1", "st2", b"a", stream_direction="client_to_server", framing="ndjson"), ("stream", "client_stream", "client_to_server")),
         (scope("webtransport", "webtransport"), "send", webtransport_stream_send("s1", "st3", b"a", stream_direction="server_to_client", framing="ndjson"), ("stream", "server_stream", "server_to_client")),
         (scope("webtransport", "webtransport"), "receive", webtransport_datagram_receive("s1", "d1", b"a", framing="json"), ("datagram", "duplex", "client_to_server")),
