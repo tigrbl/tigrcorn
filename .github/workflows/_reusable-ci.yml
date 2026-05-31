@@ -99,7 +99,6 @@ jobs:
             docs/ops/origin.md
             docs/ops/observability.md
             LEGACY_UNITTEST_INVENTORY.json
-            .artifacts/pages/
             docs/review/conformance/cli_help.current.txt
             docs/review/conformance/release_gate_status.current.json
             docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md

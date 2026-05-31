@@ -3,7 +3,7 @@ name: docs
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "README.md"
       - "docs/**"
@@ -12,8 +12,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build-docs:
@@ -49,33 +47,10 @@ jobs:
       - name: Package docs artifact
         run: |
           mkdir -p .artifacts/docs
-          mkdir -p .artifacts/pages
           cp README.md .artifacts/docs/
           cp -R docs .artifacts/docs/docs
-          cp README.md .artifacts/pages/
-          cp -R docs .artifacts/pages/docs
       - name: Upload docs artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: docs-bundle
           path: .artifacts/docs
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
-        with:
-          path: .artifacts/pages
-
-  deploy-docs:
-    needs: build-docs
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy pages
-        id: deployment
-        continue-on-error: true
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
-      - name: Warn when GitHub Pages is unavailable
-        if: ${{ steps.deployment.outcome == 'failure' }}
-        run: |
-          echo "::warning::GitHub Pages deployment failed. Enable Pages in repository settings to publish docs; release jobs should not be blocked by disabled Pages."

@@ -53,13 +53,15 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert 'python_release_tag={python_tag}' in workflow
     assert 'REL_{version}.md' in workflow
     assert 'needs.prepare-release.result == \'success\'' in workflow
+    assert 'certification-release-gates' in workflow
+    assert 'needs: [release-gates, certification-release-gates]' in workflow
     assert 'Check out prepared release commit' in workflow
     assert 'draft: ${{ github.event_name == \'workflow_dispatch\' && needs.prepare-release.outputs.prerelease == \'true\' }}' in workflow
     assert 'secrets.NPM_API_TOKEN' in workflow
     assert 'pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b' in workflow
     assert 'actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26' in workflow
     assert 'softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe' in workflow
-    assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' in workflow
+    assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' not in workflow
     assert 'npm publish --access public --provenance' in workflow
     assert 'download-artifact' in workflow
     assert 'packages-dir: dist' in workflow
@@ -68,8 +70,8 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
 
 def test_release_pages_and_docs_pipeline_are_declared():
     workflow = _text('.github/workflows/docs.yml')
-    assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' in workflow
-    assert 'actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128' in workflow
-    assert 'continue-on-error: true' in workflow
-    assert 'environment:' in workflow
-    assert 'github-pages' in workflow
+    assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' not in workflow
+    assert 'actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128' not in workflow
+    assert 'github-pages' not in workflow
+    assert 'name: docs' in workflow
+    assert 'Upload docs artifact' in workflow

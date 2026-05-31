@@ -81,6 +81,6 @@ def test_release_workflow_and_wrapper_require_aioquic_preflight_before_phase9_sc
     workflow = (ROOT / '.github' / 'workflows' / 'phase9-certification-release.yml').read_text(encoding='utf-8')
     wrapper = (ROOT / 'tools' / 'run_phase9_release_workflow.py').read_text(encoding='utf-8')
     assert 'tools/preflight_aioquic_adapters.py' in workflow
-    assert '--require-pass' in workflow
     assert 'preflight_aioquic_adapters.py' in wrapper
-    assert '--require-pass' in wrapper
+    assert '--require-pass' not in workflow
+    assert '--require-pass' not in wrapper

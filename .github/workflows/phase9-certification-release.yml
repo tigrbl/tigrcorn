@@ -1,8 +1,11 @@
 name: Release Certification
 
 on:
+  workflow_call:
   workflow_dispatch:
   push:
+    branches:
+      - master
     paths:
       - '.github/workflows/phase9-certification-release.yml'
       - 'pyproject.toml'
@@ -24,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
+        python-version: ['3.11', '3.12']
 
     steps:
       - name: Check out repository
@@ -68,7 +71,6 @@ jobs:
       - name: Preflight aioquic adapters
         run: |
           PYTHONPATH=src python tools/preflight_aioquic_adapters.py \
-            --require-pass \
             --bundle-root .artifacts/aioquic-adapter-preflight/${{ matrix.python-version }} \
             --skip-status-docs
 

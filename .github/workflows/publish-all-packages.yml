@@ -72,10 +72,14 @@ jobs:
     name: release-gates
     uses: ./.github/workflows/_reusable-ci.yml
 
+  certification-release-gates:
+    name: certification-release-gates
+    uses: ./.github/workflows/phase9-certification-release.yml
+
   prepare-release:
     name: prepare-release
-    needs: release-gates
-    if: ${{ needs.release-gates.result == 'success' }}
+    needs: [release-gates, certification-release-gates]
+    if: ${{ needs.release-gates.result == 'success' && needs.certification-release-gates.result == 'success' }}
     runs-on: ubuntu-latest
     outputs:
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
@@ -270,7 +274,7 @@ jobs:
           PACKAGE_SELECTION: ${{ inputs.package_selection || 'all' }}
         run: |
           rm -rf dist .artifacts
-          mkdir -p .artifacts/release-assets .artifacts/pages
+          mkdir -p .artifacts/release-assets
           python - <<'PY'
           from pathlib import Path
           import os
@@ -342,9 +346,6 @@ jobs:
             docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md; do
             [[ -e "$file" ]] && cp "$file" .artifacts/release-assets/
           done
-
-          cp README.md .artifacts/pages/
-          cp -R docs .artifacts/pages/docs
       - name: Capture version
         id: meta
         shell: bash
@@ -375,10 +376,6 @@ jobs:
         uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
         with:
           subject-path: dist/*
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
-        with:
-          path: .artifacts/pages
 
   publish-python-testpypi:
     name: python-testpypi-publish

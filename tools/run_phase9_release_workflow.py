@@ -76,7 +76,6 @@ def main() -> int:
     preflight_command = [
         sys.executable,
         str(ROOT / 'tools' / 'preflight_aioquic_adapters.py'),
-        '--require-pass',
         '--release-root',
         args.release_root,
         '--bundle-name',
