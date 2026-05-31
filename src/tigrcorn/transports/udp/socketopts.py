@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-import socket
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def configure_udp_socket(sock) -> None:
-    try:
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    except OSError:
-        pass
+_module = _import_module('tigrcorn_transports.udp.socketopts')
+_sys.modules[__name__] = _module

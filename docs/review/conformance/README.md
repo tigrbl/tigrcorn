@@ -6,6 +6,7 @@ The canonical package-wide certification target is defined in `docs/review/confo
 
 The current package policy chain is:
 
+- `.ssot/registry.json` — definitive machine-readable governance registry and source of truth
 - `CERTIFICATION_BOUNDARY.md` — authoritative in-bounds statement
 - `certification_boundary.json` — authoritative machine-readable RFC evidence policy
 - `BOUNDARY_NON_GOALS.md` — authoritative out-of-bounds statement
@@ -69,8 +70,8 @@ The canonical 0.3.9 release root is also **strict-target certifiably fully RFC c
 
 The remaining broader items are explicitly outside the current authoritative blocker set:
 
-- RFC 7692, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 remain intentionally bounded at `local_conformance` in the current authoritative machine-readable policy
-- the stricter all-surfaces-independent overlay for those surfaces now also passes
+- RFC 7936, RFC 8307, RFC 9110 CONNECT / trailers / content coding, and RFC 6960 remain intentionally bounded at `local_conformance` in the current authoritative machine-readable policy
+- RFC 7692 now passes the stricter all-surfaces-independent overlay, while RFC 7936 and RFC 8307 remain governed local-conformance WebSocket adjuncts
 - the provisional all-surfaces and flow-control bundles remain non-certifying historical review aids
 - the historical intermediary / proxy seed corpus improves repository completeness and remains preserved
 - a minimum certified intermediary / proxy-adjacent corpus now exists under `intermediary_proxy_corpus_minimum_certified/`, but it is still intentionally narrower than a full multi-hop intermediary certification program
@@ -110,7 +111,82 @@ The Phase 2 config / CLI surface is documented in:
 - `optional_dependency_surface.current.json`
 - `DEPLOYMENT_PROFILES.md`
 - `deployment_profiles.json`
+- `app_load_claims.json`
+- `claims_registry.json`
 - `NEXT_DEVELOPMENT_TARGETS.md`
+
+The Phase 3 proxy / policy closure surface is documented in:
+
+- `docs/conformance/proxy_contract.md`
+- `docs/conformance/proxy_contract.json`
+- `docs/conformance/policy_surface.json`
+- `docs/ops/policies.md`
+- `cli_help.current.txt`
+- `flag_contracts.json`
+
+The Phase 4 QUIC semantic closure surface is documented in:
+
+- `docs/conformance/early_data_contract.md`
+- `docs/conformance/early_data_contract.json`
+- `docs/conformance/quic_state.md`
+- `docs/conformance/quic_state.json`
+- `external_matrix.release.json`
+- `flag_contracts.json`
+
+The Phase 5 origin delivery closure surface is documented in:
+
+- `docs/conformance/origin_contract.md`
+- `docs/conformance/origin_contract.json`
+- `docs/conformance/origin_negatives.md`
+- `docs/conformance/origin_negatives.json`
+- `docs/ops/origin.md`
+- `flag_contracts.json`
+
+The Phase 6 observability closure surface is documented in:
+
+- `docs/conformance/metrics_schema.md`
+- `docs/conformance/metrics_schema.json`
+- `docs/conformance/qlog_experimental.md`
+- `docs/conformance/qlog_experimental.json`
+- `docs/ops/observability.md`
+- `flag_contracts.json`
+
+The Phase 7 negative-certification surface is documented in:
+
+- `docs/conformance/fail_state_registry.md`
+- `docs/conformance/fail_state_registry.json`
+- `docs/conformance/negative_corpora.md`
+- `docs/conformance/negative_corpora.json`
+- `docs/conformance/negative_bundles.md`
+- `docs/conformance/negative_bundles.json`
+- `docs/conformance/negative_bundles/`
+
+The Phase 8 governance and spec-hygiene surface is documented in:
+
+- `docs/governance/DEFAULT_AUDIT_POLICY.md`
+- `docs/governance/RISK_REGISTER_POLICY.md`
+- `docs/governance/TEST_STYLE_POLICY.md`
+- `.ssot/registry.json`
+- `LEGACY_UNITTEST_INVENTORY.json`
+- `docs/conformance/sf9651.md`
+- `docs/conformance/sf9651.json`
+- `docs/conformance/interop_retention.md`
+- `docs/conformance/interop_retention.json`
+- `docs/conformance/perf_retention.md`
+- `docs/conformance/perf_retention.json`
+
+The Phase 9 automated-release surface is documented in:
+
+- `docs/governance/release_auto.md`
+- `docs/conformance/claim_rep.md`
+- `docs/conformance/claim_rep.json`
+- `docs/conformance/risk_stat.md`
+- `docs/conformance/risk_stat.json`
+- `docs/conformance/evidence_ix.md`
+- `docs/conformance/evidence_ix.json`
+- `docs/conformance/release_auto.json`
+- `docs/conformance/relnotes.md`
+- `docs/conformance/relnotes.json`
 
 
 ## Operator-surface tracking

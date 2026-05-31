@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1019"
+number: 1019
+slug: "unit-identity-model"
+title: "propagate contract unit identity through the runtime"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall propagate contract unit identifiers through dispatch, adapter, logs, and evidence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1019 - Unit identity model
+
+  Decision: Tigrcorn shall propagate contract unit identifiers through dispatch, adapter, logs, and evidence.
+
+  Unit identity links scopes, events, streams, datagrams, and emitted evidence into one traceable runtime unit. Compatibility layers must preserve the identifiers through extension metadata.
+
+  Consequences:
+
+  - Contract-native and ASGI3 paths can be compared by shared identity fields.
+  - Observability and conformance evidence can reference stable runtime units.
+  - Adapter-created identifiers must be deterministic within a connection or request lifetime.

@@ -1,0 +1,48 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0617"
+number: 617
+slug: "feature-implementation-claim-ceilings"
+title: "Feature implementation is capped by active required claims"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Feature implementation status, claim lifecycle status, and claim assurance tier are separate fields. That separation is useful, but it can overstate implementation when a feature has multiple active linked claims and only one of them satisfies the target tier."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  Feature implementation status, claim lifecycle status, and claim assurance tier are separate fields. That separation is useful, but it can overstate implementation when a feature has multiple active linked claims and only one of them satisfies the target tier.
+  
+  `T0` is inventory-level assurance. A `T0` claim records declared intent, scope, or placeholder support; it does not prove working behavior. Therefore a feature with an active required `T0` claim must not be marked `implemented`.
+  
+  ## Decision
+  
+  Feature implementation promotion is capped by active required linked claims.
+  
+  All active linked claims on a feature are required for feature implementation closure. Retired claims are ignored. A stronger linked claim cannot override a weaker active required claim.
+  
+  A feature may be marked `implemented` only when:
+  
+  - linked tests pass,
+  - required features are implemented,
+  - every active required linked claim satisfies the feature's effective target tier,
+  - no active required linked claim is `T0`.
+  
+  If an active required `T0` claim is linked to a feature, the highest allowed feature `implementation_status` is `partial`. If all linked support is planned or placeholder-only, the highest allowed feature `implementation_status` is `absent`.
+  
+  Direct implementation and certification maturity are related but not identical. `T1` can establish direct implementation. `T2` can establish robust implementation. `T3` and `T4` establish release certification and external validation maturity unless a feature explicitly targets those tiers as its implementation bar.
+  
+  Active weaker claims continue to block feature implementation until they are retired or superseded. A stronger linked claim cannot hide an active weaker required claim.
+  
+  ## Consequences
+  
+  Automated status synchronization must use all-pass claim precedence for feature implementation promotion and must respect claim tier gates when evaluating whether active claims satisfy a feature target tier.
+  
+  Validation must reject manually edited registries that mark a feature `implemented` while an active required linked claim is `T0` or below the feature target tier.
+  
+  Registries that need non-blocking explanatory claims must model that as a later governed schema capability. Until that exists, active linked claims are required closure inputs.

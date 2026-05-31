@@ -11,11 +11,14 @@ The repository root is intentionally narrow.
 Mutable root files are limited to:
 
 - `README.md`
-- `AGENTS.md`
+- `.codex/AGENTS.md`
 - `CONTRIBUTING.md`
 - `CODE_OF_CONDUCT.md`
-- `RELEASE_NOTES_*.md`
 - build/config roots such as `pyproject.toml`, `Makefile`, `.gitignore`, `LICENSE`
+
+The repo also carries one allowed root metadata directory:
+
+- `.ssot/` — canonical machine-readable registry material for the package governance graph
 
 Canonical current-state, delivery-note, and root-report material lives under:
 
@@ -37,6 +40,7 @@ New mutable docs land in short, purpose-scoped folders:
 - `docs/review/` — review and conformance material
 - `docs/protocols/` — protocol-specific technical docs
 - `docs/architecture/` — architecture explanations
+- `docs/release-notes/` - maintained release notes
 
 Each mutable folder should carry:
 
@@ -94,7 +98,7 @@ Allowed states:
 ## Recommended top-level reading order
 
 1. `README.md`
-2. `AGENTS.md`
+2. `.codex/AGENTS.md`
 3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 4. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 5. `docs/review/conformance/BOUNDARY_NON_GOALS.md`

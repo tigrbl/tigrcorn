@@ -52,7 +52,7 @@ It does **not** expand the certification boundary, and it does **not** claim to 
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle/index.json`
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle/summary.json`
 - `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
-- `tests/test_phase9f3_concurrency_keepalive_checkpoint.py`
-- `tests/test_phase9i_release_assembly_checkpoint.py`
+- `tests/test_concurrency_keepalive_checkpoint.py`
+- `tests/test_release_assembly_checkpoint.py`
 
 Generated at: `2026-03-26T13:26:37.781139+00:00`

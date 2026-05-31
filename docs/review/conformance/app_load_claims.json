@@ -1,0 +1,26 @@
+{
+  "surface": "app_import_resolution",
+  "tier_alias": {
+    "tier_3": "independent_certification"
+  },
+  "claims": [
+    {
+      "id": "claim-cwd-module-import",
+      "text": "CLI/server import-string loading resolves module targets from the current working directory when app.app_dir is unset.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "local_conformance",
+      "status": "planned_for_tier_3"
+    },
+    {
+      "id": "claim-cwd-factory-import",
+      "text": "CLI/server factory loading resolves factory targets from the current working directory when app.app_dir is unset.",
+      "required_evidence_tier": "independent_certification",
+      "current_evidence": "local_conformance",
+      "status": "planned_for_tier_3"
+    }
+  ],
+  "local_evidence_tests": [
+    "tests/test_app_loader.py::AppLoaderTests::test_load_app_from_current_working_directory_without_app_dir",
+    "tests/test_app_loader.py::AppLoaderTests::test_load_factory_from_current_working_directory_without_app_dir"
+  ]
+}

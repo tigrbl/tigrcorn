@@ -4,32 +4,58 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn"
-version = "0.3.9"
-description = "ASGI3-compatible transport server with a transport-agnostic core and stdlib-only implementation."
-readme = "README.md"
-requires-python = ">=3.11"
+version = "0.3.16.dev5"
+description = "ASGI3 Python web server with built-in HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, TLS, and certification tooling."
+readme = "PYPI_README.md"
+requires-python = ">=3.10,<3.15"
 license = {file = "LICENSE"}
 authors = [
   {name = "Jacob Stewart", email = "jacob@swarmauri.com"}
 ]
-keywords = ["asgi", "server", "http", "websocket", "http2", "http3", "quic", "uvicorn", "hypercorn"]
+keywords = ["asgi", "asgi3", "server", "http", "http1", "http2", "http3", "quic", "websocket", "webtransport", "tls", "python-web-server", "uvicorn-alternative", "hypercorn-alternative"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Framework :: AsyncIO",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Networking",
+  "Typing :: Typed",
 ]
-dependencies = ["cryptography>=46.0.0"]
+dependencies = [
+    "tigrcorn-core==0.3.16.dev5",
+    "tigrcorn-config==0.3.16.dev5",
+    "tigrcorn-asgi==0.3.16.dev5",
+    "tigrcorn-contract==0.3.16.dev5",
+    "tigrcorn-transports==0.3.16.dev5",
+    "tigrcorn-protocols==0.3.16.dev5",
+    "tigrcorn-http==0.3.16.dev5",
+    "tigrcorn-security==0.3.16.dev5",
+    "tigrcorn-runtime==0.3.16.dev5",
+    "tigrcorn-static==0.3.16.dev5",
+    "tigrcorn-observability==0.3.16.dev5",
+    "tigrcorn-compat==0.3.16.dev5",
+    "tigrcorn-certification==0.3.16.dev5",
+    "tigr-asgi-contract>=0.3.2",
+]
 
 [project.optional-dependencies]
+tls-x509 = [
+  "cryptography>=46.0.0",
+]
 certification = [
+  "cryptography>=46.0.0",
   "aioquic>=1.3.0",
+  "h11>=0.14.0",
   "h2>=4.1.0",
   "websockets>=12.0",
   "wsproto>=1.3.0",
@@ -47,13 +73,17 @@ runtime-trio = [
   "trio>=0.25.0",
 ]
 full-featured = [
+  "cryptography>=46.0.0",
   "PyYAML>=6.0",
   "brotli>=1.1.0",
   "uvloop>=0.19.0; platform_system != 'Windows'",
 ]
 dev = [
+  "cryptography>=46.0.0",
   "pytest>=8.0",
+  "ssot-registry>=0.2.18",
   "aioquic>=1.3.0",
+  "h11>=0.14.0",
   "h2>=4.1.0",
   "websockets>=12.0",
   "wsproto>=1.3.0",
@@ -71,7 +101,40 @@ package-dir = {"" = "src"}
 license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
-tigrcorn = ["py.typed"]
+tigrcorn = ["py.typed", "profiles/*.profile.json", "profiles/README.md"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.uv.workspace]
+members = ["pkgs/*"]
+
+[tool.uv.sources]
+tigrcorn-core = { workspace = true }
+tigrcorn-config = { workspace = true }
+tigrcorn-asgi = { workspace = true }
+tigrcorn-contract = { workspace = true }
+tigrcorn-transports = { workspace = true }
+tigrcorn-protocols = { workspace = true }
+tigrcorn-http = { workspace = true }
+tigrcorn-security = { workspace = true }
+tigrcorn-runtime = { workspace = true }
+tigrcorn-static = { workspace = true }
+tigrcorn-observability = { workspace = true }
+tigrcorn-compat = { workspace = true }
+tigrcorn-certification = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "aioquic>=1.3.0",
+    "brotli>=1.1.0",
+    "cryptography>=46.0.0",
+    "h11>=0.14.0",
+    "h2>=4.1.0",
+    "pytest>=8.0",
+    "PyYAML>=6.0",
+    "ssot-registry>=0.2.18",
+    "uvloop>=0.19.0; platform_system != 'Windows'",
+    "websockets>=12.0",
+    "wsproto>=1.3.0",
+]

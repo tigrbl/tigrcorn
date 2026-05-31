@@ -1,0 +1,29 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "cases": [
+    {
+      "expected_action": "close_or_retry_transport_owned",
+      "expected_outcome": "server emits Retry before initial admission when require_retry is enabled",
+      "id": "retry-required-before-admission",
+      "preserved_artifacts": [
+        "docs/review/conformance/external_matrix.release.json"
+      ],
+      "tests": [
+        "tests/test_quic_transport_runtime_completion.py::QuicTransportRuntimeCompletionTests::test_retry_roundtrip_and_new_token_runtime_validation"
+      ]
+    },
+    {
+      "expected_action": "close_connection",
+      "expected_outcome": "transport closes when peer changes address despite disable_active_migration",
+      "id": "disable-active-migration-rejects-rebinding",
+      "preserved_artifacts": [
+        "docs/review/conformance/external_matrix.release.json"
+      ],
+      "tests": [
+        "tests/test_quic_transport_runtime_completion.py::QuicTransportRuntimeCompletionTests::test_disable_active_migration_rejects_rebinding_and_preferred_address_is_reported"
+      ]
+    }
+  ],
+  "contract_version": 1,
+  "surface": "quic"
+}

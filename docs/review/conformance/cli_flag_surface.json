@@ -23,6 +23,28 @@
       "performance_profiles": []
     },
     {
+      "flag_id": "app_interface",
+      "flags": [
+        "--app-interface"
+      ],
+      "family": "App / process / development",
+      "config_path": "app.interface",
+      "claim_class": "pure_operator",
+      "rfc_targets": [],
+      "default_value": "auto",
+      "validation_rules": [
+        "one of auto, tigr-asgi-contract, asgi3"
+      ],
+      "unit_tests": [
+        "tests/test_app_interface_cli_flag.py::AppInterfaceCLIFlagTests::test_cli_flag_selects_app_interface"
+      ],
+      "interop_scenarios": [],
+      "deployment_profiles": [
+        "http1_baseline"
+      ],
+      "performance_profiles": []
+    },
+    {
       "flag_id": "app_dir",
       "flags": [
         "--app-dir"
@@ -36,7 +58,7 @@
         "path string"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_app_dir_round_trip"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -61,7 +83,7 @@
         "boolean + repeatable globs/paths"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -92,7 +114,7 @@
         "healthcheck timeout positive float"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -121,7 +143,7 @@
         "optional env-file bootstrap"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_config_source_precedence_cli_over_env_over_file"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -188,7 +210,7 @@
         "unix socket ownership controls only apply to unix listeners"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -237,9 +259,9 @@
         "non-negative integer or null"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase2_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags",
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_static_delivery_surface.py::StaticAndPathsendSurfaceTests::test_cli_main_allows_static_only_mount_without_app_import_string"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -290,9 +312,9 @@
       "unit_tests": [
         "tests/test_public_api_cli_mtls_surface.py::PublicRunAndCLIClientCertificateSurfaceTests::test_cli_main_forwards_client_certificate_options",
         "tests/test_config_matrix.py::ConfigMatrixTests::test_udp_client_auth_is_accepted_with_a_trust_store",
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context",
-        "tests/test_phase5_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected"
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_cli_and_env_wiring_accept_ssl_keyfile_password_and_ssl_crl",
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_encrypted_private_key_material_loads_through_server_tls_context",
+        "tests/test_tls_operator_material_surface.py::Phase5TLSOperatorMaterialSurfaceTests::test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected"
       ],
       "interop_scenarios": [
         "http3-server-aioquic-client-mtls",
@@ -332,7 +354,7 @@
         "server names repeatable / comma-separated allowlist"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -369,7 +391,7 @@
         "optional colorized stream logging toggle"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_parser_accepts_grouped_phase2_flags"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -427,10 +449,10 @@
         "positive numeric values"
       ],
       "unit_tests": [
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
-        "tests/test_phase4_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_h1_websocket_operator_surface.py::Phase3H1WebSocketOperatorSurfaceTests::test_build_config_from_namespace_maps_phase3_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_build_config_from_namespace_maps_phase4_submodels",
+        "tests/test_http2_operator_surface.py::Phase4HTTP2OperatorSurfaceTests::test_http2_server_advertises_configured_local_settings"
       ],
       "interop_scenarios": [],
       "deployment_profiles": [
@@ -468,10 +490,15 @@
         "--quic-max-datagram-size",
         "--quic-idle-timeout",
         "--quic-early-data-policy",
+        "--webtransport-max-sessions",
+        "--webtransport-max-streams",
+        "--webtransport-max-datagram-size",
+        "--webtransport-origin",
+        "--webtransport-path",
         "--pipe-mode"
       ],
       "family": "Protocol / transport",
-      "config_path": "http.* / websocket.* / quic.* / listeners[].protocols",
+      "config_path": "http.* / websocket.* / quic.* / webtransport.* / listeners[].protocols",
       "claim_class": "rfc_scoped",
       "rfc_targets": [
         "RFC 9112",
@@ -484,9 +511,9 @@
         "RFC 7692",
         "RFC 8441",
         "RFC 9220",
-        "RFC 9110 \u00a79.3.6",
-        "RFC 9110 \u00a76.5",
-        "RFC 9110 \u00a78"
+        "RFC 9110 §9.3.6",
+        "RFC 9110 §6.5",
+        "RFC 9110 §8"
       ],
       "default_value": "defaults file",
       "validation_rules": [
@@ -495,8 +522,9 @@
       ],
       "unit_tests": [
         "tests/test_cli_and_asgi3.py::CLIAndASGI3Tests::test_parser",
-        "tests/test_phase2_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
-        "tests/test_phase3_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config"
+        "tests/test_cli_config_surface.py::Phase2CLIConfigSurfaceTests::test_build_config_from_namespace_maps_nested_submodels",
+        "tests/test_strict_rfc_surface.py::Phase3StrictRFCSurfaceTests::test_cli_phase3_flags_round_trip_into_config",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_cli_protocol_webtransport_wires_h3_quic_and_tuning_flags"
       ],
       "interop_scenarios": [
         "websocket-http11-server-websockets-client-permessage-deflate",
@@ -550,6 +578,6 @@
       ]
     }
   ],
-  "public_flag_string_count": 124,
-  "promotion_ready_count": 124
+  "public_flag_string_count": 130,
+  "promotion_ready_count": 130
 }

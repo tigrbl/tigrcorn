@@ -2,6 +2,32 @@
 
 This document defines the finite deployment-profile model used to avoid a literal Cartesian product of all flags.
 
+## Phase 1 blessed profiles
+
+These are the canonical operator-facing Phase 1 blessed profiles generated from the runtime profile registry:
+
+| Profile ID | Claim IDs | Description |
+|---|---|---|
+| `default` | `TC-PROFILE-DEFAULT-BASELINE` | Safe zero-config baseline with HTTP/1.1 only, no proxy trust, CONNECT denied, server header off, and no H2/H3/QUIC unless explicitly enabled by another profile. |
+| `strict-h1-origin` | `TC-PROFILE-STRICT-H1-ORIGIN` | Conservative HTTP/1.1 origin posture with explicit host validation and trusted-proxy rejection by default. |
+| `strict-h2-origin` | `TC-PROFILE-STRICT-H2-ORIGIN` | Explicit TLS + ALPN + HTTP/2 origin posture. |
+| `strict-h3-edge` | `TC-PROFILE-STRICT-H3-EDGE` | Explicit TCP+UDP edge posture for HTTP/3 + QUIC with Retry and deny-by-default 0-RTT. |
+| `strict-mtls-origin` | `TC-PROFILE-STRICT-MTLS-ORIGIN` | Explicit mTLS origin posture with required trust store. |
+| `static-origin` | `TC-PROFILE-STATIC-ORIGIN` | Explicit static-delivery origin posture with mounted delivery requirements. |
+
+Generated artifacts:
+
+- `profiles/default.profile.json`
+- `profiles/strict-h1-origin.profile.json`
+- `profiles/strict-h2-origin.profile.json`
+- `profiles/strict-h3-edge.profile.json`
+- `profiles/strict-mtls-origin.profile.json`
+- `profiles/static-origin.profile.json`
+- `docs/ops/profiles.md`
+- `docs/conformance/profile_bundles.json`
+
+## Legacy profile matrix
+
 | Profile ID | Claim class | RFC target(s) | Description |
 |---|---|---|---|
 | `http1_baseline` | `rfc_scoped` | RFC 9112 | Single-listener HTTP/1.1 baseline profile. |

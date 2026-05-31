@@ -1,39 +1,39 @@
 {
-  "artifact_dir": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure",
+  "artifact_dir": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure",
   "artifacts": {
     "packet_trace": {
       "exists": true,
-      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure/packet_trace.jsonl",
+      "path": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure\\packet_trace.jsonl",
       "sha256": "2cdd6e8524cd2e19dd23508b40df544fa6616d9ee23ba1772e1e396cd6c39821",
       "size": 29887
     },
     "peer_negotiation": {
       "exists": true,
-      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure/peer_negotiation.json",
+      "path": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure\\peer_negotiation.json",
       "sha256": "9838d621212476aff4e3abd4fbf6de6bc3f0053510030a5f41cdc83b2e29ae38",
       "size": 484
     },
     "peer_transcript": {
       "exists": true,
-      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure/peer_transcript.json",
+      "path": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure\\peer_transcript.json",
       "sha256": "6237fdcb30c4ac1ed6138f13417025f283b567e7598450c15502ad31b4c3c835",
       "size": 1334
     },
     "qlog": {
       "exists": true,
-      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure/qlog.json",
+      "path": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure\\qlog.json",
       "sha256": "a1080fc6f6a2916779463d8bed8c689e155644bd4369989fa86d734039305aa7",
       "size": 34932
     },
     "sut_negotiation": {
       "exists": false,
-      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure/sut_negotiation.json",
+      "path": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure\\sut_negotiation.json",
       "sha256": null,
       "size": 0
     },
     "sut_transcript": {
       "exists": false,
-      "path": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-minimum-certified-flow-control-matrix/http3-flow-control-aioquic-client-goaway-pressure/sut_transcript.json",
+      "path": "docs\\review\\conformance\\releases\\0.3.6\\release-0.3.6\\tigrcorn-minimum-certified-flow-control-matrix\\http3-flow-control-aioquic-client-goaway-pressure\\sut_transcript.json",
       "sha256": null,
       "size": 0
     }

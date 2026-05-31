@@ -22,6 +22,10 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
 
 
+def _portable_path(value: str) -> str:
+    return value.replace('\\', '/')
+
+
 def test_certification_environment_docs_bundle_and_workflow_exist() -> None:
     assert (CONFORMANCE / 'CERTIFICATION_ENVIRONMENT_FREEZE.md').exists()
     assert (CONFORMANCE / 'certification_environment_freeze.current.json').exists()
@@ -32,7 +36,7 @@ def test_certification_environment_docs_bundle_and_workflow_exist() -> None:
 
     manifest = _load_json(RELEASE_ROOT / 'manifest.json')
     assert 'certification_environment' in manifest['bundles']
-    assert manifest['bundles']['certification_environment']['path'] == str(BUNDLE_ROOT.relative_to(ROOT))
+    assert _portable_path(manifest['bundles']['certification_environment']['path']) == BUNDLE_ROOT.relative_to(ROOT).as_posix()
 
     bundle_index = _load_json(BUNDLE_ROOT / 'index.json')
     status = _load_json(CONFORMANCE / 'certification_environment_freeze.current.json')

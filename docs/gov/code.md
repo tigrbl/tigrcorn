@@ -11,6 +11,7 @@
 
 ## Code behavior
 
+- `.ssot/registry.json` is the definitive machine-readable source of truth for the current governance graph
 - changes must preserve the current T/P/A/D/R boundary unless the boundary docs are updated first
 - operator-only additions must not be presented as RFC certification claims
 - RFC-facing changes must map to the canonical evidence policy before being marketed as complete
@@ -22,10 +23,11 @@ When adding a public flag, API, or operator surface:
 
 1. update code
 2. update tests
-3. update machine-readable docs
-4. update human docs
-5. update current-state docs
-6. update release artifacts if the change is promotion-relevant
+3. update `.ssot/registry.json`
+4. update machine-readable docs
+5. update human docs
+6. update current-state docs
+7. update release artifacts if the change is promotion-relevant
 
 ## Documentation discipline
 

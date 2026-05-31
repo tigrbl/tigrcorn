@@ -44,7 +44,7 @@
     },
     "local_positive_tests": [
       "tests/test_x509_webpki_validation.py",
-      "tests/test_phase9e_ocsp_local_validation.py"
+      "tests/test_ocsp_local_validation.py"
     ],
     "fixtures": [
       "tests/fixtures_pkg/interop_ocsp_fixtures.py",

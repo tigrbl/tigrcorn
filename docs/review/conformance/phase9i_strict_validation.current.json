@@ -16,11 +16,11 @@
     "targeted_pytest_pass_count": 27,
     "targeted_pytest_test_files": [
       "tests/test_websocket_rfc7692.py",
-      "tests/test_phase9c_rfc7692_independent_closure.py",
-      "tests/test_phase9d1_connect_relay_independent_closure.py",
-      "tests/test_phase9d2_trailer_fields_independent_closure.py",
-      "tests/test_phase9d3_content_coding_independent_closure.py",
-      "tests/test_phase9i_release_assembly_checkpoint.py",
+      "tests/test_rfc7692_independent_closure.py",
+      "tests/test_connect_relay_independent_closure.py",
+      "tests/test_trailer_fields_independent_closure.py",
+      "tests/test_content_coding_independent_closure.py",
+      "tests/test_release_assembly_checkpoint.py",
       "tests/test_release_gates.py"
     ],
     "strict_validation_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-strict-validation-bundle",
@@ -28,7 +28,7 @@
     "current_package_version": "0.3.9",
     "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "administrative_promotion_remaining": false,
-    "release_notes": "RELEASE_NOTES_0.3.9.md"
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md"
   },
   "validation": {
     "compileall": {
@@ -54,11 +54,11 @@
       "test_count": 27,
       "test_files": [
         "tests/test_websocket_rfc7692.py",
-        "tests/test_phase9c_rfc7692_independent_closure.py",
-        "tests/test_phase9d1_connect_relay_independent_closure.py",
-        "tests/test_phase9d2_trailer_fields_independent_closure.py",
-        "tests/test_phase9d3_content_coding_independent_closure.py",
-        "tests/test_phase9i_release_assembly_checkpoint.py",
+        "tests/test_rfc7692_independent_closure.py",
+        "tests/test_connect_relay_independent_closure.py",
+        "tests/test_trailer_fields_independent_closure.py",
+        "tests/test_content_coding_independent_closure.py",
+        "tests/test_release_assembly_checkpoint.py",
         "tests/test_release_gates.py"
       ],
       "artifact_stdout": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-strict-validation-bundle/artifacts/targeted_pytest.stdout.txt",

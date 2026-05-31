@@ -13,6 +13,7 @@
     "docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md"
   ],
   "canonical_machine_current_state_chain": [
+    ".ssot/registry.json",
     "docs/review/conformance/current_state_chain.current.json",
     "docs/review/conformance/phase9j_released_0_3_8_repair_and_0_3_9_promotion.current.json",
     "docs/review/conformance/package_compliance_review_phase9i.current.json",
@@ -28,6 +29,7 @@
     "docs/review/conformance/certification_boundary.strict_target.json",
     "docs/review/conformance/promotion_gate.target.json"
   ],
+  "canonical_registry_source": ".ssot/registry.json",
   "scoped_current_audits_not_package_wide_truth_sources": [
     {
       "path": "docs/review/conformance/http_integrity_caching_signatures_status.current.json",

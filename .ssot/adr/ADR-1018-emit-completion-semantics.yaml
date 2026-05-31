@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1018"
+number: 1018
+slug: "emit-completion-semantics"
+title: "adopt explicit emit completion semantics"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall model emit completion using the contract completion levels."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1018 - Emit completion semantics
+
+  Decision: Tigrcorn shall model emit completion using the `tigr-asgi-contract` completion levels.
+
+  Completion is part of the runtime contract for buffering, flushing, transport handoff, and acknowledgement where applicable. ASGI3 compatibility exposes completion through extensions when standard ASGI has no matching concept.
+
+  Consequences:
+
+  - Backpressure and delivery evidence can be attached to explicit completion levels.
+  - ASGI3 apps can opt into completion signals without changing standard ASGI behavior.
+  - Unsupported completion guarantees are rejected instead of silently claimed.

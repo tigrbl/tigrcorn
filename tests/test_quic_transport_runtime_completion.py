@@ -1,3 +1,4 @@
+import importlib.util
 import unittest
 
 from tigrcorn.transports.quic import QuicConnection, decode_packet
@@ -7,6 +8,7 @@ from tigrcorn.transports.quic.packets import QuicVersionNegotiationPacket, split
 from tigrcorn.transports.quic.streams import FRAME_PING
 
 
+@unittest.skipUnless(importlib.util.find_spec('cryptography') is not None, 'cryptography package is not installed')
 class QuicTransportRuntimeCompletionTests(unittest.TestCase):
     def _issue_0rtt_ticket(self) -> tuple[bytes, bytes, object]:
         cert_pem, key_pem = generate_self_signed_certificate('server.example')
@@ -127,6 +129,28 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
                 for event in zero_rtt_events
             )
         )
+
+    def test_session_ticket_can_disable_early_data_advertisement(self):
+        cert_pem, key_pem, _ticket = self._issue_0rtt_ticket()
+        server = QuicTlsHandshakeDriver(
+            is_client=False,
+            server_name='server.example',
+            certificate_pem=cert_pem,
+            private_key_pem=key_pem,
+            enable_early_data=True,
+        )
+        client = QuicTlsHandshakeDriver(
+            is_client=True,
+            server_name='server.example',
+            trusted_certificates=[cert_pem],
+            enable_early_data=True,
+        )
+        client_finished = client.receive(server.receive(client.initiate()))
+        server.receive(client_finished)
+        ticket_bytes = server.issue_session_ticket(max_early_data_size=0)
+        client.receive(ticket_bytes)
+        assert client.received_session_ticket is not None
+        self.assertEqual(client.received_session_ticket.max_early_data_size, 0)
 
     def test_blocked_frames_and_connection_close_surface_runtime_events(self):
         client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1cli1', remote_cid=b'srv1srv1')

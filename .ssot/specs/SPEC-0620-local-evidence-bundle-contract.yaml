@@ -1,0 +1,39 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0620"
+number: 620
+slug: "local-evidence-bundle-contract"
+title: "Local Evidence Bundle Contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:03Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft contract.
+  
+  ## Contract
+  
+  A local evidence bundle records release metadata, boundary ids, claims, tests, evidence rows, source snapshot id and root hash, artifact manifest references, verification metadata, and a bundle hash.
+  
+  ## Authority
+  
+  The bundle is derived from registry truth. It must not introduce claims, tests, or evidence that are absent from the registry.
+  
+  ## Validation
+  
+  Validation checks canonical JSON, linked registry ids, evidence paths, linked test status, claim tier compatibility, and bundle hash consistency.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0618"
+  - "adr:0620"

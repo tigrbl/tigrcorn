@@ -1,0 +1,54 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0626"
+number: 626
+slug: "external-validation-evidence"
+title: "External Validation Evidence"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This SPEC defines the evidence contract used by `T4` externally certified claims."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+  
+  This SPEC defines the evidence contract used by `T4` externally certified claims.
+  
+  ## Required Evidence Content
+  
+  External validation evidence SHALL record:
+  
+  - external source name,
+  - external source version, commit, artifact id, report id, or equivalent provenance,
+  - external source authorship or control classification,
+  - validation mode,
+  - validation scope,
+  - target feature ids,
+  - target claim ids,
+  - execution command or attestation artifact where applicable,
+  - validation result,
+  - evidence artifact path,
+  - artifact hash or signature when available.
+  
+  ## Validation Modes
+  
+  Supported validation modes include:
+  
+  - `external-authored-internal-run`,
+  - `external-run`,
+  - `independent-review`,
+  - `third-party-certification`,
+  - `external-attestation`.
+  
+  ## Authority Rule
+  
+  `T4` requires external validation authority. Using an external dependency, library, tool, or service internally is not enough by itself.
+  
+  Externally authored validation artifacts may satisfy `T4` when executed internally if provenance, scope, and result are recorded.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0626"

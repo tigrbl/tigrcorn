@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class WebSocketState:
-    accepted: bool = False
-    close_sent: bool = False
-    close_received: bool = False
+_module = _import_module('tigrcorn_protocols.websocket.state')
+_sys.modules[__name__] = _module

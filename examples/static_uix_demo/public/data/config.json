@@ -1,0 +1,5 @@
+{
+  "name": "tigrcorn-static-uix-demo",
+  "served_by": "StaticFilesApp",
+  "experiments": ["head", "range", "etag", "directory-index", "cache-headers"]
+}

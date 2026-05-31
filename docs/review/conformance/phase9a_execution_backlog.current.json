@@ -645,7 +645,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new TLS cipher-policy negotiation tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -676,7 +676,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new logging precedence tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -708,7 +708,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new StatsD exporter tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -741,7 +741,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new OTEL exporter contract tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -773,7 +773,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new overload and admission-control tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -808,7 +808,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new websocket keepalive behavior tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -843,7 +843,7 @@
       ],
       "artifact_contract": {
         "required_unit_tests": [
-          "tests/test_phase2_cli_config_surface.py",
+          "tests/test_cli_config_surface.py",
           "new websocket timeout/close tests"
         ],
         "required_interop_or_perf_profiles": [
@@ -941,8 +941,8 @@
     "touch_files": [
       "src/tigrcorn/compat/release_gates.py",
       "tests/test_release_gates.py",
-      "tests/test_phase6_performance_harness.py",
-      "tests/test_phase8_promotion_targets.py",
+      "tests/test_performance_harness.py",
+      "tests/test_promotion_targets.py",
       "docs/review/conformance/promotion_gate.target.json"
     ],
     "artifact_contract": {

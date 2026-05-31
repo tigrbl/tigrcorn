@@ -1,6 +1,8 @@
 # Current-state chain
 
-This document defines the **one canonical package-wide current-state chain** for the repository.
+This document defines the package-wide current-state chain for the repository.
+
+`.ssot/registry.json` is the definitive machine-readable source of truth. The files below are the canonical package-facing current-state chain that must remain aligned with that registry.
 
 ## Canonical package-wide current-state sources
 
@@ -16,6 +18,7 @@ This document defines the **one canonical package-wide current-state chain** for
 
 ### Machine-readable sources
 
+- `.ssot/registry.json`
 - `docs/review/conformance/current_state_chain.current.json`
 - `docs/review/conformance/phase9j_released_0_3_8_repair_and_0_3_9_promotion.current.json`
 - `docs/review/conformance/package_compliance_review_phase9i.current.json`
@@ -31,6 +34,11 @@ This document defines the **one canonical package-wide current-state chain** for
 - `docs/review/conformance/STRICT_PROFILE_TARGET.md`
 - `docs/review/conformance/certification_boundary.strict_target.json`
 - `docs/review/conformance/promotion_gate.target.json`
+
+## Canonical registry source
+
+- `.ssot/registry.json` is the canonical machine-readable governance registry for current-state, boundary, release, claim, evidence, and risk linkage.
+- `tools/ssot_sync.py` regenerates `.ssot/registry.json` from the current promoted repository truth.
 
 ## Scoped current audits that are **not** package-wide current-state sources
 

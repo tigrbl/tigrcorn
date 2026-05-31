@@ -102,7 +102,7 @@ def make_alt_svc_contract(flag: str) -> dict[str, Any]:
     ]
     common_profiles = ['http1_baseline', 'http2_tls', 'http3_quic']
     common_tests = [
-        'tests/test_phase4_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3',
+        'tests/test_advanced_protocol_delivery_checkpoint.py::Phase4AdvancedDeliveryUnitTests::test_alt_svc_auto_values_resolve_and_suppress_on_http3',
     ]
     release_note = 'Phase 4 advanced delivery wires Alt-Svc advertisement controls and preserves row-level contract coverage.'
 
@@ -366,7 +366,7 @@ def patch_docs_and_scripts() -> None:
     )
 
     # Make the two stale tests count the current parser surface instead of a fixed historical snapshot.
-    phase9f3 = ROOT / 'tests' / 'test_phase9f3_concurrency_keepalive_checkpoint.py'
+    phase9f3 = ROOT / 'tests' / 'test_concurrency_keepalive_checkpoint.py'
     text = phase9f3.read_text(encoding='utf-8')
     text = text.replace(
         "    assert payload['current_state']['promotion_ready_rows'] == 84\n",
@@ -374,7 +374,7 @@ def patch_docs_and_scripts() -> None:
     )
     phase9f3.write_text(text, encoding='utf-8')
 
-    phase9i = ROOT / 'tests' / 'test_phase9i_release_assembly_checkpoint.py'
+    phase9i = ROOT / 'tests' / 'test_release_assembly_checkpoint.py'
     text = phase9i.read_text(encoding='utf-8')
     if 'from tigrcorn.cli import build_parser' not in text:
         text = text.replace(

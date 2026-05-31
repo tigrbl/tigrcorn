@@ -38,7 +38,7 @@
       "failures": []
     },
     "targeted_pytest": {
-      "command": "pytest -q tests/test_rfc7232_conditional_requests.py tests/test_rfc7233_range_requests.py tests/test_phase2_rfc_boundary_formalization_checkpoint.py tests/test_http_integrity_caching_signatures_status.py tests/test_rfc_applicability_and_competitor_status.py tests/test_rfc_applicability_and_competitor_support.py tests/test_conformance_corpus.py tests/test_certification_policy_alignment.py tests/test_phase2_entity_semantics_checkpoint.py tests/test_phase9i_release_assembly_checkpoint.py",
+      "command": "pytest -q tests/test_rfc7232_conditional_requests.py tests/test_rfc7233_range_requests.py tests/test_rfc7232_7233_boundary_formalization.py tests/test_http_integrity_caching_signatures_status.py tests/test_rfc_applicability_and_competitor_status.py tests/test_rfc_applicability_and_competitor_support.py tests/test_conformance_corpus.py tests/test_certification_policy_alignment.py tests/test_entity_semantics_checkpoint.py tests/test_release_assembly_checkpoint.py",
       "result": "passed",
       "passed": 30,
       "failed": 0
@@ -60,7 +60,7 @@
     "docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md",
     "tests/test_rfc7232_conditional_requests.py",
     "tests/test_rfc7233_range_requests.py",
-    "tests/test_phase2_rfc_boundary_formalization_checkpoint.py"
+    "tests/test_rfc7232_7233_boundary_formalization.py"
   ],
   "notes": [
     "RFC 7232 and RFC 7233 are now fully targeted and release-gated within the current package boundary.",

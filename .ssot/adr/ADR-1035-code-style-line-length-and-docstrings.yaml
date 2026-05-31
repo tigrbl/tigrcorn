@@ -1,0 +1,30 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1035"
+number: 1035
+slug: "code-style-line-length-and-docstrings"
+title: "Adopt PEP 8 line length and spaCy-style docstrings"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn source shall follow PEP 8 line-length guidance and use spaCy-style docstrings for public, non-trivial APIs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "PEP 8"
+  - "spaCy docstring style"
+body: |-
+  # ADR 1035 - Code style line length and docstrings
+
+  Decision: Tigrcorn source shall use PEP 8 as the source-code line-length standard: 79 characters for code where practical, and 72 characters for comments and docstrings where practical. Tool-enforced project limits may be wider only when the formatter or established repo policy requires it, but generated logs and runtime payloads are not governed by source-code line length.
+
+  Public, non-trivial modules, classes, and functions shall use spaCy-style docstrings when documentation is needed. The preferred sections are `Args:`, `Returns:`, `Raises:`, and `Yields:` as applicable, with concise prose and no redundant narration.
+
+  Consequences:
+
+  - Runtime log line length is not constrained by PEP 8.
+  - Long literals, generated artifacts, URLs, and protocol examples may exceed source line targets when wrapping would reduce clarity or correctness.
+  - Comments and docstrings should be rewritten for clarity before adding suppression-only formatting.
+  - New logging docs must distinguish source style limits from emitted record size or collector transport limits.

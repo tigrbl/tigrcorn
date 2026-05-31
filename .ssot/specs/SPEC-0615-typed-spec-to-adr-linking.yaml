@@ -1,0 +1,20 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0615"
+number: 615
+slug: "typed-spec-to-adr-linking"
+title: "Typed SPEC-to-ADR linking"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "SPEC rows and authored SPEC payloads SHALL support adr_ids: list[str]. adr_ids SHALL reference ids present in top-level adrs. Empty lists are valid and are the default for newly created and migrated SPEC rows. Validation SHALL reject malformed or missing ADR ids in spec.adr_ids. Graph and export views MAY expose derived feature-to-ADR visibility, but registry storage remains authoritative on SPEC rows only."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  SPEC rows and authored SPEC payloads SHALL support adr_ids: list[str]. adr_ids SHALL reference ids present in top-level adrs. Empty lists are valid and are the default for newly created and migrated SPEC rows. Validation SHALL reject malformed or missing ADR ids in spec.adr_ids. Graph and export views MAY expose derived feature-to-ADR visibility, but registry storage remains authoritative on SPEC rows only.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0614"

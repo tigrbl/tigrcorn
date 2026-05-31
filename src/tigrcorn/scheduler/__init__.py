@@ -1,17 +1,10 @@
-"""Scheduling policy and runtime components."""
+from __future__ import annotations
 
-from .dispatch import TaskDispatcher
-from .policy import SchedulerPolicy
-from .quotas import Quotas
-from .runtime import ConnectionLease, ProductionScheduler, WorkLease
-from .tasks import TaskSet
+from importlib import import_module as _import_module
 
-__all__ = [
-    'ConnectionLease',
-    'ProductionScheduler',
-    'WorkLease',
-    'Quotas',
-    'SchedulerPolicy',
-    'TaskDispatcher',
-    'TaskSet',
-]
+_module = _import_module("tigrcorn_protocols.scheduler")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

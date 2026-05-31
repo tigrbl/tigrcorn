@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn HTTP/2 ASGI3 Lab</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Tigrcorn ASGI3</p>
+          <h1>HTTP/2 Lab</h1>
+        </div>
+        <button id="runAll" type="button">Run demo</button>
+      </header>
+
+      <section class="controls" aria-label="Request controls">
+        <label>
+          Path
+          <select id="path">
+            <option value="/">Scope snapshot</option>
+            <option value="/stream?chunks=5&delay=0.05">Streaming response</option>
+            <option value="/echo">POST echo</option>
+          </select>
+        </label>
+        <label>
+          POST body
+          <textarea id="body" rows="4">hello from the UIX client</textarea>
+        </label>
+        <div class="buttonRow">
+          <button id="get" type="button">GET over HTTP/2</button>
+          <button id="post" type="button">POST over HTTP/2</button>
+          <button id="multiplex" type="button">Multiplex 6</button>
+        </div>
+      </section>
+
+      <section class="statusGrid" aria-label="Response summary">
+        <article>
+          <span>Status</span>
+          <strong id="status">idle</strong>
+        </article>
+        <article>
+          <span>Stream</span>
+          <strong id="stream">-</strong>
+        </article>
+        <article>
+          <span>Elapsed</span>
+          <strong id="elapsed">-</strong>
+        </article>
+        <article>
+          <span>ASGI http_version</span>
+          <strong id="version">-</strong>
+        </article>
+      </section>
+
+      <section class="outputWrap">
+        <div class="panel">
+          <h2>Response</h2>
+          <pre id="response">{}</pre>
+        </div>
+        <div class="panel">
+          <h2>Multiplex Results</h2>
+          <div id="cards" class="cards"></div>
+        </div>
+      </section>
+    </main>
+    <script src="/main.js"></script>
+  </body>
+</html>

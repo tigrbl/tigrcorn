@@ -8,7 +8,7 @@
     "provisional_http3_gap_bundle": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-provisional-http3-gap-bundle",
     "same_stack_replay": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix"
   },
-  "generated_at": "2026-03-19T12:12:15.886133+00:00",
+  "generated_at": "2026-04-28T09:05:09.460007+00:00",
   "notes": [
     "The 0.3.6 release root is the canonical consolidated evidence root for the current package version.",
     "The independent certification matrix includes preserved passing artifacts for all declared third-party HTTP/3 / RFC 9220 scenarios once this bundle has been regenerated and promoted.",

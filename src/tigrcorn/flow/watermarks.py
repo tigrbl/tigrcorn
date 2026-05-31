@@ -1,16 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class Watermarks:
-    low: int = 16 * 1024
-    high: int = 64 * 1024
-
-    def classify(self, value: int) -> str:
-        if value >= self.high:
-            return 'high'
-        if value <= self.low:
-            return 'low'
-        return 'mid'
+_module = _import_module("tigrcorn_protocols.flow.watermarks")
+_sys.modules[__name__] = _module

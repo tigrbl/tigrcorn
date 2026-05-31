@@ -62,7 +62,7 @@ def current_release_promotion_state() -> dict[str, Any]:
     release_notes = str(
         manifest.get('release_notes')
         or promotion_state.get('release_notes')
-        or f'RELEASE_NOTES_{package_version}.md'
+        or f'docs/release-notes/RELEASE_NOTES_{package_version}.md'
     )
     version_bump_performed = bool(
         manifest.get('version_bump_performed')

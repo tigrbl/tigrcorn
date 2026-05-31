@@ -1,0 +1,52 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2008"
+number: 2008
+slug: "tigrcorn-cli"
+title: "Tigrcorn CLI"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose a public CLI for configuring application loading, listener binding, protocol selection, protocol tuning, security, observability, resources, and delivery surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-04-26T05:47:34Z"
+    note: "Public CLI protocol and WebTransport tuning flags are now governed."
+    status: "accepted"
+references: []
+body: |-
+  ## Content
+  
+  # CLI operator reference
+  
+  Tigrcorn shall expose a public CLI for configuring application loading, listener binding, protocol selection, protocol tuning, security, observability, resources, and delivery surfaces.
+  
+  ## Public protocol selection
+  
+  - `--protocol` shall accept `http1`, `http2`, `http3`, `quic`, `websocket`, `webtransport`, `rawframed`, and `custom`.
+  - `--protocol webtransport` shall select the WebTransport protocol surface.
+  - `--protocol webtransport` shall not create a REST or JSON-RPC runtime.
+  - Protocol selection shall be resolved through the same config precedence model as other public CLI flags: CLI greater than environment greater than config file greater than defaults.
+  
+  ## WebTransport CLI tuning
+  
+  Tigrcorn shall expose these public WebTransport tuning flags:
+  
+  - `--webtransport-max-sessions`
+  - `--webtransport-max-streams`
+  - `--webtransport-max-datagram-size`
+  - `--webtransport-origin`
+  - `--webtransport-path`
+  
+  The WebTransport CLI tuning flags shall map to the `webtransport.*` config model and shall have equivalent config, environment, and public API surfaces where applicable.
+  
+  ## Validation and generated truth
+  
+  - Public CLI behavior shall be reflected in parser help, CLI flag surface metadata, flag contracts, default audits, SSOT test links, and executable tests.
+  - Public protocol and tuning flags shall fail closed on invalid enum values, invalid numeric values, or invalid WebTransport carrier state.
+  - Hidden experimental flags are not part of the public certified CLI surface unless explicitly declared by feature rows.
+spec_kind: "local-policy"
+adr_ids: []

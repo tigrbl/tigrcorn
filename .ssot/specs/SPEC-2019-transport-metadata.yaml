@@ -1,0 +1,40 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2019"
+number: 2019
+slug: "transport-metadata"
+title: "Transport metadata"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose transport metadata through the contract metadata model and ASGI/3 extensions."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:40:53Z"
+    note: "Updated transport metadata discriminators for classification projection."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated transport metadata with framing and subprotocol metadata boundaries."
+    at: "2026-05-27T18:11:40Z"
+references: []
+body: |-
+  # Transport metadata
+  
+  Tigrcorn shall expose transport metadata through the contract metadata model and ASGI/3 extensions.
+  
+  Requirements:
+  
+  - Native scopes include available protocol, peer, local address, ALPN, and transport state metadata.
+  - TLS and mTLS state, certificate identity where available, selected ALPN, HTTP version, QUIC connection metadata, and WebTransport capability flags are exposed when the carrier provides them.
+  - WebSocket selected subprotocol, selected framing metadata where known, WebTransport session id, stream id, stream direction, datagram metadata, and WebTransport lane framing hints are exposed when available and required for classification.
+  - Missing metadata is represented explicitly.
+  - ASGI/3 compatibility exposes non-standard metadata through extension keys.
+  - Metadata claims are backed by tests for each supported carrier.
+  - Metadata exposure must distinguish unknown framing, unsupported framing, and framing deliberately omitted by the application.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1020"

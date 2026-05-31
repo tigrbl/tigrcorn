@@ -1,0 +1,16 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - "release/*"
+
+jobs:
+  call-reusable-ci:
+    uses: ./.github/workflows/_reusable-ci.yml
+
+  call-release-certification:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    uses: ./.github/workflows/phase9-certification-release.yml

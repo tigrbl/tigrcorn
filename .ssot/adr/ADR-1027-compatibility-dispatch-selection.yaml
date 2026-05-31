@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1027"
+number: 1027
+slug: "compatibility-dispatch-selection"
+title: "select native or compatibility dispatch before serving traffic"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall select native contract or compatibility dispatch before serving application traffic."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1027 - Compatibility dispatch selection
+
+  Decision: Tigrcorn shall select native contract or compatibility dispatch before serving application traffic.
+
+  Detection may use configuration, app metadata, explicit wrappers, or safe introspection. Ambiguous apps fail closed unless an operator chooses a compatibility mode.
+
+  Consequences:
+
+  - Native and ASGI3 paths are observable as distinct dispatch modes.
+  - Operators can opt into compatibility behavior intentionally.
+  - App detection tests must cover native, ASGI3, ambiguous, and unsupported callables.

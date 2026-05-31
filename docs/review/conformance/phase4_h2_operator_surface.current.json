@@ -31,7 +31,7 @@
     "src/tigrcorn/config/validate.py",
     "src/tigrcorn/protocols/http2/flow.py",
     "src/tigrcorn/protocols/http2/handler.py",
-    "tests/test_phase4_http2_operator_surface.py",
+    "tests/test_http2_operator_surface.py",
     "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
     "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE4_H2_OPERATOR_SURFACE_CHECKPOINT.md",
     "docs/review/conformance/CLI_FLAG_SURFACE.md",
@@ -53,14 +53,14 @@
       "passed": true
     },
     "targeted_pytest": {
-      "command": "PYTHONPATH=src pytest -q tests/test_phase4_http2_operator_surface.py tests/test_phase2_cli_config_surface.py tests/test_phase8_promotion_targets.py tests/test_phase9i_release_assembly_checkpoint.py tests/test_release_gates.py",
+      "command": "PYTHONPATH=src pytest -q tests/test_http2_operator_surface.py tests/test_cli_config_surface.py tests/test_promotion_targets.py tests/test_release_assembly_checkpoint.py tests/test_release_gates.py",
       "passed": true,
       "summary": "29 passed",
       "tests": [
-        "tests/test_phase4_http2_operator_surface.py",
-        "tests/test_phase2_cli_config_surface.py",
-        "tests/test_phase8_promotion_targets.py",
-        "tests/test_phase9i_release_assembly_checkpoint.py",
+        "tests/test_http2_operator_surface.py",
+        "tests/test_cli_config_surface.py",
+        "tests/test_promotion_targets.py",
+        "tests/test_release_assembly_checkpoint.py",
         "tests/test_release_gates.py"
       ]
     },

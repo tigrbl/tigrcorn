@@ -51,7 +51,7 @@ Primary artifact / documentation files:
 
 Validation/tests:
 
-- `tests/test_phase4_advanced_protocol_delivery_checkpoint.py`
+- `tests/test_advanced_protocol_delivery_checkpoint.py`
 - `tests/test_trio_runtime_surface_reconciliation_checkpoint.py`
 
 ## Validation completed
@@ -66,11 +66,11 @@ All validation below was run against this updated repository state.
 
 Targeted pytest files:
 
-- `tests/test_phase1_surface_parity_checkpoint.py`
-- `tests/test_phase2_cli_config_surface.py`
-- `tests/test_phase4_advanced_protocol_delivery_checkpoint.py`
+- `tests/test_surface_parity_checkpoint.py`
+- `tests/test_cli_config_surface.py`
+- `tests/test_advanced_protocol_delivery_checkpoint.py`
 - `tests/test_trio_runtime_surface_reconciliation_checkpoint.py`
-- `tests/test_phase8_promotion_targets.py`
+- `tests/test_promotion_targets.py`
 - `tests/test_release_gates.py`
 
 ## Current honest status

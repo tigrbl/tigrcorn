@@ -1,0 +1,227 @@
+{
+  "baseline_artifact_root": "docs/review/performance/artifacts/wrk2_open_loop_baseline",
+  "current_artifact_root": "docs/review/performance/artifacts/wrk2_open_loop_current",
+  "matrix_name": "tigrcorn-wrk2-open-loop-benchmark-matrix",
+  "metadata": {
+    "certification_platforms": [
+      "operator-local"
+    ],
+    "note": "opt-in wrk2 open-loop benchmarks; separate from strict release promotion performance evidence",
+    "purpose": "high-pressure constant-rate HTTP/1.1 benchmark evidence",
+    "tool": "wrk2"
+  },
+  "profiles": [
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "wrk2 HTTP/1.1 baseline constant offered-load benchmark.",
+      "driver": "wrk2_http11_constant_rate",
+      "driver_config": {
+        "connections": 64,
+        "duration": "30s",
+        "offered_rate": 1000,
+        "path": "/plain",
+        "pattern_name": "constant-rate",
+        "phase_name": "baseline",
+        "threads": 2
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "wrk2_open_loop",
+      "live_listener_required": true,
+      "profile_id": "wrk2_http11_baseline_constant_rate",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_handshake_latency_ms": 250.0,
+        "max_p50_ms": 250.0,
+        "max_p95_ms": 500.0,
+        "max_p99_9_ms": 1000.0,
+        "max_p99_ms": 750.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 0,
+        "max_time_to_first_byte_ms": 250.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    },
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "wrk2 HTTP/1.1 keep-alive constant offered-load benchmark.",
+      "driver": "wrk2_http11_constant_rate",
+      "driver_config": {
+        "connections": 128,
+        "duration": "30s",
+        "offered_rate": 2500,
+        "path": "/plain",
+        "pattern_name": "constant-rate",
+        "phase_name": "keepalive",
+        "threads": 4
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "wrk2_open_loop",
+      "live_listener_required": true,
+      "profile_id": "wrk2_http11_keepalive_constant_rate",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_handshake_latency_ms": 250.0,
+        "max_p50_ms": 250.0,
+        "max_p95_ms": 500.0,
+        "max_p99_9_ms": 1000.0,
+        "max_p99_ms": 750.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 0,
+        "max_time_to_first_byte_ms": 250.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    },
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "wrk2 HTTP/1.1 JSON response constant offered-load benchmark.",
+      "driver": "wrk2_http11_constant_rate",
+      "driver_config": {
+        "connections": 64,
+        "duration": "30s",
+        "offered_rate": 1000,
+        "path": "/json",
+        "pattern_name": "constant-rate",
+        "phase_name": "json",
+        "threads": 2
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "wrk2_open_loop",
+      "live_listener_required": true,
+      "profile_id": "wrk2_http11_json_constant_rate",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_handshake_latency_ms": 250.0,
+        "max_p50_ms": 250.0,
+        "max_p95_ms": 500.0,
+        "max_p99_9_ms": 1000.0,
+        "max_p99_ms": 750.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 0,
+        "max_time_to_first_byte_ms": 250.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    },
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "wrk2 HTTP/1.1 higher-rate pressure benchmark.",
+      "driver": "wrk2_http11_step_rate",
+      "driver_config": {
+        "connections": 256,
+        "duration": "30s",
+        "offered_rate": 5000,
+        "path": "/plain",
+        "pattern_name": "step-rate",
+        "phase_name": "high-pressure",
+        "threads": 4
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "wrk2_open_loop",
+      "live_listener_required": true,
+      "profile_id": "wrk2_http11_high_pressure_step_rate",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_handshake_latency_ms": 250.0,
+        "max_p50_ms": 500.0,
+        "max_p95_ms": 1000.0,
+        "max_p99_9_ms": 2000.0,
+        "max_p99_ms": 1500.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 0,
+        "max_time_to_first_byte_ms": 500.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    }
+  ]
+}

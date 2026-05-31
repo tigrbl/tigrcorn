@@ -1,0 +1,10 @@
+FROM python:3.13-slim AS client
+
+WORKDIR /client
+ENV PYTHONUNBUFFERED=1
+
+COPY examples/advanced_delivery_uix ./examples/advanced_delivery_uix
+
+EXPOSE 8080/tcp 9000/tcp
+
+CMD ["python", "examples/advanced_delivery_uix/client_server.py"]

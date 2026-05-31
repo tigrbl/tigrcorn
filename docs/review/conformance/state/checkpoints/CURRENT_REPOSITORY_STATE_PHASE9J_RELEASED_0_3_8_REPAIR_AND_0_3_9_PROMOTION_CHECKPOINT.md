@@ -7,7 +7,7 @@ Current truth:
 - historical released root preserved: `docs/review/conformance/releases/0.3.8/release-0.3.8`
 - canonical current root: `docs/review/conformance/releases/0.3.9/release-0.3.9`
 - public package version: `0.3.9`
-- release notes: `RELEASE_NOTES_0.3.9.md`
+- release notes: `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 - compileall: `True`
 - targeted strict-validation pytest suite: `True` (`27` passed)
 - broader certification-refresh pytest matrix: `True` (`99` passed)

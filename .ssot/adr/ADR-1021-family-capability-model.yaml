@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1021"
+number: 1021
+slug: "family-capability-model"
+title: "declare family capabilities with the contract model"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall use contract family capabilities to describe legal runtime behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1021 - Family capability model
+
+  Decision: Tigrcorn shall use contract family capabilities to describe legal runtime behavior.
+
+  Request, session, message, stream, and datagram behavior must be represented as declared capabilities rather than inferred from ad hoc protocol names.
+
+  Consequences:
+
+  - Runtime feature gates can validate whether a scope supports a requested family.
+  - Compatibility adapters can advertise only the families they can faithfully expose.
+  - Conformance tests can target family capability declarations directly.

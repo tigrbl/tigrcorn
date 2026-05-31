@@ -166,7 +166,7 @@ def _create_local_behavior_bundle() -> None:
     LOCAL_BEHAVIOR_ROOT.mkdir(parents=True, exist_ok=True)
     vectors = [
         ('http11-request-trailers-pass', True, ['tests/test_trailers_rfc9110.py::TrailerFieldsRFC9110Tests::test_http11_request_trailers_are_exposed']),
-        ('http11-request-trailers-drop', True, ['tests/test_phase3_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_trailer_policy_drop_suppresses_trailer_event']),
+        ('http11-request-trailers-drop', True, ['tests/test_strict_rfc_surface.py::StrictRFCSurfaceTests::test_http11_trailer_policy_drop_suppresses_trailer_event']),
         ('http11-request-trailers-strict-invalid', True, ['tests/test_trailer_policy_strict_local.py::TrailerPolicyStrictLocalTests::test_http11_invalid_request_trailer_returns_400']),
         ('http11-response-trailers-pass', True, ['tests/test_response_trailers_rfc9110.py::ResponseTrailerFieldsRFC9110Tests::test_http11_response_trailers_are_emitted']),
         ('http2-request-trailers-pass', True, ['tests/test_trailers_rfc9110.py::TrailerFieldsRFC9110Tests::test_http2_request_trailers_are_exposed']),

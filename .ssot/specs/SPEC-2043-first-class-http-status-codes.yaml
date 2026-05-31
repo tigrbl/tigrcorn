@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2043"
+number: 2043
+slug: "first-class-http-status-codes"
+title: "First-class HTTP status codes"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall track the minimum immediate first-class HTTP status code set as"
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "ADR-1036"
+  - "HTTP Semantics"
+body: |-
+  # First-class HTTP status codes
+  
+  Tigrcorn shall track the minimum immediate first-class HTTP status code set as
+  explicit SSOT features with linked test rows.
+  
+  Requirements:
+  
+  - The first-class set shall include status codes 100, 101, 103, 200, 201, 202,
+    204, 206, 301, 302, 304, 307, 308, 400, 401, 402, 403, 404, 405, 406, 408,
+    413, 416, 421, 426, 431, 500, 502, 503, and 504.
+  - Each first-class status code shall have a stable feature row.
+  - Each first-class status code shall have a stable test row, even when the row
+    initially points at this SPEC as a placeholder.
+  - Runtime-originated status codes shall have concrete tests for the path that
+    emits the status.
+  - Application-originated status codes shall serialize with the correct numeric
+    code and reason phrase.
+  - The serializer shall not emit an incorrect fallback reason phrase for any
+    first-class status code.
+  - 402 Payment Required is part of the immediate governed set even though the
+    runtime does not currently originate it.
+spec_kind: "local-policy"
+adr_ids: []

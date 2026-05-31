@@ -1,0 +1,29 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "cases": [
+    {
+      "expected_action": "gate_reject",
+      "expected_outcome": "release gates fail when same-stack or independent matrix metadata is blocked or pending",
+      "id": "blocked-matrix-metadata-fails-closed",
+      "preserved_artifacts": [
+        "docs/review/conformance/release_gate_status.current.json"
+      ],
+      "tests": [
+        "tests/test_release_gates.py::ReleaseGateEvaluationTests::test_release_gates_fail_closed_when_matrix_metadata_is_blocked"
+      ]
+    },
+    {
+      "expected_action": "gate_reject",
+      "expected_outcome": "release gates fail when same-stack matrix contains a scenario outside same_stack_replay",
+      "id": "same-stack-tier-drift-fails-closed",
+      "preserved_artifacts": [
+        "docs/review/conformance/release_gate_status.current.json"
+      ],
+      "tests": [
+        "tests/test_release_gates.py::ReleaseGateEvaluationTests::test_release_gates_reject_same_stack_matrix_with_wrong_tier"
+      ]
+    }
+  ],
+  "contract_version": 1,
+  "surface": "mixed_topology"
+}

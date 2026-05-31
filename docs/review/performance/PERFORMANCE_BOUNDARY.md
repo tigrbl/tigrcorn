@@ -41,6 +41,8 @@ The current-release root is the candidate lane evaluated against that baseline.
 
 The current harness remains package-owned performance evidence. It is suitable for **repeatable release gating**, but it does **not** claim independent third-party performance certification.
 
+Optional comparison matrices that stay outside the strict release-gate proof are governed separately in `PERFORMANCE_OPTIONAL_COMPARISONS.md`.
+
 ## Families required in this checkpoint
 
 - HTTP

@@ -9,7 +9,7 @@ This checkpoint completes the Step 9 administrative release-promotion work after
 - promotion target: `True`
 - canonical authoritative release root: `docs/review/conformance/releases/0.3.9/release-0.3.9`
 - public package version: `0.3.9`
-- release notes: `RELEASE_NOTES_0.3.9.md`
+- release notes: `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 
 ## What this checkpoint changed
 

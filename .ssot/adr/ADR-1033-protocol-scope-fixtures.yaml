@@ -1,0 +1,35 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1033"
+number: 1033
+slug: "protocol-scope-fixtures"
+title: "Require protocol and scope fixtures"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: every supported Tigrcorn protocol and ASGI scope type shall have a named fixture with explicit coverage."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1033 - Protocol and scope fixtures
+
+  Decision: every supported Tigrcorn protocol and ASGI scope type shall have a named fixture with explicit coverage.
+
+  Tigrcorn supports several runtime surfaces that can regress independently: HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, lifespan, custom scopes, and raw-framed/custom protocol paths. These surfaces need durable fixtures so conformance, interoperability, and demo work have stable entry points instead of one-off test setup.
+
+  Fixture policy:
+
+  - Each supported protocol or scope type shall have one fixture feature in the SSOT registry.
+  - Each fixture feature shall identify the fixture artifact and its coverage tests.
+  - Fixture artifacts may be example apps, test fixture clients, or protocol-specific helper modules.
+  - Fixture tests shall fail when a fixture artifact is missing or no coverage path is declared.
+  - Fixture coverage shall remain separate from support claims; a fixture can exist before full runtime support is complete.
+
+  Consequences:
+
+  - Adding a new supported protocol or scope type requires adding a fixture row, SSOT feature, and test linkage.
+  - Removing or renaming a fixture requires updating the manifest and SSOT linkage in the same change.
+  - Certification and local debugging can use the fixture manifest as the stable operator inventory.

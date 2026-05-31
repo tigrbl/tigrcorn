@@ -1,0 +1,51 @@
+{
+  "boundary_id": "bnd:certification-explicit-surfaces",
+  "status": "closed",
+  "canonical_registry_source": ".ssot/registry.json",
+  "catalog_module": "tigrcorn_certification.explicit_surfaces",
+  "feature_ids": [
+    "feat:surface-http2-tls-posture",
+    "feat:surface-https-http11",
+    "feat:surface-https-service-identity",
+    "feat:surface-tcp-tls13-external-peer-interop",
+    "feat:surface-tls13-handshake-messages",
+    "feat:surface-tls13-record-layer",
+    "feat:surface-tls13-shutdown-behavior",
+    "feat:surface-tls13-state-transition",
+    "feat:surface-tls-server-name-indication",
+    "feat:surface-x509-certificate-profiles",
+    "feat:surface-x509-path-validation",
+    "feat:surface-http3-control-plane",
+    "feat:surface-ocsp-policy",
+    "feat:surface-qpack-error-handling",
+    "feat:surface-quic-retry-token-integrity",
+    "feat:surface-quic-tls-mapping",
+    "feat:surface-tls-status-request-policy",
+    "feat:surface-tcp-tls13-backend-control",
+    "feat:surface-package-owned-http-fields",
+    "feat:fail-state-registry",
+    "feat:observability-export-surfaces",
+    "feat:origin-negative-corpora",
+    "feat:qlog-stance",
+    "feat:quic-h3-counters",
+    "feat:quic-negative-corpora"
+  ],
+  "required_docs": [
+    "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+    "docs/review/conformance/CERTIFICATION_EXPLICIT_SURFACES.md",
+    "docs/review/conformance/CLI_FLAG_SURFACE.md",
+    "docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md",
+    "docs/review/conformance/INTEROP_HARNESS_ARTIFACT_SCHEMA.md"
+  ],
+  "release_evidence_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+  "release_evidence_files": [
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json"
+  ],
+  "closure_tests": [
+    "tests/test_certification_explicit_surfaces_boundary.py",
+    "tests/test_release_gates.py",
+    "tests/test_conformance_corpus.py"
+  ]
+}

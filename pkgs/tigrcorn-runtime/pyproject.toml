@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-runtime"
+version = "0.3.16.dev5"
+description = "Server runner, app loading, lifecycle hooks, workers, reload, and embedded runtime for the Tigrcorn ASGI3 web server."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+license = {file = "LICENSE"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+keywords = ["tigrcorn", "asgi-server", "server-runtime", "lifespan", "workers", "reload", "python-web-server"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Networking",
+  "Typing :: Typed",
+]
+dependencies = [
+  "tigrcorn-core==0.3.16.dev5",
+  "tigrcorn-config==0.3.16.dev5",
+  "tigrcorn-asgi==0.3.16.dev5",
+  "tigrcorn-transports==0.3.16.dev5",
+  "tigrcorn-protocols==0.3.16.dev5",
+  "tigrcorn-security==0.3.16.dev5",
+]
+
+[project.optional-dependencies]
+uvloop = ["uvloop>=0.19.0; platform_system != 'Windows'"]
+trio = ["trio>=0.25.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+license-files = ["LICENSE"]
+
+[tool.setuptools.package-data]
+tigrcorn_runtime = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

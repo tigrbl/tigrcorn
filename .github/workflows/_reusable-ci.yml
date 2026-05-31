@@ -1,0 +1,164 @@
+name: _reusable-ci
+
+on:
+  workflow_call:
+
+jobs:
+  validate:
+    name: validate-py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      - name: Install workspace packages
+        run: |
+          python -m pip install \
+            -e pkgs/tigrcorn-core \
+            -e pkgs/tigrcorn-config \
+            -e pkgs/tigrcorn-asgi \
+            -e pkgs/tigrcorn-contract \
+            -e pkgs/tigrcorn-transports \
+            -e pkgs/tigrcorn-protocols \
+            -e pkgs/tigrcorn-http \
+            -e pkgs/tigrcorn-security \
+            -e pkgs/tigrcorn-runtime \
+            -e pkgs/tigrcorn-static \
+            -e pkgs/tigrcorn-observability \
+            -e pkgs/tigrcorn-compat \
+            -e pkgs/tigrcorn-certification
+      - name: Install project
+        run: python -m pip install -e ".[certification,dev]"
+      - name: Validate tree
+        uses: ./.github/actions/ci-shell
+        with:
+          command: bash ./scripts/ci/validate.sh
+      - name: Upload validation artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: validation-py${{ matrix.python-version }}
+          path: |
+            DEFAULT_AUDIT.json
+            DEFAULT_AUDIT.md
+            PROFILE_DEFAULTS/
+            profiles/
+            docs/conformance/profile_bundles.json
+            docs/conformance/profile_bundles.md
+            docs/conformance/proxy_contract.json
+            docs/conformance/proxy_contract.md
+            docs/conformance/policy_surface.json
+            docs/conformance/early_data_contract.json
+            docs/conformance/early_data_contract.md
+            docs/conformance/quic_state.json
+            docs/conformance/quic_state.md
+            docs/conformance/origin_contract.json
+            docs/conformance/origin_contract.md
+            docs/conformance/origin_negatives.json
+            docs/conformance/origin_negatives.md
+            docs/conformance/metrics_schema.json
+            docs/conformance/metrics_schema.md
+            docs/conformance/qlog_experimental.json
+            docs/conformance/qlog_experimental.md
+            docs/conformance/fail_state_registry.json
+            docs/conformance/fail_state_registry.md
+            docs/conformance/negative_corpora.json
+            docs/conformance/negative_corpora.md
+            docs/conformance/negative_bundles.json
+            docs/conformance/negative_bundles.md
+            docs/conformance/negative_bundles/
+            docs/conformance/sf9651.json
+            docs/conformance/sf9651.md
+            docs/conformance/interop_retention.json
+            docs/conformance/interop_retention.md
+            docs/conformance/perf_retention.json
+            docs/conformance/perf_retention.md
+            docs/conformance/claim_rep.json
+            docs/conformance/claim_rep.md
+            docs/conformance/risk_stat.json
+            docs/conformance/risk_stat.md
+            docs/conformance/evidence_ix.json
+            docs/conformance/evidence_ix.md
+            docs/conformance/release_auto.json
+            docs/conformance/relnotes.json
+            docs/conformance/relnotes.md
+            docs/ops/profiles.md
+            docs/ops/defaults.md
+            docs/ops/policies.md
+            docs/ops/origin.md
+            docs/ops/observability.md
+            LEGACY_UNITTEST_INVENTORY.json
+            docs/review/conformance/cli_help.current.txt
+            docs/review/conformance/release_gate_status.current.json
+            docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md
+
+  validate-npm:
+    name: validate-npm
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
+      - name: Test WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm test --workspaces=false
+
+  validate-wt-peer-probes:
+    name: validate-wt-peer-probes
+    runs-on: ubuntu-latest
+    environment: ci
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Install Playwright browsers
+        working-directory: packages/wt-peer-probes
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
+      - name: Validate browser WebTransport peer API probes
+        working-directory: packages/wt-peer-probes
+        run: npm run test:peer-api -- --reporter=line
+      - name: Upload WebTransport peer probe Playwright report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wt-peer-probes-playwright-${{ github.sha }}
+          path: packages/wt-peer-probes/playwright-report/
+          if-no-files-found: ignore

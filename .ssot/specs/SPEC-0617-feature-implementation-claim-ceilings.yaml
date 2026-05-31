@@ -1,0 +1,64 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0617"
+number: 617
+slug: "feature-implementation-claim-ceilings"
+title: "Feature implementation claim ceilings"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Feature implementation status SHALL be derived and validated through active required claim ceilings."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Overview
+  
+  Feature implementation status SHALL be derived and validated through active required claim ceilings.
+  
+  ## Active Required Claims
+  
+  For feature implementation closure, active required claims are all linked `feature.claim_ids` whose claim status is not `retired`.
+  
+  Until a first-class non-blocking claim role exists, every non-retired linked claim SHALL be treated as required for feature implementation closure.
+  
+  ## Implementation Status Derivation
+  
+  Automated status synchronization SHALL set a feature to `implemented` only when:
+  
+  1. the feature has at least one active required linked claim,
+  2. every active required linked claim has a tier other than `T0`,
+  3. every active required linked claim is at or above the feature's `plan.target_claim_tier` when that target is present,
+  4. every active required linked claim has status `evidenced` or higher after claim synchronization,
+  5. every linked test is `passing`,
+  6. every required feature is `implemented`.
+  
+  If any active required linked claim is `T0`, the feature SHALL NOT be synchronized to `implemented`; the highest synchronized status is `partial` unless all support is planned or placeholder-only.
+  
+  If a feature has mixed active required claims and any one of them fails the closure requirements, the feature SHALL NOT be synchronized to `implemented`.
+  
+  ## Tier Targets
+  
+  `T1` claims can satisfy direct implementation targets when their direct project verification gates pass.
+  
+  `T2` claims can satisfy robust implementation targets, including security-sensitive, compatibility-sensitive, concurrency-sensitive, or failure-mode-sensitive features, when their robustness gates pass.
+  
+  `T3` and `T4` normally represent certification or validation maturity above implementation status. They SHALL be required for implementation only when the feature explicitly sets `plan.target_claim_tier` to `T3` or `T4`.
+  
+  A feature may be implemented at `T1` or `T2` and later gain `T3` or `T4` assurance through release certification or external validation without changing the meaning of implementation status.
+  
+  ## Validation
+  
+  Registry validation SHALL reject a feature with `implementation_status: implemented` when any active required linked claim is `T0` or below the feature's target claim tier.
+  
+  Claim lifecycle status normalization remains the responsibility of automated status synchronization.
+  
+  ## Profile Evaluation
+  
+  Profile and boundary-oriented feature evaluation SHALL use the same all-active-required-claims precedence. A feature with an active required `T0` claim SHALL fail feature-pass evaluation even if another linked claim is stronger.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0617"
+  - "adr:0625"

@@ -1,0 +1,57 @@
+services:
+  tigrcorn-wt-local:
+    build:
+      context: ../..
+      dockerfile: examples/webtransport_mtls_demo/Dockerfile
+    image: tigrcorn-wt-mtls-demo:local
+    command:
+      - sh
+      - -c
+      - >-
+        python -m examples.webtransport_mtls_demo.cert_setup --out /certs --server-name localhost &&
+        tigrcorn examples.webtransport_mtls_demo.server:app --transport udp --host 0.0.0.0 --port 8444
+        --protocol webtransport --http 3 --ssl-certfile /certs/server-cert.pem --ssl-keyfile /certs/server-key.pem
+        --webtransport-max-sessions 8 --webtransport-max-streams 64 --webtransport-max-datagram-size 1200
+        --webtransport-origin https://localhost:8088,http://localhost:8088 --webtransport-path /wt
+    ports:
+      - "8444:8444/udp"
+    volumes:
+      - wt-certs:/certs
+
+  tigrcorn-wt-mtls:
+    image: tigrcorn-wt-mtls-demo:local
+    environment:
+      TIGRCORN_DEMO_REQUIRE_MTLS: "true"
+    command:
+      - sh
+      - -c
+      - >-
+        python -m examples.webtransport_mtls_demo.cert_setup --out /certs --server-name localhost &&
+        tigrcorn examples.webtransport_mtls_demo.server:app --transport udp --host 0.0.0.0 --port 8443
+        --protocol webtransport --http 3 --ssl-certfile /certs/server-cert.pem --ssl-keyfile /certs/server-key.pem
+        --ssl-ca-certs tests/fixtures_certs/interop-client-cert.pem --ssl-require-client-cert
+        --webtransport-max-sessions 8 --webtransport-max-streams 64 --webtransport-max-datagram-size 1200
+        --webtransport-origin https://localhost:8088,http://localhost:8088 --webtransport-path /wt
+    ports:
+      - "8443:8443/udp"
+    volumes:
+      - wt-certs:/certs
+    depends_on:
+      - tigrcorn-wt-local
+
+  tigrcorn-wt-client:
+    image: tigrcorn-wt-mtls-demo:local
+    command:
+      - python
+      - -m
+      - examples.webtransport_mtls_demo.client_server
+    ports:
+      - "8088:8080/tcp"
+    volumes:
+      - wt-certs:/certs
+    depends_on:
+      - tigrcorn-wt-local
+      - tigrcorn-wt-mtls
+
+volumes:
+  wt-certs:

@@ -1,0 +1,51 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2052"
+number: 2052
+slug: "contract-classification-projection"
+title: "Contract classification projection"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall project runtime facts into the contract classification matrix without inventing alternate event names."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:41:22Z"
+    note: "Created Tigrcorn projection contract for canonical event classification rows."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated classification projection with optional subordinate framing metadata."
+    at: "2026-05-27T18:12:09Z"
+references: []
+body: |-
+  # Contract classification projection
+  
+  Tigrcorn shall project runtime facts into the contract classification matrix without inventing alternate event names.
+  
+  Requirements:
+  
+  - Projection rows use `event + channel + scope_type + binding + family + exchange + direction`.
+  - `event` is the canonical ASGI or tigr-asgi-contract event name.
+  - `channel` is derived from whether Tigrcorn observed the event on ASGI `receive` or `send`.
+  - `scope_type` remains one of `http`, `websocket`, `webtransport`, or `lifespan`.
+  - `binding`, `family`, `exchange`, and `direction` are derived from scope metadata, selected protocol, event type, and payload discriminators.
+  - Optional framing metadata may be projected only as subordinate row metadata.
+  - Framing metadata must not change canonical event identity or create a required `subsurface` field.
+  - WebTransport projection must distinguish session lifecycle, bidirectional stream, client-to-server unidirectional stream, server-to-client unidirectional stream, and datagram lanes.
+  - The projection must fail closed when required metadata such as stream direction, stream id, selected subprotocol, ALPN, or capability flags is missing.
+  
+  Validation:
+  
+  - Tests must cover at least HTTP request/response, WebSocket connect/message/close, WebTransport connect, WebTransport bidi stream, both WebTransport unidi directions, WebTransport datagram, and lifespan events.
+  - Tests must prove no required `subsurface` or duplicate event-name field is emitted.
+  - Tests must prove optional framing metadata is preserved when known and omitted distinctly when unknown.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1016"
+  - "adr:1017"
+  - "adr:1020"
+  - "adr:1024"

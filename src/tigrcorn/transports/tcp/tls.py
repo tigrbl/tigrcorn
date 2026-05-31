@@ -1,5 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.security.tls import build_server_ssl_context
+from importlib import import_module as _import_module
+import sys as _sys
 
-__all__ = ["build_server_ssl_context"]
+_module = _import_module('tigrcorn_transports.tcp.tls')
+_sys.modules[__name__] = _module

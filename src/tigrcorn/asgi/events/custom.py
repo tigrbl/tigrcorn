@@ -1,13 +1,7 @@
 from __future__ import annotations
 
+from importlib import import_module as _import_module
+import sys as _sys
 
-def custom_event(event_type: str, **payload) -> dict:
-    return {"type": event_type, **payload}
-
-
-def stream_receive(data: bytes, *, more_data: bool = False) -> dict:
-    return custom_event("tigrcorn.stream.receive", data=data, more_data=more_data)
-
-
-def stream_send(data: bytes, *, more_data: bool = False) -> dict:
-    return custom_event("tigrcorn.stream.send", data=data, more_data=more_data)
+_module = _import_module('tigrcorn_asgi.events.custom')
+_sys.modules[__name__] = _module

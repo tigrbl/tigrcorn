@@ -1,0 +1,33 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2031"
+number: 2031
+slug: "backpressure-flow-control"
+title: "Backpressure and flow-control mapping"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall map backpressure and flow-control behavior into contract completion and family semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Backpressure and flow-control mapping
+  
+  Tigrcorn shall map backpressure and flow-control behavior into contract completion and family semantics.
+  
+  Requirements:
+  
+  - Native streams expose flow-control state where supported.
+  - Emission APIs report completion levels that match the actual carrier guarantee.
+  - ASGI/3 compatibility exposes additional flow-control metadata only through extensions.
+  - Tests cover stalled consumers, closed streams, buffered sends, and transport handoff.
+  - For request-streaming carriers, receive-side transport credit and application-visible backlog shall be tracked separately.
+  - HTTP/2 request-body `WINDOW_UPDATE` behavior shall be tied to drained application-visible backlog or explicit backlog release, not only to bytes accepted from the socket.
+  - Flow-control replenishment shall remain bounded at both the stream and connection level so a slow consumer on one stream cannot turn multiplexing into unbounded buffering.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1003"
+  - "adr:1012"

@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1015"
+number: 1015
+slug: "asgi-feature-extension-bridge"
+title: "expose Tigrcorn features to ASGI3 apps through extensions"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn features shall remain available to ASGI3 applications through scoped extensions and adapter metadata."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1015 - ASGI feature extension bridge
+
+  Decision: Tigrcorn features shall remain available to ASGI3 applications through scoped extensions and adapter metadata.
+
+  The compatibility layer must not reduce Tigrcorn to the lowest common ASGI3 surface. When native contract metadata has no standard ASGI field, the adapter shall expose it through documented ASGI extension keys.
+
+  Consequences:
+
+  - Every first-class Tigrcorn feature needs an ASGI3 availability decision.
+  - Extensions must be documented, versioned, and covered by compatibility tests.
+  - Standard ASGI3 behavior remains unchanged for apps that ignore extensions.

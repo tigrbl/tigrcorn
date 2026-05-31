@@ -1,0 +1,18 @@
+services:
+  tigrcorn-advanced-delivery-app:
+    build:
+      context: ../..
+      dockerfile: examples/advanced_delivery_uix/Dockerfile
+    image: tigrcorn-advanced-delivery-demo:local
+    ports:
+      - "8021:8000/tcp"
+
+  tigrcorn-advanced-delivery-uix:
+    build:
+      context: ../..
+      dockerfile: examples/advanced_delivery_uix/Dockerfile.client
+    image: tigrcorn-advanced-delivery-uix:local
+    ports:
+      - "8022:8080/tcp"
+    depends_on:
+      - tigrcorn-advanced-delivery-app

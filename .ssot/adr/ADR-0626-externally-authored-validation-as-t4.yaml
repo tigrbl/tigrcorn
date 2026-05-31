@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:0626"
+number: 626
+slug: "externally-authored-validation-as-t4"
+title: "Externally Authored Validation Can Satisfy T4"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "`T4` needs to represent external assurance rather than stronger project self-attestation. At the same time, many authoritative conformance suites, probe corpora, review artifacts, and certification checks can be executed locally while remaining externally authored or independently controlled."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  `T4` needs to represent external assurance rather than stronger project self-attestation. At the same time, many authoritative conformance suites, probe corpora, review artifacts, and certification checks can be executed locally while remaining externally authored or independently controlled.
+  
+  ## Decision
+  
+  `T4` requires external validation authority.
+  
+  Externally authored validation artifacts may satisfy `T4` even when executed internally, provided the evidence records source provenance, authorship or control, validation scope, target claims or features, and result.
+  
+  Using an external dependency internally is not `T4` by itself. Passing an externally authored conformance suite, receiving an independent review report, or carrying a third-party certification artifact can satisfy `T4` when the evidence contract is met.
+  
+  ## Consequences
+  
+  `T4` remains distinct from project-controlled robustness verification. Projects can still run external suites locally without losing the external-authority property, but they must preserve provenance and scope in evidence.

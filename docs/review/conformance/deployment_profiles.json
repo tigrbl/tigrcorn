@@ -1,4 +1,42 @@
 {
+  "blessed_profiles": [
+    {
+      "profile_id": "default",
+      "claim_ids": ["TC-PROFILE-DEFAULT-BASELINE"],
+      "artifact": "profiles/default.profile.json",
+      "description": "Safe zero-config baseline with HTTP/1.1 only and deny-by-default transport posture."
+    },
+    {
+      "profile_id": "strict-h1-origin",
+      "claim_ids": ["TC-PROFILE-STRICT-H1-ORIGIN"],
+      "artifact": "profiles/strict-h1-origin.profile.json",
+      "description": "Conservative HTTP/1.1 origin posture."
+    },
+    {
+      "profile_id": "strict-h2-origin",
+      "claim_ids": ["TC-PROFILE-STRICT-H2-ORIGIN"],
+      "artifact": "profiles/strict-h2-origin.profile.json",
+      "description": "Explicit TLS plus ALPN plus HTTP/2 origin posture."
+    },
+    {
+      "profile_id": "strict-h3-edge",
+      "claim_ids": ["TC-PROFILE-STRICT-H3-EDGE"],
+      "artifact": "profiles/strict-h3-edge.profile.json",
+      "description": "Explicit HTTP/3 plus QUIC edge posture with Retry and deny-by-default early data."
+    },
+    {
+      "profile_id": "strict-mtls-origin",
+      "claim_ids": ["TC-PROFILE-STRICT-MTLS-ORIGIN"],
+      "artifact": "profiles/strict-mtls-origin.profile.json",
+      "description": "Explicit mTLS origin posture."
+    },
+    {
+      "profile_id": "static-origin",
+      "claim_ids": ["TC-PROFILE-STATIC-ORIGIN"],
+      "artifact": "profiles/static-origin.profile.json",
+      "description": "Explicit static-delivery origin posture."
+    }
+  ],
   "profiles": [
     {
       "profile_id": "http1_baseline",

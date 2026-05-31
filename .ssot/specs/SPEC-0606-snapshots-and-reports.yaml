@@ -1,0 +1,25 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0606"
+number: 606
+slug: "snapshots-and-reports"
+title: "Snapshots and reports"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Generated artifacts:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Generated artifacts:
+  - boundary snapshots
+  - release snapshots
+  - published snapshots
+  - validation reports
+  - certification reports
+  - graph exports
+spec_kind: "operational"
+adr_ids: []

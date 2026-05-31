@@ -1,0 +1,6 @@
+*
+!examples/
+!examples/advanced_delivery_uix/
+!examples/advanced_delivery_uix/client_server.py
+!examples/advanced_delivery_uix/client/
+!examples/advanced_delivery_uix/client/**

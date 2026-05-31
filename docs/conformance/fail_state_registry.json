@@ -1,0 +1,76 @@
+{
+  "contract_version": 1,
+  "registry": [
+    {
+      "default_action": "strip_and_continue",
+      "observable_outcomes": [
+        "proxy view stays on transport peer",
+        "request proceeds without forwarded override"
+      ],
+      "risk": "untrusted forwarded header spoofing",
+      "runtime_contract": "Untrusted Forwarded and X-Forwarded-* data is ignored and the connection continues using the transport-observed peer and scheme.",
+      "surface": "proxy"
+    },
+    {
+      "default_action": "reject_response",
+      "observable_outcomes": [
+        "425 Too Early",
+        "no ASGI app dispatch"
+      ],
+      "risk": "replayed resumed request without admitted 0-RTT",
+      "runtime_contract": "When early-data policy is require and resumption succeeds without admitted early data, the package sends 425 Too Early before ASGI dispatch.",
+      "surface": "early_data"
+    },
+    {
+      "default_action": "close_connection",
+      "observable_outcomes": [
+        "retry event",
+        "close event",
+        "pending close datagram"
+      ],
+      "risk": "invalid token, prohibited migration, or transport-integrity failure",
+      "runtime_contract": "QUIC transport failures produce Retry, CONNECTION_CLOSE, or transport-level close events instead of partially admitted application state.",
+      "surface": "quic"
+    },
+    {
+      "default_action": "reject_or_abort",
+      "observable_outcomes": [
+        "404 Not Found",
+        "ASGIProtocolError"
+      ],
+      "risk": "path traversal or invalid ASGI pathsend",
+      "runtime_contract": "Traversal attempts return 404 from the package-owned origin surface, while invalid http.response.pathsend inputs raise ASGIProtocolError.",
+      "surface": "origin"
+    },
+    {
+      "default_action": "reject_response",
+      "observable_outcomes": [
+        "403 connect denied",
+        "stream end / response completion"
+      ],
+      "risk": "open relay or disallowed CONNECT target",
+      "runtime_contract": "Denied or allowlist-mismatched CONNECT requests terminate with 403 connect denied and do not dispatch to the ASGI app.",
+      "surface": "connect_relay"
+    },
+    {
+      "default_action": "abort_validation",
+      "observable_outcomes": [
+        "ProtocolError",
+        "preserved OCSP validation artifacts"
+      ],
+      "risk": "revoked, stale, or unreachable revocation state under strict validation",
+      "runtime_contract": "Strict X.509 revocation failures abort validation with ProtocolError rather than soft-admitting the peer.",
+      "surface": "tls_x509"
+    },
+    {
+      "default_action": "gate_reject",
+      "observable_outcomes": [
+        "release gate failure",
+        "promotion target failure"
+      ],
+      "risk": "evidence-tier drift or blocked scenario metadata in mixed and same-stack matrices",
+      "runtime_contract": "Promotion and release-gate evaluators fail closed when matrix metadata is blocked, pending, or outside the declared evidence tier.",
+      "surface": "mixed_topology"
+    }
+  ]
+}

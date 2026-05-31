@@ -16,4 +16,4 @@ Related root/community docs:
 
 - `../../CONTRIBUTING.md`
 - `../../CODE_OF_CONDUCT.md`
-- `../../AGENTS.md`
+- `../../.codex/AGENTS.md`

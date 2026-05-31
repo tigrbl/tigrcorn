@@ -1,0 +1,80 @@
+{
+  "cases": [
+    {
+      "expected_result": "deny_after_single_decode",
+      "expected_status": 404,
+      "id": "encoded-parent-segment",
+      "request_path": "/%2e%2e/secret.txt",
+      "surface": "path_resolution"
+    },
+    {
+      "expected_result": "deny_platform_specific_separator",
+      "expected_status": 404,
+      "id": "backslash-separator-segment",
+      "request_path": "/dir\\\\..\\\\secret.txt",
+      "surface": "path_resolution"
+    },
+    {
+      "expected_result": "deny_symlink_escape",
+      "expected_status": 404,
+      "id": "escaping-symlink",
+      "request_path": "/escape.txt",
+      "surface": "path_resolution"
+    },
+    {
+      "expected_result": "deny_directory_listing_or_redirect",
+      "expected_status": 404,
+      "id": "directory-without-index",
+      "request_path": "/docs/",
+      "surface": "file_selection"
+    },
+    {
+      "expected_result": "content-range-bytes-star-length",
+      "expected_status": 416,
+      "id": "unsatisfied-range",
+      "request_headers": {
+        "range": "bytes=999-1000"
+      },
+      "surface": "http_semantics"
+    },
+    {
+      "expected_result": "full_representation_fallback",
+      "expected_status": 200,
+      "id": "stale-if-range",
+      "request_headers": {
+        "if-range": "stale-validator",
+        "range": "bytes=0-4"
+      },
+      "surface": "http_semantics"
+    },
+    {
+      "expected_result": "asgi_protocol_error",
+      "expected_status": null,
+      "id": "pathsend-relative-path",
+      "request_path": "relative.bin",
+      "surface": "pathsend"
+    },
+    {
+      "expected_result": "asgi_protocol_error",
+      "expected_status": null,
+      "id": "pathsend-missing-file",
+      "request_path": "/missing/file.bin",
+      "surface": "pathsend"
+    },
+    {
+      "expected_result": "transfer_capped_to_dispatch_snapshot_length",
+      "expected_status": 200,
+      "id": "pathsend-growth-race",
+      "request_path": "/payload.bin",
+      "surface": "pathsend"
+    },
+    {
+      "expected_result": "best_effort_termination_without_retry",
+      "expected_status": null,
+      "id": "pathsend-disconnect",
+      "request_path": "/payload.bin",
+      "surface": "pathsend"
+    }
+  ],
+  "contract_version": 1
+}

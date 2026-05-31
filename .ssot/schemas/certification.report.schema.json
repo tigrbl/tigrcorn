@@ -1,0 +1,1 @@
+{"$id":"https://example.invalid/ssot-registry/certification.report.schema.json","$schema":"https://json-schema.org/draft/2020-12/schema","required":["passed","registry_path","release","summary"],"type":"object"}

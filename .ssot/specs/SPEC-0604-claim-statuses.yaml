@@ -1,0 +1,29 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0604"
+number: 604
+slug: "claim-statuses"
+title: "Claim statuses"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Supported statuses:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Supported statuses:
+  - `proposed`
+  - `declared`
+  - `implemented`
+  - `asserted`
+  - `evidenced`
+  - `certified`
+  - `promoted`
+  - `published`
+  - `blocked`
+  - `retired`
+spec_kind: "normative"
+adr_ids: []

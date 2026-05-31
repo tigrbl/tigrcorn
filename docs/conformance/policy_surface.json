@@ -1,0 +1,753 @@
+{
+  "generated_from": [
+    "src/tigrcorn/config/policy_surface.py",
+    "src/tigrcorn/cli.py",
+    "DEFAULT_AUDIT.json"
+  ],
+  "groups": [
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3",
+        "WebSocket"
+      ],
+      "category": "Proxy contract",
+      "claim_id": "TC-CONTRACT-PROXY-TRUST",
+      "config_paths": [
+        "proxy.proxy_headers",
+        "proxy.forwarded_allow_ips"
+      ],
+      "description": "Trusted proxy admission is explicit and fail-closed.",
+      "docs": [
+        "docs/conformance/proxy_contract.md",
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--proxy-headers",
+        "--forwarded-allow-ips"
+      ],
+      "rows": [
+        {
+          "config_path": "proxy.proxy_headers",
+          "effective_default": false,
+          "flag": "--proxy-headers",
+          "help_text": "Trust Forwarded and X-Forwarded-* identity headers from allowed peers",
+          "parser_default": null
+        },
+        {
+          "config_path": "proxy.forwarded_allow_ips",
+          "effective_default": [],
+          "flag": "--forwarded-allow-ips",
+          "help_text": "Trusted proxy peers for Forwarded and X-Forwarded-* processing; repeat or use comma-separated values",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "proxy_trust",
+      "title": "Proxy Trust"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3",
+        "WebSocket"
+      ],
+      "category": "Proxy contract",
+      "claim_id": "TC-CONTRACT-PROXY-PRECEDENCE",
+      "config_paths": [
+        "proxy.proxy_headers",
+        "proxy.forwarded_allow_ips",
+        "proxy.root_path"
+      ],
+      "description": "Forwarded and X-Forwarded-* precedence is explicit for client, scheme, host, and root_path.",
+      "docs": [
+        "docs/conformance/proxy_contract.md",
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--proxy-headers",
+        "--forwarded-allow-ips",
+        "--root-path"
+      ],
+      "rows": [
+        {
+          "config_path": "proxy.proxy_headers",
+          "effective_default": false,
+          "flag": "--proxy-headers",
+          "help_text": "Trust Forwarded and X-Forwarded-* identity headers from allowed peers",
+          "parser_default": null
+        },
+        {
+          "config_path": "proxy.forwarded_allow_ips",
+          "effective_default": [],
+          "flag": "--forwarded-allow-ips",
+          "help_text": "Trusted proxy peers for Forwarded and X-Forwarded-* processing; repeat or use comma-separated values",
+          "parser_default": null
+        },
+        {
+          "config_path": "proxy.root_path",
+          "effective_default": "",
+          "flag": "--root-path",
+          "help_text": "Base ASGI root_path applied before trusted proxy prefix normalization",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "proxy_precedence",
+      "title": "Proxy Precedence"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3",
+        "WebSocket"
+      ],
+      "category": "Proxy contract",
+      "claim_id": "TC-CONTRACT-PROXY-NORMALIZATION",
+      "config_paths": [
+        "proxy.root_path"
+      ],
+      "description": "Root-path and forwarded-header normalization is frozen and shared across HTTP and WebSocket scope building.",
+      "docs": [
+        "docs/conformance/proxy_contract.md",
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--root-path"
+      ],
+      "rows": [
+        {
+          "config_path": "proxy.root_path",
+          "effective_default": "",
+          "flag": "--root-path",
+          "help_text": "Base ASGI root_path applied before trusted proxy prefix normalization",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "proxy_normalization",
+      "title": "Proxy Normalization"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3"
+      ],
+      "category": "RFC policy",
+      "claim_id": "TC-POLICY-CONNECT",
+      "config_paths": [
+        "http.connect_policy",
+        "http.connect_allow"
+      ],
+      "description": "CONNECT relay admission is explicit as deny, relay, or allowlist.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--connect-policy",
+        "--connect-allow"
+      ],
+      "rows": [
+        {
+          "config_path": "http.connect_policy",
+          "effective_default": "deny",
+          "flag": "--connect-policy",
+          "help_text": "CONNECT relay policy: deny, relay, or allowlist",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.connect_allow",
+          "effective_default": [],
+          "flag": "--connect-allow",
+          "help_text": "Allowed CONNECT authorities or CIDR targets when CONNECT policy is allowlist",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "connect",
+      "title": "CONNECT Policy"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3"
+      ],
+      "category": "RFC policy",
+      "claim_id": "TC-POLICY-TRAILERS",
+      "config_paths": [
+        "http.trailer_policy"
+      ],
+      "description": "Trailer acceptance and forwarding posture is explicit across supported carriers.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--trailer-policy"
+      ],
+      "rows": [
+        {
+          "config_path": "http.trailer_policy",
+          "effective_default": "pass",
+          "flag": "--trailer-policy",
+          "help_text": "Trailer handling policy across supported HTTP/1.1, HTTP/2, and HTTP/3 carriers",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "trailers",
+      "title": "Trailer Policy"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3"
+      ],
+      "category": "RFC policy",
+      "claim_id": "TC-POLICY-CONTENT-CODING",
+      "config_paths": [
+        "http.content_coding_policy",
+        "http.content_codings"
+      ],
+      "description": "Response content-coding policy and the supported coding allowlist are explicit.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--content-coding-policy",
+        "--content-codings"
+      ],
+      "rows": [
+        {
+          "config_path": "http.content_coding_policy",
+          "effective_default": "allowlist",
+          "flag": "--content-coding-policy",
+          "help_text": "Response content-coding policy: allowlist, identity-only, or strict",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.content_codings",
+          "effective_default": null,
+          "flag": "--content-codings",
+          "help_text": "Supported response codings for allowlist/strict policy; repeat or use comma-separated values",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "content_coding",
+      "title": "Content-Coding Policy"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2"
+      ],
+      "category": "Protocol policy",
+      "claim_id": "TC-POLICY-H2C",
+      "config_paths": [
+        "http.enable_h2c"
+      ],
+      "description": "Cleartext HTTP/2 upgrade and preface detection is explicit rather than implicit.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--disable-h2c"
+      ],
+      "rows": [
+        {
+          "config_path": "http.enable_h2c",
+          "effective_default": false,
+          "flag": "--disable-h2c",
+          "help_text": "Disable cleartext HTTP/2 upgrade and direct-preface detection on eligible listeners",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "h2c",
+      "title": "H2C Policy"
+    },
+    {
+      "carriers": [
+        "TLS over HTTP/1.1",
+        "TLS over HTTP/2",
+        "QUIC/HTTP/3"
+      ],
+      "category": "TLS policy",
+      "claim_id": "TC-POLICY-ALPN",
+      "config_paths": [
+        "tls.alpn_protocols"
+      ],
+      "description": "ALPN offer ordering and negotiation posture is a stable public control.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--ssl-alpn"
+      ],
+      "rows": [
+        {
+          "config_path": "tls.alpn_protocols",
+          "effective_default": null,
+          "flag": "--ssl-alpn",
+          "help_text": "ALPN offer list; repeat or use comma-separated values",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "alpn",
+      "title": "ALPN Policy"
+    },
+    {
+      "carriers": [
+        "TLS over HTTP/1.1",
+        "TLS over HTTP/2",
+        "QUIC/HTTP/3"
+      ],
+      "category": "TLS policy",
+      "claim_id": "TC-POLICY-REVOCATION",
+      "config_paths": [
+        "tls.ocsp_mode",
+        "tls.ocsp_soft_fail",
+        "tls.ocsp_cache_size",
+        "tls.ocsp_max_age",
+        "tls.crl_mode",
+        "tls.crl",
+        "tls.revocation_fetch"
+      ],
+      "description": "OCSP, CRL, and remote revocation-fetch policy is explicit and operator-visible.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--ssl-ocsp-mode",
+        "--ssl-ocsp-soft-fail",
+        "--ssl-ocsp-cache-size",
+        "--ssl-ocsp-max-age",
+        "--ssl-crl-mode",
+        "--ssl-crl",
+        "--ssl-revocation-fetch"
+      ],
+      "rows": [
+        {
+          "config_path": "tls.ocsp_mode",
+          "effective_default": "off",
+          "flag": "--ssl-ocsp-mode",
+          "help_text": "OCSP revocation mode for peer-certificate validation",
+          "parser_default": null
+        },
+        {
+          "config_path": "tls.ocsp_soft_fail",
+          "effective_default": false,
+          "flag": "--ssl-ocsp-soft-fail",
+          "help_text": "Allow OCSP-unavailable validation to continue when strict mode is not required",
+          "parser_default": null
+        },
+        {
+          "config_path": "tls.ocsp_cache_size",
+          "effective_default": 128,
+          "flag": "--ssl-ocsp-cache-size",
+          "help_text": "Maximum cached OCSP responses kept in the revocation cache",
+          "parser_default": null
+        },
+        {
+          "config_path": "tls.ocsp_max_age",
+          "effective_default": 43200.0,
+          "flag": "--ssl-ocsp-max-age",
+          "help_text": "Maximum acceptable OCSP response age in seconds",
+          "parser_default": null
+        },
+        {
+          "config_path": "tls.crl_mode",
+          "effective_default": "off",
+          "flag": "--ssl-crl-mode",
+          "help_text": "CRL validation mode for peer-certificate revocation checks",
+          "parser_default": null
+        },
+        {
+          "config_path": "tls.crl",
+          "effective_default": null,
+          "flag": "--ssl-crl",
+          "help_text": "Local CRL file loaded into the package-owned revocation material set",
+          "parser_default": null
+        },
+        {
+          "config_path": "tls.revocation_fetch",
+          "effective_default": true,
+          "flag": "--ssl-revocation-fetch",
+          "help_text": "Enable or disable online revocation fetching for OCSP/CRL validation",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "revocation",
+      "title": "OCSP and Revocation Policy"
+    },
+    {
+      "carriers": [
+        "WebSocket over HTTP/1.1",
+        "WebSocket over HTTP/2",
+        "WebSocket over HTTP/3"
+      ],
+      "category": "WebSocket policy",
+      "claim_id": "TC-POLICY-WEBSOCKET-COMPRESSION",
+      "config_paths": [
+        "websocket.compression"
+      ],
+      "description": "permessage-deflate policy is explicit across supported WebSocket carriers.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--websocket-compression"
+      ],
+      "rows": [
+        {
+          "config_path": "websocket.compression",
+          "effective_default": "off",
+          "flag": "--websocket-compression",
+          "help_text": "WebSocket compression policy across the supported H1, H2, and H3 carriers",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "websocket_compression",
+      "title": "WebSocket Compression Policy"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3",
+        "WebSocket"
+      ],
+      "category": "Runtime policy",
+      "claim_id": "TC-POLICY-LIMITS-TIMEOUTS",
+      "config_paths": [
+        "http.*",
+        "websocket.*",
+        "scheduler.*"
+      ],
+      "description": "Resource, buffering, and timeout posture is a reviewed public operator contract.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--timeout-keep-alive",
+        "--read-timeout",
+        "--write-timeout",
+        "--timeout-graceful-shutdown",
+        "--max-connections",
+        "--max-tasks",
+        "--max-streams",
+        "--max-body-size",
+        "--max-header-size",
+        "--http1-max-incomplete-event-size",
+        "--http1-buffer-size",
+        "--http1-header-read-timeout",
+        "--http1-keep-alive",
+        "--no-http1-keep-alive",
+        "--http2-max-concurrent-streams",
+        "--http2-max-headers-size",
+        "--http2-max-frame-size",
+        "--http2-adaptive-window",
+        "--no-http2-adaptive-window",
+        "--http2-initial-connection-window-size",
+        "--http2-initial-stream-window-size",
+        "--http2-keep-alive-interval",
+        "--http2-keep-alive-timeout",
+        "--websocket-max-message-size",
+        "--websocket-max-queue",
+        "--idle-timeout"
+      ],
+      "rows": [
+        {
+          "config_path": "http.keep_alive_timeout",
+          "effective_default": 5.0,
+          "flag": "--timeout-keep-alive",
+          "help_text": "Idle keep-alive timeout in seconds before an inactive connection is closed",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.read_timeout",
+          "effective_default": 30.0,
+          "flag": "--read-timeout",
+          "help_text": "Maximum request read time in seconds for package-owned transports",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.write_timeout",
+          "effective_default": 30.0,
+          "flag": "--write-timeout",
+          "help_text": "Maximum response write time in seconds for package-owned transports",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.shutdown_timeout",
+          "effective_default": 30.0,
+          "flag": "--timeout-graceful-shutdown",
+          "help_text": "Graceful-drain timeout in seconds before shutdown stops waiting on active work",
+          "parser_default": null
+        },
+        {
+          "config_path": "scheduler.max_connections",
+          "effective_default": null,
+          "flag": "--max-connections",
+          "help_text": "Maximum simultaneously open client connections",
+          "parser_default": null
+        },
+        {
+          "config_path": "scheduler.max_tasks",
+          "effective_default": null,
+          "flag": "--max-tasks",
+          "help_text": "Maximum concurrently scheduled background work tasks",
+          "parser_default": null
+        },
+        {
+          "config_path": "scheduler.max_streams",
+          "effective_default": null,
+          "flag": "--max-streams",
+          "help_text": "Maximum concurrently admitted logical streams or units of work per session policy",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.max_body_size",
+          "effective_default": 16777216,
+          "flag": "--max-body-size",
+          "help_text": "Maximum accepted request body size in bytes",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.max_header_size",
+          "effective_default": 65536,
+          "flag": "--max-header-size",
+          "help_text": "Maximum accepted request-header bytes before rejection",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http1_max_incomplete_event_size",
+          "effective_default": 65536,
+          "flag": "--http1-max-incomplete-event-size",
+          "help_text": "Maximum buffered incomplete HTTP/1.1 request-head bytes before rejection",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http1_buffer_size",
+          "effective_default": 65536,
+          "flag": "--http1-buffer-size",
+          "help_text": "HTTP/1.1 incremental read buffer size in bytes",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http1_header_read_timeout",
+          "effective_default": null,
+          "flag": "--http1-header-read-timeout",
+          "help_text": "HTTP/1.1 request-head read timeout in seconds",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http1_keep_alive",
+          "effective_default": true,
+          "flag": "--http1-keep-alive",
+          "help_text": "Enable HTTP/1.1 connection persistence",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http1_keep_alive",
+          "effective_default": true,
+          "flag": "--no-http1-keep-alive",
+          "help_text": "Disable enable http/1.1 connection persistence",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_max_concurrent_streams",
+          "effective_default": 128,
+          "flag": "--http2-max-concurrent-streams",
+          "help_text": "Advertised HTTP/2 MAX_CONCURRENT_STREAMS value for peer-created streams",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_max_headers_size",
+          "effective_default": 65536,
+          "flag": "--http2-max-headers-size",
+          "help_text": "HTTP/2-specific decoded header-list size cap",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_max_frame_size",
+          "effective_default": 16384,
+          "flag": "--http2-max-frame-size",
+          "help_text": "Advertised HTTP/2 MAX_FRAME_SIZE for inbound peer frames",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_adaptive_window",
+          "effective_default": false,
+          "flag": "--http2-adaptive-window",
+          "help_text": "Enable adaptive HTTP/2 receive-window growth",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_adaptive_window",
+          "effective_default": false,
+          "flag": "--no-http2-adaptive-window",
+          "help_text": "Disable enable adaptive http/2 receive-window growth",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_initial_connection_window_size",
+          "effective_default": 65535,
+          "flag": "--http2-initial-connection-window-size",
+          "help_text": "HTTP/2 connection-level receive window target",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_initial_stream_window_size",
+          "effective_default": 65535,
+          "flag": "--http2-initial-stream-window-size",
+          "help_text": "Advertised HTTP/2 INITIAL_WINDOW_SIZE for peer-created streams",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_keep_alive_interval",
+          "effective_default": null,
+          "flag": "--http2-keep-alive-interval",
+          "help_text": "Idle interval before sending an HTTP/2 connection-level PING",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.http2_keep_alive_timeout",
+          "effective_default": null,
+          "flag": "--http2-keep-alive-timeout",
+          "help_text": "Timeout in seconds for an HTTP/2 keep-alive PING acknowledgement",
+          "parser_default": null
+        },
+        {
+          "config_path": "websocket.max_message_size",
+          "effective_default": 16777216,
+          "flag": "--websocket-max-message-size",
+          "help_text": "Maximum accepted WebSocket message size in bytes",
+          "parser_default": null
+        },
+        {
+          "config_path": "websocket.max_queue",
+          "effective_default": 32,
+          "flag": "--websocket-max-queue",
+          "help_text": "Maximum queued inbound WebSocket messages before transport backpressure applies",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.idle_timeout",
+          "effective_default": 30.0,
+          "flag": "--idle-timeout",
+          "help_text": "Idle application/session timeout in seconds",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "limits_timeouts",
+      "title": "Limits and Timeouts"
+    },
+    {
+      "carriers": [
+        "WebSocket over HTTP/1.1",
+        "WebSocket over HTTP/2",
+        "WebSocket over HTTP/3"
+      ],
+      "category": "WebSocket policy",
+      "claim_id": "TC-POLICY-WEBSOCKET-HEARTBEAT",
+      "config_paths": [
+        "websocket.ping_interval",
+        "websocket.ping_timeout"
+      ],
+      "description": "Heartbeat interval and timeout are explicit and carrier-parity tested.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--websocket-ping-interval",
+        "--websocket-ping-timeout"
+      ],
+      "rows": [
+        {
+          "config_path": "websocket.ping_interval",
+          "effective_default": null,
+          "flag": "--websocket-ping-interval",
+          "help_text": "Outbound WebSocket heartbeat interval in seconds",
+          "parser_default": null
+        },
+        {
+          "config_path": "websocket.ping_timeout",
+          "effective_default": null,
+          "flag": "--websocket-ping-timeout",
+          "help_text": "WebSocket heartbeat acknowledgement timeout in seconds",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "websocket_heartbeat",
+      "title": "WebSocket Heartbeat"
+    },
+    {
+      "carriers": [
+        "HTTP/1.1",
+        "HTTP/2",
+        "HTTP/3",
+        "WebSocket"
+      ],
+      "category": "Runtime policy",
+      "claim_id": "TC-POLICY-DRAIN-ADMISSION",
+      "config_paths": [
+        "scheduler.limit_concurrency",
+        "scheduler.max_connections",
+        "scheduler.max_tasks",
+        "scheduler.max_streams",
+        "http.shutdown_timeout"
+      ],
+      "description": "Request, stream, and shutdown admission posture is explicit instead of hidden behind scheduler internals.",
+      "docs": [
+        "docs/ops/policies.md"
+      ],
+      "flags": [
+        "--limit-concurrency",
+        "--max-connections",
+        "--max-tasks",
+        "--max-streams",
+        "--timeout-graceful-shutdown"
+      ],
+      "rows": [
+        {
+          "config_path": "scheduler.limit_concurrency",
+          "effective_default": null,
+          "flag": "--limit-concurrency",
+          "help_text": "Maximum concurrently admitted request/stream work across the production scheduler",
+          "parser_default": null
+        },
+        {
+          "config_path": "scheduler.max_connections",
+          "effective_default": null,
+          "flag": "--max-connections",
+          "help_text": "Maximum simultaneously open client connections",
+          "parser_default": null
+        },
+        {
+          "config_path": "scheduler.max_tasks",
+          "effective_default": null,
+          "flag": "--max-tasks",
+          "help_text": "Maximum concurrently scheduled background work tasks",
+          "parser_default": null
+        },
+        {
+          "config_path": "scheduler.max_streams",
+          "effective_default": null,
+          "flag": "--max-streams",
+          "help_text": "Maximum concurrently admitted logical streams or units of work per session policy",
+          "parser_default": null
+        },
+        {
+          "config_path": "http.shutdown_timeout",
+          "effective_default": 30.0,
+          "flag": "--timeout-graceful-shutdown",
+          "help_text": "Graceful-drain timeout in seconds before shutdown stops waiting on active work",
+          "parser_default": null
+        }
+      ],
+      "surface_id": "drain_admission",
+      "title": "Drain and Admission Control"
+    }
+  ],
+  "surface_version": 1
+}

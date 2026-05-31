@@ -1,0 +1,8 @@
+from __future__ import annotations
+
+from tests.contract_closure_assertions import ContractClosureAssertions
+
+
+class ContractUnixConnectionIdentityTests(ContractClosureAssertions):
+    def test_unix_connection_identity_contract(self) -> None:
+        self.assert_connection_identity('unix')

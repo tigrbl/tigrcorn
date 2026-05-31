@@ -1,0 +1,92 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:0625"
+number: 625
+slug: "claim-tier-gates"
+title: "Claim Tier Gates"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This SPEC defines the machine-actionable gates that determine whether a claim may be treated as valid at `T1`, `T2`, `T3`, or `T4`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+  
+  This SPEC defines the machine-actionable gates that determine whether a claim may be treated as valid at `T1`, `T2`, `T3`, or `T4`.
+  
+  Claim closure and claim tier gates are separate. Claim closure proves linked support is coherent and passing. A tier gate proves the requested assurance tier semantically means what it claims.
+  
+  ## Gate Result
+  
+  Tier gate evaluation SHALL return:
+  
+  - `passed`,
+  - `requested_tier`,
+  - `approved_tier`,
+  - `failures`,
+  - `warnings`,
+  - `checks`.
+  
+  ## Gate Inputs
+  
+  Gate evaluators MAY consume existing claim, feature, test, evidence, release, boundary, issue, and risk rows. Optional claim and evidence metadata MAY provide gate-specific details such as robustness dimensions, source evidence ids, release context, validation mode, and external source metadata.
+  
+  ## T1 Project Verification Gate
+  
+  `T1` passes when direct implementation support exists and project-controlled verification passes:
+  
+  - linked features exist,
+  - linked tests exist and are `passing`,
+  - linked evidence exists and is `passed`,
+  - evidence tier is at least `T1`,
+  - evidence artifact paths exist,
+  - claim closure passes for direct support.
+  
+  ## T2 Robust Project Verification Gate
+  
+  `T2` passes when `T1` passes and robustness verification is present:
+  
+  - `T1` gate passes,
+  - distinct `T2` evidence exists,
+  - `T2` evidence is not identical to the `T1` evidence it builds on,
+  - at least one applicable robustness dimension is declared and exercised,
+  - linked robustness tests pass,
+  - evidence records command, result, scope, dimensions, and source `T1` evidence where available.
+  
+  Accepted robustness dimensions include `negative_cases`, `edge_cases`, `state_transitions`, `concurrency`, `compatibility`, `cross_surface`, `security_abuse_cases`, `failure_recovery`, `regression_corpus`, `property_based`, `fuzz`, `mutation`, `performance_envelope`, and `idempotency`.
+  
+  ## T3 Release Certification Gate
+  
+  `T3` passes when the claim is certified in a governed release, frozen boundary, or profile scope:
+  
+  - lower-tier requirements pass according to policy,
+  - release, boundary, or profile scope exists,
+  - boundary or profile scope is frozen when policy requires it,
+  - release is in a certifiable state when release certification is used,
+  - release includes covering claim and evidence,
+  - release certification guard passes,
+  - no open release-blocking issue applies,
+  - no active release-blocking risk applies,
+  - `T3` evidence or reports record release, boundary, or profile context.
+  
+  ## T4 External Certification Gate
+  
+  `T4` passes when external validation authority is recorded:
+  
+  - lower-tier requirements pass unless policy explicitly waives them,
+  - external source identity is recorded,
+  - external source version, commit, artifact id, report id, or equivalent provenance is recorded,
+  - external authorship or control classification is recorded,
+  - validation mode and validation scope are recorded,
+  - validation result is passed or accepted,
+  - `T4` evidence artifact exists.
+  
+  Using an external dependency internally is not sufficient for `T4`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0625"
+  - "adr:0626"

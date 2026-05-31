@@ -1,5 +1,12 @@
-from .codec import RawFrame, encode_frame, read_frame, try_decode_frame
-from .handler import RawFramedApplicationHandler
-from .state import RawFramedState
+from __future__ import annotations
 
-__all__ = ['RawFrame', 'encode_frame', 'read_frame', 'try_decode_frame', 'RawFramedState', 'RawFramedApplicationHandler']
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_protocols.rawframed")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

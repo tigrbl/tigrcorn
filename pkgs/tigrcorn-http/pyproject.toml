@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-http"
+version = "0.3.16.dev5"
+description = "HTTP utilities for Tigrcorn headers, entity tags, content coding, range requests, and Python web server responses."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+license = {file = "LICENSE"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+keywords = ["tigrcorn", "http", "headers", "etag", "content-coding", "range-requests", "http-utilities"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+dependencies = ["tigrcorn-core==0.3.16.dev5"]
+
+[project.optional-dependencies]
+compression = ["brotli>=1.1.0"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+license-files = ["LICENSE"]
+
+[tool.setuptools.package-data]
+tigrcorn_http = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

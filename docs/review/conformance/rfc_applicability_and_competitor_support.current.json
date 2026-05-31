@@ -142,7 +142,7 @@
       "implement rfc9530 content_digest and repr_digest only if integrity fields become a declared product requirement",
       "implement rfc9111 origin-side cache and freshness behavior only if cache-aware behavior becomes a deliberate product goal",
       "implement rfc9421 http message signatures only if signed edge or gateway behavior becomes a deliberate product goal",
-      "implement rfc8941 structured fields as a supporting dependency only if digest/signature work is adopted"
+      "implement rfc9651 structured fields as a supporting dependency only if digest/signature work is adopted"
     ],
     "keep_optional_unless_boundary_changes": [
       "rfc7515",
@@ -226,7 +226,7 @@
     "if_boundary_expands_into_cache_or_integrity": [
       "rfc9111",
       "rfc9421",
-      "rfc8941"
+      "rfc9651"
     ],
     "keep_optional_unless_boundary_changes": [
       "rfc7515",

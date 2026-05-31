@@ -21,7 +21,7 @@
     "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "remaining_non_passing_independent_scenarios": [],
     "remaining_strict_target_rfc_gaps": [],
-    "release_notes": "RELEASE_NOTES_0.3.9.md",
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md",
     "release_promoted": true,
     "remaining_plan_phases": []
   },
@@ -63,7 +63,7 @@
     "version_bump_performed": true,
     "release_notes_promoted": true,
     "canonical_release_promoted": true,
-    "release_notes": "RELEASE_NOTES_0.3.9.md",
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md",
     "reason_not_promoted": ""
   },
   "generated_at": "2026-03-28T06:47:38.042990+00:00"
