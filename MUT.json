@@ -24,6 +24,7 @@
     "examples/http_entity_static",
     "examples/advanced_protocol_delivery",
     "examples/advanced_delivery",
+    "docs/proposals/",
     "DEFAULT_AUDIT.json",
     "DEFAULT_AUDIT.md",
     "PROFILE_DEFAULTS/",

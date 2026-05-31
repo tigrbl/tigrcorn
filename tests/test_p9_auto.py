@@ -3,6 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from tools.cert import release_auto
+from tools import create_phase9_release_promotion_checkpoint as phase9_release_promotion
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -75,3 +78,19 @@ def test_release_pages_and_docs_pipeline_are_declared():
     assert 'github-pages' not in workflow
     assert 'name: docs' in workflow
     assert 'Upload docs artifact' in workflow
+
+
+def test_release_auto_uses_governed_release_notes_naming():
+    assert release_auto._release_notes_name('0.3.15') == 'RELEASE_NOTES_0.3.15.md'
+    assert release_auto._release_notes_name('0.3.16.dev5') == 'REL_0.3.16.dev5.md'
+
+
+def test_phase9_release_promotion_leaves_newer_dev_versions_unchanged():
+    dev_pyproject = '[project]\nname = "tigrcorn"\nversion = "0.3.16.dev5"\n'
+    release_pyproject = '[project]\nname = "tigrcorn"\nversion = "0.3.6"\n'
+
+    assert phase9_release_promotion.rewrite_root_pyproject_version(dev_pyproject) == dev_pyproject
+    assert (
+        phase9_release_promotion.rewrite_root_pyproject_version(release_pyproject)
+        == '[project]\nname = "tigrcorn"\nversion = "0.3.9"\n'
+    )

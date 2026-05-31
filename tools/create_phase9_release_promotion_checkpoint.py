@@ -102,15 +102,24 @@ def write_text(path: str | Path, text: str) -> None:
     path.write_text(text, encoding='utf-8')
 
 
+def rewrite_root_pyproject_version(text: str, *, target_version: str = VERSION) -> str:
+    match = re.search(r'(?m)^version = "([^"]+)"$', text)
+    if match is None:
+        raise RuntimeError('failed to locate pyproject version')
+    current_version = match.group(1)
+    if current_version == target_version:
+        return text
+    if current_version != '0.3.6':
+        return text
+    return text[:match.start(1)] + target_version + text[match.end(1):]
+
+
 def update_pyproject() -> None:
     path = ROOT / 'pyproject.toml'
     text = path.read_text(encoding='utf-8')
-    if f'version = "{VERSION}"' in text:
-        return
-    text, count = re.subn(r'(?m)^version = "0\.3\.6"$', f'version = "{VERSION}"', text, count=1)
-    if count != 1:
-        raise RuntimeError('failed to update pyproject version')
-    path.write_text(text, encoding='utf-8')
+    updated = rewrite_root_pyproject_version(text)
+    if updated != text:
+        path.write_text(updated, encoding='utf-8')
 
 
 def update_boundary_json() -> None:

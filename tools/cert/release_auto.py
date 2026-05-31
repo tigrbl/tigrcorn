@@ -37,6 +37,13 @@ def _release_root() -> Path:
     return ROOT / Path(str(boundary['canonical_release_bundle']))
 
 
+def _release_notes_name(version: str) -> str:
+    name = f'RELEASE_NOTES_{version}.md'
+    if len(name) <= 24:
+        return name
+    return f'REL_{version}.md'
+
+
 def _claim_report(version: str) -> dict[str, Any]:
     claims = _load_json(ROOT / 'docs' / 'review' / 'conformance' / 'claims_registry.json')
     rows = claims['current_and_candidate_claims']
@@ -100,7 +107,7 @@ def _release_auto(version: str, release_root: Path) -> dict[str, Any]:
         'schema_version': 1,
         'version': version,
         'release_root': str(release_root.relative_to(ROOT)).replace('\\', '/'),
-        'release_notes': f'{RELEASE_NOTES_DIR}/RELEASE_NOTES_{version}.md',
+        'release_notes': f'{RELEASE_NOTES_DIR}/{_release_notes_name(version)}',
         'authoritative_boundary_passed': authoritative.passed,
         'promotion_target_passed': promotion.passed,
         'strict_target_passed': promotion.strict_target_boundary.passed,
@@ -135,7 +142,7 @@ def _build_pages(version: str, release_auto: dict[str, Any]) -> None:
     <h1>tigrcorn {html.escape(version)} release evidence</h1>
     <p>Generated from the package-owned release automation metadata.</p>
     <ul>
-      <li><a href="docs/release-notes/RELEASE_NOTES_{html.escape(version)}.md">Release notes</a></li>
+      <li><a href="docs/release-notes/{html.escape(_release_notes_name(version))}">Release notes</a></li>
       <li><a href="docs/conformance/evidence_ix.md">Evidence index</a></li>
       <li><a href="docs/conformance/claim_rep.md">Claim report</a></li>
       <li><a href="docs/conformance/risk_stat.md">Risk status</a></li>
@@ -194,7 +201,7 @@ def generate() -> None:
         'Generated Release Notes',
         [
             f"version: `{version}`",
-            f"release notes source: `{RELEASE_NOTES_DIR}/RELEASE_NOTES_{version}.md`",
+            f"release notes source: `{RELEASE_NOTES_DIR}/{_release_notes_name(version)}`",
             f"authoritative boundary passed: `{release_auto['authoritative_boundary_passed']}`",
             f"strict target passed: `{release_auto['strict_target_passed']}`",
             f"promotion target passed: `{release_auto['promotion_target_passed']}`",
@@ -205,7 +212,7 @@ def generate() -> None:
         {
             'schema_version': 1,
             'version': version,
-            'release_notes': f'{RELEASE_NOTES_DIR}/RELEASE_NOTES_{version}.md',
+            'release_notes': f'{RELEASE_NOTES_DIR}/{_release_notes_name(version)}',
             'generated_summary': release_auto,
         },
     )
