@@ -1,5 +1,5 @@
 {
-  "authoritative_boundary_passed": false,
+  "authoritative_boundary_passed": true,
   "blockers": {
     "documentation": [],
     "flag_surface": [],
@@ -50,7 +50,7 @@
   ],
   "checkpoint": "strict_promotion_targets_documented",
   "documentation_passed": true,
-  "final_promotion_gate_passed": false,
+  "final_promotion_gate_passed": true,
   "flag_surface_passed": true,
   "operator_surface_passed": true,
   "performance_passed": true,

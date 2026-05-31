@@ -1,7 +1,7 @@
 # Generated Release Notes
 
-- version: `0.3.16.dev4`
-- release notes source: `docs/release-notes/RELEASE_NOTES_0.3.16.dev4.md`
-- authoritative boundary passed: `False`
+- version: `0.3.16.dev5`
+- release notes source: `docs/release-notes/REL_0.3.16.dev5.md`
+- authoritative boundary passed: `True`
 - strict target passed: `True`
-- promotion target passed: `False`
+- promotion target passed: `True`
