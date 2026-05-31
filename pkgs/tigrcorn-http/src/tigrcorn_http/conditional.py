@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 
 from tigrcorn_http.etag import EntityTag, EntityTagList, parse_entity_tag, parse_entity_tag_list, strong_compare, weak_compare
@@ -31,8 +31,8 @@ def parse_http_date(value: bytes | str | None) -> datetime | None:
     if dt is None:
         return None
     if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=UTC)
-    return dt.astimezone(UTC).replace(microsecond=0)
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc).replace(microsecond=0)
 
 
 def _current_validators(headers: HeaderList) -> tuple[EntityTag | None, bytes | None, datetime | None, bytes | None]:
