@@ -310,7 +310,12 @@ class StatsdExporter:
         try:
             sock = self._ensure_socket()
             assert self._sockaddr is not None
-            await asyncio.get_running_loop().sock_sendto(sock, payload.encode('utf-8'), self._sockaddr)
+            loop = asyncio.get_running_loop()
+            packet = payload.encode('utf-8')
+            if hasattr(loop, 'sock_sendto'):
+                await loop.sock_sendto(sock, packet, self._sockaddr)
+            else:  # pragma: no cover - Python 3.10 fallback
+                await loop.run_in_executor(None, sock.sendto, packet, self._sockaddr)
             self.sent_packets += 1
         except Exception as exc:  # pragma: no cover - bounded failure path exercised in tests
             self.send_failures += 1

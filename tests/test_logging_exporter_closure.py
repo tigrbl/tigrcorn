@@ -49,6 +49,21 @@ async def _noop_app(scope, receive, send):
     await send({'type': 'http.response.body', 'body': b'', 'more_body': False})
 
 
+def _recvfrom_blocking(sock: socket.socket, size: int) -> tuple[bytes, tuple[str, int]]:
+    sock.setblocking(True)
+    try:
+        return sock.recvfrom(size)
+    finally:
+        sock.setblocking(False)
+
+
+async def _loop_sock_recvfrom(sock: socket.socket, size: int) -> tuple[bytes, tuple[str, int]]:
+    loop = asyncio.get_running_loop()
+    if hasattr(loop, 'sock_recvfrom'):
+        return await loop.sock_recvfrom(sock, size)
+    return await loop.run_in_executor(None, _recvfrom_blocking, sock, size)
+
+
 class _CaptureHandler(BaseHTTPRequestHandler):
     requests: list[dict[str, object]] = []
 
@@ -273,7 +288,7 @@ class LoggingExporterClosureTests(unittest.IsolatedAsyncioTestCase):
         server = TigrCornServer(_noop_app, config)
         try:
             await server.start()
-            data, _addr = await asyncio.wait_for(asyncio.get_running_loop().sock_recvfrom(sock, 65535), 2.0)
+            data, _addr = await asyncio.wait_for(_loop_sock_recvfrom(sock, 65535), 2.0)
             payload = data.decode('utf-8')
             self.assertIn('tigrcorn.connections_opened', payload)
             self.assertIn('tigrcorn.requests_served', payload)
