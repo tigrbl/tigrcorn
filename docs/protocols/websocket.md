@@ -28,6 +28,6 @@ The canonical package-wide target for WebSocket is defined in `docs/review/confo
 
 ## Current certification status
 
-HTTP/1.1 WebSocket, RFC 7692 permessage-deflate, RFC 8441 WebSocket-over-HTTP/2, and RFC 9220 WebSocket-over-HTTP/3 all now have preserved passing third-party artifacts in the canonical independent release bundle.
+HTTP/1.1 WebSocket, RFC 7692 permessage-deflate, RFC 8441 WebSocket-over-HTTP/2, and RFC 9220 WebSocket-over-HTTP/3 all now have preserved passing third-party artifacts in the canonical independent release bundle. This preserves RFC 7692 across carriers.
 
 RFC 7936 and RFC 8307 are governed as local-conformance WebSocket adjuncts. Their current proof surfaces are `tests/test_websocket_rfc7936.py` and `tests/test_websocket_rfc8307.py`.
