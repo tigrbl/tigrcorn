@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import ast
 import importlib
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover
+    import tomli as tomllib
 from pathlib import Path
 
 from tools.package_boundaries import PACKAGE_BOUNDARIES, PACKAGE_BY_DISTRIBUTION, workspace_distributions

@@ -4,7 +4,10 @@ import asyncio
 from importlib import metadata as importlib_metadata
 from pathlib import Path
 from types import SimpleNamespace
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover
+    import tomli as tomllib
 
 import tigr_asgi_contract as contract
 from tigr_asgi_contract.registry import PROTOCOLS

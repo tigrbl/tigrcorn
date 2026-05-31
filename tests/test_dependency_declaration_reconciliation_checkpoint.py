@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover
+    import tomli as tomllib
 import unittest
 from pathlib import Path
 from unittest.mock import patch
