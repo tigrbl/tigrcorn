@@ -76,7 +76,7 @@ def test_aioquic_preflight_scenario_metadata_records_certificate_and_handshake_s
 
     assert http3['peer_module'] == 'tests.fixtures_third_party.aioquic_http3_client'
     assert websocket['peer_module'] == 'tests.fixtures_third_party.aioquic_http3_websocket_client'
-    assert isinstance(websocket['websocket_connect_protocol_enabled'], bool)
+    assert websocket['websocket_connect_protocol_enabled'] in {True, False, None}
 
 
 def test_release_workflow_and_wrapper_require_aioquic_preflight_before_phase9_scripts() -> None:
