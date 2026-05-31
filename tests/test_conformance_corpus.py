@@ -13,6 +13,8 @@ RFC_REVIEW_PATH = ROOT / 'docs/review/rfc_compliance_review.md'
 EXPECTED_VECTOR_CATALOG = {
     '7541': {'name': 'hpack-dynamic-state', 'protocol': 'http2-hpack', 'fixture': 'tests/test_http2_hpack.py'},
     '7692': {'name': 'websocket-permessage-deflate', 'protocol': 'websocket-compression', 'fixture': 'tests/test_websocket_rfc7692.py'},
+    '7936': {'name': 'websocket-subprotocol-registry-semantics', 'protocol': 'websocket-subprotocol', 'fixture': 'tests/test_websocket_rfc7936.py'},
+    '8307': {'name': 'websocket-well-known-uri', 'protocol': 'websocket-uri', 'fixture': 'tests/test_websocket_rfc8307.py'},
     '8441': {'name': 'http2-websocket-extended-connect', 'protocol': 'http2-websocket', 'fixture': 'tests/test_http2_websocket_rfc8441.py'},
     '8446': {'name': 'tls13-package-subsystem', 'protocol': 'tls13', 'fixture': 'tests/test_tls13_engine_upgrade.py'},
     '8446-deep': {'name': 'tls13-quic-handshake-rejection-deep', 'protocol': 'tls13', 'fixture': 'tests/test_governed_rfc_deep_coverage.py'},
