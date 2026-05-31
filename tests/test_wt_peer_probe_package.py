@@ -104,6 +104,8 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     workflow_dispatch = triggers["workflow_dispatch"]["inputs"]
     assert {"gh_release", "pypi_publish", "npmjs_publish", "package_selection"} <= set(workflow_dispatch)
     assert {"all", "tigrcorn core packages", "probes", "wt-peer-probes"} <= set(workflow_dispatch["package_selection"]["options"])
+    assert "certification-release-gates" in publish["jobs"]
+    assert publish["jobs"]["prepare-release"]["needs"] == ["release-gates", "certification-release-gates"]
 
     assert {
         "wt-peer-probes-ci",
@@ -116,10 +118,13 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     npm_steps = publish["jobs"]["publish-wt-peer-probes-npmjs"]["steps"]
     release_action = next(step for step in release_steps if step.get("uses") == "softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe")
     assert publish["jobs"]["publish-wt-peer-probes-github-release"]["needs"] == [
+        "prepare-release",
+        "create-github-tags",
         "wt-peer-probes-ci",
         "wt-peer-probes-browser-tests",
     ]
     assert publish["jobs"]["publish-wt-peer-probes-npmjs"]["needs"] == [
+        "prepare-release",
         "wt-peer-probes-ci",
         "wt-peer-probes-browser-tests",
     ]
