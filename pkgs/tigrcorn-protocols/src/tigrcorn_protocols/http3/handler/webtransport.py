@@ -79,6 +79,13 @@ class _HTTP3WebTransportSession:
                 "tigrcorn.webtransport": {"max_datagram_size": self.handler._webtransport_max_datagram_size()},
             },
         }
+        self.handler.trace_webtransport(
+            "webtransport.app.start",
+            **self.handler._trace_session_fields(self.session),
+            stream_id=self.stream_id,
+            session_id=self.session_id,
+            path=self.request.path,
+        )
         await self.receive.put({"type": "webtransport.connect", "session_id": self.session_id})
         self.task = asyncio.create_task(
             self._start_webtransport_app(scope),
@@ -89,6 +96,13 @@ class _HTTP3WebTransportSession:
         try:
             await self.handler.app(scope, self.receive, self._send)
         finally:
+            self.handler.trace_webtransport(
+                "webtransport.app.complete",
+                **self.handler._trace_session_fields(self.session),
+                stream_id=self.stream_id,
+                session_id=self.session_id,
+                closed=bool(self.closed),
+            )
             if not self.closed:
                 self.closed = True
                 with suppress(Exception):
@@ -103,6 +117,14 @@ class _HTTP3WebTransportSession:
 
     async def _send(self, message: dict) -> None:
         typ = message.get("type")
+        self.handler.trace_webtransport(
+            "webtransport.asgi.send",
+            **self.handler._trace_session_fields(self.session),
+            stream_id=message.get("stream_id", self.stream_id),
+            session_id=self.session_id,
+            type=str(typ),
+            bytes=len(bytes(message.get("data", b""))) if message.get("data") is not None else None,
+        )
         if typ == "webtransport.accept":
             if self.accepted:
                 raise RuntimeError("webtransport.accept sent more than once")
@@ -172,9 +194,25 @@ class _HTTP3WebTransportSession:
             }
             if framing is not None:
                 event["framing"] = framing
+            self.handler.trace_webtransport(
+                "webtransport.asgi.receive",
+                **self.handler._trace_session_fields(self.session),
+                stream_id=event_stream_id,
+                session_id=self.session_id,
+                type="webtransport.stream.receive",
+                bytes=len(data),
+                fin=bool(end_stream),
+            )
             await self.receive.put(event)
         if end_stream and disconnect_on_end and not self.closed:
             self.closed = True
+            self.handler.trace_webtransport(
+                "webtransport.asgi.receive",
+                **self.handler._trace_session_fields(self.session),
+                stream_id=self.stream_id,
+                session_id=self.session_id,
+                type="webtransport.disconnect",
+            )
             await self.receive.put({"type": "webtransport.disconnect", "session_id": self.session_id, "code": 0, "reason": ""})
 
     async def feed_connect_stream_data(self, data: bytes, *, end_stream: bool = False) -> None:
@@ -198,10 +236,24 @@ class _HTTP3WebTransportSession:
         }
         if framing is not None:
             event["framing"] = framing
+        self.handler.trace_webtransport(
+            "webtransport.asgi.receive",
+            **self.handler._trace_session_fields(self.session),
+            session_id=self.session_id,
+            type="webtransport.datagram.receive",
+            datagram_id=datagram_id,
+            bytes=len(data),
+        )
         await self.receive.put(event)
 
     async def abort(self) -> None:
         self.closed = True
+        self.handler.trace_webtransport(
+            "webtransport.app.abort",
+            **self.handler._trace_session_fields(self.session),
+            stream_id=self.stream_id,
+            session_id=self.session_id,
+        )
         if self.task is not None:
             self.task.cancel()
             with suppress(asyncio.CancelledError):

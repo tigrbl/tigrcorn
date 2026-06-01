@@ -210,6 +210,24 @@ class HTTP3DatagramHandler:
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._lock = asyncio.Lock()
+        self.webtransport_trace: list[dict[str, object]] = []
+
+    def trace_webtransport(self, event: str, **fields: object) -> None:
+        entry: dict[str, object] = {'event': event}
+        for key, value in fields.items():
+            if value is not None:
+                entry[key] = value
+        self.webtransport_trace.append(entry)
+
+    def _trace_session_fields(self, session: HTTP3Session | None = None) -> dict[str, object]:
+        if session is None:
+            return {}
+        return {
+            'addr': f'{session.addr[0]}:{session.addr[1]}',
+            'local_cid': session.quic.local_cid.hex(),
+            'remote_cid': session.quic.remote_cid.hex() if isinstance(session.quic.remote_cid, bytes) else None,
+            'state': session.quic.state,
+        }
 
     def _session_ticket_early_data_size(self, session: HTTP3Session) -> int:
         if session.quic.handshake_driver is None:
@@ -325,6 +343,7 @@ class HTTP3DatagramHandler:
     def _close_session(self, session: HTTP3Session) -> None:
         removed = self.sessions.pop(session.addr, None)
         if removed is session:
+            self.trace_webtransport('quic.session.close', **self._trace_session_fields(session))
             self.sessions_by_local_cid.pop(session.quic.local_cid, None)
             if self.metrics is not None:
                 self.metrics.quic_session_closed()
@@ -370,7 +389,14 @@ class HTTP3DatagramHandler:
         async with self._lock:
             try:
                 parsed = decode_packet(packet.data, destination_connection_id_length=8)
-            except Exception:
+            except Exception as exc:
+                self.trace_webtransport(
+                    'quic.packet.decode_error',
+                    addr=f'{packet.addr[0]}:{packet.addr[1]}',
+                    bytes=len(packet.data),
+                    error=type(exc).__name__,
+                    message=str(exc),
+                )
                 return
             if isinstance(parsed, QuicVersionNegotiationPacket):
                 return
@@ -385,6 +411,19 @@ class HTTP3DatagramHandler:
                 scid = parsed.source_connection_id
             else:
                 return
+            packet_type = (
+                parsed.packet_type.name.lower()
+                if isinstance(parsed, QuicLongHeaderPacket)
+                else type(parsed).__name__
+            )
+            self.trace_webtransport(
+                'quic.packet.receive',
+                addr=f'{packet.addr[0]}:{packet.addr[1]}',
+                dcid=dcid.hex(),
+                scid=scid.hex(),
+                packet_type=packet_type,
+                bytes=len(packet.data),
+            )
             session = self.sessions_by_local_cid.get(dcid)
             allow_addr_fallback = not (
                 isinstance(parsed, QuicLongHeaderPacket)
@@ -420,6 +459,14 @@ class HTTP3DatagramHandler:
                         ),
                     )
                     self._configure_session_handshake(session)
+                    self.trace_webtransport(
+                        'quic.session.create',
+                        addr=f'{packet.addr[0]}:{packet.addr[1]}',
+                        dcid=dcid.hex(),
+                        scid=scid.hex(),
+                        local_cid=session.quic.local_cid.hex(),
+                        remote_cid=session.quic.remote_cid.hex() if isinstance(session.quic.remote_cid, bytes) else None,
+                    )
                 else:
                     candidate_session = None
                     for cid_length in range(1, 21):
@@ -483,6 +530,12 @@ class HTTP3DatagramHandler:
             session.request_packets += 1
             outbound.extend(self._ensure_server_control_stream_locked(session))
             for event in events:
+                self.trace_webtransport(
+                    'quic.event',
+                    **self._trace_session_fields(session),
+                    kind=event.kind,
+                    stream_id=event.stream_id,
+                )
                 if self.metrics is not None:
                     if event.kind == 'retry':
                         self.metrics.quic_retry_emitted()
@@ -495,6 +548,7 @@ class HTTP3DatagramHandler:
                     elif event.kind == 'reset_stream':
                         self.metrics.http3_stream_reset()
                 if event.kind == 'handshake_complete':
+                    self.trace_webtransport('quic.handshake.complete', **self._trace_session_fields(session))
                     session.address_validated = True
                     session.quic.address_validated = True
                     if self.metrics is not None:
@@ -526,6 +580,13 @@ class HTTP3DatagramHandler:
                     session.quic.address_validated = True
                     outbound.extend(self._ensure_server_control_stream_locked(session))
                 elif event.kind == 'stream' and event.stream_id is not None:
+                    self.trace_webtransport(
+                        'quic.stream.receive',
+                        **self._trace_session_fields(session),
+                        stream_id=event.stream_id,
+                        bytes=len(event.data),
+                        fin=bool(event.fin),
+                    )
                     if 'http3' in self.listener.enabled_protocols:
                         try:
                             handled, h3_payload = await self._consume_webtransport_stream_event_locked(
@@ -694,8 +755,14 @@ class HTTP3DatagramHandler:
                             webtransport.note_connect_stream_stopped()
                 elif event.kind == 'datagram':
                     if 'http3' in self.listener.enabled_protocols:
+                        self.trace_webtransport(
+                            'quic.datagram.receive',
+                            **self._trace_session_fields(session),
+                            bytes=len(event.data),
+                        )
                         await self._dispatch_webtransport_datagram_locked(session, event.data)
                 elif event.kind == 'close':
+                    self.trace_webtransport('quic.connection.close.receive', **self._trace_session_fields(session))
                     await self._abort_session_tunnels(session)
                     await self._abort_session_websockets(session)
                     await self._abort_session_webtransports(session)
@@ -850,6 +917,12 @@ class HTTP3DatagramHandler:
 
         webtransport = session.webtransport_sessions.get(owner_candidate)
         if webtransport is None:
+            self.trace_webtransport(
+                'webtransport.stream.orphan',
+                **self._trace_session_fields(session),
+                stream_id=stream_id,
+                owner_stream_id=owner_candidate,
+            )
             raise HTTP3ConnectionError(
                 f'invalid WebTransport session id {owner_candidate} on stream {stream_id}',
                 error_code=H3_ID_ERROR,
@@ -857,6 +930,14 @@ class HTTP3DatagramHandler:
         session.webtransport_streams.add(stream_id)
         session.webtransport_stream_owners[stream_id] = owner_candidate
         session.webtransport_stream_prefaces.pop(stream_id, None)
+        self.trace_webtransport(
+            'webtransport.stream.dispatch',
+            **self._trace_session_fields(session),
+            stream_id=stream_id,
+            owner_stream_id=owner_candidate,
+            bytes=len(remaining),
+            fin=bool(fin),
+        )
         await webtransport.feed_stream_data(
             remaining,
             end_stream=fin,
@@ -874,10 +955,23 @@ class HTTP3DatagramHandler:
         if webtransport is None and len(session.webtransport_sessions) == 1:
             webtransport = next(iter(session.webtransport_sessions.values()))
         if webtransport is None:
+            self.trace_webtransport(
+                'webtransport.datagram.orphan',
+                **self._trace_session_fields(session),
+                stream_id=stream_id,
+                bytes=len(data),
+            )
             return
         if len(data) > self._webtransport_max_datagram_size():
             return
         datagram_id = f'{stream_id}:{getattr(session, "request_packets", 0)}'
+        self.trace_webtransport(
+            'webtransport.datagram.dispatch',
+            **self._trace_session_fields(session),
+            stream_id=stream_id,
+            datagram_id=datagram_id,
+            bytes=len(data),
+        )
         await webtransport.feed_datagram(datagram_id, data)
 
     async def _send_webtransport_stream_data(
@@ -905,7 +999,21 @@ class HTTP3DatagramHandler:
             return
         owner_stream_id = session.webtransport_stream_owners.get(stream_id)
         if owner_stream_id is None:
+            self.trace_webtransport(
+                'webtransport.stream.send.drop',
+                **self._trace_session_fields(session),
+                stream_id=stream_id,
+                reason='missing-owner',
+            )
             return
+        self.trace_webtransport(
+            'webtransport.stream.send',
+            **self._trace_session_fields(session),
+            stream_id=stream_id,
+            owner_stream_id=owner_stream_id,
+            bytes=len(data),
+            fin=bool(end_stream),
+        )
         if owner_stream_id == stream_id:
             outbound = self._build_http3_data_datagrams_locked(session, stream_id, data, end_stream=end_stream)
         else:
@@ -944,8 +1052,22 @@ class HTTP3DatagramHandler:
         if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
             return
         if stream_id not in session.webtransport_sessions:
+            self.trace_webtransport(
+                'webtransport.datagram.send.drop',
+                **self._trace_session_fields(session),
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+                reason='missing-session',
+            )
             return
         payload = self._encode_webtransport_datagram_payload(stream_id, data)
+        self.trace_webtransport(
+            'webtransport.datagram.send',
+            **self._trace_session_fields(session),
+            stream_id=stream_id,
+            datagram_id=datagram_id,
+            bytes=len(data),
+        )
         outbound = [session.quic.send_datagram_frame(payload)]
         self._queue_session_outbound_locked(session, outbound, endpoint)
 
@@ -1472,8 +1594,21 @@ class HTTP3DatagramHandler:
             work_lease=session.stream_work_leases.get(stream_id),
         )
         session.webtransport_sessions[stream_id] = webtransport
+        self.trace_webtransport(
+            'webtransport.connect.start',
+            **self._trace_session_fields(session),
+            stream_id=stream_id,
+            path=request.path,
+        )
         await webtransport.start()
         self.access_logger.log_http(session.addr, 'CONNECT', request.path, 200, 'HTTP/3')
+        self.trace_webtransport(
+            'webtransport.connect.response',
+            **self._trace_session_fields(session),
+            stream_id=stream_id,
+            status=200,
+            end_stream=False,
+        )
         return self._build_http3_response_datagrams_locked(session, stream_id, 200, response_headers, b'', end_stream=False)
 
     async def _drain_connect_request_body_locked(
