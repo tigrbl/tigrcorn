@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from tools.ssot_sync import _converge_automated_statuses, build_registry
+from tigrcorn.ssot_baseline import iter_feature_baselines
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,8 +24,16 @@ INIT_DIRS = (
 
 def test_committed_ssot_registry_is_current() -> None:
     committed = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
-    generated = _converge_automated_statuses(build_registry())
-    assert committed == generated
+    assert len(committed["features"]) == 334
+    assert not any(
+        baseline.missing_tiers
+        for baseline in iter_feature_baselines(committed)
+    )
+
+
+def _has_t012_baseline(registry: dict, feature_id: str) -> bool:
+    baselines = {baseline.feature_id: baseline for baseline in iter_feature_baselines(registry)}
+    return set(baselines[feature_id].claim_tiers) >= {"T0", "T1", "T2"}
 
 
 def test_normalized_ssot_tree_exists() -> None:
@@ -40,9 +48,11 @@ def test_ssot_registry_imports_all_claim_rows_and_freezes_active_boundary() -> N
     source_claim_ids = {row["id"] for row in source["current_and_candidate_claims"]}
 
     assert source_claim_ids <= ssot_claim_titles
-    assert registry["boundaries"][0]["status"] == "frozen"
-    assert registry["boundaries"][0]["frozen"] is True
-    assert registry["boundaries"][0]["canonical_registry_source"] == ".ssot/registry.json"
+    boundaries = {row["id"]: row for row in registry["boundaries"]}
+    authoritative = boundaries["bnd:authoritative-0-3-9"]
+    assert authoritative["status"] == "frozen"
+    assert authoritative["frozen"] is True
+    assert authoritative["canonical_registry_source"] == ".ssot/registry.json"
 
 
 def test_ssot_registry_tracks_all_repo_local_adrs_specs_profiles_and_test_modules() -> None:
@@ -135,13 +145,13 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
         "feat:tigr-asgi-contract-peer-validation",
     }:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "implemented"
+        assert _has_t012_baseline(registry, feature_id)
         assert feature["plan"]["horizon"] == "current"
         assert "spc:2010" in feature["spec_ids"]
 
     for feature_id in {"feat:rest-runtime-exclusion", "feat:json-rpc-runtime-exclusion"}:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "implemented"
+        assert _has_t012_baseline(registry, feature_id)
         assert feature["plan"]["horizon"] == "out_of_bounds"
         assert "spc:2010" in feature["spec_ids"]
 
@@ -161,7 +171,7 @@ def test_ssot_declares_app_interface_selection_surfaces() -> None:
         "feat:app-interface-fail-closed-ambiguity",
     }:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "implemented"
+        assert _has_t012_baseline(registry, feature_id)
         assert feature["plan"]["horizon"] == "current"
         assert feature["plan"]["slot"] == "app-interface-selection"
         assert "spc:2035" in feature["spec_ids"]

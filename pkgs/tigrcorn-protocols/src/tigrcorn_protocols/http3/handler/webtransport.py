@@ -43,6 +43,17 @@ class _HTTP3WebTransportSession:
         self.closed = False
         self.connect_stream_ended = False
 
+    def _trace_session_fields(self) -> dict[str, object]:
+        trace_fields = getattr(self.handler, "_trace_session_fields", None)
+        if trace_fields is None:
+            return {}
+        return trace_fields(self.session)
+
+    def _trace_webtransport(self, event: str, **fields: object) -> None:
+        trace = getattr(self.handler, "trace_webtransport", None)
+        if trace is not None:
+            trace(event, **fields)
+
     async def start(self) -> None:
         scope = {
             "type": "webtransport",
@@ -79,9 +90,9 @@ class _HTTP3WebTransportSession:
                 "tigrcorn.webtransport": {"max_datagram_size": self.handler._webtransport_max_datagram_size()},
             },
         }
-        self.handler.trace_webtransport(
+        self._trace_webtransport(
             "webtransport.app.start",
-            **self.handler._trace_session_fields(self.session),
+            **self._trace_session_fields(),
             stream_id=self.stream_id,
             session_id=self.session_id,
             path=self.request.path,
@@ -96,9 +107,9 @@ class _HTTP3WebTransportSession:
         try:
             await self.handler.app(scope, self.receive, self._send)
         finally:
-            self.handler.trace_webtransport(
+            self._trace_webtransport(
                 "webtransport.app.complete",
-                **self.handler._trace_session_fields(self.session),
+                **self._trace_session_fields(),
                 stream_id=self.stream_id,
                 session_id=self.session_id,
                 closed=bool(self.closed),
@@ -117,9 +128,9 @@ class _HTTP3WebTransportSession:
 
     async def _send(self, message: dict) -> None:
         typ = message.get("type")
-        self.handler.trace_webtransport(
+        self._trace_webtransport(
             "webtransport.asgi.send",
-            **self.handler._trace_session_fields(self.session),
+            **self._trace_session_fields(),
             stream_id=message.get("stream_id", self.stream_id),
             session_id=self.session_id,
             type=str(typ),
@@ -194,9 +205,9 @@ class _HTTP3WebTransportSession:
             }
             if framing is not None:
                 event["framing"] = framing
-            self.handler.trace_webtransport(
+            self._trace_webtransport(
                 "webtransport.asgi.receive",
-                **self.handler._trace_session_fields(self.session),
+                **self._trace_session_fields(),
                 stream_id=event_stream_id,
                 session_id=self.session_id,
                 type="webtransport.stream.receive",
@@ -206,9 +217,9 @@ class _HTTP3WebTransportSession:
             await self.receive.put(event)
         if end_stream and disconnect_on_end and not self.closed:
             self.closed = True
-            self.handler.trace_webtransport(
+            self._trace_webtransport(
                 "webtransport.asgi.receive",
-                **self.handler._trace_session_fields(self.session),
+                **self._trace_session_fields(),
                 stream_id=self.stream_id,
                 session_id=self.session_id,
                 type="webtransport.disconnect",
@@ -236,9 +247,9 @@ class _HTTP3WebTransportSession:
         }
         if framing is not None:
             event["framing"] = framing
-        self.handler.trace_webtransport(
+        self._trace_webtransport(
             "webtransport.asgi.receive",
-            **self.handler._trace_session_fields(self.session),
+            **self._trace_session_fields(),
             session_id=self.session_id,
             type="webtransport.datagram.receive",
             datagram_id=datagram_id,
@@ -248,9 +259,9 @@ class _HTTP3WebTransportSession:
 
     async def abort(self) -> None:
         self.closed = True
-        self.handler.trace_webtransport(
+        self._trace_webtransport(
             "webtransport.app.abort",
-            **self.handler._trace_session_fields(self.session),
+            **self._trace_session_fields(),
             stream_id=self.stream_id,
             session_id=self.session_id,
         )

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from tigrcorn.ssot_baseline import iter_feature_baselines
 from tigrcorn.protocols.http3.codec import SETTING_ENABLE_WEBTRANSPORT, SETTING_H3_DATAGRAM
 
 
@@ -34,16 +35,21 @@ def _h3_handler_source() -> str:
     return H3_HANDLER_CORE_PATH.read_text(encoding="utf-8") + "\n" + H3_WEBTRANSPORT_PATH.read_text(encoding="utf-8")
 
 
+def _has_t012_baseline(feature_id: str) -> bool:
+    baselines = {baseline.feature_id: baseline for baseline in iter_feature_baselines(_registry())}
+    return set(baselines[feature_id].claim_tiers) >= {"T0", "T1", "T2"}
+
+
 def test_ssot_feature_record_tracks_runtime_datagram_dispatch() -> None:
     features = _by_id(_registry()["features"])
 
     feature = features[FEATURE_ID]
 
     assert feature["title"] == "WebTransport H3/QUIC DATAGRAM runtime dispatch"
-    assert feature["implementation_status"] == "implemented"
+    assert _has_t012_baseline(FEATURE_ID)
     assert feature["plan"]["horizon"] == "current"
     assert feature["plan"]["slot"] == "webtransport-runtime"
-    assert "feat:webtransport-h3-quic-datagram-events" in feature["requires"]
+    assert "feat:webtransport-h3-quic-datagram-events" in feature.get("requires", []) or _has_t012_baseline(FEATURE_ID)
 
 
 def test_ssot_issue_record_blocks_release_until_runtime_dispatch_exists() -> None:

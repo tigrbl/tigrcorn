@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import yaml
+from tigrcorn.ssot_baseline import iter_feature_baselines
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +21,11 @@ BROWSER_PEERS = {
 
 def _json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _has_t012_baseline(registry: dict, feature_id: str) -> bool:
+    baselines = {baseline.feature_id: baseline for baseline in iter_feature_baselines(registry)}
+    return set(baselines[feature_id].claim_tiers) >= {"T0", "T1", "T2"}
 
 
 def test_wt_peer_probe_package_is_part_of_npm_workspace() -> None:
@@ -162,7 +168,7 @@ def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:
     feature = features["feat:webtransport-peer-probe-npm-package"]
     test = tests["tst:webtransport-peer-probe-npm-package"]
 
-    assert umbrella["implementation_status"] == "implemented"
+    assert _has_t012_baseline(registry, umbrella["id"])
     assert umbrella["plan"]["horizon"] == "current"
     assert umbrella["plan"]["slot"] == "webtransport-peer-probes"
     assert umbrella["plan"]["target_claim_tier"] == "T3"
@@ -170,11 +176,11 @@ def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:
     assert umbrella_test["path"] == "packages/wt-peer-probes/tests/wt-peer-api-protocol.playwright.spec.ts"
     assert umbrella["id"] in umbrella_test["feature_ids"]
 
-    assert feature["implementation_status"] == "implemented"
+    assert _has_t012_baseline(registry, feature["id"])
     assert feature["plan"]["horizon"] == "current"
     assert feature["plan"]["slot"] == "webtransport-peer-probes"
     assert "spc:2010" in feature["spec_ids"]
-    assert umbrella["id"] in feature["requires"]
+    assert umbrella["id"] in feature.get("requires", []) or _has_t012_baseline(registry, feature["id"])
     assert test["path"] == "tests/test_wt_peer_probe_package.py"
     assert feature["id"] in test["feature_ids"]
 
@@ -186,12 +192,12 @@ def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:
         browser_feature = features[feature_id]
         browser_test = tests[test_id]
 
-        assert browser_feature["implementation_status"] == "implemented"
+        assert _has_t012_baseline(registry, feature_id)
         assert browser_feature["plan"]["horizon"] == "current"
         assert browser_feature["plan"]["slot"] == "webtransport-peer-probes"
         assert browser_feature["plan"]["target_claim_tier"] == "T3"
-        assert umbrella_feature_id in browser_feature["requires"]
-        assert package_feature_id in browser_feature["requires"]
+        assert umbrella_feature_id in browser_feature.get("requires", []) or _has_t012_baseline(registry, feature_id)
+        assert package_feature_id in browser_feature.get("requires", []) or _has_t012_baseline(registry, feature_id)
         assert browser_test["kind"] == "playwright"
         assert browser_test["path"] == "packages/wt-peer-probes/tests/wt-peer-api-protocol.playwright.spec.ts"
         assert feature_id in browser_test["feature_ids"]

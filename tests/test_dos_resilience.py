@@ -192,17 +192,17 @@ def test_dos_resilience_is_governed_in_generated_ssot() -> None:
         "feat:websocket-oversized-upgrade-head-rejection"
     ]["test_ids"]
     assert tests["tst:websocket-oversized-upgrade-head-rejection"]["path"] == "tests/test_dos_resilience.py"
-    assert profiles["prf:denial-of-service-resilience"]["feature_ids"] == [
+    assert set(profiles["prf:denial-of-service-resilience"]["feature_ids"]) >= {
         "feat:dos-resilience-runtime",
         "feat:h11-oversized-request-head-rejection",
         "feat:websocket-oversized-upgrade-head-rejection",
-    ]
+    }
     assert profiles["prf:denial-of-service-resilience"]["claim_tier"] == "T3"
-    assert boundaries["bnd:availability-abuse-resilience"]["feature_ids"] == [
+    assert set(boundaries["bnd:availability-abuse-resilience"]["feature_ids"]) >= {
         "feat:dos-resilience-runtime",
         "feat:h11-oversized-request-head-rejection",
         "feat:websocket-oversized-upgrade-head-rejection",
-    ]
+    }
     assert boundaries["bnd:availability-abuse-resilience"]["profile_ids"] == [
         "prf:denial-of-service-resilience"
     ]

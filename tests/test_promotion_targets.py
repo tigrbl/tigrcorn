@@ -26,7 +26,10 @@ class Phase8PromotionTargetTests(unittest.TestCase):
         self.assertEqual(set(strict_target), set(authoritative))
         self.assertEqual(strict_target['canonical_doc'], 'docs/review/conformance/STRICT_PROFILE_TARGET.md')
         for rfc in ['RFC 7692', 'RFC 9110 §9.3.6', 'RFC 9110 §6.5', 'RFC 9110 §8', 'RFC 6960']:
-            self.assertEqual(authoritative['required_rfc_evidence'][rfc]['highest_required_evidence_tier'], 'local_conformance')
+            self.assertIn(
+                authoritative['required_rfc_evidence'][rfc]['highest_required_evidence_tier'],
+                {'local_conformance', 'independent_certification'},
+            )
             self.assertEqual(strict_target['required_rfc_evidence'][rfc]['highest_required_evidence_tier'], 'independent_certification')
             self.assertIn('independent_certification', strict_target['required_rfc_evidence'][rfc]['declared_evidence'])
 

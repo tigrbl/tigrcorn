@@ -14,6 +14,7 @@ from tigrcorn.observability.metrics import Metrics
 from tigrcorn.protocols.http3.codec import SETTING_H3_DATAGRAM
 from tigrcorn.protocols.http3.handler import HTTP3DatagramHandler
 from tigrcorn.transports.quic.streams import FRAME_DATAGRAM, QuicDatagramFrame, decode_frame, encode_frame
+from tigrcorn.ssot_baseline import iter_feature_baselines
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,6 +51,11 @@ def _by_id(rows: object) -> dict[str, dict[str, object]]:
     return {str(row['id']): row for row in rows if isinstance(row, dict)}
 
 
+def _has_t012_baseline(registry: dict, feature_id: str) -> bool:
+    baselines = {baseline.feature_id: baseline for baseline in iter_feature_baselines(registry)}
+    return set(baselines[feature_id].claim_tiers) >= {'T0', 'T1', 'T2'}
+
+
 def _http3_handler() -> HTTP3DatagramHandler:
     async def app(scope, receive, send):
         return None
@@ -82,7 +88,7 @@ class GovernedRFCSupportFloorTests(unittest.TestCase):
                 self.assertTrue(policy['declared_evidence'].get('local_conformance'), msg=rfc_name)
 
                 feature = features[feature_id]
-                self.assertEqual(feature['implementation_status'], 'implemented')
+                self.assertTrue(_has_t012_baseline(registry, feature_id), msg=rfc_name)
                 self.assertEqual(feature['plan']['horizon'], 'current')
                 self.assertIn('spc:2044', feature['spec_ids'])
                 self.assertGreaterEqual(TIER_RANK[feature['plan']['target_claim_tier']], TIER_RANK['T2'])

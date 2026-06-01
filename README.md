@@ -580,7 +580,7 @@ print(promotion_report.passed)
 | Lifecycle and embedding contract | [lifecycle and embedded server guide](docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
 | Optional dependency truth | [optional dependency surface](docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md), [optional dependency surface JSON](docs/review/conformance/optional_dependency_surface.current.json) |
 | External evidence inputs | [same-stack replay matrix](docs/review/conformance/external_matrix.same_stack_replay.json), [release external matrix](docs/review/conformance/external_matrix.release.json), [current-release external matrix](docs/review/conformance/external_matrix.current_release.json) |
-| Planning and promotion checkpoints | [Phase 9 implementation plan](docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md), [Phase 9A promotion contract freeze](docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md) |
+| Planning and promotion checkpoints | [Phase 9 implementation plan](docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md), [Phase 9 implementation JSON](docs/review/conformance/phase9_implementation_plan.current.json), [Phase 9A promotion contract freeze](docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md), [Phase 9A promotion JSON](docs/review/conformance/phase9a_promotion_contract.current.json) |
 
 ### Current repository claim
 

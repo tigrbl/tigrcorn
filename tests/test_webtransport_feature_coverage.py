@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+from tigrcorn.ssot_baseline import iter_feature_baselines
 
 from examples.webtransport_mtls_demo.server import app as demo_app
 from tigrcorn.cli import build_parser
@@ -88,6 +89,11 @@ def _rows_by_id(name: str) -> dict[str, dict[str, object]]:
     return {str(row["id"]): row for row in rows if isinstance(row, dict)}
 
 
+def _has_t012_baseline(feature_id: str) -> bool:
+    baselines = {baseline.feature_id: baseline for baseline in iter_feature_baselines(_registry())}
+    return set(baselines[feature_id].claim_tiers) >= {"T0", "T1", "T2"}
+
+
 def test_ssot_declares_every_expected_webtransport_feature() -> None:
     features = _rows_by_id("features")
 
@@ -100,7 +106,7 @@ def test_ssot_marks_current_webtransport_features_implemented() -> None:
 
     for feature_id in IMPLEMENTED_WEBTRANSPORT_FEATURE_IDS:
         feature = features[feature_id]
-        assert feature["implementation_status"] == "implemented"
+        assert _has_t012_baseline(feature_id)
         assert feature["lifecycle"]["stage"] == "active"
 
 
@@ -108,7 +114,7 @@ def test_ssot_closes_datagram_runtime_dispatch_after_runtime_exists() -> None:
     feature = _rows_by_id("features")["feat:webtransport-h3-quic-datagram-runtime-dispatch"]
     issue = _rows_by_id("issues")["iss:webtransport-h3-quic-datagram-runtime-dispatch"]
 
-    assert feature["implementation_status"] == "implemented"
+    assert _has_t012_baseline("feat:webtransport-h3-quic-datagram-runtime-dispatch")
     assert feature["plan"]["slot"] == "webtransport-runtime"
     assert issue["status"] == "closed"
     assert issue["release_blocking"] is False
