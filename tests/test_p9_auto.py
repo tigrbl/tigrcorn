@@ -47,9 +47,9 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert '- wt-peer-probes' in workflow
     assert 'environment: testpypi' in workflow
     assert 'environment: pypi' in workflow
-    assert 'secrets.PYPI_API_TOKEN' in workflow
-    assert 'user: __token__' in workflow
-    assert 'password: ${{ secrets.PYPI_API_TOKEN }}' in workflow
+    assert 'id-token: write' in workflow
+    assert 'user: __token__' not in workflow
+    assert 'password: ${{ secrets.PYPI_API_TOKEN }}' not in workflow
     assert 'create-github-tags' in workflow
     assert 'create-github-releases' not in workflow
     assert 'github_releases = plan.get("github_releases", [])' in workflow
