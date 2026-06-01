@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-static"
-version = "0.3.16.dev6"
+version = "0.3.16.dev7"
 description = "Static file origin, file-send, validators, ranges, and cache-aware HTTP responses for the Tigrcorn ASGI server."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -29,9 +29,9 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.16.dev6",
-  "tigrcorn-asgi==0.3.16.dev6",
-  "tigrcorn-http==0.3.16.dev6",
+  "tigrcorn-core==0.3.16.dev7",
+  "tigrcorn-asgi==0.3.16.dev7",
+  "tigrcorn-http==0.3.16.dev7",
 ]
 
 [tool.setuptools]

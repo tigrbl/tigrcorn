@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-runtime"
-version = "0.3.16.dev6"
+version = "0.3.16.dev7"
 description = "Server runner, app loading, lifecycle hooks, workers, reload, and embedded runtime for the Tigrcorn ASGI3 web server."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -30,12 +30,12 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.16.dev6",
-  "tigrcorn-config==0.3.16.dev6",
-  "tigrcorn-asgi==0.3.16.dev6",
-  "tigrcorn-transports==0.3.16.dev6",
-  "tigrcorn-protocols==0.3.16.dev6",
-  "tigrcorn-security==0.3.16.dev6",
+  "tigrcorn-core==0.3.16.dev7",
+  "tigrcorn-config==0.3.16.dev7",
+  "tigrcorn-asgi==0.3.16.dev7",
+  "tigrcorn-transports==0.3.16.dev7",
+  "tigrcorn-protocols==0.3.16.dev7",
+  "tigrcorn-security==0.3.16.dev7",
 ]
 
 [project.optional-dependencies]
