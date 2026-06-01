@@ -9,6 +9,9 @@ EndpointKind = Literal["tcp", "uds", "fd", "pipe", "inproc"]
 IdentityKind = Literal["tcp", "unix", "quic", "http2", "http3", "webtransport-session", "webtransport-stream", "datagram"]
 
 
+_ALPN_PROTOCOLS = {"http/1.1", "h2", "h3"}
+_OCSP_STATUSES = {"good", "revoked", "unknown", "unavailable", "not_provided"}
+_CRL_STATUSES = {"checked", "clear", "revoked", "unknown", "unavailable", "not_provided"}
 _ENDPOINT_ALLOWED_FIELDS: dict[str, set[str]] = {
     "tcp": {"address", "port"},
     "uds": {"address"},
@@ -265,10 +268,41 @@ def unit_identity(unit_id: str, *, family: str, binding: str, **fields: Any) -> 
 
 
 def security_metadata(**fields: Any) -> SecurityMetadata:
-    metadata = SecurityMetadata(**fields)
+    try:
+        metadata = SecurityMetadata(**fields)
+    except TypeError as exc:
+        raise ProtocolError("invalid security metadata fields") from exc
+    validate_security_metadata(metadata)
+    return metadata
+
+
+def validate_security_metadata(metadata: SecurityMetadata) -> None:
+    if not isinstance(metadata.tls, bool):
+        raise ProtocolError("TLS metadata flag must be a boolean")
+    if not isinstance(metadata.mtls, bool):
+        raise ProtocolError("mTLS metadata flag must be a boolean")
     if metadata.mtls and not metadata.tls:
         raise ProtocolError("mTLS metadata requires TLS metadata")
-    return metadata
+    if metadata.mtls and metadata.peer_certificate is None:
+        raise ProtocolError("mTLS metadata requires peer_certificate")
+    if metadata.alpn is not None:
+        _require_non_empty_string("ALPN metadata", metadata.alpn)
+        if metadata.alpn not in _ALPN_PROTOCOLS:
+            raise ProtocolError(f"unsupported ALPN protocol: {metadata.alpn!r}")
+    if metadata.sni is not None:
+        _require_non_empty_string("SNI metadata", metadata.sni)
+        if any(part == "" for part in metadata.sni.split(".")):
+            raise ProtocolError("SNI metadata must be a valid hostname")
+    if metadata.peer_certificate is not None:
+        _require_non_empty_string("peer certificate metadata", metadata.peer_certificate)
+    if metadata.ocsp_status is not None:
+        _require_non_empty_string("OCSP status metadata", metadata.ocsp_status)
+        if metadata.ocsp_status not in _OCSP_STATUSES:
+            raise ProtocolError(f"unsupported OCSP status: {metadata.ocsp_status!r}")
+    if metadata.crl_status is not None:
+        _require_non_empty_string("CRL status metadata", metadata.crl_status)
+        if metadata.crl_status not in _CRL_STATUSES:
+            raise ProtocolError(f"unsupported CRL status: {metadata.crl_status!r}")
 
 
 def require_lossless_metadata(name: str, value: Any) -> Any:

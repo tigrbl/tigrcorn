@@ -82,6 +82,7 @@ from .metadata import (
     unit_identity,
     validate_connection_identity,
     validate_endpoint_metadata,
+    validate_security_metadata,
     validate_stream_identity,
 )
 from .projection import (
@@ -165,6 +166,7 @@ __all__ = [
     "validate_endpoint_metadata",
     "validate_event_order",
     "validate_projected_event",
+    "validate_security_metadata",
     "validate_scope",
     "validate_stream_event",
     "validate_stream_identity",
