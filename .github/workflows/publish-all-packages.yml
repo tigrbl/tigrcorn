@@ -392,12 +392,27 @@ jobs:
         with:
           name: python-dist-${{ github.sha }}
           path: dist
+      - name: Install uv
+        run: python -m pip install --upgrade uv
       - name: Publish Python distributions to TestPyPI
         if: github.event_name == 'release' && github.event.release.prerelease
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          packages-dir: dist
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          artifacts=(dist/*)
+          if [[ ${#artifacts[@]} -eq 0 ]]; then
+            echo "No Python distributions found in dist/." >&2
+            exit 1
+          fi
+          for artifact in "${artifacts[@]}"; do
+            echo "Publishing ${artifact} to TestPyPI with trusted publishing."
+            uv publish \
+              --trusted-publishing always \
+              --publish-url https://test.pypi.org/legacy/ \
+              --check-url https://test.pypi.org/simple/ \
+              "${artifact}"
+          done
 
   publish-python-pypi:
     name: python-pypi-publish
@@ -414,12 +429,27 @@ jobs:
         with:
           name: python-dist-${{ github.sha }}
           path: dist
+      - name: Install uv
+        run: python -m pip install --upgrade uv
       - name: Publish Python distributions to PyPI
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == false)
-        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b
-        with:
-          packages-dir: dist
-          skip-existing: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          artifacts=(dist/*)
+          if [[ ${#artifacts[@]} -eq 0 ]]; then
+            echo "No Python distributions found in dist/." >&2
+            exit 1
+          fi
+          for artifact in "${artifacts[@]}"; do
+            echo "Publishing ${artifact} to PyPI with trusted publishing."
+            uv publish \
+              --trusted-publishing always \
+              --publish-url https://upload.pypi.org/legacy/ \
+              --check-url https://pypi.org/simple/ \
+              "${artifact}"
+          done
 
   wt-peer-probes-ci:
     name: wt-peer-probes-ci
