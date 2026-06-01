@@ -164,10 +164,25 @@ class ContractClosureAssertions(unittest.TestCase):
         self.assertEqual(complete, {"type": "transport.emit.complete", "unit_id": "unit-1", "level": "flushed_to_transport", "status": "ok"})
 
     def assert_binding_classification(self, kind: str) -> None:
+        expected = {
+            "rest": ("http", "request", "unary", "json", ("json",)),
+            "jsonrpc": ("http", "request", "unary", "jsonrpc", ("jsonrpc",)),
+            "sse": ("http", "stream", "server_stream", "sse", ("sse",)),
+        }[kind]
         classification = classify_binding(kind)
         self.assertFalse(classification.runtime_owned)
         self.assertTrue(classification.classification_only)
         self.assertEqual(classification.dispatch_runtime, "application")
+        self.assertEqual(
+            (
+                classification.scope_type,
+                classification.family,
+                classification.exchange,
+                classification.framing,
+                classification.allowed_framings,
+            ),
+            expected,
+        )
 
     def assert_runtime_exclusion(self, name: str) -> None:
         status = product_surface_status(name)

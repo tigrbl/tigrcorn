@@ -5,7 +5,7 @@ from typing import Literal
 
 from tigrcorn_core.errors import ConfigError
 
-BindingKind = Literal["http", "websocket", "lifespan", "webtransport", "stream", "datagram", "rest", "jsonrpc", "sse"]
+BindingKind = Literal["http", "http.stream", "websocket", "lifespan", "webtransport", "stream", "datagram", "rest", "jsonrpc", "sse"]
 ProductSurfaceKind = Literal[
     "auto",
     "tigr-asgi-contract",
@@ -17,7 +17,7 @@ ProductSurfaceKind = Literal[
     "jsonrpc",
 ]
 
-_SERVER_OWNED_RUNTIMES = {"http", "websocket", "lifespan", "webtransport", "stream", "datagram"}
+_SERVER_OWNED_RUNTIMES = {"http", "http.stream", "websocket", "lifespan", "webtransport", "stream", "datagram"}
 _CLASSIFICATION_ONLY = {"rest", "jsonrpc", "sse"}
 _SUPPORTED_APP_INTERFACES = {"auto", "tigr-asgi-contract", "asgi3"}
 _UNSUPPORTED_COMPAT_INTERFACES = {"asgi2", "wsgi", "rsgi"}
@@ -30,6 +30,11 @@ class BindingClassification:
     runtime_owned: bool
     classification_only: bool
     dispatch_runtime: str
+    scope_type: str
+    family: str
+    exchange: str
+    framing: str | None = None
+    allowed_framings: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,13 +69,13 @@ _FAMILY_CAPABILITIES = {
     ),
     "message": FamilyCapability(
         family="message",
-        bindings=("websocket", "sse", "jsonrpc"),
+        bindings=("websocket",),
         subevents=("message.in", "message.decode", "message.handle", "message.out", "message.ack", "message.nack"),
-        exchanges=("unary", "server_stream", "duplex"),
+        exchanges=("duplex",),
     ),
     "stream": FamilyCapability(
         family="stream",
-        bindings=("http.stream", "webtransport", "stream"),
+        bindings=("http.stream", "webtransport", "stream", "sse"),
         subevents=("stream.open", "stream.chunk_in", "stream.chunk_out", "stream.flush", "stream.finalize", "stream.abort", "stream.close"),
         exchanges=("server_stream", "duplex"),
     ),
@@ -82,6 +87,19 @@ _FAMILY_CAPABILITIES = {
     ),
 }
 
+_BINDING_SHAPES: dict[str, tuple[str, str, str, str | None, tuple[str, ...]]] = {
+    "http": ("http", "request", "unary", None, ()),
+    "http.stream": ("http", "stream", "server_stream", None, ()),
+    "websocket": ("websocket", "message", "duplex", None, ()),
+    "lifespan": ("lifespan", "session", "duplex", None, ()),
+    "webtransport": ("webtransport", "session", "duplex", None, ()),
+    "stream": ("tigrcorn.stream", "stream", "duplex", None, ()),
+    "datagram": ("tigrcorn.datagram", "datagram", "duplex", None, ()),
+    "rest": ("http", "request", "unary", "json", ("json",)),
+    "jsonrpc": ("http", "request", "unary", "jsonrpc", ("jsonrpc",)),
+    "sse": ("http", "stream", "server_stream", "sse", ("sse",)),
+}
+
 
 def classify_binding(kind: str) -> BindingClassification:
     normalized = kind.strip().lower().replace("_", "-")
@@ -89,11 +107,17 @@ def classify_binding(kind: str) -> BindingClassification:
         normalized = "jsonrpc"
     if normalized not in _SERVER_OWNED_RUNTIMES | _CLASSIFICATION_ONLY:
         raise ConfigError(f"unsupported binding classification: {kind!r}")
+    scope_type, family, exchange, framing, allowed_framings = _BINDING_SHAPES[normalized]
     return BindingClassification(
         kind=normalized,  # type: ignore[arg-type]
         runtime_owned=normalized in _SERVER_OWNED_RUNTIMES,
         classification_only=normalized in _CLASSIFICATION_ONLY,
         dispatch_runtime="application" if normalized in _CLASSIFICATION_ONLY else "tigrcorn",
+        scope_type=scope_type,
+        family=family,
+        exchange=exchange,
+        framing=framing,
+        allowed_framings=allowed_framings,
     )
 
 
@@ -153,13 +177,19 @@ def family_capability(family: str) -> FamilyCapability:
 
 
 def validate_binding_legality(*, binding: str, family: str, subevent: str | None = None, exchange: str | None = None) -> None:
-    normalized_binding = binding.strip().lower()
+    normalized_binding = binding.strip().lower().replace("_", "-")
     if normalized_binding == "json-rpc":
         normalized_binding = "jsonrpc"
+    classification = classify_binding(normalized_binding)
+    normalized_family = family.strip().lower()
+    if classification.classification_only and normalized_family != classification.family:
+        raise ConfigError(f"binding {binding!r} is illegal for family {family!r}")
     capability = family_capability(family)
     if normalized_binding not in capability.bindings:
         raise ConfigError(f"binding {binding!r} is illegal for family {family!r}")
     if subevent is not None and subevent not in capability.subevents and not subevent.endswith(".emit_complete"):
         raise ConfigError(f"subevent {subevent!r} is illegal for family {family!r}")
+    if classification.classification_only and exchange is not None and exchange != classification.exchange:
+        raise ConfigError(f"exchange {exchange!r} is illegal for binding {binding!r}")
     if exchange is not None and exchange not in capability.exchanges:
         raise ConfigError(f"exchange {exchange!r} is illegal for family {family!r}")
