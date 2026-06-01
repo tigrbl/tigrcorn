@@ -62,14 +62,114 @@ class EventOrderRule:
     allowed_after_close: tuple[str, ...] = ()
 
 
+@dataclass(slots=True)
+class GenericStreamRuntime:
+    _events: list[dict[str, Any]]
+    _completed: set[str]
+
+    def __init__(self) -> None:
+        self._events = []
+        self._completed = set()
+
+    @property
+    def events(self) -> tuple[dict[str, Any], ...]:
+        return tuple(dict(event) for event in self._events)
+
+    def receive(self, stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
+        self._ensure_open(stream_id)
+        event = stream_receive(stream_id, data, more=more)
+        self._events.append(event)
+        return event
+
+    def send(self, stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
+        self._ensure_open(stream_id)
+        event = stream_send(stream_id, data, more=more)
+        self._events.append(event)
+        return event
+
+    def complete(
+        self,
+        stream_id: str,
+        *,
+        level: str | CompletionLevel = CompletionLevel.FLUSHED_TO_TRANSPORT,
+        status: str | CompletionStatus = CompletionStatus.OK,
+        detail: str | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open(stream_id)
+        event = emit_complete(stream_id, level=level, status=status, detail=detail)
+        self._completed.add(stream_id)
+        self._events.append(event)
+        return event
+
+    def _ensure_open(self, stream_id: str) -> None:
+        if stream_id in self._completed:
+            raise ProtocolError(f"stream unit already completed: {stream_id}")
+
+
+@dataclass(slots=True)
+class GenericDatagramRuntime:
+    _events: list[dict[str, Any]]
+    _completed: set[str]
+
+    def __init__(self) -> None:
+        self._events = []
+        self._completed = set()
+
+    @property
+    def events(self) -> tuple[dict[str, Any], ...]:
+        return tuple(dict(event) for event in self._events)
+
+    def receive(self, datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
+        self._ensure_open(datagram_id)
+        event = datagram_receive(datagram_id, data, flow_controlled=flow_controlled)
+        self._events.append(event)
+        return event
+
+    def send(self, datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
+        self._ensure_open(datagram_id)
+        event = datagram_send(datagram_id, data, flow_controlled=flow_controlled)
+        self._events.append(event)
+        return event
+
+    def complete(
+        self,
+        datagram_id: str,
+        *,
+        level: str | CompletionLevel = CompletionLevel.FLUSHED_TO_TRANSPORT,
+        status: str | CompletionStatus = CompletionStatus.OK,
+        detail: str | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open(datagram_id)
+        event = emit_complete(datagram_id, level=level, status=status, detail=detail)
+        self._completed.add(datagram_id)
+        self._events.append(event)
+        return event
+
+    def _ensure_open(self, datagram_id: str) -> None:
+        if datagram_id in self._completed:
+            raise ProtocolError(f"datagram unit already completed: {datagram_id}")
+
+
 def _event(event_type: str, **payload: Any) -> dict[str, Any]:
     return {"type": event_type, **payload}
 
 
 def _require_unit_id(unit_id: str) -> str:
-    if not unit_id:
+    if not isinstance(unit_id, str) or not unit_id.strip():
         raise ProtocolError("contract event requires unit_id")
     return unit_id
+
+
+def _require_bytes(name: str, value: bytes) -> bytes:
+    if not isinstance(value, bytes):
+        raise ProtocolError(f"{name} must be bytes")
+    return value
+
+
+def _require_bool(name: str, value: bool) -> bool:
+    if not isinstance(value, bool):
+        raise ProtocolError(f"{name} must be a boolean")
+    return value
 
 
 def http_request(unit_id: str, *, body: bytes = b"", more_body: bool = False) -> dict[str, Any]:
@@ -202,19 +302,19 @@ def map_contract_event(binding: str, subevent: str) -> str:
 
 
 def stream_receive(stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
-    return _event("transport.stream.receive", stream_id=stream_id, data=data, more=more)
+    return _event("transport.stream.receive", stream_id=_require_unit_id(stream_id), data=_require_bytes("stream data", data), more=_require_bool("stream more", more))
 
 
 def stream_send(stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
-    return _event("transport.stream.send", stream_id=stream_id, data=data, more=more)
+    return _event("transport.stream.send", stream_id=_require_unit_id(stream_id), data=_require_bytes("stream data", data), more=_require_bool("stream more", more))
 
 
 def datagram_receive(datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
-    return _event("transport.datagram.receive", datagram_id=datagram_id, data=data, flow_controlled=flow_controlled)
+    return _event("transport.datagram.receive", datagram_id=_require_unit_id(datagram_id), data=_require_bytes("datagram data", data), flow_controlled=_require_bool("datagram flow_controlled", flow_controlled))
 
 
 def datagram_send(datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
-    return _event("transport.datagram.send", datagram_id=datagram_id, data=data, flow_controlled=flow_controlled)
+    return _event("transport.datagram.send", datagram_id=_require_unit_id(datagram_id), data=_require_bytes("datagram data", data), flow_controlled=_require_bool("datagram flow_controlled", flow_controlled))
 
 
 def webtransport_connect(session_id: str) -> dict[str, Any]:
@@ -306,10 +406,30 @@ def emit_complete(
         completion_status = CompletionStatus(str(status))
     except ValueError as exc:
         raise ProtocolError(f"unsupported completion status: {status!r}") from exc
-    event = _event("transport.emit.complete", unit_id=unit_id, level=completion_level.value, status=completion_status.value)
+    event = _event("transport.emit.complete", unit_id=_require_unit_id(unit_id), level=completion_level.value, status=completion_status.value)
     if detail:
         event["detail"] = detail
     return event
+
+
+def validate_stream_event(event: dict[str, Any]) -> None:
+    if not isinstance(event, dict):
+        raise ProtocolError("stream event must be a mapping")
+    if event.get("type") not in {"transport.stream.receive", "transport.stream.send"}:
+        raise ProtocolError(f"unsupported stream event type: {event.get('type')!r}")
+    _require_unit_id(event.get("stream_id"))
+    _require_bytes("stream data", event.get("data"))
+    _require_bool("stream more", event.get("more", False))
+
+
+def validate_datagram_event(event: dict[str, Any]) -> None:
+    if not isinstance(event, dict):
+        raise ProtocolError("datagram event must be a mapping")
+    if event.get("type") not in {"transport.datagram.receive", "transport.datagram.send"}:
+        raise ProtocolError(f"unsupported datagram event type: {event.get('type')!r}")
+    _require_unit_id(event.get("datagram_id"))
+    _require_bytes("datagram data", event.get("data"))
+    _require_bool("datagram flow_controlled", event.get("flow_controlled", False))
 
 
 def _normalize_completion_level(level: str) -> str:
