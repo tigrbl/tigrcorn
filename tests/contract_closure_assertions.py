@@ -15,6 +15,8 @@ from tigrcorn.contract import (
     emit_complete,
     endpoint_metadata,
     require_lossless_metadata,
+    product_surface_status,
+    require_product_runtime_available,
     runtime_interface_available,
     security_metadata,
     stream_identity,
@@ -168,12 +170,26 @@ class ContractClosureAssertions(unittest.TestCase):
         self.assertEqual(classification.dispatch_runtime, "application")
 
     def assert_runtime_exclusion(self, name: str) -> None:
+        status = product_surface_status(name)
+        self.assertFalse(status.runtime_available)
+        self.assertTrue(status.classification_only)
+        self.assertFalse(status.compatibility_exclusion)
         self.assertFalse(runtime_interface_available(name))
         with self.assertRaises(ConfigError):
-            classify_binding("rsgi")
+            require_product_runtime_available(name)
+        classification = classify_binding(name)
+        self.assertFalse(classification.runtime_owned)
+        self.assertTrue(classification.classification_only)
+        self.assertEqual(classification.dispatch_runtime, "application")
 
     def assert_compat_exclusion(self, name: str) -> None:
+        status = product_surface_status(name)
+        self.assertFalse(status.runtime_available)
+        self.assertFalse(status.classification_only)
+        self.assertTrue(status.compatibility_exclusion)
         self.assertFalse(runtime_interface_available(name))
+        with self.assertRaises(ConfigError):
+            require_product_runtime_available(name)
         with self.assertRaises(ConfigError):
             classify_binding(name)
 

@@ -6,10 +6,22 @@ from typing import Literal
 from tigrcorn_core.errors import ConfigError
 
 BindingKind = Literal["http", "websocket", "lifespan", "webtransport", "stream", "datagram", "rest", "jsonrpc", "sse"]
+ProductSurfaceKind = Literal[
+    "auto",
+    "tigr-asgi-contract",
+    "asgi3",
+    "asgi2",
+    "wsgi",
+    "rsgi",
+    "rest",
+    "jsonrpc",
+]
 
 _SERVER_OWNED_RUNTIMES = {"http", "websocket", "lifespan", "webtransport", "stream", "datagram"}
 _CLASSIFICATION_ONLY = {"rest", "jsonrpc", "sse"}
 _SUPPORTED_APP_INTERFACES = {"auto", "tigr-asgi-contract", "asgi3"}
+_UNSUPPORTED_COMPAT_INTERFACES = {"asgi2", "wsgi", "rsgi"}
+_RUNTIME_EXCLUDED_CLASSIFICATIONS = {"rest", "jsonrpc"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,6 +38,15 @@ class FamilyCapability:
     bindings: tuple[str, ...]
     subevents: tuple[str, ...]
     exchanges: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class ProductSurfaceStatus:
+    kind: ProductSurfaceKind
+    runtime_available: bool
+    classification_only: bool
+    compatibility_exclusion: bool
+    reason: str
 
 
 _FAMILY_CAPABILITIES = {
@@ -77,10 +98,50 @@ def classify_binding(kind: str) -> BindingClassification:
 
 
 def runtime_interface_available(interface: str) -> bool:
-    normalized = interface.strip().lower().replace("_", "-")
-    if normalized == "jsonrpc":
-        normalized = "json-rpc"
-    return normalized in _SUPPORTED_APP_INTERFACES
+    return product_surface_status(interface).runtime_available
+
+
+def _normalize_product_surface(value: str) -> ProductSurfaceKind:
+    normalized = value.strip().lower().replace("_", "-")
+    if normalized == "json-rpc":
+        normalized = "jsonrpc"
+    if normalized not in _SUPPORTED_APP_INTERFACES | _UNSUPPORTED_COMPAT_INTERFACES | _RUNTIME_EXCLUDED_CLASSIFICATIONS:
+        raise ConfigError(f"unsupported product surface: {value!r}")
+    return normalized  # type: ignore[return-value]
+
+
+def product_surface_status(surface: str) -> ProductSurfaceStatus:
+    normalized = _normalize_product_surface(surface)
+    if normalized in _SUPPORTED_APP_INTERFACES:
+        return ProductSurfaceStatus(
+            kind=normalized,
+            runtime_available=True,
+            classification_only=False,
+            compatibility_exclusion=False,
+            reason="supported app interface",
+        )
+    if normalized in _RUNTIME_EXCLUDED_CLASSIFICATIONS:
+        return ProductSurfaceStatus(
+            kind=normalized,
+            runtime_available=False,
+            classification_only=True,
+            compatibility_exclusion=False,
+            reason="classification-only binding; runtime belongs to the application layer",
+        )
+    return ProductSurfaceStatus(
+        kind=normalized,
+        runtime_available=False,
+        classification_only=False,
+        compatibility_exclusion=True,
+        reason="unsupported compatibility interface",
+    )
+
+
+def require_product_runtime_available(surface: str) -> ProductSurfaceStatus:
+    status = product_surface_status(surface)
+    if not status.runtime_available:
+        raise ConfigError(f"unsupported runtime product surface: {surface!r} ({status.reason})")
+    return status
 
 
 def family_capability(family: str) -> FamilyCapability:

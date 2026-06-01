@@ -152,7 +152,9 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
     for feature_id in {"feat:rest-runtime-exclusion", "feat:json-rpc-runtime-exclusion"}:
         feature = features[feature_id]
         assert _has_t012_baseline(registry, feature_id)
-        assert feature["plan"]["horizon"] == "out_of_bounds"
+        assert feature["implementation_status"] == "implemented"
+        assert feature["plan"]["horizon"] == "explicit"
+        assert feature["lifecycle"]["note"].startswith("Explicit product-boundary exclusion")
         assert "spc:2010" in feature["spec_ids"]
 
 
