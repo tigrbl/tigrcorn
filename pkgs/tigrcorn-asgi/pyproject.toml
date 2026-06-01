@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-asgi"
-version = "0.3.16.dev9"
+version = "0.3.16.dev10"
 description = "ASGI3 scope, event, receive/send, and extension primitives for the Tigrcorn Python web server."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -28,7 +28,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
 ]
-dependencies = ["tigrcorn-core==0.3.16.dev9"]
+dependencies = ["tigrcorn-core==0.3.16.dev10"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

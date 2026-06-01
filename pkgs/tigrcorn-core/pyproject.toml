@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-core"
-version = "0.3.16.dev9"
+version = "0.3.16.dev10"
 description = "Typed core primitives, errors, constants, and utilities shared by the Tigrcorn ASGI3 Python web server packages."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
