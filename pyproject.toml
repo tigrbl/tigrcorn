@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn"
-version = "0.3.16.dev10"
+version = "0.3.16.dev11"
 description = "ASGI3 Python web server with built-in HTTP/1.1, HTTP/2, HTTP/3, QUIC, WebSocket, WebTransport, TLS, and certification tooling."
 readme = "PYPI_README.md"
 requires-python = ">=3.10,<3.15"
@@ -32,19 +32,19 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-    "tigrcorn-core==0.3.16.dev10",
-    "tigrcorn-config==0.3.16.dev10",
-    "tigrcorn-asgi==0.3.16.dev10",
-    "tigrcorn-contract==0.3.16.dev10",
-    "tigrcorn-transports==0.3.16.dev10",
-    "tigrcorn-protocols==0.3.16.dev10",
-    "tigrcorn-http==0.3.16.dev10",
-    "tigrcorn-security==0.3.16.dev10",
-    "tigrcorn-runtime==0.3.16.dev10",
-    "tigrcorn-static==0.3.16.dev10",
-    "tigrcorn-observability==0.3.16.dev10",
-    "tigrcorn-compat==0.3.16.dev10",
-    "tigrcorn-certification==0.3.16.dev10",
+    "tigrcorn-core==0.3.16.dev11",
+    "tigrcorn-config==0.3.16.dev11",
+    "tigrcorn-asgi==0.3.16.dev11",
+    "tigrcorn-contract==0.3.16.dev11",
+    "tigrcorn-transports==0.3.16.dev11",
+    "tigrcorn-protocols==0.3.16.dev11",
+    "tigrcorn-http==0.3.16.dev11",
+    "tigrcorn-security==0.3.16.dev11",
+    "tigrcorn-runtime==0.3.16.dev11",
+    "tigrcorn-static==0.3.16.dev11",
+    "tigrcorn-observability==0.3.16.dev11",
+    "tigrcorn-compat==0.3.16.dev11",
+    "tigrcorn-certification==0.3.16.dev11",
     "tigr-asgi-contract>=0.3.2",
 ]
 
