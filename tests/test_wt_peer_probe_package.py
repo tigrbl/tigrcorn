@@ -171,7 +171,7 @@ def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:
     assert _has_t012_baseline(registry, umbrella["id"])
     assert umbrella["plan"]["horizon"] == "current"
     assert umbrella["plan"]["slot"] == "webtransport-peer-probes"
-    assert umbrella["plan"]["target_claim_tier"] == "T3"
+    assert umbrella["plan"]["target_claim_tier"] == "T2"
     assert umbrella_test["kind"] == "playwright"
     assert umbrella_test["path"] == "packages/wt-peer-probes/tests/wt-peer-api-protocol.playwright.spec.ts"
     assert umbrella["id"] in umbrella_test["feature_ids"]
@@ -195,7 +195,7 @@ def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:
         assert _has_t012_baseline(registry, feature_id)
         assert browser_feature["plan"]["horizon"] == "current"
         assert browser_feature["plan"]["slot"] == "webtransport-peer-probes"
-        assert browser_feature["plan"]["target_claim_tier"] == "T3"
+        assert browser_feature["plan"]["target_claim_tier"] == "T2"
         assert umbrella_feature_id in browser_feature.get("requires", []) or _has_t012_baseline(registry, feature_id)
         assert package_feature_id in browser_feature.get("requires", []) or _has_t012_baseline(registry, feature_id)
         assert browser_test["kind"] == "playwright"
