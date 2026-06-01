@@ -9,6 +9,8 @@ from tigrcorn_core.types import ASGIApp, Message, Scope
 
 AppInterface = Literal["auto", "tigr-asgi-contract", "asgi3"]
 APP_INTERFACE_VALUES: tuple[AppInterface, ...] = ("auto", "tigr-asgi-contract", "asgi3")
+ResolvedAppInterface = Literal["tigr-asgi-contract", "asgi3"]
+DispatchSource = Literal["explicit", "auto-marker", "auto-signature"]
 
 Receive = Callable[[], Awaitable[Message]]
 Send = Callable[[Message], Awaitable[None]]
@@ -34,9 +36,21 @@ class NativeContractApp:
 
 @dataclass(frozen=True, slots=True)
 class DispatchSelection:
-    interface: Literal["tigr-asgi-contract", "asgi3"]
+    interface: ResolvedAppInterface
     app: ASGIApp
     native: bool
+    requested_interface: AppInterface = "auto"
+    source: DispatchSource = "explicit"
+    reason: str = ""
+
+    def as_metadata(self) -> dict[str, str | bool]:
+        return {
+            "interface": self.interface,
+            "requested_interface": self.requested_interface,
+            "source": self.source,
+            "native": self.native,
+            "reason": self.reason,
+        }
 
 
 def native_contract_app(
@@ -68,6 +82,13 @@ def is_native_contract_app(app: Any) -> bool:
     return isinstance(app, NativeContractApp) or getattr(app, "__tigrcorn_app_interface__", None) == "tigr-asgi-contract"
 
 
+def normalize_app_interface(value: str | None) -> AppInterface:
+    normalized = str(value or "auto").strip().lower().replace("_", "-")
+    if normalized not in APP_INTERFACE_VALUES:
+        raise AppInterfaceError(f"unsupported app interface: {value!r}")
+    return normalized  # type: ignore[return-value]
+
+
 def _as_native(app: Any) -> NativeContractApp:
     if isinstance(app, NativeContractApp):
         return app
@@ -84,22 +105,49 @@ def _is_unambiguous_asgi3(app: Any) -> bool:
 
 
 def resolve_app_dispatch(app: Any, interface: AppInterface = "auto") -> DispatchSelection:
-    if interface not in APP_INTERFACE_VALUES:
-        raise AppInterfaceError(f"unsupported app interface: {interface!r}")
-    if interface == "tigr-asgi-contract":
+    requested = normalize_app_interface(interface)
+    if requested == "tigr-asgi-contract":
         if not is_native_contract_app(app):
             raise AppInterfaceError("explicit tigr-asgi-contract selection requires a native contract app marker or wrapper")
-        return DispatchSelection("tigr-asgi-contract", _as_native(app), True)
-    if interface == "asgi3":
+        return DispatchSelection(
+            "tigr-asgi-contract",
+            _as_native(app),
+            True,
+            requested_interface=requested,
+            source="explicit",
+            reason="explicit native contract interface selection",
+        )
+    if requested == "asgi3":
         try:
             assert_asgi3_app(app)
         except Exception as exc:
             raise AppInterfaceError("explicit asgi3 selection requires an ASGI 3 callable") from exc
-        return DispatchSelection("asgi3", app, False)
+        return DispatchSelection(
+            "asgi3",
+            app,
+            False,
+            requested_interface=requested,
+            source="explicit",
+            reason="explicit ASGI 3 interface selection",
+        )
 
     if is_native_contract_app(app):
-        return DispatchSelection("tigr-asgi-contract", _as_native(app), True)
+        return DispatchSelection(
+            "tigr-asgi-contract",
+            _as_native(app),
+            True,
+            requested_interface=requested,
+            source="auto-marker",
+            reason="native contract app marker selected before signature introspection",
+        )
     if _is_unambiguous_asgi3(app):
         assert_asgi3_app(app)
-        return DispatchSelection("asgi3", app, False)
+        return DispatchSelection(
+            "asgi3",
+            app,
+            False,
+            requested_interface=requested,
+            source="auto-signature",
+            reason="unambiguous ASGI 3 callable signature",
+        )
     raise AppInterfaceError("ambiguous or unsupported application interface; select asgi3 or tigr-asgi-contract explicitly")

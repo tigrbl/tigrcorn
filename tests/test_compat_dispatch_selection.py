@@ -15,6 +15,9 @@ class CompatDispatchSelectionTests(unittest.TestCase):
 
         self.assertEqual(selection.interface, "tigr-asgi-contract")
         self.assertTrue(selection.native)
+        self.assertEqual(selection.requested_interface, "auto")
+        self.assertEqual(selection.source, "auto-marker")
+        self.assertIn("marker", selection.reason)
 
     def test_auto_selects_unambiguous_asgi3_callable(self) -> None:
         async def app(scope, receive, send):
@@ -24,6 +27,9 @@ class CompatDispatchSelectionTests(unittest.TestCase):
 
         self.assertEqual(selection.interface, "asgi3")
         self.assertFalse(selection.native)
+        self.assertEqual(selection.requested_interface, "auto")
+        self.assertEqual(selection.source, "auto-signature")
+        self.assertIn("signature", selection.reason)
 
     def test_auto_fails_closed_for_ambiguous_callable(self) -> None:
         def ambiguous(*args):
@@ -31,3 +37,14 @@ class CompatDispatchSelectionTests(unittest.TestCase):
 
         with self.assertRaises(AppInterfaceError):
             resolve_app_dispatch(ambiguous, "auto")
+
+    def test_explicit_selection_records_explicit_dispatch_source(self) -> None:
+        async def app(scope, receive, send):
+            return None
+
+        selection = resolve_app_dispatch(app, "asgi3")
+
+        self.assertEqual(selection.interface, "asgi3")
+        self.assertEqual(selection.requested_interface, "asgi3")
+        self.assertEqual(selection.source, "explicit")
+        self.assertFalse(selection.native)

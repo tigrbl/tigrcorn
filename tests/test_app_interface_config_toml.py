@@ -17,3 +17,12 @@ class AppInterfaceConfigTOMLTests(unittest.TestCase):
             config = config_from_source(path)
 
         self.assertEqual(config.app.interface, "asgi3")
+
+    def test_toml_app_interface_normalizes_underscore_alias(self) -> None:
+        with tempfile.TemporaryDirectory(dir=os.getcwd()) as tmp:
+            path = Path(tmp) / "tigrcorn.toml"
+            path.write_text('[app]\ninterface = "tigr_asgi_contract"\n', encoding="utf-8")
+
+            config = config_from_source(path)
+
+        self.assertEqual(config.app.interface, "tigr-asgi-contract")

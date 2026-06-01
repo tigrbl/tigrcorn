@@ -19,3 +19,16 @@ class AppInterfaceEnvVarTests(unittest.TestCase):
             config = build_config_from_sources(env_prefix="ALT")
 
         self.assertEqual(config.app.interface, "tigr-asgi-contract")
+
+    def test_nested_env_var_overrides_flat_env_var_for_same_prefix(self) -> None:
+        with patch.dict(
+            os.environ,
+            {
+                "TIGRCORN_APP_INTERFACE": "asgi3",
+                "TIGRCORN__APP__INTERFACE": "tigr-asgi-contract",
+            },
+            clear=False,
+        ):
+            config = build_config_from_sources()
+
+        self.assertEqual(config.app.interface, "tigr-asgi-contract")

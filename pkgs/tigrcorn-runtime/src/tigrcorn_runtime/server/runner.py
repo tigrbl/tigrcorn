@@ -47,7 +47,10 @@ class TigrCornServer:
     def __init__(self, app: ASGIApp, config: ServerConfig) -> None:
         selection = resolve_app_dispatch(app, config.app.interface)
         self.app = selection.app
+        self.app_dispatch_selection = selection
         self.app_interface = selection.interface
+        self.app_interface_source = selection.source
+        self.app_interface_reason = selection.reason
         self.config = config
         self._resolved_logging = resolve_logging_config(config.log_level, config=config.logging)
         self.logger = configure_logging(config.log_level, config=config.logging)
