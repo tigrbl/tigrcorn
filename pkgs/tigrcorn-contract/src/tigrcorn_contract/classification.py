@@ -126,7 +126,10 @@ def runtime_interface_available(interface: str) -> bool:
 
 
 def _normalize_product_surface(value: str) -> ProductSurfaceKind:
-    normalized = value.strip().lower().replace("_", "-")
+    try:
+        normalized = value.strip().lower().replace("_", "-")
+    except AttributeError as exc:
+        raise ConfigError(f"unsupported product surface: {value!r}") from exc
     if normalized == "json-rpc":
         normalized = "jsonrpc"
     if normalized not in _SUPPORTED_APP_INTERFACES | _UNSUPPORTED_COMPAT_INTERFACES | _RUNTIME_EXCLUDED_CLASSIFICATIONS:
@@ -165,6 +168,17 @@ def require_product_runtime_available(surface: str) -> ProductSurfaceStatus:
     status = product_surface_status(surface)
     if not status.runtime_available:
         raise ConfigError(f"unsupported runtime product surface: {surface!r} ({status.reason})")
+    return status
+
+
+def product_surface_excluded(surface: str) -> bool:
+    return not product_surface_status(surface).runtime_available
+
+
+def require_product_boundary_exclusion(surface: str) -> ProductSurfaceStatus:
+    status = product_surface_status(surface)
+    if status.runtime_available:
+        raise ConfigError(f"product surface is supported, not excluded: {surface!r}")
     return status
 
 
