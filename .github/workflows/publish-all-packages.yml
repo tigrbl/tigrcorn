@@ -386,6 +386,24 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - tigrcorn
+          - tigrcorn-asgi
+          - tigrcorn-certification
+          - tigrcorn-compat
+          - tigrcorn-config
+          - tigrcorn-contract
+          - tigrcorn-core
+          - tigrcorn-http
+          - tigrcorn-observability
+          - tigrcorn-protocols
+          - tigrcorn-runtime
+          - tigrcorn-security
+          - tigrcorn-static
+          - tigrcorn-transports
     steps:
       - name: Download Python distributions
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -400,10 +418,12 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          artifacts=(dist/*)
+          package_slug="${{ matrix.package }}"
+          package_slug="${package_slug//-/_}"
+          artifacts=(dist/${package_slug}-*)
           if [[ ${#artifacts[@]} -eq 0 ]]; then
-            echo "No Python distributions found in dist/." >&2
-            exit 1
+            echo "No Python distributions found for ${{ matrix.package }}; skipping."
+            exit 0
           fi
           for artifact in "${artifacts[@]}"; do
             echo "Publishing ${artifact} to TestPyPI with trusted publishing."
@@ -423,6 +443,24 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - tigrcorn
+          - tigrcorn-asgi
+          - tigrcorn-certification
+          - tigrcorn-compat
+          - tigrcorn-config
+          - tigrcorn-contract
+          - tigrcorn-core
+          - tigrcorn-http
+          - tigrcorn-observability
+          - tigrcorn-protocols
+          - tigrcorn-runtime
+          - tigrcorn-security
+          - tigrcorn-static
+          - tigrcorn-transports
     steps:
       - name: Download Python distributions
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -437,10 +475,12 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          artifacts=(dist/*)
+          package_slug="${{ matrix.package }}"
+          package_slug="${package_slug//-/_}"
+          artifacts=(dist/${package_slug}-*)
           if [[ ${#artifacts[@]} -eq 0 ]]; then
-            echo "No Python distributions found in dist/." >&2
-            exit 1
+            echo "No Python distributions found for ${{ matrix.package }}; skipping."
+            exit 0
           fi
           for artifact in "${artifacts[@]}"; do
             echo "Publishing ${artifact} to PyPI with trusted publishing."
