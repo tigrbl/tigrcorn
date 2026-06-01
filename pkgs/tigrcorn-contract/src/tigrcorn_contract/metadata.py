@@ -111,7 +111,10 @@ def endpoint_metadata(kind: str, **fields: Any) -> EndpointMetadata:
         raise ProtocolError("endpoint kind must be a string") from exc
     if endpoint_kind not in {"tcp", "uds", "fd", "pipe", "inproc"}:
         raise ProtocolError(f"unsupported endpoint kind: {kind!r}")
-    metadata = EndpointMetadata(kind=endpoint_kind, **fields)  # type: ignore[arg-type]
+    try:
+        metadata = EndpointMetadata(kind=endpoint_kind, **fields)  # type: ignore[arg-type]
+    except TypeError as exc:
+        raise ProtocolError(f"invalid endpoint metadata fields for {endpoint_kind!r}") from exc
     validate_endpoint_metadata(metadata)
     return metadata
 
@@ -119,10 +122,16 @@ def endpoint_metadata(kind: str, **fields: Any) -> EndpointMetadata:
 def validate_endpoint_metadata(metadata: EndpointMetadata) -> None:
     if metadata.kind == "tcp" and (not metadata.address or metadata.port is None):
         raise ProtocolError("tcp endpoint metadata requires address and port")
+    if metadata.kind == "tcp" and not isinstance(metadata.port, int):
+        raise ProtocolError("tcp endpoint metadata port must be an integer")
+    if metadata.kind == "tcp" and not (0 <= metadata.port <= 65_535):
+        raise ProtocolError("tcp endpoint metadata port must be between 0 and 65535")
     if metadata.kind == "uds" and not metadata.address:
         raise ProtocolError("uds endpoint metadata requires socket path")
     if metadata.kind == "fd" and metadata.fd is None:
         raise ProtocolError("fd endpoint metadata requires fd")
+    if metadata.kind == "fd" and (not isinstance(metadata.fd, int) or metadata.fd < 0):
+        raise ProtocolError("fd endpoint metadata fd must be a non-negative integer")
     if metadata.kind == "pipe" and not metadata.pipe_name:
         raise ProtocolError("pipe endpoint metadata requires pipe_name")
     if metadata.kind == "inproc" and not metadata.inproc_name:
@@ -173,8 +182,16 @@ def security_metadata(**fields: Any) -> SecurityMetadata:
 
 
 def require_lossless_metadata(name: str, value: Any) -> Any:
-    if value in (None, "", (), [], {}):
+    if value in (None, "", b"", (), [], {}):
         raise ProtocolError(f"required metadata would be lossy: {name}")
+    if isinstance(value, str) and not value.strip():
+        raise ProtocolError(f"required metadata would be lossy: {name}")
+    if isinstance(value, dict):
+        for key, item in value.items():
+            require_lossless_metadata(f"{name}.{key}", item)
+    elif isinstance(value, (list, tuple)):
+        for index, item in enumerate(value):
+            require_lossless_metadata(f"{name}[{index}]", item)
     return value
 
 

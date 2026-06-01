@@ -326,12 +326,23 @@ def _normalize_completion_level(level: str) -> str:
 def validate_event_order(events: list[dict[str, Any]], *, required_first: str, terminal_prefixes: tuple[str, ...]) -> None:
     if not events:
         raise ProtocolError("contract event sequence is empty")
+    if not required_first:
+        raise ProtocolError("contract event order requires a first event type")
+    if not terminal_prefixes:
+        raise ProtocolError("contract event order requires terminal prefixes")
     if events[0].get("type") != required_first:
         raise ProtocolError(f"first contract event must be {required_first}")
     closed = False
-    for event in events:
-        event_type = str(event.get("type", ""))
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            raise ProtocolError("contract event must be a mapping")
+        event_type_raw = event.get("type")
+        if not isinstance(event_type_raw, str) or not event_type_raw:
+            raise ProtocolError("contract event type must be a non-empty string")
+        event_type = event_type_raw
         if closed:
             raise ProtocolError("contract event emitted after terminal event")
+        if index > 0 and event_type == required_first:
+            raise ProtocolError(f"contract event sequence repeated first event {required_first}")
         if event_type.startswith(terminal_prefixes):
             closed = True

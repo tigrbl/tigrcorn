@@ -10,7 +10,11 @@ _PATH_SCOPE_TYPES = {"http", "websocket", "webtransport", "tigrcorn.stream"}
 
 
 def validate_scope(scope: dict[str, Any]) -> None:
+    if not isinstance(scope, dict):
+        raise ProtocolError("contract scope must be a mapping")
     scope_type = scope.get("type")
+    if not isinstance(scope_type, str):
+        raise ProtocolError("contract scope type must be a string")
     if scope_type not in SUPPORTED_SCOPE_TYPES:
         raise ProtocolError(f"unsupported contract scope type: {scope_type!r}")
     if scope_type in _PATH_SCOPE_TYPES and not isinstance(scope.get("path", "/"), str):
@@ -23,8 +27,12 @@ def validate_scope(scope: dict[str, Any]) -> None:
         raise ProtocolError("lifespan scope state must be a mapping")
     if scope_type == "webtransport":
         extensions = scope.get("extensions", {})
+        if not isinstance(extensions, dict):
+            raise ProtocolError("webtransport scope extensions must be a mapping")
         if "h3" not in extensions or "quic" not in extensions:
             raise ProtocolError("webtransport scope requires h3 and quic extension metadata")
+        if not isinstance(extensions.get("h3"), dict) or not isinstance(extensions.get("quic"), dict):
+            raise ProtocolError("webtransport h3 and quic extension metadata must be mappings")
     if scope_type == "tigrcorn.datagram" and "datagram_id" in scope and not scope["datagram_id"]:
         raise ProtocolError("datagram scope datagram_id must not be empty")
 
