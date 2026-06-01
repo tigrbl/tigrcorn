@@ -9,6 +9,15 @@ EndpointKind = Literal["tcp", "uds", "fd", "pipe", "inproc"]
 IdentityKind = Literal["tcp", "unix", "quic", "http2", "http3", "webtransport-session", "webtransport-stream", "datagram"]
 
 
+_ENDPOINT_ALLOWED_FIELDS: dict[str, set[str]] = {
+    "tcp": {"address", "port"},
+    "uds": {"address"},
+    "fd": {"fd"},
+    "pipe": {"pipe_name"},
+    "inproc": {"inproc_name"},
+}
+
+
 @dataclass(frozen=True, slots=True)
 class EndpointMetadata:
     kind: EndpointKind
@@ -119,47 +128,128 @@ def endpoint_metadata(kind: str, **fields: Any) -> EndpointMetadata:
     return metadata
 
 
+def _require_non_empty_string(name: str, value: Any) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ProtocolError(f"{name} must be a non-empty string")
+    return value
+
+
+def _require_metadata_mapping(name: str, value: Any) -> dict[str, Any]:
+    if value is None:
+        return {}
+    if not isinstance(value, dict):
+        raise ProtocolError(f"{name} metadata must be a mapping")
+    if value:
+        require_lossless_metadata(name, value)
+    return value
+
+
+def _reject_irrelevant_endpoint_fields(metadata: EndpointMetadata) -> None:
+    allowed = _ENDPOINT_ALLOWED_FIELDS[metadata.kind]
+    payload = metadata.as_dict()
+    extras = sorted(key for key in payload if key != "kind" and key not in allowed)
+    if extras:
+        raise ProtocolError(f"{metadata.kind} endpoint metadata contains irrelevant fields: {', '.join(extras)}")
+
+
 def validate_endpoint_metadata(metadata: EndpointMetadata) -> None:
+    _reject_irrelevant_endpoint_fields(metadata)
     if metadata.kind == "tcp" and (not metadata.address or metadata.port is None):
         raise ProtocolError("tcp endpoint metadata requires address and port")
+    if metadata.kind == "tcp":
+        _require_non_empty_string("tcp endpoint address", metadata.address)
     if metadata.kind == "tcp" and not isinstance(metadata.port, int):
+        raise ProtocolError("tcp endpoint metadata port must be an integer")
+    if metadata.kind == "tcp" and isinstance(metadata.port, bool):
         raise ProtocolError("tcp endpoint metadata port must be an integer")
     if metadata.kind == "tcp" and not (0 <= metadata.port <= 65_535):
         raise ProtocolError("tcp endpoint metadata port must be between 0 and 65535")
     if metadata.kind == "uds" and not metadata.address:
         raise ProtocolError("uds endpoint metadata requires socket path")
+    if metadata.kind == "uds":
+        _require_non_empty_string("uds endpoint address", metadata.address)
     if metadata.kind == "fd" and metadata.fd is None:
         raise ProtocolError("fd endpoint metadata requires fd")
-    if metadata.kind == "fd" and (not isinstance(metadata.fd, int) or metadata.fd < 0):
+    if metadata.kind == "fd" and (not isinstance(metadata.fd, int) or isinstance(metadata.fd, bool) or metadata.fd < 0):
         raise ProtocolError("fd endpoint metadata fd must be a non-negative integer")
     if metadata.kind == "pipe" and not metadata.pipe_name:
         raise ProtocolError("pipe endpoint metadata requires pipe_name")
+    if metadata.kind == "pipe":
+        _require_non_empty_string("pipe endpoint name", metadata.pipe_name)
     if metadata.kind == "inproc" and not metadata.inproc_name:
         raise ProtocolError("inproc endpoint metadata requires inproc_name")
+    if metadata.kind == "inproc":
+        _require_non_empty_string("inproc endpoint name", metadata.inproc_name)
 
 
 def transport_identity(kind: str, connection_id: str, **fields: Any) -> ConnectionIdentity:
-    normalized = kind.strip().lower()
+    try:
+        normalized = kind.strip().lower()
+    except AttributeError as exc:
+        raise ProtocolError("connection identity kind must be a string") from exc
     if normalized not in {"tcp", "unix", "quic"}:
         raise ProtocolError(f"unsupported connection identity kind: {kind!r}")
-    if not connection_id:
-        raise ProtocolError("connection identity requires connection_id")
-    return ConnectionIdentity(kind=normalized, connection_id=connection_id, **fields)  # type: ignore[arg-type]
+    _require_non_empty_string("connection identity connection_id", connection_id)
+    metadata = _require_metadata_mapping("connection identity", fields.pop("metadata", None))
+    try:
+        identity = ConnectionIdentity(kind=normalized, connection_id=connection_id, metadata=metadata, **fields)  # type: ignore[arg-type]
+    except TypeError as exc:
+        raise ProtocolError(f"invalid connection identity fields for {normalized!r}") from exc
+    validate_connection_identity(identity)
+    return identity
+
+
+def validate_connection_identity(identity: ConnectionIdentity) -> None:
+    if identity.kind not in {"tcp", "unix", "quic"}:
+        raise ProtocolError(f"unsupported connection identity kind: {identity.kind!r}")
+    _require_non_empty_string("connection identity connection_id", identity.connection_id)
+    if identity.peer is not None:
+        _require_non_empty_string("connection identity peer", identity.peer)
+    if identity.local is not None:
+        _require_non_empty_string("connection identity local", identity.local)
+    _require_metadata_mapping("connection identity", identity.metadata)
 
 
 def stream_identity(kind: str, connection_id: str, stream_id: str, **fields: Any) -> StreamIdentity:
-    normalized = kind.strip().lower()
+    try:
+        normalized = kind.strip().lower()
+    except AttributeError as exc:
+        raise ProtocolError("stream identity kind must be a string") from exc
     if normalized not in {"http2", "http3", "webtransport-session", "webtransport-stream"}:
         raise ProtocolError(f"unsupported stream identity kind: {kind!r}")
-    if not connection_id or not stream_id:
-        raise ProtocolError("stream identity requires connection_id and stream_id")
-    return StreamIdentity(kind=normalized, connection_id=connection_id, stream_id=stream_id, **fields)  # type: ignore[arg-type]
+    _require_non_empty_string("stream identity connection_id", connection_id)
+    _require_non_empty_string("stream identity stream_id", stream_id)
+    try:
+        identity = StreamIdentity(kind=normalized, connection_id=connection_id, stream_id=stream_id, **fields)  # type: ignore[arg-type]
+    except TypeError as exc:
+        raise ProtocolError(f"invalid stream identity fields for {normalized!r}") from exc
+    validate_stream_identity(identity)
+    return identity
+
+
+def validate_stream_identity(identity: StreamIdentity) -> None:
+    if identity.kind not in {"http2", "http3", "webtransport-session", "webtransport-stream", "datagram"}:
+        raise ProtocolError(f"unsupported stream identity kind: {identity.kind!r}")
+    _require_non_empty_string("stream identity connection_id", identity.connection_id)
+    _require_non_empty_string("stream identity stream_id", identity.stream_id)
+    if identity.session_id is not None:
+        _require_non_empty_string("stream identity session_id", identity.session_id)
+    if identity.kind != "datagram" and identity.datagram_id is not None:
+        raise ProtocolError("non-datagram stream identity must not include datagram_id")
+    if identity.kind == "datagram":
+        _require_non_empty_string("datagram identity datagram_id", identity.datagram_id)
+        if identity.stream_id != identity.datagram_id:
+            raise ProtocolError("datagram identity stream_id must equal datagram_id")
 
 
 def datagram_identity(connection_id: str, datagram_id: str, *, session_id: str | None = None) -> StreamIdentity:
-    if not connection_id or not datagram_id:
-        raise ProtocolError("datagram identity requires connection_id and datagram_id")
-    return StreamIdentity(kind="datagram", connection_id=connection_id, stream_id=datagram_id, datagram_id=datagram_id, session_id=session_id)
+    _require_non_empty_string("datagram identity connection_id", connection_id)
+    _require_non_empty_string("datagram identity datagram_id", datagram_id)
+    if session_id is not None:
+        _require_non_empty_string("datagram identity session_id", session_id)
+    identity = StreamIdentity(kind="datagram", connection_id=connection_id, stream_id=datagram_id, datagram_id=datagram_id, session_id=session_id)
+    validate_stream_identity(identity)
+    return identity
 
 
 def unit_identity(unit_id: str, *, family: str, binding: str, **fields: Any) -> UnitIdentity:
