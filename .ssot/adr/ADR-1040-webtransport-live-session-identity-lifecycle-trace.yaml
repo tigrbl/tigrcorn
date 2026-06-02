@@ -1,0 +1,17 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1040"
+number: 1040
+slug: "webtransport-live-session-identity-lifecycle-trace"
+title: "WebTransport live sessions require transport-owned identity and lifecycle traces"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn owns QUIC, HTTP/3, and WebTransport connection/session lifecycle. Live downstream applications must receive stable transport-owned session identity and traces for packet receive, session create, handshake complete, CONNECT response, stream dispatch, datagram dispatch, close, and cleanup. Session, stream, and datagram ownership must remain keyed by actual QUIC/WebTransport runtime state, including sequential and concurrent sessions on one listener."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn owns QUIC, HTTP/3, and WebTransport connection/session lifecycle. Live downstream applications must receive stable transport-owned session identity and traces for packet receive, session create, handshake complete, CONNECT response, stream dispatch, datagram dispatch, close, and cleanup. Session, stream, and datagram ownership must remain keyed by actual QUIC/WebTransport runtime state, including sequential and concurrent sessions on one listener.

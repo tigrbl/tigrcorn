@@ -1,0 +1,20 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2054"
+number: 2054
+slug: "webtransport-live-session-identity-lifecycle-trace-contract"
+title: "WebTransport live session identity and lifecycle trace contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener: stable session identity, lifecycle trace events, session-scoped streams and datagrams, bidi/unidi stream-kind metadata, cleanup after close, and stale partial-handshake protection."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener: stable session identity, lifecycle trace events, session-scoped streams and datagrams, bidi/unidi stream-kind metadata, cleanup after close, and stale partial-handshake protection.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1040"
