@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.fixtures_third_party.wt_stream_client import probe_wt_stream
 from tigrcorn.config.load import build_config
 from tigrcorn.constants import DEFAULT_QUIC_SECRET
 from tigrcorn.protocols.http3 import HTTP3ConnectionCore
@@ -49,6 +50,82 @@ async def _wt_child_stream_echo_app(scope, receive, send, *, stream_received=Non
             return
         if event["type"] in {"webtransport.close", "webtransport.disconnect"}:
             return
+
+
+async def _wt_multi_lane_echo_app(scope, receive, send) -> None:
+    assert scope["type"] == "webtransport"
+    connect = await receive()
+    assert connect["type"] == "webtransport.connect"
+    session_id = connect["session_id"]
+    assert scope["session_id"] == session_id
+    assert scope["ext"]["webtransport"]["session_id"] == session_id
+    await send({"type": "webtransport.accept", "session_id": session_id})
+    while True:
+        event = await receive()
+        if event["type"] == "webtransport.stream.receive":
+            if event.get("stream_direction") == "client_to_server":
+                continue
+            await send(
+                {
+                    "type": "webtransport.stream.send",
+                    "session_id": session_id,
+                    "stream_id": event["stream_id"],
+                    "data": b"echo:" + event["data"],
+                    "more": False,
+                }
+            )
+        elif event["type"] == "webtransport.datagram.receive":
+            await send(
+                {
+                    "type": "webtransport.datagram.send",
+                    "session_id": session_id,
+                    "datagram_id": event["datagram_id"],
+                    "data": b"dg:" + event["data"],
+                }
+            )
+        elif event["type"] in {"webtransport.close", "webtransport.disconnect"}:
+            return
+
+
+def _trace_events(trace: list[dict[str, object]]) -> set[str]:
+    return {str(row["event"]) for row in trace}
+
+
+def _trace_session_ids(trace: list[dict[str, object]]) -> set[str]:
+    return {str(row["session_id"]) for row in trace if row.get("session_id")}
+
+
+def _assert_no_bad_trace_events(testcase: unittest.TestCase, trace: list[dict[str, object]]) -> None:
+    bad = [
+        row for row in trace
+        if str(row.get("event", "")).endswith((".orphan", ".send.drop")) or row.get("event") == "quic.packet.decode_error"
+    ]
+    testcase.assertEqual(bad, [])
+
+
+async def _start_wt_server(app=_wt_multi_lane_echo_app):
+    cert_pem, key_pem = generate_self_signed_certificate("server.example")
+    tmpdir = tempfile.TemporaryDirectory()
+    certfile = Path(tmpdir.name) / "server-cert.pem"
+    keyfile = Path(tmpdir.name) / "server-key.pem"
+    certfile.write_bytes(cert_pem)
+    keyfile.write_bytes(key_pem)
+    config = build_config(
+        transport="udp",
+        host="127.0.0.1",
+        port=0,
+        lifespan="off",
+        http_versions=["3"],
+        protocols=["webtransport"],
+        ssl_certfile=str(certfile),
+        ssl_keyfile=str(keyfile),
+        webtransport_path="/wt",
+        webtransport_origins=["https://localhost:8088"],
+    )
+    server = TigrCornServer(app, config)
+    await server.start()
+    port = server._listeners[0].transport.get_extra_info("sockname")[1]
+    return server, port, cert_pem, tmpdir
 
 
 class WebTransportBidiStreamContextTests(unittest.IsolatedAsyncioTestCase):
@@ -169,6 +246,302 @@ class WebTransportBidiStreamContextTests(unittest.IsolatedAsyncioTestCase):
             finally:
                 sock.close()
                 await server.close()
+
+    async def test_live_webtransport_two_sequential_sessions_roundtrip(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            first = await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"seq00001",
+                child_payloads=(b"a1", b"a2"),
+                datagram_payload=b"adg",
+                send_unidi=True,
+            )
+            await asyncio.sleep(0.05)
+            second = await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"seq00002",
+                child_payloads=(b"b1", b"b2"),
+                datagram_payload=b"bdg",
+                send_unidi=True,
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertEqual(first.stream_bodies[4], b"echo:a1")
+        self.assertEqual(first.stream_bodies[8], b"echo:a2")
+        self.assertEqual(first.datagram_body, b"dg:adg")
+        self.assertEqual(second.stream_bodies[4], b"echo:b1")
+        self.assertEqual(second.stream_bodies[8], b"echo:b2")
+        self.assertEqual(second.datagram_body, b"dg:bdg")
+        self.assertGreaterEqual(len(_trace_session_ids(trace)), 2)
+        self.assertGreaterEqual(sum(1 for row in trace if row["event"] == "quic.handshake.complete"), 2)
+        self.assertGreaterEqual(sum(1 for row in trace if row["event"] == "webtransport.connect.response"), 2)
+        self.assertIn("quic.connection.close.receive", _trace_events(trace))
+        _assert_no_bad_trace_events(self, trace)
+
+    async def test_live_webtransport_many_sequential_sessions_roundtrip(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            for index in range(5):
+                response = await probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=f"many{index:04d}".encode("ascii"),
+                    child_payloads=(f"{index}-a".encode("ascii"), f"{index}-b".encode("ascii")),
+                    datagram_payload=f"{index}-dg".encode("ascii"),
+                    send_unidi=True,
+                )
+                self.assertEqual(response.stream_bodies[4], b"echo:" + f"{index}-a".encode("ascii"))
+                self.assertEqual(response.stream_bodies[8], b"echo:" + f"{index}-b".encode("ascii"))
+                self.assertEqual(response.datagram_body, b"dg:" + f"{index}-dg".encode("ascii"))
+                await asyncio.sleep(0.02)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertGreaterEqual(len(_trace_session_ids(trace)), 5)
+        self.assertGreaterEqual(sum(1 for row in trace if row["event"] == "webtransport.connect.response"), 5)
+        _assert_no_bad_trace_events(self, trace)
+
+    async def test_live_webtransport_concurrent_sessions_are_isolated(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            first, second = await asyncio.gather(
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"conc0001",
+                    child_payloads=(b"left-a", b"left-b"),
+                    datagram_payload=b"left-dg",
+                    send_unidi=True,
+                ),
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"conc0002",
+                    child_payloads=(b"right-a", b"right-b"),
+                    datagram_payload=b"right-dg",
+                    send_unidi=True,
+                ),
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertEqual(first.stream_bodies[4], b"echo:left-a")
+        self.assertEqual(first.stream_bodies[8], b"echo:left-b")
+        self.assertEqual(first.datagram_body, b"dg:left-dg")
+        self.assertEqual(second.stream_bodies[4], b"echo:right-a")
+        self.assertEqual(second.stream_bodies[8], b"echo:right-b")
+        self.assertEqual(second.datagram_body, b"dg:right-dg")
+        self.assertGreaterEqual(len(_trace_session_ids(trace)), 2)
+        stream_dispatches = [row for row in trace if row["event"] == "webtransport.stream.dispatch"]
+        self.assertGreaterEqual(len(stream_dispatches), 6)
+        for row in stream_dispatches:
+            self.assertIn("session_id", row)
+            self.assertIn("owner_stream_id", row)
+        _assert_no_bad_trace_events(self, trace)
+
+    async def test_webtransport_trace_contains_lifecycle_events_per_session(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"life0001",
+                child_payloads=(b"trace-a", b"trace-b"),
+                datagram_payload=b"trace-dg",
+                send_unidi=True,
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        events = _trace_events(trace)
+        for expected in {
+            "quic.packet.receive",
+            "quic.session.create",
+            "quic.handshake.complete",
+            "webtransport.connect.start",
+            "webtransport.connect.response",
+            "webtransport.stream.dispatch",
+            "webtransport.stream.send",
+            "webtransport.datagram.dispatch",
+            "webtransport.datagram.send",
+            "quic.connection.close.receive",
+            "quic.session.close",
+            "webtransport.session.cleanup",
+        }:
+            self.assertIn(expected, events)
+        self.assertEqual(len(_trace_session_ids([row for row in trace if row.get("session_id")])), 1)
+
+    async def test_webtransport_stream_ids_are_session_scoped(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            first, second = await asyncio.gather(
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"strm0001",
+                    child_payloads=(b"s1-a", b"s1-b"),
+                    datagram_payload=b"s1-dg",
+                ),
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"strm0002",
+                    child_payloads=(b"s2-a", b"s2-b"),
+                    datagram_payload=b"s2-dg",
+                ),
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertEqual(first.stream_bodies[4], b"echo:s1-a")
+        self.assertEqual(second.stream_bodies[4], b"echo:s2-a")
+        dispatches_for_stream_4 = [row for row in trace if row["event"] == "webtransport.stream.dispatch" and row.get("stream_id") == 4]
+        self.assertGreaterEqual(len({row["session_id"] for row in dispatches_for_stream_4}), 2)
+
+    async def test_webtransport_datagrams_are_session_scoped(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            first, second = await asyncio.gather(
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"dgrm0001",
+                    child_payloads=(b"d1-a", b"d1-b"),
+                    datagram_payload=b"d1",
+                ),
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"dgrm0002",
+                    child_payloads=(b"d2-a", b"d2-b"),
+                    datagram_payload=b"d2",
+                ),
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertEqual(first.datagram_body, b"dg:d1")
+        self.assertEqual(second.datagram_body, b"dg:d2")
+        dispatches = [row for row in trace if row["event"] == "webtransport.datagram.dispatch"]
+        self.assertGreaterEqual(len({row["session_id"] for row in dispatches}), 2)
+        _assert_no_bad_trace_events(self, trace)
+
+    async def test_webtransport_unidi_and_bidi_streams_are_distinguished(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"lane0001",
+                child_payloads=(b"bidi-a", b"bidi-b"),
+                datagram_payload=b"lane-dg",
+                send_unidi=True,
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        directions = {row.get("stream_direction") for row in trace if row["event"] == "webtransport.stream.dispatch"}
+        self.assertIn("bidi", directions)
+        self.assertIn("client_to_server", directions)
+
+    async def test_webtransport_partial_handshake_does_not_block_later_session(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            partial = QuicConnection(is_client=True, secret=DEFAULT_QUIC_SECRET, local_cid=b"part0001")
+            partial.configure_handshake(
+                QuicTlsHandshakeDriver(
+                    is_client=True,
+                    server_name="server.example",
+                    trusted_certificates=[cert_pem],
+                )
+            )
+            sock.sendto(partial.start_handshake(), ("127.0.0.1", port))
+            sock.setblocking(False)
+            await asyncio.sleep(0.05)
+            response = await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"part0002",
+                child_payloads=(b"valid-a", b"valid-b"),
+                datagram_payload=b"valid-dg",
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            if sock.fileno() != -1:
+                sock.close()
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertEqual(response.stream_bodies[4], b"echo:valid-a")
+        self.assertIn("quic.handshake.complete", _trace_events(trace))
+        self.assertIn("webtransport.connect.response", _trace_events(trace))
+
+    async def test_webtransport_second_session_post_initial_progresses(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"post0001",
+                child_payloads=(b"first-a", b"first-b"),
+                datagram_payload=b"first-dg",
+            )
+            await asyncio.sleep(0.05)
+            await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"post0002",
+                child_payloads=(b"second-a", b"second-b"),
+                datagram_payload=b"second-dg",
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertGreaterEqual(sum(1 for row in trace if row["event"] == "quic.handshake.complete"), 2, trace)
+        self.assertGreaterEqual(sum(1 for row in trace if row["event"] == "webtransport.connect.response"), 2, trace)
 
     async def test_active_webtransport_session_claims_child_bidi_stream_context(self) -> None:
         stream_received = asyncio.Event()

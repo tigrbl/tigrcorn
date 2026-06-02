@@ -36,7 +36,8 @@ class _HTTP3WebTransportSession:
         self.scheme = scheme
         self.endpoint = endpoint
         self.work_lease = work_lease
-        self.session_id = f"h3-{stream_id}"
+        h3_session_id = getattr(session, "runtime_id", "") or session.quic.local_cid.hex() or "session"
+        self.session_id = f"h3-{h3_session_id}-{stream_id}"
         self.receive = QueueReceive(max_size=handler.config.webtransport.max_streams)
         self.task: asyncio.Task[None] | None = None
         self.accepted = False
@@ -73,6 +74,7 @@ class _HTTP3WebTransportSession:
                     "alpn": "h3",
                     "secure": self.scheme in {"https", "wss"},
                     "quic": {"connection_id": self.session.quic.local_cid.hex()},
+                    "h3_session_id": getattr(self.session, "runtime_id", ""),
                 },
                 "webtransport": {
                     "supports_bidi_streams": True,
@@ -133,6 +135,7 @@ class _HTTP3WebTransportSession:
             **self._trace_session_fields(),
             stream_id=message.get("stream_id", self.stream_id),
             session_id=self.session_id,
+            owner_stream_id=self.stream_id,
             type=str(typ),
             bytes=len(bytes(message.get("data", b""))) if message.get("data") is not None else None,
         )
@@ -210,7 +213,9 @@ class _HTTP3WebTransportSession:
                 **self._trace_session_fields(),
                 stream_id=event_stream_id,
                 session_id=self.session_id,
+                owner_stream_id=self.stream_id,
                 type="webtransport.stream.receive",
+                stream_direction=stream_direction,
                 bytes=len(data),
                 fin=bool(end_stream),
             )
@@ -251,6 +256,7 @@ class _HTTP3WebTransportSession:
             "webtransport.asgi.receive",
             **self._trace_session_fields(),
             session_id=self.session_id,
+            owner_stream_id=self.stream_id,
             type="webtransport.datagram.receive",
             datagram_id=datagram_id,
             bytes=len(data),

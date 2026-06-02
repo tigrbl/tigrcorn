@@ -75,6 +75,9 @@ IMPLEMENTED_WEBTRANSPORT_FEATURE_IDS = {
     "feat:fixture-asgi-webtransport-scope",
     "feat:fixture-webtransport-protocol",
     "feat:webtransport-h3-quic-datagram-runtime-dispatch",
+    "feat:webtransport-live-session-lifecycle-trace",
+    "feat:webtransport-live-session-identity-isolation",
+    "feat:webtransport-live-stream-datagram-ownership",
 }
 PLANNED_WEBTRANSPORT_FEATURE_IDS: set[str] = set()
 

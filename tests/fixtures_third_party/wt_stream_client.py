@@ -21,7 +21,7 @@ from tigrcorn.protocols.http3.codec import (
 )
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver
-from tigrcorn.utils.bytes import encode_quic_varint
+from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
 
 
 @dataclass(frozen=True)
@@ -36,6 +36,8 @@ class WebTransportStreamProbeResult:
     quic_events: tuple[str, ...]
     datagrams_sent: int
     datagrams_received: int
+    stream_bodies: dict[int, bytes]
+    datagram_body: bytes
 
     def header_map(self) -> dict[bytes, bytes]:
         return {name.lower(): value for name, value in self.headers}
@@ -55,6 +57,8 @@ class WebTransportStreamProbeResult:
             "quic_events": list(self.quic_events),
             "datagrams_sent": self.datagrams_sent,
             "datagrams_received": self.datagrams_received,
+            "stream_bodies": {str(key): value.decode("utf-8", errors="replace") for key, value in self.stream_bodies.items()},
+            "datagram_body": self.datagram_body.decode("utf-8", errors="replace"),
         }
 
 
@@ -69,6 +73,10 @@ async def probe_wt_stream(
     trusted_certificates: list[bytes] | None = None,
     timeout: float = 5.0,
     local_cid: bytes = b"wtprobe1",
+    child_payloads: tuple[bytes, ...] = (),
+    datagram_payload: bytes | None = None,
+    send_unidi: bool = False,
+    close_connection: bool = True,
 ) -> WebTransportStreamProbeResult:
     target = (host, port)
     client = QuicConnection(is_client=True, secret=DEFAULT_QUIC_SECRET, local_cid=local_cid)
@@ -100,8 +108,9 @@ async def probe_wt_stream(
         datagrams_received += 1
         for event in client.receive_datagram(data):
             quic_events.append(event.kind)
-            if event.kind == "stream":
+            if event.kind in {"stream", "datagram"}:
                 stream_events.append(event)
+            if event.kind == "stream":
                 try:
                     state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
                 except Exception:
@@ -160,32 +169,68 @@ async def probe_wt_stream(
         if response_state is None:
             raise RuntimeError("webtransport probe did not receive CONNECT response headers")
 
-        child_stream_id = 4
-        child_payload = encode_quic_varint(0x41) + encode_quic_varint(stream_id) + payload
-        send(client.send_stream_data(child_stream_id, child_payload, fin=True))
-        child_body = bytearray()
-        child_fin = False
-        for _attempt in range(12):
-            _states, stream_events = await receive_once()
-            for event in stream_events:
-                if event.kind == "stream" and event.stream_id == child_stream_id:
-                    child_body.extend(event.data)
-                    child_fin = child_fin or event.fin
-            if child_body or child_fin:
-                break
+        requested_payloads = child_payloads or (payload,)
+        stream_bodies: dict[int, bytes] = {}
+        first_child_stream_id = 4
+        first_child_fin = False
+        for index, child_data in enumerate(requested_payloads):
+            child_stream_id = 4 + (index * 4)
+            child_payload = encode_quic_varint(0x41) + encode_quic_varint(stream_id) + child_data
+            send(client.send_stream_data(child_stream_id, child_payload, fin=True))
+            child_body = bytearray()
+            child_fin = False
+            for _attempt in range(12):
+                _states, stream_events = await receive_once()
+                for event in stream_events:
+                    if event.kind == "stream" and event.stream_id == child_stream_id:
+                        child_body.extend(event.data)
+                        child_fin = child_fin or event.fin
+                if child_body or child_fin:
+                    break
+            stream_bodies[child_stream_id] = bytes(child_body)
+            if index == 0:
+                first_child_fin = child_fin
+
+        if send_unidi:
+            unidi_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
+            unidi_payload = encode_quic_varint(0x54) + encode_quic_varint(stream_id) + b"unidi:" + payload
+            send(client.send_stream_data(unidi_stream_id, unidi_payload, fin=True))
+            await asyncio.sleep(0)
+
+        datagram_body = b""
+        if datagram_payload is not None:
+            datagram_wire_payload = encode_quic_varint(stream_id // 4) + datagram_payload
+            send(client.send_datagram_frame(datagram_wire_payload))
+            for _attempt in range(12):
+                _states, stream_events = await receive_once()
+                for event in stream_events:
+                    if event.kind == "datagram":
+                        try:
+                            _session_quarter_id, offset = decode_quic_varint(event.data, 0)
+                        except ValueError:
+                            continue
+                        datagram_body = event.data[offset:]
+                if datagram_body:
+                    break
+
+        if close_connection:
+            send(client.close(application=True))
+            await asyncio.sleep(0)
 
         header_map = {name.lower(): value for name, value in response_state.headers}
         return WebTransportStreamProbeResult(
-            stream_id=child_stream_id,
+            stream_id=first_child_stream_id,
             status=int(header_map.get(b":status", b"0")),
             headers=tuple(response_state.headers),
-            body=bytes(child_body),
+            body=stream_bodies.get(first_child_stream_id, b""),
             received_initial_headers=response_state.received_initial_headers,
-            ended=child_fin,
+            ended=first_child_fin,
             remote_settings=dict(core.state.remote_settings),
             quic_events=tuple(quic_events),
             datagrams_sent=datagrams_sent,
             datagrams_received=datagrams_received,
+            stream_bodies=stream_bodies,
+            datagram_body=datagram_body,
         )
     finally:
         sock.close()

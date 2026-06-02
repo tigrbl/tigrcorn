@@ -24,7 +24,7 @@ INIT_DIRS = (
 
 def test_committed_ssot_registry_is_current() -> None:
     committed = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
-    assert len(committed["features"]) == 340
+    assert len(committed["features"]) == 343
     assert not any(
         baseline.missing_tiers
         for baseline in iter_feature_baselines(committed)

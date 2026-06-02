@@ -130,7 +130,7 @@ async def _captured_webtransport_scope() -> dict:
     await transport.start()
     assert transport.task is not None
     await transport.task
-    assert captured["first_event"] == {"type": "webtransport.connect", "session_id": "h3-4"}
+    assert captured["first_event"] == {"type": "webtransport.connect", "session_id": "h3-local-cid-4"}
     scope = captured["scope"]
     assert isinstance(scope, dict)
     return scope

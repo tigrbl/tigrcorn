@@ -36,7 +36,7 @@ def test_release_plan_supports_all_packages() -> None:
     assert "tigrcorn-core" in names
     assert "@tigrcorn/wt-peer-probes" in names
     assert plan["prerelease"] is True
-    assert any(release["tag"].startswith("tigrcorn==0.3.16.dev") for release in plan["github_releases"])
+    assert any(release["tag"].startswith("tigrcorn==0.3.17.dev") for release in plan["github_releases"])
 
 
 def test_release_plan_supports_probe_selection() -> None:
