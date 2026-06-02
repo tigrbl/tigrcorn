@@ -95,10 +95,28 @@ def _trace_session_ids(trace: list[dict[str, object]]) -> set[str]:
     return {str(row["session_id"]) for row in trace if row.get("session_id")}
 
 
+def _trace_rows_by_session(
+    trace: list[dict[str, object]],
+    *,
+    event: str | None = None,
+) -> dict[str, list[dict[str, object]]]:
+    rows: dict[str, list[dict[str, object]]] = {}
+    for row in trace:
+        session_id = row.get("session_id")
+        if not session_id:
+            continue
+        if event is not None and row.get("event") != event:
+            continue
+        rows.setdefault(str(session_id), []).append(row)
+    return rows
+
+
 def _assert_no_bad_trace_events(testcase: unittest.TestCase, trace: list[dict[str, object]]) -> None:
     bad = [
         row for row in trace
-        if str(row.get("event", "")).endswith((".orphan", ".send.drop")) or row.get("event") == "quic.packet.decode_error"
+        if str(row.get("event", "")).endswith((".orphan", ".send.drop"))
+        or row.get("event") == "quic.packet.decode_error"
+        or "owner_mismatch" in str(row.get("event", ""))
     ]
     testcase.assertEqual(bad, [])
 
@@ -354,6 +372,67 @@ class WebTransportBidiStreamContextTests(unittest.IsolatedAsyncioTestCase):
         for row in stream_dispatches:
             self.assertIn("session_id", row)
             self.assertIn("owner_stream_id", row)
+        for rows in _trace_rows_by_session(trace, event="webtransport.stream.dispatch").values():
+            directions = {row.get("stream_direction") for row in rows}
+            self.assertIn("bidi", directions)
+            self.assertIn("client_to_server", directions)
+        _assert_no_bad_trace_events(self, trace)
+
+    async def test_live_webtransport_concurrent_sessions_multi_lane_burst_isolated(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            first, second = await asyncio.gather(
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"brst0001",
+                    payload=b"left-unidi",
+                    child_payloads=(b"left-a", b"left-b"),
+                    datagram_payload=b"left-dg",
+                    send_unidi=True,
+                    burst_child_streams=True,
+                ),
+                probe_wt_stream(
+                    "127.0.0.1",
+                    port,
+                    trusted_certificates=[cert_pem],
+                    local_cid=b"brst0002",
+                    payload=b"right-unidi",
+                    child_payloads=(b"right-a", b"right-b"),
+                    datagram_payload=b"right-dg",
+                    send_unidi=True,
+                    burst_child_streams=True,
+                ),
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertEqual(first.stream_bodies[4], b"echo:left-a")
+        self.assertEqual(first.stream_bodies[8], b"echo:left-b")
+        self.assertEqual(first.datagram_body, b"dg:left-dg")
+        self.assertEqual(second.stream_bodies[4], b"echo:right-a")
+        self.assertEqual(second.stream_bodies[8], b"echo:right-b")
+        self.assertEqual(second.datagram_body, b"dg:right-dg")
+
+        session_ids = _trace_session_ids(trace)
+        self.assertGreaterEqual(len(session_ids), 2)
+        stream_dispatches = _trace_rows_by_session(trace, event="webtransport.stream.dispatch")
+        datagram_dispatches = _trace_rows_by_session(trace, event="webtransport.datagram.dispatch")
+        for session_id in session_ids:
+            rows = stream_dispatches.get(session_id, [])
+            self.assertGreaterEqual(
+                sum(1 for row in rows if row.get("stream_direction") == "bidi"),
+                2,
+            )
+            self.assertGreaterEqual(
+                sum(1 for row in rows if row.get("stream_direction") == "client_to_server"),
+                1,
+            )
+            self.assertGreaterEqual(len(datagram_dispatches.get(session_id, [])), 1)
         _assert_no_bad_trace_events(self, trace)
 
     async def test_webtransport_trace_contains_lifecycle_events_per_session(self) -> None:

@@ -76,6 +76,7 @@ async def probe_wt_stream(
     child_payloads: tuple[bytes, ...] = (),
     datagram_payload: bytes | None = None,
     send_unidi: bool = False,
+    burst_child_streams: bool = False,
     close_connection: bool = True,
 ) -> WebTransportStreamProbeResult:
     target = (host, port)
@@ -170,35 +171,72 @@ async def probe_wt_stream(
             raise RuntimeError("webtransport probe did not receive CONNECT response headers")
 
         requested_payloads = child_payloads or (payload,)
+        expected_child_streams = tuple(4 + (index * 4) for index in range(len(requested_payloads)))
         stream_bodies: dict[int, bytes] = {}
         first_child_stream_id = 4
         first_child_fin = False
-        for index, child_data in enumerate(requested_payloads):
-            child_stream_id = 4 + (index * 4)
-            child_payload = encode_quic_varint(0x41) + encode_quic_varint(stream_id) + child_data
-            send(client.send_stream_data(child_stream_id, child_payload, fin=True))
-            child_body = bytearray()
-            child_fin = False
-            for _attempt in range(12):
+        datagram_body = b""
+
+        if burst_child_streams:
+            stream_body_parts = {child_stream_id: bytearray() for child_stream_id in expected_child_streams}
+            stream_fins = {child_stream_id: False for child_stream_id in expected_child_streams}
+            for child_stream_id, child_data in zip(expected_child_streams, requested_payloads):
+                child_payload = encode_quic_varint(0x41) + encode_quic_varint(stream_id) + child_data
+                send(client.send_stream_data(child_stream_id, child_payload, fin=True))
+
+            if send_unidi:
+                unidi_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
+                unidi_payload = encode_quic_varint(0x54) + encode_quic_varint(stream_id) + b"unidi:" + payload
+                send(client.send_stream_data(unidi_stream_id, unidi_payload, fin=True))
+
+            if datagram_payload is not None:
+                datagram_wire_payload = encode_quic_varint(stream_id // 4) + datagram_payload
+                send(client.send_datagram_frame(datagram_wire_payload))
+
+            for _attempt in range(24):
                 _states, stream_events = await receive_once()
                 for event in stream_events:
-                    if event.kind == "stream" and event.stream_id == child_stream_id:
-                        child_body.extend(event.data)
-                        child_fin = child_fin or event.fin
-                if child_body or child_fin:
+                    if event.kind == "stream" and event.stream_id in stream_body_parts:
+                        stream_body_parts[event.stream_id].extend(event.data)
+                        stream_fins[event.stream_id] = stream_fins[event.stream_id] or event.fin
+                    elif event.kind == "datagram" and datagram_payload is not None:
+                        try:
+                            _session_quarter_id, offset = decode_quic_varint(event.data, 0)
+                        except ValueError:
+                            continue
+                        datagram_body = event.data[offset:]
+                streams_complete = all(stream_body_parts[item] or stream_fins[item] for item in expected_child_streams)
+                datagram_complete = datagram_payload is None or bool(datagram_body)
+                if streams_complete and datagram_complete:
                     break
-            stream_bodies[child_stream_id] = bytes(child_body)
-            if index == 0:
-                first_child_fin = child_fin
 
-        if send_unidi:
+            stream_bodies = {stream_id_: bytes(body) for stream_id_, body in stream_body_parts.items()}
+            first_child_fin = stream_fins.get(first_child_stream_id, False)
+        else:
+            for child_stream_id, child_data in zip(expected_child_streams, requested_payloads):
+                child_payload = encode_quic_varint(0x41) + encode_quic_varint(stream_id) + child_data
+                send(client.send_stream_data(child_stream_id, child_payload, fin=True))
+                child_body = bytearray()
+                child_fin = False
+                for _attempt in range(12):
+                    _states, stream_events = await receive_once()
+                    for event in stream_events:
+                        if event.kind == "stream" and event.stream_id == child_stream_id:
+                            child_body.extend(event.data)
+                            child_fin = child_fin or event.fin
+                    if child_body or child_fin:
+                        break
+                stream_bodies[child_stream_id] = bytes(child_body)
+                if child_stream_id == first_child_stream_id:
+                    first_child_fin = child_fin
+
+        if send_unidi and not burst_child_streams:
             unidi_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
             unidi_payload = encode_quic_varint(0x54) + encode_quic_varint(stream_id) + b"unidi:" + payload
             send(client.send_stream_data(unidi_stream_id, unidi_payload, fin=True))
             await asyncio.sleep(0)
 
-        datagram_body = b""
-        if datagram_payload is not None:
+        if datagram_payload is not None and not burst_child_streams:
             datagram_wire_payload = encode_quic_varint(stream_id // 4) + datagram_payload
             send(client.send_datagram_frame(datagram_wire_payload))
             for _attempt in range(12):
