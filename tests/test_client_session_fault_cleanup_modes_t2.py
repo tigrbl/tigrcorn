@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tests.support.client_session_matrix import ClientSessionTopologyHarness
+from tests.support.client_session_matrix import ClientSessionRobustnessHarness
 from tigrcorn_protocols.client_session_coverage import (
     ClientTopology,
     CoverageDisposition,
@@ -25,40 +25,59 @@ def test_governed_records_reject_internal_lane_field() -> None:
 
 
 def test_cross_client_session_access_fails_closed() -> None:
-    harness = ClientSessionTopologyHarness(ProtocolCarrier.WEBTRANSPORT_H3_QUIC)
+    harness = ClientSessionRobustnessHarness(ProtocolCarrier.WEBTRANSPORT_H3_QUIC)
     topology = ClientTopology.CONCURRENT_CLIENTS
-    harness.open("client-a", "wt-conn-a", "wt-session-a", topology)
+    harness.open("client-a", "wt-conn-a", "wt-session-a")
 
     with pytest.raises(PermissionError, match="cross-client"):
         harness.send("client-b", "wt-conn-a", "wt-session-a", topology, "stolen")
 
-    row = build_matrix_row(
-        protocol_carrier=ProtocolCarrier.WEBTRANSPORT_H3_QUIC,
-        client_topology=topology,
-        disposition=CoverageDisposition.FAIL_CLOSED,
-        lifecycle_behavior=CoverageDisposition.COVERED,
-        identity_isolation=CoverageDisposition.COVERED,
-        ordering_behavior=CoverageDisposition.REQUIRED,
-        pressure_mode=CoverageDisposition.REQUIRED,
-        fault_mode=CoverageDisposition.COVERED,
-        client_id="client-b",
-        connection_id="wt-conn-a",
-        session_id="wt-session-a",
-        error_kind="cross_client_session_access",
-    )
-    assert row["fault_mode"] == "covered"
+    assert harness.errors[-1]["fault_mode"] == "covered"
+    assert harness.errors[-1]["error_kind"] == "cross_client_session_access"
 
 
 def test_post_close_send_is_rejected_and_session_cleanup_is_visible() -> None:
-    harness = ClientSessionTopologyHarness(ProtocolCarrier.WEBSOCKET_H1)
+    harness = ClientSessionRobustnessHarness(ProtocolCarrier.WEBSOCKET_H1)
     topology = ClientTopology.CHURN_CLIENTS
-    harness.open("client-a", "ws-conn-a", "ws-session-a", topology)
+    harness.open("client-a", "ws-conn-a", "ws-session-a")
     harness.close("client-a", "ws-conn-a", "ws-session-a", topology)
 
     with pytest.raises(RuntimeError, match="post-close"):
         harness.send("client-a", "ws-conn-a", "ws-session-a", topology, "late")
 
     assert harness.sessions["ws-session-a"].closed is True
+    assert harness.errors[-1]["error_kind"] == "post_close_send"
+
+
+def test_timeout_cancel_and_unknown_session_cleanup_fail_closed() -> None:
+    harness = ClientSessionRobustnessHarness(ProtocolCarrier.HTTP3_QUIC)
+    topology = ClientTopology.CHURN_CLIENTS
+    harness.open("client-a", "h3-conn-a", "h3-session-a")
+    harness.open("client-b", "h3-conn-b", "h3-session-b")
+
+    harness.timeout("client-a", "h3-conn-a", "h3-session-a", topology)
+    harness.cancel("client-b", "h3-conn-b", "h3-session-b", topology)
+    with pytest.raises(KeyError, match="unknown session"):
+        harness.send("client-c", "h3-conn-c", "missing-session", topology, "late")
+
+    assert [error["error_kind"] for error in harness.errors] == [
+        "timeout",
+        "cancelled",
+        "unknown_session",
+    ]
+    assert harness.sessions["h3-session-a"].closed is True
+    assert harness.sessions["h3-session-b"].closed is True
+
+
+def test_malformed_payload_is_rejected_fail_closed() -> None:
+    harness = ClientSessionRobustnessHarness(ProtocolCarrier.HTTP1)
+    topology = ClientTopology.SINGLE_CLIENT
+    harness.open("client-a", "http1-conn", "request-session")
+
+    with pytest.raises(ValueError, match="malformed payload"):
+        harness.send("client-a", "http1-conn", "request-session", topology, {})
+
+    assert harness.errors[-1]["error_kind"] == "malformed_payload"
 
 
 def test_native_webtransport_message_event_is_unsupported_fault() -> None:

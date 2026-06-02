@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from tigrcorn_protocols.client_session_coverage import (
     ClientSession,
+    ClientSessionRobustnessHarness,
     ClientSessionTopologyHarness,
     bounded_interleaved_pair,
     sequential_pair,
@@ -9,6 +10,7 @@ from tigrcorn_protocols.client_session_coverage import (
 
 __all__ = [
     "ClientSession",
+    "ClientSessionRobustnessHarness",
     "ClientSessionTopologyHarness",
     "bounded_interleaved_pair",
     "sequential_pair",

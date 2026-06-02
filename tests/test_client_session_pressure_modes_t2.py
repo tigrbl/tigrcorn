@@ -3,82 +3,87 @@ from __future__ import annotations
 from tigrcorn.config.model import WebSocketConfig, WebTransportConfig
 from tigrcorn.sessions.limits import SessionLimits
 from tigrcorn_protocols.client_session_coverage import (
+    ClientSessionRobustnessHarness,
     ClientTopology,
-    CoverageDisposition,
     ProtocolCarrier,
-    build_matrix_row,
 )
 
 
 def test_session_limits_bound_concurrent_stream_pressure() -> None:
     limits = SessionLimits(max_streams=2)
+    harness = ClientSessionRobustnessHarness(ProtocolCarrier.HTTP2, max_streams=2)
+    topology = ClientTopology.CONCURRENT_CLIENTS
+    harness.open("client-a", "h2-conn", "h2-session")
 
     assert limits.allow_stream(0) is True
     assert limits.allow_stream(1) is True
     assert limits.allow_stream(2) is False
 
-    row = build_matrix_row(
-        protocol_carrier=ProtocolCarrier.HTTP2,
-        client_topology=ClientTopology.CONCURRENT_CLIENTS,
-        disposition=CoverageDisposition.FAIL_CLOSED,
-        lifecycle_behavior=CoverageDisposition.COVERED,
-        identity_isolation=CoverageDisposition.COVERED,
-        ordering_behavior=CoverageDisposition.COVERED,
-        pressure_mode=CoverageDisposition.COVERED,
-        fault_mode=CoverageDisposition.REQUIRED,
-        client_id="client-a",
-        connection_id="h2-conn",
-        stream_id=3,
-        error_kind="max_streams_exceeded",
-    )
-    assert row["pressure_mode"] == "covered"
-    assert row["error_kind"] == "max_streams_exceeded"
+    harness.send("client-a", "h2-conn", "h2-session", topology, "one", stream_id=0)
+    harness.send("client-a", "h2-conn", "h2-session", topology, "two", stream_id=1)
+    try:
+        harness.send("client-a", "h2-conn", "h2-session", topology, "three", stream_id=2)
+    except BufferError as exc:
+        assert "stream pressure" in str(exc)
+    else:  # pragma: no cover - defensive guard for the T2 contract
+        raise AssertionError("stream pressure was not bounded")
+
+    assert harness.errors[-1]["pressure_mode"] == "covered"
+    assert harness.errors[-1]["error_kind"] == "max_streams_exceeded"
+    assert harness.errors[-1]["stream_id"] == 2
 
 
 def test_websocket_queue_and_message_pressure_have_configured_bounds() -> None:
     config = WebSocketConfig(max_message_size=4, max_queue=2)
-    accepted = [b"one", b"two"]
-    rejected_payload = b"three"
-
-    assert len(accepted) == config.max_queue
-    assert len(rejected_payload) > config.max_message_size
-
-    row = build_matrix_row(
-        protocol_carrier=ProtocolCarrier.WEBSOCKET_H1,
-        client_topology=ClientTopology.CONCURRENT_CLIENTS,
-        disposition=CoverageDisposition.FAIL_CLOSED,
-        lifecycle_behavior=CoverageDisposition.COVERED,
-        identity_isolation=CoverageDisposition.COVERED,
-        ordering_behavior=CoverageDisposition.COVERED,
-        pressure_mode=CoverageDisposition.COVERED,
-        fault_mode=CoverageDisposition.COVERED,
-        client_id="client-a",
-        connection_id="ws-conn",
-        error_kind="websocket_pressure_budget_exceeded",
+    harness = ClientSessionRobustnessHarness(
+        ProtocolCarrier.WEBSOCKET_H1,
+        max_message_size=config.max_message_size,
+        max_queue=config.max_queue,
     )
-    assert row["session_scope"] == "websocket_connection_scoped"
+    topology = ClientTopology.CONCURRENT_CLIENTS
+    harness.open("client-a", "ws-conn", "ws-session")
+    harness.send("client-a", "ws-conn", "ws-session", topology, b"one")
+    harness.send("client-a", "ws-conn", "ws-session", topology, b"two")
+
+    try:
+        harness.send("client-a", "ws-conn", "ws-session", topology, b"three")
+    except BufferError as exc:
+        assert "message pressure" in str(exc)
+    else:  # pragma: no cover - defensive guard for the T2 contract
+        raise AssertionError("websocket message pressure was not bounded")
+
+    assert harness.errors[-1]["session_scope"] == "websocket_connection_scoped"
+    assert harness.errors[-1]["error_kind"] == "message_pressure_budget_exceeded"
 
 
 def test_webtransport_session_stream_and_datagram_pressure_are_bounded() -> None:
     config = WebTransportConfig(max_sessions=1, max_streams=1, max_datagram_size=4)
+    harness = ClientSessionRobustnessHarness(
+        ProtocolCarrier.WEBTRANSPORT_H3_QUIC,
+        max_sessions=config.max_sessions,
+        max_streams=config.max_streams,
+        max_datagram_size=config.max_datagram_size,
+    )
+    topology = ClientTopology.CONCURRENT_CLIENTS
+    harness.open("client-a", "wt-conn", "wt-session")
 
     assert config.max_sessions == 1
     assert config.max_streams == 1
-    assert len(b"toolong") > config.max_datagram_size
+    harness.send("client-a", "wt-conn", "wt-session", topology, b"ok", stream_id="stream-1")
 
-    row = build_matrix_row(
-        protocol_carrier=ProtocolCarrier.WEBTRANSPORT_H3_QUIC,
-        client_topology=ClientTopology.CONCURRENT_CLIENTS,
-        disposition=CoverageDisposition.FAIL_CLOSED,
-        lifecycle_behavior=CoverageDisposition.COVERED,
-        identity_isolation=CoverageDisposition.COVERED,
-        ordering_behavior=CoverageDisposition.COVERED,
-        pressure_mode=CoverageDisposition.COVERED,
-        fault_mode=CoverageDisposition.COVERED,
-        client_id="client-a",
-        connection_id="wt-conn",
-        session_id="wt-session",
-        datagram_id="d-too-large",
-        error_kind="webtransport_pressure_budget_exceeded",
-    )
-    assert row["datagram_id"] == "d-too-large"
+    try:
+        harness.send(
+            "client-a",
+            "wt-conn",
+            "wt-session",
+            topology,
+            b"toolong",
+            datagram_id="d-too-large",
+        )
+    except BufferError as exc:
+        assert "datagram pressure" in str(exc)
+    else:  # pragma: no cover - defensive guard for the T2 contract
+        raise AssertionError("webtransport datagram pressure was not bounded")
+
+    assert harness.errors[-1]["datagram_id"] == "d-too-large"
+    assert harness.errors[-1]["error_kind"] == "datagram_pressure_budget_exceeded"
