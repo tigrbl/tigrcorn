@@ -33,3 +33,5 @@ body: |-
   ## Classification update
   
   Stream and datagram runtime labels shall validate against the contract event classification matrix. A stream event must declare or derive whether it is bidirectional, client-to-server unidirectional, or server-to-client unidirectional before it can be classified as `duplex`, `client_stream`, or `server_stream`.
+
+  Client-session coverage under ADR-1039 treats `stream_id` and `datagram_id` as governed proof identifiers but does not expose internal lane labels as client-session fields.

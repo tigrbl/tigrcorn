@@ -34,3 +34,4 @@ body: |-
   - WebTransport is not modeled as ordinary ASGI HTTP.
   - ASGI3 exposure, if present, must be extension-based and capability-gated.
   - WebTransport tests must cover streams, datagrams, session lifecycle, and metadata.
+  - Cross-client WebTransport topology proof is governed separately by ADR-1039 and must not be inferred from single-session runtime proof.

@@ -33,3 +33,4 @@ body: |-
   - Adding a new supported protocol or scope type requires adding a fixture row, SSOT feature, and test linkage.
   - Removing or renaming a fixture requires updating the manifest and SSOT linkage in the same change.
   - Certification and local debugging can use the fixture manifest as the stable operator inventory.
+  - Client-session topology fixtures and schedules are governed by ADR-1039 and SPEC-2053 as a coverage layer over protocol fixtures.

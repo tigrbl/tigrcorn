@@ -31,6 +31,8 @@ body: |-
   - Datagram events preserve unit identity, payload, and delivery semantics supported by the carrier.
   - Datagram labels validate against the contract classification matrix before they are exposed as `family=datagram`.
   - ASGI/3 compatibility exposes these families only through documented extensions.
+  - Client-session proof uses stream and datagram identifiers under `spc:2053` without promoting internal lane labels into the governed proof schema.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1024"
+  - "adr:1039"

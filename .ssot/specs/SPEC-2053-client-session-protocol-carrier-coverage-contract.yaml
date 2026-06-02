@@ -1,0 +1,111 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2053"
+number: 2053
+slug: "client-session-protocol-carrier-coverage-contract"
+title: "Tigrcorn Client Session x Protocol Carrier Coverage Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed client-session coverage axes for Tigrcorn protocol carriers."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-01T00:00:00Z"
+    note: "Created to classify client-session behavior across Tigrcorn protocol carriers."
+    status: "draft"
+references: []
+body: |-
+  # Tigrcorn Client Session x Protocol Carrier Coverage Contract
+
+  Intent:
+
+  - Classify client-session behavior across Tigrcorn protocol carriers without making protocol carrier support claims ambiguous.
+
+  Required dispositions:
+
+  - `covered`
+  - `required`
+  - `planned`
+  - `not_applicable`
+  - `fail_closed`
+
+  Required axes:
+
+  - `protocol_carrier`
+  - `client_topology`
+  - `session_scope`
+  - `lifecycle_behavior`
+  - `identity_isolation`
+  - `ordering_behavior`
+  - `pressure_mode`
+  - `fault_mode`
+
+  Protocol carriers:
+
+  - `http1`
+  - `http2`
+  - `http3_quic`
+  - `websocket_h1`
+  - `websocket_h2`
+  - `websocket_h3`
+  - `webtransport_h3_quic`
+
+  Client topologies:
+
+  - `single_client`
+  - `sequential_clients`
+  - `bounded_interleaved_clients`
+  - `concurrent_clients`
+  - `churn_clients`
+
+  Session scopes:
+
+  - `request_scoped`
+  - `tcp_connection_scoped`
+  - `h2_connection_scoped`
+  - `h2_stream_scoped`
+  - `quic_connection_scoped`
+  - `h3_stream_scoped`
+  - `websocket_connection_scoped`
+  - `webtransport_session_scoped`
+  - `webtransport_stream_scoped`
+  - `webtransport_datagram_scoped`
+
+  Governed proof identifiers:
+
+  - `client_id`
+  - `connection_id`
+  - `session_id`
+  - `stream_id`
+  - `datagram_id`
+
+  The governed client-session schema must reject public `lane` fields. Protocol-specific lane/profile terminology may remain internal to WebTransport and classification projection tests.
+
+  Carrier scope defaults:
+
+  - `http1` defaults to `request_scoped`.
+  - `http2` defaults to `h2_stream_scoped`.
+  - `http3_quic` defaults to `h3_stream_scoped`.
+  - `websocket_h1`, `websocket_h2`, and `websocket_h3` default to `websocket_connection_scoped`.
+  - `webtransport_h3_quic` defaults to `webtransport_session_scoped`.
+
+  Proof expectations:
+
+  - Sequential-client proof must show client A completes before client B starts and that state does not leak.
+  - Bounded-interleaved proof must show a controlled A/B schedule and preserve ordering.
+  - Concurrent-client proof must show overlapping activity without identity collapse.
+  - Churn proof must show disconnect/reconnect behavior without disrupting still-active clients.
+  - Pressure proof must show bounded queues, flow-control, or configured limits.
+  - Fault proof must show malformed, unsupported, cross-session, post-close, timeout, or cancellation behavior fails closed.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1039"
+  - "adr:1002"
+  - "adr:1003"
+  - "adr:1011"
+  - "adr:1023"
+  - "adr:1024"
+  - "adr:1033"

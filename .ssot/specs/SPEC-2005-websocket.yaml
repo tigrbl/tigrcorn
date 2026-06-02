@@ -49,5 +49,8 @@ body: |-
   HTTP/1.1 WebSocket, RFC 7692 permessage-deflate, RFC 8441 WebSocket-over-HTTP/2, and RFC 9220 WebSocket-over-HTTP/3 all now have preserved passing third-party artifacts in the canonical independent release bundle.
   
   RFC 7936 and RFC 8307 are governed as local-conformance WebSocket adjuncts. Their current proof surfaces are `tests/test_websocket_rfc7936.py` and `tests/test_websocket_rfc8307.py`.
+
+  Client-session topology coverage for WebSocket connections over HTTP/1.1, HTTP/2, and HTTP/3 is governed by `spc:2053`; this SPEC remains the WebSocket carrier support contract.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1039"

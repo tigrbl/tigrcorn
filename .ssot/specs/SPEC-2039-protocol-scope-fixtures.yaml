@@ -28,5 +28,7 @@ body: |-
   - Every fixture feature shall link to this SPEC through `spec_ids`.
   - Every fixture feature shall have a pytest test row that verifies fixture presence and coverage.
   - Fixture coverage tests shall verify that fixture artifacts exist and that each fixture has at least one existing coverage path.
+  - Client-session schedule fixtures are governed by `spc:2053` as topology coverage over these protocol fixtures.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1039"

@@ -39,3 +39,5 @@ body: |-
   WebTransport projection shall distinguish native lanes under one session: session lifecycle, bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams. Message-shaped application payloads may be inner framing on a stream or datagram, but `message` is not a peer native WebTransport transport lane.
   
   Tigrcorn owns WebTransport lane transport facts such as session identity, stream identity, stream direction, datagram capability, and close/error metadata. Application-level message framing inside a WebTransport stream or datagram remains a higher-layer concern unless separately governed in Tigrcorn.
+
+  Client-session topology coverage under ADR-1039 uses `session_id`, `stream_id`, and `datagram_id` as governed proof identifiers while keeping WebTransport lane terminology protocol-internal.

@@ -74,8 +74,11 @@ body: |-
   Tigrcorn shall not implement REST or JSON-RPC as product runtimes. Those bindings remain application/framework responsibilities above ASGI HTTP.
   
   Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
+
+  Client-session topology coverage for WebTransport sessions, streams, and datagrams is governed by `spc:2053`; this SPEC remains the WebTransport runtime contract.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1011"
   - "adr:1020"
   - "adr:1024"
+  - "adr:1039"

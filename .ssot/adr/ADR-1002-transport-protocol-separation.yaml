@@ -20,3 +20,5 @@ body: |-
   
   Reason: TCP, UDP, QUIC, Unix sockets, and in-process transports should be reusable beneath
   HTTP/1.1, HTTP/2, HTTP/3, WebSocket, raw framed, and custom protocols.
+
+  Client-session topology coverage is governed separately by ADR-1039 and does not collapse transport or protocol support into one axis.

@@ -24,7 +24,7 @@ INIT_DIRS = (
 
 def test_committed_ssot_registry_is_current() -> None:
     committed = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
-    assert len(committed["features"]) == 334
+    assert len(committed["features"]) == 340
     assert not any(
         baseline.missing_tiers
         for baseline in iter_feature_baselines(committed)
@@ -156,6 +156,24 @@ def test_ssot_declares_webtransport_in_scope_and_rest_jsonrpc_out() -> None:
         assert feature["plan"]["horizon"] == "explicit"
         assert feature["lifecycle"]["note"].startswith("Explicit product-boundary exclusion")
         assert "spc:2010" in feature["spec_ids"]
+
+
+def test_ssot_declares_client_session_protocol_coverage() -> None:
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
+    features = {row["id"]: row for row in registry["features"]}
+
+    for feature_id in {
+        "feat:client-session-protocol-coverage-matrix",
+        "feat:client-session-topology-schedules",
+        "feat:client-session-scope-and-identity-classification",
+        "feat:client-session-isolation-properties",
+        "feat:client-session-pressure-modes",
+        "feat:client-session-fault-cleanup-modes",
+    }:
+        feature = features[feature_id]
+        assert _has_t012_baseline(registry, feature_id)
+        assert feature["plan"]["horizon"] == "current"
+        assert "spc:2053" in feature["spec_ids"]
 
 
 def test_ssot_declares_app_interface_selection_surfaces() -> None:

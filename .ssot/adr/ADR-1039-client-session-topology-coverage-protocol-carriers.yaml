@@ -1,0 +1,43 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1039"
+number: 1039
+slug: "client-session-topology-coverage-protocol-carriers"
+title: "Client session topology coverage is orthogonal to protocol carrier support"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Client topology, session scope, identity and isolation, pressure, and fault behavior are governed separately from protocol carrier support."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-01T00:00:00Z"
+    note: "Created to govern Tigrcorn client-session coverage across protocol carriers."
+    status: "draft"
+references: []
+body: |-
+  # Client session topology coverage across protocol carriers
+
+  Decision:
+
+  - Protocol carrier support, client topology, session scope, identity/isolation, pressure, and fault behavior are separate coverage axes.
+  - Client-session coverage classifies existing Tigrcorn protocol carriers; it does not replace HTTP, HTTP/2, HTTP/3, QUIC, WebSocket, or WebTransport support contracts.
+  - Governed proof identifiers are `client_id`, `connection_id`, `session_id`, `stream_id`, and `datagram_id`.
+  - `lane` remains internal/protocol-specific classification and is not a governed client-session proof field.
+  - Single-connection, single-stream, or single-session protocol proofs must not be rebranded as sequential-client, interleaved-client, concurrent-client, or churn proof unless they exercise that topology.
+
+  Rationale:
+
+  - Tigrcorn owns protocol-boundary behavior: TCP connections, HTTP/2 streams, QUIC connections, HTTP/3 streams, WebSocket connections, and WebTransport sessions, streams, and datagrams.
+  - Existing protocol support rows prove carrier behavior. They do not automatically prove cross-client isolation, scheduling, pressure, or cleanup behavior.
+  - Explicit topology coverage prevents overclaiming while allowing existing protocol proofs to remain valid supporting evidence.
+
+  Consequences:
+
+  - New client-session claims must name the protocol carrier, topology, scope, isolation/identity behavior, pressure mode, and fault mode.
+  - Existing WebTransport and HTTP/2 proofs remain accurate but must state whether they are single-client, single-session, or multi-client topology proofs.
+  - Runtime telemetry emission is out of scope for this decision.
+
+  Related: ADR-1002, ADR-1003, ADR-1011, ADR-1023, ADR-1024, ADR-1033, SPEC-2053.

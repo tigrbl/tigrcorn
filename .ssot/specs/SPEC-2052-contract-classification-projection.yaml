@@ -43,9 +43,11 @@ body: |-
   - Tests must cover at least HTTP request/response, WebSocket connect/message/close, WebTransport connect, WebTransport bidi stream, both WebTransport unidi directions, WebTransport datagram, and lifespan events.
   - Tests must prove no required `subsurface` or duplicate event-name field is emitted.
   - Tests must prove optional framing metadata is preserved when known and omitted distinctly when unknown.
+  - Client-session proof fields are governed by `spc:2053`; classification projection may use protocol-internal lane terms without exposing `lane` as a governed client-session field.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1016"
   - "adr:1017"
   - "adr:1020"
   - "adr:1024"
+  - "adr:1039"

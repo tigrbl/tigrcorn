@@ -25,3 +25,4 @@ body: |-
   - receive-side transport credit and application-visible backlog are separate concerns and shall not be collapsed into a single ingress-only counter
   - a carrier that exposes request-body streaming shall replenish receive-side credit from application consumption or explicit backlog release, not merely from bytes accepted off the socket
   - HTTP/2 request streaming and same-stream request/response interleaving shall therefore use bounded per-stream backlog plus consumption-driven `WINDOW_UPDATE` behavior
+  - client-session pressure coverage is classified by ADR-1039 and must name the topology and protocol carrier being proven

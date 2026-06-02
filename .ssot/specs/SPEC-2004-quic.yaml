@@ -51,5 +51,8 @@ body: |-
   Under the authoritative certification boundary, the QUIC transport now satisfies the required independent evidence for RFC 9000, RFC 9001, RFC 9002, and the HTTP/3 carrier that depends on them. The package-wide RFC 8446 target is no longer blocked by the public TCP/TLS listener path.
   
   Broader flow-control and strict all-surfaces-independent follow-on work remains tracked separately and does not change the current passing release-gate result.
+
+  Client-session topology coverage for QUIC connection identity, streams, and datagrams is governed by `spc:2053`; this SPEC remains the QUIC carrier support contract.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1039"

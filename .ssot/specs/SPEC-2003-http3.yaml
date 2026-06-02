@@ -57,5 +57,8 @@ body: |-
   - package-owned TCP/TLS condition in the certification boundary is satisfied separately
   
   The stricter all-surfaces-independent overlay remains a separate non-authoritative follow-on profile.
+
+  Client-session topology coverage for HTTP/3 over QUIC is governed by `spc:2053`; this SPEC remains the HTTP/3 carrier support contract.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1039"
