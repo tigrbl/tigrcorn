@@ -500,9 +500,19 @@ class WebTransportBidiStreamContextTests(unittest.IsolatedAsyncioTestCase):
 
         session_ids = _trace_session_ids(trace)
         self.assertGreaterEqual(len(session_ids), 2)
+        _assert_transport_boundary_trace(self, trace)
+        self.assertGreaterEqual(
+            sum(1 for row in trace if row.get("event") == "quic.handshake.complete"),
+            len(session_ids),
+        )
+        self.assertGreaterEqual(
+            sum(1 for row in trace if row.get("event") == "webtransport.connect.response"),
+            len(session_ids),
+        )
         stream_dispatches = _trace_rows_by_session(trace, event="webtransport.stream.dispatch")
         datagram_dispatches = _trace_rows_by_session(trace, event="webtransport.datagram.dispatch")
         for session_id in session_ids:
+            _assert_session_lifecycle_trace(self, trace, session_id)
             rows = stream_dispatches.get(session_id, [])
             self.assertGreaterEqual(
                 sum(1 for row in rows if row.get("stream_direction") == "bidi"),
@@ -513,6 +523,18 @@ class WebTransportBidiStreamContextTests(unittest.IsolatedAsyncioTestCase):
                 1,
             )
             self.assertGreaterEqual(len(datagram_dispatches.get(session_id, [])), 1)
+            owned_rows = [
+                row for row in trace
+                if row.get("event") in {
+                    "webtransport.stream.dispatch",
+                    "webtransport.stream.send",
+                    "webtransport.datagram.dispatch",
+                    "webtransport.datagram.send",
+                }
+                and row.get("session_id") == session_id
+            ]
+            self.assertTrue(owned_rows)
+            self.assertEqual({row["session_id"] for row in owned_rows}, {session_id})
         _assert_no_bad_trace_events(self, trace)
 
     async def test_webtransport_trace_contains_lifecycle_events_per_session(self) -> None:
