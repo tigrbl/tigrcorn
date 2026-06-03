@@ -38,6 +38,8 @@ class WebTransportStreamProbeResult:
     datagrams_received: int
     stream_bodies: dict[int, bytes]
     datagram_body: bytes
+    handshake_complete: bool
+    connect_response_received: bool
 
     def header_map(self) -> dict[bytes, bytes]:
         return {name.lower(): value for name, value in self.headers}
@@ -59,6 +61,8 @@ class WebTransportStreamProbeResult:
             "datagrams_received": self.datagrams_received,
             "stream_bodies": {str(key): value.decode("utf-8", errors="replace") for key, value in self.stream_bodies.items()},
             "datagram_body": self.datagram_body.decode("utf-8", errors="replace"),
+            "handshake_complete": self.handshake_complete,
+            "connect_response_received": self.connect_response_received,
         }
 
 
@@ -269,6 +273,8 @@ async def probe_wt_stream(
             datagrams_received=datagrams_received,
             stream_bodies=stream_bodies,
             datagram_body=datagram_body,
+            handshake_complete=bool(client.handshake_driver is not None and client.handshake_driver.complete),
+            connect_response_received=response_state is not None and response_state.received_initial_headers,
         )
     finally:
         sock.close()

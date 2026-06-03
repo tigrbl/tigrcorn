@@ -111,6 +111,49 @@ def _trace_rows_by_session(
     return rows
 
 
+def _trace_rows_for_session(
+    trace: list[dict[str, object]],
+    session_id: str,
+) -> list[dict[str, object]]:
+    return [row for row in trace if row.get("session_id") == session_id]
+
+
+def _assert_session_lifecycle_trace(
+    testcase: unittest.TestCase,
+    trace: list[dict[str, object]],
+    session_id: str,
+    *,
+    require_close: bool = True,
+) -> None:
+    session_rows = _trace_rows_for_session(trace, session_id)
+    events = {str(row.get("event")) for row in session_rows}
+    for expected in {
+        "webtransport.connect.start",
+        "webtransport.connect.response",
+        "webtransport.stream.dispatch",
+        "webtransport.stream.send",
+        "webtransport.datagram.dispatch",
+        "webtransport.datagram.send",
+    }:
+        testcase.assertIn(expected, events, session_rows)
+    if require_close:
+        testcase.assertIn("webtransport.session.cleanup", events, session_rows)
+
+
+def _assert_transport_boundary_trace(testcase: unittest.TestCase, trace: list[dict[str, object]]) -> None:
+    events = _trace_events(trace)
+    for expected in {
+        "quic.packet.receive",
+        "quic.session.create",
+        "quic.handshake.complete",
+        "webtransport.connect.start",
+        "webtransport.connect.response",
+        "webtransport.stream.dispatch",
+        "webtransport.datagram.dispatch",
+    }:
+        testcase.assertIn(expected, events)
+
+
 def _assert_no_bad_trace_events(testcase: unittest.TestCase, trace: list[dict[str, object]]) -> None:
     bad = [
         row for row in trace
@@ -329,6 +372,43 @@ class WebTransportBidiStreamContextTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertGreaterEqual(len(_trace_session_ids(trace)), 5)
         self.assertGreaterEqual(sum(1 for row in trace if row["event"] == "webtransport.connect.response"), 5)
+        _assert_no_bad_trace_events(self, trace)
+
+    async def test_live_webtransport_quic_h3_connect_transcript_proves_transport_boundary(self) -> None:
+        server, port, cert_pem, tmpdir = await _start_wt_server()
+        try:
+            response = await probe_wt_stream(
+                "127.0.0.1",
+                port,
+                trusted_certificates=[cert_pem],
+                local_cid=b"proof001",
+                child_payloads=(b"proof-a", b"proof-b"),
+                datagram_payload=b"proof-dg",
+                send_unidi=True,
+            )
+            await asyncio.sleep(0.05)
+            trace = list(server._datagram_handlers[0].webtransport_trace)
+        finally:
+            await server.close()
+            tmpdir.cleanup()
+
+        self.assertTrue(response.handshake_complete)
+        self.assertTrue(response.connect_response_received)
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.stream_bodies[4], b"echo:proof-a")
+        self.assertEqual(response.stream_bodies[8], b"echo:proof-b")
+        self.assertEqual(response.datagram_body, b"dg:proof-dg")
+        self.assertIn("stream", response.quic_events)
+        self.assertIn("datagram", response.quic_events)
+        self.assertEqual(response.remote_settings[SETTING_ENABLE_CONNECT_PROTOCOL], 1)
+        self.assertEqual(response.remote_settings[SETTING_H3_DATAGRAM], 1)
+        self.assertEqual(response.remote_settings[SETTING_ENABLE_WEBTRANSPORT], 1)
+
+        _assert_transport_boundary_trace(self, trace)
+        session_ids = _trace_session_ids(trace)
+        self.assertEqual(len(session_ids), 1)
+        session_id = next(iter(session_ids))
+        _assert_session_lifecycle_trace(self, trace, session_id)
         _assert_no_bad_trace_events(self, trace)
 
     async def test_live_webtransport_concurrent_sessions_are_isolated(self) -> None:
