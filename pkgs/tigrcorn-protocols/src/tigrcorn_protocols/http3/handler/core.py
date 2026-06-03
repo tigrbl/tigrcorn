@@ -259,7 +259,13 @@ class HTTP3DatagramHandler:
             return
         context = build_server_ssl_context(self.listener)
         assert context is not None
-        transport_parameters = TransportParameters(max_udp_payload_size=self.listener.max_datagram_size, max_streams_bidi=self.config.scheduler.max_streams or 128, max_streams_uni=self.config.scheduler.max_streams or 128, idle_timeout=int(self.config.quic.idle_timeout * 1000))
+        transport_parameters = TransportParameters(
+            max_udp_payload_size=self.listener.max_datagram_size,
+            max_streams_bidi=self.config.scheduler.max_streams or 128,
+            max_streams_uni=self.config.scheduler.max_streams or 128,
+            idle_timeout=int(self.config.quic.idle_timeout * 1000),
+            max_datagram_frame_size=self.listener.max_datagram_size,
+        )
         session.quic.configure_handshake(
             QuicTlsHandshakeDriver(
                 is_client=False,
@@ -439,7 +445,7 @@ class HTTP3DatagramHandler:
                 and parsed.packet_type == QuicLongHeaderType.INITIAL
                 and not parsed.token
             )
-            session = None if fresh_initial else self.sessions_by_local_cid.get(dcid)
+            session = self.sessions_by_local_cid.get(dcid)
             allow_addr_fallback = not fresh_initial
             if session is None and allow_addr_fallback:
                 session = self.sessions.get(packet.addr)
@@ -1743,9 +1749,20 @@ class HTTP3DatagramHandler:
         webtransport = session.webtransport_sessions.get(stream_id)
         if webtransport is None:
             return
-        chunks = list(request_state.body_parts)
+        chunk_count = len(request_state.body_parts)
+        byte_count = sum(len(chunk) for chunk in request_state.body_parts)
         request_state.body_parts.clear()
-        await webtransport.feed_connect_stream_data(b''.join(chunks), end_stream=request_state.ended)
+        if chunk_count:
+            self.trace_webtransport(
+                'webtransport.connect.body.drop',
+                **self._trace_session_fields(session),
+                session_id=webtransport.session_id,
+                stream_id=stream_id,
+                chunks=chunk_count,
+                bytes=byte_count,
+            )
+        if request_state.ended:
+            webtransport.note_connect_stream_stopped()
 
     async def _respond_ready_requests(self, session: HTTP3Session, endpoint: UDPEndpoint) -> list[bytes]:
         outbound: list[bytes] = []

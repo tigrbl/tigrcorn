@@ -87,6 +87,7 @@ _TP_PREFERRED_ADDRESS = 0x0D
 _TP_ACTIVE_CONNECTION_ID_LIMIT = 0x0E
 _TP_INITIAL_SOURCE_CONNECTION_ID = 0x0F
 _TP_RETRY_SOURCE_CONNECTION_ID = 0x10
+_TP_MAX_DATAGRAM_FRAME_SIZE = 0x20
 
 
 @dataclass(slots=True)
@@ -108,6 +109,7 @@ class TransportParameters:
     preferred_address: bytes | None = None
     initial_source_connection_id: bytes | None = None
     retry_source_connection_id: bytes | None = None
+    max_datagram_frame_size: int | None = None
     unknown_parameters: dict[int, bytes] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -119,6 +121,8 @@ class TransportParameters:
             raise ValueError('max_ack_delay must be non-negative')
         if self.max_udp_payload_size < 1200:
             raise ValueError('max_udp_payload_size must be at least 1200')
+        if self.max_datagram_frame_size is not None and self.max_datagram_frame_size < 0:
+            raise ValueError('max_datagram_frame_size must be non-negative')
         if self.stateless_reset_token is not None and len(self.stateless_reset_token) != 16:
             raise ValueError('stateless_reset_token must be exactly 16 bytes')
 
@@ -159,6 +163,7 @@ class TransportParameters:
         add_int(_TP_ACTIVE_CONNECTION_ID_LIMIT, self.active_connection_id_limit)
         add_bytes(_TP_INITIAL_SOURCE_CONNECTION_ID, self.initial_source_connection_id)
         add_bytes(_TP_RETRY_SOURCE_CONNECTION_ID, self.retry_source_connection_id)
+        add_int(_TP_MAX_DATAGRAM_FRAME_SIZE, self.max_datagram_frame_size)
         for parameter_id, value in sorted(self.unknown_parameters.items()):
             payload.extend(encode_quic_varint(parameter_id))
             payload.extend(encode_quic_varint(len(value)))
@@ -226,6 +231,8 @@ class TransportParameters:
                 values['initial_source_connection_id'] = raw
             elif parameter_id == _TP_RETRY_SOURCE_CONNECTION_ID:
                 values['retry_source_connection_id'] = raw
+            elif parameter_id == _TP_MAX_DATAGRAM_FRAME_SIZE:
+                values['max_datagram_frame_size'] = decode_int(raw)
             else:
                 values['unknown_parameters'][parameter_id] = raw
         return cls(**values)
@@ -239,6 +246,13 @@ class TransportParameters:
             and current.max_streams_bidi >= self.max_streams_bidi
             and current.max_streams_uni >= self.max_streams_uni
             and current.max_udp_payload_size >= self.max_udp_payload_size
+            and (
+                self.max_datagram_frame_size is None
+                or (
+                    current.max_datagram_frame_size is not None
+                    and current.max_datagram_frame_size >= self.max_datagram_frame_size
+                )
+            )
             and current.active_connection_id_limit >= self.active_connection_id_limit
             and current.ack_delay_exponent == self.ack_delay_exponent
             and current.max_ack_delay == self.max_ack_delay
