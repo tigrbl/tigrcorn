@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.tigrcorn.local/runtime-capability-registry.schema.json",
+  "title": "Tigrcorn Runtime Capability Registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry",
+    "profile",
+    "profile_valid",
+    "profile_errors",
+    "capabilities"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "registry": {
+      "type": "string",
+      "const": "tigrcorn.runtime-capabilities"
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_valid": {
+      "type": "boolean"
+    },
+    "profile_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/capability"
+      }
+    }
+  },
+  "$defs": {
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "domain",
+        "name",
+        "state",
+        "compiled",
+        "configured",
+        "enabled",
+        "certified",
+        "certifiable",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "protocol",
+            "transport",
+            "tls",
+            "runtime",
+            "observability",
+            "certification",
+            "delivery"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "compiled",
+            "configured",
+            "enabled",
+            "certified",
+            "unavailable",
+            "unsupported"
+          ]
+        },
+        "compiled": {
+          "type": "boolean"
+        },
+        "configured": {
+          "type": "boolean"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "certified": {
+          "type": "boolean"
+        },
+        "certifiable": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

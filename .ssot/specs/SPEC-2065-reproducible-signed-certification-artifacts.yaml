@@ -1,0 +1,32 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2065"
+number: 2065
+slug: "reproducible-signed-certification-artifacts"
+title: "Reproducible signed certification artifacts"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn release certification shall generate deterministic and signed certification artifacts for identical inputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn release certification shall generate deterministic and signed certification artifacts for identical inputs.
+  
+  Requirements:
+  
+  - Certification artifact families shall include protocol, runtime, security, performance, and interoperability evidence.
+  - Artifact serialization shall be deterministic for identical inputs, environment descriptions, and evidence sets.
+  - Replay and comparison tools shall identify meaningful evidence changes separately from timestamp or path noise.
+  - Signing and provenance shall bind artifacts to the release, source snapshot, dependency state, and certification command inputs.
+  - Promotion and publication gates shall distinguish unsigned draft evidence from signed release evidence.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:0607"
+  - "adr:0618"
+  - "adr:0620"
+  - "adr:1045"
+  - "adr:1052"

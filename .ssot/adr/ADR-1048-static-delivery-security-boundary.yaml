@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1048"
+number: 1048
+slug: "static-delivery-security-boundary"
+title: "Static delivery has an explicit security certification boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn static delivery shall have an explicit security certification boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn static delivery shall have an explicit security certification boundary.
+  
+  Certification must cover path traversal, encoded traversal, Unicode traversal, symlink escapes, cache poisoning, Alt-Svc misconfiguration, Early Hints validation, and interaction with range and content-coding behavior.
+  
+  Consequences:
+  
+  - Static delivery remains inside the documented product boundary without relying on implicit web-server assumptions.
+  - Negative tests can prove that filesystem escape and cache poisoning attempts fail closed.
+  - Deployment profiles can include or exclude certified static delivery explicitly.
+  - Static delivery security evidence can be reviewed independently from dynamic ASGI application behavior.

@@ -1,3 +1,5 @@
+from importlib import import_module
+
 from .version import __version__
 from ._workspace import ensure_workspace_package_paths
 
@@ -5,6 +7,7 @@ ensure_workspace_package_paths()
 
 __all__ = [
     "__version__",
+    "capabilities",
     "run",
     "serve",
     "serve_import_string",
@@ -17,6 +20,8 @@ __all__ = [
 
 
 def __getattr__(name: str):
+    if name == "capabilities":
+        return import_module(".capabilities", __name__)
     if name in {"run", "serve", "serve_import_string"}:
         from .api import run, serve, serve_import_string
 

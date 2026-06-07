@@ -38,7 +38,9 @@ class EmbeddedServer:
     async def close(self) -> None:
         if self.server is None:
             return
-        await self.server.close()
+        server = self.server
+        await server.close()
+        self.server = None
 
     async def __aenter__(self) -> 'EmbeddedServer':
         await self.start()
@@ -72,6 +74,18 @@ class EmbeddedServer:
             if path:
                 endpoints.append(path)
         return endpoints
+
+    def describe(self) -> dict[str, Any]:
+        if self.server is not None:
+            return self.server.describe()
+        server = TigrCornServer(self.app, self.config)
+        return server.describe()
+
+    def resource_ownership(self) -> dict[str, Any]:
+        if self.server is not None:
+            return self.server.resource_ownership()
+        server = TigrCornServer(self.app, self.config)
+        return server.resource_ownership()
 
 
 __all__ = ['EmbeddedServer']

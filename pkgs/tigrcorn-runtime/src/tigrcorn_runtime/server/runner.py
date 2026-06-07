@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import random
 from contextlib import suppress
-from typing import Any
+from typing import Any, Iterable
 
 from tigrcorn_asgi.receive import HTTPRequestReceive, HTTPStreamingRequestReceive
 from tigrcorn_asgi.scopes.http import build_http_scope
@@ -36,6 +36,18 @@ from tigrcorn_security.tls import build_server_ssl_context, tls_extension_payloa
 from tigrcorn_runtime.server.hooks import run_async_hooks
 from tigrcorn_runtime.server.state import ServerState
 from tigrcorn_transports.tcp.reader import PrebufferedReader
+from tigrcorn_transports.registry import (
+    TRANSPORTS,
+    TransportDomainAccounting,
+    _normalize_listener_kind,
+    transport_domain_diagnostics,
+    validate_profile_transport_domains,
+)
+from tigrcorn_transports.quic.security import QuicOperationalSecurityRuntime
+from tigrcorn_protocols.webtransport.governance import (
+    WebTransportGovernanceManager,
+    default_webtransport_budget_policy,
+)
 from tigrcorn_core.types import ASGIApp, StreamReaderLike
 from tigrcorn_core.utils.authority import authority_allowed
 from tigrcorn_core.utils.headers import get_header
@@ -63,6 +75,9 @@ class TigrCornServer:
         self.lifespan = LifespanManager(app, mode=config.lifespan)
         self._listeners: list[TCPListener | UDPListener | UnixListener | PipeListener | InProcListener] = []
         self._datagram_handlers: list[HTTP3DatagramHandler] = []
+        self._transport_domain_accounting = TransportDomainAccounting()
+        self._quic_operational_security: dict[str, QuicOperationalSecurityRuntime] = {}
+        self._webtransport_governance = WebTransportGovernanceManager(default_webtransport_budget_policy())
         self._should_exit = asyncio.Event()
         self._started = False
         self._metrics_server: asyncio.AbstractServer | None = None
@@ -84,27 +99,275 @@ class TigrCornServer:
             jitter = max(0, config.process.max_requests_jitter)
             self._request_budget = config.process.limit_max_requests + (random.randint(0, jitter) if jitter else 0)
 
+    def describe(self) -> dict[str, Any]:
+        configured_protocols: set[str] = set()
+        configured_transports: set[str] = set()
+        listeners: list[dict[str, Any]] = []
+        bound_endpoints = self._bound_endpoint_strings()
+        for index, listener in enumerate(self.config.listeners):
+            protocols = tuple(sorted(listener.enabled_protocols))
+            configured_protocols.update(protocols)
+            configured_transports.add(listener.kind)
+            listeners.append(
+                {
+                    "id": f"listener:{index}",
+                    "active": self._started and index < len(self._listeners),
+                    "kind": listener.kind,
+                    "label": listener.label,
+                    "bound_endpoint": bound_endpoints[index] if index < len(bound_endpoints) else None,
+                    "protocols": list(protocols),
+                    "http_versions": list(listener.http_versions),
+                    "tls": {
+                        "enabled": listener.ssl_enabled,
+                        "alpn_protocols": list(listener.alpn_protocols),
+                        "certfile": self._redact(listener.ssl_certfile),
+                        "keyfile": self._redact(listener.ssl_keyfile),
+                        "ca_certs": self._redact(listener.ssl_ca_certs),
+                        "client_cert_required": bool(listener.ssl_require_client_cert),
+                        "ocsp_mode": listener.ocsp_mode,
+                        "crl_mode": listener.crl_mode,
+                    },
+                }
+            )
+        return {
+            "schema_version": "1.0",
+            "runtime": self.config.process.runtime,
+            "active": self._started,
+            "profile": self.config.app.profile or "default",
+            "app_interface": {
+                "selected": self.app_interface,
+                "source": self.app_interface_source,
+                "reason": self.app_interface_reason,
+            },
+            "capabilities": {
+                "protocols": ["http1", "http2", "http3", "lifespan", "quic", "websocket", "webtransport"],
+                "transports": sorted(TRANSPORTS),
+            },
+            "configured_protocols": sorted(configured_protocols),
+            "active_protocols": sorted(configured_protocols) if self._started else [],
+            "configured_transports": sorted(configured_transports),
+            "active_transports": sorted(configured_transports) if self._started else [],
+            "transport_domains": self.transport_domain_diagnostics(),
+            "quic_operational_security": self.quic_operational_security_evidence(),
+            "webtransport_resource_governance": self.webtransport_resource_governance(),
+            "listeners": listeners,
+            "worker": {
+                "count": self.config.process.workers,
+                "class": self.config.process.worker_class,
+                "runtime": self.config.process.runtime,
+            },
+            "observability": {
+                "metrics_enabled": bool(self.config.metrics.enabled),
+                "metrics_bind": self.config.metrics.bind,
+                "statsd_enabled": bool(self.config.metrics.statsd_host),
+                "otel_enabled": bool(self.config.metrics.otel_endpoint),
+                "structured_logging": bool(self.config.logging.structured),
+            },
+        }
+
+    def _bound_endpoint_strings(self) -> list[str]:
+        endpoints: list[str] = []
+        for listener in self._listeners:
+            server = getattr(listener, "server", None)
+            sockets = getattr(server, "sockets", None) if server is not None else None
+            if sockets:
+                endpoints.append(str(sockets[0].getsockname()))
+                continue
+            transport = getattr(listener, "transport", None)
+            if transport is not None:
+                sockname = transport.get_extra_info("sockname")
+                if sockname is not None:
+                    endpoints.append(str(sockname))
+                    continue
+            path = getattr(listener, "path", None)
+            if path:
+                endpoints.append(str(path))
+        return endpoints
+
+    def transport_domain_diagnostics(self) -> dict[str, Any]:
+        active_domains = self._active_transport_domain_ids() if self._started else ()
+        return transport_domain_diagnostics(
+            accounting=self._transport_domain_accounting,
+            active_domains=active_domains,
+            endpoint_identities=self._transport_domain_endpoint_identities(active_domains),
+        )
+
+    def quic_operational_security_evidence(self) -> dict[str, Any]:
+        return {
+            label: collector.runtime_evidence()
+            for label, collector in sorted(self._quic_operational_security.items())
+        }
+
+    def webtransport_resource_governance(self) -> dict[str, Any]:
+        return self._jsonable(self._webtransport_governance.snapshot())
+
+    def _active_transport_domain_ids(self) -> tuple[str, ...]:
+        domains: set[str] = set()
+        for index, listener in enumerate(self.config.listeners):
+            if index >= len(self._listeners):
+                continue
+            domains.update(self._listener_transport_domain_ids(listener))
+        return tuple(sorted(domains))
+
+    def _configured_transport_domain_ids(self) -> tuple[str, ...]:
+        domains: set[str] = set()
+        for listener in self.config.listeners:
+            domains.update(self._listener_transport_domain_ids(listener))
+        return tuple(sorted(domains))
+
+    @staticmethod
+    def _listener_transport_domain_ids(listener: ListenerConfig) -> tuple[str, ...]:
+        domains = {"listener", _normalize_listener_kind(listener.kind)}
+        if "quic" in listener.enabled_protocols:
+            domains.add("quic")
+        return tuple(sorted(domains))
+
+    def _transport_domain_endpoint_identities(self, active_domains: Iterable[str]) -> dict[str, str | None]:
+        endpoint = ",".join(self._bound_endpoint_strings()) or None
+        return {domain_id: endpoint for domain_id in active_domains}
+
+    @staticmethod
+    def _redact(value: Any) -> str | None:
+        return "<redacted>" if value else None
+
+    @staticmethod
+    def _jsonable(value: Any) -> Any:
+        if isinstance(value, tuple):
+            return [TigrCornServer._jsonable(item) for item in value]
+        if isinstance(value, list):
+            return [TigrCornServer._jsonable(item) for item in value]
+        if isinstance(value, dict):
+            return {
+                key: TigrCornServer._jsonable(item)
+                for key, item in value.items()
+            }
+        return value
+
     async def start(self) -> None:
         if self._started:
             return
+        if self.config.app.profile and self.config.app.profile != "default":
+            validate_profile_transport_domains(
+                self.config.app.profile,
+                required_domains=self._configured_transport_domain_ids(),
+            )
         with span('server.start', attrs={'listener_count': len(self.config.listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
-            await self.lifespan.startup()
-            await run_async_hooks(self.config.hooks.on_startup, self)
-            for listener_cfg in self.config.listeners:
-                listener = await self._make_listener(listener_cfg)
-                await listener.start(self._make_client_handler(listener_cfg))
-                self._sync_listener_bound_address(listener_cfg, listener)
-                self._listeners.append(listener)
-                self.logger.info('listening on %s', listener_cfg.label)
-            if self.config.metrics.enabled and self.config.metrics.bind:
-                self._metrics_server = await self._start_metrics_endpoint(self.config.metrics.bind)
-            if self._statsd_exporter is not None:
-                await self._statsd_exporter.start(self.state.metrics)
-            if self._otel_exporter is not None:
-                await self._otel_exporter.start(self.state.metrics)
-            if self._request_budget is not None:
-                self._request_budget_task = asyncio.create_task(self._monitor_request_budget(), name='tigrcorn-request-budget')
+            try:
+                await self.lifespan.startup()
+                await run_async_hooks(self.config.hooks.on_startup, self)
+                for listener_cfg in self.config.listeners:
+                    listener = await self._make_listener(listener_cfg)
+                    await listener.start(self._make_client_handler(listener_cfg))
+                    self._sync_listener_bound_address(listener_cfg, listener)
+                    self._listeners.append(listener)
+                    self._record_listener_transport_domains(listener_cfg)
+                    self.logger.info('listening on %s', listener_cfg.label)
+                if self.config.metrics.enabled and self.config.metrics.bind:
+                    self._metrics_server = await self._start_metrics_endpoint(self.config.metrics.bind)
+                if self._statsd_exporter is not None:
+                    await self._statsd_exporter.start(self.state.metrics)
+                if self._otel_exporter is not None:
+                    await self._otel_exporter.start(self.state.metrics)
+                if self._request_budget is not None:
+                    self._request_budget_task = asyncio.create_task(self._monitor_request_budget(), name='tigrcorn-request-budget')
+            except Exception:
+                await self.close()
+                raise
         self._started = True
+
+    def resource_ownership(self) -> dict[str, Any]:
+        resources: list[dict[str, Any]] = [
+            {
+                "id": "runtime:event-loop",
+                "kind": "event_loop",
+                "owner": "caller",
+                "caller_owned": True,
+                "active": self._started,
+                "close_action": "not_closed",
+            },
+            {
+                "id": "runtime:worker-pool",
+                "kind": "worker_pool",
+                "owner": "tigrcorn",
+                "caller_owned": False,
+                "active": self._started and self.config.process.workers > 1,
+                "close_action": "shutdown",
+            },
+        ]
+        for index, listener in enumerate(self.config.listeners):
+            active = self._started and index < len(self._listeners)
+            resources.append(
+                {
+                    "id": f"listener:{index}",
+                    "kind": "listener",
+                    "owner": "tigrcorn",
+                    "caller_owned": False,
+                    "active": active,
+                    "close_action": "close",
+                    "label": listener.label,
+                }
+            )
+            resources.append(
+                {
+                    "id": f"socket:{index}",
+                    "kind": "socket",
+                    "owner": "tigrcorn" if listener.fd is None else "caller",
+                    "caller_owned": listener.fd is not None,
+                    "active": active and listener.kind in {"tcp", "udp", "unix"},
+                    "close_action": "close" if listener.fd is None else "not_closed",
+                    "label": listener.label,
+                }
+            )
+            resources.append(
+                {
+                    "id": f"transport:{index}",
+                    "kind": "transport",
+                    "owner": "tigrcorn",
+                    "caller_owned": False,
+                    "active": active,
+                    "close_action": "close",
+                    "label": listener.kind,
+                }
+            )
+            if listener.ssl_certfile or listener.ssl_keyfile or listener.alpn_protocols:
+                resources.append(
+                    {
+                        "id": f"tls-context:{index}",
+                        "kind": "tls_context",
+                        "owner": "tigrcorn",
+                        "caller_owned": False,
+                        "active": active and listener.ssl_enabled,
+                        "close_action": "release",
+                        "label": "<redacted>",
+                    }
+                )
+        resources.append(
+            {
+                "id": "telemetry:statsd",
+                "kind": "telemetry_exporter",
+                "owner": "tigrcorn",
+                "caller_owned": False,
+                "active": self._statsd_exporter is not None and getattr(self._statsd_exporter, "_task", None) is not None,
+                "close_action": "flush_stop",
+            }
+        )
+        resources.append(
+            {
+                "id": "telemetry:otel",
+                "kind": "telemetry_exporter",
+                "owner": "tigrcorn",
+                "caller_owned": False,
+                "active": self._otel_exporter is not None and getattr(self._otel_exporter, "_task", None) is not None,
+                "close_action": "flush_stop",
+            }
+        )
+        return {
+            "schema_version": "1.0",
+            "owner": "tigrcorn",
+            "generation": int(self.state.shutting_down) + int(self._started),
+            "active": self._started and not self.state.shutting_down,
+            "resources": sorted(resources, key=lambda item: item["id"]),
+        }
 
     async def serve_forever(self) -> None:
         await self.start()
@@ -147,8 +410,9 @@ class TigrCornServer:
         with span('server.shutdown', attrs={'active_listeners': len(self._listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
             if self._request_budget_task is not None:
                 self._request_budget_task.cancel()
-                with suppress(Exception):
+                with suppress(asyncio.CancelledError, Exception):
                     await self._request_budget_task
+                self._request_budget_task = None
             if self._metrics_server is not None:
                 self._metrics_server.close()
                 with suppress(Exception):
@@ -197,6 +461,48 @@ class TigrCornServer:
             return PipeListener(cfg.path or '')
         return InProcListener()
 
+    def _record_listener_transport_domains(self, listener_cfg: ListenerConfig) -> None:
+        for domain_id in self._listener_transport_domain_ids(listener_cfg):
+            counters: dict[str, int] = {"connections": 1}
+            if domain_id == "quic":
+                counters["datagrams"] = 0
+                counters["streams"] = 0
+            elif domain_id in {"tcp", "unix", "pipe", "in-process"}:
+                counters["streams"] = 1
+            self._transport_domain_accounting.record(domain_id, **counters)
+
+    def _quic_operational_security_for_listener(self, listener_cfg: ListenerConfig) -> QuicOperationalSecurityRuntime:
+        label = listener_cfg.label or f"listener:{len(self._quic_operational_security)}"
+        collector = self._quic_operational_security.get(label)
+        if collector is None:
+            collector = QuicOperationalSecurityRuntime(
+                secret=listener_cfg.quic_secret or b"tigrcorn-quic-operational-security",
+                profile=self.config.app.profile or "default",
+            )
+            self._quic_operational_security[label] = collector
+        return collector
+
+    def _record_quic_operational_security_packet(
+        self,
+        listener_cfg: ListenerConfig,
+        packet: Any,
+        endpoint: Any,
+        *,
+        attempted_send_bytes: int | None = None,
+        address_validated: bool = False,
+    ) -> dict[str, Any] | None:
+        if "quic" not in listener_cfg.enabled_protocols:
+            return None
+        packet_bytes = bytes(getattr(packet, "data", packet))
+        packet_endpoint = getattr(packet, "addr", endpoint)
+        collector = self._quic_operational_security_for_listener(listener_cfg)
+        return collector.record_packet_path(
+            packet=packet_bytes,
+            endpoint=packet_endpoint,
+            attempted_send_bytes=attempted_send_bytes,
+            address_validated=address_validated,
+        )
+
     def _make_client_handler(self, listener_cfg: ListenerConfig):
         if listener_cfg.kind == 'udp':
             h3_handler = HTTP3DatagramHandler(
@@ -206,12 +512,14 @@ class TigrCornServer:
                 access_logger=self.access_logger,
                 scheduler=self.scheduler,
                 metrics=self.state.metrics,
+                webtransport_governance=self._webtransport_governance,
             )
             self._datagram_handlers.append(h3_handler)
 
             async def udp_handler(packet, endpoint) -> None:
                 sessions_before = len(h3_handler.sessions)
                 responses_before = sum(len(session.responded_streams) for session in h3_handler.sessions.values())
+                self._record_quic_operational_security_packet(listener_cfg, packet, endpoint)
                 await h3_handler.handle_packet(packet, endpoint)
                 if len(h3_handler.sessions) > sessions_before:
                     self.state.metrics.connection_opened()
@@ -811,7 +1119,15 @@ class TigrCornServer:
             return False
         finally:
             send.cleanup()
-        self.access_logger.log_http(client, request.method, request.path, status, f'HTTP/{request.http_version}')
+        self.access_logger.log_http(
+            client,
+            request.method,
+            request.path,
+            status,
+            f'HTTP/{request.http_version}',
+            request_headers=request.headers,
+            **self._writer_tls_observability(writer),
+        )
         body_complete = getattr(receive, 'body_complete', True)
         return request.keep_alive and body_complete
 
@@ -836,6 +1152,15 @@ class TigrCornServer:
             )
         )
         await self._drain_writer(writer)
+
+    @staticmethod
+    def _writer_tls_observability(writer: asyncio.StreamWriter) -> dict[str, str | None]:
+        ssl_object = writer.get_extra_info("ssl_object")
+        if ssl_object is None:
+            return {"tls_version": None, "alpn": None}
+        version = getattr(ssl_object, "version", lambda: None)()
+        alpn = getattr(ssl_object, "selected_alpn_protocol", lambda: None)()
+        return {"tls_version": version, "alpn": alpn}
 
     async def _start_metrics_endpoint(self, bind: str) -> asyncio.AbstractServer:
         host, port = self._parse_bind_target(bind)

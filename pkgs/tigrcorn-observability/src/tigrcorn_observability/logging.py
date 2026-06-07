@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from tigrcorn_config.files import ConfigFileError, load_config_source
+from tigrcorn_observability.protocol import make_observability_record
 
 
 class LoggingConfigError(RuntimeError):
@@ -164,23 +165,132 @@ class AccessLogger:
         self.logger = logger
         self.enabled = enabled
         self.fmt = fmt or '{peer} "{method} {path} {proto}" {status}'
+        self.observability_records: list[dict[str, Any]] = []
 
     def _peer(self, client: tuple[str, int] | None) -> str:
         return f"{client[0]}:{client[1]}" if client else '-'
 
-    def log_http(self, client: tuple[str, int] | None, method: str, path: str, status: int, proto: str) -> None:
+    def log_http(
+        self,
+        client: tuple[str, int] | None,
+        method: str,
+        path: str,
+        status: int,
+        proto: str,
+        *,
+        request_headers: list[tuple[bytes, bytes]] | tuple[tuple[bytes, bytes], ...] | None = None,
+        tls_version: str | None = None,
+        alpn: str | None = None,
+        transport: str | None = None,
+    ) -> None:
         if not self.enabled:
             return
         peer = self._peer(client)
         message = self.fmt.format(peer=peer, method=method, path=path, status=status, proto=proto)
-        self.logger.info(message, extra={'event': 'access.http', 'peer': peer, 'method': method, 'path': path, 'status': status, 'proto': proto})
+        observability = self._http_observability_record(
+            peer=peer,
+            method=method,
+            path=path,
+            status=status,
+            proto=proto,
+            request_headers=request_headers,
+            tls_version=tls_version,
+            alpn=alpn,
+            transport=transport,
+        )
+        self.observability_records.append(observability)
+        self.logger.info(
+            message,
+            extra={
+                'event': 'access.http',
+                'peer': peer,
+                'method': method,
+                'path': path,
+                'status': status,
+                'proto': proto,
+                'observability': observability,
+            },
+        )
 
     def log_ws(self, client: tuple[str, int] | None, path: str, result: str) -> None:
         if not self.enabled:
             return
         peer = self._peer(client)
         message = f'{peer} "WEBSOCKET {path}" {result}'
-        self.logger.info(message, extra={'event': 'access.websocket', 'peer': peer, 'path': path, 'result': result})
+        observability = make_observability_record(
+            kind='event',
+            name=f'websocket.{result}',
+            labels={
+                'protocol': 'websocket',
+                'transport': 'tcp',
+                'lifecycle': result,
+                'peer': peer,
+                'path': path,
+            },
+            attributes={'result': result},
+        )
+        self.observability_records.append(observability)
+        self.logger.info(
+            message,
+            extra={
+                'event': 'access.websocket',
+                'peer': peer,
+                'path': path,
+                'result': result,
+                'observability': observability,
+            },
+        )
+
+    def _http_observability_record(
+        self,
+        *,
+        peer: str,
+        method: str,
+        path: str,
+        status: int,
+        proto: str,
+        request_headers: list[tuple[bytes, bytes]] | tuple[tuple[bytes, bytes], ...] | None,
+        tls_version: str | None,
+        alpn: str | None,
+        transport: str | None,
+    ) -> dict[str, Any]:
+        protocol = _protocol_from_http_proto(proto)
+        labels: dict[str, Any] = {
+            'protocol': protocol,
+            'transport': transport or ('quic' if protocol == 'http3' else 'tcp'),
+            'peer': peer,
+            'path': path,
+        }
+        if tls_version is not None:
+            labels['tls_version'] = tls_version
+        if alpn is not None:
+            labels['alpn'] = alpn
+        return make_observability_record(
+            kind='event',
+            name='http.request',
+            labels=labels,
+            attributes={
+                'headers': _headers_to_mapping(request_headers or ()),
+                'method': method,
+                'status': int(status),
+            },
+        )
+
+
+def _protocol_from_http_proto(proto: str) -> str:
+    normalized = str(proto).lower()
+    if normalized.endswith('/3'):
+        return 'http3'
+    if normalized.endswith('/2'):
+        return 'http2'
+    return 'http1'
+
+
+def _headers_to_mapping(headers: list[tuple[bytes, bytes]] | tuple[tuple[bytes, bytes], ...]) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for name, value in headers:
+        result[name.decode('latin1').lower()] = value.decode('latin1', 'replace')
+    return result
 
 
 def _coerce_level(level: str) -> int:

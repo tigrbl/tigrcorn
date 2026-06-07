@@ -1,0 +1,39 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2055"
+number: 2055
+slug: "runtime-capability-registry"
+title: "Runtime capability registry"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose a canonical machine-readable capability registry for protocol, transport, TLS, lifecycle, embedded runtime, observability, and certification support claims."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall expose a canonical machine-readable capability registry for protocol, transport, TLS, lifecycle, embedded runtime, observability, and certification support claims.
+  
+  Requirements:
+  
+  - Capability records shall distinguish compiled, configured, enabled, certified, unavailable, and unsupported states.
+  - Protocol capability records shall cover HTTP/1.1, HTTP/2, HTTP/3, WebSocket, WebTransport, and lifespan behavior.
+  - Transport capability records shall cover TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transports.
+  - TLS and identity capability records shall cover TLS 1.3, ALPN, X.509 validation, OCSP, CRL handling, and mTLS where configured.
+  - Runtime capability records shall identify supported lifecycle, embedded-server, loop, worker, and observability surfaces.
+  - Certification tooling and deployment profiles shall consume capability records rather than parsing README, package metadata, or release-note prose.
+  - Public CLI and Python APIs shall return deterministic structured output suitable for profile validation and release evidence.
+  - Tigrcorn shall support `from tigrcorn import capabilities` with `capabilities.export()` as the public Python capability-registry surface.
+  - Tigrcorn shall support `server.describe()` as the public runtime introspection surface for active runtime state.
+  - Tigrcorn shall support `transport.capabilities()` as the public transport capability discovery surface.
+  - Tigrcorn shall support `tigrcorn inspect transport` as the public operator diagnostic command for live transport state.
+  - Tigrcorn shall support `tigrcorn certify` as the public operator command for deterministic certification artifact generation.
+  - Certification output shall include deterministic `protocol.json`, `runtime.json`, `security.json`, `performance.json`, and `interop.json` artifacts.
+  - Release evidence shall support SPDX, CycloneDX, and SLSA provenance artifacts alongside certification evidence.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1021"
+  - "adr:1031"
+  - "adr:1041"

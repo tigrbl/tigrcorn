@@ -1,0 +1,32 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2061"
+number: 2061
+slug: "webtransport-resource-governance"
+title: "WebTransport resource governance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn WebTransport support shall require explicit resource governance for certified live-session behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn WebTransport support shall require explicit resource governance for certified live-session behavior.
+  
+  Requirements:
+  
+  - WebTransport configuration shall expose maximum sessions, maximum streams, maximum datagram size, and governed admission controls.
+  - Certified profiles shall define memory, bandwidth, peer, and queue budgets or explicitly state that a budget is unavailable.
+  - Runtime behavior shall fail closed or shed load predictably when stream, datagram, peer, memory, or bandwidth budgets are exceeded.
+  - Certification shall cover stream exhaustion, datagram abuse, flow-control stalls, migration handling, fairness across sessions, and cleanup after close.
+  - Resource-governance evidence shall link to WebTransport lifecycle and client-session coverage evidence.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1011"
+  - "adr:1023"
+  - "adr:1024"
+  - "adr:1040"
+  - "adr:1050"

@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1050"
+number: 1050
+slug: "webtransport-resource-governance"
+title: "WebTransport requires explicit resource governance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn WebTransport support shall require explicit stream, datagram, memory, bandwidth, and peer budgets before certification of broader live-session behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn WebTransport support shall require explicit stream, datagram, memory, bandwidth, and peer budgets before certification of broader live-session behavior.
+  
+  Resource governance must cover maximum streams, maximum datagrams, memory budgets, bandwidth budgets, peer budgets, stream exhaustion, datagram abuse, migration handling, flow control, and fairness.
+  
+  Consequences:
+  
+  - WebTransport support cannot be certified only through successful session establishment.
+  - Abuse and exhaustion behavior becomes testable.
+  - Operators can map deployment profiles to explicit resource budgets.
+  - WebTransport certification remains tied to QUIC and HTTP/3 operational controls.

@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2060"
+number: 2060
+slug: "quic-operational-security-certification"
+title: "QUIC operational security certification"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn QUIC certification shall include operational security behavior beyond happy-path HTTP/3 and WebTransport traffic."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn QUIC certification shall include operational security behavior beyond happy-path HTTP/3 and WebTransport traffic.
+  
+  Requirements:
+  
+  - Certification shall cover anti-amplification limits, Retry token acceptance, Retry token rejection, and spoofed address handling.
+  - Certification shall cover path validation, NAT rebinding, disabled migration, preferred-address handling, and connection ID rotation.
+  - Certification shall cover congestion control, loss recovery, deferred send behavior, and close behavior after transport-integrity failure.
+  - qlog or equivalent transport evidence shall be captured where available and redacted before publication.
+  - HTTP/3 and WebTransport certification shall declare whether they rely on this QUIC operational security baseline.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1023"
+  - "adr:1024"
+  - "adr:1040"
+  - "adr:1047"

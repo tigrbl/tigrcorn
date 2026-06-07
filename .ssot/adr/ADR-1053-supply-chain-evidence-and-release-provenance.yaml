@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1053"
+number: 1053
+slug: "supply-chain-evidence-and-release-provenance"
+title: "Releases include supply-chain evidence and provenance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn releases shall include supply-chain evidence such as SPDX, CycloneDX, SLSA provenance, package manifest integrity, dependency graph drift checks, and release-train evidence alongside certification artifacts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn releases shall include supply-chain evidence such as SPDX, CycloneDX, SLSA provenance, package manifest integrity, dependency graph drift checks, and release-train evidence alongside certification artifacts.
+  
+  Multi-package publication increases dependency, compatibility, and provenance risk. Supply-chain evidence must be reviewed as part of release integrity rather than treated as packaging-only metadata.
+  
+  Consequences:
+  
+  - Release gates can verify package manifests, dependency graphs, and provenance before publication.
+  - Certification evidence and supply-chain evidence can be evaluated together.
+  - Package-family drift becomes visible before promotion.
+  - Operators can consume release evidence using standard SBOM and provenance formats.

@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1044"
+number: 1044
+slug: "contract-registry-and-stability-levels"
+title: "Contracts are discoverable with explicit stability and certification levels"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn contracts shall be discoverable through a contract registry that records contract identity, version, owning package, stability level, certification state, deprecation state, and evidence links."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn contracts shall be discoverable through a contract registry that records contract identity, version, owning package, stability level, certification state, deprecation state, and evidence links.
+  
+  Contract stability levels are experimental, preview, stable, certified, and deprecated. A contract may be implemented without being certified, and certification must be represented separately from implementation availability.
+  
+  Consequences:
+  
+  - Operators can identify which contracts are stable enough for a deployment profile.
+  - Certification gates can require certified contracts for strict profiles.
+  - Deprecation can be represented without deleting historical contract records.
+  - Contract metadata becomes an auditable release artifact instead of README-only prose.

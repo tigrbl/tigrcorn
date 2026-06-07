@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2057"
+number: 2057
+slug: "embedded-resource-ownership-contract"
+title: "Embedded resource ownership contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define ownership and lifecycle rules for listeners, sockets, transports, TLS contexts, event loops, worker pools, and telemetry exporters in embedded and standalone deployments."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall define ownership and lifecycle rules for listeners, sockets, transports, TLS contexts, event loops, worker pools, and telemetry exporters in embedded and standalone deployments.
+  
+  Requirements:
+  
+  - Runtime resources shall be classified as server-owned, caller-owned, borrowed, or transferred before startup completes.
+  - Shutdown shall close server-owned resources and shall not close caller-owned resources unless ownership has been explicitly transferred.
+  - Restart and reload shall preserve caller-owned resources unless the caller explicitly requests replacement or transfer.
+  - Failure cleanup shall cancel workers, close transports, flush telemetry where safe, and leave borrowed resources in a documented state.
+  - Embedded deployments shall expose ownership state through the runtime describe contract.
+  - Certification tests shall cover shutdown, restart, reload, cancellation, double-close prevention, and leak prevention for each resource class.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1003"
+  - "adr:1038"
+  - "adr:1043"

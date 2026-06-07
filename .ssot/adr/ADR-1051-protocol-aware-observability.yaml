@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1051"
+number: 1051
+slug: "protocol-aware-observability"
+title: "Observability includes protocol and transport intelligence"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn observability shall include protocol, transport, TLS, ALPN, RTT, loss, QUIC migration, and connection/session identity dimensions instead of only request, error, and latency metrics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn observability shall include protocol, transport, TLS, ALPN, RTT, loss, QUIC migration, and connection/session identity dimensions instead of only request, error, and latency metrics.
+  
+  OpenTelemetry traces, metrics, and logs must preserve propagation, correlation, and trace-context behavior where enabled. Observability output must respect redaction and avoid leaking secrets or private key material.
+  
+  Consequences:
+  
+  - Transport-aware runtime behavior can be diagnosed from telemetry.
+  - Certification artifacts can include observability conformance evidence.
+  - Operators can correlate protocol behavior with transport degradation.
+  - Logging and telemetry standards remain aligned with runtime-owned metadata.

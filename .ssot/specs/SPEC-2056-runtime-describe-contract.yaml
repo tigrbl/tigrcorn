@@ -1,0 +1,32 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2056"
+number: 2056
+slug: "runtime-describe-contract"
+title: "Runtime describe contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn runtime instances shall expose a stable describe contract for active event loop, listener, protocol, transport, TLS, deployment profile, worker, and observability state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn runtime instances shall expose a stable describe contract for active event loop, listener, protocol, transport, TLS, deployment profile, worker, and observability state.
+  
+  Requirements:
+  
+  - Describe output shall identify the active runtime loop and whether it was selected explicitly, by profile, or by automatic fallback.
+  - Describe output shall enumerate active listeners, their endpoint kinds, transport identities, local addresses, and externally safe peer metadata where available.
+  - Describe output shall enumerate active protocol carriers, selected HTTP versions, WebSocket/WebTransport posture, TLS version, ALPN, and profile-derived policy state.
+  - Describe output shall identify caller-owned, server-owned, borrowed, and transferred runtime resources without exposing secrets or private key material.
+  - Describe output shall include observability exporter posture and redacted correlation identifiers where configured.
+  - Describe output shall be distinct from capability export: capability export says what is supportable, while describe output says what is active now.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1038"
+  - "adr:1041"
+  - "adr:1042"
+  - "adr:1043"

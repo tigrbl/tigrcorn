@@ -39,6 +39,7 @@ from tigrcorn_protocols.http3.streams import (
     HTTP3ConnectionCore,
 )
 from tigrcorn_protocols.http3.websocket import H3WebSocketSession
+from tigrcorn_protocols.webtransport.governance import WebTransportGovernanceError
 from tigrcorn_transports.quic.connection import QuicConnection
 from tigrcorn_transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters
 from tigrcorn_transports.quic.packets import QuicLongHeaderPacket, QuicLongHeaderType, QuicRetryPacket, QuicShortHeaderPacket, QuicVersionNegotiationPacket, decode_packet
@@ -202,13 +203,24 @@ class HTTP3DatagramHandler:
     _WEBTRANSPORT_BIDI_STREAM_SIGNAL = 0x41
     _WEBTRANSPORT_UNIDI_STREAM_SIGNAL = 0x54
 
-    def __init__(self, *, app: ASGIApp, config: ServerConfig, listener: ListenerConfig, access_logger: AccessLogger, scheduler: ProductionScheduler | None = None, metrics: Metrics | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        app: ASGIApp,
+        config: ServerConfig,
+        listener: ListenerConfig,
+        access_logger: AccessLogger,
+        scheduler: ProductionScheduler | None = None,
+        metrics: Metrics | None = None,
+        webtransport_governance: Any | None = None,
+    ) -> None:
         self.app = app
         self.config = config
         self.listener = listener
         self.access_logger = access_logger
         self.scheduler = scheduler
         self.metrics = metrics
+        self.webtransport_governance = webtransport_governance
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._session_sequence = 0
@@ -232,6 +244,60 @@ class HTTP3DatagramHandler:
             'remote_cid': session.quic.remote_cid.hex() if isinstance(session.quic.remote_cid, bytes) else None,
             'state': session.quic.state,
         }
+
+    @staticmethod
+    def _webtransport_address(addr: tuple[str, int]) -> str:
+        return f"{addr[0]}:{addr[1]}"
+
+    def _webtransport_budget_snapshot(self) -> dict[str, Any] | None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return None
+        return manager.snapshot()
+
+    def _webtransport_register_session(self, session: HTTP3Session, webtransport: _HTTP3WebTransportSession) -> dict[str, Any] | None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return None
+        return manager.open_session(
+            webtransport.session_id,
+            peer_id=self._webtransport_address(session.addr),
+            address=self._webtransport_address(session.addr),
+        )
+
+    def _webtransport_register_stream(self, webtransport: _HTTP3WebTransportSession, stream_id: int | str) -> dict[str, Any] | None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return None
+        return manager.open_stream(webtransport.session_id, str(stream_id))
+
+    def _webtransport_register_datagram(
+        self,
+        webtransport: _HTTP3WebTransportSession,
+        datagram_id: str,
+        data: bytes,
+    ) -> dict[str, Any] | None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return None
+        return manager.send_datagram(webtransport.session_id, datagram_id, data)
+
+    def _webtransport_register_rebinding(self, session: HTTP3Session) -> None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return
+        new_address = self._webtransport_address(session.addr)
+        for webtransport in session.webtransport_sessions.values():
+            with suppress(WebTransportGovernanceError):
+                manager.migrate_session(webtransport.session_id, new_address=new_address)
+
+    def _webtransport_release_session(self, session_id: str, *, reason: str) -> dict[str, Any] | None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return None
+        with suppress(WebTransportGovernanceError):
+            return manager.close_session(session_id, reason=reason)
+        return None
 
     def _assign_session_runtime_id(self, session: HTTP3Session) -> None:
         if session.runtime_id:
@@ -543,6 +609,7 @@ class HTTP3DatagramHandler:
                 session.address_validated = True
                 session.quic.address_validated = True
                 self.sessions[packet.addr] = session
+                self._webtransport_register_rebinding(session)
             if session.quic.local_cid:
                 self.sessions_by_local_cid[session.quic.local_cid] = session
             session.request_packets += 1
@@ -949,6 +1016,7 @@ class HTTP3DatagramHandler:
             session.webtransport_streams.add(stream_id)
             session.webtransport_stream_owners[stream_id] = owner_candidate
             session.webtransport_stream_prefaces.pop(stream_id, None)
+            self._webtransport_register_stream(webtransport, stream_id)
             self.trace_webtransport(
                 'webtransport.stream.dispatch',
                 **self._trace_session_fields(session),
@@ -1001,6 +1069,7 @@ class HTTP3DatagramHandler:
         session.webtransport_streams.add(stream_id)
         session.webtransport_stream_owners[stream_id] = owner_candidate
         session.webtransport_stream_prefaces.pop(stream_id, None)
+        self._webtransport_register_stream(webtransport, stream_id)
         self.trace_webtransport(
             'webtransport.stream.dispatch',
             **self._trace_session_fields(session),
@@ -1037,6 +1106,20 @@ class HTTP3DatagramHandler:
         if len(data) > self._webtransport_max_datagram_size():
             return
         datagram_id = f'{stream_id}:{getattr(session, "request_packets", 0)}'
+        budget_result = self._webtransport_register_datagram(webtransport, datagram_id, data)
+        if budget_result is not None and not budget_result.get("accepted", False):
+            self.trace_webtransport(
+                'webtransport.datagram.budget.reject',
+                **self._trace_session_fields(session),
+                session_id=webtransport.session_id,
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+                reason=budget_result.get("reason"),
+                closed=bool(budget_result.get("closed")),
+            )
+            if budget_result.get("closed"):
+                await webtransport.abort()
+            return
         self.trace_webtransport(
             'webtransport.datagram.dispatch',
             **self._trace_session_fields(session),
@@ -1097,7 +1180,9 @@ class HTTP3DatagramHandler:
             session.webtransport_stream_owners.pop(stream_id, None)
             session.webtransport_stream_prefaces.pop(stream_id, None)
             if owner_stream_id == stream_id:
-                session.webtransport_sessions.pop(stream_id, None)
+                webtransport = session.webtransport_sessions.pop(stream_id, None)
+                if webtransport is not None:
+                    self._webtransport_release_session(webtransport.session_id, reason='stream-closed')
                 self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
         self._queue_session_outbound_locked(session, outbound, endpoint)
@@ -1133,6 +1218,20 @@ class HTTP3DatagramHandler:
                 datagram_id=datagram_id,
                 reason='missing-session',
             )
+            return
+        budget_result = self._webtransport_register_datagram(session.webtransport_sessions[stream_id], datagram_id, data)
+        if budget_result is not None and not budget_result.get("accepted", False):
+            self.trace_webtransport(
+                'webtransport.datagram.send.budget.reject',
+                **self._trace_session_fields(session),
+                session_id=session.webtransport_sessions[stream_id].session_id,
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+                reason=budget_result.get("reason"),
+                closed=bool(budget_result.get("closed")),
+            )
+            if budget_result.get("closed"):
+                await session.webtransport_sessions[stream_id].abort()
             return
         payload = self._encode_webtransport_datagram_payload(stream_id, data)
         self.trace_webtransport(
@@ -1401,6 +1500,7 @@ class HTTP3DatagramHandler:
         session.webtransport_stream_owners.clear()
         session.webtransport_stream_prefaces.clear()
         for session_id in session_ids:
+            self._webtransport_release_session(session_id, reason='abort-session')
             self.trace_webtransport(
                 'webtransport.session.cleanup',
                 **self._trace_session_fields(session),
@@ -1426,6 +1526,7 @@ class HTTP3DatagramHandler:
         self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
         if webtransport is not None:
+            self._webtransport_release_session(webtransport.session_id, reason='stream-closed')
             self.trace_webtransport(
                 'webtransport.session.cleanup',
                 **self._trace_session_fields(session),
@@ -1685,6 +1786,23 @@ class HTTP3DatagramHandler:
             work_lease=session.stream_work_leases.get(stream_id),
         )
         session.webtransport_sessions[stream_id] = webtransport
+        try:
+            self._webtransport_register_session(session, webtransport)
+            self._webtransport_register_stream(webtransport, stream_id)
+        except WebTransportGovernanceError:
+            session.webtransport_sessions.pop(stream_id, None)
+            session.webtransport_streams.discard(stream_id)
+            session.webtransport_stream_owners.pop(stream_id, None)
+            self._release_stream_work_lease(session, stream_id)
+            self.access_logger.log_http(session.addr, 'CONNECT', request.path, 429, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session,
+                stream_id,
+                429,
+                [(b'content-type', b'text/plain')],
+                b'webtransport resource budget exceeded',
+                end_stream=True,
+            )
         self.trace_webtransport(
             'webtransport.connect.start',
             **self._trace_session_fields(session),

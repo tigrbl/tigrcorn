@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2059"
+number: 2059
+slug: "transport-certification-domains"
+title: "Transport certification domains"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall certify TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transports as independent transport domains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall certify TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transports as independent transport domains.
+  
+  Requirements:
+  
+  - Transport certification shall cover capability discovery, startup, shutdown, backpressure, latency, throughput, fairness, and resource usage.
+  - Transport diagnostics shall expose endpoint identity, transport kind, carrier state, and safe operational counters.
+  - QUIC transport diagnostics shall expose safe RTT, loss, migration, retry, and connection-id state where available.
+  - Unsupported or unavailable transport capabilities shall fail closed during strict profile validation.
+  - Transport evidence shall remain distinct from protocol handler evidence even when the same test scenario exercises both.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1002"
+  - "adr:1020"
+  - "adr:1031"
+  - "adr:1046"

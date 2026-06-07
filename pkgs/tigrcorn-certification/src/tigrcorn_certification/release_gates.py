@@ -15,8 +15,11 @@ DEFAULT_STRICT_TARGET_BOUNDARY_PATH = Path('docs/review/conformance/certificatio
 DEFAULT_PROMOTION_TARGET_PATH = Path('docs/review/conformance/promotion_gate.target.json')
 DEFAULT_TLS_WRAPPER_PATH = Path('src/tigrcorn/security/tls.py')
 DEFAULT_CLAIMS_REGISTRY_PATH = Path('docs/review/conformance/claims_registry.json')
+DEFAULT_CONTRACT_REGISTRY_PATH = Path('docs/review/conformance/contract_registry.json')
 DEFAULT_LEGACY_UNITTEST_INVENTORY_PATH = Path('LEGACY_UNITTEST_INVENTORY.json')
 DEFAULT_SSOT_REGISTRY_PATH = Path('.ssot/registry.json')
+DEFAULT_CERTIFICATION_ARTIFACT_ROOT = Path('certification-artifacts')
+DEFAULT_SUPPLY_CHAIN_RELEASE_BUNDLE_ROOT = Path('release-evidence/supply-chain')
 VALID_EVIDENCE_TIERS = ('local_conformance', 'same_stack_replay', 'independent_certification')
 EVIDENCE_TIER_ORDER = {name: index for index, name in enumerate(VALID_EVIDENCE_TIERS, start=1)}
 
@@ -158,6 +161,37 @@ def evaluate_release_gates(
     if gates.get('require_governance_graph', False):
         failures.extend(_evaluate_governance_graph(source_root=source_root, checked_files=checked_files))
 
+    if gates.get('require_contract_registry_traceability', False):
+        failures.extend(
+            evaluate_contract_registry_release_gate(
+                source_root,
+                boundary=boundary,
+                require_ssot_links=bool(gates.get('require_contract_registry_ssot_links', False)),
+                checked_files=checked_files,
+                artifact_status=artifact_status,
+            )
+        )
+
+    if gates.get('require_signed_certification_artifacts', False):
+        failures.extend(
+            evaluate_certification_artifact_release_gate(
+                source_root,
+                boundary=boundary,
+                checked_files=checked_files,
+                artifact_status=artifact_status,
+            )
+        )
+
+    if gates.get('require_supply_chain_release_provenance', False):
+        failures.extend(
+            evaluate_supply_chain_release_gate(
+                source_root,
+                boundary=boundary,
+                checked_files=checked_files,
+                artifact_status=artifact_status,
+            )
+        )
+
     return ReleaseGateReport(not failures, failures, checked_files, rfc_status, artifact_status)
 
 
@@ -257,6 +291,230 @@ def _fail_closed_for_scenario_metadata(scenario: InteropScenario) -> list[str]:
         value = metadata.get(key)
         if isinstance(value, str) and value.strip():
             failures.append(f'independent scenario {scenario.id} is blocked by metadata {key}={value!r}')
+    return failures
+
+
+def evaluate_contract_registry_release_gate(
+    source_root: str | Path,
+    *,
+    boundary: Mapping[str, Any] | None = None,
+    contract_registry_path: str | Path | None = None,
+    require_ssot_links: bool = False,
+    checked_files: list[str] | None = None,
+    artifact_status: dict[str, dict[str, Any]] | None = None,
+) -> list[str]:
+    source_root = Path(source_root)
+    boundary = dict(boundary or {})
+    registry_payload = _load_contract_registry_payload(
+        source_root,
+        boundary=boundary,
+        contract_registry_path=contract_registry_path,
+        checked_files=checked_files,
+    )
+    failures = _evaluate_contract_registry_payload(registry_payload)
+    if require_ssot_links:
+        failures.extend(
+            _evaluate_contract_registry_ssot_links(
+                source_root=source_root,
+                registry_payload=registry_payload,
+                checked_files=checked_files,
+            )
+        )
+    if artifact_status is not None:
+        artifact_status['contract_registry'] = {
+            'contract_count': len(registry_payload.get('contracts', [])) if isinstance(registry_payload.get('contracts'), list) else 0,
+            'failed': bool(failures),
+            'require_ssot_links': require_ssot_links,
+        }
+    return failures
+
+
+def evaluate_certification_artifact_release_gate(
+    source_root: str | Path,
+    *,
+    boundary: Mapping[str, Any] | None = None,
+    artifact_root: str | Path | None = None,
+    signature_key: str | bytes | None = None,
+    checked_files: list[str] | None = None,
+    artifact_status: dict[str, dict[str, Any]] | None = None,
+) -> list[str]:
+    from tigrcorn_certification.artifacts import verify_output_tree
+
+    source_root = Path(source_root)
+    boundary = dict(boundary or {})
+    artifact_config = boundary.get('certification_artifacts', {})
+    if not isinstance(artifact_config, Mapping):
+        artifact_config = {}
+    root_value = artifact_root or artifact_config.get('artifact_root') or DEFAULT_CERTIFICATION_ARTIFACT_ROOT
+    root = source_root / Path(root_value)
+    key_value = signature_key if signature_key is not None else artifact_config.get('manifest_signature_key')
+    result = verify_output_tree(root, key=key_value, require_signature=True)
+    if checked_files is not None:
+        checked_files.extend(str(path) for path in result.get('checked_files', []))
+    failures = [f'certification artifacts: {item}' for item in result.get('failures', [])]
+    if artifact_status is not None:
+        artifact_status['certification_artifacts'] = {
+            'artifact_root': str(root),
+            'failed': bool(failures),
+            'files': list(result.get('files', [])),
+            'release_eligible': bool(result.get('release_eligible', False)),
+        }
+    return failures
+
+
+def evaluate_supply_chain_release_gate(
+    source_root: str | Path,
+    *,
+    boundary: Mapping[str, Any] | None = None,
+    bundle_root: str | Path | None = None,
+    checked_files: list[str] | None = None,
+    artifact_status: dict[str, dict[str, Any]] | None = None,
+) -> list[str]:
+    from tigrcorn_certification.supply_chain import validate_release_bundle
+
+    source_root = Path(source_root)
+    boundary = dict(boundary or {})
+    supply_chain_config = boundary.get('supply_chain', {})
+    if not isinstance(supply_chain_config, Mapping):
+        supply_chain_config = {}
+    root_value = bundle_root or supply_chain_config.get('bundle_root') or DEFAULT_SUPPLY_CHAIN_RELEASE_BUNDLE_ROOT
+    artifact_root_value = supply_chain_config.get('certification_artifact_root')
+    root = source_root / Path(root_value)
+    artifact_root = source_root / Path(artifact_root_value) if artifact_root_value else None
+    workspace_packages = tuple(str(item) for item in supply_chain_config.get('workspace_packages', ()))
+    result = validate_release_bundle(
+        root,
+        workspace_packages=workspace_packages,
+        certification_artifact_root=artifact_root,
+    )
+    if checked_files is not None:
+        checked_files.extend(str(path) for path in result.get('checked_files', []))
+    failures = [f'supply chain: {item}' for item in result.get('failures', [])]
+    if artifact_status is not None:
+        artifact_status['supply_chain'] = {
+            'bundle_root': str(root),
+            'failed': bool(failures),
+            'package_count': int(result.get('package_count', 0)),
+            'release_eligible': bool(result.get('release_eligible', False)),
+            'sbom_present': bool(result.get('sbom_present', False)),
+            'slsa_present': bool(result.get('slsa_present', False)),
+        }
+    return failures
+
+
+def _load_contract_registry_payload(
+    source_root: Path,
+    *,
+    boundary: Mapping[str, Any],
+    contract_registry_path: str | Path | None,
+    checked_files: list[str] | None,
+) -> dict[str, Any]:
+    registry_path_value = contract_registry_path or boundary.get('contract_registry')
+    if registry_path_value is not None:
+        registry_path = source_root / Path(registry_path_value)
+        if checked_files is not None:
+            checked_files.append(str(registry_path))
+        if not registry_path.exists():
+            return {'contracts': [], '_load_failure': f'missing contract registry file: {registry_path}'}
+        return json.loads(registry_path.read_text(encoding='utf-8'))
+
+    from tigrcorn_contract.registry import export_contract_registry
+
+    return export_contract_registry()
+
+
+def _evaluate_contract_registry_payload(registry_payload: Mapping[str, Any]) -> list[str]:
+    failures: list[str] = []
+    load_failure = registry_payload.get('_load_failure')
+    if isinstance(load_failure, str) and load_failure:
+        return [load_failure]
+    contracts = registry_payload.get('contracts')
+    if not isinstance(contracts, list):
+        return ['contract registry is missing a contracts list']
+    if not contracts:
+        failures.append('contract registry does not declare any contracts')
+
+    seen_ids: set[str] = set()
+    for contract in contracts:
+        if not isinstance(contract, Mapping):
+            failures.append('contract registry contains a malformed contract record')
+            continue
+        contract_id = str(contract.get('contract_id', '')).strip()
+        if not contract_id:
+            failures.append('contract registry contains a contract without contract_id')
+            continue
+        if contract_id in seen_ids:
+            failures.append(f'contract registry contains duplicate contract_id: {contract_id}')
+        seen_ids.add(contract_id)
+        failures.extend(_evaluate_contract_release_traceability(contract_id, contract))
+    return failures
+
+
+def _evaluate_contract_release_traceability(contract_id: str, contract: Mapping[str, Any]) -> list[str]:
+    failures: list[str] = []
+    traceability = contract.get('traceability', {})
+    if not isinstance(traceability, Mapping):
+        traceability = {}
+    certified = bool(contract.get('certified', False))
+    release_certified = bool(traceability.get('release_certified', False))
+    stability = str(contract.get('stability', '')).strip()
+
+    if stability == 'deprecated':
+        if certified or release_certified:
+            failures.append(f'deprecated contract {contract_id} cannot be release certified')
+        if not contract.get('replacement_contract_id'):
+            failures.append(f'deprecated contract {contract_id} must declare replacement_contract_id')
+        if not contract.get('retirement_note'):
+            failures.append(f'deprecated contract {contract_id} must declare retirement_note')
+        return failures
+
+    if not certified and not release_certified:
+        return failures
+
+    if stability != 'certified':
+        failures.append(f'certified contract {contract_id} must use certified stability')
+    if not bool(contract.get('implemented', False)):
+        failures.append(f'certified contract {contract_id} must be implemented')
+    if str(traceability.get('status', '')).strip() != 'complete':
+        failures.append(f'certified contract {contract_id} must have complete traceability')
+    if not release_certified:
+        failures.append(f'certified contract {contract_id} must set traceability.release_certified')
+    for field_name in ('rfcs', 'spec_ids', 'implementation_refs', 'test_ids', 'evidence_ids', 'negative_test_ids'):
+        values = traceability.get(field_name)
+        if not isinstance(values, list) or not values:
+            failures.append(f'certified contract {contract_id} is missing traceability.{field_name}')
+    return failures
+
+
+def _evaluate_contract_registry_ssot_links(
+    *,
+    source_root: Path,
+    registry_payload: Mapping[str, Any],
+    checked_files: list[str] | None,
+) -> list[str]:
+    ssot_path = source_root / DEFAULT_SSOT_REGISTRY_PATH
+    if checked_files is not None:
+        checked_files.append(str(ssot_path))
+    if not ssot_path.exists():
+        return [f'missing SSOT registry for contract traceability links: {ssot_path}']
+    ssot_payload = json.loads(ssot_path.read_text(encoding='utf-8'))
+    id_sets = {
+        'spec_ids': {str(item.get('id')) for item in ssot_payload.get('specs', []) if isinstance(item, Mapping)},
+        'test_ids': {str(item.get('id')) for item in ssot_payload.get('tests', []) if isinstance(item, Mapping)},
+        'evidence_ids': {str(item.get('id')) for item in ssot_payload.get('evidence', []) if isinstance(item, Mapping)},
+    }
+    failures: list[str] = []
+    for contract in registry_payload.get('contracts', []):
+        if not isinstance(contract, Mapping):
+            continue
+        traceability = contract.get('traceability', {})
+        if not isinstance(traceability, Mapping) or not (contract.get('certified') or traceability.get('release_certified')):
+            continue
+        contract_id = str(contract.get('contract_id'))
+        for field_name, known_ids in id_sets.items():
+            for linked_id in traceability.get(field_name, []):
+                if str(linked_id) not in known_ids:
+                    failures.append(f'contract {contract_id} references unknown SSOT {field_name[:-4]} id: {linked_id}')
     return failures
 
 
@@ -1329,6 +1587,7 @@ def _load_performance_metric_keys(artifact_root: Path, profile_ids: list[str]) -
 __all__ = [
     'DEFAULT_BOUNDARY_PATH',
     'DEFAULT_CLAIMS_REGISTRY_PATH',
+    'DEFAULT_CONTRACT_REGISTRY_PATH',
     'DEFAULT_CORPUS_PATH',
     'DEFAULT_INDEPENDENT_MATRIX_PATH',
     'DEFAULT_LEGACY_UNITTEST_INVENTORY_PATH',
@@ -1336,6 +1595,8 @@ __all__ = [
     'DEFAULT_STRICT_TARGET_BOUNDARY_PATH',
     'DEFAULT_PROMOTION_TARGET_PATH',
     'DEFAULT_SSOT_REGISTRY_PATH',
+    'DEFAULT_CERTIFICATION_ARTIFACT_ROOT',
+    'DEFAULT_SUPPLY_CHAIN_RELEASE_BUNDLE_ROOT',
     'PromotionSectionReport',
     'PromotionTargetError',
     'PromotionTargetReport',
@@ -1344,7 +1605,10 @@ __all__ = [
     'assert_promotion_target_ready',
     'assert_release_ready',
     'evaluate_promotion_target',
+    'evaluate_contract_registry_release_gate',
+    'evaluate_certification_artifact_release_gate',
     'evaluate_release_gates',
+    'evaluate_supply_chain_release_gate',
     'load_certification_boundary',
     'load_conformance_corpus',
     'load_promotion_target',

@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1052"
+number: 1052
+slug: "reproducible-signed-certification-artifacts"
+title: "Certification artifacts are reproducible and signed"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn release certification shall generate deterministic and signed protocol, runtime, security, performance, and interoperability evidence artifacts for identical inputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn release certification shall generate deterministic and signed protocol, runtime, security, performance, and interoperability evidence artifacts for identical inputs.
+  
+  Certification outputs must include stable artifact shapes for protocol, runtime, security, performance, and interoperability evidence. Signing and provenance may use Sigstore or equivalent governed mechanisms, but unsigned certification artifacts must not be treated as final release evidence for strict profiles.
+  
+  Consequences:
+  
+  - Release certification can be replayed and compared across environments.
+  - Evidence tampering becomes detectable.
+  - Promotion and publication gates can require signed certification artifacts.
+  - Local evidence bundles remain derived artifacts, not replacement canonical source.

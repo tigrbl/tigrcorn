@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2064"
+number: 2064
+slug: "protocol-aware-observability"
+title: "Protocol-aware observability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn observability shall include protocol and transport intelligence beyond request, error, and latency metrics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn observability shall include protocol and transport intelligence beyond request, error, and latency metrics.
+  
+  Requirements:
+  
+  - Telemetry shall expose safe protocol, transport, TLS version, ALPN, listener, and profile dimensions.
+  - QUIC and HTTP/3 telemetry shall expose safe RTT, loss, migration, retry, and connection/session identity dimensions where available.
+  - WebSocket and WebTransport telemetry shall expose safe lifecycle, stream, datagram, and close dimensions where available.
+  - OpenTelemetry traces, metrics, and logs shall preserve propagation, correlation, and trace-context behavior where enabled.
+  - Redaction rules shall forbid secret, private key, token, and unsafe certificate material in logs, metrics, traces, and evidence.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1031"
+  - "adr:1034"
+  - "adr:1042"
+  - "adr:1051"

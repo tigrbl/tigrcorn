@@ -1,0 +1,34 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2058"
+number: 2058
+slug: "contract-registry-and-traceability"
+title: "Contract registry and traceability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall maintain contract registry records and a traceability chain from RFC or specification requirement to contract, implementation, tests, claims, and evidence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall maintain contract registry records and a traceability chain from RFC or specification requirement to contract, implementation, tests, claims, and evidence.
+  
+  Requirements:
+  
+  - Contract records shall include contract id, version, owning package, status, stability level, certification state, deprecation state, and evidence links.
+  - Stability levels shall be experimental, preview, stable, certified, and deprecated.
+  - Certification state shall be represented separately from implementation availability.
+  - RFC and specification requirements shall link to governed SPEC records, contract records, feature rows, test rows, claim rows, and evidence rows.
+  - Partial, provisional, external, and unsupported evidence shall be represented explicitly.
+  - Release certification shall fail closed when required traceability links are absent for a certified surface.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1008"
+  - "adr:1009"
+  - "adr:1029"
+  - "adr:1030"
+  - "adr:1044"
+  - "adr:1045"

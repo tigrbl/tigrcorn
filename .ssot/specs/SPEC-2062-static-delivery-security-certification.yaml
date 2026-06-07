@@ -1,0 +1,30 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2062"
+number: 2062
+slug: "static-delivery-security-certification"
+title: "Static delivery security certification"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn static delivery shall have an explicit security certification boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn static delivery shall have an explicit security certification boundary.
+  
+  Requirements:
+  
+  - Certification shall cover plain traversal, encoded traversal, Unicode traversal, and rejected normalization ambiguity.
+  - Certification shall cover symlink escape prevention and configured directory boundary enforcement.
+  - Certification shall cover cache poisoning controls, validator behavior, range interaction, and content-coding interaction.
+  - Certification shall cover Alt-Svc interaction and Early Hints validation when those features are enabled with static delivery.
+  - Static-origin profiles shall declare whether static delivery is disabled, enabled only when mounted, or enabled by explicit operator configuration.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1015"
+  - "adr:1017"
+  - "adr:1048"

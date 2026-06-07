@@ -326,10 +326,10 @@ class WebSocketConnectionHandler:
                 self.state['closed'] = True
             if self.keepalive_task is not None:
                 self.keepalive_task.cancel()
-                with suppress(Exception):
+                with suppress(asyncio.CancelledError, Exception):
                     await self.keepalive_task
             reader_task.cancel()
-            with suppress(Exception):
+            with suppress(asyncio.CancelledError, Exception):
                 await reader_task
             self.access_logger.log_ws(self.client, self.request.path, 'accepted' if self.state['accepted'] else 'denied')
 
