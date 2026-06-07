@@ -10,6 +10,21 @@ class _ManagedProcess:
         self.stderr_path = stderr_path
 
     def stop(self, *, timeout: float = 5.0) -> int | None:
+        if os.name == 'nt' and self.process.poll() is None:
+            try:
+                subprocess.run(
+                    ['taskkill', '/PID', str(self.process.pid), '/T', '/F'],
+                    capture_output=True,
+                    text=True,
+                    timeout=timeout,
+                )
+            except Exception:
+                pass
+            try:
+                self.process.wait(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                return None
+            return self.process.returncode
         if self.process.poll() is None:
             try:
                 self.process.terminate()

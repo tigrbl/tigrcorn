@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from .imports import *
 from .models import *
+from .adapters import BasePeerAdapter, _ADAPTERS
 from .helpers import *
+from .helpers import _apply_template, _probe_command, _sha256_bytes, _sha256_path
+from tigrcorn_core.version import __version__
 
 def detect_source_revision(source_root: str | Path) -> str:
     env_commit = os.environ.get('TIGRCORN_COMMIT_HASH') or os.environ.get('GIT_COMMIT')
@@ -122,6 +125,14 @@ def _instantiate_adapter(name: str) -> BasePeerAdapter:
         return _ADAPTERS[name]()
     except KeyError as exc:
         raise InteropRunnerError(f'unknown interop adapter: {name}') from exc
+
+
+def _resolve_process_command(command: list[str]) -> list[str]:
+    if command and command[0] == '/opt/pyvenv/bin/python':
+        return [os.environ.get('TIGRCORN_INTEROP_PYTHON', os.sys.executable), *command[1:]]
+    return command
+
+
 def _materialize_process_spec(spec: InteropProcessSpec, context: Mapping[str, str]) -> InteropProcessSpec:
     return InteropProcessSpec(
         name=_apply_template(spec.name, context),

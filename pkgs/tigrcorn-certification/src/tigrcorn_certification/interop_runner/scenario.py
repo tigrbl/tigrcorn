@@ -2,6 +2,7 @@ from __future__ import annotations
 from .imports import *
 from .models import *
 from .adapters import *
+from .assertions import *
 from .proxies import *
 from .environment import *
 from .matrix import *

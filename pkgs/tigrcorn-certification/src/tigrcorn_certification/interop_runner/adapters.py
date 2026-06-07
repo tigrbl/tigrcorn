@@ -4,6 +4,7 @@ from .imports import *
 from .models import *
 from .process import *
 from .helpers import *
+from .ports import _wait_for_server_ready
 
 class BasePeerAdapter:
     def inspect_version(self, spec: InteropProcessSpec, *, env: Mapping[str, str], cwd: Path | None) -> dict[str, Any]:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .imports import *
 from .helpers import *
+from .ports import _normalize_sockaddr
 
 class _PacketTraceWriter:
     def __init__(self, path: Path) -> None:
