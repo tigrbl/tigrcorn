@@ -54,6 +54,8 @@ class PerfRunSummary:
     passed: int
     failed: int
     profiles: list[PerfProfileResult]
+    shuffle_seed: int | None = None
+    execution_order: list[str] | None = None
 
 
 class PerfRunnerError(RuntimeError):

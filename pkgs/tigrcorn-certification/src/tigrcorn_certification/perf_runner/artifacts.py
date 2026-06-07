@@ -4,6 +4,7 @@ from .imports import *
 from .models import *
 from .stats import *
 from .metrics import *
+from .stats import _build_histogram
 
 def _jsonable(value: Any) -> Any:
     if isinstance(value, (str, int, float, bool)) or value is None:
@@ -119,7 +120,14 @@ def _write_samples_csv(path: Path, samples: list[Any]) -> None:
     path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
 
-def _write_run_summary(artifact_root: Path, summary: PerfRunSummary, environment: Mapping[str, Any], *, profiles: list[PerfProfile]) -> None:
+def _write_run_summary(
+    artifact_root: Path,
+    summary: PerfRunSummary,
+    environment: Mapping[str, Any],
+    *,
+    profiles: list[PerfProfile],
+    shuffle_metadata: dict[str, Any] | None = None,
+) -> None:
     lane_counts: dict[str, int] = {}
     for profile in profiles:
         lane_counts[profile.lane] = lane_counts.get(profile.lane, 0) + 1
@@ -144,5 +152,7 @@ def _write_run_summary(artifact_root: Path, summary: PerfRunSummary, environment
         ],
         'generated_at_epoch': environment.get('generated_at_epoch'),
     }
+    if shuffle_metadata is not None:
+        payload['shuffle'] = dict(shuffle_metadata)
     (artifact_root / 'summary.json').write_text(json.dumps(_jsonable(payload), indent=2, sort_keys=True) + '\n', encoding='utf-8')
     (artifact_root / 'index.json').write_text(json.dumps(_jsonable(payload), indent=2, sort_keys=True) + '\n', encoding='utf-8')

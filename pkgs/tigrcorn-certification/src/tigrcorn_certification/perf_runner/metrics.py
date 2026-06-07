@@ -3,6 +3,7 @@ from __future__ import annotations
 from .imports import *
 from .models import *
 from .stats import *
+from .stats import _percentiles
 
 def _summarize_measurement(measurement: Mapping[str, Any], *, profile: PerfProfile) -> dict[str, Any]:
     samples = [float(item) for item in measurement.get('samples_ms', [])]

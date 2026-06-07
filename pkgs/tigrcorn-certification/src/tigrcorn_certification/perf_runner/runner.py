@@ -7,6 +7,13 @@ from .matrix import *
 from .artifacts import *
 from .environment import *
 from .metrics import *
+from .artifacts import _write_profile_artifacts, _write_run_summary
+from .environment import _environment_snapshot, _resolve_commit_hash
+from .metrics import (
+    _evaluate_relative_regression,
+    _evaluate_thresholds,
+    _summarize_measurement,
+)
 
 def run_performance_matrix(
     source_root: str | Path,
@@ -16,12 +23,19 @@ def run_performance_matrix(
     baseline_root: str | Path | None = None,
     profile_ids: list[str] | None = None,
     establish_baseline: bool = False,
+    shuffle: bool = False,
+    seed: int | None = None,
 ) -> PerfRunSummary:
     source_root = Path(source_root)
     matrix_file = source_root / (Path(matrix_path) if matrix_path is not None else DEFAULT_PERFORMANCE_MATRIX_PATH)
     matrix = load_performance_matrix(matrix_file)
     selected_ids = set(profile_ids or [profile.profile_id for profile in matrix.profiles])
     selected_profiles = [profile for profile in matrix.profiles if profile.profile_id in selected_ids]
+    effective_seed: int | None = None
+    if shuffle:
+        effective_seed = seed if seed is not None else random.randint(0, 2**32 - 1)
+        rng = random.Random(effective_seed)
+        rng.shuffle(selected_profiles)
     if not selected_profiles:
         raise PerfRunnerError('no performance profiles selected')
 
@@ -100,6 +114,13 @@ def run_performance_matrix(
         passed=sum(1 for result in results if result.passed),
         failed=sum(1 for result in results if not result.passed),
         profiles=results,
+        shuffle_seed=effective_seed if shuffle else None,
+        execution_order=[p.profile_id for p in selected_profiles] if shuffle else None,
     )
-    _write_run_summary(artifact_root, summary, environment, profiles=selected_profiles)
+    shuffle_meta = {
+        'enabled': True,
+        'seed': effective_seed,
+        'execution_order': [p.profile_id for p in selected_profiles],
+    } if shuffle else None
+    _write_run_summary(artifact_root, summary, environment, profiles=selected_profiles, shuffle_metadata=shuffle_meta)
     return summary
