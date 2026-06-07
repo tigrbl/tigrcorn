@@ -181,3 +181,15 @@ class ServerConfig:
                 seen.add(payload)
                 values.append(payload)
         return tuple(values)
+
+    @property
+    def enable_h2c(self) -> bool:
+        return self.http.enable_h2c
+
+    @enable_h2c.setter
+    def enable_h2c(self, value: bool) -> None:
+        self.http.enable_h2c = value
+
+    @property
+    def static_mount_enabled(self) -> bool:
+        return bool(self.static.route and self.static.mount)
