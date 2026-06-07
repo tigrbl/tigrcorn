@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 
 from tigrcorn.compat.release_gates import evaluate_release_gates
-from tools.ssot_sync import build_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -17,7 +16,7 @@ def _load_json(relative_path: str):
 
 def test_risk_traceability_graph_is_resolved_and_green():
     claims = _load_json('docs/review/conformance/claims_registry.json')
-    registry = build_registry()
+    registry = _load_json('.ssot/registry.json')
 
     claim_ids = {row['id'] for row in claims['current_and_candidate_claims']}
     risks = registry['risks']

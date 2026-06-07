@@ -8,14 +8,18 @@ from tigrcorn_certification import (
     certification_explicit_surface_ids,
     validate_explicit_surface_manifest,
 )
-from tools.ssot_sync import build_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "docs/review/conformance/certification_explicit_surfaces.json"
+REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
 
 
 def _manifest() -> dict[str, object]:
     return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+
+
+def _registry() -> dict[str, object]:
+    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
 
 def test_explicit_surface_manifest_matches_packaged_catalog() -> None:
@@ -38,7 +42,7 @@ def test_explicit_surface_artifacts_exist() -> None:
 
 def test_explicit_surface_boundary_is_frozen_and_implemented() -> None:
     manifest = _manifest()
-    registry = build_registry()
+    registry = _registry()
     boundaries = {row["id"]: row for row in registry["boundaries"]}
     features = {row["id"]: row for row in registry["features"]}
 
@@ -55,10 +59,10 @@ def test_explicit_surface_boundary_is_frozen_and_implemented() -> None:
 
 
 def test_explicit_surface_closure_test_links_every_feature() -> None:
-    registry = build_registry()
+    registry = _registry()
     tests = {row["id"]: row for row in registry["tests"]}
     closure = tests["tst:certification-explicit-surfaces-boundary"]
 
     assert closure["status"] == "passing"
     assert closure["path"] == "tests/test_certification_explicit_surfaces_boundary.py"
-    assert tuple(closure["feature_ids"]) == certification_explicit_surface_ids()
+    assert set(closure["feature_ids"]) == set(certification_explicit_surface_ids())

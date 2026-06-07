@@ -11,10 +11,10 @@ from tigrcorn.protocols.http3.codec import SETTING_ENABLE_WEBTRANSPORT, SETTING_
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
-H3_HANDLER_CORE_PATH = ROOT / "pkgs" / "tigrcorn-protocols" / "src" / "tigrcorn_protocols" / "http3" / "handler" / "core.py"
-H3_WEBTRANSPORT_PATH = ROOT / "pkgs" / "tigrcorn-protocols" / "src" / "tigrcorn_protocols" / "http3" / "handler" / "webtransport.py"
-QUIC_STREAMS_PATH = ROOT / "pkgs" / "tigrcorn-transports" / "src" / "tigrcorn_transports" / "quic" / "streams.py"
-QUIC_CONNECTION_PATH = ROOT / "pkgs" / "tigrcorn-transports" / "src" / "tigrcorn_transports" / "quic" / "connection.py"
+H3_HANDLER_PATH = ROOT / "pkgs" / "tigrcorn-protocols" / "src" / "tigrcorn_protocols" / "http3" / "handler"
+H3_WEBTRANSPORT_PATH = H3_HANDLER_PATH / "webtransport.py"
+QUIC_STREAMS_PATH = ROOT / "pkgs" / "tigrcorn-transports" / "src" / "tigrcorn_transports" / "quic" / "streams"
+QUIC_CONNECTION_PATH = ROOT / "pkgs" / "tigrcorn-transports" / "src" / "tigrcorn_transports" / "quic" / "connection"
 DEMO_SERVER_PATH = ROOT / "examples" / "webtransport_mtls_demo" / "server.py"
 
 FEATURE_ID = "feat:webtransport-h3-quic-datagram-runtime-dispatch"
@@ -32,7 +32,11 @@ def _by_id(rows: object) -> dict[str, dict[str, object]]:
 
 
 def _h3_handler_source() -> str:
-    return H3_HANDLER_CORE_PATH.read_text(encoding="utf-8") + "\n" + H3_WEBTRANSPORT_PATH.read_text(encoding="utf-8")
+    return "\n".join(path.read_text(encoding="utf-8") for path in sorted(H3_HANDLER_PATH.glob("*.py")))
+
+
+def _package_source(path: Path) -> str:
+    return "\n".join(file.read_text(encoding="utf-8") for file in sorted(path.glob("*.py")))
 
 
 def _has_t012_baseline(feature_id: str) -> bool:
@@ -81,19 +85,19 @@ def test_webtransport_settings_advertise_h3_datagram_support() -> None:
 
 
 def test_quic_datagram_frame_constant_is_declared() -> None:
-    source = QUIC_STREAMS_PATH.read_text(encoding="utf-8")
+    source = _package_source(QUIC_STREAMS_PATH)
 
     assert "FRAME_DATAGRAM = 0x30" in source
 
 
 def test_quic_receive_emits_single_datagram_event_kind() -> None:
-    source = QUIC_CONNECTION_PATH.read_text(encoding="utf-8")
+    source = _package_source(QUIC_CONNECTION_PATH)
 
     assert "kind='datagram'" in source
 
 
 def test_quic_connection_exposes_datagram_sender() -> None:
-    source = QUIC_CONNECTION_PATH.read_text(encoding="utf-8")
+    source = _package_source(QUIC_CONNECTION_PATH)
 
     assert "def send_datagram_frame(" in source
 

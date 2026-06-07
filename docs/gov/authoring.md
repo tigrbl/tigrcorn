@@ -31,8 +31,7 @@ When sources disagree, use this order:
 
 1. **Definitive machine-readable truth**
    - `.ssot/registry.json`
-   - `tools/ssot_sync.py`
-   - normalized `.ssot` scaffold bootstrapped from `ssot-registry init`
+   - normalized `.ssot` scaffold and document rows maintained through the SSOT CLI
 2. **Canonical current-state truth**
    - `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
    - `docs/review/conformance/current_state_chain.current.json`
@@ -106,7 +105,7 @@ When a machine-readable statement exists in `.ssot/registry.json`, prose and der
 ### If you change canonical truth
 
 Update `.ssot/registry.json` first, then regenerate or reconcile downstream docs and JSON views.
-The `.ssot` directory scaffold itself is initialized by `tools/ssot_sync.py` through `ssot-registry init`.
+The `.ssot` directory scaffold itself is initialized and maintained through the SSOT CLI.
 
 ### If you change CLI behavior
 
@@ -145,7 +144,7 @@ Confirm path and naming rules in `docs/gov/tree.md`, add `MUT.json` where needed
 Run, at minimum:
 
 ```bash
-python tools/ssot_sync.py --check
+uv run ssot validate .
 python tools/govchk.py scan
 PYTHONPATH=src python -m compileall -q src benchmarks tools
 PYTHONPATH=src pytest -q

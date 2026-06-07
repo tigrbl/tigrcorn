@@ -5,10 +5,9 @@ import importlib
 import json
 from pathlib import Path
 
-from tools.ssot_sync import build_registry
-
 ROOT = Path(__file__).resolve().parents[1]
 PROOF_MANIFEST = ROOT / "docs/review/conformance/contract_proof_boundary.json"
+REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
 PROOF_FEATURE_IDS = {
     "feat:contract-docs-migration",
     "feat:contract-examples",
@@ -21,6 +20,10 @@ PROOF_FEATURE_IDS = {
 
 def _load_manifest() -> dict[str, object]:
     return json.loads(PROOF_MANIFEST.read_text(encoding="utf-8"))
+
+
+def _registry() -> dict[str, object]:
+    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
 
 def test_contract_proof_manifest_references_existing_artifacts() -> None:
@@ -40,7 +43,7 @@ def test_contract_proof_manifest_references_existing_artifacts() -> None:
 
 def test_contract_proof_boundary_and_upstreams_are_frozen_in_registry() -> None:
     manifest = _load_manifest()
-    registry = build_registry()
+    registry = _registry()
     boundaries = {row["id"]: row for row in registry["boundaries"]}
     features = {row["id"]: row for row in registry["features"]}
 
@@ -59,7 +62,7 @@ def test_contract_proof_boundary_and_upstreams_are_frozen_in_registry() -> None:
 
 
 def test_contract_proof_features_have_passing_executable_rows() -> None:
-    registry = build_registry()
+    registry = _registry()
     passing_feature_ids = {
         feature_id
         for row in registry["tests"]

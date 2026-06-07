@@ -38,7 +38,7 @@ This document defines the package-wide current-state chain for the repository.
 ## Canonical registry source
 
 - `.ssot/registry.json` is the canonical machine-readable governance registry for current-state, boundary, release, claim, evidence, and risk linkage.
-- `tools/ssot_sync.py` regenerates `.ssot/registry.json` from the current promoted repository truth.
+- SSOT CLI operations maintain `.ssot/registry.json`; validation gates read the committed registry directly.
 
 ## Scoped current audits that are **not** package-wide current-state sources
 

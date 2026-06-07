@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+import json
+from pathlib import Path
 
 from tigrcorn.availability import DOS_WARNING_EVENT, dos_warning
 from tigrcorn.protocols.http1.parser import read_http11_request_head
@@ -11,6 +13,9 @@ from tigrcorn.scheduler.cancellation import cancel_many_bounded
 from tigrcorn.scheduler.tasks import TaskSet
 from tigrcorn.errors import ProtocolError
 import pytest
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class _LimitedHeadReader:
@@ -161,9 +166,7 @@ def test_dos_warning_event_shape_is_stable_and_structured() -> None:
 
 
 def test_dos_resilience_is_governed_in_generated_ssot() -> None:
-    from tools.ssot_sync import build_registry
-
-    registry = build_registry()
+    registry = json.loads((ROOT / ".ssot" / "registry.json").read_text(encoding="utf-8"))
     features = {row["id"]: row for row in registry["features"]}
     claims = {row["id"]: row for row in registry["claims"]}
     tests = {row["id"]: row for row in registry["tests"]}
@@ -177,10 +180,11 @@ def test_dos_resilience_is_governed_in_generated_ssot() -> None:
     assert feature["plan"]["slot"] == "availability-resilience"
     assert {"spc:2050", "spc:2003", "spc:2004", "spc:2010"} <= set(feature["spec_ids"])
     assert "spc:2050" in specs
-    assert "clm:dos-resilience-runtime-implemented" in feature["claim_ids"]
+    assert "clm:dos-resilience-runtime-t2-baseline" in feature["claim_ids"]
     assert "tst:dos-resilience-runtime" in feature["test_ids"]
-    assert claims["clm:dos-resilience-runtime-implemented"]["tier"] == "T3"
+    assert claims["clm:dos-resilience-runtime-t2-baseline"]["tier"] == "T2"
     assert tests["tst:dos-resilience-runtime"]["path"] == "tests/test_dos_resilience.py"
+    assert "clm:dos-resilience-runtime-implemented" in tests["tst:dos-resilience-runtime"]["claim_ids"]
     assert evidence["evd:dos-resilience-runtime-pytest"]["path"] == "tests/test_dos_resilience.py"
     assert features["feat:h11-oversized-request-head-rejection"]["implementation_status"] == "implemented"
     assert "tst:h11-oversized-request-head-rejection" in features[

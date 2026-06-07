@@ -20,6 +20,7 @@
     "tools/",
     "profiles/",
     "src/tigrcorn/profiles/",
+    "src/tigrcorn/capabilities/schema/runtime-capability-registry.schema.json",
     "docs/review/performance/",
     "examples/http_entity_static",
     "examples/advanced_protocol_delivery",

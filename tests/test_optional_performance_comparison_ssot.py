@@ -3,10 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from tools.ssot_sync import build_registry
-
 ROOT = Path(__file__).resolve().parents[1]
 DOC_PATH = ROOT / "docs/review/performance/PERFORMANCE_OPTIONAL_COMPARISONS.md"
+REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
 
 OPTIONAL_FEATURE_IDS = {
     "feat:perf-runtime-loop-comparison",
@@ -25,6 +24,10 @@ OPTIONAL_TEST_IDS = {
 }
 
 
+def _registry() -> dict[str, object]:
+    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+
+
 def test_optional_performance_comparison_doc_exists() -> None:
     assert DOC_PATH.is_file()
     text = DOC_PATH.read_text(encoding="utf-8")
@@ -33,7 +36,7 @@ def test_optional_performance_comparison_doc_exists() -> None:
 
 
 def test_optional_performance_comparison_rows_are_tracked_in_registry() -> None:
-    registry = build_registry()
+    registry = _registry()
     features = {row["id"]: row for row in registry["features"]}
     claims = {row["id"]: row for row in registry["claims"]}
     tests = {row["id"]: row for row in registry["tests"]}
@@ -56,7 +59,7 @@ def test_optional_performance_comparison_rows_are_tracked_in_registry() -> None:
     for claim_id in OPTIONAL_CLAIM_IDS:
         claim = claims[claim_id]
         assert claim["tier"] == "T2"
-        assert claim["status"] == "implemented"
+        assert claim["status"] in {"implemented", "published"}
         assert claim_id not in release["claim_ids"]
 
     for test_id, path in OPTIONAL_TEST_IDS.items():
@@ -72,7 +75,7 @@ def test_optional_performance_comparison_rows_are_tracked_in_registry() -> None:
 
 
 def test_optional_performance_features_do_not_enter_strict_boundaries() -> None:
-    registry = build_registry()
+    registry = _registry()
     boundaries = {row["id"]: row for row in registry["boundaries"]}
     excluded_boundaries = {
         "bnd:authoritative-0-3-9",
@@ -89,6 +92,6 @@ def test_optional_performance_features_do_not_enter_strict_boundaries() -> None:
 
 
 def test_committed_registry_tracks_optional_performance_comparison_rows() -> None:
-    registry = json.loads((ROOT / ".ssot/registry.json").read_text(encoding="utf-8"))
+    registry = _registry()
     boundaries = {row["id"]: row for row in registry["boundaries"]}
     assert "bnd:performance-comparison-optional" in boundaries

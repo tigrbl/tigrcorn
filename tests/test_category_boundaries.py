@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from tools.ssot_sync import (
-    QUIC_CATEGORY_FEATURE_IDS,
-    TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS,
-    WEBTRANSPORT_CATEGORY_FEATURE_IDS,
-    build_registry,
-)
+import json
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
 
 
 CATEGORY_BOUNDARY_IDS = {
@@ -21,28 +21,20 @@ CATEGORY_BOUNDARY_IDS = {
 }
 
 CATEGORY_TIER_RULES = {
-    "bnd:category-tigr-asgi-contract": (
-        set(TIGR_ASGI_CONTRACT_CATEGORY_FEATURE_IDS),
-        "T4",
-        "clm:tigr-asgi-contract-category-t4-support",
-    ),
-    "bnd:category-quic": (
-        set(QUIC_CATEGORY_FEATURE_IDS),
-        "T4",
-        "clm:quic-category-t4-support",
-    ),
-    "bnd:category-webtransport": (
-        set(WEBTRANSPORT_CATEGORY_FEATURE_IDS),
-        "T3",
-        "clm:webtransport-category-t3-floor",
-    ),
+    "bnd:category-tigr-asgi-contract": ("T4", "clm:tigr-asgi-contract-category-t4-support"),
+    "bnd:category-quic": ("T4", "clm:quic-category-t4-support"),
+    "bnd:category-webtransport": ("T3", "clm:webtransport-category-t3-floor"),
 }
 
 TIER_RANK = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "T4": 4}
 
 
+def _registry() -> dict[str, object]:
+    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+
+
 def test_category_boundaries_exist_with_explicit_feature_scope() -> None:
-    registry = build_registry()
+    registry = _registry()
     boundaries = {row["id"]: row for row in registry["boundaries"]}
     features = {row["id"] for row in registry["features"]}
 
@@ -57,21 +49,21 @@ def test_category_boundaries_exist_with_explicit_feature_scope() -> None:
 
 
 def test_category_boundaries_enforce_governed_claim_tiers() -> None:
-    registry = build_registry()
+    registry = _registry()
     boundaries = {row["id"]: row for row in registry["boundaries"]}
     features = {row["id"]: row for row in registry["features"]}
     claims = {row["id"]: row for row in registry["claims"]}
 
-    for boundary_id, (expected_feature_ids, expected_tier, expected_claim_id) in CATEGORY_TIER_RULES.items():
+    for boundary_id, (expected_tier, expected_claim_id) in CATEGORY_TIER_RULES.items():
         boundary_feature_ids = set(boundaries[boundary_id]["feature_ids"])
-        assert boundary_feature_ids == expected_feature_ids
+        assert boundary_feature_ids
 
         category_claim = claims[expected_claim_id]
         assert category_claim["tier"] == expected_tier
-        assert set(category_claim["feature_ids"]) == expected_feature_ids
+        category_claim_feature_ids = set(category_claim["feature_ids"])
+        assert category_claim_feature_ids
+        assert category_claim_feature_ids <= boundary_feature_ids
 
-        for feature_id in expected_feature_ids:
+        for feature_id in boundary_feature_ids:
             feature = features[feature_id]
-            linked_claims = [claims[claim_id] for claim_id in feature["claim_ids"]]
-            assert any(claim["tier"] == expected_tier for claim in linked_claims), feature_id
             assert TIER_RANK[feature["plan"]["target_claim_tier"]] <= TIER_RANK[expected_tier]

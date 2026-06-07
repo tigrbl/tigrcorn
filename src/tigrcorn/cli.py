@@ -4,8 +4,9 @@ import argparse
 import json
 import sys
 
+import tigrcorn_runtime.cli as _runtime_cli
 from tigrcorn_runtime.cli import build_parser as build_server_parser
-from tigrcorn_runtime.cli import main as _server_main
+from tigrcorn_runtime.server.bootstrap import run_config
 
 
 def _capabilities_parser() -> argparse.ArgumentParser:
@@ -35,4 +36,5 @@ def main(argv: list[str] | None = None) -> int:
     effective_argv = list(sys.argv[1:] if argv is None else argv)
     if effective_argv[:2] == ["inspect", "capabilities"]:
         return _inspect_capabilities(effective_argv[2:])
-    return _server_main(effective_argv)
+    _runtime_cli.run_config = run_config
+    return _runtime_cli.main(effective_argv)

@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import importlib.metadata
 import importlib.util
 import json
@@ -10,12 +9,10 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
-
 try:
     import tomllib
 except ModuleNotFoundError:  # pragma: no cover - Python 3.10 fallback
     import tomli as tomllib
-
 SUPPORTED_PYTHON_VERSIONS: tuple[str, ...] = ('3.11', '3.12')
 REQUIRED_IMPORTS: tuple[str, ...] = ('aioquic', 'h2', 'websockets', 'wsproto')
 REQUIRED_EXTRAS: tuple[str, ...] = ('certification', 'dev')
@@ -33,32 +30,20 @@ DEFAULT_RELEASE_WORKFLOW = '.github/workflows/phase9-certification-release.yml'
 DEFAULT_WRAPPER = 'tools/run_phase9_release_workflow.py'
 DEFAULT_INSTALL_COMMAND = 'python -m pip install -e ".[certification,dev]"'
 DEFAULT_VERIFY_COMMAND = "python - <<'PY'\nimport aioquic, h2, websockets, wsproto\nprint('certification deps OK')\nPY"
-
-
 class CertificationEnvironmentError(RuntimeError):
     """Raised when the release certification environment contract is not satisfied."""
-
-
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
-
-
 def _read_pyproject(root: Path) -> dict[str, Any]:
     return tomllib.loads((root / 'pyproject.toml').read_text(encoding='utf-8'))
-
-
 def _load_optional_dependencies(root: Path) -> dict[str, list[str]]:
     payload = _read_pyproject(root)
     project = payload.get('project', {})
     optional = project.get('optional-dependencies', {})
     return {str(name): [str(item) for item in values] for name, values in optional.items()}
-
-
 def _safe_env_snapshot(env: Mapping[str, str] | None = None) -> dict[str, str]:
     source = os.environ if env is None else env
     return {key: str(source[key]) for key in SAFE_ENV_KEYS if key in source}
-
-
 def _module_status(module_name: str) -> dict[str, Any]:
     spec = importlib.util.find_spec(module_name)
     importable = spec is not None
@@ -74,22 +59,14 @@ def _module_status(module_name: str) -> dict[str, Any]:
         'installed': installed,
         'version': version,
     }
-
-
 def _current_python_version() -> str:
     return f'{sys.version_info.major}.{sys.version_info.minor}'
-
-
 def _python_ready() -> bool:
     return _current_python_version() in SUPPORTED_PYTHON_VERSIONS
-
-
 def _capture_command(command: Sequence[str] | None) -> list[str]:
     if command is None:
         return [sys.executable, *sys.argv]
     return [str(item) for item in command]
-
-
 def _resolve_git_commit(root: Path) -> str | None:
     try:
         result = subprocess.run(
@@ -103,8 +80,6 @@ def _resolve_git_commit(root: Path) -> str | None:
         return None
     commit = result.stdout.strip()
     return commit or None
-
-
 def build_certification_environment_snapshot(
     root: str | Path,
     *,
@@ -119,7 +94,6 @@ def build_certification_environment_snapshot(
     missing_imports = [name for name, state in dependency_state.items() if not state['importable']]
     required_imports_ready = not missing_imports
     python_version_ready = current_python in SUPPORTED_PYTHON_VERSIONS
-
     extras = {
         name: optional.get(name, []) for name in REQUIRED_EXTRAS
     }
@@ -130,7 +104,6 @@ def build_certification_environment_snapshot(
         }
         for name in REQUIRED_IMPORTS
     }
-
     snapshot: dict[str, Any] = {
         'schema_version': 1,
         'captured_at': _now(),
@@ -177,8 +150,6 @@ def build_certification_environment_snapshot(
         },
     }
     return snapshot
-
-
 def _bundle_manifest(bundle_root: Path, artifact_root: str, snapshot: Mapping[str, Any], *, workflow_path: str, wrapper_path: str) -> dict[str, Any]:
     return {
         'bundle_kind': 'certification_environment_bundle',
@@ -191,8 +162,6 @@ def _bundle_manifest(bundle_root: Path, artifact_root: str, snapshot: Mapping[st
         'wrapper_path': wrapper_path,
         'note': 'This bundle freezes the certification-environment installation contract and the observed execution environment for the strict-promotion workflow.',
     }
-
-
 def _bundle_index(bundle_root: Path, artifact_root: str, snapshot: Mapping[str, Any], *, workflow_path: str, wrapper_path: str, environment_file: str) -> dict[str, Any]:
     validation = dict(snapshot['validation'])
     return {
@@ -213,8 +182,6 @@ def _bundle_index(bundle_root: Path, artifact_root: str, snapshot: Mapping[str, 
         'workflow_path': workflow_path,
         'wrapper_path': wrapper_path,
     }
-
-
 def _bundle_summary(index: Mapping[str, Any]) -> dict[str, Any]:
     return {
         'bundle_kind': index['bundle_kind'],
@@ -225,8 +192,6 @@ def _bundle_summary(index: Mapping[str, Any]) -> dict[str, Any]:
         'required_imports_ready': index['required_imports_ready'],
         'missing_imports': index['missing_imports'],
     }
-
-
 def _bundle_readme(snapshot: Mapping[str, Any], *, workflow_path: str, wrapper_path: str) -> str:
     validation = snapshot['validation']
     missing_imports = ', '.join(validation['missing_imports']) if validation['missing_imports'] else 'none'
@@ -247,13 +212,9 @@ def _bundle_readme(snapshot: Mapping[str, Any], *, workflow_path: str, wrapper_p
         f"Release workflow path: `{workflow_path}`\n\n"
         f"Checkpoint wrapper path: `{wrapper_path}`\n"
     )
-
-
 def _bootstrap_script(snapshot: Mapping[str, Any]) -> str:
     commands = '\n'.join(snapshot['installation_contract']['bootstrap_commands'])
     return '#!/usr/bin/env bash\nset -euo pipefail\n' + commands + '\n'
-
-
 def write_certification_environment_bundle(
     root: str | Path,
     *,
@@ -273,7 +234,6 @@ def write_certification_environment_bundle(
     else:
         bundle_path = Path(bundle_root)
     bundle_path.mkdir(parents=True, exist_ok=True)
-
     snapshot = build_certification_environment_snapshot(
         repo_root,
         command=command,
@@ -295,7 +255,6 @@ def write_certification_environment_bundle(
         environment_file=environment_file,
     )
     summary = _bundle_summary(index)
-
     (bundle_path / 'environment.json').write_text(json.dumps(snapshot, indent=2) + '\n', encoding='utf-8')
     (bundle_path / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     (bundle_path / 'index.json').write_text(json.dumps(index, indent=2) + '\n', encoding='utf-8')
@@ -304,7 +263,6 @@ def write_certification_environment_bundle(
     bootstrap = bundle_path / 'bootstrap.sh'
     bootstrap.write_text(_bootstrap_script(snapshot), encoding='utf-8')
     bootstrap.chmod(0o755)
-
     if require_ready and not snapshot['validation']['environment_ready_for_release_workflow']:
         missing = ', '.join(snapshot['validation']['missing_imports']) or 'python version mismatch'
         raise CertificationEnvironmentError(
@@ -314,8 +272,6 @@ def write_certification_environment_bundle(
             f"missing={missing}"
         )
     return snapshot
-
-
 def build_status_payload(
     snapshot: Mapping[str, Any],
     *,
@@ -356,8 +312,6 @@ def build_status_payload(
             'This checkpoint closes the operational ambiguity around how the strict-promotion environment is provisioned, but it does not by itself turn the strict RFC target green.',
         ],
     }
-
-
 def build_status_markdown(payload: Mapping[str, Any]) -> str:
     state = payload['current_state']
     missing = ', '.join(state['missing_imports']) if state['missing_imports'] else 'none'
@@ -389,8 +343,6 @@ def build_status_markdown(payload: Mapping[str, Any]) -> str:
         '## Honest current result\n\n'
         'This update improves the package operationally, but it does **not** by itself make the package certifiably fully featured or strict-target fully RFC compliant. The remaining strict-target HTTP/3 evidence blockers still need to be closed separately.\n'
     )
-
-
 def write_status_documents(
     root: str | Path,
     snapshot: Mapping[str, Any],

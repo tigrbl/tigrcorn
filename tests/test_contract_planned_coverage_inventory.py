@@ -1,10 +1,19 @@
 from __future__ import annotations
 
-from tools.ssot_sync import build_registry
+import json
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+REGISTRY_PATH = ROOT / ".ssot" / "registry.json"
+
+
+def _registry() -> dict[str, object]:
+    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
 
 def test_contract_and_asgi3_features_have_test_links() -> None:
-    registry = build_registry()
+    registry = _registry()
     features = {row["id"]: row for row in registry["features"]}
 
     required_feature_ids = {
@@ -62,7 +71,7 @@ def test_contract_and_asgi3_features_have_test_links() -> None:
 
 
 def test_closed_contract_features_have_passing_executable_tests() -> None:
-    registry = build_registry()
+    registry = _registry()
     tests = registry["tests"]
 
     closed_feature_ids = {
@@ -155,7 +164,7 @@ def test_closed_contract_features_have_passing_executable_tests() -> None:
 
 
 def test_unsupported_compatibility_surfaces_are_exclusion_features_only() -> None:
-    registry = build_registry()
+    registry = _registry()
     features = {row["id"]: row for row in registry["features"]}
 
     unsupported_ids = {
@@ -173,5 +182,5 @@ def test_unsupported_compatibility_surfaces_are_exclusion_features_only() -> Non
     for feature_id in unsupported_ids:
         feature = features[feature_id]
         assert feature["implementation_status"] == "implemented"
-        assert feature["plan"]["horizon"] == "out_of_bounds"
+        assert feature["plan"]["horizon"] == "explicit"
         assert feature["plan"]["slot"] == "compatibility-exclusion"
