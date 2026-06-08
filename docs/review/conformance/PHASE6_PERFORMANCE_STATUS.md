@@ -1,6 +1,6 @@
 # Phase 6 performance status
 
-This repository still preserves the historical **Phase 6** performance roots, but those preserved roots now carry the richer **Phase 9G** artifact and metric contract.
+This repository still preserves the historical **Phase 6** performance roots, but those preserved roots now carry the richer **Strict performance** artifact and metric contract.
 
 ## What remains true from Phase 6
 
@@ -11,7 +11,7 @@ This repository still preserves the historical **Phase 6** performance roots, bu
   - `docs/review/performance/artifacts/phase6_reference_baseline/`
   - `docs/review/performance/artifacts/phase6_current_release/`
 
-## What changed by Phase 9G
+## What changed by Strict performance
 
 The preserved performance roots now also carry:
 

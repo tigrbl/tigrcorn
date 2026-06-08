@@ -13,12 +13,12 @@ def _load_json(relative_path: str) -> dict:
     return json.loads((ROOT / relative_path).read_text(encoding='utf-8'))
 
 
-def test_phase9a_contract_freeze_docs_and_release_root_exist() -> None:
-    doc = CONFORMANCE / 'PHASE9A_PROMOTION_CONTRACT_FREEZE.md'
-    backlog_doc = CONFORMANCE / 'PHASE9A_EXECUTION_BACKLOG.md'
-    status_json = CONFORMANCE / 'phase9a_promotion_contract.current.json'
-    backlog_json = CONFORMANCE / 'phase9a_execution_backlog.current.json'
-    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9A_PROMOTION_CONTRACT_FREEZE.md'
+def test_promotion_contract_contract_freeze_docs_and_release_root_exist() -> None:
+    doc = CONFORMANCE / 'PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md'
+    backlog_doc = CONFORMANCE / 'PROMOTION_CONTRACT_EXECUTION_BACKLOG.md'
+    status_json = CONFORMANCE / 'promotion_contract_promotion_contract.current.json'
+    backlog_json = CONFORMANCE / 'promotion_contract_execution_backlog.current.json'
+    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md'
     release_root = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
     manifest = release_root / 'manifest.json'
     readme = release_root / 'README.md'
@@ -33,7 +33,7 @@ def test_phase9a_contract_freeze_docs_and_release_root_exist() -> None:
     assert readme.exists()
 
     text = doc.read_text(encoding='utf-8')
-    assert 'Phase 9A' in text
+    assert 'Promotion contract' in text
     assert '0.3.9' in text
     assert '0.3.7' in text
     assert '13 strict-target independent-scenario gaps' in text
@@ -41,10 +41,10 @@ def test_phase9a_contract_freeze_docs_and_release_root_exist() -> None:
     assert 'not yet' in text and 'certifiably fully featured' in text
 
 
-def test_phase9a_status_snapshot_freezes_release_root_policy_and_scope() -> None:
-    payload = _load_json('docs/review/conformance/phase9a_promotion_contract.current.json')
+def test_promotion_contract_status_snapshot_freezes_release_root_policy_and_scope() -> None:
+    payload = _load_json('docs/review/conformance/promotion_contract_promotion_contract.current.json')
     assert payload['phase'] == '9A'
-    assert payload['checkpoint'] == 'phase9a_promotion_contract_freeze'
+    assert payload['checkpoint'] == 'promotion_contract_promotion_contract_freeze'
     assert payload['contract_frozen'] is True
     assert payload['status'] == 'contract_frozen_not_yet_strict_complete'
 
@@ -87,8 +87,8 @@ def test_phase9a_status_snapshot_freezes_release_root_policy_and_scope() -> None
     ]
 
 
-def test_phase9a_backlog_tracks_every_remaining_strict_scenario_and_flag_gap() -> None:
-    payload = _load_json('docs/review/conformance/phase9a_execution_backlog.current.json')
+def test_promotion_contract_backlog_tracks_every_remaining_strict_scenario_and_flag_gap() -> None:
+    payload = _load_json('docs/review/conformance/promotion_contract_execution_backlog.current.json')
     strict_rows = payload['strict_target_scenario_rows']
     flag_rows = payload['public_flag_closure_rows']
 
@@ -102,7 +102,7 @@ def test_phase9a_backlog_tracks_every_remaining_strict_scenario_and_flag_gap() -
 
     for row in strict_rows:
         assert row['owner_role']
-        assert row['target_phase'] in {'9C', '9D', '9E'}
+        assert row['target_step'] in {'9C', '9D', '9E'}
         assert row['touch_files']
         assert row['artifact_contract']['required_scenario_files']
         assert row['exit_tests']
@@ -120,7 +120,7 @@ def test_phase9a_backlog_tracks_every_remaining_strict_scenario_and_flag_gap() -
 
     for row in flag_rows:
         assert row['owner_role']
-        assert row['target_phase'] == '9F'
+        assert row['target_step'] == '9F'
         assert row['touch_files']
         assert row['artifact_contract']['required_state_transition']
         assert row['exit_tests']
@@ -139,44 +139,44 @@ def test_phase9a_backlog_tracks_every_remaining_strict_scenario_and_flag_gap() -
     assert 'missing_lane' in gate['artifact_contract']['required_negative_fixture_classes']
 
 
-def test_phase9a_updates_contract_files_and_readmes() -> None:
+def test_promotion_contract_updates_contract_files_and_readmes() -> None:
     strict_text = (CONFORMANCE / 'STRICT_PROFILE_TARGET.md').read_text(encoding='utf-8')
     flag_text = (CONFORMANCE / 'FLAG_CERTIFICATION_TARGET.md').read_text(encoding='utf-8')
     perf_text = (PERFORMANCE / 'PERFORMANCE_SLOS.md').read_text(encoding='utf-8')
     current_state = (ROOT / 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md').read_text(encoding='utf-8')
     root_readme = (ROOT / 'README.md').read_text(encoding='utf-8')
     conf_readme = (CONFORMANCE / 'README.md').read_text(encoding='utf-8')
-    plan_json = _load_json('docs/review/conformance/phase9_implementation_plan.current.json')
+    plan_json = _load_json('docs/review/conformance/release_implementation_plan.current.json')
     contracts = _load_json('docs/review/conformance/flag_contracts.json')
     covering = _load_json('docs/review/conformance/flag_covering_array.json')
     promo = _load_json('docs/review/conformance/promotion_gate.target.json')
 
-    assert 'PHASE9A_PROMOTION_CONTRACT_FREEZE.md' in strict_text
-    assert 'phase9a_execution_backlog.current.json' in strict_text
+    assert 'PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md' in strict_text
+    assert 'promotion_contract_execution_backlog.current.json' in strict_text
     assert 'RFC 7232, RFC 9530, RFC 9111, RFC 9421, JOSE, and COSE remain out-of-scope' in strict_text
 
-    assert 'PHASE9A_EXECUTION_BACKLOG.md' in flag_text
-    assert 'phase9a_execution_backlog.current.json' in flag_text
+    assert 'PROMOTION_CONTRACT_EXECUTION_BACKLOG.md' in flag_text
+    assert 'promotion_contract_execution_backlog.current.json' in flag_text
     assert 'Row-level delivery metadata' in flag_text
 
-    assert 'phase9a_promotion_contract.current.json' in perf_text
+    assert 'promotion_contract_promotion_contract.current.json' in perf_text
     assert 'fixed contract data' in perf_text
 
-    assert '## Phase 9A promotion-contract-freeze checkpoint' in current_state
-    assert 'phase9a_promotion_contract.current.json' in current_state
-    assert 'phase9a_execution_backlog.current.json' in current_state
+    assert '## Promotion contract promotion-contract-freeze checkpoint' in current_state
+    assert 'promotion_contract_promotion_contract.current.json' in current_state
+    assert 'promotion_contract_execution_backlog.current.json' in current_state
 
-    assert 'PHASE9A_PROMOTION_CONTRACT_FREEZE.md' in root_readme
-    assert 'phase9a_promotion_contract.current.json' in root_readme
-    assert 'PHASE9A_PROMOTION_CONTRACT_FREEZE.md' in conf_readme
-    assert 'phase9a_execution_backlog.current.json' in conf_readme
+    assert 'PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md' in root_readme
+    assert 'promotion_contract_promotion_contract.current.json' in root_readme
+    assert 'PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md' in conf_readme
+    assert 'promotion_contract_execution_backlog.current.json' in conf_readme
 
-    assert plan_json['phase_execution_status']['9A']['status'] == 'completed'
-    assert 'phase9a_contract_freeze' in contracts
-    assert 'phase9a_contract_freeze' in covering
-    assert 'phase9a_contract_freeze' in promo
+    assert plan_json['release_execution_status']['9A']['status'] == 'completed'
+    assert 'promotion_contract_contract_freeze' in contracts
+    assert 'promotion_contract_contract_freeze' in covering
+    assert 'promotion_contract_contract_freeze' in promo
 
-    blocking = contracts['phase9a_contract_freeze']['blocking_flags']
+    blocking = contracts['promotion_contract_contract_freeze']['blocking_flags']
     assert set(blocking) == {
         '--ssl-ciphers',
         '--log-config',
@@ -188,7 +188,7 @@ def test_phase9a_updates_contract_files_and_readmes() -> None:
     }
 
     rows = {row['flag_strings'][0]: row for row in contracts['contracts']}
-    assert rows['--ssl-ciphers']['phase9a_delivery']['owner_role'] == 'tls_runtime_owner'
-    assert rows['--log-config']['phase9a_delivery']['owner_role'] == 'observability_owner'
-    assert rows['--limit-concurrency']['phase9a_delivery']['owner_role'] == 'scheduler_runtime_owner'
-    assert rows['--websocket-ping-timeout']['phase9a_delivery']['owner_role'] == 'websocket_runtime_owner'
+    assert rows['--ssl-ciphers']['promotion_contract_delivery']['owner_role'] == 'tls_runtime_owner'
+    assert rows['--log-config']['promotion_contract_delivery']['owner_role'] == 'observability_owner'
+    assert rows['--limit-concurrency']['promotion_contract_delivery']['owner_role'] == 'scheduler_runtime_owner'
+    assert rows['--websocket-ping-timeout']['promotion_contract_delivery']['owner_role'] == 'websocket_runtime_owner'

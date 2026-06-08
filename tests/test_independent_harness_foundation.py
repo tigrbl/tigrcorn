@@ -25,12 +25,12 @@ def _write_matrix(tmp_path: Path, payload: dict) -> Path:
     return path
 
 
-def test_phase9b_docs_wrapper_registry_and_release_root_exist() -> None:
-    doc = CONFORMANCE / 'PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md'
+def test_independent_harness_docs_wrapper_registry_and_release_root_exist() -> None:
+    doc = CONFORMANCE / 'INDEPENDENT_HARNESS_INDEPENDENT_HARNESS_FOUNDATION.md'
     schema_doc = CONFORMANCE / 'INTEROP_HARNESS_ARTIFACT_SCHEMA.md'
-    status_json = CONFORMANCE / 'phase9b_independent_harness.current.json'
+    status_json = CONFORMANCE / 'independent_harness_independent_harness.current.json'
     wrapper_json = CONFORMANCE / 'interop_wrapper_registry.current.json'
-    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md'
+    delivery = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_INDEPENDENT_HARNESS_INDEPENDENT_HARNESS_FOUNDATION.md'
 
     assert doc.exists()
     assert schema_doc.exists()
@@ -49,7 +49,7 @@ def test_phase9b_docs_wrapper_registry_and_release_root_exist() -> None:
     assert payload['proof_bundle']['proof_scenarios'] == ['http1-server-curl-client']
 
 
-def test_wrapper_registry_covers_the_phase9b_peer_families() -> None:
+def test_wrapper_registry_covers_the_independent_harness_peer_families() -> None:
     registry = describe_wrapper_registry()
     assert registry['module'] == 'tools.interop_wrappers'
     assert set(registry['families']) == {'curl', 'websockets', 'h2', 'aioquic', 'openssl'}
@@ -58,7 +58,7 @@ def test_wrapper_registry_covers_the_phase9b_peer_families() -> None:
     assert 'openssl.quic_client' in registry['families']['openssl']
 
 
-def test_phase9b_proof_bundle_validates_and_contains_required_artifacts() -> None:
+def test_independent_harness_proof_bundle_validates_and_contains_required_artifacts() -> None:
     report = validate_independent_certification_bundle(
         BUNDLE_ROOT,
         required_scenarios=['http1-server-curl-client'],
@@ -93,13 +93,13 @@ def test_bundle_validator_rejects_missing_required_scenario_file() -> None:
     assert any('env.json' in failure for failure in report.failures)
 
 
-def test_runner_emits_phase9b_artifact_schema_for_new_runs() -> None:
+def test_runner_emits_independent_harness_artifact_schema_for_new_runs() -> None:
     payload = {
         'metadata': {
             'bundle_kind': 'independent_certification',
-            'phase9b_wrapper_families': describe_wrapper_registry()['families'],
+            'independent_harness_wrapper_families': describe_wrapper_registry()['families'],
         },
-        'name': 'phase9b-runner-proof',
+        'name': 'independent_harness-runner-proof',
         'scenarios': [
             {
                 'id': 'http1-server-fixture-client',
@@ -134,7 +134,7 @@ def test_runner_emits_phase9b_artifact_schema_for_new_runs() -> None:
         tmp_root = Path(tmpdir)
         matrix_path = _write_matrix(tmp_root, payload)
         prior = os.environ.get('TIGRCORN_COMMIT_HASH')
-        os.environ['TIGRCORN_COMMIT_HASH'] = 'phase9b-runner-test'
+        os.environ['TIGRCORN_COMMIT_HASH'] = 'independent_harness-runner-test'
         try:
             runner = ExternalInteropRunner(matrix=load_external_matrix(matrix_path), artifact_root=tmp_root, source_root=ROOT)
             summary = runner.run()

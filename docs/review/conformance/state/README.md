@@ -14,14 +14,14 @@ This directory contains the canonical promoted-state pointer and archived histor
 
 These files explain how the repository reached the current promoted state and what contracts were frozen at key checkpoints:
 
-- `docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md`
-- `docs/review/conformance/phase9_implementation_plan.current.json`
-- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
-- `docs/review/conformance/phase9a_promotion_contract.current.json`
-- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
-- `docs/review/conformance/phase9a_execution_backlog.current.json`
-- `docs/review/conformance/PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
-- `docs/review/conformance/phase9i_release_assembly.current.json`
+- `docs/review/conformance/RELEASE_IMPLEMENTATION_PLAN.md`
+- `docs/review/conformance/release_implementation_plan.current.json`
+- `docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/promotion_contract_promotion_contract.current.json`
+- `docs/review/conformance/PROMOTION_CONTRACT_EXECUTION_BACKLOG.md`
+- `docs/review/conformance/promotion_contract_execution_backlog.current.json`
+- `docs/review/conformance/RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `docs/review/conformance/release_assembly.current.json`
 
 Treat those as planning/provenance documents, not as competing current-state sources.
 

@@ -8,14 +8,14 @@ CONFORMANCE = ROOT / "docs" / "review" / "conformance"
 
 
 
-def test_phase9f3_docs_and_status_exist():
-    assert (CONFORMANCE / 'PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
-    assert (CONFORMANCE / 'phase9f3_concurrency_keepalive.current.json').exists()
-    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
+def test_concurrency_keepalive_docs_and_status_exist():
+    assert (CONFORMANCE / 'CONCURRENCY_KEEPALIVE_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
+    assert (CONFORMANCE / 'concurrency_keepalive_concurrency_keepalive.current.json').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_CONCURRENCY_KEEPALIVE_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md').exists()
 
-    payload = json.loads((CONFORMANCE / 'phase9f3_concurrency_keepalive.current.json').read_text(encoding='utf-8'))
+    payload = json.loads((CONFORMANCE / 'concurrency_keepalive_concurrency_keepalive.current.json').read_text(encoding='utf-8'))
     assert payload['phase'] == '9F3'
-    assert payload['checkpoint'] == 'phase9f3_concurrency_keepalive_closure'
+    assert payload['checkpoint'] == 'concurrency_keepalive_concurrency_keepalive_closure'
     assert payload['current_state']['authoritative_boundary_passed'] is True
     assert payload['current_state']['strict_target_boundary_passed'] is False
     assert payload['current_state']['promotion_target_passed'] is False

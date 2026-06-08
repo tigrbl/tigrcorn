@@ -25,7 +25,7 @@ class ExternalInteropRunner(ExternalInteropScenarioMixin):
         run_root = self.artifact_root / self.commit_hash / self.matrix.name
         run_root.mkdir(parents=True, exist_ok=True)
         bundle_kind = str(self.matrix.metadata.get('bundle_kind', self.matrix.metadata.get('evidence_tier', 'mixed')) or 'mixed')
-        wrapper_families = dict(self.matrix.metadata.get('phase9b_wrapper_families', {}))
+        wrapper_families = dict(self.matrix.metadata.get('independent_harness_wrapper_families', {}))
         _write_json(
             run_root / 'manifest.json',
             {

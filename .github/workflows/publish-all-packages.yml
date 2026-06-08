@@ -74,7 +74,7 @@ jobs:
 
   certification-release-gates:
     name: certification-release-gates
-    uses: ./.github/workflows/phase9-certification-release.yml
+    uses: ./.github/workflows/certification-release.yml
 
   prepare-release:
     name: prepare-release

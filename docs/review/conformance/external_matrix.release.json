@@ -12,13 +12,13 @@
       "aioquic"
     ],
     "pending_third_party_http3_scenarios": [],
-    "phase9b_artifact_schema_version": 1,
-    "phase9b_required_bundle_files": [
+    "independent_harness_artifact_schema_version": 1,
+    "independent_harness_required_bundle_files": [
       "manifest.json",
       "summary.json",
       "index.json"
     ],
-    "phase9b_required_scenario_files": [
+    "independent_harness_required_scenario_files": [
       "summary.json",
       "index.json",
       "result.json",
@@ -28,7 +28,7 @@
       "versions.json",
       "wire_capture.json"
     ],
-    "phase9b_wrapper_families": {
+    "independent_harness_wrapper_families": {
       "aioquic": [
         "aioquic.http3_client",
         "aioquic.http3_websocket_client"
@@ -48,7 +48,7 @@
         "websockets.http11_client"
       ]
     },
-    "phase9b_wrapper_mapping": {
+    "independent_harness_wrapper_mapping": {
       "http1-server-curl-client": "curl.http1_client",
       "http2-server-curl-client": "curl.http2_client",
       "http2-server-h2-client": "h2.http2_client",
@@ -80,7 +80,7 @@
       "http2-trailer-fields-h2-client": "h2.http2_client",
       "http3-trailer-fields-aioquic-client": "aioquic.http3_client"
     },
-    "phase9b_wrapper_registry_module": "tools.interop_wrappers",
+    "independent_harness_wrapper_registry_module": "tools.interop_wrappers",
     "preserved_enabled_scenarios": [
       "http1-server-curl-client",
       "http11-connect-relay-curl-client",
@@ -149,7 +149,7 @@
       "metadata": {
         "peer_implementation": "curl",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "curl.http1_client",
+        "independent_harness_wrapper_id": "curl.http1_client",
         "rfc": [
           "RFC 9112"
         ]
@@ -228,7 +228,7 @@
       "metadata": {
         "peer_implementation": "curl",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "curl.http1_client",
+        "independent_harness_wrapper_id": "curl.http1_client",
         "rfc": [
           "RFC 9110 \u00a79.3.6",
           "RFC 9112"
@@ -338,7 +338,7 @@
       "metadata": {
         "peer_implementation": "curl",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "curl.http1_client",
+        "independent_harness_wrapper_id": "curl.http1_client",
         "rfc": [
           "RFC 9110 \u00a78",
           "RFC 9112"
@@ -450,7 +450,7 @@
       "metadata": {
         "peer_implementation": "curl",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "curl.http1_client",
+        "independent_harness_wrapper_id": "curl.http1_client",
         "rfc": [
           "RFC 9110 \u00a76.5",
           "RFC 9112"
@@ -567,7 +567,7 @@
       "metadata": {
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_client",
+        "independent_harness_wrapper_id": "h2.http2_client",
         "rfc": [
           "RFC 9110 \u00a79.3.6",
           "RFC 9113"
@@ -678,7 +678,7 @@
       "metadata": {
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_client",
+        "independent_harness_wrapper_id": "h2.http2_client",
         "rfc": [
           "RFC 9110 \u00a78",
           "RFC 9113"
@@ -817,7 +817,7 @@
       "metadata": {
         "peer_implementation": "curl+nghttp2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "curl.http2_client",
+        "independent_harness_wrapper_id": "curl.http2_client",
         "rfc": [
           "RFC 9113"
         ]
@@ -918,7 +918,7 @@
       "metadata": {
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_client",
+        "independent_harness_wrapper_id": "h2.http2_client",
         "rfc": [
           "RFC 9113",
           "RFC 7541"
@@ -1019,7 +1019,7 @@
       "metadata": {
         "peer_implementation": "curl+nghttp2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "curl.http2_client",
+        "independent_harness_wrapper_id": "curl.http2_client",
         "rfc": [
           "RFC 9113",
           "RFC 8446",
@@ -1134,7 +1134,7 @@
       "metadata": {
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_client",
+        "independent_harness_wrapper_id": "h2.http2_client",
         "rfc": [
           "RFC 9113",
           "RFC 8446",
@@ -1227,7 +1227,7 @@
       "metadata": {
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_client",
+        "independent_harness_wrapper_id": "h2.http2_client",
         "rfc": [
           "RFC 9110 \u00a76.5",
           "RFC 9113"
@@ -1349,7 +1349,7 @@
       "metadata": {
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 9110 \u00a79.3.6",
           "RFC 9114",
@@ -1474,7 +1474,7 @@
       "metadata": {
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 9110 \u00a78",
           "RFC 9114",
@@ -1625,7 +1625,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -1743,7 +1743,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -1858,7 +1858,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -1980,7 +1980,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
         "rfc": [
           "RFC 8446",
@@ -2103,7 +2103,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -2217,7 +2217,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -2348,7 +2348,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -2478,7 +2478,7 @@
       "metadata": {
         "peer_implementation": "openssl-quic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "openssl.quic_client",
+        "independent_harness_wrapper_id": "openssl.quic_client",
         "rfc": [
           "RFC 9000",
           "RFC 9001",
@@ -2571,7 +2571,7 @@
       "metadata": {
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_client",
+        "independent_harness_wrapper_id": "aioquic.http3_client",
         "rfc": [
           "RFC 9110 \u00a76.5",
           "RFC 9114",
@@ -2702,7 +2702,7 @@
       "metadata": {
         "peer_implementation": "openssl",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "openssl.tls_client",
+        "independent_harness_wrapper_id": "openssl.tls_client",
         "rfc": [
           "RFC 6960",
           "RFC 5280",
@@ -2722,9 +2722,9 @@
         ],
         "env": {
           "INTEROP_OCSP_APP": "examples.echo_http.app:app",
-          "INTEROP_OCSP_CERTFILE": "PHASE9E_DYNAMIC_CERTFILE",
-          "INTEROP_OCSP_KEYFILE": "PHASE9E_DYNAMIC_KEYFILE",
-          "INTEROP_OCSP_CA_CERTS": "PHASE9E_DYNAMIC_CA_BUNDLE",
+          "INTEROP_OCSP_CERTFILE": "OCSP_CERTIFICATION_DYNAMIC_CERTFILE",
+          "INTEROP_OCSP_KEYFILE": "OCSP_CERTIFICATION_DYNAMIC_KEYFILE",
+          "INTEROP_OCSP_CA_CERTS": "OCSP_CERTIFICATION_DYNAMIC_CA_BUNDLE",
           "INTEROP_OCSP_MODE": "require",
           "INTEROP_OCSP_MAX_AGE": "300",
           "INTEROP_OCSP_REVOCATION_FETCH": "on"
@@ -2757,10 +2757,10 @@
           "--version"
         ],
         "env": {
-          "INTEROP_CAFILE": "PHASE9E_DYNAMIC_CA_BUNDLE",
+          "INTEROP_CAFILE": "OCSP_CERTIFICATION_DYNAMIC_CA_BUNDLE",
           "INTEROP_SERVER_NAME": "localhost",
-          "INTEROP_CLIENT_CERT": "PHASE9E_DYNAMIC_CLIENT_CERT",
-          "INTEROP_CLIENT_KEY": "PHASE9E_DYNAMIC_CLIENT_KEY",
+          "INTEROP_CLIENT_CERT": "OCSP_CERTIFICATION_DYNAMIC_CLIENT_CERT",
+          "INTEROP_CLIENT_KEY": "OCSP_CERTIFICATION_DYNAMIC_CLIENT_KEY",
           "INTEROP_REQUEST_PATH": "/",
           "INTEROP_ALPN": "http/1.1"
         },
@@ -2809,7 +2809,7 @@
       "metadata": {
         "peer_implementation": "python-websockets",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "websockets.http11_client",
+        "independent_harness_wrapper_id": "websockets.http11_client",
         "rfc": [
           "RFC 7692",
           "RFC 6455"
@@ -2943,7 +2943,7 @@
       "metadata": {
         "peer_implementation": "python-h2",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_websocket_client",
+        "independent_harness_wrapper_id": "h2.http2_websocket_client",
         "rfc": [
           "RFC 8441",
           "RFC 6455"
@@ -3022,7 +3022,7 @@
       "metadata": {
         "peer_implementation": "python-h2/wsproto",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "h2.http2_websocket_client",
+        "independent_harness_wrapper_id": "h2.http2_websocket_client",
         "rfc": [
           "RFC 7692",
           "RFC 8441",
@@ -3169,7 +3169,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_websocket_client",
+        "independent_harness_wrapper_id": "aioquic.http3_websocket_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -3292,7 +3292,7 @@
         "certification_status": "ready_for_preserved_artifact_promotion",
         "peer_implementation": "aioquic",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_websocket_client",
+        "independent_harness_wrapper_id": "aioquic.http3_websocket_client",
         "rfc": [
           "RFC 8446",
           "RFC 9000",
@@ -3393,7 +3393,7 @@
       "metadata": {
         "peer_implementation": "aioquic/wsproto",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "aioquic.http3_websocket_client",
+        "independent_harness_wrapper_id": "aioquic.http3_websocket_client",
         "rfc": [
           "RFC 7692",
           "RFC 8446",
@@ -3549,7 +3549,7 @@
       "metadata": {
         "peer_implementation": "python-websockets",
         "peer_independence": "third-party",
-        "phase9b_wrapper_id": "websockets.http11_client",
+        "independent_harness_wrapper_id": "websockets.http11_client",
         "rfc": [
           "RFC 6455"
         ]

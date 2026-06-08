@@ -1,6 +1,6 @@
 # Trailer fields local behavior artifacts
 
-This document records the local behavior vectors preserved during **Phase 9D2**.
+This document records the local behavior vectors preserved during **Trailer fields independent closure**.
 
 Artifact bundle:
 

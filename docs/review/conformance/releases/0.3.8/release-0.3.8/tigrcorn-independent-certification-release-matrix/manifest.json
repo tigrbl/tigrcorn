@@ -77,7 +77,7 @@
   },
   "environment": {
     "curation": {
-      "note": "This canonical 0.3.8 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Phase 9 closure artifacts while keeping the underlying packet traces and peer transcripts intact."
+      "note": "This canonical 0.3.8 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Release certification closure artifacts while keeping the underlying packet traces and peer transcripts intact."
     },
     "tigrcorn": {
       "bundle_scope": "curated-preserved-artifacts",
@@ -132,12 +132,12 @@
     ]
   },
   "notes": [
-    "Phase 9C overlays fresh RFC 7692 independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
-    "Phase 9D1 overlays fresh CONNECT relay independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
-    "Phase 9D2 overlays fresh trailer-field independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
-    "Phase 9D3 overlays fresh content-coding independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
-    "Phase 9E overlays a fresh OpenSSL OCSP/mTLS independent-artifact run into the 0.3.8 working release root.",
-    "Phase 9C overlays a passing RFC 7692 HTTP/3 aioquic permessage-deflate artifact into the 0.3.8 working release root while preserving the existing HTTP/1.1 and HTTP/2 passing artifacts."
+    "RFC 7692 independent closure overlays fresh RFC 7692 independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "CONNECT relay independent closure overlays fresh CONNECT relay independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "Trailer fields independent closure overlays fresh trailer-field independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "Content coding independent closure overlays fresh content-coding independent-artifact runs for HTTP/1.1, HTTP/2, and HTTP/3 into the 0.3.8 working release root.",
+    "OCSP certification overlays a fresh OpenSSL OCSP/mTLS independent-artifact run into the 0.3.8 working release root.",
+    "RFC 7692 independent closure overlays a passing RFC 7692 HTTP/3 aioquic permessage-deflate artifact into the 0.3.8 working release root while preserving the existing HTTP/1.1 and HTTP/2 passing artifacts."
   ],
   "canonical_release_promoted": true
 }

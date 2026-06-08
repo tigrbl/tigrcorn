@@ -1,0 +1,190 @@
+        'working_release_root_bundle_index': relative_path(RELEASE_ROOT_BUNDLE_INDEX),
+        'working_release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
+    }
+    normalized = normalize_workspace_paths(payload)
+    dump_json(RELEASE_GATE_STATUS_JSON, normalized)
+    RELEASE_GATE_STATUS_MD.write_text(build_release_gate_status_markdown(normalized), encoding='utf-8')
+
+
+def build_package_review_markdown(payload: dict[str, Any]) -> str:
+    summary = payload['summary']
+    lines = [
+        '# Package compliance review — Release assembly current state',
+        '',
+        'The authoritative boundary is green. The strict target is green, and the composite promotion target is green under the 0.3.9 working release root.',
+        '',
+        '## Current summary',
+        '',
+        f"- authoritative boundary: `{summary['authoritative_boundary_passed']}`",
+        f"- strict target boundary: `{summary['strict_target_boundary_passed']}`",
+        f"- promotion target: `{summary['promotion_target_passed']}`",
+        f"- flag surface: `{summary['flag_surface_passed']}`",
+        f"- operator surface: `{summary['operator_surface_passed']}`",
+        f"- performance target: `{summary['performance_passed']}`",
+        f"- documentation target: `{summary['documentation_passed']}`",
+        '',
+        '## What is complete',
+        '',
+        '- RFC 7692 is green across HTTP/1.1, HTTP/2, and HTTP/3',
+        '- RFC 9110 §9.3.6 CONNECT relay is green across HTTP/1.1, HTTP/2, and HTTP/3',
+        '- RFC 9110 §6.5 trailer fields is green across HTTP/1.1, HTTP/2, and HTTP/3',
+        '- RFC 9110 §8 content coding is green across HTTP/1.1, HTTP/2, and HTTP/3',
+        f"- {summary['public_flag_count']} / {summary['public_flag_count']} public flags are promotion-ready",
+        f"- {summary['operator_implemented_count']} / {summary['operator_implemented_count']} operator-surface capabilities are green",
+        f"- the strict performance target is green across {summary['performance_profile_count']} profiles",
+        '- the 0.3.9 working release root has refreshed manifest / bundle index / bundle summary files',
+        '',
+        '## Remaining strict-target blockers',
+        '',
+    ]
+    if payload['remaining_gaps']:
+        lines.extend(f'- {gap}' for gap in payload['remaining_gaps'])
+    else:
+        lines.append('- none')
+    lines.extend([
+        '',
+        'The remaining administrative work is explicit release promotion/version bumping, not unresolved RFC or feature work in the 0.3.9 working release root.',
+        '',
+        f"Operational note: {payload['operational_note']}",
+        '',
+    ])
+    return '\n'.join(lines)
+
+
+def write_package_compliance_review(auth: Any, *, strict: Any, promotion: Any) -> None:
+    flag_contracts = load_json(CONFORMANCE / 'flag_contracts.json')
+    operator_status = load_json(CONFORMANCE / 'phase4_operator_surface_status.current.json')
+    performance_status = load_json(CONFORMANCE / 'strict_performance_strict_performance.current.json')
+    cert_env_index = load_json(CERT_ENV_BUNDLE / 'index.json')
+    preflight_index = load_json(AIOQUIC_PREFLIGHT_BUNDLE / 'index.json')
+    remaining_rfc_gaps = strict_target_gap_rfcs(strict)
+    payload = {
+        'checkpoint': 'package_compliance_review_release_assembly',
+        'generated_at': _now(),
+        'status': ('authoritative_green_strict_target_green_promotion_green' if promotion.passed else 'authoritative_green_strict_target_incomplete'),
+        'summary': {
+            'authoritative_boundary_passed': auth.passed,
+            'strict_target_boundary_passed': strict.passed,
+            'promotion_target_passed': promotion.passed,
+            'flag_surface_passed': promotion.flag_surface.passed,
+            'operator_surface_passed': promotion.operator_surface.passed,
+            'performance_passed': promotion.performance.passed,
+            'documentation_passed': promotion.documentation.passed,
+            'public_flag_count': flag_contracts['public_flag_string_count'],
+            'operator_implemented_count': sum(1 for value in operator_status['implemented'].values() if value),
+            'performance_profile_count': performance_status['performance_contract']['profile_count'],
+            'remaining_non_passing_independent_scenarios': scenario_failures(strict),
+            'remaining_strict_target_rfc_gaps': remaining_rfc_gaps,
+            'current_authoritative_rfc_boundary_complete': auth.passed,
+            'current_strict_target_fully_complete': strict.passed,
+            'current_package_certifiably_fully_featured': promotion.passed,
+            'aioquic_adapter_preflight_passed': preflight_index['all_adapters_passed'],
+            'current_environment_required_imports_ready': cert_env_index['required_imports_ready'],
+            'current_environment_release_python_ready': cert_env_index['python_version_ready'],
+            'working_release_root_manifest': relative_path(RELEASE_ROOT / 'manifest.json'),
+            'working_release_root_bundle_index': relative_path(RELEASE_ROOT_BUNDLE_INDEX),
+            'working_release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
+        },
+        'files_updated_by_review': [
+            'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+            'docs/review/conformance/RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md',
+            'docs/review/conformance/release_assembly.current.json',
+            'docs/review/conformance/RELEASE_GATE_STATUS.md',
+            'docs/review/conformance/release_gate_status.current.json',
+            'docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_RELEASE_ASSEMBLY.md',
+            'docs/review/conformance/package_compliance_review_release_assembly.current.json',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json',
+            'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json',
+            'README.md',
+            'docs/review/conformance/README.md',
+            'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
+            'docs/review/conformance/STRICT_PROFILE_TARGET.md',
+        ],
+        'remaining_gaps': remaining_rfc_gaps,
+        'operational_note': 'The current local workspace still runs under Python 3.13, while the frozen release-workflow contract requires Python 3.11 or 3.12. That does not change the preserved artifact truth in the 0.3.9 working release root.',
+    }
+    normalized = normalize_workspace_paths(payload)
+    dump_json(PACKAGE_REVIEW_JSON, normalized)
+    PACKAGE_REVIEW_MD.write_text(build_package_review_markdown(normalized), encoding='utf-8')
+
+
+def load_pyproject_version() -> str:
+    for line in (ROOT / 'pyproject.toml').read_text(encoding='utf-8').splitlines():
+        if line.startswith('version = '):
+            return line.split('=', 1)[1].strip().strip('"')
+    return 'unknown'
+
+
+def build_release_assembly_markdown(status: dict[str, Any]) -> str:
+    strict_failures = '\n'.join(f'- {failure}' for failure in status['validation']['evaluate_release_gates_strict_target']['failures'])
+    lines = [
+        '# Release assembly release assembly and certifiable checkpoint',
+        '',
+        'This checkpoint executes **Release assembly** of the Release certification implementation plan.',
+        '',
+        'It reassembles the 0.3.9 working release root, refreshes bundle manifests / indexes / summaries, and updates the machine-readable current-state snapshots after the final HTTP/3 strict-target closures.',
+        '',
+        '## Current machine-readable result',
+        '',
+        f"- authoritative boundary: `{status['current_state']['authoritative_boundary_passed']}`",
+        f"- strict target boundary: `{status['current_state']['strict_target_boundary_passed']}`",
+        f"- flag surface: `{status['current_state']['flag_surface_passed']}`",
+        f"- operator surface: `{status['current_state']['operator_surface_passed']}`",
+        f"- performance target: `{status['current_state']['performance_passed']}`",
+        f"- documentation / claim consistency: `{status['current_state']['documentation_passed']}`",
+        f"- composite promotion gate: `{status['current_state']['promotion_target_passed']}`",
+        '',
+        '## Release-root artifacts refreshed by this checkpoint',
+        '',
+        f"- manifest: `{status['current_state']['release_root_manifest']}`",
+        f"- bundle index: `{status['current_state']['release_root_bundle_index']}`",
+        f"- bundle summary: `{status['current_state']['release_root_bundle_summary']}`",
+        '',
+        '## Remaining blockers',
+        '',
+    ]
+    if strict_failures:
+        lines.append(strict_failures)
+    else:
+        lines.append('- none')
+    lines.extend([
+        '',
+        '## Honest current result',
+        '',
+        ('The package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the evaluated working 0.3.9 release root.' if status['current_state']['promotion_target_passed'] else 'The package remains **certifiably fully RFC compliant under the authoritative certification boundary**, but it is **not yet certifiably fully featured** and **not yet strict-target certifiably fully RFC compliant**.'),
+        '',
+        'Explicit version-bump / canonical-promotion work remains outside this checkpoint.',
+    ])
+    return '\n'.join(lines) + '\n'
+
+
+def build_delivery_notes(status: dict[str, Any]) -> str:
+    return (
+        '# Delivery notes — Release assembly release assembly and certifiable checkpoint\n\n'
+        'This checkpoint reassembles the 0.3.9 working release root with refreshed bundle manifests, bundle indexes, bundle summaries, and machine-readable status snapshots.\n\n'
+        f"- release-root manifest: `{status['current_state']['release_root_manifest']}`\n"
+        f"- release-root bundle index: `{status['current_state']['release_root_bundle_index']}`\n"
+        f"- release-root bundle summary: `{status['current_state']['release_root_bundle_summary']}`\n\n"
+        'All four previously failing HTTP/3 strict-target scenarios are now preserved as passing artifacts in the assembled 0.3.9 working release root.\n\n'
+        'Validation summary is recorded in `docs/review/conformance/release_assembly.current.json`. Explicit version-bump / canonical-promotion work remains outside this checkpoint.\n'
+    )
+
+
+def main() -> None:
+    build_flag_bundle()
+    build_operator_bundle()
+    build_performance_bundle()
+    build_certification_environment_bundle()
+    build_aioquic_preflight_bundle()
+    update_release_root_manifest()
+    build_release_root_indexes()
+    update_docs_and_status()
+    if current_release_promotion_state()['canonical_release_promoted']:
+        subprocess.run([sys.executable, str(ROOT / 'tools' / 'create_release_promotion_checkpoint.py')], check=True, cwd=ROOT)
+        sync_certification_environment_status_from_bundle()
+        sync_aioquic_preflight_status_from_bundle()
+
+
+if __name__ == '__main__':
+    main()

@@ -79,9 +79,9 @@ def test_aioquic_preflight_scenario_metadata_records_certificate_and_handshake_s
     assert websocket['websocket_connect_protocol_enabled'] in {True, False, None}
 
 
-def test_release_workflow_and_wrapper_require_aioquic_preflight_before_phase9_scripts() -> None:
-    workflow = (ROOT / '.github' / 'workflows' / 'phase9-certification-release.yml').read_text(encoding='utf-8')
-    wrapper = (ROOT / 'tools' / 'run_phase9_release_workflow.py').read_text(encoding='utf-8')
+def test_release_workflow_and_wrapper_require_aioquic_preflight_before_release_certification_scripts() -> None:
+    workflow = (ROOT / '.github' / 'workflows' / 'certification-release.yml').read_text(encoding='utf-8')
+    wrapper = (ROOT / 'tools' / 'run_certification_release_workflow.py').read_text(encoding='utf-8')
     assert 'tools/preflight_aioquic_adapters.py' in workflow
     assert 'preflight_aioquic_adapters.py' in wrapper
     assert '--require-pass' not in workflow

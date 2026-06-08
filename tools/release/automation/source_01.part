@@ -1,0 +1,155 @@
+def run(args: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+    print("+ " + " ".join(args), flush=True)
+    return subprocess.run(args, cwd=ROOT, check=True, text=True, **kwargs)
+
+
+def git_output(args: list[str]) -> str:
+    return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
+
+
+def normalize_python_project(name: str) -> str:
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
+def url_exists(url: str) -> bool:
+    request = urllib.request.Request(url, method="GET")
+    try:
+        with urllib.request.urlopen(request, timeout=30):
+            return True
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return False
+        raise RuntimeError(f"{url} lookup failed with HTTP {exc.code}") from exc
+
+
+def validate_release_targets(plan_path: Path, *, github: bool, pypi: bool, npmjs: bool) -> None:
+    plan = json.loads(read(plan_path))
+    failures: list[str] = []
+
+    if github:
+        for release in plan["github_releases"]:
+            tag = release["tag"]
+            tag_exists = subprocess.run(
+                ["git", "rev-parse", "-q", "--verify", f"refs/tags/{tag}"],
+                cwd=ROOT,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            if tag_exists.returncode == 0:
+                failures.append(f"Git tag already exists: {tag}")
+                continue
+            release_exists = subprocess.run(
+                ["gh", "release", "view", tag],
+                cwd=ROOT,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            if release_exists.returncode == 0:
+                failures.append(f"GitHub release already exists: {tag}")
+
+    if pypi:
+        for release in plan["python"]:
+            project = normalize_python_project(release["name"])
+            version = release["version"]
+            url = f"https://pypi.org/pypi/{project}/{version}/json"
+            if url_exists(url):
+                failures.append(f"PyPI version already exists: {project} {version}")
+
+    if npmjs:
+        for release in plan["npm"]:
+            encoded = urllib.parse.quote(release["name"], safe="")
+            version = release["version"]
+            url = f"https://registry.npmjs.org/{encoded}/{version}"
+            if url_exists(url):
+                failures.append(f"npmjs version already exists: {release['name']} {version}")
+
+    if failures:
+        print("Release target validation failed:")
+        for failure in failures:
+            print(f"- {failure}")
+        raise SystemExit(1)
+
+    selected = []
+    if github:
+        selected.append("GitHub releases")
+    if pypi:
+        selected.append("PyPI")
+    if npmjs:
+        selected.append("npmjs")
+    print(f"Release target validation passed for: {', '.join(selected) or 'none'}")
+
+
+def create_github_tags(plan_path: Path) -> None:
+    plan = json.loads(read(plan_path))
+    created_tags: list[str] = []
+    for release in plan["github_releases"]:
+        tag = release["tag"]
+        existing = subprocess.run(
+            ["git", "rev-parse", "-q", "--verify", f"refs/tags/{tag}"],
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+        )
+        if existing.returncode == 0:
+            raise RuntimeError(f"tag {tag} already exists")
+        run(["git", "tag", "-a", tag, "-m", tag])
+        created_tags.append(tag)
+    if created_tags:
+        run(["git", "push", "origin", *created_tags])
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    bump = subparsers.add_parser("bump")
+    bump.add_argument("--semver", choices=["minor", "patch", "dev", "x", "y", "z", "finalize"], required=True)
+    bump.add_argument("--summary", type=Path, required=True)
+    bump.add_argument("--packages", default="all")
+    bump.add_argument("--write", action="store_true")
+
+    current = subparsers.add_parser("current")
+    current.add_argument("--summary", type=Path, required=True)
+
+    validate_targets = subparsers.add_parser("validate-release-targets")
+    validate_targets.add_argument("--summary", type=Path, required=True)
+    validate_targets.add_argument("--github", action="store_true")
+    validate_targets.add_argument("--pypi", action="store_true")
+    validate_targets.add_argument("--npmjs", action="store_true")
+
+    gh = subparsers.add_parser("create-github-tags")
+    gh.add_argument("--summary", type=Path, required=True)
+
+    args = parser.parse_args(argv)
+
+    if args.command == "bump":
+        plan = build_plan(args.semver, write_changes=args.write, packages=args.packages)
+        args.summary.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps(plan, indent=2))
+        return 0
+    if args.command == "current":
+        plan = current_version_summary()
+        args.summary.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps(plan, indent=2))
+        return 0
+    if args.command == "validate-release-targets":
+        if args.github and not os.environ.get("GH_TOKEN") and not os.environ.get("GITHUB_TOKEN"):
+            raise RuntimeError("GH_TOKEN or GITHUB_TOKEN is required")
+        validate_release_targets(
+            args.summary,
+            github=args.github,
+            pypi=args.pypi,
+            npmjs=args.npmjs,
+        )
+        return 0
+    if args.command == "create-github-tags":
+        create_github_tags(args.summary)
+        return 0
+    raise AssertionError(args.command)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

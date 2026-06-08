@@ -1,6 +1,6 @@
 # Content-coding local behavior artifacts
 
-This document records the local content-coding behavior vectors preserved during **Phase 9D3**.
+This document records the local content-coding behavior vectors preserved during **Content coding independent closure**.
 
 Artifact bundle:
 

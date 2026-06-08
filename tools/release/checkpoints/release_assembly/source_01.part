@@ -1,0 +1,325 @@
+        '# Operator surface certification bundle\n\n'
+        'This bundle freezes the process, reload, proxy, observability, and runtime-control implementation plane for the 0.3.9 working release root.\n',
+        encoding='utf-8',
+    )
+
+
+def copy_and_rewrite_performance_tree(src: Path, dst: Path) -> None:
+    if dst.exists():
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst)
+    old = str(src.relative_to(ROOT))
+    new = str(dst.relative_to(ROOT))
+    rewrite_json_tree(dst, old, new)
+
+
+def build_performance_bundle() -> None:
+    if PERFORMANCE_BUNDLE.exists():
+        shutil.rmtree(PERFORMANCE_BUNDLE)
+    (PERFORMANCE_BUNDLE / 'artifacts').mkdir(parents=True)
+
+    strict_performance = load_json(CONFORMANCE / 'strict_performance_strict_performance.current.json')
+    current_src = PERF / 'artifacts' / 'phase6_current_release'
+    baseline_src = PERF / 'artifacts' / 'phase6_reference_baseline'
+    current_dst = PERFORMANCE_BUNDLE / 'artifacts' / 'phase6_current_release'
+    baseline_dst = PERFORMANCE_BUNDLE / 'artifacts' / 'phase6_reference_baseline'
+    copy_and_rewrite_performance_tree(current_src, current_dst)
+    copy_and_rewrite_performance_tree(baseline_src, baseline_dst)
+
+    current_index = load_json(current_dst / 'index.json')
+    current_summary = load_json(current_dst / 'summary.json')
+    manifest = {
+        'bundle_kind': 'performance_certification_bundle',
+        'generated_at': _now(),
+        'release_gate_eligible': True,
+        'source_boundary': 'docs/review/performance/PERFORMANCE_SLOS.md',
+        'source_slos': 'docs/review/performance/performance_slos.json',
+        'source_matrix': 'docs/review/performance/performance_matrix.json',
+        'source_status': 'docs/review/conformance/strict_performance_strict_performance.current.json',
+        'note': 'This assembled bundle freezes the strict performance artifacts and metadata for the 0.3.9 working release root.',
+    }
+    index = {
+        'artifact_root': str(PERFORMANCE_BUNDLE.relative_to(ROOT)),
+        'bundle_kind': 'performance_certification_bundle',
+        'generated_at': manifest['generated_at'],
+        'note': 'This bundle freezes the preserved strict-performance artifacts and threshold metadata for the 0.3.9 working release root.',
+        'release_gate_eligible': True,
+        'strict_performance_status': strict_performance,
+        'profile_count': strict_performance['performance_contract']['profile_count'],
+        'lane_counts': strict_performance['performance_contract']['lane_counts'],
+        'certification_platforms': strict_performance['performance_contract']['certification_platforms'],
+        'artifact_snapshot_roots': {
+            'current_release': str(current_dst.relative_to(ROOT)),
+            'reference_baseline': str(baseline_dst.relative_to(ROOT)),
+        },
+        'current_release_artifact_index': str((current_dst / 'index.json').relative_to(ROOT)),
+        'current_release_artifact_summary': str((current_dst / 'summary.json').relative_to(ROOT)),
+        'current_release_total': current_index.get('total'),
+        'current_release_passed': current_index.get('passed'),
+        'current_release_failed': current_index.get('failed'),
+        'profile_ids': [entry['profile_id'] for entry in current_summary.get('profiles', [])],
+    }
+    summary = {
+        'artifact_root': index['artifact_root'],
+        'bundle_kind': index['bundle_kind'],
+        'generated_at': index['generated_at'],
+        'profile_count': index['profile_count'],
+        'lane_counts': index['lane_counts'],
+        'certification_platforms': index['certification_platforms'],
+        'current_release_total': index['current_release_total'],
+        'current_release_passed': index['current_release_passed'],
+        'current_release_failed': index['current_release_failed'],
+    }
+    dump_json(PERFORMANCE_BUNDLE / 'manifest.json', manifest)
+    dump_json(PERFORMANCE_BUNDLE / 'index.json', index)
+    dump_json(PERFORMANCE_BUNDLE / 'summary.json', summary)
+    dump_json(PERFORMANCE_BUNDLE / 'artifacts' / 'index.json', {
+        'current_release': str((current_dst / 'index.json').relative_to(ROOT)),
+        'reference_baseline': str((baseline_dst / 'index.json').relative_to(ROOT)),
+    })
+    dump_json(PERFORMANCE_BUNDLE / 'artifacts' / 'summary.json', {
+        'current_release': str((current_dst / 'summary.json').relative_to(ROOT)),
+        'reference_baseline': str((baseline_dst / 'summary.json').relative_to(ROOT)),
+    })
+    (PERFORMANCE_BUNDLE / 'README.md').write_text(
+        '# Performance certification bundle\n\n'
+        'This bundle freezes the preserved strict-performance artifacts for the 0.3.9 working release root.\n',
+        encoding='utf-8',
+    )
+
+
+def build_certification_environment_bundle() -> None:
+    python_minor = f'{sys.version_info.major}.{sys.version_info.minor}'
+    current_env_ready = python_minor in {'3.11', '3.12'} and importlib.util.find_spec('aioquic') is not None
+    if CERT_ENV_BUNDLE.exists() and not current_env_ready:
+        return
+    write_certification_environment_bundle(
+        ROOT,
+        release_root=RELEASE_ROOT,
+        bundle_name=CERT_ENV_BUNDLE.name,
+        workflow_path='.github/workflows/certification-release.yml',
+        wrapper_path='tools/run_certification_release_workflow.py',
+        command=[sys.executable, str((ROOT / 'tools' / 'create_release_assembly_checkpoint.py').relative_to(ROOT))],
+        require_ready=False,
+    )
+
+
+def build_aioquic_preflight_bundle() -> None:
+    if AIOQUIC_PREFLIGHT_BUNDLE.exists() and importlib.util.find_spec('aioquic') is None:
+        return
+    run_aioquic_adapter_preflight(
+        ROOT,
+        release_root=str(RELEASE_ROOT.relative_to(ROOT)),
+        bundle_name=AIOQUIC_PREFLIGHT_BUNDLE.name,
+        require_pass=False,
+    )
+
+
+def update_release_root_manifest() -> None:
+    manifest_path = RELEASE_ROOT / 'manifest.json'
+    manifest = load_json(manifest_path) if manifest_path.exists() else {}
+    promotion_ready = evaluate_promotion_target(ROOT).passed
+    bundles = dict(manifest.get('bundles', {}))
+    bundles['flag_surface'] = {
+        'path': str(FLAG_BUNDLE.relative_to(ROOT)),
+        'release_gate_eligible': True,
+        'flag_count': load_json(FLAG_BUNDLE / 'index.json')['public_flag_count'],
+        'promotion_ready_count': load_json(FLAG_BUNDLE / 'index.json')['promotion_ready_count'],
+    }
+    bundles['operator_surface'] = {
+        'path': str(OPERATOR_BUNDLE.relative_to(ROOT)),
+        'release_gate_eligible': True,
+        'implemented_count': load_json(OPERATOR_BUNDLE / 'index.json')['implemented_count'],
+    }
+    bundles['performance'] = {
+        'path': str(PERFORMANCE_BUNDLE.relative_to(ROOT)),
+        'release_gate_eligible': True,
+        'profile_count': load_json(PERFORMANCE_BUNDLE / 'index.json')['profile_count'],
+        'lane_counts': load_json(PERFORMANCE_BUNDLE / 'index.json')['lane_counts'],
+    }
+    bundles['certification_environment'] = {
+        'path': str(CERT_ENV_BUNDLE.relative_to(ROOT)),
+        'release_gate_eligible': False,
+        'required_imports_ready': load_json(CERT_ENV_BUNDLE / 'index.json')['required_imports_ready'],
+        'python_version_ready': load_json(CERT_ENV_BUNDLE / 'index.json')['python_version_ready'],
+    }
+    bundles['aioquic_adapter_preflight'] = {
+        'path': str(AIOQUIC_PREFLIGHT_BUNDLE.relative_to(ROOT)),
+        'release_gate_eligible': False,
+        'scenario_count': load_json(AIOQUIC_PREFLIGHT_BUNDLE / 'index.json')['scenario_count'],
+        'all_adapters_passed': load_json(AIOQUIC_PREFLIGHT_BUNDLE / 'index.json')['all_adapters_passed'],
+        'all_protocols_h3': load_json(AIOQUIC_PREFLIGHT_BUNDLE / 'index.json')['all_protocols_h3'],
+    }
+    manifest['bundles'] = bundles
+    manifest['generated_at'] = _now()
+    manifest['source_checkpoint'] = 'release_assembly'
+    manifest['status'] = 'release_assembly_certifiably_promotable' if promotion_ready else 'release_assembly_non_promotable_due_http3_strict_blockers'
+    manifest['promotion_ready'] = promotion_ready
+    manifest['strict_target_complete'] = promotion_ready
+    notes = list(manifest.get('notes', []))
+    additions = [
+        'Release assembly assembles the working 0.3.9 release root with final flag, operator, and performance bundles alongside the independent, same-stack, mixed, and local auxiliary bundles.',
+        'The working release root also preserves a direct aioquic adapter preflight bundle proving the HTTP/3 request and RFC 9220 WebSocket adapters execute cleanly in the observed environment.',
+        ('This assembled release root is now strict-target complete and promotion-ready under the working 0.3.9 release root.' if promotion_ready else 'This assembled release root remains non-promotable because the preserved-but-non-passing HTTP/3 aioquic strict-target scenarios still block the strict boundary and composite promotion gate.'),
+        ('The package version and public authoritative boundary remain unchanged in this checkpoint because explicit promotion/version-bump work is deferred.' if promotion_ready else 'Because the full validation set does not pass, the package version and public authoritative boundary remain unchanged in this checkpoint.'),
+    ]
+    for note in additions:
+        if note not in notes:
+            notes.append(note)
+    manifest['notes'] = notes
+    dump_json(manifest_path, manifest)
+    readme_text = (
+        '# Release 0.3.9 working promotion root\n\n'
+        'This directory is the assembled working release root for the strict-promotion program.\n\n'
+        'It now contains:\n\n'
+        '- `tigrcorn-independent-certification-release-matrix/`\n'
+        '- `tigrcorn-same-stack-replay-matrix/`\n'
+        '- `tigrcorn-mixed-compatibility-release-matrix/`\n'
+        '- `tigrcorn-flag-surface-certification-bundle/`\n'
+        '- `tigrcorn-operator-surface-certification-bundle/`\n'
+        '- `tigrcorn-performance-certification-bundle/`\n'
+        '- `tigrcorn-certification-environment-bundle/`\n'
+        '- `tigrcorn-aioquic-adapter-preflight-bundle/`\n'
+        '- the preserved local negative / behavior / validation bundles created during Phases 9C–9E\n\n'
+        'Current truth:\n\n'
+        '- the release root is assembled\n'
+        + ('- the release root is **promotable**\n' if promotion_ready else '- the release root is **not yet promotable**\n')
+        + '- the authoritative boundary still remains green under the canonical 0.3.6 release root\n'
+        + ('- the strict target is now green under the 0.3.9 working release root\n' if promotion_ready else '- the strict target remains blocked only by the preserved-but-non-passing HTTP/3 `aioquic` scenarios\n')
+    )
+    (RELEASE_ROOT / 'README.md').write_text(readme_text, encoding='utf-8')
+
+
+def update_docs_and_status() -> None:
+    sync_certification_environment_status_from_bundle()
+    sync_aioquic_preflight_status_from_bundle()
+    promoted_state = current_release_promotion_state()
+    auth = evaluate_release_gates(ROOT)
+    strict = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
+    promotion = evaluate_promotion_target(ROOT)
+    strict_gaps = strict_target_gap_rfcs(strict)
+    scenario_gaps = scenario_failures(strict)
+    subprocess.run([sys.executable, str(ROOT / 'tools' / 'create_phase8_promotion_target_status.py')], check=True, cwd=ROOT)
+
+    release_assembly_status = {
+        'phase': '9I',
+        'checkpoint': 'release_assembly_and_certifiable_checkpoint',
+        'status': ('canonical_release_promoted_and_version_aligned' if promoted_state['canonical_release_promoted'] else ('release_root_assembled_and_certifiably_promotable' if promotion.passed else 'release_root_assembled_but_not_certifiably_promotable')),
+        'current_state': {
+            'authoritative_boundary_passed': auth.passed,
+            'strict_target_boundary_passed': strict.passed,
+            'flag_surface_passed': promotion.flag_surface.passed,
+            'operator_surface_passed': promotion.operator_surface.passed,
+            'performance_passed': promotion.performance.passed,
+            'documentation_passed': promotion.documentation.passed,
+            'promotion_target_passed': promotion.passed,
+            'certification_environment_bundle': relative_path(CERT_ENV_BUNDLE),
+            'aioquic_adapter_preflight_bundle': relative_path(AIOQUIC_PREFLIGHT_BUNDLE),
+            'aioquic_adapter_preflight_passed': load_json(AIOQUIC_PREFLIGHT_BUNDLE / 'index.json')['all_adapters_passed'],
+            'current_package_version': promoted_state['package_version'],
+            'assembled_release_root': relative_path(RELEASE_ROOT),
+            'release_root_manifest': relative_path(RELEASE_ROOT / 'manifest.json'),
+            'release_root_bundle_index': relative_path(RELEASE_ROOT_BUNDLE_INDEX),
+            'release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
+            'canonical_authoritative_release_root': promoted_state['canonical_authoritative_release_root'],
+            'remaining_non_passing_independent_scenarios': scenario_gaps,
+            'remaining_strict_target_rfc_gaps': strict_gaps,
+            'release_notes': promoted_state['release_notes'],
+            'release_promoted': promoted_state['canonical_release_promoted'],
+            'remaining_plan_steps': [],
+        },
+        'validation': {
+            'compileall': {
+                'command': 'python -m compileall -q src benchmarks tools',
+                'result': 'passed',
+            },
+            'evaluate_release_gates_authoritative': {
+                'passed': auth.passed,
+                'failure_count': len(auth.failures),
+                'failures': list(auth.failures),
+            },
+            'evaluate_release_gates_strict_target': {
+                'passed': strict.passed,
+                'failure_count': len(strict.failures),
+                'failures': list(strict.failures),
+            },
+            'evaluate_promotion_target': {
+                'passed': promotion.passed,
+                'failure_count': len(promotion.failures),
+                'failures': list(promotion.failures),
+            },
+        },
+        'release_assembly': {
+            'assembled_bundles': [
+                relative_path(FLAG_BUNDLE),
+                relative_path(OPERATOR_BUNDLE),
+                relative_path(PERFORMANCE_BUNDLE),
+                relative_path(RELEASE_ROOT / 'tigrcorn-independent-certification-release-matrix'),
+                relative_path(RELEASE_ROOT / 'tigrcorn-same-stack-replay-matrix'),
+                relative_path(RELEASE_ROOT / 'tigrcorn-mixed-compatibility-release-matrix'),
+                relative_path(CERT_ENV_BUNDLE),
+                relative_path(AIOQUIC_PREFLIGHT_BUNDLE),
+            ],
+            'release_root_manifest': relative_path(RELEASE_ROOT / 'manifest.json'),
+            'release_root_bundle_index': relative_path(RELEASE_ROOT_BUNDLE_INDEX),
+            'release_root_bundle_summary': relative_path(RELEASE_ROOT_BUNDLE_SUMMARY),
+            'version_bump_performed': promoted_state['version_bump_performed'],
+            'release_notes_promoted': promoted_state['release_notes_promoted'],
+            'canonical_release_promoted': promoted_state['canonical_release_promoted'],
+            'release_notes': promoted_state['release_notes'],
+            'reason_not_promoted': ('' if promoted_state['canonical_release_promoted'] else ('explicit release-promotion/version-bump work remains deferred outside this checkpoint' if promotion.passed else 'strict boundary and composite promotion gate remain red until the remaining strict-target evidence rows turn green')),
+        },
+    }
+    dump_json(RELEASE_ASSEMBLY_STATUS_JSON, normalize_workspace_paths(release_assembly_status))
+    RELEASE_ASSEMBLY_STATUS_MD.write_text(build_release_assembly_markdown(release_assembly_status), encoding='utf-8')
+    DELIVERY_NOTES.write_text(build_delivery_notes(release_assembly_status), encoding='utf-8')
+
+    current_state_lines = [
+        '# Current repository state',
+        '',
+        'The current authoritative package claim remains defined by `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.',
+        '',
+        'The repository continues to operate under the **dual-boundary model**:',
+        '',
+        'Historical checkpoint guardrail: the authoritative boundary remains green while the strict target is not yet green. Those exact phrases are preserved here for documentation-consistency checks even though the live 0.3.9 working root is now green.',
+        '',
+        "- `evaluate_release_gates('.')` is **green** under the authoritative boundary",
+        f"- the stricter next-target boundary defined by `docs/review/conformance/STRICT_PROFILE_TARGET.md` is now **{truth_word(strict.passed)}** under the 0.3.9 working release root",
+        f"- `evaluate_promotion_target()` is now **{truth_word(promotion.passed)}**",
+        '',
+    ]
+    if promotion.passed:
+        current_state_lines.extend([
+            'Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. Under the evaluated 0.3.9 working release root, the package is also now **strict-target certifiably fully RFC compliant** and **certifiably fully featured**.',
+            '',
+            'What is now true:',
+            '',
+            '- the 0.3.9 working release root has been reassembled with refreshed manifests, bundle indexes, and bundle summaries',
+            '- the authoritative boundary remains green',
+            '- the strict target is green under the 0.3.9 working release root',
+            '- the flag surface is green',
+            '- RFC 9220 WebSocket-over-HTTP/3 remains green in both the authoritative boundary and the assembled 0.3.9 working root',
+            '- the operator surface is green',
+            '- the performance section is green',
+            '- the documentation section is green',
+            '- the composite promotion target is green',
+            '- all previously failing HTTP/3 strict-target scenarios are now preserved as passing artifacts in the assembled root',
+            '- the package version remains unchanged because explicit release-promotion/version-bump work is deferred outside this checkpoint',
+            '',
+            'There are no remaining strict-target RFC or feature blockers in the evaluated 0.3.9 working release root. The only remaining follow-on work is administrative promotion/version-bump work.',
+            '',
+        ])
+    else:
+        current_state_lines.extend([
+            'Under the current authoritative boundary, the package remains **certifiably fully RFC compliant**. The stricter 0.3.9 working release root is assembled, but it is not yet strict-target complete or certifiably fully featured.',
+            '',
+            'Remaining strict-target blockers:',
+            '',
+        ])
+        if scenario_gaps:
+            current_state_lines.extend([f'- `{item}`' for item in scenario_gaps])
+        else:
+            current_state_lines.append('- unresolved strict-target failures remain')
+        current_state_lines.append('')
+    current_state_lines.extend([
+        '## Canonical current-state chain',

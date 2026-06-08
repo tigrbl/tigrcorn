@@ -13,4 +13,4 @@ jobs:
 
   call-release-certification:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-    uses: ./.github/workflows/phase9-certification-release.yml
+    uses: ./.github/workflows/certification-release.yml

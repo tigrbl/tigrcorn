@@ -18,7 +18,7 @@ from tigrcorn.transports.quic import QuicConnection
 from tests.support.concurrency_keepalive import _frame_wire_length, _start_server
 
 
-class Phase9F3ConcurrencyKeepaliveClosureTests(unittest.IsolatedAsyncioTestCase):
+class ReleaseF3ConcurrencyKeepaliveClosureTests(unittest.IsolatedAsyncioTestCase):
     async def test_scheduler_limit_concurrency_is_real_global_inflight_cap(self):
         scheduler = ProductionScheduler(SchedulerPolicy(limit_concurrency=1))
         first = scheduler.acquire_work()

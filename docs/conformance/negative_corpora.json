@@ -10,7 +10,7 @@
           "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts"
         ],
         "tests": [
-          "tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream"
+          "tests/test_connect_relay_local_negatives.py::ConnectRelayIndependentLocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream"
         ]
       },
       {
@@ -21,7 +21,7 @@
           "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts"
         ],
         "tests": [
-          "tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream"
+          "tests/test_connect_relay_local_negatives.py::ConnectRelayIndependentLocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream"
         ]
       }
     ],

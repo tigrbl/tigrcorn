@@ -1693,7 +1693,7 @@
         ".github/workflows/docs.yml",
         "tools/cert/release_auto.py",
         "docs/governance/release_auto.md",
-        "tests/test_p9_auto.py"
+        "tests/test_release_auto.py"
       ],
       "status": "implemented_in_tree",
       "surface": "automated_release_pipeline",
@@ -1709,7 +1709,7 @@
       "source_files": [
         ".github/workflows/publish-all-packages.yml",
         "docs/governance/release_auto.md",
-        "tests/test_p9_auto.py"
+        "tests/test_release_auto.py"
       ],
       "status": "implemented_in_tree",
       "surface": "token_based_publishing",
@@ -1728,7 +1728,7 @@
         "docs/conformance/risk_stat.json",
         "docs/conformance/evidence_ix.json",
         "docs/conformance/relnotes.json",
-        "tests/test_p9_auto.py"
+        "tests/test_release_auto.py"
       ],
       "status": "implemented_in_tree",
       "surface": "release_evidence_attachments",

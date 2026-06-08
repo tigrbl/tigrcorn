@@ -32,8 +32,8 @@ This file is generated from the package-owned Phase 7 negative-certification met
 
 | Case | Expected action | Expected outcome | Tests | Preserved artifacts |
 |---|---|---|---|---|
-| `http2-connect-policy-deny` | `reject_response` | 403 connect denied and end stream | `tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream` | `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts` |
-| `http3-connect-allowlist-rejection` | `reject_response` | 403 connect denied and end stream | `tests/test_connect_relay_local_negatives.py::ConnectRelayPhase9D1LocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream` | `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts` |
+| `http2-connect-policy-deny` | `reject_response` | 403 connect denied and end stream | `tests/test_connect_relay_local_negatives.py::ConnectRelayIndependentLocalNegativeTests::test_http2_connect_policy_deny_and_allowlist_rejection_end_stream` | `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts` |
+| `http3-connect-allowlist-rejection` | `reject_response` | 403 connect denied and end stream | `tests/test_connect_relay_local_negatives.py::ConnectRelayIndependentLocalNegativeTests::test_http3_connect_policy_deny_and_allowlist_rejection_end_stream` | `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts` |
 
 ## tls_x509
 

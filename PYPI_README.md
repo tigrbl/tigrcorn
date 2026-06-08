@@ -580,7 +580,7 @@ print(promotion_report.passed)
 | Lifecycle and embedding contract | [lifecycle and embedded server guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
 | Optional dependency truth | [optional dependency surface](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md), [optional dependency surface JSON](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/optional_dependency_surface.current.json) |
 | External evidence inputs | [same-stack replay matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.same_stack_replay.json), [release external matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.release.json), [current-release external matrix](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/external_matrix.current_release.json) |
-| Planning and promotion checkpoints | [Phase 9 implementation plan](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md), [Phase 9A promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md) |
+| Planning and promotion checkpoints | [Release certification implementation plan](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RELEASE_IMPLEMENTATION_PLAN.md), [Promotion contract promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md) |
 
 ### Current repository claim
 
@@ -619,7 +619,7 @@ Read next:
 - [release gate status](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/RELEASE_GATE_STATUS.md)
 - [strict profile target](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/STRICT_PROFILE_TARGET.md)
 - [flag certification target](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/FLAG_CERTIFICATION_TARGET.md)
-- [Phase 9A promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md)
+- [Promotion contract promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md)
 
 ## Where to look
 
@@ -633,7 +633,7 @@ Read next:
 | Reviewing the boundary or current scope | [certification boundary](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/CERTIFICATION_BOUNDARY.md) | [boundary non-goals](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/BOUNDARY_NON_GOALS.md) |
 | Comparing Tigrcorn with peer servers | [RFC comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/rfc.md) | [CLI comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/cli.md), [operations comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/ops.md), [out-of-bound comparison](https://github.com/tigrbl/tigrcorn/blob/master/docs/comp/oob.md) |
 | Writing or maintaining docs | [authoring guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/authoring.md) | [`CONTRIBUTING.md`](https://github.com/tigrbl/tigrcorn/blob/master/CONTRIBUTING.md), [tree rules](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/tree.md), [mutability rules](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/mut.md) |
-| Working on release or promotion | [release workflow guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/release.md) | [Phase 9A promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md) |
+| Working on release or promotion | [release workflow guide](https://github.com/tigrbl/tigrcorn/blob/master/docs/gov/release.md) | [Promotion contract promotion contract freeze](https://github.com/tigrbl/tigrcorn/blob/master/docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md) |
 
 ## Contributing, conduct, and community norms
 

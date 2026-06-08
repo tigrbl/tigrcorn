@@ -1,0 +1,102 @@
+name: Release Certification
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/certification-release.yml'
+      - 'pyproject.toml'
+      - 'src/**'
+      - 'tools/**'
+      - 'docs/review/conformance/**'
+      - 'docs/review/performance/**'
+      - 'tests/**'
+      - 'README.md'
+      - 'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md'
+
+jobs:
+  certification-environment-and-release-checkpoints:
+    name: Certification Environment and Release Checkpoints (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: python -m pip install -U pip
+
+      - name: Install workspace packages
+        run: |
+          python -m pip install \
+            -e pkgs/tigrcorn-core \
+            -e pkgs/tigrcorn-config \
+            -e pkgs/tigrcorn-asgi \
+            -e pkgs/tigrcorn-contract \
+            -e pkgs/tigrcorn-transports \
+            -e pkgs/tigrcorn-protocols \
+            -e pkgs/tigrcorn-http \
+            -e pkgs/tigrcorn-security \
+            -e pkgs/tigrcorn-runtime \
+            -e pkgs/tigrcorn-static \
+            -e pkgs/tigrcorn-observability \
+            -e pkgs/tigrcorn-compat \
+            -e pkgs/tigrcorn-certification
+
+      - name: Install certification dependencies
+        run: python -m pip install -e ".[certification,dev]"
+
+      - name: Freeze certification environment
+        run: |
+          PYTHONPATH=src python tools/freeze_certification_environment.py \
+            --require-imports \
+            --bundle-root .artifacts/certification-environment/${{ matrix.python-version }} \
+            --skip-status-docs
+
+      - name: Preflight aioquic adapters
+        run: |
+          PYTHONPATH=src python tools/preflight_aioquic_adapters.py \
+            --bundle-root .artifacts/aioquic-adapter-preflight/${{ matrix.python-version }} \
+            --skip-status-docs
+
+      - name: Run release checkpoint wrapper
+        run: |
+          PYTHONPATH=src python tools/run_certification_release_workflow.py \
+            --skip-status-docs \
+            --scripts tools/create_release_assembly_checkpoint.py
+
+      - name: Validate release-gate surface
+        run: |
+          python -m compileall -q src benchmarks tools
+          PYTHONPATH=src pytest -q \
+            tests/test_release_assembly_checkpoint.py \
+            tests/test_release_gates.py \
+            tests/test_certification_environment_freeze.py \
+            tests/test_aioquic_adapter_preflight.py
+
+      - name: Upload certification-environment artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: certification-environment-${{ matrix.python-version }}
+          path: .artifacts/certification-environment/${{ matrix.python-version }}
+
+      - name: Upload aioquic adapter preflight artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: aioquic-adapter-preflight-${{ matrix.python-version }}
+          path: .artifacts/aioquic-adapter-preflight/${{ matrix.python-version }}

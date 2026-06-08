@@ -26,8 +26,8 @@ DEFAULT_BUNDLE_NAME = 'tigrcorn-certification-environment-bundle'
 DEFAULT_STATUS_DOC = 'docs/review/conformance/CERTIFICATION_ENVIRONMENT_FREEZE.md'
 DEFAULT_STATUS_JSON = 'docs/review/conformance/certification_environment_freeze.current.json'
 DEFAULT_DELIVERY_NOTES = 'docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md'
-DEFAULT_RELEASE_WORKFLOW = '.github/workflows/phase9-certification-release.yml'
-DEFAULT_WRAPPER = 'tools/run_phase9_release_workflow.py'
+DEFAULT_RELEASE_WORKFLOW = '.github/workflows/certification-release.yml'
+DEFAULT_WRAPPER = 'tools/run_certification_release_workflow.py'
 DEFAULT_INSTALL_COMMAND = 'python -m pip install -e ".[certification,dev]"'
 DEFAULT_VERIFY_COMMAND = "python - <<'PY'\nimport aioquic, h2, websockets, wsproto\nprint('certification deps OK')\nPY"
 class CertificationEnvironmentError(RuntimeError):
@@ -307,7 +307,7 @@ def build_status_payload(
             'supported_release_workflow_versions': list(snapshot['python']['supported_release_workflow_versions']),
         },
         'notes': [
-            'The release workflow must install the package with both the certification and dev extras before any Phase 9 checkpoint script is executed.',
+            'The release workflow must install the package with both the certification and dev extras before any release checkpoint script is executed.',
             'The local/offline checkpoint environment may still be non-ready even when the installation contract has been frozen; current readiness is recorded, not assumed.',
             'This checkpoint closes the operational ambiguity around how the strict-promotion environment is provisioned, but it does not by itself turn the strict RFC target green.',
         ],
@@ -339,7 +339,7 @@ def build_status_markdown(payload: Mapping[str, Any]) -> str:
         '- makes the strict-promotion installation contract explicit\n'
         '- records the observed environment snapshot in a preserved certification bundle\n'
         '- adds a release-workflow guard that fails when the required imports are missing\n'
-        '- adds a local wrapper that freezes the environment before invoking Phase 9 checkpoint scripts\n\n'
+        '- adds a local wrapper that freezes the environment before invoking release checkpoint scripts\n\n'
         '## Honest current result\n\n'
         'This update improves the package operationally, but it does **not** by itself make the package certifiably fully featured or strict-target fully RFC compliant. The remaining strict-target HTTP/3 evidence blockers still need to be closed separately.\n'
     )

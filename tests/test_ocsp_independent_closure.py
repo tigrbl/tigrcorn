@@ -16,14 +16,14 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
 
 
-def test_phase9e_docs_and_status_exist() -> None:
-    assert (CONFORMANCE / 'PHASE9E_OCSP_INDEPENDENT_CLOSURE.md').exists()
-    assert (CONFORMANCE / 'phase9e_ocsp_independent.current.json').exists()
+def test_ocsp_certification_docs_and_status_exist() -> None:
+    assert (CONFORMANCE / 'OCSP_CERTIFICATION_OCSP_INDEPENDENT_CLOSURE.md').exists()
+    assert (CONFORMANCE / 'ocsp_certification_ocsp_independent.current.json').exists()
     assert (CONFORMANCE / 'OCSP_LOCAL_VALIDATION_ARTIFACTS.md').exists()
     assert (CONFORMANCE / 'ocsp_local_validation_artifacts.current.json').exists()
-    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9E_OCSP_INDEPENDENT_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_OCSP_CERTIFICATION_OCSP_INDEPENDENT_CLOSURE.md').exists()
 
-    payload = _load_json(CONFORMANCE / 'phase9e_ocsp_independent.current.json')
+    payload = _load_json(CONFORMANCE / 'ocsp_certification_ocsp_independent.current.json')
     assert payload['phase'] == '9E'
     assert payload['status'] == 'ocsp_independent_green_remaining_http3_blockers'
     assert payload['current_state']['authoritative_boundary_passed'] is True
@@ -35,7 +35,7 @@ def test_phase9e_docs_and_status_exist() -> None:
     ]
 
 
-def test_phase9e_release_root_contains_passing_ocsp_artifact_and_local_vectors() -> None:
+def test_ocsp_certification_release_root_contains_passing_ocsp_artifact_and_local_vectors() -> None:
     index_payload = _load_json(INDEPENDENT / 'index.json')
     entries = {entry['id']: entry for entry in index_payload['scenarios']}
     assert entries['tls-server-ocsp-validation-openssl-client']['passed'] is True
@@ -58,7 +58,7 @@ def test_phase9e_release_root_contains_passing_ocsp_artifact_and_local_vectors()
     assert local_index['failed'] == 0
 
 
-def test_phase9e_strict_boundary_and_validator_reflect_ocsp_progress() -> None:
+def test_ocsp_certification_strict_boundary_and_validator_reflect_ocsp_progress() -> None:
     report = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
     failures = '\n'.join(report.failures)
     assert report.passed is True
@@ -72,7 +72,7 @@ def test_phase9e_strict_boundary_and_validator_reflect_ocsp_progress() -> None:
     assert validation.failures == []
 
 
-def test_phase9e_external_matrix_declares_openssl_ocsp_row() -> None:
+def test_ocsp_certification_external_matrix_declares_openssl_ocsp_row() -> None:
     matrix = _load_json(CONFORMANCE / 'external_matrix.release.json')
     entries = {entry['id']: entry for entry in matrix['scenarios']}
     row = entries['tls-server-ocsp-validation-openssl-client']

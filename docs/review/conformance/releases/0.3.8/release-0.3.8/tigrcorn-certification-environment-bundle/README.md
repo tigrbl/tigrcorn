@@ -21,6 +21,6 @@ Observed required-import readiness: `False`
 
 Observed missing imports: `aioquic`
 
-Release workflow path: `.github/workflows/phase9-certification-release.yml`
+Release workflow path: `.github/workflows/release_certification-certification-release.yml`
 
-Checkpoint wrapper path: `tools/run_phase9_release_workflow.py`
+Checkpoint wrapper path: `tools/run_release_certification_release_workflow.py`

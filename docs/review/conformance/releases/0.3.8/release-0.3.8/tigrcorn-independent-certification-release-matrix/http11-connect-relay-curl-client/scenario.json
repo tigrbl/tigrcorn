@@ -50,7 +50,7 @@
   "metadata": {
     "peer_implementation": "curl",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "curl.http1_client",
+    "independent_harness_wrapper_id": "curl.http1_client",
     "rfc": [
       "RFC 9110 \u00a79.3.6",
       "RFC 9112"

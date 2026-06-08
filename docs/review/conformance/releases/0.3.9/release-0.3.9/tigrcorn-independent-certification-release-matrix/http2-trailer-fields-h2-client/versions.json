@@ -18,7 +18,7 @@
       "--lifespan",
       "off"
     ],
-    "executable": "/mnt/data/step5work/tigrcorn_phase9i_release_assembly_checkpoint/.venv_step5/bin/python",
+    "executable": "/mnt/data/step5work/tigrcorn_release_assembly_checkpoint/.venv_step5/bin/python",
     "executable_sha256": "e59d0124ff06c248546876e01fcfb1ea3cda63534949f94a9372bfcfe3bfc3f5",
     "version_command": [
       "python",
@@ -37,7 +37,7 @@
       "tests.fixtures_pkg.external_h2_http_client",
       "--response-trailers"
     ],
-    "executable": "/mnt/data/step5work/tigrcorn_phase9i_release_assembly_checkpoint/.venv_step5/bin/python",
+    "executable": "/mnt/data/step5work/tigrcorn_release_assembly_checkpoint/.venv_step5/bin/python",
     "executable_sha256": "e59d0124ff06c248546876e01fcfb1ea3cda63534949f94a9372bfcfe3bfc3f5",
     "version_command": [
       "python",

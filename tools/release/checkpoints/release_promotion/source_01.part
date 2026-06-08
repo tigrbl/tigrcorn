@@ -1,0 +1,291 @@
+        f"""# Release gate status\n\nThe canonical package-wide certification target is defined in `docs/review/conformance/CERTIFICATION_BOUNDARY.md`.\n\n## Current result\n\n- `evaluate_release_gates('.')` → `passed=True`\n- `failure_count=0`\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json` is refreshed\n- `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json` is refreshed\n\nThe canonical release gates are green.\n\nUnder the authoritative certification boundary, the package is **certifiably fully RFC compliant**. The canonical 0.3.9 release root is additionally strict-target complete, promotion-complete, and version-aligned with the public package release.\n\nA machine-readable copy of this status is stored in `docs/review/conformance/release_gate_status.current.json`.\n""",
+    )
+
+    write_text(
+        CONFORMANCE / 'RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md',
+        f"""# Release assembly release assembly and certifiable checkpoint\n\nThis checkpoint executes **Release assembly** of the Release certification implementation plan.\n\nIt reassembled the 0.3.9 release root, refreshed bundle manifests / indexes / summaries, and updated the machine-readable current-state snapshots after the final HTTP/3 strict-target closures.\n\n## Current machine-readable result\n\n- authoritative boundary: `True`\n- strict target boundary: `True`\n- flag surface: `True`\n- operator surface: `True`\n- performance target: `True`\n- documentation / claim consistency: `True`\n- composite promotion gate: `True`\n\n## Release-root artifacts refreshed by this checkpoint\n\n- manifest: `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`\n- bundle index: `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`\n- bundle summary: `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`\n\n## Remaining blockers\n\n- none\n\n## Honest current result\n\nThe package is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured** under the canonical 0.3.9 release root.\n\nStep 9 promotion has now completed the version bump and release-note promotion work as well, so the canonical release root and the public package version are aligned at `{VERSION}`.\n\n## Full strict validation set\n\nThe full Step 8 strict validation set has been executed against the reassembled 0.3.9 release root.\n\n- compileall: `True`\n- authoritative boundary: `True`\n- strict target boundary: `True`\n- promotion target: `True`\n- targeted pytest suite: `True` (27 passed)\n\nPreserved artifact bundle: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-strict-validation-bundle`\n""",
+    )
+
+    write_text(
+        CONFORMANCE / 'PACKAGE_COMPLIANCE_REVIEW_RELEASE_ASSEMBLY.md',
+        f"""# Package compliance review — Release assembly current state\n\nThe authoritative boundary is green. The strict target is green, and the composite promotion target is green under the canonical 0.3.9 release root.\n\n## Current summary\n\n- authoritative boundary: `True`\n- strict target boundary: `True`\n- promotion target: `True`\n- flag surface: `True`\n- operator surface: `True`\n- performance target: `True`\n- documentation target: `True`\n- current package version: `{VERSION}`\n- canonical authoritative release root: `{RELEASE_ROOT_TEXT}`\n- release notes: `{RELEASE_NOTES}`\n\n## What is complete\n\n- RFC 7692 is green across HTTP/1.1, HTTP/2, and HTTP/3\n- RFC 9110 §9.3.6 CONNECT relay is green across HTTP/1.1, HTTP/2, and HTTP/3\n- RFC 9110 §6.5 trailer fields is green across HTTP/1.1, HTTP/2, and HTTP/3\n- RFC 9110 §8 content coding is green across HTTP/1.1, HTTP/2, and HTTP/3\n- all current public flags are promotion-ready\n- 7 / 7 operator-surface capabilities are green\n- the strict performance target is green across 32 profiles\n- the 0.3.9 canonical release root has refreshed manifest / bundle index / bundle summary files\n- the public package version and canonical release root are aligned at 0.3.9\n\n## Remaining strict-target blockers\n\n- none\n\nThere is no remaining administrative promotion/version-bump work for the canonical 0.3.9 release.\n\nOperational note: The current local workspace still runs under Python 3.13, while the frozen release-workflow contract requires Python 3.11 or 3.12. That does not change the preserved artifact truth in the canonical release root.\n\n## Strict validation evidence\n\nThe exact Step 8 strict validation set now has preserved command/output artifacts.\n\n- strict validation bundle: `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-strict-validation-bundle`\n- compileall: `True`\n- authoritative boundary: `True`\n- strict target boundary: `True`\n- promotion target: `True`\n- targeted pytest suite: `27 passed`\n""",
+    )
+
+    write_text(
+        CONFORMANCE / 'RELEASE_ASSEMBLY_STRICT_VALIDATION.md',
+        f"""# Release assembly strict validation\n\nThis checkpoint records the full strict validation set executed after the 0.3.9 release root was reassembled.\n\nThe preserved strict validation bundle remains green, and the subsequent Step 9 promotion aligned the canonical release root and public package version at `{VERSION}`.\n\n## Current machine-readable result\n\n- compileall: `True`\n- authoritative boundary: `True`\n- strict target boundary: `True`\n- promotion target: `True`\n- targeted pytest suite: `True` (`27` passed)\n\n## Promoted release note\n\nThe canonical release notes now live in `{RELEASE_NOTES}`.\n""",
+    )
+
+    # Strict profile target: preserve historical guardrail phrases but update current truth.
+    path = CONFORMANCE / 'STRICT_PROFILE_TARGET.md'
+    text = path.read_text(encoding='utf-8')
+    text = replace_section(
+        text,
+        '## Current truth\n',
+        '## Historical guardrail phrases preserved for the promotion evaluator\n',
+        """## Current truth\n\n- the authoritative boundary remains green\n- the 0.3.9 canonical release root is the evaluation substrate for this target\n- the strict target is now green\n- the composite promotion target is now green\n- Step 9 promotion is now complete\n- the public package version is `0.3.9`\n\n""",
+    )
+    text = replace_once_optional(
+        text,
+        'The 0.3.9 working release root is now assembled with final independent, same-stack, mixed, flag, operator, and performance bundles.\n\nThat working root is now promotable under the strict target. Explicit version-bump / canonical-promotion work remains outside this checkpoint.\n',
+        'The 0.3.9 canonical release root now carries the final independent, same-stack, mixed, flag, operator, performance, certification-environment, aioquic-preflight, and strict-validation bundles.\n\nThat canonical root is now green under the strict target and the composite promotion target, and the public package version is aligned at `0.3.9`.\n',
+    )
+    path.write_text(text, encoding='utf-8')
+
+    # Protocol docs canonical root paths
+    for doc in [ROOT / 'docs/protocols/http3.md', ROOT / 'docs/protocols/quic.md', ROOT / 'docs/protocols/websocket.md']:
+        text = doc.read_text(encoding='utf-8')
+        text = text.replace('docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-same-stack-replay-matrix/', f'{SAME_STACK_ROOT}/')
+        text = text.replace('docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix/', f'{INDEPENDENT_ROOT}/')
+        text = text.replace('canonical `0.3.6` same-stack bundle', 'canonical `0.3.9` same-stack bundle')
+        doc.write_text(text, encoding='utf-8')
+
+
+def create_release_notes_and_promotion_docs(authoritative_passed: bool, strict_passed: bool, promotion_passed: bool) -> None:
+    release_notes_text = f"""# Release notes — tigrcorn 0.3.9\n\n`tigrcorn` `0.3.9` promotes the previously validated 0.3.9 release root to the canonical authoritative release.\n\n## What changed in this promotion\n\n- promoted `docs/review/conformance/releases/0.3.9/release-0.3.9/` to the canonical release root\n- updated `pyproject.toml` from `0.3.6` to `0.3.9`\n- aligned the authoritative release-boundary metadata, external matrices, release manifests, summaries, and current-state snapshots with the promoted 0.3.9 release\n- preserved the Step 8 strict-validation bundle and its passing results\n\n## Current certification status\n\n- authoritative boundary: `{authoritative_passed}`\n- strict target boundary: `{strict_passed}`\n- composite promotion target: `{promotion_passed}`\n\nThe promoted 0.3.9 release is **certifiably fully RFC compliant**, **strict-target certifiably fully RFC compliant**, and **certifiably fully featured**.\n\n## Notable preserved bundles\n\n- independent certification matrix\n- same-stack replay matrix\n- mixed compatibility matrix\n- flag-surface certification bundle\n- operator-surface certification bundle\n- performance certification bundle\n- certification-environment freeze bundle\n- aioquic adapter preflight bundle\n- strict-validation bundle\n\n## Operational note\n\nThe local workspace used for this checkpoint still runs under Python 3.13. The frozen release-workflow contract remains Python 3.11 or 3.12 with `.[certification,dev]` installed. That does not change the preserved release-artifact truth of the canonical 0.3.9 release root.\n"""
+    write_text(ROOT / RELEASE_NOTES, release_notes_text)
+
+    promotion_md_text = f"""# Release certification release promotion and version update\n\nThis checkpoint completes the Step 9 administrative release-promotion work after the Step 8 strict validation set turned green.\n\n## Result\n\n- authoritative boundary: `{authoritative_passed}`\n- strict target boundary: `{strict_passed}`\n- promotion target: `{promotion_passed}`\n- canonical authoritative release root: `{RELEASE_ROOT_TEXT}`\n- public package version: `{VERSION}`\n- release notes: `{RELEASE_NOTES}`\n\n## What this checkpoint changed\n\n- promoted the 0.3.9 release root from a validated working root into the canonical authoritative release root\n- updated `pyproject.toml` from `0.3.6` to `0.3.9`\n- updated release notes, README/current-state docs, conformance docs, and machine-readable status snapshots to truthfully claim the strict-target green state\n- aligned the external matrix metadata and top-level release manifests with the promoted 0.3.9 release\n\n## Honest current result\n\nThe package is now honestly:\n\n- **certifiably fully RFC compliant**\n- **strict-target certifiably fully RFC compliant**\n- **certifiably fully featured**\n\nunder the canonical 0.3.9 release root.\n"""
+    write_text(PROMOTION_MD, promotion_md_text)
+
+    promotion_json = {
+        'phase': 9,
+        'checkpoint': 'release_promotion_and_version_update',
+        'status': 'canonical_release_promoted_and_version_aligned',
+        'generated_at': now(),
+        'current_state': {
+            'authoritative_boundary_passed': authoritative_passed,
+            'strict_target_boundary_passed': strict_passed,
+            'promotion_target_passed': promotion_passed,
+            'current_package_version': VERSION,
+            'canonical_authoritative_release_root': RELEASE_ROOT_TEXT,
+            'release_notes': RELEASE_NOTES,
+            'version_bump_performed': True,
+            'release_notes_promoted': True,
+            'remaining_administrative_work': [],
+        },
+        'validation': {
+            'evaluate_release_gates_authoritative': {'passed': authoritative_passed},
+            'evaluate_release_gates_strict_target': {'passed': strict_passed},
+            'evaluate_promotion_target': {'passed': promotion_passed},
+        },
+        'files_updated': [
+            'pyproject.toml',
+            'README.md',
+            'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+            'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
+            'docs/release-notes/RELEASE_NOTES_0.3.9.md',
+            'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
+            'docs/review/conformance/certification_boundary.json',
+            'docs/review/conformance/README.md',
+            'docs/review/conformance/RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md',
+            'docs/review/conformance/RELEASE_ASSEMBLY_STRICT_VALIDATION.md',
+            'docs/review/conformance/PACKAGE_COMPLIANCE_REVIEW_RELEASE_ASSEMBLY.md',
+            'docs/review/conformance/RELEASE_CERTIFICATION_RELEASE_PROMOTION_AND_VERSION_UPDATE.md',
+            'docs/review/conformance/release_promotion.current.json',
+        ],
+    }
+    dump_json(PROMOTION_JSON, promotion_json)
+
+    write_text(
+        DELIVERY_NOTES,
+        f"""# Delivery notes — Release certification release promotion and version update\n\nThis checkpoint completes the Step 9 administrative promotion work after the fully green Step 8 validation set.\n\nDelivered changes:\n\n- promoted `{RELEASE_ROOT_TEXT}` to the canonical release root\n- updated package version to `{VERSION}`\n- added `{RELEASE_NOTES}`\n- added `docs/review/conformance/RELEASE_CERTIFICATION_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`\n- added `docs/review/conformance/release_promotion.current.json`\n- refreshed current-state documentation and top-level release metadata so the canonical release root and public version align\n\nValidation truth at delivery time:\n\n- authoritative boundary: `{authoritative_passed}`\n- strict target boundary: `{strict_passed}`\n- promotion target: `{promotion_passed}`\n""",
+    )
+
+
+def update_status_jsons(authoritative_report: Any, strict_report: Any, promotion_report: Any) -> None:
+    ts = now()
+    # release gate status
+    payload = {
+        'generated_at': ts,
+        'boundary': 'docs/review/conformance/certification_boundary.json',
+        'strict_target_boundary': 'docs/review/conformance/certification_boundary.strict_target.json',
+        'passed': authoritative_report.passed,
+        'failures': list(authoritative_report.failures),
+        'checked_files': relative_paths(list(authoritative_report.checked_files)),
+        'rfc_status': authoritative_report.rfc_status,
+        'artifact_status': authoritative_report.artifact_status,
+        'strict_target_passed': strict_report.passed,
+        'promotion_target_passed': promotion_report.passed,
+        'canonical_authoritative_release_root': RELEASE_ROOT_TEXT,
+        'canonical_release_root_manifest': f'{RELEASE_ROOT_TEXT}/manifest.json',
+        'canonical_release_root_bundle_index': f'{RELEASE_ROOT_TEXT}/bundle_index.json',
+        'canonical_release_root_bundle_summary': f'{RELEASE_ROOT_TEXT}/bundle_summary.json',
+        'working_release_root': RELEASE_ROOT_TEXT,
+        'working_release_root_manifest': f'{RELEASE_ROOT_TEXT}/manifest.json',
+        'working_release_root_bundle_index': f'{RELEASE_ROOT_TEXT}/bundle_index.json',
+        'working_release_root_bundle_summary': f'{RELEASE_ROOT_TEXT}/bundle_summary.json',
+        'current_package_version': VERSION,
+    }
+    dump_json(CONFORMANCE / 'release_gate_status.current.json', payload)
+
+    release_assembly = load_json(CONFORMANCE / 'release_assembly.current.json')
+    release_assembly['generated_at'] = ts
+    release_assembly['status'] = 'canonical_release_promoted_and_version_aligned'
+    release_assembly['current_state']['current_package_version'] = VERSION
+    release_assembly['current_state']['canonical_authoritative_release_root'] = RELEASE_ROOT_TEXT
+    release_assembly['current_state']['release_notes'] = RELEASE_NOTES
+    release_assembly['current_state']['release_promoted'] = True
+    release_assembly['release_assembly']['version_bump_performed'] = True
+    release_assembly['release_assembly']['release_notes_promoted'] = True
+    release_assembly['release_assembly']['canonical_release_promoted'] = True
+    release_assembly['release_assembly']['release_notes'] = RELEASE_NOTES
+    release_assembly['release_assembly']['reason_not_promoted'] = ''
+    dump_json(CONFORMANCE / 'release_assembly.current.json', release_assembly)
+
+    strict_validation = load_json(CONFORMANCE / 'strict_release_validation.current.json')
+    strict_validation['generated_at'] = ts
+    strict_validation['current_state']['current_package_version'] = VERSION
+    strict_validation['current_state']['canonical_authoritative_release_root'] = RELEASE_ROOT_TEXT
+    strict_validation['current_state']['administrative_promotion_remaining'] = False
+    strict_validation['current_state']['release_notes'] = RELEASE_NOTES
+    dump_json(CONFORMANCE / 'strict_release_validation.current.json', strict_validation)
+
+    review = load_json(CONFORMANCE / 'package_compliance_review_release_assembly.current.json')
+    review['generated_at'] = ts
+    review['status'] = 'canonical_release_promoted_authoritative_green_strict_target_green_promotion_green'
+    summary = review.setdefault('summary', {})
+    summary['authoritative_boundary_passed'] = authoritative_report.passed
+    summary['strict_target_boundary_passed'] = strict_report.passed
+    summary['promotion_target_passed'] = promotion_report.passed
+    summary['current_package_certifiably_fully_featured'] = True
+    summary['current_authoritative_rfc_boundary_complete'] = True
+    summary['current_strict_target_fully_complete'] = True
+    summary['documentation_truth_normalized'] = True
+    summary['canonical_current_state_chain_defined'] = True
+    summary['historical_current_aliases_labeled'] = True
+    summary['canonical_phase4_example_tree'] = 'examples/advanced_delivery/'
+    summary['current_package_version'] = VERSION
+    summary['canonical_authoritative_release_root'] = RELEASE_ROOT_TEXT
+    summary['release_notes'] = RELEASE_NOTES
+    summary['version_bump_performed'] = True
+    summary['release_notes_promoted'] = True
+    review['remaining_gaps'] = []
+    files = set(review.get('files_updated_by_review', []))
+    files.update([
+        'pyproject.toml',
+        'README.md',
+        'docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md',
+        'docs/review/conformance/reports/RFC_CERTIFICATION_STATUS.md',
+        'docs/release-notes/RELEASE_NOTES_0.3.9.md',
+        'docs/review/conformance/CERTIFICATION_BOUNDARY.md',
+        'docs/review/conformance/certification_boundary.json',
+        'docs/review/conformance/README.md',
+        'docs/review/conformance/RELEASE_CERTIFICATION_RELEASE_PROMOTION_AND_VERSION_UPDATE.md',
+        'docs/review/conformance/release_promotion.current.json',
+        'docs/review/conformance/release_assembly.current.json',
+        'docs/review/conformance/release_gate_status.current.json',
+        'docs/review/conformance/package_compliance_review_release_assembly.current.json',
+        'docs/review/conformance/strict_release_validation.current.json',
+        'docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json',
+        'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json',
+        'docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json',
+    ])
+    review['files_updated_by_review'] = sorted(files)
+    dump_json(CONFORMANCE / 'package_compliance_review_release_assembly.current.json', review)
+
+    promotion_target = load_json(CONFORMANCE / 'promotion_gate.target.json')
+    promotion_target['status'] = 'release_certification_release_promoted_canonical'
+    promotion_target['operator_surface']['bundle_index'] = f'{RELEASE_ROOT_TEXT}/tigrcorn-operator-surface-certification-bundle/index.json'
+    promotion_target['release_assembly']['working_release_root'] = RELEASE_ROOT_TEXT
+    promotion_target['release_assembly']['promotion_ready'] = True
+    promotion_target['release_assembly']['version_bump_performed'] = True
+    promotion_target['release_assembly']['canonical_release_root'] = RELEASE_ROOT_TEXT
+    promotion_target['release_assembly']['current_package_version'] = VERSION
+    dump_json(CONFORMANCE / 'promotion_gate.target.json', promotion_target)
+
+
+def update_tests() -> None:
+    # Documentation reconciliation
+    path = ROOT / 'tests/test_documentation_reconciliation.py'
+    text = path.read_text(encoding='utf-8')
+    text = text.replace("CANONICAL_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.6/release-0.3.6/'", f"CANONICAL_RELEASE_ROOT = '{RELEASE_ROOT_TEXT}/'")
+    path.write_text(text, encoding='utf-8')
+
+    # External current release matrix tests
+    path = ROOT / 'tests/test_external_current_release_matrix.py'
+    text = path.read_text(encoding='utf-8')
+    text = text.replace("RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix'", f"RELEASE_ROOT = ROOT / '{MIXED_ROOT}'")
+    text = text.replace("self.assertEqual(matrix.metadata['canonical_release_root'], 'docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-mixed-compatibility-release-matrix')", f"self.assertEqual(matrix.metadata['canonical_release_root'], '{MIXED_ROOT}')")
+    text = text.replace("self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.6')", "self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.9')")
+    text = text.replace("self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.6')", "self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.9')")
+    path.write_text(text, encoding='utf-8')
+
+    # External independent release matrix tests
+    path = ROOT / 'tests/test_external_independent_peer_release_matrix.py'
+    text = path.read_text(encoding='utf-8')
+    text = text.replace("RELEASE_ROOT = ROOT / 'docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix'", f"RELEASE_ROOT = ROOT / '{INDEPENDENT_ROOT}'")
+    pattern = re.compile(r"EXPECTED_ENABLED_SCENARIO_IDS = \{.*?\n\}\nEXPECTED_PENDING_SCENARIO_IDS: set\[str\] = set\(\)", re.S)
+    replacement = """EXPECTED_ENABLED_SCENARIO_IDS = {
+    'http1-server-curl-client',
+    'http11-connect-relay-curl-client',
+    'http11-content-coding-curl-client',
+    'http11-trailer-fields-curl-client',
+    'http2-connect-relay-h2-client',
+    'http2-content-coding-curl-client',
+    'http2-server-curl-client',
+    'http2-server-h2-client',
+    'http2-tls-server-curl-client',
+    'http2-tls-server-h2-client',
+    'http2-trailer-fields-h2-client',
+    'http3-connect-relay-aioquic-client',
+    'http3-content-coding-aioquic-client',
+    'http3-server-aioquic-client-post',
+    'http3-server-aioquic-client-post-goaway-qpack',
+    'http3-server-aioquic-client-post-migration',
+    'http3-server-aioquic-client-post-mtls',
+    'http3-server-aioquic-client-post-resumption',
+    'http3-server-aioquic-client-post-retry',
+    'http3-server-aioquic-client-post-zero-rtt',
+    'http3-server-openssl-quic-handshake',
+    'http3-trailer-fields-aioquic-client',
+    'tls-server-ocsp-validation-openssl-client',
+    'websocket-http11-server-websockets-client-permessage-deflate',
+    'websocket-http2-server-h2-client',
+    'websocket-http2-server-h2-client-permessage-deflate',
+    'websocket-http3-server-aioquic-client',
+    'websocket-http3-server-aioquic-client-mtls',
+    'websocket-http3-server-aioquic-client-permessage-deflate',
+    'websocket-server-websockets-client',
+}
+EXPECTED_PENDING_SCENARIO_IDS: set[str] = set()"""
+    text = re.sub(pattern, replacement, text)
+    text = text.replace("self.assertEqual(index_payload['total'], 17)", "self.assertEqual(index_payload['total'], 30)")
+    text = text.replace("self.assertEqual(index_payload['passed'], 17)", "self.assertEqual(index_payload['passed'], 30)")
+    text = text.replace("self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.6')", "self.assertEqual(manifest_payload['environment']['tigrcorn']['commit_hash'], 'release-0.3.9')")
+    text = text.replace("self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.6')", "self.assertEqual(manifest_payload['environment']['tigrcorn']['version'], '0.3.9')")
+    path.write_text(text, encoding='utf-8')
+
+    # Release assembly checkpoint test
+    path = ROOT / 'tests/test_release_assembly_checkpoint.py'
+    text = path.read_text(encoding='utf-8')
+    text = text.replace("assert status['current_state']['current_package_version'] == '0.3.6'", "assert status['current_state']['current_package_version'] == '0.3.9'")
+    text = text.replace("assert status['release_assembly']['version_bump_performed'] is False", "assert status['release_assembly']['version_bump_performed'] is True")
+    text = text.replace("assert status['release_assembly']['release_notes_promoted'] is False", "assert status['release_assembly']['release_notes_promoted'] is True")
+    path.write_text(text, encoding='utf-8')
+
+
+def main() -> None:
+    update_pyproject()
+    update_boundary_json()
+    update_external_matrices()
+    update_root_bundle_metadata()
+    update_markdown_docs()
+
+    authoritative_report = evaluate_release_gates(ROOT)
+    strict_report = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
+    promotion_report = evaluate_promotion_target(ROOT)
+    if not authoritative_report.passed:
+        raise RuntimeError(f'authoritative release gates failed: {authoritative_report.failures}')
+    if not strict_report.passed:
+        raise RuntimeError(f'strict release gates failed: {strict_report.failures}')
+    if not promotion_report.passed:
+        raise RuntimeError(f'promotion target failed: {promotion_report.failures}')
+
+    create_release_notes_and_promotion_docs(authoritative_report.passed, strict_report.passed, promotion_report.passed)
+    update_status_jsons(authoritative_report, strict_report, promotion_report)
+    update_tests()
+
+
+if __name__ == '__main__':
+    main()

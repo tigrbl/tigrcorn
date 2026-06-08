@@ -104,7 +104,7 @@ async def _issue_h3_connect(port: int, authority: str) -> tuple[list[tuple[bytes
         sock.close()
 
 
-class ConnectRelayPhase9D1LocalNegativeTests(unittest.IsolatedAsyncioTestCase):
+class ConnectRelayIndependentLocalNegativeTests(unittest.IsolatedAsyncioTestCase):
     async def test_http2_connect_policy_deny_and_allowlist_rejection_end_stream(self) -> None:
         upstream = await asyncio.start_server(lambda r, w: None, '127.0.0.1', 0)
         upstream_port = upstream.sockets[0].getsockname()[1]

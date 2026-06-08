@@ -45,7 +45,7 @@
     "implementation_version": "0.3.6",
     "name": "tigrcorn-http3-websocket-permessage-deflate",
     "role": "server",
-    "stderr_path": "/mnt/data/step3repo/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stderr.log",
-    "stdout_path": "/mnt/data/step3repo/tigrcorn_phase9i_release_assembly_checkpoint/docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stdout.log"
+    "stderr_path": "/mnt/data/step3repo/tigrcorn_release_assembly_checkpoint/docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stderr.log",
+    "stdout_path": "/mnt/data/step3repo/tigrcorn_release_assembly_checkpoint/docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/websocket-http3-server-aioquic-client-permessage-deflate/sut_stdout.log"
   }
 }

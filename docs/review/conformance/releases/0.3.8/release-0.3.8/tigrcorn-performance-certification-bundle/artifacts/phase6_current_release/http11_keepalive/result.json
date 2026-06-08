@@ -20,7 +20,7 @@
   "family": "HTTP",
   "lane": "end_to_end_release",
   "live_listener_required": true,
-  "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+  "matrix_name": "tigrcorn-strict_performance-strict-performance-matrix",
   "metrics": {
     "certification_platforms": [
       "linux-x86_64-cpython3.11"
@@ -52,8 +52,8 @@
   "passed": true,
   "profile_id": "http11_keepalive",
   "relative_regression": {
-    "baseline_profile": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline/http11_keepalive/result.json",
-    "baseline_root": "/mnt/data/phase9g_work/tigrcorn_phase9f3_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline",
+    "baseline_profile": "/mnt/data/strict_performance_work/tigrcorn_concurrency_keepalive_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline/http11_keepalive/result.json",
+    "baseline_root": "/mnt/data/strict_performance_work/tigrcorn_concurrency_keepalive_concurrency_keepalive_closure_checkpoint/docs/review/performance/artifacts/phase6_reference_baseline",
     "checks": {
       "cpu_increase_fraction": {
         "absolute_slack_seconds": 0.02,

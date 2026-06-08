@@ -32,7 +32,7 @@ These files are package-owned summaries. They do not replace the canonical froze
 
 - `.github/workflows/publish-all-packages.yml` builds, validates, attests, publishes, attaches release assets, and deploys the release-evidence Pages bundle for selected Python and probe packages
 - `.github/workflows/docs.yml` regenerates the mutable documentation and release-evidence Pages bundle for the docs surface
-- `scripts/ci/validate.sh` regenerates the Phase 9 release artifacts so parity failures break CI before a release run
+- `scripts/ci/validate.sh` regenerates the Release certification release artifacts so parity failures break CI before a release run
 
 ## Honesty boundary
 

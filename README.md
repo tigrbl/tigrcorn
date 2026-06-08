@@ -580,7 +580,7 @@ print(promotion_report.passed)
 | Lifecycle and embedding contract | [lifecycle and embedded server guide](docs/LIFECYCLE_AND_EMBEDDED_SERVER.md) |
 | Optional dependency truth | [optional dependency surface](docs/review/conformance/OPTIONAL_DEPENDENCY_SURFACE.md), [optional dependency surface JSON](docs/review/conformance/optional_dependency_surface.current.json) |
 | External evidence inputs | [same-stack replay matrix](docs/review/conformance/external_matrix.same_stack_replay.json), [release external matrix](docs/review/conformance/external_matrix.release.json), [current-release external matrix](docs/review/conformance/external_matrix.current_release.json) |
-| Planning and promotion checkpoints | [Phase 9 implementation plan](docs/review/conformance/PHASE9_IMPLEMENTATION_PLAN.md), [Phase 9 implementation JSON](docs/review/conformance/phase9_implementation_plan.current.json), [Phase 9A promotion contract freeze](docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md), [Phase 9A promotion JSON](docs/review/conformance/phase9a_promotion_contract.current.json) |
+| Planning and promotion checkpoints | [Release certification implementation plan](docs/review/conformance/RELEASE_IMPLEMENTATION_PLAN.md), [Release certification implementation JSON](docs/review/conformance/release_implementation_plan.current.json), [Promotion contract promotion contract freeze](docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md), [Promotion contract promotion JSON](docs/review/conformance/promotion_contract_promotion_contract.current.json) |
 
 ### Current repository claim
 
@@ -619,7 +619,7 @@ Read next:
 - [release gate status](docs/review/conformance/RELEASE_GATE_STATUS.md)
 - [strict profile target](docs/review/conformance/STRICT_PROFILE_TARGET.md)
 - [flag certification target](docs/review/conformance/FLAG_CERTIFICATION_TARGET.md)
-- [Phase 9A promotion contract freeze](docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md)
+- [Promotion contract promotion contract freeze](docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md)
 
 ## Where to look
 
@@ -633,7 +633,7 @@ Read next:
 | Reviewing the boundary or current scope | [certification boundary](docs/review/conformance/CERTIFICATION_BOUNDARY.md) | [boundary non-goals](docs/review/conformance/BOUNDARY_NON_GOALS.md) |
 | Comparing Tigrcorn with peer servers | [RFC comparison](docs/comp/rfc.md) | [CLI comparison](docs/comp/cli.md), [operations comparison](docs/comp/ops.md), [out-of-bound comparison](docs/comp/oob.md) |
 | Writing or maintaining docs | [authoring guide](docs/gov/authoring.md) | [`CONTRIBUTING.md`](CONTRIBUTING.md), [tree rules](docs/gov/tree.md), [mutability rules](docs/gov/mut.md) |
-| Working on release or promotion | [release workflow guide](docs/gov/release.md) | [Phase 9A promotion contract freeze](docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md) |
+| Working on release or promotion | [release workflow guide](docs/gov/release.md) | [Promotion contract promotion contract freeze](docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md) |
 
 ## Contributing, conduct, and community norms
 

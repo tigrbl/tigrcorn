@@ -1,0 +1,70 @@
+{
+  "phase": "9I",
+  "checkpoint": "release_assembly_and_certifiable_checkpoint",
+  "status": "canonical_release_promoted_and_version_aligned",
+  "current_state": {
+    "authoritative_boundary_passed": true,
+    "strict_target_boundary_passed": true,
+    "flag_surface_passed": true,
+    "operator_surface_passed": true,
+    "performance_passed": true,
+    "documentation_passed": true,
+    "promotion_target_passed": true,
+    "certification_environment_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
+    "aioquic_adapter_preflight_bundle": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle",
+    "aioquic_adapter_preflight_passed": true,
+    "current_package_version": "0.3.9",
+    "assembled_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
+    "canonical_authoritative_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+    "remaining_non_passing_independent_scenarios": [],
+    "remaining_strict_target_rfc_gaps": [],
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md",
+    "release_promoted": true,
+    "remaining_plan_steps": []
+  },
+  "validation": {
+    "compileall": {
+      "command": "python -m compileall -q src benchmarks tools",
+      "result": "passed"
+    },
+    "evaluate_release_gates_authoritative": {
+      "passed": true,
+      "failure_count": 0,
+      "failures": []
+    },
+    "evaluate_release_gates_strict_target": {
+      "passed": true,
+      "failure_count": 0,
+      "failures": []
+    },
+    "evaluate_promotion_target": {
+      "passed": true,
+      "failure_count": 0,
+      "failures": []
+    }
+  },
+  "release_assembly": {
+    "assembled_bundles": [
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-flag-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-operator-surface-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-performance-certification-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
+      "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle"
+    ],
+    "release_root_manifest": "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "release_root_bundle_index": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "release_root_bundle_summary": "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json",
+    "version_bump_performed": true,
+    "release_notes_promoted": true,
+    "canonical_release_promoted": true,
+    "release_notes": "docs/release-notes/RELEASE_NOTES_0.3.9.md",
+    "reason_not_promoted": ""
+  },
+  "generated_at": "2026-03-28T06:47:38.042990+00:00"
+}

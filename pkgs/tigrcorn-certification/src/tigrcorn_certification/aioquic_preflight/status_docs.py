@@ -71,12 +71,12 @@ def _delivery_notes(snapshot: Mapping[str, Any], *, release_root: str, bundle_ro
     current = snapshot['current_state']
     return (
         '# Delivery notes — aioquic adapter preflight\n\n'
-        'This checkpoint adds a direct aioquic adapter preflight on top of the existing Phase 9I release-assembly repository.\n\n'
+        'This checkpoint adds a direct aioquic adapter preflight on top of the existing release-assembly repository.\n\n'
         'What changed:\n\n'
         '- added a reusable aioquic preflight module at `src/tigrcorn/compat/aioquic_preflight.py`\n'
         '- added a runnable checkpoint tool at `tools/preflight_aioquic_adapters.py`\n'
         '- added a preserved preflight bundle under the 0.3.9 working release root\n'
-        '- updated the release workflow and local wrapper so aioquic adapter preflight is now mandatory before Phase 9 checkpoint scripts run\n'
+        '- updated the release workflow and local wrapper so aioquic adapter preflight is now mandatory before release checkpoint scripts run\n'
         '- updated current-state documentation\n\n'
         'Current result:\n\n'
         f"- preflight bundle root: `{bundle_root}`\n"

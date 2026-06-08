@@ -25,15 +25,15 @@ Step 9 promotion is now complete:
 - the release notes now live in `docs/release-notes/RELEASE_NOTES_0.3.9.md`
 - the promoted release remains green under the authoritative boundary, the strict target, and the composite promotion target
 
-## Phase 9I release assembly
+## Release assembly release assembly
 
-Phase 9I reassembled the 0.3.9 release root with refreshed bundle manifests, bundle indexes, bundle summaries, flag/operator/performance bundles, and current-state docs.
+Release assembly reassembled the 0.3.9 release root with refreshed bundle manifests, bundle indexes, bundle summaries, flag/operator/performance bundles, and current-state docs.
 
 Step 9 then promoted that validated root to the canonical release and aligned the public package version.
 
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json`
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json`
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json`
-- `docs/review/conformance/phase9i_release_assembly.current.json`
-- `docs/review/conformance/phase9_release_promotion.current.json`
+- `docs/review/conformance/release_assembly.current.json`
+- `docs/review/conformance/release_promotion.current.json`
 - `docs/release-notes/RELEASE_NOTES_0.3.9.md`

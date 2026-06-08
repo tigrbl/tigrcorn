@@ -31,6 +31,6 @@ python -m pytest -q \
   tests/test_profile_resolution.py \
   tests/test_p8_gov.py \
   tests/test_p8_sf.py \
-  tests/test_p9_auto.py
+  tests/test_release_auto.py
 
 python tools/cert/status.py

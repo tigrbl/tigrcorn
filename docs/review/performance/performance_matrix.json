@@ -1,10 +1,10 @@
 {
   "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",
   "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
-  "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+  "matrix_name": "tigrcorn-strict_performance-strict-performance-matrix",
   "metadata": {
     "note": "explicit lane separation, richer threshold coverage, and relative regression budgets after public runtime closure",
-    "phase": "phase9g",
+    "phase": "strict_performance",
     "purpose": "strict promotion-grade performance certification surface",
     "certification_platforms": [
       "linux-x86_64-cpython3.11"

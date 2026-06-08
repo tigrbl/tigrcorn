@@ -7,7 +7,7 @@ This directory preserves the upgraded strict-performance evidence roots.
 - `phase6_reference_baseline/` — the preserved accepted baseline lane for this checkpoint
 - `phase6_current_release/` — the preserved current release lane evaluated against that baseline
 
-The directory names remain historical, but the artifact contract is now the stricter **Phase 9G** contract.
+The directory names remain historical, but the artifact contract is now the stricter **Strict performance** contract.
 
 Each profile directory now contains:
 

@@ -87,11 +87,11 @@ The canonical package-wide current-state chain is now explicitly defined in:
 - `docs/review/conformance/CURRENT_STATE_CHAIN.md`
 - `docs/review/conformance/current_state_chain.current.json`
 - `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
-- `docs/review/conformance/package_compliance_review_phase9i.current.json`
+- `docs/review/conformance/package_compliance_review_release_assembly.current.json`
 - `docs/review/conformance/release_gate_status.current.json`
-- `docs/review/conformance/phase9_release_promotion.current.json`
-- `docs/review/conformance/phase9i_release_assembly.current.json`
-- `docs/review/conformance/phase9i_strict_validation.current.json`
+- `docs/review/conformance/release_promotion.current.json`
+- `docs/review/conformance/release_assembly.current.json`
+- `docs/review/conformance/strict_release_validation.current.json`
 
 Historical phase checkpoint snapshots still keep stable `*.current.json` file names where needed for tests and provenance, but they are now explicitly labeled by `document_role` and are not ambiguous current-state sources.
 
@@ -175,7 +175,7 @@ The Phase 8 governance and spec-hygiene surface is documented in:
 - `docs/conformance/perf_retention.md`
 - `docs/conformance/perf_retention.json`
 
-The Phase 9 automated-release surface is documented in:
+The Release certification automated-release surface is documented in:
 
 - `docs/governance/release_auto.md`
 - `docs/conformance/claim_rep.md`
@@ -271,145 +271,145 @@ The current **in-bounds** post-promotion backlog is now documented through:
 
 That pair defines what the repository is still choosing to build next, and what it is explicitly **not** choosing to build, inside the current T/P/A/D/R governance model.
 
-A repository-level package compliance review for the assembled Phase 9I checkpoint now also lives in:
+A repository-level package compliance review for the assembled Release assembly checkpoint now also lives in:
 
-- `PACKAGE_COMPLIANCE_REVIEW_PHASE9I.md`
-- `package_compliance_review_phase9i.current.json`
+- `PACKAGE_COMPLIANCE_REVIEW_RELEASE_ASSEMBLY.md`
+- `package_compliance_review_release_assembly.current.json`
 
 The historical strict-target snapshot for this target remains preserved in `PHASE8_STRICT_PROMOTION_TARGET_STATUS.md` and `phase8_strict_promotion_target_status.current.json`. Those files are retained for provenance and are not the canonical package-wide current-state chain.
 
 A detailed execution plan for closing the remaining work now also lives in:
 
-- `PHASE9_IMPLEMENTATION_PLAN.md`
-- `phase9_implementation_plan.current.json`
+- `RELEASE_IMPLEMENTATION_PLAN.md`
+- `release_implementation_plan.current.json`
 
-The executed Phase 9A contract freeze is now documented through:
+The executed Promotion contract contract freeze is now documented through:
 
-- `PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
-- `PHASE9A_EXECUTION_BACKLOG.md`
-- `phase9a_promotion_contract.current.json`
-- `phase9a_execution_backlog.current.json`
+- `PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md`
+- `PROMOTION_CONTRACT_EXECUTION_BACKLOG.md`
+- `promotion_contract_promotion_contract.current.json`
+- `promotion_contract_execution_backlog.current.json`
 
-The executed Phase 9B independent-harness foundation is now documented through:
+The executed Independent harness independent-harness foundation is now documented through:
 
-- `PHASE9B_INDEPENDENT_HARNESS_FOUNDATION.md`
+- `INDEPENDENT_HARNESS_INDEPENDENT_HARNESS_FOUNDATION.md`
 - `INTEROP_HARNESS_ARTIFACT_SCHEMA.md`
 - `interop_wrapper_registry.current.json`
-- `phase9b_independent_harness.current.json`
+- `independent_harness_independent_harness.current.json`
 
 Those executed phase records remain in-tree for provenance and stable references. Their `*.current.json` file names do not make them the canonical package-wide current-state chain.
 
 
-## Phase 9C RFC 7692 independent closure
+## RFC 7692 independent closure RFC 7692 independent closure
 
-The executed Phase 9C RFC 7692 closure is now documented through:
+The executed RFC 7692 independent closure RFC 7692 closure is now documented through:
 
-- `docs/review/conformance/PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`
-- `docs/review/conformance/phase9c_rfc7692_independent_closure.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/RFC7692_INDEPENDENT_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/rfc7692_independent_independent_closure.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_RFC7692_INDEPENDENT_INDEPENDENT_CLOSURE.md`
 
-## Phase 9D1 CONNECT relay independent closure
+## CONNECT relay independent closure CONNECT relay independent closure
 
-The executed Phase 9D1 CONNECT relay closure is now documented through:
+The executed CONNECT relay independent closure CONNECT relay closure is now documented through:
 
-- `PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
-- `phase9d1_connect_relay_independent.current.json`
+- `CONNECT_RELAY_INDEPENDENT_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
+- `connect_relay_independent_connect_relay_independent.current.json`
 - `../releases/0.3.9/release-0.3.9/tigrcorn-connect-relay-local-negative-artifacts/`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D1_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_CONNECT_RELAY_INDEPENDENT_CONNECT_RELAY_INDEPENDENT_CLOSURE.md`
 
 
 
-## Phase 9D2 trailer fields independent closure
+## Trailer fields independent closure trailer fields independent closure
 
-The executed Phase 9D2 trailer-fields closure is now documented through:
+The executed Trailer fields independent closure trailer-fields closure is now documented through:
 
-- `docs/review/conformance/PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md`
-- `docs/review/conformance/phase9d2_trailer_fields_independent.current.json`
+- `docs/review/conformance/TRAILER_FIELDS_INDEPENDENT_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/trailer_fields_independent_trailer_fields_independent.current.json`
 - `docs/review/conformance/TRAILER_FIELDS_LOCAL_BEHAVIOR_ARTIFACTS.md`
 - `docs/review/conformance/trailer_fields_local_behavior_artifacts.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D2_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_TRAILER_FIELDS_INDEPENDENT_TRAILER_FIELDS_INDEPENDENT_CLOSURE.md`
 
 
-## Phase 9D3 content-coding independent closure
+## Content coding independent closure content-coding independent closure
 
-The executed Phase 9D3 content-coding closure is now documented through:
+The executed Content coding independent closure content-coding closure is now documented through:
 
-- `docs/review/conformance/PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md`
-- `docs/review/conformance/phase9d3_content_coding_independent.current.json`
+- `docs/review/conformance/CONTENT_CODING_INDEPENDENT_CONTENT_CODING_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/content_coding_independent_content_coding_independent.current.json`
 - `docs/review/conformance/CONTENT_CODING_LOCAL_BEHAVIOR_ARTIFACTS.md`
 - `docs/review/conformance/content_coding_local_behavior_artifacts.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_CONTENT_CODING_INDEPENDENT_CONTENT_CODING_INDEPENDENT_CLOSURE.md`
 
 
-## Phase 9E OCSP independent closure
+## OCSP certification OCSP independent closure
 
-The executed Phase 9E OCSP closure is now documented through:
+The executed OCSP certification OCSP closure is now documented through:
 
-- `docs/review/conformance/PHASE9E_OCSP_INDEPENDENT_CLOSURE.md`
-- `docs/review/conformance/phase9e_ocsp_independent.current.json`
+- `docs/review/conformance/OCSP_CERTIFICATION_OCSP_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/ocsp_certification_ocsp_independent.current.json`
 - `docs/review/conformance/OCSP_LOCAL_VALIDATION_ARTIFACTS.md`
 - `docs/review/conformance/ocsp_local_validation_artifacts.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9E_OCSP_INDEPENDENT_CLOSURE.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_OCSP_CERTIFICATION_OCSP_INDEPENDENT_CLOSURE.md`
 
 
-## Phase 9F1 TLS cipher-policy closure
+## TLS cipher policy TLS cipher-policy closure
 
-The executed Phase 9F1 TLS cipher-policy closure is now documented through:
+The executed TLS cipher policy TLS cipher-policy closure is now documented through:
 
-- `docs/review/conformance/PHASE9F1_TLS_CIPHER_POLICY_CLOSURE.md`
-- `docs/review/conformance/phase9f1_tls_cipher_policy.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F1_TLS_CIPHER_POLICY_CLOSURE.md`
-
-
-## Phase 9F2 logging and exporter closure
-
-The executed Phase 9F2 observability closure is now documented through:
-
-- `docs/review/conformance/PHASE9F2_LOGGING_EXPORTER_CLOSURE.md`
-- `docs/review/conformance/phase9f2_logging_exporter.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F2_LOGGING_EXPORTER_CLOSURE.md`
+- `docs/review/conformance/TLS_CIPHER_POLICY_TLS_CIPHER_POLICY_CLOSURE.md`
+- `docs/review/conformance/tls_cipher_policy_tls_cipher_policy.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_TLS_CIPHER_POLICY_TLS_CIPHER_POLICY_CLOSURE.md`
 
 
-## Phase 9F3 concurrency and WebSocket keepalive closure
+## Observability surface logging and exporter closure
 
-The executed Phase 9F3 concurrency / keepalive closure is now documented through:
+The executed Observability surface observability closure is now documented through:
 
-- `docs/review/conformance/PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
-- `docs/review/conformance/phase9f3_concurrency_keepalive.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9F3_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
-
-
-## Phase 9G strict performance closure
-
-The executed Phase 9G strict-performance closure is now documented through:
-
-- `docs/review/conformance/PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
-- `docs/review/conformance/phase9g_strict_performance.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
+- `docs/review/conformance/OBSERVABILITY_SURFACE_LOGGING_EXPORTER_CLOSURE.md`
+- `docs/review/conformance/observability_surface_logging_exporter.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_OBSERVABILITY_SURFACE_LOGGING_EXPORTER_CLOSURE.md`
 
 
-## Phase 9H promotion-evaluator hardening
+## Concurrency keepalive concurrency and WebSocket keepalive closure
 
-The executed Phase 9H evaluator-hardening checkpoint is now documented through:
+The executed Concurrency keepalive concurrency / keepalive closure is now documented through:
 
-- `docs/review/conformance/PHASE9H_PROMOTION_EVALUATOR_HARDENING.md`
-- `docs/review/conformance/phase9h_promotion_evaluator.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9H_PROMOTION_EVALUATOR_HARDENING.md`
+- `docs/review/conformance/CONCURRENCY_KEEPALIVE_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
+- `docs/review/conformance/concurrency_keepalive_concurrency_keepalive.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_CONCURRENCY_KEEPALIVE_CONCURRENCY_WEBSOCKET_KEEPALIVE_CLOSURE.md`
 
 
-## Phase 9I release assembly and certifiable checkpoint
+## Strict performance strict performance closure
 
-The executed Phase 9I release-assembly checkpoint is now documented through:
+The executed Strict performance strict-performance closure is now documented through:
 
-- `PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
-- `phase9i_release_assembly.current.json`
+- `docs/review/conformance/STRICT_PERFORMANCE_STRICT_PERFORMANCE_CLOSURE.md`
+- `docs/review/conformance/strict_performance_strict_performance.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_STRICT_PERFORMANCE_STRICT_PERFORMANCE_CLOSURE.md`
+
+
+## Promotion hardening promotion-evaluator hardening
+
+The executed Promotion hardening evaluator-hardening checkpoint is now documented through:
+
+- `docs/review/conformance/PROMOTION_HARDENING_PROMOTION_EVALUATOR_HARDENING.md`
+- `docs/review/conformance/promotion_hardening_promotion_evaluator.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_PROMOTION_HARDENING_PROMOTION_EVALUATOR_HARDENING.md`
+
+
+## Release assembly release assembly and certifiable checkpoint
+
+The executed Release assembly release-assembly checkpoint is now documented through:
+
+- `RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `release_assembly.current.json`
 - `../releases/0.3.9/release-0.3.9/`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
 
 
 ## Certification environment freeze
 
-The strict-promotion release workflow now freezes the certification environment before it invokes any Phase 9 checkpoint script.
+The strict-promotion release workflow now freezes the certification environment before it invokes any Release certification checkpoint script.
 
 Current artifacts for that contract live in:
 
@@ -427,7 +427,7 @@ The direct third-party `aioquic` adapter preflight now also lives in:
 - `releases/0.3.9/release-0.3.9/tigrcorn-aioquic-adapter-preflight-bundle/`
 - `docs/review/conformance/delivery/DELIVERY_NOTES_AIOQUIC_ADAPTER_PREFLIGHT.md`
 
-## Phase 9I strict validation
+## Release assembly strict validation
 
-- `PHASE9I_STRICT_VALIDATION.md`
-- `phase9i_strict_validation.current.json`
+- `STRICT_RELEASE_VALIDATION.md`
+- `strict_release_validation.current.json`

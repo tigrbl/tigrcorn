@@ -1,4 +1,4 @@
-# Phase 9I strict validation bundle
+# Release assembly strict validation bundle
 
 This bundle preserves the exact Step 8 strict-validation commands and outputs for the evaluated 0.3.8 working release root.
 

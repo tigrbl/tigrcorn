@@ -13,9 +13,9 @@ PROMOTION_TARGET = json.loads((ROOT / 'docs/review/conformance/promotion_gate.ta
 PERFORMANCE_CONFIG = dict(PROMOTION_TARGET['performance'])
 
 
-class Phase9HPromotionEvaluatorHardeningTests(unittest.TestCase):
+class ReleaseHPromotionEvaluatorHardeningTests(unittest.TestCase):
     def _copy_performance_tree(self) -> Path:
-        tmpdir = tempfile.mkdtemp(prefix='tigrcorn-phase9h-')
+        tmpdir = tempfile.mkdtemp(prefix='tigrcorn-promotion_hardening-')
         root = Path(tmpdir)
         shutil.copytree(ROOT / 'docs/review/performance', root / 'docs/review/performance', dirs_exist_ok=True)
         return root

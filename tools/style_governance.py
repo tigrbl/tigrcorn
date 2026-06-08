@@ -25,7 +25,6 @@ IGNORED_DIRS = {
 GENERATED_OR_EVIDENCE_PREFIXES = (
     "docs/review/",
     "tools/create_",
-    "tools/normalize_documentation_truth.py",
     "tools/regenerate_",
     "tools/retrofit_",
 )

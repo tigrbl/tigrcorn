@@ -7,8 +7,8 @@ Canonical sources:
 - `docs/review/conformance/certification_environment_freeze.current.json`
 - `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle/`
-- `.github/workflows/phase9-certification-release.yml`
-- `tools/run_phase9_release_workflow.py`
+- `.github/workflows/release_certification-certification-release.yml`
+- `tools/run_release_certification_release_workflow.py`
 
 ## Purpose
 
@@ -16,7 +16,7 @@ The goal of this document is to make the release-workflow environment contract e
 
 - how the certification environment is installed
 - which extras are mandatory
-- which imports must succeed before Phase 9 scripts run
+- which imports must succeed before Release certification scripts run
 - where the preserved bundle lives
 - whether the **current observed local environment** is ready
 
@@ -51,8 +51,8 @@ PY
 | environment ready for release workflow | `False` |
 | release root | `docs/review/conformance/releases/0.3.9/release-0.3.9` |
 | bundle root | `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle` |
-| workflow path | `.github/workflows/phase9-certification-release.yml` |
-| wrapper path | `tools/run_phase9_release_workflow.py` |
+| workflow path | `.github/workflows/release_certification-certification-release.yml` |
+| wrapper path | `tools/run_release_certification_release_workflow.py` |
 
 ## Interpretation
 
@@ -68,7 +68,7 @@ At this checkpoint, the frozen contract is explicit, but the observed environmen
 - makes the strict release-workflow installation contract explicit
 - records the observed environment snapshot in a preserved certification bundle
 - ties the release workflow and local wrapper to the same install/import expectations
-- removes ambiguity about which extras and imports are mandatory before Phase 9 release scripts run
+- removes ambiguity about which extras and imports are mandatory before Release certification release scripts run
 
 ## What this checkpoint does not mean
 
@@ -77,7 +77,7 @@ This freeze does **not** by itself widen the product boundary, close unrelated s
 Use:
 
 - `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
-- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
-- `docs/review/conformance/phase9a_promotion_contract.current.json`
+- `docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/promotion_contract_promotion_contract.current.json`
 
 for promotion and current-state truth.

@@ -48,7 +48,7 @@ def test_phase4_support_statements_are_explicit_and_rfc9218_remains_out() -> Non
 
 def test_phase4_current_state_docs_are_explicit_not_ambiguous() -> None:
     applicability = _load('docs/review/conformance/rfc_applicability_and_competitor_status.current.json')
-    review = _load('docs/review/conformance/package_compliance_review_phase9i.current.json')
+    review = _load('docs/review/conformance/package_compliance_review_release_assembly.current.json')
 
     assert applicability['rfc_applicability']['rfc8297']['status'] == 'core_current_boundary'
     assert applicability['rfc_applicability']['rfc7838']['status'] == 'core_current_boundary_bounded'

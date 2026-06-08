@@ -30,14 +30,14 @@ def current_public_flag_count() -> int:
     return len(flags)
 
 
-def test_phase9i_docs_and_status_exist() -> None:
-    assert (CONFORMANCE / 'PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
-    assert (CONFORMANCE / 'phase9i_release_assembly.current.json').exists()
-    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
+def test_release_assembly_docs_and_status_exist() -> None:
+    assert (CONFORMANCE / 'RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
+    assert (CONFORMANCE / 'release_assembly.current.json').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md').exists()
 
-    status = load_json(CONFORMANCE / 'phase9i_release_assembly.current.json')
+    status = load_json(CONFORMANCE / 'release_assembly.current.json')
     assert status['phase'] == '9I'
-    assert status['checkpoint'] == 'phase9i_release_assembly_and_certifiable_checkpoint'
+    assert status['checkpoint'] == 'release_assembly_and_certifiable_checkpoint'
     assert status['current_state']['authoritative_boundary_passed'] is True
     assert status['current_state']['strict_target_boundary_passed'] is True
     assert status['current_state']['flag_surface_passed'] is True
@@ -50,7 +50,7 @@ def test_phase9i_docs_and_status_exist() -> None:
     assert status['release_assembly']['release_notes_promoted'] is True
 
 
-def test_phase9i_release_root_contains_final_bundle_set() -> None:
+def test_release_assembly_release_root_contains_final_bundle_set() -> None:
     expected_bundles = {
         'tigrcorn-independent-certification-release-matrix',
         'tigrcorn-same-stack-replay-matrix',
@@ -63,8 +63,8 @@ def test_phase9i_release_root_contains_final_bundle_set() -> None:
     assert expected_bundles.issubset(actual)
 
     manifest = load_json(RELEASE_ROOT / 'manifest.json')
-    assert manifest['source_checkpoint'] == 'phase9i_release_assembly'
-    assert manifest['status'] == 'phase9i_release_assembly_certifiably_promotable'
+    assert manifest['source_checkpoint'] == 'release_assembly'
+    assert manifest['status'] == 'release_assembly_certifiably_promotable'
     assert manifest['promotion_ready'] is True
     assert manifest['strict_target_complete'] is True
     for key in ['flag_surface', 'operator_surface', 'performance', 'certification_environment', 'aioquic_adapter_preflight']:
@@ -74,7 +74,7 @@ def test_phase9i_release_root_contains_final_bundle_set() -> None:
 
     bundle_index = load_json(RELEASE_ROOT / 'bundle_index.json')
     bundle_summary = load_json(RELEASE_ROOT / 'bundle_summary.json')
-    assert bundle_index['source_checkpoint'] == 'phase9i_release_assembly'
+    assert bundle_index['source_checkpoint'] == 'release_assembly'
     assert bundle_index['promotion_ready'] is True
     assert bundle_index['strict_target_complete'] is True
     assert bundle_index['independent_certification_failed'] == 0
@@ -83,7 +83,7 @@ def test_phase9i_release_root_contains_final_bundle_set() -> None:
     assert bundle_summary['independent_certification_failed'] == 0
 
 
-def test_phase9i_flag_operator_and_performance_bundles_are_current() -> None:
+def test_release_assembly_flag_operator_and_performance_bundles_are_current() -> None:
     flag_index = load_json(RELEASE_ROOT / 'tigrcorn-flag-surface-certification-bundle' / 'index.json')
     expected_public_flag_count = current_public_flag_count()
     assert flag_index['public_flag_count'] == expected_public_flag_count
@@ -103,13 +103,13 @@ def test_phase9i_flag_operator_and_performance_bundles_are_current() -> None:
     assert current_index['failed'] == 0
 
 
-def test_phase9i_current_gate_truth_matches_live_evaluators() -> None:
+def test_release_assembly_current_gate_truth_matches_live_evaluators() -> None:
     authoritative = evaluate_release_gates(ROOT)
     strict = evaluate_release_gates(ROOT, boundary_path='docs/review/conformance/certification_boundary.strict_target.json')
     promotion = evaluate_promotion_target(ROOT)
-    status = load_json(CONFORMANCE / 'phase9i_release_assembly.current.json')
+    status = load_json(CONFORMANCE / 'release_assembly.current.json')
     release_gate_status = load_json(CONFORMANCE / 'release_gate_status.current.json')
-    package_review = load_json(CONFORMANCE / 'package_compliance_review_phase9i.current.json')
+    package_review = load_json(CONFORMANCE / 'package_compliance_review_release_assembly.current.json')
 
     assert status['validation']['evaluate_release_gates_authoritative']['passed'] == authoritative.passed
     assert status['validation']['evaluate_release_gates_strict_target']['passed'] == strict.passed

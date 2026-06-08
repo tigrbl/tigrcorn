@@ -16,14 +16,14 @@ def _load_json(path: Path):
     return json.loads(path.read_text(encoding='utf-8'))
 
 
-def test_phase9d3_docs_and_status_exist() -> None:
-    assert (CONFORMANCE / 'PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md').exists()
-    assert (CONFORMANCE / 'phase9d3_content_coding_independent.current.json').exists()
+def test_content_coding_independent_docs_and_status_exist() -> None:
+    assert (CONFORMANCE / 'CONTENT_CODING_INDEPENDENT_CONTENT_CODING_INDEPENDENT_CLOSURE.md').exists()
+    assert (CONFORMANCE / 'content_coding_independent_content_coding_independent.current.json').exists()
     assert (CONFORMANCE / 'CONTENT_CODING_LOCAL_BEHAVIOR_ARTIFACTS.md').exists()
     assert (CONFORMANCE / 'content_coding_local_behavior_artifacts.current.json').exists()
-    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9D3_CONTENT_CODING_INDEPENDENT_CLOSURE.md').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_CONTENT_CODING_INDEPENDENT_CONTENT_CODING_INDEPENDENT_CLOSURE.md').exists()
 
-    payload = _load_json(CONFORMANCE / 'phase9d3_content_coding_independent.current.json')
+    payload = _load_json(CONFORMANCE / 'content_coding_independent_content_coding_independent.current.json')
     assert payload['phase'] == '9D3'
     assert payload['status'] == 'content_coding_independent_complete_all_carriers_green'
     assert payload['current_state']['authoritative_boundary_passed'] is True
@@ -32,7 +32,7 @@ def test_phase9d3_docs_and_status_exist() -> None:
     assert payload['current_state']['non_passing_independent_scenarios'] == []
 
 
-def test_phase9d3_release_root_contains_content_coding_artifacts_and_local_behavior_bundle() -> None:
+def test_content_coding_independent_release_root_contains_content_coding_artifacts_and_local_behavior_bundle() -> None:
     index_payload = _load_json(INDEPENDENT / 'index.json')
     entries = {entry['id']: entry for entry in index_payload['scenarios']}
     assert entries['http11-content-coding-curl-client']['passed'] is True
@@ -74,7 +74,7 @@ def test_phase9d3_release_root_contains_content_coding_artifacts_and_local_behav
     assert local_index['failed'] == 0
 
 
-def test_phase9d3_strict_boundary_tracks_content_coding_progress_in_0_3_8_root() -> None:
+def test_content_coding_independent_strict_boundary_tracks_content_coding_progress_in_0_3_8_root() -> None:
     boundary = _load_json(CONFORMANCE / 'certification_boundary.strict_target.json')
     assert boundary['canonical_release_bundle'] == 'docs/review/conformance/releases/0.3.9/release-0.3.9'
     assert boundary['artifact_bundles']['independent_certification'].endswith('releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix')
@@ -89,7 +89,7 @@ def test_phase9d3_strict_boundary_tracks_content_coding_progress_in_0_3_8_root()
     assert 'RFC 9110 §8 references unknown independent_certification scenario http2-content-coding-curl-client' not in failures
 
 
-def test_phase9d3_independent_bundle_still_validates() -> None:
+def test_content_coding_independent_independent_bundle_still_validates() -> None:
     report = validate_independent_certification_bundle(INDEPENDENT)
     assert report.passed is True
     assert report.failures == []

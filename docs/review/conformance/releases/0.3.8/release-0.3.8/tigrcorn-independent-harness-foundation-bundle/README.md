@@ -1,6 +1,6 @@
-# Phase 9B independent harness foundation bundle
+# Independent harness independent harness foundation bundle
 
-This bundle is the Phase 9B proof bundle for the shared independent-certification harness.
+This bundle is the Independent harness proof bundle for the shared independent-certification harness.
 
 It intentionally contains one rerun already-green scenario:
 

@@ -62,7 +62,7 @@
   "metadata": {
     "peer_implementation": "aioquic/wsproto",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "aioquic.http3_websocket_client",
+    "independent_harness_wrapper_id": "aioquic.http3_websocket_client",
     "rfc": [
       "RFC 7692",
       "RFC 8446",

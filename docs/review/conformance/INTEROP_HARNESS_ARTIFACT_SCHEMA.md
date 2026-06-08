@@ -1,6 +1,6 @@
 # Interop harness artifact schema
 
-This document records the promoted artifact schema introduced by the Phase 9B harness-foundation checkpoint.
+This document records the promoted artifact schema introduced by the Independent harness harness-foundation checkpoint.
 
 ## Scope
 
@@ -10,7 +10,7 @@ It does **not** retroactively redefine the older canonical 0.3.6 preserved bundl
 
 ## Required bundle files
 
-Every newly generated Phase 9B-style independent bundle must contain:
+Every newly generated Independent harness-style independent bundle must contain:
 
 - `manifest.json`
 - `summary.json`
@@ -102,7 +102,7 @@ The per-scenario summary and artifact inventory used by the validator.
 
 ## Current proof bundle
 
-The first Phase 9B proof bundle using this schema is:
+The first Independent harness proof bundle using this schema is:
 
 - `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-harness-foundation-bundle/`
 

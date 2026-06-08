@@ -58,7 +58,7 @@
   "metadata": {
     "peer_implementation": "python-h2",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "h2.http2_client",
+    "independent_harness_wrapper_id": "h2.http2_client",
     "rfc": [
       "RFC 9110 \u00a78",
       "RFC 9113"

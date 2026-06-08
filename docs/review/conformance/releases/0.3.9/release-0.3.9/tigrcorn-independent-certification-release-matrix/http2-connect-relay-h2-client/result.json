@@ -39,7 +39,7 @@
     }
   },
   "assertions_failed": [],
-  "commit_hash": "phase9d1-connect-relay-checkpoint",
+  "commit_hash": "connect_relay_independent-connect-relay-checkpoint",
   "error": null,
   "negotiation": {
     "peer": {

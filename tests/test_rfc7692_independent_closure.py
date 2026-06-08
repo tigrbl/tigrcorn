@@ -17,12 +17,12 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
 
 
-def test_phase9c_docs_and_status_exist() -> None:
-    assert (CONFORMANCE / 'PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md').exists()
-    assert (CONFORMANCE / 'phase9c_rfc7692_independent_closure.current.json').exists()
-    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9C_RFC7692_INDEPENDENT_CLOSURE.md').exists()
+def test_rfc7692_independent_docs_and_status_exist() -> None:
+    assert (CONFORMANCE / 'RFC7692_INDEPENDENT_INDEPENDENT_CLOSURE.md').exists()
+    assert (CONFORMANCE / 'rfc7692_independent_independent_closure.current.json').exists()
+    assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_RFC7692_INDEPENDENT_INDEPENDENT_CLOSURE.md').exists()
 
-    payload = _load_json(CONFORMANCE / 'phase9c_rfc7692_independent_closure.current.json')
+    payload = _load_json(CONFORMANCE / 'rfc7692_independent_independent_closure.current.json')
     assert payload['phase'] == '9C'
     assert payload['status'] == 'rfc7692_independent_closure_complete_all_carriers_green'
     assert payload['current_state']['authoritative_boundary_passed'] is True
@@ -33,7 +33,7 @@ def test_phase9c_docs_and_status_exist() -> None:
     assert payload['current_state']['rfc7692_complete_all_carriers'] is True
 
 
-def test_phase9c_release_root_contains_passing_rfc7692_artifacts_and_local_negative_vectors() -> None:
+def test_rfc7692_independent_release_root_contains_passing_rfc7692_artifacts_and_local_negative_vectors() -> None:
     index_payload = _load_json(INDEPENDENT / 'index.json')
     entries = {entry['id']: entry for entry in index_payload['scenarios']}
     assert entries['websocket-http11-server-websockets-client-permessage-deflate']['passed'] is True
@@ -60,7 +60,7 @@ def test_phase9c_release_root_contains_passing_rfc7692_artifacts_and_local_negat
     assert local_index['failed'] == 0
 
 
-def test_phase9c_strict_boundary_now_points_to_0_3_8_and_reports_rfc7692_as_complete() -> None:
+def test_rfc7692_independent_strict_boundary_now_points_to_0_3_8_and_reports_rfc7692_as_complete() -> None:
     boundary = _load_json(CONFORMANCE / 'certification_boundary.strict_target.json')
     assert boundary['canonical_release_bundle'] == 'docs/review/conformance/releases/0.3.9/release-0.3.9'
     assert boundary['artifact_bundles']['independent_certification'].endswith('releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix')

@@ -13,17 +13,17 @@ PERFORMANCE = ROOT / 'docs' / 'review' / 'performance'
 CURRENT_ROOT = ROOT / 'docs' / 'review' / 'performance' / 'artifacts' / 'phase6_current_release'
 
 
-class Phase9GStrictPerformanceClosureTests(unittest.TestCase):
+class ReleaseGStrictPerformanceClosureTests(unittest.TestCase):
     def _load_json(self, relative_path: str) -> dict:
         return json.loads((ROOT / relative_path).read_text(encoding='utf-8'))
 
-    def test_phase9g_docs_and_status_exist(self) -> None:
-        self.assertTrue((CONFORMANCE / 'PHASE9G_STRICT_PERFORMANCE_CLOSURE.md').exists())
-        self.assertTrue((CONFORMANCE / 'phase9g_strict_performance.current.json').exists())
-        self.assertTrue((ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md').exists())
-        status = self._load_json('docs/review/conformance/phase9g_strict_performance.current.json')
+    def test_strict_performance_docs_and_status_exist(self) -> None:
+        self.assertTrue((CONFORMANCE / 'STRICT_PERFORMANCE_STRICT_PERFORMANCE_CLOSURE.md').exists())
+        self.assertTrue((CONFORMANCE / 'strict_performance_strict_performance.current.json').exists())
+        self.assertTrue((ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_STRICT_PERFORMANCE_STRICT_PERFORMANCE_CLOSURE.md').exists())
+        status = self._load_json('docs/review/conformance/strict_performance_strict_performance.current.json')
         self.assertEqual(status['phase'], '9G')
-        self.assertEqual(status['checkpoint'], 'phase9g_strict_performance_closure')
+        self.assertEqual(status['checkpoint'], 'strict_performance_strict_performance_closure')
         self.assertTrue(status['current_state']['performance_passed'])
         self.assertFalse(status['current_state']['promotion_target_passed'])
 

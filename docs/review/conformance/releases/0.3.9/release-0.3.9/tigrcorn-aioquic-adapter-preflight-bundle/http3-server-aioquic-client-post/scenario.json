@@ -47,7 +47,7 @@
     "certification_status": "ready_for_preserved_artifact_promotion",
     "peer_implementation": "aioquic",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "aioquic.http3_client",
+    "independent_harness_wrapper_id": "aioquic.http3_client",
     "planned_release_root": "docs/review/conformance/releases/0.3.6/release-0.3.6/tigrcorn-independent-certification-release-matrix",
     "rfc": [
       "RFC 8446",

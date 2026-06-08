@@ -79,7 +79,7 @@ async def _start_http3_server(*, ssl_ciphers: str):
     return tmpdir, cert_pem, server, port
 
 
-class Phase9F1TLSCipherPolicyTests(unittest.IsolatedAsyncioTestCase):
+class ReleaseF1TLSCipherPolicyTests(unittest.IsolatedAsyncioTestCase):
     def test_cli_and_config_runtime_fields_resolve_ssl_ciphers(self):
         config = build_config(
             host='127.0.0.1',
@@ -171,8 +171,8 @@ class Phase9F1TLSCipherPolicyTests(unittest.IsolatedAsyncioTestCase):
             await server.close()
             tmpdir.cleanup()
 
-    def test_phase9f1_status_snapshot_matches_current_flag_surface_state(self):
-        payload = json.loads((CONFORMANCE / 'phase9f1_tls_cipher_policy.current.json').read_text(encoding='utf-8'))
+    def test_tls_cipher_policy_status_snapshot_matches_current_flag_surface_state(self):
+        payload = json.loads((CONFORMANCE / 'tls_cipher_policy_tls_cipher_policy.current.json').read_text(encoding='utf-8'))
         self.assertEqual(payload['phase'], '9F1')
         self.assertEqual(payload['implemented_flag'], '--ssl-ciphers')
         self.assertNotIn('--ssl-ciphers', payload['current_state']['remaining_flag_runtime_blockers'])
