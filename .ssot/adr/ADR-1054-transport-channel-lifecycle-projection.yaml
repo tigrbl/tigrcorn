@@ -1,0 +1,21 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1054"
+number: 1054
+slug: "transport-channel-lifecycle-projection"
+title: "Transport observations project into contract channel lifecycle"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: tigrcorn owns protocol and runtime observation of channel lifecycle facts and projects them into contract-owned channel_lifecycle states. The RFC enforcement targets are HTTP/2 RFC 9113 sections 5.1, 5.2, 6.4, and 6.8, HTTP/3 RFC 9114 sections 4.1, 4.1.1, 5.2, and 6.1, QUIC RFC 9000 sections 3, 3.5, 10, 19.4, and 19.5, plus WebSocket tunnel behavior from RFC 8441 and RFC 9220 when applicable. HTTP/2 half-closed remote maps to read_closed, HTTP/2 half-closed local maps to write_closed, WebSocket closing maps to closing, TCP reset maps to lost or failed, HTTP/3 RESET_STREAM is directional, and HTTP/3 or QUIC STOP_SENDING expresses outbound stop intent without app-policy interpretation."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-14T07:42:06Z"
+    note: "Accepted for transport lifecycle projection ownership."
+    status: "accepted"
+references: []
+body: |-
+  Decision: tigrcorn owns protocol and runtime observation of channel lifecycle facts and projects them into contract-owned channel_lifecycle states. The RFC enforcement targets are HTTP/2 RFC 9113 sections 5.1, 5.2, 6.4, and 6.8, HTTP/3 RFC 9114 sections 4.1, 4.1.1, 5.2, and 6.1, QUIC RFC 9000 sections 3, 3.5, 10, 19.4, and 19.5, plus WebSocket tunnel behavior from RFC 8441 and RFC 9220 when applicable. HTTP/2 half-closed remote maps to read_closed, HTTP/2 half-closed local maps to write_closed, WebSocket closing maps to closing, TCP reset maps to lost or failed, HTTP/3 RESET_STREAM is directional, and HTTP/3 or QUIC STOP_SENDING expresses outbound stop intent without app-policy interpretation.
