@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:0602"
 number: 602
@@ -27,5 +27,11 @@ body: |-
   - `AFFECTS`
   - `PUBLISHES`
   - `INCLUDES`
+  - `REQUIRES`
+  
+  A `REQUIRES` edge derived from `feature.requires` SHALL represent a passing prerequisite relationship.
+  It SHALL NOT be used to model parent/leaf, umbrella/member, category/item, or inventory grouping
+  composition. Such grouping remains a feature inventory convention unless represented through a separate
+  SSOT entity with its own semantics.
 spec_kind: "normative"
 adr_ids: []

@@ -1,0 +1,48 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0640"
+number: 640
+slug: "evidence-centered-proof-link-contract"
+title: "Evidence Centered Proof Link Contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Scope"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define schema 0.8.0 evidence-centered proof link semantics."
+    at: "2026-06-07T13:06:35Z"
+references: []
+body: |-
+  Scope
+  This SPEC defines the evidence-centered proof-link contract for registry schema 0.8.0.
+  
+  Canonical fields
+  `claim.feature_ids` is the canonical feature scope for claims.
+  `evidence.claim_ids` is the canonical proof target link from evidence to claims.
+  `evidence.test_ids` is the canonical test-produced provenance link from evidence to tests.
+  
+  Compatibility fields
+  `claim.evidence_ids`, `claim.test_ids`, `test.claim_ids`, and `test.evidence_ids` may remain in schema 0.8.0 as compatibility mirrors or planning indexes. They shall be reconciled from evidence-owned proof links by migration and repair tooling where possible. They shall not be treated as proof authority when they disagree with evidence-owned links.
+  
+  Validation
+  Registry validation shall require proof evidence to support at least one claim. Passed evidence with no claim target shall fail unless it is explicitly classified as non-proof source or contextual evidence under a future provenance contract. Evidence shall fail validation when it references missing claims or tests. Evidence tier shall be at or above each linked claim tier. Test-produced passed evidence shall require its linked tests to be passing.
+  
+  Migration
+  The 0.7.0 to 0.8.0 migration shall populate `evidence.claim_ids` from existing `claim.evidence_ids` and shall populate `evidence.test_ids` from existing `test.evidence_ids`. It shall also infer evidence claim targets from `test.claim_ids` only when a test-evidence link already exists. The migration shall deduplicate and sort links. It shall report orphan evidence, unsupported claims, and unresolved mirror mismatches without inventing passed proof.
+  
+  Graph and lineage
+  Graph exports shall emit canonical `PRODUCES` edges from tests to evidence and canonical `SUPPORTS` edges from evidence to claims. Direct test-to-claim verification edges, when emitted for compatibility, shall be labeled as derived. Lineage views shall center claim proof on `claim <- evidence <- test`.
+  
+  CLI and automation
+  CLI, MCP, scaffolding, repair, certification, and skills shall create and repair evidence-owned proof links first. Compatibility commands that accept claim-side or test-side proof links shall update evidence-owned links or clearly report that they are compatibility operations.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0640"
+  - "adr:0634"
+  - "adr:0635"
+  - "adr:0603"

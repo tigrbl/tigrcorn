@@ -1,0 +1,30 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0634"
+number: 634
+slug: "proof-graph-canonical-assurance-unit"
+title: "Proof Graph Is The Canonical Assurance Unit"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Summary"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-21T05:59:13Z"
+    note: "Created to govern proof-graph-first assurance semantics after downstream MCP and certification closure work."
+    status: "draft"
+references: []
+body: |-
+  Summary
+  The governed assurance unit is a linked proof graph rather than any single row.
+  
+  Decision
+  A certifiable SSOT assertion shall be represented as a connected graph containing the target feature, tiered claims, verifying tests, supporting evidence, and any higher-tier certification context needed by guards.
+  
+  Implications
+  Operators may continue to edit rows individually, but registry truth, tier gates, and certification closure shall be evaluated against the connected graph.
+  Row-complete but graph-incomplete states shall not be treated as certified or honestly fully featured.
+  Future CLI and MCP surfaces shall prefer graph-valid materialization over ad hoc row creation that leaves partial invalid states.

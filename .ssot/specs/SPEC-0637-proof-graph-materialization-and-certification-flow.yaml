@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0637"
+number: 637
+slug: "proof-graph-materialization-and-certification-flow"
+title: "Proof Graph Materialization And Certification Flow"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Scope"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-21T05:59:17Z"
+    note: "Created to define supported CLI and MCP proof-graph operator flows."
+    status: "draft"
+references: []
+body: |-
+  Scope
+  This SPEC defines the operator flow for proof-graph materialization and certification closure.
+  
+  Materialization flow
+  A supported command shall be able to create a target feature together with linked claims, tests, and evidence scaffolding without deadlocking on immediate validation.
+  
+  Closure flow
+  A supported command shall be able to materialize T1 source evidence, enrich higher-tier evidence metadata, create or select scoped boundary and release context, certify the release, and persist certification feedback back into linked proof evidence.
+  
+  Idempotency and failure behavior
+  Repeated runs shall converge without duplicate graph members.
+  Failures shall leave the registry in a graph-valid or explicitly incomplete state with actionable reasons rather than silent partial closure.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0635"

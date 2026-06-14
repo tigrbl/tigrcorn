@@ -1,0 +1,30 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0640"
+number: 640
+slug: "evidence-owns-proof-linkage"
+title: "Evidence Owns Proof Linkage"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Summary"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern evidence-centered proof authority for schema 0.8.0."
+    at: "2026-06-07T13:05:50Z"
+references: []
+body: |-
+  Summary
+  Evidence owns canonical proof linkage.
+  
+  Decision
+  SSOT proof semantics shall use evidence as the canonical proof carrier. Claims remain directly scoped to features through `claim.feature_ids`. Evidence supports claims through `evidence.claim_ids`. Tests and other producers attach to evidence through `evidence.test_ids` or later producer/provenance fields. The canonical proof path is `test -> evidence -> claim`, and the feature assurance path is `feature -> claim <- evidence <- test`.
+  
+  Claim-to-test links and claim/test evidence mirrors may be retained during a compatibility window, but they shall be treated as derived indexes or planning conveniences. They shall not override evidence-owned proof linkage.
+  
+  Implications
+  Schema, migration, validation, CLI, graph export, lineage views, skills, MCP repair, scaffolding, claim-tier gates, and certification closure shall be updated to use evidence-centered proof authority. Orphan proof evidence shall fail or warn according to lifecycle policy instead of silently appearing as proof.

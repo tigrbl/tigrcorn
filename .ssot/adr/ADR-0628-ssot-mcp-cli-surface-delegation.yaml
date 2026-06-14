@@ -1,0 +1,60 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0628"
+number: 628
+slug: "ssot-mcp-cli-surface-delegation"
+title: "SSOT MCP and CLI surfaces stay in parity"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Codex workers and other MCP clients need the same governed operational surface that exists in the `ssot-registry` CLI. A generic delegated CLI runner is useful, but parity is weaker if MCP clients cannot address the live CLI paths as first-class MCP tools."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T16:21:19Z"
+    note: "Created to govern safe SSOT CLI delegation through ssot-mcp."
+    status: "draft"
+  -
+    at: "2026-05-22T00:44:55Z"
+    note: "Updated to require explicit CLI/MCP parity, mirrored MCP command-path tools, and drift enforcement."
+    status: "draft"
+references: []
+body: |-
+  ## Context
+  
+  Codex workers and other MCP clients need the same governed operational surface that exists in the `ssot-registry` CLI. A generic delegated CLI runner is useful, but parity is weaker if MCP clients cannot address the live CLI paths as first-class MCP tools.
+  
+  Workers must not hand-edit `.ssot/registry.json`, so MCP needs a safe compatibility layer that preserves the CLI surface while remaining transport-safe for help, version, and invalid-argument flows.
+  
+  ## Decision
+  
+  `ssot-mcp` SHALL maintain parity with the live `ssot-registry` CLI surface.
+  
+  That parity includes two layers:
+  
+  - discovery of the live CLI parser surface
+  - execution of that surface through MCP
+  
+  The MCP server SHALL continue to expose a generic delegated CLI execution tool, and it SHALL also expose mirrored MCP tools for the live CLI command paths so the MCP surface is not limited to a single catch-all runner.
+  
+  The discovery surface SHALL report:
+  
+  - global flags
+  - top-level commands
+  - subcommand paths
+  - flags by command path
+  - exact MCP tool names mapped to CLI paths
+  
+  Help, version, and invalid-argument parser exits SHALL be contained and returned as normal MCP tool results. They must not close the MCP transport.
+  
+  Dedicated structured MCP tools remain preferred for domain-native worker-control and registry CRUD operations, but CLI/MCP parity is a required compatibility guarantee rather than a best-effort fallback.
+  
+  ## Consequences
+  
+  MCP clients can invoke the governed CLI surface without shelling out and without hand-editing registry files.
+  
+  CLI evolution becomes an MCP contract concern: when the parser surface changes, mirrored MCP tool coverage and parity tests must change with it.
+  
+  The generic delegated runner remains useful, but parity is enforced by discovery, mirrored tool registration, and drift-detection tests rather than by convention alone.

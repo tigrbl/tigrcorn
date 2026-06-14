@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0636"
+number: 636
+slug: "proof-graph-assurance-contract"
+title: "Proof Graph Assurance Contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Scope"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-21T05:59:16Z"
+    note: "Created to define the connected proof-graph contract and tier semantics."
+    status: "draft"
+references: []
+body: |-
+  Scope
+  This SPEC defines the proof-graph contract for SSOT assurance closure.
+  
+  Required nodes
+  A valid proof graph contains at minimum a feature, one or more claims, one or more tests, and one or more evidence rows linked transitively and reciprocally according to registry rules.
+  
+  Tier semantics
+  T1 requires passing linked tests and passed evidence at or above T1.
+  T2 additionally requires declared robustness dimensions and explicit source T1 evidence lineage.
+  T3 additionally requires release context, boundary context, and a passing certification guard result that can be read from linked evidence context.
+  
+  Operator expectations
+  Graph-valid materialization shall create a minimally valid linked subgraph in one supported transaction.
+  Graph evaluation shall fail closed when required nodes, links, artifacts, or tier metadata are missing.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0634"
+  - "adr:0635"

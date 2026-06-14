@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0631"
+number: 631
+slug: "mcp-mediated-upgrade-uses-current-runtime"
+title: "MCP mediated upgrade uses the current runtime"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision: ssot-mcp delegated upgrade calls use the currently running ssot-mcp binary and installed ssot-core runtime. MCP upgrade normalization must not attempt to install, resolve, or treat schema versions as PyPI package versions. It should refresh packaged ADR and SPEC documents during upgrade."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:16Z"
+    note: "Created to govern SSOT MCP worker repair and scoped maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  Decision: ssot-mcp delegated upgrade calls use the currently running ssot-mcp binary and installed ssot-core runtime. MCP upgrade normalization must not attempt to install, resolve, or treat schema versions as PyPI package versions. It should refresh packaged ADR and SPEC documents during upgrade.

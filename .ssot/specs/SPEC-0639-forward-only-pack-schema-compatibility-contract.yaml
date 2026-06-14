@@ -1,0 +1,59 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0639"
+number: 639
+slug: "forward-only-pack-schema-compatibility-contract"
+title: "Forward-only pack schema compatibility contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Pack manifest entries SHALL include `minimum_schema_version` as a strict"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-01T00:00:00Z"
+    note: "Created to specify forward-only governance-pack schema compatibility."
+    status: "draft"
+references: []
+body: |-
+  ## Contract
+  
+  Pack manifest entries SHALL include `minimum_schema_version` as a strict
+  semver string. Missing, empty, malformed, prerelease, and legacy integer
+  values SHALL fail pack-contract validation.
+  
+  Pack sync SHALL fail closed when the target registry schema version is below a
+  manifest row's `minimum_schema_version`.
+  
+  The schema compatibility check SHALL be a lower-bound preflight. It SHALL NOT
+  select historical ADR or SPEC parsers, and it SHALL NOT permit newly
+  published governance packs to emit obsolete document shapes.
+  
+  Legacy integer registry schema values used during old migrations SHALL compare
+  deterministically against semver manifest minimums so migration paths can
+  evaluate built-in and extension-pack manifests without ambiguous ordering.
+  
+  Materialized ADR and SPEC rows SHALL remain normalized registry rows. They
+  SHALL preserve source provenance through `source_pack_id`,
+  `source_package_name`, `source_document_kind`, and `source_document_id`, plus
+  package version and content hash metadata where applicable. They SHALL NOT
+  persist raw manifest payloads, row-level `minimum_schema_version`, or
+  `source_minimum_schema_version`.
+  
+  Governance-pack publish workflows SHALL build the local wheel and run a
+  downstream compatibility gate before PyPI publishing. The gate SHALL install
+  the built wheel into a clean downstream repository using
+  `ssot-registry>=0.2.22,<0.3.0`, unless an operator supplies an explicit
+  version override, then run `ssot pack sync . <import-name> --all --trust
+  --yes` and `ssot validate .`.
+  
+  This SPEC is the packaged `ssot-origin` contract for the policy introduced by
+  `adr:0637`. Upstream implementation context is also governed by `adr:0542`
+  and `adr:0546`, but those ADRs are `ssot-core` documents and are intentionally
+  not listed in `adr_ids` for downstream packaged sync.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0637"
+  - "adr:0610"

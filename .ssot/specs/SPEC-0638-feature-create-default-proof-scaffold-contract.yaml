@@ -1,0 +1,44 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0638"
+number: 638
+slug: "feature-create-default-proof-scaffold-contract"
+title: "Feature create default proof scaffold contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "`feature create` SHALL default to proof-graph scaffolding for new feature rows unless an explicit CLI override or effective repo-local config disables that behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-24T10:52:03Z"
+    note: "Created to govern default proof-graph scaffolding during feature creation."
+    status: "draft"
+references: []
+body: |-
+  ## Contract
+  
+  `feature create` SHALL default to proof-graph scaffolding for new feature rows unless an explicit CLI override or effective repo-local config disables that behavior.
+  
+  The default scaffold SHALL create or link the minimally valid claim, test, and evidence graph required for a governed feature row in the same transaction as feature creation. The command SHALL validate and save atomically.
+  
+  CLI precedence SHALL be:
+  1. explicit `--auto-scaffold-proof-graph` or `--no-auto-scaffold-proof-graph`
+  2. command-scoped repo-local config for feature creation
+  3. global repo-local config
+  4. built-in default
+  
+  The built-in default SHALL be scaffold enabled.
+  
+  The command SHALL expose an auditable result that makes clear when proof-graph scaffolding occurred, what ids were created or linked, and what files were materialized.
+  
+  Repositories MAY disable the default through repo-local config for narrow workflows such as inventory-only umbrella-parent creation, but such policy does not change the canonical meaning of features, parent links, profiles, claims, tests, or evidence.
+  
+  Repeated scaffolded creation attempts against an unchanged target SHALL be idempotent or fail cleanly without duplicating stable rows.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0601"
+  - "adr:0627"
+  - "adr:0636"

@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0632"
+number: 632
+slug: "targeted-repair-with-baseline-validation-drift"
+title: "Targeted repair can proceed with unrelated baseline drift"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision: targeted SSOT repair may proceed in a repository that already has unrelated validation drift when the repair introduces no new validation failures. Rationale: workers must be able to repair the blocker they own without being forced to mutate unrelated registry state outside the slice."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:17Z"
+    note: "Created to govern SSOT MCP worker repair and scoped maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  Decision: targeted SSOT repair may proceed in a repository that already has unrelated validation drift when the repair introduces no new validation failures. Rationale: workers must be able to repair the blocker they own without being forced to mutate unrelated registry state outside the slice.

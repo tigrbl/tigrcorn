@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0627"
+number: 627
+slug: "feature-parent-link-contract"
+title: "Feature parent link contract"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Feature rows SHALL include parent_feature_ids as a canonical list of normalized feature ids. Existing registries upgraded to this schema SHALL receive parent_feature_ids: [] for every feature row that does not already define the field."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-19T22:26:45Z"
+    note: "Accepted with ADR-0627 to separate inventory composition from prerequisite gating."
+    status: "accepted"
+references: []
+body: |-
+  ## Feature Row Contract
+  
+  Feature rows SHALL include parent_feature_ids as a canonical list of normalized feature ids. Existing registries upgraded to this schema SHALL receive parent_feature_ids: [] for every feature row that does not already define the field.
+  
+  parent_feature_ids SHALL represent inventory composition only. The field SHALL NOT express runtime prerequisites, implementation dependencies, claim dependencies, test dependencies, or release readiness gates. feature.requires remains the only feature-to-feature prerequisite edge.
+  
+  A feature MAY list more than one parent feature id. Each parent id MUST refer to an existing feature. A feature MUST NOT list itself as a parent. Parent-link cycles MUST fail validation.
+  
+  The registry SHALL derive children by selecting features that list a given parent id. The canonical registry SHALL NOT store child_feature_ids on parent rows.
+  
+  Validation and migration SHALL deduplicate and sort parent_feature_ids for deterministic output. Normal validation SHALL reject malformed values.
+  
+  Status synchronization, feature implementation evaluation, profile evaluation, boundary freeze, release certification, promotion, and publication SHALL ignore parent_feature_ids unless a later accepted ADR and SPEC define an explicit aggregate policy.
+  
+  Default proof-graph scaffolding for `feature create` SHALL NOT treat parent links as readiness edges and SHALL NOT infer that a row is non-targeted merely because it references or is referenced by `parent_feature_ids`. Disabling create-time scaffold for inventory-only umbrella rows is an explicit command or config choice.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0627"

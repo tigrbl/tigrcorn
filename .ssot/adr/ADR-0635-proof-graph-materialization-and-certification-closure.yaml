@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0635"
+number: 635
+slug: "proof-graph-materialization-and-certification-closure"
+title: "Proof Graph Materialization And Certification Closure"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Summary"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-21T05:59:14Z"
+    note: "Created to govern operator materialization and higher-tier proof-graph closure flows."
+    status: "draft"
+references: []
+body: |-
+  Summary
+  Proof graphs shall be materializable and closable through supported operator workflows.
+  
+  Decision
+  The SSOT CLI and MCP surfaces shall support atomic or fail-closed materialization of a minimally valid proof graph and a repeatable closure workflow for higher-tier evidence, boundary context, release certification, and certification feedback propagation.
+  
+  A minimally valid create-time scaffold shall not collapse all scaffolded claim tiers onto one placeholder test row when multiple claim tiers are scaffolded. When a feature scaffold creates T0 and T1 claims, the scaffold shall create separate support tests for the T0 claim and the T1 claim. The same rule extends upward for higher scaffolded tiers.
+  
+  Implications
+  A user shall not need hidden row-order knowledge to author or close a valid proof graph.
+  T2 and T3 closure metadata, including robustness dimensions, source evidence links, and release context, shall be first-class operator inputs.
+  Release certification outcomes that satisfy claim-tier gates shall be reattachable to linked proof evidence without direct registry edits.
+  Default scaffold materialization shall preserve tier distinction in the test rows it creates, even when those scaffold tests remain placeholder tests rather than authored unit or integration semantics.

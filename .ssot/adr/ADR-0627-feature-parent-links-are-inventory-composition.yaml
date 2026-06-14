@@ -1,0 +1,29 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0627"
+number: 627
+slug: "feature-parent-links-are-inventory-composition"
+title: "Feature parent links are inventory composition"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision: feature parent/leaf links are first-class inventory composition links, not readiness gates."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-19T22:26:32Z"
+    note: "Accepted as the modeling correction for umbrella and leaf feature inventories."
+    status: "accepted"
+references: []
+body: |-
+  Decision: feature parent/leaf links are first-class inventory composition links, not readiness gates.
+  
+  The canonical feature row will store parent membership on the leaf as parent_feature_ids. A leaf may list multiple parent feature ids, and children are derived by querying rows that name a parent. The registry will not store canonical child_feature_ids because that would create bidirectional drift.
+  
+  This decision preserves feature.requires as a passing prerequisite edge. Parent/leaf links organize the feature inventory and graph views only; they do not affect feature pass/fail, status synchronization, claim closure, profile evaluation, boundary freeze, certification, promotion, or publication.
+  
+  Default proof-graph scaffolding during `feature create` does not change the meaning of parent links. It only changes the default authoring path. When an operator is creating an inventory-only umbrella parent, disabling the default scaffold is an explicit operator choice or repo-local policy choice; it is not implied automatically by the existence of `parent_feature_ids`.
+  
+  Migration must add parent_feature_ids as an empty list to existing feature rows without inferring hierarchy from ids and without rewriting requires.

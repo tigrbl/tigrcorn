@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0628"
+number: 628
+slug: "feature-parent-cli-contract"
+title: "Feature parent CLI contract"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The CLI SHALL expose feature parent-link operations that mutate only the canonical child-side parent_feature_ids field."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-19T22:26:59Z"
+    note: "Accepted with ADR-0627 to define bulk parent and child command behavior."
+    status: "accepted"
+references: []
+body: |-
+  ## CLI Contract
+  
+  The CLI SHALL expose feature parent-link operations that mutate only the canonical child-side parent_feature_ids field.
+  
+  The CLI SHALL support bulk leaf-side operations:
+  
+  - feature parent add --ids <leaf...> --parent-ids <parent...>
+  - feature parent set --ids <leaf...> --parent-ids <parent...>
+  - feature parent remove --ids <leaf...> --parent-ids <parent...>
+  - feature parent clear --ids <leaf...>
+  
+  The CLI MAY expose parent-side convenience operations such as feature children add, feature children remove, and feature children list. Parent-side mutation commands SHALL still update parent_feature_ids on child rows and SHALL NOT create canonical child_feature_ids.
+  
+  Every bulk mutation SHALL resolve all referenced ids, apply changes in memory, deduplicate and sort parent ids, check missing references, self-parenting, and cycles, validate the full registry, and save once. If any row fails validation, the operation SHALL fail atomically without partial writes.
+  
+  CLI help and examples SHALL state that parent links are inventory composition only and SHALL NOT be used as a substitute for feature.requires prerequisite gates.
+  
+  CLI help and examples for `feature create` SHALL also state that proof-graph scaffolding is enabled by default, and that inventory-only umbrella creation is an explicit opt-out workflow via CLI override or repo-local config.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0627"
