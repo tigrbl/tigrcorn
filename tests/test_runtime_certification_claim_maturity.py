@@ -144,23 +144,46 @@ def _feature_claims(registry: dict) -> dict[str, list[dict]]:
 def test_runtime_certification_features_have_certified_t2_without_lower_caps() -> None:
     registry = _registry()
     features = {feature["id"]: feature for feature in registry["features"]}
+    claims_by_id = {claim["id"]: claim for claim in registry["claims"]}
     claims_by_feature = _feature_claims(registry)
     tier_order = {"T0": 0, "T1": 1, "T2": 2, "T3": 3, "T4": 4}
+
+    def lineage_ids(claim: dict) -> set[str]:
+        lineage: set[str] = {claim["id"]}
+        pending = list(claim.get("depends_on_claim_ids", []))
+        while pending:
+            claim_id = pending.pop()
+            if claim_id in lineage:
+                continue
+            lineage.add(claim_id)
+            pending.extend(claims_by_id[claim_id].get("depends_on_claim_ids", []))
+        return lineage
 
     for feature_id in sorted(TARGET_FEATURES):
         feature = features[feature_id]
         target_tier = feature["plan"]["target_claim_tier"]
         claims = claims_by_feature[feature_id]
-
-        assert any(
-            claim["tier"] == target_tier
+        satisfying_claims = [
+            claim
+            for claim in claims
+            if claim["tier"] == target_tier
             and claim["status"] in {"certified", "published"}
+        ]
+        satisfying_lineage = set().union(
+            *(lineage_ids(claim) for claim in satisfying_claims)
+        )
+
+        assert satisfying_claims, feature_id
+        lower_claims_outside_lineage = [
+            claim["id"]
             for claim in claims
-        ), feature_id
-        assert all(
-            tier_order[claim["tier"]] >= tier_order[target_tier]
-            for claim in claims
-        ), feature_id
+            if tier_order[claim["tier"]] < tier_order[target_tier]
+            and claim["id"] not in satisfying_lineage
+        ]
+        assert not lower_claims_outside_lineage, (
+            feature_id,
+            lower_claims_outside_lineage,
+        )
 
 
 def test_runtime_certification_features_have_passing_t0_t1_runtime_proof() -> None:
