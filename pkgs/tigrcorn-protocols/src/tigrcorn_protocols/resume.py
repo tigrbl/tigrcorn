@@ -51,6 +51,7 @@ class StreamResumeIdentity:
 class StreamResumeRecord:
     token: str
     identity: StreamResumeIdentity
+    base_offset: int = 0
     next_offset: int = 0
     state: ResumeState = ResumeState.ACTIVE
     expires_at: float | None = None
@@ -59,8 +60,12 @@ class StreamResumeRecord:
     def __post_init__(self) -> None:
         if not isinstance(self.token, str) or not self.token:
             raise ValueError("resume token is required")
+        if self.base_offset < 0:
+            raise ValueError("base_offset must be non-negative")
         if self.next_offset < 0:
             raise ValueError("next_offset must be non-negative")
+        if self.base_offset > self.next_offset:
+            raise ValueError("base_offset cannot exceed next_offset")
 
     def expired(self, *, now: float | None = None) -> bool:
         return self.expires_at is not None and (now if now is not None else monotonic()) >= self.expires_at
@@ -69,6 +74,7 @@ class StreamResumeRecord:
         return {
             "token": self.token,
             "identity": self.identity.as_dict(),
+            "base_offset": self.base_offset,
             "next_offset": self.next_offset,
             "state": self.state.value,
             "replay_count": len(self.replay_units),
@@ -80,6 +86,7 @@ class ResumeDecision:
     accepted: bool
     token: str
     state: ResumeState
+    identity: StreamResumeIdentity | None = None
     reason: str | None = None
     accepted_offset: int | None = None
     replay_units: tuple[bytes, ...] = ()
@@ -90,6 +97,8 @@ class ResumeDecision:
             "type": event_type,
             "resume_token": self.token,
         }
+        if self.identity is not None:
+            payload.update(self.identity.as_dict())
         if self.accepted:
             payload["accepted_offset"] = self.accepted_offset or 0
             payload["replay_count"] = len(self.replay_units)
@@ -128,6 +137,7 @@ class StreamResumeRegistry:
             raise ValueError("replay unit must be bytes")
         if len(record.replay_units) >= self.max_replay_units:
             record.replay_units.pop(0)
+            record.base_offset += 1
         record.replay_units.append(data)
         record.next_offset += 1
 
@@ -146,24 +156,35 @@ class StreamResumeRegistry:
     ) -> ResumeDecision:
         record = self._records.get(token)
         if record is None:
-            return ResumeDecision(False, token, ResumeState.REJECTED, reason="not_found")
+            return ResumeDecision(False, token, ResumeState.REJECTED, identity=identity, reason="not_found")
         if record.expired(now=now):
             record.state = ResumeState.EXPIRED
-            return ResumeDecision(False, token, ResumeState.EXPIRED, reason="expired")
+            return ResumeDecision(False, token, ResumeState.EXPIRED, identity=identity, reason="expired")
         if record.identity != identity:
             record.state = ResumeState.REJECTED
-            return ResumeDecision(False, token, ResumeState.REJECTED, reason="identity_mismatch")
-        if requested_offset < 0 or requested_offset > record.next_offset:
+            return ResumeDecision(
+                False,
+                token,
+                ResumeState.REJECTED,
+                identity=identity,
+                reason="identity_mismatch",
+            )
+        if (
+            not isinstance(requested_offset, int)
+            or requested_offset < record.base_offset
+            or requested_offset > record.next_offset
+        ):
             record.state = ResumeState.REJECTED
-            return ResumeDecision(False, token, ResumeState.REJECTED, reason="out_of_window")
+            return ResumeDecision(False, token, ResumeState.REJECTED, identity=identity, reason="out_of_window")
 
-        replay_from = max(0, requested_offset)
+        replay_from = requested_offset - record.base_offset
         record.state = ResumeState.RESUMED
         return ResumeDecision(
             True,
             token,
             ResumeState.RESUMED,
-            accepted_offset=replay_from,
+            identity=identity,
+            accepted_offset=requested_offset,
             replay_units=tuple(record.replay_units[replay_from:]),
         )
 

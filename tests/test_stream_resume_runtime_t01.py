@@ -39,6 +39,10 @@ def test_stream_resume_t1_accepts_matching_identity_and_replays_units() -> None:
     assert decision.event() == {
         "type": "stream.resume.accept",
         "resume_token": "rt-a",
+        "client_id": "client-a",
+        "session_id": "session-a",
+        "stream_id": "stream-a",
+        "binding": "h2",
         "accepted_offset": 1,
         "replay_count": 1,
     }
