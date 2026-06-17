@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1061"
+number: 1061
+slug: "webtransport-http3-draft-runtime-carrier"
+title: "WebTransport over HTTP/3 runtime follows the active IETF draft target"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn owns WebTransport-over-HTTP/3 runtime behavior against the active IETF WebTransport HTTP/3 draft target, with draft maturity explicitly separated from RFC claims."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:41:50Z"
+references: []
+body: |-
+  Decision: Tigrcorn owns WebTransport-over-HTTP/3 runtime behavior against the active IETF WebTransport HTTP/3 draft target, with draft maturity explicitly separated from RFC claims.
+  
+  Owned boundary:
+  - Tigrcorn owns Extended CONNECT negotiation, WebTransport session lifecycle, QUIC-backed stream/datagram handling, flow-control interactions, and runtime evidence for this stack.
+  - Tigrcorn must preserve the active draft identifier in governance until an RFC replaces it.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns contract vocabulary.
+  - Tigrbl owns app binding projection to WebTransport lanes.
+  
+  Forbidden claims:
+  - WebTransport-over-H3 runtime evidence must not be presented as RFC-stable unless the target has become an RFC and the ADR/specs are updated.
+  - WebTransport-over-H3 must not be combined with WebSocket as one stack.

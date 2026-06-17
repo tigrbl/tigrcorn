@@ -1,0 +1,39 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1058"
+number: 1058
+slug: "http11-message-body-stream-runtime-lifecycle"
+title: "HTTP/1.1 runtime streams are message body lifecycles"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn owns HTTP/1.1 streaming as request and response message body lifecycle behavior, not as native multiplexed transport stream behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T12:31:41Z"
+    note: "Accepted to govern the h11 runtime stack boundary before per-stack specs and features are added."
+    status: "accepted"
+references: []
+body: |-
+  Decision: Tigrcorn owns HTTP/1.1 streaming as request and response message body lifecycle behavior, not as native multiplexed transport stream behavior.
+  
+  Owned boundary:
+  - Tigrcorn owns HTTP/1.1 parser/runtime behavior for incremental request bodies, streaming response bodies, disconnects, trailers where supported, body-size limits, and connection/message-level backpressure.
+  - Tigrcorn may expose protocol-local lifecycle facts to the contract adapter without inventing HTTP/1.1 stream IDs.
+  - Tigrcorn owns runtime evidence for HTTP/1.1 streaming claims.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns the HTTP scope and event vocabulary.
+  - Tigrbl owns app binding projection onto HTTP request and response body streams.
+  
+  Non-goals:
+  - This ADR does not define HTTP/2 or HTTP/3 stream ID rules.
+  - This ADR does not define WebSocket or WebTransport stream/session behavior.
+  - This ADR does not define Tigrbl table binding policy.
+  
+  Forbidden claims:
+  - Tigrcorn must not represent HTTP/1.1 body streaming as native bidirectional or unidirectional transport streams.
+  - Tigrcorn must not claim HTTP/2, HTTP/3, QUIC, or WebTransport stream identity from HTTP/1.1 runtime evidence.

@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1060"
+number: 1060
+slug: "http3-quic-backed-stream-runtime-taxonomy"
+title: "HTTP/3 runtime owns QUIC-backed stream taxonomy and lifecycle"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn owns HTTP/3 runtime stream taxonomy over QUIC, including request, push, control, QPACK, reset, GOAWAY, and transport lifecycle behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:41:47Z"
+references: []
+body: |-
+  Decision: Tigrcorn owns HTTP/3 runtime stream taxonomy over QUIC, including request, push, control, QPACK, reset, GOAWAY, and transport lifecycle behavior.
+  
+  Owned boundary:
+  - Tigrcorn owns QUIC stream initiator and direction handling where it affects HTTP/3 runtime behavior.
+  - Tigrcorn owns HTTP/3 runtime evidence and certification boundaries.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns projected contract vocabulary.
+  - Tigrbl owns binding legality above runtime capabilities.
+  
+  Forbidden claims:
+  - Tigrcorn must not treat WebTransport lanes as plain HTTP/3 app streams.
+  - Tigrcorn must not use WebSocket-over-H3 evidence to claim generic WebTransport behavior.
