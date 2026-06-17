@@ -36,7 +36,7 @@ def test_emit_completion_event_accepts_canonical_enums_and_detail() -> None:
         ("accepted", "accepted_by_runtime"),
         ("flushed", "flushed_to_transport"),
         ("transport", "flushed_to_transport"),
-        ("acknowledged", "flushed_to_transport"),
+        ("acknowledged", "peer_acknowledged"),
     ],
 )
 def test_emit_completion_event_normalizes_legacy_level_aliases(alias: str, expected: str) -> None:

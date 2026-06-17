@@ -75,6 +75,28 @@ IMPLEMENTED_WEBTRANSPORT_FEATURE_IDS = {
     "feat:webtransport-live-session-lifecycle-trace",
     "feat:webtransport-live-session-identity-isolation",
     "feat:webtransport-live-stream-datagram-ownership",
+    "feat:webtransport-h2-carrier-negotiation",
+    "feat:webtransport-h2-extended-connect-session",
+    "feat:webtransport-h2-capsule-codec",
+    "feat:webtransport-h2-datagram-capsule",
+    "feat:webtransport-h2-stream-capsules",
+    "feat:webtransport-h2-flow-control-capsules",
+    "feat:webtransport-h2-session-termination",
+    "feat:webtransport-h2-operator-carrier-selection",
+    "feat:webtransport-h2-iana-constant-registry",
+    "feat:webtransport-h3-draft13-settings-negotiation",
+    "feat:webtransport-h3-draft13-extended-connect-session",
+    "feat:webtransport-h3-draft13-protocol-negotiation-headers",
+    "feat:webtransport-h3-draft13-unidi-streams",
+    "feat:webtransport-h3-draft13-bidi-streams",
+    "feat:webtransport-h3-draft13-reset-stop-streams",
+    "feat:webtransport-h3-draft13-datagrams",
+    "feat:webtransport-h3-draft13-buffering-and-orphan-handling",
+    "feat:webtransport-h3-draft13-goaway-and-drain",
+    "feat:webtransport-h3-draft13-keying-material-exporters",
+    "feat:webtransport-h3-draft13-flow-control-capsules",
+    "feat:webtransport-h3-draft13-session-termination",
+    "feat:webtransport-h3-draft13-iana-constant-registry",
 }
 PLANNED_WEBTRANSPORT_FEATURE_IDS: set[str] = set()
 
@@ -194,7 +216,7 @@ def test_webtransport_contract_completion_events_normalize_acknowledged_alias() 
     assert complete == {
         "type": "transport.emit.complete",
         "unit_id": "s1",
-        "level": "flushed_to_transport",
+        "level": "peer_acknowledged",
         "status": "ok",
     }
 

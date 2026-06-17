@@ -1,16 +1,28 @@
+from __future__ import annotations
+
 import pytest
 
-
-pytestmark = pytest.mark.skip(reason="planned SSOT coverage for WebTransport over HTTP/3 draft-13 buffering")
-
-
-def test_webtransport_h3_draft13_buffered_stream_before_connect():
-    """Planned coverage for tst:webtransport-h3-draft13-buffered-stream-before-connect."""
+from tigrcorn.webtransport.wire import WebTransportWireError, WebTransportWireRuntime
 
 
-def test_webtransport_h3_draft13_buffered_stream_limit_rejected():
-    """Planned coverage for tst:webtransport-h3-draft13-buffered-stream-limit-rejected."""
+def test_webtransport_h3_draft13_buffered_stream_before_connect() -> None:
+    runtime = WebTransportWireRuntime(max_sessions=1, buffer_limit=2)
+
+    runtime.buffer_before_session("4", "stream", b"payload")
+
+    assert runtime.flush_buffered("4")[0].payload == b"payload"
 
 
-def test_webtransport_h3_draft13_orphan_datagram_dropped():
-    """Planned coverage for tst:webtransport-h3-draft13-orphan-datagram-dropped."""
+def test_webtransport_h3_draft13_buffered_stream_limit_rejected() -> None:
+    runtime = WebTransportWireRuntime(max_sessions=1, buffer_limit=1)
+    runtime.buffer_before_session("4", "stream", b"one")
+
+    with pytest.raises(WebTransportWireError, match="WT_BUFFERED_STREAM_REJECTED"):
+        runtime.buffer_before_session("4", "stream", b"two")
+
+
+def test_webtransport_h3_draft13_orphan_datagram_dropped() -> None:
+    runtime = WebTransportWireRuntime(max_sessions=1)
+
+    with pytest.raises(WebTransportWireError, match="WT_SESSION_GONE"):
+        runtime.receive_datagram("404", b"orphan")

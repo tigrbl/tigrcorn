@@ -135,6 +135,7 @@ class HTTP3OutboundMixin:
         if 'webtransport' in self.listener.enabled_protocols:
             control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
             control_settings[SETTING_H3_DATAGRAM] = 1
+            control_settings[SETTING_WT_MAX_SESSIONS] = int(self.config.webtransport.max_sessions or 1)
             control_settings[SETTING_ENABLE_WEBTRANSPORT] = 1
         control_payload = session.h3.encode_control_stream(control_settings)
         session.server_control_stream_sent = True

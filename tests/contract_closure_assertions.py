@@ -149,7 +149,7 @@ class ContractClosureAssertions(unittest.TestCase):
         complete = emit_complete("s1", level="acknowledged")
         self.assertEqual(close["type"], "webtransport.close")
         self.assertEqual(complete["type"], "transport.emit.complete")
-        self.assertEqual(complete["level"], "flushed_to_transport")
+        self.assertEqual(complete["level"], "peer_acknowledged")
 
     def assert_generic_stream_runtime(self) -> None:
         self.assertEqual(stream_receive("s1", b"hello", more=True)["type"], "transport.stream.receive")

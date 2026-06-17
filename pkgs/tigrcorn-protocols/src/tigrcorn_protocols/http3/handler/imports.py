@@ -29,10 +29,12 @@ from tigrcorn_protocols.http3.codec import (
     SETTING_ENABLE_CONNECT_PROTOCOL,
     SETTING_ENABLE_WEBTRANSPORT,
     SETTING_H3_DATAGRAM,
+    SETTING_WT_MAX_SESSIONS,
     HTTP3ConnectionError,
     HTTP3StreamError,
     encode_frame,
 )
+from tigrcorn_protocols.webtransport.wire import H3_FRAME_WEBTRANSPORT_STREAM, H3_STREAM_TYPE_WEBTRANSPORT
 from tigrcorn_protocols.http3.streams import (
     STREAM_TYPE_QPACK_DECODER,
     STREAM_TYPE_QPACK_ENCODER,
