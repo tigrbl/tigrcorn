@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2076"
+number: 2076
+slug: "webtransport-http2-draft-fallback-runtime-contract"
+title: "WebTransport over HTTP/2 draft fallback runtime contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn WebTransport-over-HTTP/2 fallback runtime behavior for HTTP/2 Extended CONNECT and capsule-carrier operation. Source specifications: draft-ietf-webtrans-http2-14 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http2/, RFC 9113 https://www.rfc-editor.org/rfc/rfc9113, and RFC 9297 https://www.rfc-editor.org/rfc/rfc9297. It must not claim QUIC stream-ID or QUIC datagram behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack runtime behavior."
+    at: "2026-06-17T12:48:49Z"
+references: []
+body: |-
+  Defines Tigrcorn WebTransport-over-HTTP/2 fallback runtime behavior for HTTP/2 Extended CONNECT and capsule-carrier operation. Source specifications: draft-ietf-webtrans-http2-14 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http2/, RFC 9113 https://www.rfc-editor.org/rfc/rfc9113, and RFC 9297 https://www.rfc-editor.org/rfc/rfc9297. It must not claim QUIC stream-ID or QUIC datagram behavior.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1062"

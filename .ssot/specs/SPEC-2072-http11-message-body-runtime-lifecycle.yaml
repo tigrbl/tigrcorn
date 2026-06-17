@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2072"
+number: 2072
+slug: "http11-message-body-runtime-lifecycle"
+title: "HTTP/1.1 message body runtime lifecycle"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn HTTP/1.1 runtime behavior for incremental request bodies, streaming response bodies, disconnects, trailers where supported, body limits, and connection or message backpressure. Source specification: RFC 9112 https://www.rfc-editor.org/rfc/rfc9112. The runtime must not expose native h11 stream IDs or multiplexed stream lanes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack runtime behavior."
+    at: "2026-06-17T12:48:40Z"
+references: []
+body: |-
+  Defines Tigrcorn HTTP/1.1 runtime behavior for incremental request bodies, streaming response bodies, disconnects, trailers where supported, body limits, and connection or message backpressure. Source specification: RFC 9112 https://www.rfc-editor.org/rfc/rfc9112. The runtime must not expose native h11 stream IDs or multiplexed stream lanes.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1058"

@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2074"
+number: 2074
+slug: "http3-quic-backed-runtime-stream-contract"
+title: "HTTP/3 QUIC-backed runtime stream contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn HTTP/3 runtime stream taxonomy over QUIC, including request, push, control, QPACK, reset, GOAWAY, and transport lifecycle behavior. Source specifications: RFC 9114 https://www.rfc-editor.org/rfc/rfc9114 and RFC 9000 https://www.rfc-editor.org/rfc/rfc9000. Plain HTTP/3 runtime behavior must remain separate from WebTransport lanes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack runtime behavior."
+    at: "2026-06-17T12:48:45Z"
+references: []
+body: |-
+  Defines Tigrcorn HTTP/3 runtime stream taxonomy over QUIC, including request, push, control, QPACK, reset, GOAWAY, and transport lifecycle behavior. Source specifications: RFC 9114 https://www.rfc-editor.org/rfc/rfc9114 and RFC 9000 https://www.rfc-editor.org/rfc/rfc9000. Plain HTTP/3 runtime behavior must remain separate from WebTransport lanes.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1060"
