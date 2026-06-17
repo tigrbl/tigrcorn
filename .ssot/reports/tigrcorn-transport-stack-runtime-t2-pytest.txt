@@ -1,0 +1,3 @@
+Tigrcorn transport stack runtime taxonomy T2 pytest evidence
+command: uv run pytest tests/test_transport_stack_taxonomy_t01.py tests/test_transport_stack_taxonomy_t2.py -q
+result: 9 passed
