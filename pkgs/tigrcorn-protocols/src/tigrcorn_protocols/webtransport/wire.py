@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from hashlib import sha256
 from hmac import compare_digest
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from tigrcorn_core.errors import ProtocolError
 from tigrcorn_core.utils.bytes import decode_quic_varint, encode_quic_varint
@@ -196,6 +196,8 @@ class WebTransportFlowController:
         self.data_sent += amount
 
     def allow_stream_data(self, stream_id: int, direction: StreamDirection, amount: int) -> None:
+        if amount < 0:
+            raise WebTransportWireError("flow-control amount must be non-negative")
         limit = self.max_stream_data_uni if direction is StreamDirection.UNI else self.max_stream_data_bidi
         current = self.stream_data_sent.get(stream_id, 0)
         if limit and current + amount > limit:
@@ -215,7 +217,10 @@ class WebTransportFlowController:
         return self.streams_opened_bidi - 1
 
     def apply_flow_control_capsule(self, capsule: Capsule) -> None:
-        values = list(decode_varints(capsule.payload))
+        try:
+            values = list(decode_varints(capsule.payload))
+        except (ProtocolError, ValueError) as exc:
+            raise WebTransportWireError("malformed flow-control capsule") from exc
         if capsule.capsule_type == CAPSULE_WT_MAX_DATA:
             self.max_data = _single_value(values, "WT_MAX_DATA")
             return
@@ -233,13 +238,19 @@ class WebTransportFlowController:
         if capsule.capsule_type == CAPSULE_WT_MAX_STREAMS_BIDI:
             self.max_streams_bidi = _single_value(values, "WT_MAX_STREAMS_BIDI")
             return
-        if capsule.capsule_type not in {
-            CAPSULE_WT_DATA_BLOCKED,
-            CAPSULE_WT_STREAM_DATA_BLOCKED,
-            CAPSULE_WT_STREAMS_BLOCKED_BIDI,
-            CAPSULE_WT_STREAMS_BLOCKED_UNI,
-        }:
-            raise WebTransportWireError(f"unsupported flow-control capsule {capsule.capsule_type:#x}")
+        if capsule.capsule_type == CAPSULE_WT_DATA_BLOCKED:
+            _single_value(values, "WT_DATA_BLOCKED")
+            return
+        if capsule.capsule_type == CAPSULE_WT_STREAM_DATA_BLOCKED:
+            _two_values(values, "WT_STREAM_DATA_BLOCKED")
+            return
+        if capsule.capsule_type == CAPSULE_WT_STREAMS_BLOCKED_BIDI:
+            _single_value(values, "WT_STREAMS_BLOCKED_BIDI")
+            return
+        if capsule.capsule_type == CAPSULE_WT_STREAMS_BLOCKED_UNI:
+            _single_value(values, "WT_STREAMS_BLOCKED_UNI")
+            return
+        raise WebTransportWireError(f"unsupported flow-control capsule {capsule.capsule_type:#x}")
 
 
 @dataclass(slots=True)
@@ -261,6 +272,11 @@ class WebTransportSession:
         if self.state is SessionState.CLOSED:
             raise WebTransportWireError("WebTransport session is closed")
 
+    def ensure_accepting_traffic(self) -> None:
+        self.ensure_open()
+        if self.state is SessionState.DRAINING:
+            raise WebTransportWireError("WebTransport session is draining")
+
 
 @dataclass(slots=True)
 class BufferedItem:
@@ -269,8 +285,18 @@ class BufferedItem:
     payload: bytes
 
 
+KeyingMaterialExporter = Callable[[str, bytes, int], bytes]
+
+
 class WebTransportWireRuntime:
-    def __init__(self, *, max_sessions: int, max_datagram_size: int = 1200, buffer_limit: int = 16) -> None:
+    def __init__(
+        self,
+        *,
+        max_sessions: int,
+        max_datagram_size: int = 1200,
+        buffer_limit: int = 16,
+        keying_material_exporter: KeyingMaterialExporter | None = None,
+    ) -> None:
         if max_sessions < 1:
             raise ValueError("max_sessions must be positive")
         if max_datagram_size < 1:
@@ -283,6 +309,7 @@ class WebTransportWireRuntime:
         self.sessions: dict[str, WebTransportSession] = {}
         self.buffered: list[BufferedItem] = []
         self.goaway_stream_id: int | None = None
+        self._keying_material_exporter = keying_material_exporter
 
     def accept(self, request: ConnectRequest) -> ConnectDecision:
         decision = validate_extended_connect(request)
@@ -306,24 +333,27 @@ class WebTransportWireRuntime:
 
     def open_stream(self, session_id: str, stream_id: int, direction: StreamDirection) -> None:
         session = self._session(session_id)
-        session.ensure_open()
+        session.ensure_accepting_traffic()
         session.flow.open_stream(direction)
         session.streams[stream_id] = direction
 
     def receive_stream_data(self, session_id: str, stream_id: int, data: bytes, direction: StreamDirection) -> None:
         session = self._session(session_id)
+        session.ensure_accepting_traffic()
         if stream_id not in session.streams:
             self.open_stream(session_id, stream_id, direction)
         session.flow.allow_stream_data(stream_id, direction, len(data))
 
     def receive_datagram(self, session_id: str, payload: bytes) -> None:
         session = self._session(session_id)
-        session.ensure_open()
+        session.ensure_accepting_traffic()
         if len(payload) > self.max_datagram_size:
             raise WebTransportWireError("datagram size exceeded")
         session.datagrams.append(payload)
 
     def buffer_before_session(self, session_id: str, kind: str, payload: bytes) -> None:
+        if session_id in self.sessions:
+            raise WebTransportWireError("session already established")
         if len(self.buffered) >= self.buffer_limit:
             raise WebTransportWireError("WT_BUFFERED_STREAM_REJECTED")
         self.buffered.append(BufferedItem(session_id=session_id, kind=kind, payload=payload))
@@ -379,10 +409,16 @@ class WebTransportWireRuntime:
 
     def keying_material_exporter(self, session_id: str, label: str, context: bytes, length: int) -> bytes:
         session = self._session(session_id)
+        session.ensure_open()
         if session.carrier is not Carrier.H3:
             raise WebTransportWireError("keying material exporters require HTTP/3 over QUIC")
         if length < 1:
             raise WebTransportWireError("exporter length must be positive")
+        if self._keying_material_exporter is not None:
+            exported = self._keying_material_exporter(label, context, length)
+            if len(exported) != length:
+                raise WebTransportWireError("keying material exporter returned wrong length")
+            return exported
         seed = f"{session.session_id}:{label}:".encode("ascii") + context
         digest = sha256(seed).digest()
         output = bytearray()
@@ -399,6 +435,8 @@ class WebTransportWireRuntime:
 
 
 def h2_webtransport_settings(max_sessions: int, init: WebTransportInit | None = None) -> dict[int, int]:
+    if max_sessions < 0:
+        raise ValueError("max_sessions must be non-negative")
     init = init or WebTransportInit()
     return {
         SETTING_ENABLE_CONNECT_PROTOCOL: 1,
@@ -412,6 +450,8 @@ def h2_webtransport_settings(max_sessions: int, init: WebTransportInit | None = 
 
 
 def h3_draft13_settings(max_sessions: int) -> dict[int, int]:
+    if max_sessions < 0:
+        raise ValueError("max_sessions must be non-negative")
     return {
         SETTING_ENABLE_CONNECT_PROTOCOL: 1,
         SETTING_H3_DATAGRAM: 1,
@@ -626,7 +666,10 @@ def encode_h3_datagram_payload(connect_stream_id: int, data: bytes) -> bytes:
 
 
 def decode_h3_datagram_payload(payload: bytes) -> tuple[int, bytes]:
-    quarter_stream_id, offset = decode_quic_varint(payload, 0)
+    try:
+        quarter_stream_id, offset = decode_quic_varint(payload, 0)
+    except (ProtocolError, ValueError) as exc:
+        raise WebTransportWireError("malformed H3 datagram payload") from exc
     return int(quarter_stream_id) * 4, payload[offset:]
 
 
@@ -737,6 +780,7 @@ __all__ = [
     "WebTransportInit",
     "WebTransportWireError",
     "WebTransportWireRuntime",
+    "KeyingMaterialExporter",
     "carrier_for_selection",
     "constant_registry_snapshot",
     "decode_capsule",
