@@ -1,0 +1,17 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1056"
+number: 1056
+slug: "transport-stream-resume-runtime-boundary"
+title: "Transport stream resume runtime boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn owns transport-adjacent resume state, token validation, and replay-window decisions while preserving protocol-local stream identity boundaries."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrcorn owns transport-adjacent resume state, token validation, and replay-window decisions while preserving protocol-local stream identity boundaries.

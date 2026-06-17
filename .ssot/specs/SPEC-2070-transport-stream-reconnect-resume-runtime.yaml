@@ -1,0 +1,20 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2070"
+number: 2070
+slug: "transport-stream-reconnect-resume-runtime"
+title: "Transport stream reconnect resume runtime"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn runtime ownership for identity-bound stream resume records, replay windows, token validation, and explicit accept or reject decisions."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines Tigrcorn runtime ownership for identity-bound stream resume records, replay windows, token validation, and explicit accept or reject decisions.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1056"

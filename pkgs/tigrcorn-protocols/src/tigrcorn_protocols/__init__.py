@@ -4,4 +4,5 @@ from __future__ import annotations
 
 __all__ = [
     "client_session_coverage",
+    "resume",
 ]
