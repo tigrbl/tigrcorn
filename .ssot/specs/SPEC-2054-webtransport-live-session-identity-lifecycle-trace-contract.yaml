@@ -8,13 +8,22 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener: stable session identity, lifecycle trace events, session-scoped streams and datagrams, bidi/unidi stream-kind metadata, cleanup after close, and stale partial-handshake protection."
+summary: "Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener across H3 native and H2 capsule-backed carriers."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener: stable session identity, lifecycle trace events, session-scoped streams and datagrams, bidi/unidi stream-kind metadata, cleanup after close, and stale partial-handshake protection.
+  Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener across H3 native and H2 capsule-backed carriers.
+
+  Requirements:
+
+  - Live session identity shall remain stable for session create, accept, stream dispatch, datagram dispatch, close, drain, and cleanup.
+  - H3 WebTransport traces shall include draft-13 settings negotiation, extended CONNECT response, stream/datagram ownership, buffering, GOAWAY effects, close/drain, and error-code mapping where applicable.
+  - H2 WebTransport traces shall include settings negotiation, extended CONNECT response, capsule parsing, session-scoped stream/datagram ownership, flow-control capsule effects, close/drain, and malformed capsule rejection.
+  - Carrier metadata shall distinguish H3/QUIC native stream/datagram backing from H2 capsule backing in evidence.
 spec_kind: "operational"
 adr_ids:
+  - "adr:1011"
   - "adr:1040"
+  - "adr:1055"

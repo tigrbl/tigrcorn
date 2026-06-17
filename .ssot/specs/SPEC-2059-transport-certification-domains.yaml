@@ -15,17 +15,21 @@ status_notes: []
 references: []
 body: |-
   Tigrcorn shall certify TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transports as independent transport domains.
-  
+
   Requirements:
-  
+
   - Transport certification shall cover capability discovery, startup, shutdown, backpressure, latency, throughput, fairness, and resource usage.
   - Transport diagnostics shall expose endpoint identity, transport kind, carrier state, and safe operational counters.
   - QUIC transport diagnostics shall expose safe RTT, loss, migration, retry, and connection-id state where available.
+  - WebTransport over HTTP/3 draft-13 certification shall be a protocol-over-transport domain layered on HTTP/3 and QUIC evidence, with draft-specific settings, streams, datagrams, capsules, error codes, and protocol negotiation preserved.
+  - WebTransport over HTTP/2 certification shall be a separate fallback-carrier domain layered on HTTP/2 evidence, with capsule-backed streams, datagrams, flow control, and close/drain behavior preserved.
   - Unsupported or unavailable transport capabilities shall fail closed during strict profile validation.
   - Transport evidence shall remain distinct from protocol handler evidence even when the same test scenario exercises both.
 spec_kind: "operational"
 adr_ids:
   - "adr:1002"
+  - "adr:1011"
   - "adr:1020"
   - "adr:1031"
   - "adr:1046"
+  - "adr:1055"

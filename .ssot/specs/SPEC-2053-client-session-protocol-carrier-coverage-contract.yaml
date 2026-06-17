@@ -51,6 +51,7 @@ body: |-
   - `websocket_h1`
   - `websocket_h2`
   - `websocket_h3`
+  - `webtransport_h2`
   - `webtransport_h3_quic`
 
   Client topologies:
@@ -90,6 +91,7 @@ body: |-
   - `http2` defaults to `h2_stream_scoped`.
   - `http3_quic` defaults to `h3_stream_scoped`.
   - `websocket_h1`, `websocket_h2`, and `websocket_h3` default to `websocket_connection_scoped`.
+  - `webtransport_h2` defaults to `webtransport_session_scoped` with HTTP/2 CONNECT stream identity preserved.
   - `webtransport_h3_quic` defaults to `webtransport_session_scoped`.
 
   Proof expectations:
@@ -100,6 +102,7 @@ body: |-
   - Churn proof must show disconnect/reconnect behavior without disrupting still-active clients.
   - Pressure proof must show bounded queues, flow-control, or configured limits.
   - Fault proof must show malformed, unsupported, cross-session, post-close, timeout, or cancellation behavior fails closed.
+  - WebTransport carrier proof must distinguish H2 capsule-backed sessions from H3/QUIC native sessions and shall not cross-credit one carrier's passing tests to the other carrier.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1039"
@@ -109,3 +112,4 @@ adr_ids:
   - "adr:1023"
   - "adr:1024"
   - "adr:1033"
+  - "adr:1055"

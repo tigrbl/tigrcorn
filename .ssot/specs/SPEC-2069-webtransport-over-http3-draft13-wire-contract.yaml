@@ -1,0 +1,46 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2069"
+number: 2069
+slug: "webtransport-over-http3-draft13-wire-contract"
+title: "WebTransport over HTTP/3 draft-13 wire contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn's canonical WebTransport over HTTP/3 and QUIC carrier contract for draft-ietf-webtrans-http3-13."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T00:00:00Z"
+    note: "Created to govern draft-13 WebTransport over HTTP/3 support separately from legacy draft02 compatibility behavior."
+    status: "draft"
+references:
+  - "IETF draft-ietf-webtrans-http3-13: https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-13"
+body: |-
+  # WebTransport over HTTP/3 draft-13 wire contract
+
+  This SPEC defines Tigrcorn's canonical WebTransport over HTTP/3 and QUIC carrier contract for draft-ietf-webtrans-http3-13.
+
+  Requirements:
+
+  - The HTTP/3 carrier shall negotiate WebTransport support with `SETTINGS_WT_MAX_SESSIONS`; legacy `SETTING_ENABLE_WEBTRANSPORT` and `sec-webtransport-http3-draft` behavior is compatibility-only.
+  - Session establishment shall use extended CONNECT with `:protocol = webtransport`, `:scheme = https`, `:authority`, `:path`, and applicable `Origin` validation.
+  - The carrier shall implement draft-13 protocol negotiation headers `WT-Available-Protocols` and `WT-Protocol`.
+  - Bidirectional WebTransport streams shall use the draft-13 stream signal/frame type and preserve session association before application data.
+  - Unidirectional WebTransport streams shall use the draft-13 unidirectional stream type and preserve session association before application data.
+  - QUIC DATAGRAM and HTTP/3 Datagram handling shall preserve WebTransport session association and configured datagram limits.
+  - The carrier shall implement draft-13 stream reset, stop sending, application error, `RESET_STREAM_AT`, and buffered-stream rejection behavior where required by the draft.
+  - The carrier shall implement draft-13 session close and drain capsules and the required flow-control capsules.
+  - HTTP/3 GOAWAY behavior shall prevent new WebTransport sessions beyond the advertised limit while preserving established-session semantics.
+  - Keying material exporter support shall be governed explicitly before certification claims mention exporter availability.
+  - Runtime projection shall expose the same `webtransport.*` session, stream, datagram, and close events as other WebTransport carriers while preserving carrier metadata that identifies native HTTP/3 over QUIC backing.
+  - Certification shall include positive and negative tests for settings negotiation, extended CONNECT admission, protocol negotiation headers, bidi streams, unidi streams, datagrams, buffering, GOAWAY, close/drain, flow-control capsules, error-code mapping, and legacy-draft rejection or compatibility behavior.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1011"
+  - "adr:1023"
+  - "adr:1024"
+  - "adr:1040"
+  - "adr:1050"

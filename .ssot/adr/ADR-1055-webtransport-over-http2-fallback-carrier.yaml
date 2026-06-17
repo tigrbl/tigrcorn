@@ -1,0 +1,35 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1055"
+number: 1055
+slug: "webtransport-over-http2-fallback-carrier"
+title: "adopt WebTransport over HTTP/2 as a separately gated fallback carrier"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision proposal: Tigrcorn shall add WebTransport over HTTP/2 as a separately gated fallback carrier rather than treating it as part of the existing HTTP/3 WebTransport target."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T00:00:00Z"
+    note: "Created to govern draft-ietf-webtrans-http2-08 support separately from the HTTP/3 WebTransport target."
+    status: "draft"
+references:
+  - "IETF draft-ietf-webtrans-http2-08: https://www.ietf.org/archive/id/draft-ietf-webtrans-http2-08.html"
+body: |-
+  # ADR 1055 - WebTransport over HTTP/2 fallback carrier
+
+  Decision proposal: Tigrcorn shall add WebTransport over HTTP/2 as a separately gated fallback carrier rather than treating it as part of the existing HTTP/3 WebTransport target.
+
+  WebTransport over HTTP/2 is a different wire contract from WebTransport over HTTP/3. It uses HTTP/2 extended CONNECT plus the HTTP Capsule Protocol to emulate WebTransport sessions, streams, datagrams, flow control, and termination on top of a TCP-backed HTTP/2 connection.
+
+  Consequences:
+
+  - HTTP/2 WebTransport shall require an explicit operator/carrier selection and shall not be enabled by the existing UDP/QUIC/H3 WebTransport path.
+  - HTTP/2 `:protocol = webtransport` shall stop being treated as an unsupported extended CONNECT protocol only when the capsule-backed carrier is implemented and configured.
+  - The H2 carrier shall negotiate `SETTINGS_WEBTRANSPORT_MAX_SESSIONS` and `SETTINGS_ENABLE_CONNECT_PROTOCOL` before admitting WebTransport sessions.
+  - The H2 carrier shall implement the WebTransport capsule set, including stream, datagram, flow-control, reset/stop, close, and drain capsules.
+  - Runtime events shall project into the same contract-native WebTransport session, stream, and datagram families as the H3 carrier, but the transport facts shall record that the underlying carrier is capsule-backed HTTP/2 rather than native QUIC streams and datagrams.
+  - Flow control, resource governance, and certification evidence shall remain carrier-specific so H2 fallback support cannot be certified by H3-only tests.

@@ -1,14 +1,14 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1011"
 number: 1011
 slug: "webtransport-contract-boundary"
-title: "adopt WebTransport over HTTP/3 and QUIC as an in-bound contract target"
+title: "adopt WebTransport over HTTP/3 draft-13 and QUIC as the canonical carrier target"
 status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 and QUIC as an in-bound product target."
+summary: "Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 draft-13 and QUIC as the canonical native WebTransport carrier target."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -17,27 +17,35 @@ status_notes:
     note: "Updated to require native WebTransport lane separation."
     status: "accepted"
   -
-    status: "accepted"
-    note: "Updated WebTransport boundary to keep app framing above lane transport facts."
     at: "2026-05-27T17:58:38Z"
+    note: "Updated WebTransport boundary to keep app framing above lane transport facts."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Pinned HTTP/3 WebTransport governance to draft-13; HTTP/2 fallback is governed separately by ADR-1055."
+    at: "2026-06-17T08:44:18Z"
 references: []
 body: |-
   # ADR 1011 - WebTransport contract boundary
-  
-  Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 and QUIC as an in-bound product target.
-  
+
+  Decision: Tigrcorn shall implement first-class WebTransport over HTTP/3 draft-13 and QUIC as the canonical native WebTransport carrier target.
+
   The authoritative product boundary is the `.ssot` registry. Human-readable docs are projections and do not win conflicts with `.ssot/registry.json`.
-  
+
   WebTransport is in bounds because it is a transport/protocol/application-hosting target that sits directly on the package-owned QUIC and HTTP/3 stack.
-  
-  The boundary tracks the W3C WebTransport API model as the external API semantics reference and the IETF WEBTRANS HTTP/3 draft family as the carrier-protocol reference while those documents remain work in progress. MDN WebTransport documentation is tracked as an informative implementation and browser-behavior reference for developer-facing examples, terminology, and compatibility notes.
-  
+
+  The boundary tracks the W3C WebTransport API model as the external API semantics reference and IETF draft-ietf-webtrans-http3-13 as the HTTP/3 carrier-protocol reference. MDN WebTransport documentation is tracked as an informative implementation and browser-behavior reference for developer-facing examples, terminology, and compatibility notes.
+
+  Tigrcorn's existing legacy HTTP/3 WebTransport negotiation surface, including `SETTING_ENABLE_WEBTRANSPORT` and `sec-webtransport-http3-draft`, is compatibility behavior and is not the canonical target for new conformance work. The canonical HTTP/3 carrier requires draft-13 negotiation, settings, streams, datagrams, capsules, error codes, and protocol-negotiation headers as governed by `spc:2069`.
+
+  WebTransport over HTTP/2 is not implied by this ADR. HTTP/2 fallback support is governed separately by ADR-1055 and its capsule-based wire contract.
+
   REST and JSON-RPC are out of bounds for Tigrcorn's runtime. They are application or framework bindings above ASGI HTTP. Tigrcorn may validate contract metadata that classifies HTTP traffic, but it shall not implement REST or JSON-RPC product runtimes.
-  
+
   ## Classification update
-  
+
   WebTransport projection shall distinguish native lanes under one session: session lifecycle, bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams. Message-shaped application payloads may be inner framing on a stream or datagram, but `message` is not a peer native WebTransport transport lane.
-  
+
   Tigrcorn owns WebTransport lane transport facts such as session identity, stream identity, stream direction, datagram capability, and close/error metadata. Application-level message framing inside a WebTransport stream or datagram remains a higher-layer concern unless separately governed in Tigrcorn.
 
   Client-session topology coverage under ADR-1039 uses `session_id`, `stream_id`, and `datagram_id` as governed proof identifiers while keeping WebTransport lane terminology protocol-internal.

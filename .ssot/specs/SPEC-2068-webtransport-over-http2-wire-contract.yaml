@@ -1,0 +1,43 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2068"
+number: 2068
+slug: "webtransport-over-http2-wire-contract"
+title: "WebTransport over HTTP/2 wire contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn's planned WebTransport over HTTP/2 carrier contract for draft-ietf-webtrans-http2-08."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T00:00:00Z"
+    note: "Created to govern capsule-backed WebTransport over HTTP/2 support."
+    status: "draft"
+references:
+  - "IETF draft-ietf-webtrans-http2-08: https://www.ietf.org/archive/id/draft-ietf-webtrans-http2-08.html"
+body: |-
+  # WebTransport over HTTP/2 wire contract
+
+  This SPEC defines Tigrcorn's planned WebTransport over HTTP/2 carrier contract for draft-ietf-webtrans-http2-08.
+
+  Requirements:
+
+  - The HTTP/2 carrier shall negotiate `SETTINGS_ENABLE_CONNECT_PROTOCOL` and `SETTINGS_WEBTRANSPORT_MAX_SESSIONS` before admitting WebTransport sessions.
+  - WebTransport sessions shall be created only through extended CONNECT with `:protocol = webtransport`, `:scheme = https`, `:authority`, `:path`, and applicable browser `Origin` validation.
+  - The CONNECT stream ID shall be the WebTransport session identifier for wire-level correlation.
+  - Capsules shall be carried in HTTP/2 DATA frames on the CONNECT stream using the HTTP Capsule Protocol.
+  - The carrier shall implement the required WebTransport capsule families: padding, stream, reset stream, stop sending, datagram, session close, session drain, and flow-control capsules.
+  - Flow control shall model TCP, HTTP/2 connection, HTTP/2 stream, WebTransport session, and WebTransport stream credit separately.
+  - Initial WebTransport flow-control values shall be negotiated by HTTP/2 settings and `WebTransport-Init` where applicable.
+  - Runtime projection shall expose the same `webtransport.*` session, stream, datagram, and close events as the H3 carrier while preserving carrier metadata that identifies HTTP/2 capsule backing.
+  - Unsupported or unnegotiated WebTransport-over-H2 requests shall fail closed and remain distinct from RFC 8441 WebSocket extended CONNECT and generic CONNECT relay.
+  - Certification shall include positive and negative tests for settings negotiation, session admission, capsule parsing, stream/data flow control, datagrams, close/drain, malformed capsules, excess sessions, and post-close traffic.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1055"
+  - "adr:1003"
+  - "adr:1024"
+  - "adr:1050"

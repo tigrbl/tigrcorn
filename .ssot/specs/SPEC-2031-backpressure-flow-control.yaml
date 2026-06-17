@@ -15,11 +15,11 @@ status_notes: []
 references: []
 body: |-
   # Backpressure and flow-control mapping
-  
+
   Tigrcorn shall map backpressure and flow-control behavior into contract completion and family semantics.
-  
+
   Requirements:
-  
+
   - Native streams expose flow-control state where supported.
   - Emission APIs report completion levels that match the actual carrier guarantee.
   - ASGI/3 compatibility exposes additional flow-control metadata only through extensions.
@@ -27,7 +27,14 @@ body: |-
   - For request-streaming carriers, receive-side transport credit and application-visible backlog shall be tracked separately.
   - HTTP/2 request-body `WINDOW_UPDATE` behavior shall be tied to drained application-visible backlog or explicit backlog release, not only to bytes accepted from the socket.
   - Flow-control replenishment shall remain bounded at both the stream and connection level so a slow consumer on one stream cannot turn multiplexing into unbounded buffering.
+  - WebTransport over HTTP/2 shall model TCP, HTTP/2 connection, HTTP/2 stream, WebTransport session, and WebTransport stream flow-control layers separately.
+  - WebTransport over HTTP/2 shall implement and test WebTransport flow-control capsules before claiming stream/datagram backpressure support.
+  - WebTransport over HTTP/3 shall distinguish QUIC transport flow control from WebTransport session and stream limits negotiated by draft-13 settings and capsules.
+  - WebTransport resource governance shall connect configured budgets to carrier flow-control behavior without treating local limits as a substitute for negotiated wire semantics.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1003"
   - "adr:1012"
+  - "adr:1011"
+  - "adr:1050"
+  - "adr:1055"

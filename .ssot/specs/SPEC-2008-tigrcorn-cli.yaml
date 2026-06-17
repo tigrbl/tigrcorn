@@ -19,34 +19,39 @@ status_notes:
 references: []
 body: |-
   ## Content
-  
+
   # CLI operator reference
-  
+
   Tigrcorn shall expose a public CLI for configuring application loading, listener binding, protocol selection, protocol tuning, security, observability, resources, and delivery surfaces.
-  
+
   ## Public protocol selection
-  
+
   - `--protocol` shall accept `http1`, `http2`, `http3`, `quic`, `websocket`, `webtransport`, `rawframed`, and `custom`.
   - `--protocol webtransport` shall select the WebTransport protocol surface.
   - `--protocol webtransport` shall not create a REST or JSON-RPC runtime.
+  - `--protocol webtransport` shall select the canonical HTTP/3/QUIC WebTransport carrier unless a separately governed HTTP/2 fallback selector is explicitly added.
+  - WebTransport over HTTP/2 shall require explicit operator configuration once implemented; it shall not be selected implicitly by HTTP/2 WebSocket extended CONNECT support.
   - Protocol selection shall be resolved through the same config precedence model as other public CLI flags: CLI greater than environment greater than config file greater than defaults.
-  
+
   ## WebTransport CLI tuning
-  
+
   Tigrcorn shall expose these public WebTransport tuning flags:
-  
+
   - `--webtransport-max-sessions`
   - `--webtransport-max-streams`
   - `--webtransport-max-datagram-size`
   - `--webtransport-origin`
   - `--webtransport-path`
-  
+
   The WebTransport CLI tuning flags shall map to the `webtransport.*` config model and shall have equivalent config, environment, and public API surfaces where applicable.
-  
+
   ## Validation and generated truth
-  
+
   - Public CLI behavior shall be reflected in parser help, CLI flag surface metadata, flag contracts, default audits, SSOT test links, and executable tests.
   - Public protocol and tuning flags shall fail closed on invalid enum values, invalid numeric values, or invalid WebTransport carrier state.
   - Hidden experimental flags are not part of the public certified CLI surface unless explicitly declared by feature rows.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1011"
+  - "adr:1050"
+  - "adr:1055"

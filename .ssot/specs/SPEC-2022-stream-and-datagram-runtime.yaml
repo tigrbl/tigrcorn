@@ -19,20 +19,26 @@ status_notes:
 references: []
 body: |-
   # Stream and datagram runtime
-  
+
   Tigrcorn shall model stream and datagram behavior as contract-native runtime families.
-  
+
   Requirements:
-  
+
   - Native scopes declare stream and datagram capabilities where supported.
   - Stream events preserve stream identity, direction, close state, and flow-control state.
   - WebTransport stream events declare or derive whether the stream is bidirectional, client-to-server unidirectional, or server-to-client unidirectional.
+  - WebTransport over HTTP/3 shall map native QUIC bidirectional and unidirectional streams to the contract stream family with session ownership preserved.
+  - WebTransport over HTTP/2 shall map capsule-backed bidirectional and unidirectional streams to the same contract stream family while preserving carrier metadata that identifies capsule backing.
   - Stream labels validate against the contract classification matrix before they are exposed as `duplex`, `client_stream`, or `server_stream`.
   - Datagram events preserve unit identity, payload, and delivery semantics supported by the carrier.
+  - WebTransport datagram events shall preserve whether delivery used native QUIC DATAGRAM / HTTP Datagram semantics or an HTTP/2 DATAGRAM capsule.
   - Datagram labels validate against the contract classification matrix before they are exposed as `family=datagram`.
   - ASGI/3 compatibility exposes these families only through documented extensions.
   - Client-session proof uses stream and datagram identifiers under `spc:2053` without promoting internal lane labels into the governed proof schema.
 spec_kind: "local-policy"
 adr_ids:
+  - "adr:1011"
   - "adr:1024"
   - "adr:1039"
+  - "adr:1050"
+  - "adr:1055"

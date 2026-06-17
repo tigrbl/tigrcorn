@@ -15,13 +15,13 @@ status_notes: []
 references: []
 body: |-
   ## Content
-  
+
   # HTTP/2
-  
+
   This build includes a pure-Python HTTP/2 prior-knowledge server path with an explicit RFC 9113 stream-state machine.
-  
+
   ## Implemented And Validated In This Build
-  
+
   - frame encoding and decoding
   - SETTINGS, HEADERS, CONTINUATION, DATA, WINDOW_UPDATE, PING, GOAWAY, PRIORITY, and RST_STREAM handling
   - explicit stream lifecycle tracking for `idle`, `reserved-local`, `reserved-remote`, `open`, `half-closed-local`, `half-closed-remote`, and `closed`
@@ -38,28 +38,36 @@ body: |-
   - outbound server push via `PUSH_PROMISE` and promised response streams on the HTTP/2 carrier
   - per-stream request dispatch onto the ASGI boundary
   - generic CONNECT tunnel relay integration on the HTTP/2 carrier
-  
+
+  ## Planned WebTransport Over HTTP/2 Carrier Closure
+
+  WebTransport over HTTP/2 is governed separately by `adr:1055` and `spc:2068`.
+
+  - HTTP/2 WebTransport support shall not be inferred from RFC 8441 WebSocket extended CONNECT support.
+  - HTTP/2 `:protocol = webtransport` shall remain fail-closed until `SETTINGS_WEBTRANSPORT_MAX_SESSIONS`, `WebTransport-Init`, capsule parsing, WebTransport stream/datagram capsules, flow-control capsules, and close/drain capsules are implemented and tested.
+  - WebTransport-over-H2 evidence shall be carrier-specific and shall not reuse H3/QUIC WebTransport passing tests as proof of H2 capsule behavior.
+
   ## Planned Closure For The Generic HTTP/2 Request Streaming Gap
-  
+
   - generic HTTP/2 request dispatch shall start after request HEADERS are complete and valid rather than waiting for request `END_STREAM`
   - generic request bodies shall be delivered to the app incrementally as ordered receive events instead of only as a fully buffered body
   - request trailers shall remain available after the final streamed request-body event on the generic HTTP path
   - same-stream request/response interleaving shall be supported when the app emits response body before request end
   - receive-side flow-control replenishment for streamed request bodies shall be driven by application consumption of queued backlog rather than ingress alone
   - per-stream and connection-level backlog shall remain bounded and fail closed when limits are exceeded
-  
+
   ## Release Evidence Shipped With This Archive
-  
+
   Historical preserved evidence remains bundled:
-  
+
   - `curl --http2-prior-knowledge` request/response artifacts under `docs/review/conformance/releases/0.3.2/.../http2-server-curl-client/`
   - `curl` HTTPS + ALPN HTTP/2 request/response artifacts under `docs/review/conformance/releases/0.3.6-rfc-hardening/.../http2-tls-server-curl-client/`
   - third-party `h2` WebSocket extended CONNECT artifacts under `docs/review/conformance/releases/0.3.6-rfc-hardening/.../websocket-http2-server-h2-client/`
-  
+
   The committed current-release bundle at `docs/review/conformance/releases/0.3.6-current/release-0.3.6-current/tigrcorn-current-release-matrix/` additionally includes replayable `python-h2` request/response artifacts for both cleartext and TLS hosting.
-  
+
   ## Evidence Status
-  
+
   The documentation for the HTTP/2 carrier is aligned with the implemented code and the committed release bundle. HPACK dynamic state, RFC 8441, TLS hosting, and CONNECT relay are all represented in preserved and current evidence.
 
   Client-session topology coverage for HTTP/2 is governed by `spc:2053`; this SPEC remains the carrier support contract.
@@ -68,3 +76,4 @@ adr_ids:
   - "adr:1003"
   - "adr:1012"
   - "adr:1039"
+  - "adr:1055"
