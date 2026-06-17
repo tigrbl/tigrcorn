@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2068"
 number: 2068
@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines Tigrcorn's planned WebTransport over HTTP/2 carrier contract for draft-ietf-webtrans-http2-08."
+summary: "This SPEC defines Tigrcorn's planned WebTransport over HTTP/2 carrier contract for draft-ietf-webtrans-http2-08."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -16,8 +16,7 @@ status_notes:
     at: "2026-06-17T00:00:00Z"
     note: "Created to govern capsule-backed WebTransport over HTTP/2 support."
     status: "draft"
-references:
-  - "IETF draft-ietf-webtrans-http2-08: https://www.ietf.org/archive/id/draft-ietf-webtrans-http2-08.html"
+references: []
 body: |-
   # WebTransport over HTTP/2 wire contract
 
@@ -35,6 +34,11 @@ body: |-
   - Runtime projection shall expose the same `webtransport.*` session, stream, datagram, and close events as the H3 carrier while preserving carrier metadata that identifies HTTP/2 capsule backing.
   - Unsupported or unnegotiated WebTransport-over-H2 requests shall fail closed and remain distinct from RFC 8441 WebSocket extended CONNECT and generic CONNECT relay.
   - Certification shall include positive and negative tests for settings negotiation, session admission, capsule parsing, stream/data flow control, datagrams, close/drain, malformed capsules, excess sessions, and post-close traffic.
+  - Runtime certification shall exercise the HTTP/2 handler path, not only `tigrcorn.webtransport.wire` helper APIs.
+  - The current fail-closed behavior for `:protocol = webtransport` may only be removed when the HTTP/2 carrier negotiates `SETTINGS_ENABLE_CONNECT_PROTOCOL` and `SETTINGS_WEBTRANSPORT_MAX_SESSIONS`, accepts eligible extended CONNECT requests, and rejects unsupported or unnegotiated requests with deterministic status/error behavior.
+  - `WebTransport-Init` handling shall use Structured Field dictionary semantics and invalid values shall fail closed before session traffic is processed.
+  - Capsule IO shall be tested as HTTP/2 DATA-frame traffic on the CONNECT stream, including partial capsule boundaries, malformed payloads, unknown capsule disposition, post-close traffic, and flow-control backpressure.
+  - H2 carrier compliance shall link to the WebTransport runtime conformance matrix in `spc:2071`.
 spec_kind: "normative"
 adr_ids:
   - "adr:1055"

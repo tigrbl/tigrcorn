@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2004"
 number: 2004
@@ -34,6 +34,7 @@ body: |-
   - UDP listener client-certificate verification through `ssl_ca_certs` and `ssl_require_client_cert`
   - UDP listener Retry configuration through `quic_require_retry` / `--quic-require-retry`
   - WebTransport over HTTP/3 draft-13 dependencies for QUIC streams, QUIC DATAGRAM, transport-parameter-backed stream/data limits, `RESET_STREAM_AT`, application error mapping, and keying material exporters when those capabilities are certified
+  - WebTransport draft-13 runtime certification requires live QUIC behavior for data stream final-size accounting, `RESET_STREAM_AT`, `WT_SESSION_GONE`, `WT_BUFFERED_STREAM_REJECTED`, application error mapping, datagram buffering/drop policy, and TLS keying material exporters.
 
   ## Evidence Tiers
 
@@ -58,3 +59,4 @@ spec_kind: "local-policy"
 adr_ids:
   - "adr:1011"
   - "adr:1039"
+  - "adr:1057"

@@ -1,0 +1,27 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1057"
+number: 1057
+slug: "webtransport-over-http3-draft13-carrier-compliance"
+title: "WebTransport over HTTP/3 draft-13 carrier compliance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall certify WebTransport over HTTP/3 draft-13 as its own carrier compliance domain, separate from legacy draft02 compatibility and helper-only wire modeling."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T00:00:00Z"
+    note: "Created to govern draft-ietf-webtrans-http3-13 runtime compliance separately from legacy draft02 compatibility and helper-only wire modeling."
+    status: "draft"
+references: []
+body: |-
+  ## Decision
+  Tigrcorn shall certify WebTransport over HTTP/3 draft-13 as its own carrier compliance domain, separate from legacy draft02 compatibility and helper-only wire modeling.
+
+  ## Consequences
+  - HTTP/3 draft-13 compliance requires runtime-level carrier behavior, not helper-only packet or capsule modeling.
+  - Runtime certification must prove stream, session, SETTINGS, capsule, datagram, and lifecycle behavior through Tigrcorn surfaces.
+  - Legacy draft02 and HTTP/2 fallback evidence does not satisfy this draft-13 carrier target.

@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Tigrcorn owns QUIC, HTTP/3, and WebTransport connection/session lifecycle. Live downstream applications must receive stable transport-owned session identity and traces for packet receive, session create, handshake complete, CONNECT response, stream dispatch, datagram dispatch, close, and cleanup. Session, stream, and datagram ownership must remain keyed by actual QUIC/WebTransport runtime state, including sequential and concurrent sessions on one listener.
+
+  H2 fallback and H3 draft-13 runtime traces are distinct carrier cases. HTTP/2 WebTransport session identity is the extended CONNECT stream id and stream/datagram ownership is capsule-backed. HTTP/3 draft-13 WebTransport session identity is tied to the CONNECT stream while data streams, QUIC DATAGRAM payloads, reset/stop events, GOAWAY/drain signals, and `WT_SESSION_GONE` cleanup must preserve carrier-specific ownership metadata.

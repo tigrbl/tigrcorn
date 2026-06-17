@@ -1,0 +1,39 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2071"
+number: 2071
+slug: "webtransport-carrier-runtime-conformance-matrix"
+title: "WebTransport carrier runtime conformance matrix"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the proof levels that separate WebTransport helper-level wire modeling from in-process carrier runtime behavior and independent peer interoperability."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T00:00:00Z"
+    note: "Created to prevent helper-only WebTransport proof from satisfying carrier runtime compliance claims."
+    status: "draft"
+references:
+  - "IETF draft-ietf-webtrans-http2-08: https://www.ietf.org/archive/id/draft-ietf-webtrans-http2-08.html"
+  - "IETF draft-ietf-webtrans-http3-13: https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-13"
+body: |-
+  # WebTransport carrier runtime conformance matrix
+
+  This SPEC defines the proof levels that separate WebTransport helper-level wire modeling from in-process carrier runtime behavior and independent peer interoperability.
+
+  Requirements:
+
+  - WebTransport helper or codec tests may prove wire-model behavior, but they shall not satisfy carrier runtime claims by themselves.
+  - Carrier runtime claims shall exercise the actual Tigrcorn HTTP/2 or HTTP/3 handler path, including negotiated settings, session admission, frame/capsule IO, stream/datagram dispatch, flow control, and session termination.
+  - Independent peer claims shall exercise a non-Tigrcorn client or browser peer against the Tigrcorn listener and preserve replayable artifacts when required by the certification boundary.
+  - H2 and H3 WebTransport proof shall remain separate certification domains because H2 uses capsule-backed DATA frames while H3 uses native QUIC streams, QUIC DATAGRAM, HTTP Datagrams, and HTTP/3 error codes.
+  - Feature implementation status shall be `partial` when only helper or wire-model behavior exists for a draft feature whose runtime carrier path is not implemented.
+  - Planned tests shall use stable test ids and paths even before executable tests exist, but passing status shall only be used after the executable test or approved evidence artifact exists.
+  - Runtime-conformance features shall link this SPEC plus the carrier-specific SPEC (`spc:2068` for H2, `spc:2069` for H3 draft-13).
+spec_kind: "operational"
+adr_ids:
+  - "adr:1055"
+  - "adr:1057"

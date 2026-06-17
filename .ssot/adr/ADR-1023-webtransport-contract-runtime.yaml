@@ -26,7 +26,7 @@ body: |-
   Decision: WebTransport shall be implemented as a contract-native Tigrcorn runtime surface.
 
   WebTransport belongs in the native contract path because it depends on HTTP/3, QUIC streams, datagrams, session semantics, and transport metadata that ASGI3 does not standardize.
-  
+
   Runtime behavior shall align with W3C WebTransport session, stream, datagram, close, abort, and cancel semantics while exposing those semantics through Tigrcorn's contract-native event surface rather than by pretending WebTransport is ordinary ASGI HTTP. MDN WebTransport documentation is informative input for examples and operator-facing descriptions of close, closed, stream, and datagram behavior; it is not the source of normative conformance.
 
   Consequences:
@@ -35,3 +35,5 @@ body: |-
   - ASGI3 exposure, if present, must be extension-based and capability-gated.
   - WebTransport tests must cover streams, datagrams, session lifecycle, and metadata.
   - Cross-client WebTransport topology proof is governed separately by ADR-1039 and must not be inferred from single-session runtime proof.
+  - Contract-native WebTransport support does not imply every protocol carrier is implemented. H2 fallback and H3 draft-13 runtime compliance certify independently from the shared contract event model.
+  - Helper-level WebTransport wire tests may support contract modeling, but carrier-compliance claims require tests through the actual HTTP/2 or HTTP/3 runtime handler.

@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2002"
 number: 2002
@@ -46,6 +46,7 @@ body: |-
   - HTTP/2 WebTransport support shall not be inferred from RFC 8441 WebSocket extended CONNECT support.
   - HTTP/2 `:protocol = webtransport` shall remain fail-closed until `SETTINGS_WEBTRANSPORT_MAX_SESSIONS`, `WebTransport-Init`, capsule parsing, WebTransport stream/datagram capsules, flow-control capsules, and close/drain capsules are implemented and tested.
   - WebTransport-over-H2 evidence shall be carrier-specific and shall not reuse H3/QUIC WebTransport passing tests as proof of H2 capsule behavior.
+  - Helper-level capsule or flow-control tests shall not remove the fail-closed guard. The transition requires runtime tests through the HTTP/2 handler that prove SETTINGS negotiation, CONNECT admission, DATA-frame capsule IO, stream/datagram dispatch, flow control, and session termination.
 
   ## Planned Closure For The Generic HTTP/2 Request Streaming Gap
 

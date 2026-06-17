@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1055"
 number: 1055
@@ -16,8 +16,7 @@ status_notes:
     at: "2026-06-17T00:00:00Z"
     note: "Created to govern draft-ietf-webtrans-http2-08 support separately from the HTTP/3 WebTransport target."
     status: "draft"
-references:
-  - "IETF draft-ietf-webtrans-http2-08: https://www.ietf.org/archive/id/draft-ietf-webtrans-http2-08.html"
+references: []
 body: |-
   # ADR 1055 - WebTransport over HTTP/2 fallback carrier
 
@@ -33,3 +32,5 @@ body: |-
   - The H2 carrier shall implement the WebTransport capsule set, including stream, datagram, flow-control, reset/stop, close, and drain capsules.
   - Runtime events shall project into the same contract-native WebTransport session, stream, and datagram families as the H3 carrier, but the transport facts shall record that the underlying carrier is capsule-backed HTTP/2 rather than native QUIC streams and datagrams.
   - Flow control, resource governance, and certification evidence shall remain carrier-specific so H2 fallback support cannot be certified by H3-only tests.
+  - Helper-level WebTransport capsule codecs and in-memory flow models do not satisfy H2 runtime compliance until the HTTP/2 handler negotiates settings, admits `:protocol = webtransport`, and exchanges WebTransport capsules on HTTP/2 DATA frames.
+  - Until that runtime path lands, H2 WebTransport features shall be tracked as partial or planned carrier work rather than fully implemented support.

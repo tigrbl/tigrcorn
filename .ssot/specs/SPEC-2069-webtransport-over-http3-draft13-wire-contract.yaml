@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2069"
 number: 2069
@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines Tigrcorn's canonical WebTransport over HTTP/3 and QUIC carrier contract for draft-ietf-webtrans-http3-13."
+summary: "This SPEC defines Tigrcorn's canonical WebTransport over HTTP/3 and QUIC carrier contract for draft-ietf-webtrans-http3-13."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -16,8 +16,7 @@ status_notes:
     at: "2026-06-17T00:00:00Z"
     note: "Created to govern draft-13 WebTransport over HTTP/3 support separately from legacy draft02 compatibility behavior."
     status: "draft"
-references:
-  - "IETF draft-ietf-webtrans-http3-13: https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-13"
+references: []
 body: |-
   # WebTransport over HTTP/3 draft-13 wire contract
 
@@ -37,6 +36,12 @@ body: |-
   - Keying material exporter support shall be governed explicitly before certification claims mention exporter availability.
   - Runtime projection shall expose the same `webtransport.*` session, stream, datagram, and close events as other WebTransport carriers while preserving carrier metadata that identifies native HTTP/3 over QUIC backing.
   - Certification shall include positive and negative tests for settings negotiation, extended CONNECT admission, protocol negotiation headers, bidi streams, unidi streams, datagrams, buffering, GOAWAY, close/drain, flow-control capsules, error-code mapping, and legacy-draft rejection or compatibility behavior.
+  - Runtime certification shall exercise the HTTP/3 and QUIC handler path, not only `tigrcorn.webtransport.wire` helper APIs.
+  - Draft-13 settings negotiation shall include `SETTINGS_WT_MAX_SESSIONS`, `SETTINGS_WT_INITIAL_MAX_STREAMS_UNI`, `SETTINGS_WT_INITIAL_MAX_STREAMS_BIDI`, and `SETTINGS_WT_INITIAL_MAX_DATA` where applicable.
+  - `WT-Available-Protocols` and `WT-Protocol` shall be emitted and validated by the live H3 WebTransport path before protocol-negotiation support is claimed.
+  - Keying material exporter support shall call the QUIC/TLS exporter with the draft-13 WebTransport exporter context; deterministic helper hashing is not compliant runtime behavior.
+  - `RESET_STREAM_AT`, `WT_SESSION_GONE`, `WT_BUFFERED_STREAM_REJECTED`, `WT_APPLICATION_ERROR`, GOAWAY, drain, and close-session behavior shall map to live QUIC/H3 errors and stream state transitions.
+  - H3 draft-13 carrier compliance shall link to the WebTransport runtime conformance matrix in `spc:2071`.
 spec_kind: "normative"
 adr_ids:
   - "adr:1011"
@@ -44,3 +49,4 @@ adr_ids:
   - "adr:1024"
   - "adr:1040"
   - "adr:1050"
+  - "adr:1057"

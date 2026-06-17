@@ -15,12 +15,15 @@ status_notes: []
 references: []
 body: |-
   Tigrcorn WebTransport support shall require explicit stream, datagram, memory, bandwidth, and peer budgets before certification of broader live-session behavior.
-  
+
   Resource governance must cover maximum streams, maximum datagrams, memory budgets, bandwidth budgets, peer budgets, stream exhaustion, datagram abuse, migration handling, flow control, and fairness.
-  
+
   Consequences:
-  
+
   - WebTransport support cannot be certified only through successful session establishment.
   - Abuse and exhaustion behavior becomes testable.
   - Operators can map deployment profiles to explicit resource budgets.
   - WebTransport certification remains tied to QUIC and HTTP/3 operational controls.
+  - HTTP/2 WebTransport resource governance must account for TCP, HTTP/2 connection, HTTP/2 stream, WebTransport session, and capsule-backed WebTransport stream limits separately.
+  - HTTP/3 draft-13 WebTransport resource governance must account for QUIC connection limits, QUIC stream final-size accounting, WebTransport session flow-control capsules, datagram buffering limits, and fairness across sessions sharing one transport connection.
+  - Wire-helper counters do not satisfy resource-governance certification unless they are enforced by the carrier runtime path.

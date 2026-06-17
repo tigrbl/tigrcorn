@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2003"
 number: 2003
@@ -37,10 +37,12 @@ body: |-
 
   ## Planned WebTransport Over HTTP/3 Draft-13 Carrier Closure
 
-  WebTransport over HTTP/3 draft-13 is governed by `adr:1011` and `spc:2069`.
+  WebTransport over HTTP/3 draft-13 is governed by `adr:1057` and `spc:2069`.
 
   - The canonical WebTransport-over-H3 target shall use draft-13 settings, stream types, datagram semantics, capsules, error codes, protocol-negotiation headers, GOAWAY behavior, and session termination semantics.
   - Legacy `SETTING_ENABLE_WEBTRANSPORT` and `sec-webtransport-http3-draft` behavior shall be treated as compatibility behavior and shall not satisfy draft-13 certification by itself.
+  - Helper-level draft-13 wire tests shall not satisfy HTTP/3 carrier compliance unless equivalent behavior is exercised through the live HTTP/3 and QUIC handler path.
+  - Draft-13 runtime closure shall include initial WebTransport flow settings, live protocol negotiation headers, reset/stop/error mapping, TLS keying material exporters, GOAWAY/drain, and session termination behavior.
 
   ## Evidence Tiers
 
@@ -70,3 +72,4 @@ spec_kind: "local-policy"
 adr_ids:
   - "adr:1011"
   - "adr:1039"
+  - "adr:1057"
