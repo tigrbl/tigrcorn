@@ -11,11 +11,13 @@ from tigrcorn.webtransport.wire import (
     CAPSULE_WT_DATA_BLOCKED,
     CAPSULE_WT_DRAIN_SESSION,
     CAPSULE_WT_MAX_DATA,
+    CAPSULE_WT_MAX_STREAMS_BIDI,
     CAPSULE_WT_STREAM_DATA_BLOCKED,
     Capsule,
     Carrier,
     ConnectRequest,
     StreamDirection,
+    WebTransportInit,
     WebTransportWireError,
     WebTransportWireRuntime,
     decode_h3_datagram_payload,
@@ -96,6 +98,40 @@ def test_webtransport_t2_drain_rejects_new_traffic_but_allows_close() -> None:
 def test_webtransport_t2_h3_datagram_payload_underflow_fails_closed() -> None:
     with pytest.raises(WebTransportWireError, match="malformed H3 datagram payload"):
         decode_h3_datagram_payload(b"")
+
+
+def test_webtransport_t2_h3_single_session_ignores_flow_control_capsules() -> None:
+    runtime = WebTransportWireRuntime(max_sessions=1)
+    _accept_h3(runtime)
+
+    assert runtime.apply_capsule("4", Capsule(CAPSULE_WT_MAX_DATA, b"\xff")) == {
+        "event": "webtransport.flow-control-ignored",
+        "capsule_type": CAPSULE_WT_MAX_DATA,
+    }
+    assert runtime.apply_capsule("4", Capsule(CAPSULE_WT_MAX_STREAMS_BIDI, encode_varints(1))) == {
+        "event": "webtransport.flow-control-ignored",
+        "capsule_type": CAPSULE_WT_MAX_STREAMS_BIDI,
+    }
+    runtime.receive_stream_data("4", 8, b"unlimited", StreamDirection.BIDI)
+
+    flow = runtime.sessions["4"].flow
+    assert flow.max_data == 0
+    assert flow.max_streams_bidi == 0
+    assert flow.data_sent == 0
+
+
+def test_webtransport_t2_h3_initial_limits_are_enforced_when_flow_control_enabled() -> None:
+    runtime = WebTransportWireRuntime(max_sessions=2)
+    settings = h3_draft13_settings(2, init=WebTransportInit(max_data=3, max_streams_bidi=1, max_streams_uni=1))
+    assert runtime.accept(_request(4, Carrier.H3, settings)).accepted is True
+
+    runtime.open_stream("4", 8, StreamDirection.BIDI)
+    with pytest.raises(WebTransportWireError, match="WT_MAX_STREAMS bidi exceeded"):
+        runtime.open_stream("4", 12, StreamDirection.BIDI)
+
+    runtime.receive_stream_data("4", 8, b"abc", StreamDirection.BIDI)
+    with pytest.raises(WebTransportWireError, match="WT_MAX_DATA exceeded"):
+        runtime.receive_stream_data("4", 8, b"d", StreamDirection.BIDI)
 
 
 def test_webtransport_t2_buffering_rejects_established_session() -> None:

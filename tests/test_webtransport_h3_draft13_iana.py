@@ -1,12 +1,22 @@
 from __future__ import annotations
 
+import pytest
+
+from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.utils.bytes import encode_quic_varint
 from tigrcorn.protocols.http3.codec import (
     H3_DATAGRAM_ERROR,
     H3_SETTINGS_ERROR,
+    HTTP3ConnectionError,
+    HTTP3_RESERVED_FRAME_TYPES,
     QPACK_DECODER_STREAM_ERROR,
     SETTING_ENABLE_CONNECT_PROTOCOL,
     SETTING_H3_DATAGRAM,
+    decode_settings,
+    encode_settings,
     http3_iana_registry_snapshot,
+    is_grease_identifier,
+    is_reserved_frame_type,
 )
 from tigrcorn.webtransport.wire import (
     CAPSULE_WT_CLOSE_SESSION,
@@ -50,3 +60,38 @@ def test_http3_iana_registry_snapshot_covers_runtime_constants() -> None:
     assert snapshot["error_codes"]["H3_DATAGRAM_ERROR"] == H3_DATAGRAM_ERROR == 0x33
     assert snapshot["error_codes"]["H3_SETTINGS_ERROR"] == H3_SETTINGS_ERROR == 0x0109
     assert snapshot["error_codes"]["QPACK_DECODER_STREAM_ERROR"] == QPACK_DECODER_STREAM_ERROR == 0x0202
+
+
+def test_http3_iana_registry_snapshot_is_isolated_copy() -> None:
+    snapshot = http3_iana_registry_snapshot()
+    snapshot["settings"]["SETTINGS_H3_DATAGRAM"] = 0
+
+    assert http3_iana_registry_snapshot()["settings"]["SETTINGS_H3_DATAGRAM"] == SETTING_H3_DATAGRAM
+
+
+def test_http3_settings_reserved_and_duplicate_identifiers_fail_closed() -> None:
+    with pytest.raises(ProtocolError, match="reserved HTTP/3 setting"):
+        encode_settings({0x00: 1})
+
+    duplicate_payload = (
+        encode_quic_varint(SETTING_H3_DATAGRAM)
+        + encode_quic_varint(1)
+        + encode_quic_varint(SETTING_H3_DATAGRAM)
+        + encode_quic_varint(1)
+    )
+    with pytest.raises(HTTP3ConnectionError) as exc_info:
+        decode_settings(duplicate_payload)
+    assert exc_info.value.error_code == H3_SETTINGS_ERROR
+
+    reserved_payload = encode_quic_varint(0x02) + encode_quic_varint(1)
+    with pytest.raises(HTTP3ConnectionError) as exc_info:
+        decode_settings(reserved_payload)
+    assert exc_info.value.error_code == H3_SETTINGS_ERROR
+
+
+def test_http3_frame_registry_reserved_and_grease_detection() -> None:
+    assert {0x02, 0x06, 0x08, 0x09} <= set(HTTP3_RESERVED_FRAME_TYPES)
+    assert is_reserved_frame_type(0x02)
+    assert is_grease_identifier(0x21)
+    assert is_grease_identifier(0x40)
+    assert not is_reserved_frame_type(0x41)

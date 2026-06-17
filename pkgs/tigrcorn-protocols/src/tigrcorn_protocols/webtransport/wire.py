@@ -276,6 +276,7 @@ class WebTransportSession:
     path: str
     selected_protocol: str | None = None
     flow: WebTransportFlowController = field(default_factory=WebTransportFlowController)
+    flow_control_enabled: bool = True
     state: SessionState = SessionState.OPEN
     streams: dict[int, StreamDirection] = field(default_factory=dict)
     datagrams: list[bytes] = field(default_factory=list)
@@ -341,6 +342,7 @@ class WebTransportWireRuntime:
             path=_required_header(request.headers, ":path"),
             selected_protocol=request.selected_protocol,
             flow=_flow_from_request(request),
+            flow_control_enabled=_flow_control_enabled(request),
         )
         self.sessions[session.session_id] = session
         return decision
@@ -348,7 +350,8 @@ class WebTransportWireRuntime:
     def open_stream(self, session_id: str, stream_id: int, direction: StreamDirection) -> None:
         session = self._session(session_id)
         session.ensure_accepting_traffic()
-        session.flow.open_stream(direction)
+        if session.flow_control_enabled:
+            session.flow.open_stream(direction)
         session.streams[stream_id] = direction
 
     def receive_stream_data(self, session_id: str, stream_id: int, data: bytes, direction: StreamDirection) -> None:
@@ -356,7 +359,8 @@ class WebTransportWireRuntime:
         session.ensure_accepting_traffic()
         if stream_id not in session.streams:
             self.open_stream(session_id, stream_id, direction)
-        session.flow.allow_stream_data(stream_id, direction, len(data))
+        if session.flow_control_enabled:
+            session.flow.allow_stream_data(stream_id, direction, len(data))
 
     def receive_datagram(self, session_id: str, payload: bytes) -> None:
         session = self._session(session_id)
@@ -402,6 +406,8 @@ class WebTransportWireRuntime:
             CAPSULE_WT_STREAMS_BLOCKED_BIDI,
             CAPSULE_WT_STREAMS_BLOCKED_UNI,
         }:
+            if not session.flow_control_enabled:
+                return {"event": "webtransport.flow-control-ignored", "capsule_type": capsule.capsule_type}
             session.flow.apply_flow_control_capsule(capsule)
             return {"event": "webtransport.flow-control", "capsule_type": capsule.capsule_type}
         if capsule.capsule_type in {CAPSULE_WT_STREAM, CAPSULE_WT_STREAM_FIN}:
@@ -732,6 +738,12 @@ def _flow_from_request(request: ConnectRequest) -> WebTransportFlowController:
         max_streams_uni=init.max_streams_uni,
         max_streams_bidi=init.max_streams_bidi,
     )
+
+
+def _flow_control_enabled(request: ConnectRequest) -> bool:
+    if request.carrier is Carrier.H3:
+        return int(request.negotiated_settings.get(SETTING_WT_MAX_SESSIONS, 0)) > 1
+    return True
 
 
 def _header(headers: Mapping[str, str], name: str) -> str | None:

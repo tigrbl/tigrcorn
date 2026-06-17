@@ -65,3 +65,27 @@ def test_protocol_support_matrix_named_tests_are_linked_to_evidence() -> None:
         test = tests[test_id]
         assert test["path"] == expected_path
         assert test["evidence_ids"], test_id
+
+
+def test_protocol_support_t2_claims_use_runtime_robustness_tests() -> None:
+    claims = _rows_by_id("claims")
+    tests = _rows_by_id("tests")
+    expected = {
+        "clm:http3-iana-registry-conformance.t2": (
+            "tst:pytest.http3-iana-registry-conformance.t2.proof-graph",
+            "tests/test_webtransport_h3_draft13_iana.py",
+        ),
+        "clm:webtransport-h3-draft13-initial-flow-settings.t2": (
+            "tst:pytest.webtransport-h3-draft13-initial-flow-settings.t2.proof-graph",
+            "tests/test_webtransport_t2_runtime_robustness.py",
+        ),
+        "clm:http2-connect-relay-not-general-proxy.t2": (
+            "tst:pytest.http2-connect-relay-not-general-proxy.t2.proof-graph",
+            "tests/test_connect_relay_local_negatives.py",
+        ),
+    }
+
+    for claim_id, (test_id, expected_path) in expected.items():
+        assert test_id in claims[claim_id]["test_ids"]
+        assert tests[test_id]["path"] == expected_path
+        assert tests[test_id]["status"] == "passing"

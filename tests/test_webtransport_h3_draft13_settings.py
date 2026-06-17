@@ -33,9 +33,9 @@ def test_webtransport_h3_draft13_initial_flow_settings_are_canonical() -> None:
 
 
 def test_webtransport_h3_draft13_accept_applies_initial_flow_settings() -> None:
-    runtime = WebTransportWireRuntime(max_sessions=1)
+    runtime = WebTransportWireRuntime(max_sessions=2)
     settings = h3_draft13_settings(
-        1,
+        2,
         init=WebTransportInit(max_data=128, max_streams_uni=1, max_streams_bidi=2),
     )
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import socket
 import unittest
+from contextlib import closing
 
 from tigrcorn.config.load import build_config
 from tigrcorn.constants import H2_PREFACE
@@ -104,6 +105,17 @@ async def _issue_h3_connect(port: int, authority: str) -> tuple[list[tuple[bytes
         sock.close()
 
 
+def _closed_tcp_port() -> int:
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+        sock.bind(('127.0.0.1', 0))
+        return int(sock.getsockname()[1])
+
+
+def _relay(config):
+    config.http.connect_policy = 'relay'
+    config.read_timeout = 0.1
+
+
 class ConnectRelayIndependentLocalNegativeTests(unittest.IsolatedAsyncioTestCase):
     async def test_http2_connect_policy_deny_and_allowlist_rejection_end_stream(self) -> None:
         upstream = await asyncio.start_server(lambda r, w: None, '127.0.0.1', 0)
@@ -168,6 +180,38 @@ class ConnectRelayIndependentLocalNegativeTests(unittest.IsolatedAsyncioTestCase
         finally:
             upstream.close()
             await upstream.wait_closed()
+
+    async def test_http2_connect_bad_authority_and_upstream_failure_end_stream(self) -> None:
+        server, port = await _start_server(http_versions=['2'], config_mutator=_relay)
+        try:
+            headers, body, ended = await _issue_h2_connect(port, 'bad-target')
+            self.assertIn((b':status', b'400'), headers)
+            self.assertEqual(body, b'bad connect target')
+            self.assertTrue(ended)
+
+            closed_port = _closed_tcp_port()
+            headers, body, ended = await _issue_h2_connect(port, f'127.0.0.1:{closed_port}')
+            self.assertIn((b':status', b'502'), headers)
+            self.assertEqual(body, b'bad gateway')
+            self.assertTrue(ended)
+        finally:
+            await server.close()
+
+    async def test_http3_connect_bad_authority_and_upstream_failure_end_stream(self) -> None:
+        server, port = await _start_server(http_versions=['3'], transport='udp', config_mutator=_relay)
+        try:
+            headers, body, ended = await _issue_h3_connect(port, 'bad-target')
+            self.assertIn((b':status', b'400'), headers)
+            self.assertEqual(body, b'bad connect target')
+            self.assertTrue(ended)
+
+            closed_port = _closed_tcp_port()
+            headers, body, ended = await _issue_h3_connect(port, f'127.0.0.1:{closed_port}')
+            self.assertIn((b':status', b'502'), headers)
+            self.assertEqual(body, b'bad gateway')
+            self.assertTrue(ended)
+        finally:
+            await server.close()
 
 
 if __name__ == '__main__':
