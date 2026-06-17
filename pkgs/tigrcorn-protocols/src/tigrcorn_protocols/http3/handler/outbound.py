@@ -129,14 +129,16 @@ class HTTP3OutboundMixin:
             return []
         if session.server_control_stream_id is None:
             session.server_control_stream_id = session.quic.streams.next_stream_id(client=False, unidirectional=True)
-        control_settings = {1: 0, 6: self.listener.max_datagram_size}
+        control_settings = {
+            SETTING_QPACK_MAX_TABLE_CAPACITY: 0,
+            SETTING_MAX_FIELD_SECTION_SIZE: self.listener.max_datagram_size,
+        }
         if self.listener.websocket:
             control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
         if 'webtransport' in self.listener.enabled_protocols:
             control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
             control_settings[SETTING_H3_DATAGRAM] = 1
             control_settings[SETTING_WT_MAX_SESSIONS] = int(self.config.webtransport.max_sessions or 1)
-            control_settings[SETTING_ENABLE_WEBTRANSPORT] = 1
         control_payload = session.h3.encode_control_stream(control_settings)
         session.server_control_stream_sent = True
         return [session.quic.send_stream_data(session.server_control_stream_id, control_payload, fin=False)]

@@ -26,6 +26,9 @@ SETTING_WEBTRANSPORT_INITIAL_MAX_STREAM_DATA_BIDI = 0x2B63
 SETTING_WEBTRANSPORT_INITIAL_MAX_STREAMS_UNI = 0x2B64
 SETTING_WEBTRANSPORT_INITIAL_MAX_STREAMS_BIDI = 0x2B65
 SETTING_WT_MAX_SESSIONS = 0x14E9CD29
+SETTING_WT_INITIAL_MAX_DATA = SETTING_WEBTRANSPORT_INITIAL_MAX_DATA
+SETTING_WT_INITIAL_MAX_STREAMS_UNI = SETTING_WEBTRANSPORT_INITIAL_MAX_STREAMS_UNI
+SETTING_WT_INITIAL_MAX_STREAMS_BIDI = SETTING_WEBTRANSPORT_INITIAL_MAX_STREAMS_BIDI
 
 H3_FRAME_WEBTRANSPORT_STREAM = 0x41
 H3_STREAM_TYPE_WEBTRANSPORT = 0x54
@@ -61,6 +64,9 @@ H2_SETTINGS_REGISTRY = {
 
 H3_DRAFT13_REGISTRY = {
     "SETTINGS_WT_MAX_SESSIONS": SETTING_WT_MAX_SESSIONS,
+    "SETTINGS_WT_INITIAL_MAX_DATA": SETTING_WT_INITIAL_MAX_DATA,
+    "SETTINGS_WT_INITIAL_MAX_STREAMS_UNI": SETTING_WT_INITIAL_MAX_STREAMS_UNI,
+    "SETTINGS_WT_INITIAL_MAX_STREAMS_BIDI": SETTING_WT_INITIAL_MAX_STREAMS_BIDI,
     "WT_STREAM_FRAME": H3_FRAME_WEBTRANSPORT_STREAM,
     "WT_UNIDI_STREAM_TYPE": H3_STREAM_TYPE_WEBTRANSPORT,
     "WT_APPLICATION_ERROR": H3_ERROR_WT_APPLICATION_ERROR,
@@ -151,6 +157,14 @@ class WebTransportInit:
             for key, value in parse_webtransport_init_header(header).items():
                 values[key] = max(values[key], value)
         return cls(**values)
+
+    @classmethod
+    def from_h3_settings(cls, settings: Mapping[int, int]) -> "WebTransportInit":
+        return cls(
+            max_data=int(settings.get(SETTING_WT_INITIAL_MAX_DATA, 0)),
+            max_streams_uni=int(settings.get(SETTING_WT_INITIAL_MAX_STREAMS_UNI, 0)),
+            max_streams_bidi=int(settings.get(SETTING_WT_INITIAL_MAX_STREAMS_BIDI, 0)),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -449,14 +463,22 @@ def h2_webtransport_settings(max_sessions: int, init: WebTransportInit | None = 
     }
 
 
-def h3_draft13_settings(max_sessions: int) -> dict[int, int]:
+def h3_draft13_settings(max_sessions: int, init: WebTransportInit | None = None) -> dict[int, int]:
     if max_sessions < 0:
         raise ValueError("max_sessions must be non-negative")
-    return {
+    settings = {
         SETTING_ENABLE_CONNECT_PROTOCOL: 1,
         SETTING_H3_DATAGRAM: 1,
         SETTING_WT_MAX_SESSIONS: max_sessions,
     }
+    if init is not None:
+        if init.max_data:
+            settings[SETTING_WT_INITIAL_MAX_DATA] = init.max_data
+        if init.max_streams_uni:
+            settings[SETTING_WT_INITIAL_MAX_STREAMS_UNI] = init.max_streams_uni
+        if init.max_streams_bidi:
+            settings[SETTING_WT_INITIAL_MAX_STREAMS_BIDI] = init.max_streams_bidi
+    return settings
 
 
 def h3_compat_settings(max_sessions: int) -> dict[int, int]:
@@ -696,10 +718,13 @@ def constant_registry_snapshot() -> dict[str, dict[str, int]]:
 
 
 def _flow_from_request(request: ConnectRequest) -> WebTransportFlowController:
-    init = WebTransportInit.from_h2_settings_and_header(
-        request.negotiated_settings,
-        _header(request.headers, HEADER_WEBTRANSPORT_INIT),
-    )
+    if request.carrier is Carrier.H3:
+        init = WebTransportInit.from_h3_settings(request.negotiated_settings)
+    else:
+        init = WebTransportInit.from_h2_settings_and_header(
+            request.negotiated_settings,
+            _header(request.headers, HEADER_WEBTRANSPORT_INIT),
+        )
     return WebTransportFlowController(
         max_data=init.max_data,
         max_stream_data_uni=init.max_stream_data_uni,
@@ -773,6 +798,9 @@ __all__ = [
     "SETTING_ENABLE_WEBTRANSPORT_LEGACY",
     "SETTING_H3_DATAGRAM",
     "SETTING_WEBTRANSPORT_MAX_SESSIONS",
+    "SETTING_WT_INITIAL_MAX_DATA",
+    "SETTING_WT_INITIAL_MAX_STREAMS_BIDI",
+    "SETTING_WT_INITIAL_MAX_STREAMS_UNI",
     "SETTING_WT_MAX_SESSIONS",
     "SessionState",
     "StreamDirection",

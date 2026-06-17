@@ -27,16 +27,17 @@ def test_http3_iana_registry_feature_links_existing_constant_proof() -> None:
     assert "tst:webtransport-h3-draft13-iana-settings-frame-stream-error-capsule-constants" in feature["test_ids"]
 
 
-def test_webtransport_initial_flow_settings_remain_a_tracked_gap() -> None:
+def test_webtransport_initial_flow_settings_are_runtime_tracked() -> None:
     features = _rows_by_id("features")
     tests = _rows_by_id("tests")
     feature = features["feat:webtransport-h3-draft13-initial-flow-settings"]
 
     assert feature["implementation_status"] == "implemented"
     assert feature["plan"]["horizon"] == "next"
-    assert "support-boundary guard" in feature["description"]
+    assert "initial WebTransport flow-control settings" in feature["description"]
     assert {"spc:2061", "spc:2069"} <= set(feature["spec_ids"])
     assert "tst:webtransport-h3-initial-flow-settings-gap" in feature["test_ids"]
+    assert tests["tst:webtransport-h3-initial-flow-settings-gap"]["path"] == "tests/test_webtransport_h3_draft13_settings.py"
     assert tests["tst:webtransport-h3-initial-flow-settings-gap"]["status"] == "passing"
 
 
@@ -52,14 +53,15 @@ def test_http2_connect_relay_feature_does_not_claim_general_proxying() -> None:
 
 def test_protocol_support_matrix_named_tests_are_linked_to_evidence() -> None:
     tests = _rows_by_id("tests")
-    expected_test_ids = {
-        "tst:http3-iana-registry-conformance",
-        "tst:webtransport-h3-initial-flow-settings-gap",
-        "tst:http2-connect-relay-not-general-proxy",
-        "tst:protocol-support-matrix-drift",
+    expected_paths = {
+        "tst:http3-iana-registry-conformance": "tests/test_webtransport_h3_draft13_iana.py",
+        "tst:webtransport-h3-initial-flow-settings-gap": "tests/test_webtransport_h3_draft13_settings.py",
+        "tst:http2-connect-relay-not-general-proxy": "tests/test_protocol_support_matrix.py",
+        "tst:pytest-file-tests-test-connect-tunnel-h2-h3-py": "tests/test_connect_tunnel_h2_h3.py",
+        "tst:protocol-support-matrix-drift": "tests/test_protocol_support_matrix.py",
     }
 
-    for test_id in expected_test_ids:
+    for test_id, expected_path in expected_paths.items():
         test = tests[test_id]
-        assert test["path"] == "tests/test_protocol_support_matrix.py"
+        assert test["path"] == expected_path
         assert test["evidence_ids"], test_id
