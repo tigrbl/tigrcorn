@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-config"
-version = "0.3.16"
+version = "0.3.17.dev1"
 description = "Typed configuration models, profiles, environment loading, and validation for the Tigrcorn ASGI/HTTP server stack."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -28,7 +28,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
 ]
-dependencies = ["tigrcorn-core==0.3.16"]
+dependencies = ["tigrcorn-core==0.3.17.dev1"]
 
 [project.optional-dependencies]
 yaml = ["PyYAML>=6.0"]
