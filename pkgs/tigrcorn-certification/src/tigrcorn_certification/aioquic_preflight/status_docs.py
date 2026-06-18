@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .imports import *
+from .helpers import _dump_json
 
 def _status_markdown(snapshot: Mapping[str, Any], *, release_root: str, bundle_root: str) -> str:
     current = snapshot['current_state']

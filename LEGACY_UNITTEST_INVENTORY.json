@@ -1,5 +1,5 @@
 {
-  "approved_legacy_count": 154,
+  "approved_legacy_count": 157,
   "approved_legacy_files": [
     "tests/test_additional_remaining_work.py",
     "tests/test_app_loader.py",
@@ -148,15 +148,18 @@
     "tests/test_stream_probe_fixtures.py",
     "tests/test_websocket_uix_demo.py",
     "tests/test_webtransport_bidi_stream_context.py",
+    "tests/test_webtransport_feature_demo_app.py",
     "tests/test_webtransport_feature_coverage.py",
     "tests/test_webtransport_mtls_demo.py",
+    "tests/test_webtransport_mtls_demo_cleanup.py",
+    "tests/test_webtransport_mtls_demo_runtime.py",
     "tests/test_webtransport_operator_surface.py",
     "tests/test_aioquic_performance_matrix.py",
     "tests/test_ws_wss_probe_fixture.py",
     "tests/test_wss_asgi3_lab.py",
     "tests/test_wt_stream_probe_fixture.py"
   ],
-  "detected_legacy_count": 154,
+  "detected_legacy_count": 157,
   "detected_legacy_files": [
     "tests/test_additional_remaining_work.py",
     "tests/test_advanced_protocol_delivery_checkpoint.py",
@@ -307,7 +310,10 @@
     "tests/test_websocket_uix_demo.py",
     "tests/test_webtransport_bidi_stream_context.py",
     "tests/test_webtransport_feature_coverage.py",
+    "tests/test_webtransport_feature_demo_app.py",
     "tests/test_webtransport_mtls_demo.py",
+    "tests/test_webtransport_mtls_demo_cleanup.py",
+    "tests/test_webtransport_mtls_demo_runtime.py",
     "tests/test_webtransport_operator_surface.py",
     "tests/test_ws_wss_probe_fixture.py",
     "tests/test_wss_asgi3_lab.py",

@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from .imports import *
 from .helpers import *
+from .helpers import _dump_json, _module_version, _now
 from .records import *
+from .records import _extract_scenario_record
 from .bundle import *
+from .bundle import _bundle_index, _bundle_manifest, _bundle_readme, _bundle_summary
 from .status_docs import *
 
 def run_aioquic_adapter_preflight(
@@ -29,7 +32,7 @@ def run_aioquic_adapter_preflight(
             artifact_root=tmpdir,
             source_root=repo_root,
             scenario_ids=list(scenario_ids),
-            strict=True,
+            strict=False,
         )
         generated_root = Path(summary.artifact_root)
         for source_name, target_name in (

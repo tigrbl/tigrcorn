@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .imports import *
+from .matrix import load_external_matrix
 from .models import *
 from .runner import ExternalInteropRunner
 

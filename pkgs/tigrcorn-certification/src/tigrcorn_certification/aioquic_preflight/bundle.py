@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .imports import *
 from .helpers import *
+from .helpers import _now
 
 def _bundle_manifest(*, artifact_root: str, matrix_path: str, scenario_ids: Sequence[str]) -> dict[str, Any]:
     return {
