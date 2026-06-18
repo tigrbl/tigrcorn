@@ -552,7 +552,16 @@ jobs:
         run: npm ci --workspaces=false
       - name: Install Playwright browsers
         working-directory: packages/wt-peer-probes
-        run: npx playwright install --with-deps chromium firefox webkit
+        run: |
+          for attempt in 1 2 3; do
+            echo "Installing Playwright browsers (attempt ${attempt}/3)."
+            if timeout 15m npx playwright install --with-deps chromium firefox webkit; then
+              exit 0
+            fi
+            echo "Playwright browser installation attempt ${attempt} failed or timed out."
+            sleep 20
+          done
+          exit 1
       - name: Build WebTransport peer probe package
         working-directory: packages/wt-peer-probes
         run: npm run build --workspaces=false
