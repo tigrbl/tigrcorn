@@ -37,7 +37,6 @@ def validate_release_targets(plan_path: Path, *, github: bool, pypi: bool, npmjs
                 stderr=subprocess.DEVNULL,
             )
             if tag_exists.returncode == 0:
-                failures.append(f"Git tag already exists: {tag}")
                 continue
             release_exists = subprocess.run(
                 ["gh", "release", "view", tag],
@@ -94,7 +93,8 @@ def create_github_tags(plan_path: Path) -> None:
             stderr=subprocess.DEVNULL,
         )
         if existing.returncode == 0:
-            raise RuntimeError(f"tag {tag} already exists")
+            print(f"Tag already exists, reusing: {tag}")
+            continue
         run(["git", "tag", "-a", tag, "-m", tag])
         created_tags.append(tag)
     if created_tags:

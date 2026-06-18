@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from tools.release import release_automation
+from tools.release import automation as release_automation_impl
 from tools.release.release_automation import Version, build_plan
 
 
@@ -36,7 +37,7 @@ def test_release_plan_supports_all_packages() -> None:
     assert "tigrcorn-core" in names
     assert "@tigrcorn/wt-peer-probes" in names
     assert plan["prerelease"] is True
-    assert any(release["tag"].startswith("tigrcorn==0.3.17.dev") for release in plan["github_releases"])
+    assert any(release["tag"].startswith("tigrcorn==0.3.18.dev") for release in plan["github_releases"])
 
 
 def test_release_plan_supports_probe_selection() -> None:
@@ -93,11 +94,86 @@ def test_create_github_tags_pushes_tags_without_creating_releases(
             return _Completed(1)
         return _Completed(0)
 
-    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: calls.append(args))
-    monkeypatch.setattr(release_automation.subprocess, "run", fake_subprocess_run)
+    monkeypatch.setattr(release_automation_impl, "run", lambda args, **kwargs: calls.append(args))
+    monkeypatch.setattr(release_automation_impl.subprocess, "run", fake_subprocess_run)
 
     release_automation.create_github_tags(summary)
 
     assert ["git", "tag", "-a", "tigrcorn==0.3.16.dev1", "-m", "tigrcorn==0.3.16.dev1"] in calls
     assert ["git", "push", "origin", "tigrcorn==0.3.16.dev1"] in calls
     assert not [call for call in calls if call[:3] == ["gh", "release", "create"]]
+
+
+def test_create_github_tags_reuses_existing_tags(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "semver": "finalize",
+                "prerelease": False,
+                "github_releases": [
+                    {
+                        "name": "tigrcorn",
+                        "kind": "pypi",
+                        "path": "pyproject.toml",
+                        "version": "0.3.17",
+                        "tag": "tigrcorn==0.3.17",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    calls: list[list[str]] = []
+
+    class _Completed:
+        returncode = 0
+
+    monkeypatch.setattr(release_automation_impl, "run", lambda args, **kwargs: calls.append(args))
+    monkeypatch.setattr(release_automation_impl.subprocess, "run", lambda args, **kwargs: _Completed())
+
+    release_automation.create_github_tags(summary)
+
+    assert calls == []
+
+
+def test_validate_release_targets_allows_existing_git_tags(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "github_releases": [
+                    {
+                        "name": "tigrcorn",
+                        "kind": "pypi",
+                        "path": "pyproject.toml",
+                        "version": "0.3.17",
+                        "tag": "tigrcorn==0.3.17",
+                    }
+                ],
+                "python": [],
+                "npm": [{"name": "@tigrcorn/wt-peer-probes", "version": "0.1.8"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    class _Completed:
+        def __init__(self, returncode: int) -> None:
+            self.returncode = returncode
+
+    def fake_subprocess_run(args: list[str], **kwargs) -> _Completed:
+        if args[:2] == ["git", "rev-parse"]:
+            return _Completed(0)
+        if args[:3] == ["gh", "release", "view"]:
+            return _Completed(1)
+        return _Completed(0)
+
+    monkeypatch.setattr(release_automation_impl.subprocess, "run", fake_subprocess_run)
+    monkeypatch.setattr(release_automation_impl, "url_exists", lambda url: False)
+
+    release_automation.validate_release_targets(summary, github=True, pypi=False, npmjs=True)
