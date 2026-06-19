@@ -504,13 +504,17 @@ jobs:
           skip-existing: "true"
 
   wt-peer-probes-ci:
-    name: wt-peer-probes-ci
+    name: wt-peer-probes-ci-node${{ matrix.node-version }}
     needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.npmjs_publish || inputs.gh_release) && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     environment: ci
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "23", "24", "25"]
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -519,7 +523,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: packages/wt-peer-probes/package-lock.json
       - name: Install WebTransport peer probe dependencies
@@ -532,22 +536,28 @@ jobs:
         working-directory: packages/wt-peer-probes
         run: npm test --workspaces=false
       - name: Pack WebTransport peer probe package
+        if: ${{ matrix.node-version == '25' }}
         working-directory: packages/wt-peer-probes
         run: npm pack
       - name: Upload WebTransport peer probe tarball
+        if: ${{ matrix.node-version == '25' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: wt-peer-probes-${{ github.sha }}
           path: packages/wt-peer-probes/tigrcorn-wt-peer-probes-*.tgz
 
   wt-peer-probes-browser-tests:
-    name: wt-peer-probes-browser-tests
+    name: wt-peer-probes-browser-tests-node${{ matrix.node-version }}
     needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.npmjs_publish || inputs.gh_release) && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
     environment: ci
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "23", "24", "25"]
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -556,7 +566,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: packages/wt-peer-probes/package-lock.json
       - name: Install WebTransport peer probe dependencies
@@ -575,7 +585,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: wt-peer-probes-playwright-${{ github.sha }}
+          name: wt-peer-probes-playwright-node${{ matrix.node-version }}-${{ github.sha }}
           path: packages/wt-peer-probes/playwright-report/
           if-no-files-found: ignore
 

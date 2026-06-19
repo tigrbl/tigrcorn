@@ -104,18 +104,22 @@ jobs:
             docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md
 
   validate-npm:
-    name: validate-npm
+    name: validate-npm-node${{ matrix.node-version }}
     runs-on: ubuntu-latest
     environment: ci
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "23", "24", "25"]
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: packages/wt-peer-probes/package-lock.json
       - name: Install WebTransport peer probe dependencies
@@ -129,18 +133,22 @@ jobs:
         run: npm test --workspaces=false
 
   validate-wt-peer-probes:
-    name: validate-wt-peer-probes
+    name: validate-wt-peer-probes-node${{ matrix.node-version }}
     runs-on: ubuntu-latest
     environment: ci
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "23", "24", "25"]
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ matrix.node-version }}
           cache: npm
           cache-dependency-path: packages/wt-peer-probes/package-lock.json
       - name: Install WebTransport peer probe dependencies
@@ -159,6 +167,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: wt-peer-probes-playwright-${{ github.sha }}
+          name: wt-peer-probes-playwright-node${{ matrix.node-version }}-${{ github.sha }}
           path: packages/wt-peer-probes/playwright-report/
           if-no-files-found: ignore
