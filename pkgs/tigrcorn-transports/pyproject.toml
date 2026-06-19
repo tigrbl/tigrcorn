@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-transports"
-version = "0.3.17"
+version = "0.3.18.dev1"
 description = "TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transport primitives for the Tigrcorn server stack."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -29,8 +29,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.17",
-  "tigrcorn-config==0.3.17",
+  "tigrcorn-core==0.3.18.dev1",
+  "tigrcorn-config==0.3.18.dev1",
 ]
 
 [tool.setuptools]
