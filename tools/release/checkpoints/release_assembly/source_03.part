@@ -102,7 +102,7 @@ def write_package_compliance_review(auth: Any, *, strict: Any, promotion: Any) -
             'docs/review/conformance/STRICT_PROFILE_TARGET.md',
         ],
         'remaining_gaps': remaining_rfc_gaps,
-        'operational_note': 'The current local workspace still runs under Python 3.13, while the frozen release-workflow contract requires Python 3.11 or 3.12. That does not change the preserved artifact truth in the 0.3.9 working release root.',
+        'operational_note': 'The current local workspace still runs under Python 3.13, while the frozen release-workflow contract requires Python 3.10, 3.11, 3.12, 3.13, or 3.14. That does not change the preserved artifact truth in the 0.3.9 working release root.',
     }
     normalized = normalize_workspace_paths(payload)
     dump_json(PACKAGE_REVIEW_JSON, normalized)

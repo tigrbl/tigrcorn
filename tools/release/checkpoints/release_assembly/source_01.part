@@ -90,7 +90,7 @@ def build_performance_bundle() -> None:
 
 def build_certification_environment_bundle() -> None:
     python_minor = f'{sys.version_info.major}.{sys.version_info.minor}'
-    current_env_ready = python_minor in {'3.11', '3.12'} and importlib.util.find_spec('aioquic') is not None
+    current_env_ready = python_minor in {'3.10', '3.11', '3.12', '3.13', '3.14'} and importlib.util.find_spec('aioquic') is not None
     if CERT_ENV_BUNDLE.exists() and not current_env_ready:
         return
     write_certification_environment_bundle(

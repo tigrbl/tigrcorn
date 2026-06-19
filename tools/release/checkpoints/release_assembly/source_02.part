@@ -33,7 +33,7 @@
         '',
         'What that freeze now means:',
         '',
-        '- the release workflow must run under Python 3.11 or 3.12',
+        '- the release workflow must run under Python 3.10, 3.11, 3.12, 3.13, or 3.14',
         '- the release workflow must install `.[certification,dev]` before any Release certification checkpoint script is executed',
         '- `tools/run_certification_release_workflow.py` freezes and validates the certification environment before it invokes Release certification checkpoint scripts',
         '- a non-ready local environment is recorded honestly instead of being treated as an acceptable release-workflow substitute',

@@ -13,7 +13,7 @@ try:
     import tomllib
 except ModuleNotFoundError:  # pragma: no cover - Python 3.10 fallback
     import tomli as tomllib
-SUPPORTED_PYTHON_VERSIONS: tuple[str, ...] = ('3.11', '3.12')
+SUPPORTED_PYTHON_VERSIONS: tuple[str, ...] = ('3.10', '3.11', '3.12', '3.13', '3.14')
 REQUIRED_IMPORTS: tuple[str, ...] = ('aioquic', 'h2', 'websockets', 'wsproto')
 REQUIRED_EXTRAS: tuple[str, ...] = ('certification', 'dev')
 SAFE_ENV_KEYS: tuple[str, ...] = (
