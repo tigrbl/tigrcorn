@@ -103,35 +103,6 @@ jobs:
             docs/review/conformance/release_gate_status.current.json
             docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md
 
-  validate-npm:
-    name: validate-npm-node${{ matrix.node-version }}
-    runs-on: ubuntu-latest
-    environment: ci
-    permissions:
-      contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: ["22", "23", "24", "25"]
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path: packages/wt-peer-probes/package-lock.json
-      - name: Install WebTransport peer probe dependencies
-        working-directory: packages/wt-peer-probes
-        run: npm ci --workspaces=false
-      - name: Build WebTransport peer probe package
-        working-directory: packages/wt-peer-probes
-        run: npm run build --workspaces=false
-      - name: Test WebTransport peer probe package
-        working-directory: packages/wt-peer-probes
-        run: npm test --workspaces=false
-
   validate-wt-peer-probes:
     name: validate-wt-peer-probes-node${{ matrix.node-version }}
     runs-on: ubuntu-latest
@@ -160,6 +131,9 @@ jobs:
       - name: Build WebTransport peer probe package
         working-directory: packages/wt-peer-probes
         run: npm run build --workspaces=false
+      - name: Test WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm test --workspaces=false
       - name: Validate browser WebTransport peer API probes
         working-directory: packages/wt-peer-probes
         run: npm run test:peer-api -- --reporter=line
