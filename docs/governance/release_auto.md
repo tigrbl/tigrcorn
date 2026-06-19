@@ -6,7 +6,7 @@ This document defines the mutable-tree automation contract for prerelease, relea
 
 - distributions are built exactly once in the `staging` environment
 - downstream publication jobs consume the same uploaded `dist/` artifact rather than rebuilding
-- TestPyPI and PyPI publication use the repository `PYPI_API_TOKEN` secret, and npmjs publication uses the repository `NPM_API_TOKEN` secret
+- TestPyPI and PyPI publication use PyPI Trusted Publishing, and npmjs publication uses npm trusted publishing/provenance through GitHub Actions OIDC.
 - generated release evidence is emitted from `tools/cert/release_auto.py`
 - release assets include generated claim, risk, evidence-index, release-note, and current-state outputs
 - release Pages content is generated from the same release evidence set
@@ -53,5 +53,5 @@ The following must exist outside this working tree:
 
 - GitHub environments `staging`, `testpypi`, `pypi`, and `docs`
 - GitHub Pages enabled for the repository
-- repository secrets `PYPI_API_TOKEN` and `NPM_API_TOKEN` configured with the required package publication rights
+- PyPI and npm trusted publisher bindings configured for this repository, workflow, package, and environment identity
 - repository rulesets that require the release and validation workflows

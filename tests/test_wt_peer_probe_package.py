@@ -74,7 +74,8 @@ def test_wt_peer_probe_playwright_matrix_is_peer_based() -> None:
 
 
 def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
-    reusable = yaml.safe_load((ROOT / ".github" / "workflows" / "_reusable-ci.yml").read_text(encoding="utf-8"))
+    reusable_text = (ROOT / ".github" / "workflows" / "_reusable-ci.yml").read_text(encoding="utf-8")
+    reusable = yaml.safe_load(reusable_text)
     publish = yaml.safe_load((ROOT / ".github" / "workflows" / "publish-all-packages.yml").read_text(encoding="utf-8"))
 
     assert "validate-npm" in reusable["jobs"]
@@ -95,11 +96,7 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
         step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm test --workspaces=false"
         for step in steps
     )
-    assert any(
-        step.get("working-directory") == "packages/wt-peer-probes"
-        and step.get("run") == "npx playwright install --with-deps chromium firefox webkit"
-        for step in peer_steps
-    )
+    assert "timeout 90m npx playwright install --with-deps chromium firefox webkit" in reusable_text
     assert any(
         step.get("working-directory") == "packages/wt-peer-probes"
         and step.get("run") == "npm run test:peer-api -- --reporter=line"
@@ -122,7 +119,7 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
     publish_peer_steps = publish["jobs"]["wt-peer-probes-browser-tests"]["steps"]
     release_steps = publish["jobs"]["publish-wt-peer-probes-github-release"]["steps"]
     npm_steps = publish["jobs"]["publish-wt-peer-probes-npmjs"]["steps"]
-    release_action = next(step for step in release_steps if step.get("uses") == "softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe")
+    release_action = next(step for step in release_steps if step.get("uses") == "cobycloud/actions/actions/github-release@main")
     assert publish["jobs"]["publish-wt-peer-probes-github-release"]["needs"] == [
         "prepare-release",
         "create-github-tags",
@@ -140,22 +137,14 @@ def test_wt_peer_probe_package_has_ci_and_publish_rails() -> None:
         for step in publish_peer_steps
     )
     assert release_action["with"]["files"] == ".artifacts/wt-peer-probes/*.tgz"
-    assert any(step.get("uses") == "actions/setup-node@v4" for step in npm_steps)
-    assert any(
-        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm ci --workspaces=false"
-        for step in npm_steps
-    )
-    assert any(
-        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm run build --workspaces=false"
-        for step in npm_steps
-    )
-    assert any(
-        step.get("working-directory") == "packages/wt-peer-probes" and step.get("run") == "npm test --workspaces=false"
-        for step in npm_steps
-    )
-    publish_step = next(step for step in npm_steps if step.get("run") == "npm publish --access public --provenance")
-    assert publish_step["working-directory"] == "packages/wt-peer-probes"
-    assert publish_step["env"]["NODE_AUTH_TOKEN"] == "${{ secrets.NPM_API_TOKEN }}"
+    publish_step = next(step for step in npm_steps if step.get("uses") == "cobycloud/actions/actions/npm-publish@main" and step["with"].get("dry-run") != "true")
+    assert publish_step["with"]["publish-mode"] == "trusted"
+    assert publish_step["with"]["node-version"] == "25"
+    assert publish_step["with"]["package-directory"] == "packages/wt-peer-probes"
+    assert publish_step["with"]["install-command"] == "npm ci --workspaces=false"
+    assert publish_step["with"]["build-command"] == "npm run build --workspaces=false"
+    assert publish_step["with"]["test-command"] == "npm test --workspaces=false"
+    assert publish_step["with"]["provenance"] == "true"
 
 
 def test_wt_peer_probe_contract_is_registered_in_ssot() -> None:

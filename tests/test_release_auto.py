@@ -60,15 +60,14 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert 'needs: [release-gates, certification-release-gates]' in workflow
     assert 'Check out prepared release commit' in workflow
     assert 'draft: ${{ github.event_name == \'workflow_dispatch\' && needs.prepare-release.outputs.prerelease == \'true\' }}' in workflow
-    assert 'secrets.NPM_API_TOKEN' in workflow
-    assert 'uv publish' in workflow
-    assert '--trusted-publishing always' in workflow
+    assert 'publish-mode: trusted' in workflow
+    assert 'cobycloud/actions/actions/pypi-publish@main' in workflow
+    assert 'cobycloud/actions/actions/npm-publish@main' in workflow
     assert 'actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26' in workflow
-    assert 'softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe' in workflow
+    assert 'cobycloud/actions/actions/github-release@main' in workflow
     assert 'actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b' not in workflow
-    assert 'npm publish --access public --provenance' in workflow
     assert 'download-artifact' in workflow
-    assert '--check-url https://pypi.org/simple/' in workflow
+    assert 'repository-url: https://upload.pypi.org/legacy/' in workflow
     assert 'python -m build --outdir dist "$package_dir"' in workflow
 
 

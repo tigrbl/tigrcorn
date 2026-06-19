@@ -410,29 +410,35 @@ jobs:
         with:
           name: python-dist-${{ github.sha }}
           path: dist
-      - name: Install uv
-        run: python -m pip install --upgrade uv
-      - name: Publish Python distributions to TestPyPI
+      - name: Select Python distributions for TestPyPI
+        id: select-testpypi-dist
         if: github.event_name == 'release' && github.event.release.prerelease
         shell: bash
         run: |
           set -euo pipefail
           shopt -s nullglob
+          rm -rf .publish-python
+          mkdir -p .publish-python
           package_slug="${{ matrix.package }}"
           package_slug="${package_slug//-/_}"
           artifacts=(dist/${package_slug}-*)
           if [[ ${#artifacts[@]} -eq 0 ]]; then
             echo "No Python distributions found for ${{ matrix.package }}; skipping."
+            echo "has_artifacts=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           for artifact in "${artifacts[@]}"; do
-            echo "Publishing ${artifact} to TestPyPI with trusted publishing."
-            uv publish \
-              --trusted-publishing always \
-              --publish-url https://test.pypi.org/legacy/ \
-              --check-url https://test.pypi.org/simple/ \
-              "${artifact}"
+            cp "${artifact}" .publish-python/
           done
+          echo "has_artifacts=true" >> "$GITHUB_OUTPUT"
+      - name: Publish Python distributions to TestPyPI
+        if: ${{ github.event_name == 'release' && github.event.release.prerelease && steps.select-testpypi-dist.outputs.has_artifacts == 'true' }}
+        uses: cobycloud/actions/actions/pypi-publish@main
+        with:
+          publish-mode: trusted
+          packages-dir: .publish-python
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: "true"
 
   publish-python-pypi:
     name: python-pypi-publish
@@ -467,29 +473,35 @@ jobs:
         with:
           name: python-dist-${{ github.sha }}
           path: dist
-      - name: Install uv
-        run: python -m pip install --upgrade uv
-      - name: Publish Python distributions to PyPI
+      - name: Select Python distributions for PyPI
+        id: select-pypi-dist
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == false)
         shell: bash
         run: |
           set -euo pipefail
           shopt -s nullglob
+          rm -rf .publish-python
+          mkdir -p .publish-python
           package_slug="${{ matrix.package }}"
           package_slug="${package_slug//-/_}"
           artifacts=(dist/${package_slug}-*)
           if [[ ${#artifacts[@]} -eq 0 ]]; then
             echo "No Python distributions found for ${{ matrix.package }}; skipping."
+            echo "has_artifacts=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           for artifact in "${artifacts[@]}"; do
-            echo "Publishing ${artifact} to PyPI with trusted publishing."
-            uv publish \
-              --trusted-publishing always \
-              --publish-url https://upload.pypi.org/legacy/ \
-              --check-url https://pypi.org/simple/ \
-              "${artifact}"
+            cp "${artifact}" .publish-python/
           done
+          echo "has_artifacts=true" >> "$GITHUB_OUTPUT"
+      - name: Publish Python distributions to PyPI
+        if: ${{ (github.event_name == 'workflow_dispatch' || (github.event_name == 'release' && github.event.action == 'published' && github.event.release.prerelease == false)) && steps.select-pypi-dist.outputs.has_artifacts == 'true' }}
+        uses: cobycloud/actions/actions/pypi-publish@main
+        with:
+          publish-mode: trusted
+          packages-dir: .publish-python
+          repository-url: https://upload.pypi.org/legacy/
+          skip-existing: "true"
 
   wt-peer-probes-ci:
     name: wt-peer-probes-ci
@@ -614,15 +626,15 @@ jobs:
           name: wt-peer-probes-${{ github.sha }}
           path: .artifacts/wt-peer-probes
       - name: Create or update GitHub release with probe package
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
+        uses: cobycloud/actions/actions/github-release@main
         with:
-          tag_name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.npm_release_tag || github.ref_name }}
+          tag-name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.npm_release_tag || github.ref_name }}
           name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.npm_release_tag || github.ref_name }}
-          body_path: ${{ needs.prepare-release.outputs.release_notes }}
+          body-path: ${{ needs.prepare-release.outputs.release_notes }}
           files: .artifacts/wt-peer-probes/*.tgz
           draft: ${{ github.event_name == 'workflow_dispatch' && inputs.package_selection == 'all' }}
           prerelease: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.prerelease == 'true' || github.event_name == 'release' && github.event.release.prerelease }}
-          make_latest: legacy
+          make-latest: legacy
 
   publish-wt-peer-probes-npmjs:
     name: wt-peer-probes-npmjs-publish
@@ -638,34 +650,31 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          registry-url: https://registry.npmjs.org
-          cache: npm
-          cache-dependency-path: packages/wt-peer-probes/package-lock.json
-      - name: Install WebTransport peer probe dependencies
-        working-directory: packages/wt-peer-probes
-        run: npm ci --workspaces=false
-      - name: Build WebTransport peer probe package
-        working-directory: packages/wt-peer-probes
-        run: npm run build --workspaces=false
-      - name: Test WebTransport peer probe package
-        working-directory: packages/wt-peer-probes
-        run: npm test --workspaces=false
       - name: Publish WebTransport peer probe package to npm dry run
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
-        working-directory: packages/wt-peer-probes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_API_TOKEN }}
-        run: npm publish --access public --provenance --dry-run
+        uses: cobycloud/actions/actions/npm-publish@main
+        with:
+          publish-mode: trusted
+          node-version: "25"
+          package-directory: packages/wt-peer-probes
+          install-command: npm ci --workspaces=false
+          build-command: npm run build --workspaces=false
+          test-command: npm test --workspaces=false
+          access: public
+          provenance: "true"
+          dry-run: "true"
       - name: Publish WebTransport peer probe package to npm
         if: ${{ github.event_name != 'workflow_dispatch' || !inputs.dry_run }}
-        working-directory: packages/wt-peer-probes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_API_TOKEN }}
-        run: npm publish --access public --provenance
+        uses: cobycloud/actions/actions/npm-publish@main
+        with:
+          publish-mode: trusted
+          node-version: "25"
+          package-directory: packages/wt-peer-probes
+          install-command: npm ci --workspaces=false
+          build-command: npm run build --workspaces=false
+          test-command: npm test --workspaces=false
+          access: public
+          provenance: "true"
 
   publish-python-github-release:
     name: python-github-release
@@ -690,11 +699,11 @@ jobs:
           name: release-assets-${{ github.sha }}
           path: .artifacts/release-assets
       - name: Attach Python package and release evidence assets
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe
+        uses: cobycloud/actions/actions/github-release@main
         with:
-          tag_name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.python_release_tag || github.ref_name }}
+          tag-name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.python_release_tag || github.ref_name }}
           name: ${{ github.event_name == 'workflow_dispatch' && needs.prepare-release.outputs.python_release_tag || github.ref_name }}
-          body_path: ${{ needs.prepare-release.outputs.release_notes }}
+          body-path: ${{ needs.prepare-release.outputs.release_notes }}
           files: |
             dist/*
             .artifacts/release-assets/*
