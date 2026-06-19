@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-contract"
-version = "0.3.18.dev1"
+version = "0.3.18.dev2"
 description = "tigr-asgi-contract adapters and runtime-boundary classification for Tigrcorn ASGI3, WebSocket, and WebTransport surfaces."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -29,8 +29,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "tigrcorn-core==0.3.18.dev1",
-  "tigrcorn-asgi==0.3.18.dev1",
+  "tigrcorn-core==0.3.18.dev2",
+  "tigrcorn-asgi==0.3.18.dev2",
   "tigr-asgi-contract>=0.3.2",
 ]
 

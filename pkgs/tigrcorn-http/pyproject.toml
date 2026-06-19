@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-http"
-version = "0.3.18.dev1"
+version = "0.3.18.dev2"
 description = "HTTP utilities for Tigrcorn headers, entity tags, content coding, range requests, and Python web server responses."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
@@ -28,7 +28,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
 ]
-dependencies = ["tigrcorn-core==0.3.18.dev1"]
+dependencies = ["tigrcorn-core==0.3.18.dev2"]
 
 [project.optional-dependencies]
 compression = ["brotli>=1.1.0"]
