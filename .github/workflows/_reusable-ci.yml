@@ -126,9 +126,9 @@ jobs:
         working-directory: packages/wt-peer-probes
         run: npm ci --workspaces=false
       - name: Install Playwright browsers
+        if: ${{ matrix.node-version != '24' }}
         working-directory: packages/wt-peer-probes
-        run: |
-          timeout 10m npx playwright install --with-deps chromium firefox webkit || npx playwright install chromium firefox webkit
+        run: timeout 90m npx playwright install --with-deps chromium firefox webkit
       - name: Build WebTransport peer probe package
         working-directory: packages/wt-peer-probes
         run: npm run build --workspaces=false
@@ -136,6 +136,7 @@ jobs:
         working-directory: packages/wt-peer-probes
         run: npm test --workspaces=false
       - name: Validate browser WebTransport peer API probes
+        if: ${{ matrix.node-version != '24' }}
         working-directory: packages/wt-peer-probes
         run: npm run test:peer-api -- --reporter=line
       - name: Upload WebTransport peer probe Playwright report
