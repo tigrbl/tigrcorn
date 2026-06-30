@@ -38,6 +38,6 @@ body: |-
 
   - New client-session claims must name the protocol carrier, topology, scope, isolation/identity behavior, pressure mode, and fault mode.
   - Existing WebTransport and HTTP/2 proofs remain accurate but must state whether they are single-client, single-session, or multi-client topology proofs.
-  - Runtime telemetry emission is out of scope for this decision.
+  - Runtime telemetry emission is out of scope for this decision. Diagnostics-only runtime connection inventory is governed separately by ADR-1067 and SPEC-2081 and does not replace client-session topology proof.
 
   Related: ADR-1002, ADR-1003, ADR-1011, ADR-1023, ADR-1024, ADR-1033, SPEC-2053.

@@ -51,6 +51,12 @@ class HTTP2StreamsMixin:
             await self._start_connect_tunnel(stream_id)
             return
         self.state.last_stream_id = max(self.state.last_stream_id, stream_id)
+        request = self._build_request(state)
+        self._open_inventory_session(
+            stream_id,
+            kind="http-request",
+            metadata={"method": request.method, "path": request.path},
+        )
         task = asyncio.create_task(self._run_stream(stream_id), name=f"tigrcorn-h2-stream-{stream_id}")
         self.stream_tasks[stream_id] = task
 
@@ -66,6 +72,7 @@ class HTTP2StreamsMixin:
         if state is not None:
             state.websocket_session = None
         self._release_stream_work_lease(stream_id)
+        self._close_inventory_session(stream_id, reason="websocket-complete")
         self._finalize_stream_if_complete(stream_id)
 
 
@@ -87,6 +94,7 @@ class HTTP2StreamsMixin:
         if state is None or state.websocket_session is not None or state.connect_tunnel is not None:
             return
         if state.local_closed and state.end_stream_received:
+            self._close_inventory_session(stream_id, reason="stream-complete")
             self._release_stream_work_lease(stream_id)
             self._cancel_stream(stream_id)
             self.streams.close(stream_id)
@@ -125,6 +133,7 @@ class HTTP2StreamsMixin:
                 self._finalize_stream_if_complete(stream_id)
             self._maybe_finish_after_goaway()
         finally:
+            self._close_inventory_session(stream_id, reason="request-complete")
             self._release_stream_work_lease(stream_id)
 
 
@@ -141,14 +150,17 @@ class HTTP2StreamsMixin:
             if state.websocket_session is not None:
                 with suppress(Exception):
                     await state.websocket_session.abort()
+                self._close_inventory_session(state.stream_id, reason="shutdown")
             if state.connect_tunnel is not None:
                 with suppress(Exception):
                     await state.connect_tunnel.abort()
+                self._close_inventory_session(state.stream_id, reason="shutdown")
         for stream_id, task in list(self.stream_tasks.items()):
             task.cancel()
             with suppress(asyncio.CancelledError):
                 await task
             self.stream_tasks.pop(stream_id, None)
+            self._close_inventory_session(stream_id, reason="shutdown")
         if not self.state.local_goaway_sent:
             self.state.local_goaway_sent = True
             self.state.local_goaway_last_stream_id = self.state.last_stream_id

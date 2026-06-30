@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from .imports import *
-
 class HTTP3PacketMixin:
     async def handle_packet(self, packet: UDPPacket, endpoint: UDPEndpoint) -> None:
         async with self._lock:
@@ -122,13 +120,12 @@ class HTTP3PacketMixin:
                 self.sessions[packet.addr] = session
                 if session.quic.local_cid:
                     self.sessions_by_local_cid[session.quic.local_cid] = session
+                self._register_h3_connection(session)
                 if self.metrics is not None:
                     self.metrics.quic_session_opened()
             else:
                 session.quic.remote_cid = scid or session.quic.remote_cid
-
             outbound: list[bytes] = []
-
             session.bytes_received += len(packet.data)
             if self.metrics is not None:
                 self.metrics.quic_datagram_received(len(packet.data))
@@ -146,6 +143,7 @@ class HTTP3PacketMixin:
                 session.quic.address_validated = True
                 self.sessions[packet.addr] = session
                 self._webtransport_register_rebinding(session)
+                self._update_h3_connection(session)
             if session.quic.local_cid:
                 self.sessions_by_local_cid[session.quic.local_cid] = session
             session.request_packets += 1
@@ -390,6 +388,7 @@ class HTTP3PacketMixin:
                     self._cancel_session_timer(session)
                     self._close_session(session)
             self._sync_quic_loss_metrics(session)
+            self._update_h3_connection(session)
             outbound.extend(session.quic.take_handshake_datagrams())
             outbound.extend(session.quic.drain_scheduled_datagrams())
             for raw in outbound:

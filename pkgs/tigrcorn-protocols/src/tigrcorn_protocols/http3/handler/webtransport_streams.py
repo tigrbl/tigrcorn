@@ -182,6 +182,8 @@ class HTTP3WebTransportStreamsMixin:
             if owner_stream_id == stream_id:
                 webtransport = session.webtransport_sessions.pop(stream_id, None)
                 if webtransport is not None:
+                    if self.connection_inventory is not None:
+                        self.connection_inventory.close_session(webtransport.session_id, reason='stream-closed')
                     self._webtransport_release_session(webtransport.session_id, reason='stream-closed')
                 self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
@@ -236,10 +238,20 @@ class HTTP3WebTransportStreamsMixin:
             work_lease=session.stream_work_leases.get(stream_id),
         )
         session.webtransport_sessions[stream_id] = webtransport
+        if self.connection_inventory is not None:
+            self.connection_inventory.open_session(
+                webtransport.session_id,
+                connection_id=self._connection_id_for_session(session),
+                kind='webtransport',
+                stream_ids=(str(stream_id),),
+                metadata={'path': request.path, 'protocol': 'http3', 'carrier': 'h3'},
+            )
         try:
             self._webtransport_register_session(session, webtransport)
             self._webtransport_register_stream(webtransport, stream_id)
         except WebTransportGovernanceError:
+            if self.connection_inventory is not None:
+                self.connection_inventory.close_session(webtransport.session_id, reason='webtransport-governance-rejected')
             session.webtransport_sessions.pop(stream_id, None)
             session.webtransport_streams.discard(stream_id)
             session.webtransport_stream_owners.pop(stream_id, None)

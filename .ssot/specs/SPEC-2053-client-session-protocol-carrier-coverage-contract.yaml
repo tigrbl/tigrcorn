@@ -78,10 +78,13 @@ body: |-
   Governed proof identifiers:
 
   - `client_id`
+  - `peer_id`
   - `connection_id`
   - `session_id`
   - `stream_id`
   - `datagram_id`
+
+  `peer_id` is a diagnostics grouping key for the remote participant. It shall not be treated as a protocol session, stream, datagram, or authenticated identity unless a stronger peer identity source is explicitly configured. Runtime inventory records for these identifiers are governed by `spc:2081`.
 
   The governed client-session schema must reject public `lane` fields. Protocol-specific lane/profile terminology may remain internal to WebTransport and classification projection tests.
 

@@ -23,6 +23,7 @@ class _TigrCornServerHTTP11Mixin:
         scheme: str,
         ws_scheme: str,
         scope_extensions: dict | None = None,
+        connection_id: str | None = None,
     ) -> None:
         keep_handling = True
         handled_requests = 0
@@ -67,7 +68,19 @@ class _TigrCornServerHTTP11Mixin:
             request.keep_alive = apply_keep_alive_policy(request.keep_alive, enabled=self.config.http.http1_keep_alive)
 
             if request.method.upper() == 'CONNECT':
-                await self._handle_http11_connect_tunnel(reader, writer, request, client=request_client)
+                session_id = f"{connection_id}:connect:{handled_requests}" if connection_id else None
+                if session_id is not None:
+                    self._connection_inventory.open_session(
+                        session_id,
+                        connection_id=connection_id,
+                        kind='connect-tunnel',
+                        metadata={'authority': request.target, 'protocol': 'http1'},
+                    )
+                try:
+                    await self._handle_http11_connect_tunnel(reader, writer, request, client=request_client)
+                finally:
+                    if session_id is not None:
+                        self._connection_inventory.close_session(session_id, reason='connect-complete')
                 keep_handling = False
                 break
 
@@ -93,10 +106,20 @@ class _TigrCornServerHTTP11Mixin:
                     scope_extensions=scope_extensions,
                     metrics=self.state.metrics,
                 )
+                session_id = f"{connection_id}:websocket:{handled_requests}" if connection_id else None
+                if session_id is not None:
+                    self._connection_inventory.open_session(
+                        session_id,
+                        connection_id=connection_id,
+                        kind='websocket',
+                        metadata={'path': request.path, 'protocol': 'http1'},
+                    )
                 try:
                     self.state.metrics.websocket_opened()
                     await handler.handle()
                 finally:
+                    if session_id is not None:
+                        self._connection_inventory.close_session(session_id, reason='websocket-complete')
                     work_lease.release()
                     self.state.metrics.websocket_closed()
                     keep_handling = False
@@ -108,6 +131,14 @@ class _TigrCornServerHTTP11Mixin:
                 await self._write_error(writer, 503, b'scheduler overloaded', keep_alive=False)
                 break
             try:
+                session_id = f"{connection_id}:http1:{handled_requests}" if connection_id else None
+                if session_id is not None:
+                    self._connection_inventory.open_session(
+                        session_id,
+                        connection_id=connection_id,
+                        kind='http-request',
+                        metadata={'method': request.method, 'path': request.path, 'protocol': 'http1'},
+                    )
                 keep_handling = await self._serve_http11_request(
                 reader,
                 writer,
@@ -116,8 +147,12 @@ class _TigrCornServerHTTP11Mixin:
                 server=request_server,
                 scheme=request_scheme,
                 scope_extensions=scope_extensions,
+                connection_id=connection_id,
+                session_id=session_id,
             )
             finally:
+                if session_id is not None:
+                    self._connection_inventory.close_session(session_id, reason='request-complete')
                 work_lease.release()
             handled_requests += 1
 

@@ -70,6 +70,11 @@ class _HTTP3ConnectTunnel:
             with suppress(asyncio.CancelledError):
                 await self.relay_task
         self.session.connect_tunnels.pop(self.stream_id, None)
+        if self.handler.connection_inventory is not None:
+            self.handler.connection_inventory.close_session(
+                f"{self.handler._connection_id_for_session(self.session)}:connect:{self.stream_id}",
+                reason='connect-abort',
+            )
         lease = self.session.stream_work_leases.pop(self.stream_id, None)
         if lease is not None:
             lease.release()
@@ -252,6 +257,14 @@ class HTTP3ConnectMixin:
             work_lease=session.stream_work_leases.get(stream_id),
         )
         session.connect_tunnels[stream_id] = tunnel
+        if self.connection_inventory is not None:
+            self.connection_inventory.open_session(
+                f"{self._connection_id_for_session(session)}:connect:{stream_id}",
+                connection_id=self._connection_id_for_session(session),
+                kind='connect-tunnel',
+                stream_ids=(str(stream_id),),
+                metadata={'authority': authority, 'protocol': 'http3'},
+            )
         tunnel.start()
         self.access_logger.log_http(session.addr, 'CONNECT', authority, 200, 'HTTP/3')
         return self._build_http3_response_datagrams_locked(session, stream_id, 200, [], b'', end_stream=False)

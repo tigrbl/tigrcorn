@@ -22,6 +22,7 @@ body: |-
   - H3 WebTransport traces shall include draft-13 settings negotiation, extended CONNECT response, stream/datagram ownership, buffering, GOAWAY effects, close/drain, and error-code mapping where applicable.
   - H2 WebTransport traces shall include settings negotiation, extended CONNECT response, capsule parsing, session-scoped stream/datagram ownership, flow-control capsule effects, close/drain, and malformed capsule rejection.
   - Carrier metadata shall distinguish H3/QUIC native stream/datagram backing from H2 capsule backing in evidence.
+  - Global diagnostics inventory for WebTransport session records is governed by `spc:2081`; this SPEC remains the WebTransport-specific live identity and trace contract.
 spec_kind: "operational"
 adr_ids:
   - "adr:1011"

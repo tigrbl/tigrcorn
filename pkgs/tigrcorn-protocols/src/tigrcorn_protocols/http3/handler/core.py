@@ -41,6 +41,7 @@ class HTTP3DatagramHandler(
         scheduler: ProductionScheduler | None = None,
         metrics: Metrics | None = None,
         webtransport_governance: Any | None = None,
+        connection_inventory: RuntimeConnectionInventory | None = None,
     ) -> None:
         self.app = app
         self.config = config
@@ -49,6 +50,7 @@ class HTTP3DatagramHandler(
         self.scheduler = scheduler
         self.metrics = metrics
         self.webtransport_governance = webtransport_governance
+        self.connection_inventory = connection_inventory
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._session_sequence = 0

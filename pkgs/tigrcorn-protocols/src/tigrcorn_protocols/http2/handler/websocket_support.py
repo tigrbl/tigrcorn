@@ -41,6 +41,15 @@ class HTTP2WebSocketSupportMixin:
             on_close=lambda stream_id=stream_id: self._on_websocket_stream_closed(stream_id),
         )
         state.websocket_session = session
+        self._open_inventory_session(
+            stream_id,
+            kind="websocket",
+            metadata={"path": request.path},
+        )
         self.state.last_stream_id = max(self.state.last_stream_id, stream_id)
-        await session.start()
+        try:
+            await session.start()
+        except Exception:
+            self._close_inventory_session(stream_id, reason="websocket-start-failed")
+            raise
 

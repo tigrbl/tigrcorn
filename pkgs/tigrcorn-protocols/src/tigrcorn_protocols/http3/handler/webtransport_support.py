@@ -65,6 +65,8 @@ class HTTP3WebTransportSupportMixin:
         session.webtransport_stream_owners.clear()
         session.webtransport_stream_prefaces.clear()
         for session_id in session_ids:
+            if self.connection_inventory is not None:
+                self.connection_inventory.close_session(session_id, reason='abort-session')
             self._webtransport_release_session(session_id, reason='abort-session')
             self.trace_webtransport(
                 'webtransport.session.cleanup',
@@ -80,6 +82,11 @@ class HTTP3WebTransportSupportMixin:
 
     def _on_websocket_stream_closed(self, session: HTTP3Session, stream_id: int) -> None:
         session.websocket_sessions.pop(stream_id, None)
+        if self.connection_inventory is not None:
+            self.connection_inventory.close_session(
+                f"{self._connection_id_for_session(session)}:websocket:{stream_id}",
+                reason='websocket-closed',
+            )
         self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
 
@@ -91,6 +98,8 @@ class HTTP3WebTransportSupportMixin:
         self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
         if webtransport is not None:
+            if self.connection_inventory is not None:
+                self.connection_inventory.close_session(webtransport.session_id, reason='stream-closed')
             self._webtransport_release_session(webtransport.session_id, reason='stream-closed')
             self.trace_webtransport(
                 'webtransport.session.cleanup',

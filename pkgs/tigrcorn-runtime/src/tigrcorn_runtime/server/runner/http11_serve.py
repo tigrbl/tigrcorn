@@ -13,6 +13,8 @@ class _TigrCornServerHTTP11ServeMixin:
         server: tuple[str, int] | tuple[str, None] | None,
         scheme: str,
         scope_extensions: dict | None = None,
+        connection_id: str | None = None,
+        session_id: str | None = None,
     ) -> bool:
         host_header = get_header(request.headers, b'host')
         if self.config.allowed_server_names and not authority_allowed(host_header, self.config.allowed_server_names):
@@ -161,6 +163,10 @@ class _TigrCornServerHTTP11ServeMixin:
                     trailers=trailers,
                 )
             self.state.metrics.requests_served += 1
+            if connection_id is not None:
+                self._connection_inventory.increment_connection_counter(connection_id, 'requests')
+            if session_id is not None:
+                self._connection_inventory.increment_session_counter(session_id, 'responses')
         except ProtocolError:
             self.state.metrics.requests_failed += 1
             await self._write_error(writer, 400, b'bad request trailers', keep_alive=False)

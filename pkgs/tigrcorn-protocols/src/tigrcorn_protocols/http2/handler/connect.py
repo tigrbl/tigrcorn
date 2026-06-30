@@ -67,6 +67,7 @@ class _HTTP2ConnectTunnel:
         if self.work_lease is not None:
             self.work_lease.release()
         await close_tcp_writer(self.upstream_writer)
+        self.handler._close_inventory_session(self.stream_id, reason="connect-complete")
         self.handler._finalize_stream_if_complete(self.stream_id)
 
     async def _relay_upstream_to_client(self) -> None:
@@ -108,6 +109,7 @@ class HTTP2ConnectMixin:
                 await self._write_raw(serialize_rst_stream(stream_id, H2_CONNECT_ERROR))
             state.mark_reset_sent()
         self._cancel_stream(stream_id)
+        self._close_inventory_session(stream_id, reason="connect-reset")
         self.streams.close(stream_id)
         self._maybe_finish_after_goaway()
 
@@ -163,11 +165,17 @@ class HTTP2ConnectMixin:
             work_lease=self.stream_work_leases.get(stream_id),
         )
         state.connect_tunnel = tunnel
+        self._open_inventory_session(
+            stream_id,
+            kind="connect-tunnel",
+            metadata={"authority": request.target},
+        )
         self.state.last_stream_id = max(self.state.last_stream_id, stream_id)
         try:
             await tunnel.start()
         except Exception:
             state.connect_tunnel = None
+            self._close_inventory_session(stream_id, reason="connect-start-failed")
             await close_tcp_writer(upstream_writer)
             raise
         if state.end_stream_received:

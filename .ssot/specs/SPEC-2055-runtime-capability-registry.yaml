@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2055"
 number: 2055
@@ -11,27 +11,34 @@ tags: []
 summary: "Tigrcorn shall expose a canonical machine-readable capability registry for protocol, transport, TLS, lifecycle, embedded runtime, observability, and certification support claims."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Specify public capability API, CLI require checks, and describe integration."
+    at: "2026-06-27T11:35:51Z"
 references: []
 body: |-
+  # Runtime capability registry
+
   Tigrcorn shall expose a canonical machine-readable capability registry for protocol, transport, TLS, lifecycle, embedded runtime, observability, and certification support claims.
-  
+
   Requirements:
-  
+
   - Capability records shall distinguish compiled, configured, enabled, certified, unavailable, and unsupported states.
-  - Protocol capability records shall cover HTTP/1.1, HTTP/2, HTTP/3, WebSocket, WebTransport, and lifespan behavior.
+  - Capability records shall be deterministic JSON with schema version, registry name, profile, profile validation status, profile errors, and sorted capability records.
+  - Capability ids shall remain stable and use domain-prefixed names such as `protocol.http3`, `transport.quic`, `tls.tls13`, `delivery.static`, and `certification.release_validation`.
+  - Protocol capability records shall cover HTTP/1.1, HTTP/2, HTTP/3, WebSocket, WebTransport, QUIC, and lifespan behavior.
   - Transport capability records shall cover TCP, UDP, Unix socket, pipe, in-process, listener, and QUIC transports.
   - TLS and identity capability records shall cover TLS 1.3, ALPN, X.509 validation, OCSP, CRL handling, and mTLS where configured.
   - Runtime capability records shall identify supported lifecycle, embedded-server, loop, worker, and observability surfaces.
   - Certification tooling and deployment profiles shall consume capability records rather than parsing README, package metadata, or release-note prose.
   - Public CLI and Python APIs shall return deterministic structured output suitable for profile validation and release evidence.
-  - Tigrcorn shall support `from tigrcorn import capabilities` with `capabilities.export()` as the public Python capability-registry surface.
-  - Tigrcorn shall support `server.describe()` as the public runtime introspection surface for active runtime state.
-  - Tigrcorn shall support `transport.capabilities()` as the public transport capability discovery surface.
-  - Tigrcorn shall support `tigrcorn inspect transport` as the public operator diagnostic command for live transport state.
-  - Tigrcorn shall support `tigrcorn certify` as the public operator command for deterministic certification artifact generation.
-  - Certification output shall include deterministic `protocol.json`, `runtime.json`, `security.json`, `performance.json`, and `interop.json` artifacts.
-  - Release evidence shall support SPDX, CycloneDX, and SLSA provenance artifacts alongside certification evidence.
+  - Tigrcorn shall support `from tigrcorn import capabilities` with `capabilities.export()`, `capabilities.capability_ids()`, and `capabilities.require_supported()` as the public Python capability-registry surface.
+  - Tigrcorn shall support `tigrcorn inspect capabilities --json --profile <profile>` as the public operator capability export command.
+  - Tigrcorn capability inspection may accept repeatable `--require <capability-id>` checks that fail closed when a selected profile does not enable the required capability.
+  - Runtime instance `.describe()` output shall reference capability ids rather than inventing a parallel support vocabulary.
+  - Runtime connection inventory describes live peer, connection, and protocol-session instances and is governed separately by `spc:2081`. It shall not be treated as a capability registry, and capability records shall not be inferred from live connection records.
+  - Transport capability discovery shall align with the same capability id vocabulary.
 spec_kind: "operational"
 adr_ids:
   - "adr:1021"

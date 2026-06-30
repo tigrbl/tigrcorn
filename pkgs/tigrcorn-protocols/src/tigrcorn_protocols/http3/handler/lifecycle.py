@@ -25,6 +25,62 @@ class HTTP3LifecycleMixin:
     def _webtransport_address(addr: tuple[str, int]) -> str:
         return f"{addr[0]}:{addr[1]}"
 
+    def _connection_id_for_session(self, session: HTTP3Session) -> str:
+        return f"conn:h3:{session.runtime_id or session.quic.local_cid.hex() or 'session'}"
+
+    def _listener_id(self) -> str:
+        return self.listener.label or f"{self.listener.kind}:{self.listener.host}:{self.listener.port}"
+
+    def _register_h3_connection(self, session: HTTP3Session) -> None:
+        inventory = self.connection_inventory
+        if inventory is None:
+            return
+        address = self._webtransport_address(session.addr)
+        handshake = session.quic.handshake_driver
+        inventory.open_connection(
+            self._connection_id_for_session(session),
+            transport='quic',
+            protocols=tuple(sorted(self.listener.enabled_protocols)),
+            listener_id=self._listener_id(),
+            peer_id=peer_id_from_address(address),
+            remote_address=address,
+            local_address=self.listener.label,
+            security={
+                'alpn': getattr(handshake, 'selected_alpn', None) if handshake is not None else None,
+                'local_cid': session.quic.local_cid.hex(),
+                'remote_cid': session.quic.remote_cid.hex() if isinstance(session.quic.remote_cid, bytes) else None,
+                'tls': bool(handshake is not None),
+            },
+        )
+
+    def _update_h3_connection(self, session: HTTP3Session) -> None:
+        inventory = self.connection_inventory
+        if inventory is None:
+            return
+        inventory.update_connection(
+            self._connection_id_for_session(session),
+            remote_address=self._webtransport_address(session.addr),
+            counters={
+                'bytes_received': session.bytes_received,
+                'bytes_sent': session.bytes_sent,
+                'requests': len(session.responded_streams),
+                'streams': len(session.h3.requests) + len(session.webtransport_streams),
+                'webtransport_sessions': len(session.webtransport_sessions),
+                'websocket_sessions': len(session.websocket_sessions),
+            },
+            security={
+                'local_cid': session.quic.local_cid.hex(),
+                'remote_cid': session.quic.remote_cid.hex() if isinstance(session.quic.remote_cid, bytes) else None,
+            },
+        )
+
+    def _close_h3_connection(self, session: HTTP3Session, *, reason: str) -> None:
+        inventory = self.connection_inventory
+        if inventory is None:
+            return
+        self._update_h3_connection(session)
+        inventory.close_connection(self._connection_id_for_session(session), reason=reason)
+
     def _webtransport_budget_snapshot(self) -> dict[str, Any] | None:
         manager = self.webtransport_governance
         if manager is None:
@@ -37,11 +93,16 @@ class HTTP3LifecycleMixin:
             return None
         return manager.open_session(
             webtransport.session_id,
-            peer_id=self._webtransport_address(session.addr),
+            peer_id=peer_id_from_address(self._webtransport_address(session.addr)),
             address=self._webtransport_address(session.addr),
         )
 
     def _webtransport_register_stream(self, webtransport: _HTTP3WebTransportSession, stream_id: int | str) -> dict[str, Any] | None:
+        if self.connection_inventory is not None:
+            self.connection_inventory.update_session(
+                webtransport.session_id,
+                stream_ids=(str(stream_id),),
+            )
         manager = self.webtransport_governance
         if manager is None:
             return None

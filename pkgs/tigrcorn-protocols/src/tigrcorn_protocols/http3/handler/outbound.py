@@ -79,6 +79,7 @@ class HTTP3OutboundMixin:
     def _close_session(self, session: HTTP3Session) -> None:
         removed = self.sessions.pop(session.addr, None)
         if removed is session:
+            self._close_h3_connection(session, reason='quic-session-close')
             self.trace_webtransport('quic.session.close', **self._trace_session_fields(session))
             self.sessions_by_local_cid.pop(session.quic.local_cid, None)
             if self.metrics is not None:

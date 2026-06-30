@@ -42,6 +42,7 @@ from tigrcorn_protocols.http3.streams import (
     HTTP3ConnectionCore,
 )
 from tigrcorn_protocols.http3.websocket import H3WebSocketSession
+from tigrcorn_protocols.sessions import RuntimeConnectionInventory, peer_id_from_address
 from tigrcorn_protocols.webtransport.governance import WebTransportGovernanceError
 from tigrcorn_transports.quic.connection import QuicConnection
 from tigrcorn_transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters

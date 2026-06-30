@@ -25,6 +25,8 @@ body: |-
   - HTTP/2 resource governance shall account for `SETTINGS_WEBTRANSPORT_MAX_SESSIONS`, `WebTransport-Init`, capsule-backed stream and datagram limits, WT flow-control capsules, close/drain, and malformed capsule rejection.
   - Certification shall cover stream exhaustion, datagram abuse, flow-control stalls, migration handling, fairness across sessions, and cleanup after close.
   - Resource-governance evidence shall link to WebTransport lifecycle and client-session coverage evidence.
+  - Governance remains the budget and policy owner. Diagnostics inventory may expose WebTransport session records and peer grouping under `spc:2081`, but inventory record lifecycle shall not allocate, release, or override governance budgets.
+  - Address-derived governance peer keys should align with `PeerIdentity.peer_id` where no stronger authenticated peer identity exists.
 spec_kind: "operational"
 adr_ids:
   - "adr:1011"

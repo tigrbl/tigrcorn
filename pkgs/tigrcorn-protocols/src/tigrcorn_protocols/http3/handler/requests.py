@@ -115,6 +115,16 @@ class HTTP3RequestsMixin:
                 end_stream=True,
             )
         request = self._build_request(request_state, header_map)
+        inventory_session_id = None
+        if self.connection_inventory is not None:
+            inventory_session_id = f"{self._connection_id_for_session(session)}:http3:{stream_id}"
+            self.connection_inventory.open_session(
+                inventory_session_id,
+                connection_id=self._connection_id_for_session(session),
+                kind='http-request',
+                stream_ids=(str(stream_id),),
+                metadata={'method': request.method, 'path': request.path, 'protocol': 'http3'},
+            )
         client = session.addr
         local = endpoint.local_addr
         server = (local[0], local[1]) if isinstance(local, tuple) and len(local) >= 2 else ('', None)
@@ -288,5 +298,8 @@ class HTTP3RequestsMixin:
                 self.metrics.http3_request_served()
             return [*qpack_outbound, session.quic.send_stream_data(stream_id, bytes(frame_payload), fin=True)]
         finally:
+            if self.connection_inventory is not None and inventory_session_id is not None:
+                self.connection_inventory.increment_session_counter(inventory_session_id, 'responses')
+                self.connection_inventory.close_session(inventory_session_id, reason='request-complete')
             send.cleanup()
             self._release_stream_work_lease(session, stream_id)

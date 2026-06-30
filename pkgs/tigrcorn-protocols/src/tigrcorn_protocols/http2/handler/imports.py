@@ -63,6 +63,7 @@ from tigrcorn_protocols.scheduler.runtime import ProductionScheduler, WorkLease
 from tigrcorn_protocols.http2.streams import H2StreamRegistry
 from tigrcorn_protocols.connect import close_tcp_writer, half_close_tcp_writer, is_connect_allowed, parse_connect_authority
 from tigrcorn_protocols.http2.websocket import H2WebSocketSession
+from tigrcorn_protocols.sessions import RuntimeConnectionInventory
 from tigrcorn_core.types import ASGIApp
 from tigrcorn_core.utils.authority import authority_allowed
 from tigrcorn_core.utils.headers import apply_response_header_policy, sanitize_early_hints_headers, strip_connection_specific_headers

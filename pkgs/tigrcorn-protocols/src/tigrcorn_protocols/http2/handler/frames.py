@@ -116,6 +116,7 @@ class HTTP2FrameDispatchMixin:
             await state.connect_tunnel.abort()
         self._cancel_stream(frame.stream_id)
         state.mark_reset_received()
+        self._close_inventory_session(frame.stream_id, reason="rst-stream")
         self.streams.close(frame.stream_id)
         self._notify_waiter(frame.stream_id)
         self._maybe_finish_after_goaway()

@@ -97,7 +97,7 @@ def test_webtransport_session_open_registers_budget_state() -> None:
     snapshot = handler._webtransport_budget_snapshot()
 
     assert registered["session_id"] == webtransport.session_id
-    assert registered["peer_id"] == "203.0.113.10:4433"
+    assert registered["peer_id"] == "peer:addr:203.0.113.10:4433"
     assert snapshot["active_sessions"] == (webtransport.session_id,)
     assert snapshot["sessions"][webtransport.session_id]["address"] == "203.0.113.10:4433"
 

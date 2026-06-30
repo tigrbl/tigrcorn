@@ -40,6 +40,11 @@ class HTTP3WebSocketRuntimeMixin:
         )
         if end_stream:
             session.websocket_sessions.pop(stream_id, None)
+            if self.connection_inventory is not None:
+                self.connection_inventory.close_session(
+                    f"{self._connection_id_for_session(session)}:websocket:{stream_id}",
+                    reason='websocket-headers-end',
+                )
             self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
         self._queue_session_outbound_locked(session, outbound, endpoint)
@@ -72,6 +77,11 @@ class HTTP3WebSocketRuntimeMixin:
         outbound = self._build_http3_data_datagrams_locked(session, stream_id, data, end_stream=end_stream)
         if end_stream:
             session.websocket_sessions.pop(stream_id, None)
+            if self.connection_inventory is not None:
+                self.connection_inventory.close_session(
+                    f"{self._connection_id_for_session(session)}:websocket:{stream_id}",
+                    reason='websocket-data-end',
+                )
             self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
         self._queue_session_outbound_locked(session, outbound, endpoint)
@@ -95,6 +105,11 @@ class HTTP3WebSocketRuntimeMixin:
         if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
             return
         session.websocket_sessions.pop(stream_id, None)
+        if self.connection_inventory is not None:
+            self.connection_inventory.close_session(
+                f"{self._connection_id_for_session(session)}:websocket:{stream_id}",
+                reason='websocket-reset',
+            )
         self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
         outbound = self._flush_qpack_streams(session)
@@ -105,6 +120,12 @@ class HTTP3WebSocketRuntimeMixin:
         for websocket in list(session.websocket_sessions.values()):
             with suppress(Exception):
                 await websocket.abort()
+        if self.connection_inventory is not None:
+            for stream_id in list(session.websocket_sessions):
+                self.connection_inventory.close_session(
+                    f"{self._connection_id_for_session(session)}:websocket:{stream_id}",
+                    reason='websocket-abort-session',
+                )
         session.websocket_sessions.clear()
     async def _start_websocket_stream_locked(
         self,
@@ -180,6 +201,14 @@ class HTTP3WebSocketRuntimeMixin:
                 end_stream=True,
             )
         session.websocket_sessions[stream_id] = websocket
+        if self.connection_inventory is not None:
+            self.connection_inventory.open_session(
+                f"{self._connection_id_for_session(session)}:websocket:{stream_id}",
+                connection_id=self._connection_id_for_session(session),
+                kind='websocket',
+                stream_ids=(str(stream_id),),
+                metadata={'path': request.path, 'protocol': 'http3'},
+            )
         await websocket.start()
         return []
     async def _drain_websocket_request_body_locked(

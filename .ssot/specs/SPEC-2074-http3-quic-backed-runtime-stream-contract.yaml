@@ -19,6 +19,8 @@ status_notes:
 references: []
 body: |-
   Defines Tigrcorn HTTP/3 runtime stream taxonomy over QUIC, including request, push, control, QPACK, reset, GOAWAY, and transport lifecycle behavior. Source specifications: RFC 9114 https://www.rfc-editor.org/rfc/rfc9114 and RFC 9000 https://www.rfc-editor.org/rfc/rfc9000. Plain HTTP/3 runtime behavior must remain separate from WebTransport lanes.
+
+  Runtime diagnostics inventory for this carrier is governed by `spc:2081`. HTTP/3 over QUIC owners shall register H3/QUIC connection records when runtime sessions are created, update addresses on path migration, close records when runtime sessions are removed, and attach child request, CONNECT tunnel, WebSocket, or WebTransport protocol-session records without transferring lifecycle ownership to the inventory.
 spec_kind: "operational"
 adr_ids:
   - "adr:1060"

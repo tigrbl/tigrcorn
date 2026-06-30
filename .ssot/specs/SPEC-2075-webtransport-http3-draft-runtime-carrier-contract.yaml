@@ -19,6 +19,8 @@ status_notes:
 references: []
 body: |-
   Defines Tigrcorn WebTransport-over-HTTP/3 runtime behavior for Extended CONNECT negotiation, session lifecycle, QUIC-backed stream and datagram handling, flow-control interactions, and evidence boundaries. Source specification: draft-ietf-webtrans-http3-15 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/. Claims remain draft-target claims until an RFC replaces the draft.
+
+  Runtime diagnostics inventory for WebTransport-over-H3 protocol-session records is governed by `spc:2081`. Inventory records may expose session identity, parent H3/QUIC connection identity, stream ids, counters, and close state, but WebTransport runtime and governance owners remain authoritative for admission, stream/datagram lifecycle, and budget release.
 spec_kind: "operational"
 adr_ids:
   - "adr:1061"

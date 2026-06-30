@@ -13,6 +13,7 @@ class _TigrCornServerClientHandlerMixin:
                 scheduler=self.scheduler,
                 metrics=self.state.metrics,
                 webtransport_governance=self._webtransport_governance,
+                connection_inventory=self._connection_inventory,
             )
             self._datagram_handlers.append(h3_handler)
 
@@ -74,6 +75,20 @@ class _TigrCornServerClientHandlerMixin:
         server = (server_host or '', server_port)
         scheme = 'https' if ssl_obj else (listener_cfg.scheme or 'http')
         ws_scheme = 'wss' if ssl_obj else 'ws'
+        connection_id = self._next_connection_id(listener_cfg)
+        remote_address = self._address_string(peername)
+        local_address = self._address_string(sockname)
+        listener_index = self.config.listeners.index(listener_cfg) if listener_cfg in self.config.listeners else 0
+        self._connection_inventory.open_connection(
+            connection_id,
+            transport=listener_cfg.kind,
+            protocols=tuple(sorted(listener_cfg.enabled_protocols)),
+            listener_id=f"listener:{listener_index}",
+            peer_id=peer_id_from_address(remote_address),
+            remote_address=remote_address,
+            local_address=local_address,
+            security={"alpn": selected_alpn, "tls": bool(ssl_obj)},
+        )
         try:
             if selected_alpn == 'h2' and '2' in listener_cfg.http_versions:
                 h2_handler = HTTP2ConnectionHandler(
@@ -88,6 +103,8 @@ class _TigrCornServerClientHandlerMixin:
                     server=server,
                     scheme=scheme,
                     scope_extensions=scope_tls_extensions,
+                    connection_id=connection_id,
+                    connection_inventory=self._connection_inventory,
                 )
                 await h2_handler.handle()
                 return
@@ -109,6 +126,8 @@ class _TigrCornServerClientHandlerMixin:
                         scheme=scheme,
                         prebuffer=initial,
                         scope_extensions=scope_tls_extensions,
+                        connection_id=connection_id,
+                        connection_inventory=self._connection_inventory,
                     )
                     await h2_handler.handle()
                     return
@@ -123,8 +142,10 @@ class _TigrCornServerClientHandlerMixin:
                 scheme=scheme,
                 ws_scheme=ws_scheme,
                 scope_extensions=scope_tls_extensions,
+                connection_id=connection_id,
             )
         finally:
+            self._connection_inventory.close_connection(connection_id, reason='client-handler-complete')
             lease.release()
             self.state.metrics.connection_closed()
             writer.close()

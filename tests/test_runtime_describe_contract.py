@@ -52,6 +52,14 @@ def test_runtime_describe_empty_server_state() -> None:
     assert before == after
     assert before["active_protocols"] == []
     assert before["active_transports"] == []
+    assert before["connection_inventory"]["counts"] == {
+        "active_connections": 0,
+        "active_peers": 0,
+        "active_sessions": 0,
+        "connections": 0,
+        "peers": 0,
+        "sessions": 0,
+    }
     assert before["listeners"][0]["active"] is False
     assert before["listeners"][0]["bound_endpoint"] is None
 
@@ -73,6 +81,37 @@ def test_runtime_describe_active_listeners() -> None:
     assert listener["kind"] == "tcp"
     assert listener["label"].startswith("127.0.0.1:")
     assert listener["bound_endpoint"] is not None
+    assert payload["connection_inventory"]["counts"]["connections"] == 0
+
+
+def test_runtime_describe_records_http11_connection_inventory() -> None:
+    async def scenario() -> dict[str, object]:
+        server = _server()
+        await server.start()
+        try:
+            port = server._listeners[0].server.sockets[0].getsockname()[1]
+            reader, writer = await asyncio.open_connection("127.0.0.1", port)
+            writer.write(b"GET /inventory HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n")
+            await writer.drain()
+            await asyncio.wait_for(reader.read(4096), timeout=2.0)
+            writer.close()
+            await writer.wait_closed()
+            await asyncio.sleep(0)
+            return server.describe()["connection_inventory"]
+        finally:
+            await server.close()
+
+    inventory = asyncio.run(scenario())
+
+    assert inventory["counts"]["connections"] == 1
+    connection = next(iter(inventory["connections"].values()))
+    assert connection["transport"] == "tcp"
+    assert connection["state"] == "closed"
+    assert connection["counters"]["requests"] == 1
+    assert connection["session_ids"]
+    session = next(iter(inventory["sessions"].values()))
+    assert session["kind"] == "http-request"
+    assert session["state"] == "closed"
 
 
 def test_runtime_describe_protocol_transport_tls_state() -> None:

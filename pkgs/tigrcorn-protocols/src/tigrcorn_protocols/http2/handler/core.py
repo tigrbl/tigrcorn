@@ -5,6 +5,7 @@ from .connect import HTTP2ConnectMixin
 from .flow_control import HTTP2FlowControlMixin
 from .frames import HTTP2FrameDispatchMixin
 from .headers import HTTP2HeadersMixin
+from .inventory import HTTP2InventoryMixin
 from .io import HTTP2IOMixin
 from .requests import HTTP2RequestsMixin
 from .responses import HTTP2ResponsesMixin
@@ -22,6 +23,7 @@ class HTTP2ConnectionHandler(
     HTTP2ResponsesMixin,
     HTTP2ConnectMixin,
     HTTP2WebSocketSupportMixin,
+    HTTP2InventoryMixin,
 ):
     def __init__(
         self,
@@ -38,6 +40,8 @@ class HTTP2ConnectionHandler(
         scheme: str,
         prebuffer: bytes = b"",
         scope_extensions: dict | None = None,
+        connection_id: str | None = None,
+        connection_inventory: RuntimeConnectionInventory | None = None,
     ) -> None:
         self.app = app
         self.config = config
@@ -51,6 +55,8 @@ class HTTP2ConnectionHandler(
         self.scheme = scheme
         self.prebuffer = prebuffer
         self.scope_extensions = dict(scope_extensions or {})
+        self.connection_id = connection_id
+        self.connection_inventory = connection_inventory
         self.state = H2ConnectionState()
         self.state.local_settings[SETTING_MAX_CONCURRENT_STREAMS] = self.config.http.http2_max_concurrent_streams
         self.state.local_settings[SETTING_MAX_HEADER_LIST_SIZE] = self.config.http.http2_max_headers_size

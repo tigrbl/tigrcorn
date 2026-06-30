@@ -52,6 +52,7 @@ class _TigrCornServerDiagnosticsMixin:
             "configured_transports": sorted(configured_transports),
             "active_transports": sorted(configured_transports) if self._started else [],
             "transport_domains": self.transport_domain_diagnostics(),
+            "connection_inventory": self.connection_inventory(),
             "quic_operational_security": self.quic_operational_security_evidence(),
             "webtransport_resource_governance": self.webtransport_resource_governance(),
             "listeners": listeners,
@@ -101,6 +102,9 @@ class _TigrCornServerDiagnosticsMixin:
             label: collector.runtime_evidence()
             for label, collector in sorted(self._quic_operational_security.items())
         }
+
+    def connection_inventory(self) -> dict[str, Any]:
+        return self._jsonable(self._connection_inventory.snapshot())
 
     def webtransport_resource_governance(self) -> dict[str, Any]:
         return self._jsonable(self._webtransport_governance.snapshot())

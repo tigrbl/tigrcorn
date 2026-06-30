@@ -1,0 +1,59 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2081"
+number: 2081
+slug: "runtime-connection-inventory"
+title: "Runtime connection inventory"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose a single read-oriented runtime connection inventory that normalizes live peer, connection, and child protocol-session state without moving lifecycle ownership into a global manager."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to define the diagnostics-only runtime connection inventory contract."
+    at: "2026-06-30T07:29:23Z"
+references: []
+body: |-
+  # Runtime connection inventory
+
+  Tigrcorn shall expose a single read-oriented runtime connection inventory that normalizes live peer, connection, and child protocol-session state without moving lifecycle ownership into a global manager.
+
+  Requirements:
+
+  - The inventory implementation shall live in `tigrcorn_protocols.sessions` and may be re-exported by root `tigrcorn.sessions` shims.
+  - Runtime packages may instantiate and pass the inventory into protocol handlers. Protocol packages shall not import runtime packages.
+  - `PeerIdentity` shall include `peer_id`, `kind`, `address`, `connection_ids`, and future-safe metadata for authenticated peer forms.
+  - `ConnectionRecord` shall include `connection_id`, transport, protocols, listener id, peer id, local and remote address, open/close timestamps, lifecycle state, counters, security metadata, and child `session_ids`.
+  - `ProtocolSessionRecord` shall include `session_id`, `connection_id`, protocol kind, state, stream ids, counters, and optional close reason.
+  - `RuntimeConnectionInventory.snapshot()` shall return deterministic JSON with `schema_version`, `peers`, `connections`, `sessions`, and `counts`.
+  - Inventory snapshots shall be redacted of secrets. TLS, ALPN, mTLS, QUIC CID, and similar security or transport metadata may be exposed only as diagnostic metadata and not as private keying material.
+  - Inventory methods shall be idempotent for repeated update, detach, close, or removal calls.
+  - The inventory shall not own lifecycle authority. Closing or removing a record shall not close a socket, QUIC connection, WebSocket, CONNECT tunnel, WebTransport session, stream, datagram, scheduler lease, or governance budget.
+  - TCP, Unix socket, pipe, and in-process runtime owners shall register connection records around accepted stream connection lifecycle boundaries.
+  - HTTP/3 over QUIC owners shall register H3/QUIC connection records when runtime sessions are created, update addresses on path migration, and close records when sessions are removed.
+  - HTTP/1.1, HTTP/3 request, WebSocket, CONNECT tunnel, and WebTransport owners shall register protocol-session records while preserving their existing operational maps.
+  - WebTransport governance shall remain the resource budget owner, but its address-derived peer identity shall align with `PeerIdentity.peer_id`.
+  - `TigrCornServer.describe()` shall expose `connection_inventory` and shall not replace existing `transport_domains`, `quic_operational_security`, `webtransport_resource_governance`, or capability-registry diagnostics.
+
+  Identifier rules:
+
+  - TCP, Unix socket, pipe, and in-process connection ids shall use `conn:{listener_id}:{sequence}` when no stronger runtime id exists.
+  - HTTP/3 over QUIC connection ids shall use `conn:h3:{runtime_id}`.
+  - WebTransport protocol-session ids shall reuse the existing generated H3 WebTransport session id shape.
+  - V1 peer ids may use `peer:addr:{host}:{port}` when no authenticated identity exists.
+
+  Boundaries:
+
+  - This SPEC is diagnostics-only. It does not add an admin HTTP route, CLI command, public stability promise beyond `describe()`, or a new connection lifecycle manager.
+  - Client-session topology classification remains governed by SPEC-2053.
+  - WebTransport live session trace obligations remain governed by SPEC-2054.
+  - Runtime capability discovery remains governed by SPEC-2055.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1067"
+  - "adr:1002"
+  - "adr:1039"
