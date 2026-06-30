@@ -30,7 +30,9 @@ def test_certification_python_files_stay_under_400_loc() -> None:
 
 
 def test_certification_public_imports_remain_compatible() -> None:
+    from tigrcorn_certification import certify_static
     from tigrcorn_certification import evaluate_release_gates as RootReleaseGates
+    from tigrcorn_certification import export_hardening_suite_catalog
     from tigrcorn_certification.aioquic_preflight import run_aioquic_adapter_preflight
     from tigrcorn_certification.interop_runner import run_external_matrix
     from tigrcorn_certification.perf_runner import run_performance_matrix
@@ -40,6 +42,8 @@ def test_certification_public_imports_remain_compatible() -> None:
     assert callable(run_external_matrix)
     assert callable(run_performance_matrix)
     assert callable(run_aioquic_adapter_preflight)
+    assert callable(certify_static)
+    assert callable(export_hardening_suite_catalog)
 
 
 def test_interop_transport_harness_code_is_isolated() -> None:
@@ -85,3 +89,22 @@ def test_release_gates_do_not_import_runtime_protocol_or_transport_packages() ->
     for token in forbidden:
         assert token not in source
 
+
+def test_certify_command_modules_do_not_import_runtime_protocol_transport_or_security() -> None:
+    source = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in [
+            CERTIFICATION_PATH / "certify" / "__init__.py",
+            CERTIFICATION_PATH / "certify" / "static.py",
+            CERTIFICATION_PATH / "hardening_suites.py",
+        ]
+    )
+
+    forbidden = (
+        "tigrcorn_runtime.",
+        "tigrcorn_protocols.",
+        "tigrcorn_transports.",
+        "tigrcorn_security.",
+    )
+    for token in forbidden:
+        assert token not in source

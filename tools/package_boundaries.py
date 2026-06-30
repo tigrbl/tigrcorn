@@ -125,7 +125,7 @@ PACKAGE_BOUNDARIES: tuple[PackageBoundary, ...] = (
         import_name="tigrcorn_certification",
         layer=6,
         owns=("release gates", "certification environment", "external peer matrices", "strict promotion checks"),
-        depends_on=("tigrcorn-compat", "tigrcorn-runtime"),
+        depends_on=("tigrcorn-compat", "tigrcorn-runtime", "tigrcorn-static"),
         optional_dependencies=("aioquic", "h2", "websockets", "wsproto", "cryptography"),
     ),
 )

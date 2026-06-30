@@ -1,0 +1,40 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1065"
+number: 1065
+slug: "certification-command-namespace"
+title: "Certification command namespace is a leaf-package operator surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall expose certification workflows through a narrow `tigrcorn certify` operator namespace while keeping certification implementations in the leaf `tigrcorn-certification` package."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Add certification namespace decision scoped to static first."
+    at: "2026-06-27T11:35:57Z"
+references: []
+body: |-
+  # ADR 1065 - Certification command namespace
+  
+  Decision: Tigrcorn shall expose certification workflows through a narrow `tigrcorn certify` operator namespace while keeping certification implementations in the leaf `tigrcorn-certification` package.
+  
+  The umbrella CLI may route certification subcommands, but it shall not make runtime, protocol, transport, security, static, or observability packages import certification code. Certification commands shall consume package-owned public APIs, conformance corpora, and capability records, then write deterministic evidence artifacts.
+  
+  Initial scope:
+  
+  - `tigrcorn certify static` is the first certification subcommand in this namespace.
+  - Certification commands may accept profile, output, and surface-specific inputs.
+  - Certification commands shall emit machine-readable artifacts and preserve enough context for release evidence.
+  - Certification commands shall fail closed when requested capabilities or profiles are unavailable.
+  - Certification commands shall not expand product boundaries by their existence; they only certify surfaces already in scope.
+  
+  Consequences:
+  
+  - `src/tigrcorn/cli.py` may dispatch command namespaces.
+  - `tigrcorn-certification` owns command implementations and artifact writing.
+  - Package owners expose reusable checks or public APIs; they do not import the certification package.
+  - New certification subcommands require SPEC coverage before implementation.

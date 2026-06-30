@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2062"
 number: 2062
@@ -11,17 +11,29 @@ tags: []
 summary: "Tigrcorn static delivery shall have an explicit security certification boundary."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Add static certification CLI, ownership split, and explicit non-claims."
+    at: "2026-06-27T11:35:54Z"
 references: []
 body: |-
+  # Static delivery security certification
+  
   Tigrcorn static delivery shall have an explicit security certification boundary.
   
   Requirements:
   
-  - Certification shall cover plain traversal, encoded traversal, Unicode traversal, and rejected normalization ambiguity.
-  - Certification shall cover symlink escape prevention and configured directory boundary enforcement.
-  - Certification shall cover cache poisoning controls, validator behavior, range interaction, and content-coding interaction.
-  - Certification shall cover Alt-Svc interaction and Early Hints validation when those features are enabled with static delivery.
+  - Certification shall cover plain traversal, percent-encoded traversal, double-encoded traversal, Unicode normalization traversal, and rejected normalization ambiguity.
+  - Certification shall cover symlink escape, hardlink escape where observable, mount-root ambiguity, directory-index ambiguity, case-folding ambiguity, and inode mutation during response.
+  - Certification shall cover strong ETag, weak ETag, If-Match, If-None-Match, If-Modified-Since, If-Unmodified-Since, and HEAD versus GET consistency.
+  - Certification shall cover invalid ranges, suffix ranges, overlapping ranges, multipart ranges, and range amplification limits.
+  - Certification shall cover gzip sidecars, brotli sidecars, sidecar mismatch, content-length consistency, and decompression amplification controls.
+  - Certification shall cover direct 103 Early Hints safe-header filtering and bounded Alt-Svc header-field advertisement.
+  - Certification shall not claim HTTP/2 ALTSVC frames, broader Alt-Svc cache management, RFC 9111 caching/freshness, or RFC 9218 prioritization.
+  - `tigrcorn-static` shall own reusable filesystem-origin checks, static response behavior, validator behavior, sidecar handling, and range response behavior.
+  - `tigrcorn-certification` shall own the `tigrcorn certify static` command implementation, evidence bundle writing, artifact preservation, and certification report shape.
+  - The umbrella `tigrcorn` CLI may dispatch `tigrcorn certify static --mount <path> --profile <profile> --output <dir>` to the certification package without making runtime, protocol, transport, security, or static packages depend on certification.
   - Static-origin profiles shall declare whether static delivery is disabled, enabled only when mounted, or enabled by explicit operator configuration.
 spec_kind: "operational"
 adr_ids:

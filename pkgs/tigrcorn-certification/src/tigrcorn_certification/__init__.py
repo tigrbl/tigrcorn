@@ -44,10 +44,36 @@ __all__ = [
     "validate_package_manifest_integrity",
     "validate_release_evidence",
     "write_supply_chain_release_bundle",
+    "certify_static",
+    "certify_static_main",
+    "export_hardening_suite_catalog",
+    "validate_hardening_suite_catalog",
 ]
 
 
 def __getattr__(name: str):
+    if name in {
+        "certify_static",
+        "certify_static_main",
+    }:
+        from .certify.static import certify_static, certify_static_main
+
+        mapping = {
+            "certify_static": certify_static,
+            "certify_static_main": certify_static_main,
+        }
+        return mapping[name]
+    if name in {
+        "export_hardening_suite_catalog",
+        "validate_hardening_suite_catalog",
+    }:
+        from .hardening_suites import export_hardening_suite_catalog, validate_hardening_suite_catalog
+
+        mapping = {
+            "export_hardening_suite_catalog": export_hardening_suite_catalog,
+            "validate_hardening_suite_catalog": validate_hardening_suite_catalog,
+        }
+        return mapping[name]
     if name in {
         "evaluate_release_gates",
         "assert_release_ready",

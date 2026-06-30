@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1032"
 number: 1032
@@ -11,28 +11,48 @@ tags: []
 summary: "Decision: Tigrcorn shall remain a stable umbrella package while implementation migrates into governed workspace packages with one-way dependencies."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Clarify package DAG, ownership, facade, and certification leaf boundaries."
+    at: "2026-06-27T11:35:43Z"
 references: []
 body: |-
   # ADR 1032 - Package workspace boundaries
-
+  
   Decision: Tigrcorn shall remain a stable umbrella package while implementation migrates into governed workspace packages with one-way dependencies.
-
+  
   The monolithic package shape makes long-term protocol, transport, runtime, compatibility, and certification work harder to evolve independently. The project shall use a monorepo workspace so implementation can be split into publishable packages without forcing separate repositories.
-
+  
   Package ownership:
-
-  - `tigrcorn-core` owns dependency-light constants, exceptions, and type aliases.
+  
+  - `tigrcorn-core` owns dependency-light constants, exceptions, type aliases, and shared utility primitives.
   - `tigrcorn-config`, `tigrcorn-http`, and `tigrcorn-asgi` own reusable lower-layer surfaces.
   - `tigrcorn-contract`, `tigrcorn-transports`, and `tigrcorn-security` own runtime-adjacent adapters and primitives.
   - `tigrcorn-protocols`, `tigrcorn-static`, and `tigrcorn-observability` own feature families above those primitives.
-  - `tigrcorn-runtime` composes server runtime behavior.
+  - `tigrcorn-runtime` composes app loading, lifecycle, listener orchestration, workers, reload, shutdown, and embedding.
   - `tigrcorn-compat` and `tigrcorn-certification` remain leaf packages.
   - `tigrcorn` remains the umbrella public install and compatibility facade.
-
+  
+  Layer order:
+  
+  - Layer 0: `tigrcorn-core`.
+  - Layer 1: `tigrcorn-config`, `tigrcorn-http`, `tigrcorn-asgi`.
+  - Layer 2: `tigrcorn-contract`, `tigrcorn-transports`, `tigrcorn-security`.
+  - Layer 3: `tigrcorn-protocols`, `tigrcorn-static`, `tigrcorn-observability`.
+  - Layer 4: `tigrcorn-runtime`.
+  - Layer 5: `tigrcorn-compat`.
+  - Layer 6: `tigrcorn-certification`.
+  - Umbrella: `tigrcorn`.
+  
   Consequences:
-
+  
   - Lower layers must not import higher layers.
   - Optional dependencies belong to the package that owns the optional surface.
   - Existing public `tigrcorn.*` imports remain stable through compatibility shims during migration.
   - New implementation work shall target the package that owns the capability.
+  - Root `src/tigrcorn` modules shall remain facades except for umbrella-only CLI dispatch and capability export wiring.
+  - Overloaded packages must be split internally by subpackage before new distributions are introduced.
+  - `tigrcorn-protocols` may own multiple protocol families, but new work must land in protocol-family subpackages.
+  - `tigrcorn-transports` may own QUIC transport primitives, but transport-security expansion requires a separate boundary decision.
+  - `tigrcorn-certification` may orchestrate evidence and command implementations, but runtime, protocol, and transport packages must not import it.

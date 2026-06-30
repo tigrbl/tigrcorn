@@ -105,3 +105,19 @@ def test_cli_inspect_capabilities_json_outputs_registry(capsys: pytest.CaptureFi
     assert rc == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload == capabilities.export()
+
+
+def test_cli_inspect_capabilities_require_enforces_profile(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    rc = cli_main(["inspect", "capabilities", "--json", "--require", "runtime.lifecycle"])
+
+    assert rc == 0
+    assert json.loads(capsys.readouterr().out) == capabilities.export()
+
+    rc = cli_main(["inspect", "capabilities", "--json", "--profile", "default", "--require", "protocol.http3"])
+
+    captured = capsys.readouterr()
+    assert rc == 2
+    assert captured.out == ""
+    assert "protocol.http3" in captured.err

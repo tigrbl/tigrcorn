@@ -76,6 +76,34 @@ def static_delivery_certification_artifact() -> dict[str, Any]:
     }
 
 
+def build_static_certification_evidence(root: str | Path, *, profile: str = "default") -> dict[str, Any]:
+    root_path = Path(root)
+    negative_corpus = {
+        "dotdot_traversal": _raises_static_error(lambda: validate_static_path(root_path, "/../secret.txt")),
+        "encoded_traversal": _raises_static_error(lambda: validate_static_path(root_path, "/%2e%2e/secret.txt")),
+        "unicode_traversal": _raises_static_error(lambda: validate_static_path(root_path, "/\uff0e\uff0e/secret.txt")),
+        "symlink_escape": _raises_static_error(lambda: validate_static_resolved_path(root_path, root_path.parent / "__tigrcorn_escape_probe__")),
+    }
+    alt_svc_headers = static_alt_svc_headers(
+        profile=profile,
+        static_enabled=True,
+        requested_headers=[b'h3=":443"; ma=3600', b'h2=":443"'],
+    )
+    early_hints = validate_static_early_hints([(b"link", b"</assets/app.css>; rel=preload")])
+    return {
+        "checks": {
+            "alt_svc": _json_header_list(alt_svc_headers),
+            "early_hints": _json_header_list(early_hints),
+            "range_amplification": validate_static_range_amplification(b"bytes=0-0", resource_length=1),
+        },
+        "mount_name": root_path.name,
+        "negative_corpus": negative_corpus,
+        "policy": static_security_policy()["policy"],
+        "profile": profile,
+        "schema_version": 1,
+    }
+
+
 def validate_static_path(root: str | Path, request_path: str) -> dict[str, Any]:
     root_path = Path(root).resolve()
     decoded = _decode_static_path(request_path)
@@ -182,6 +210,71 @@ def validate_static_range_request(
     }
 
 
+def validate_static_sidecar_pair(
+    origin: str | Path,
+    sidecar: str | Path,
+    *,
+    coding: str,
+) -> dict[str, Any]:
+    origin_path = Path(origin)
+    sidecar_path = Path(sidecar)
+    expected_suffix = _sidecar_suffix_map().get(coding)
+    if expected_suffix is None:
+        raise StaticSecurityCertificationError(f"unsupported static sidecar coding: {coding}")
+    if sidecar_path.name != origin_path.name + expected_suffix:
+        raise StaticSecurityCertificationError("static sidecar name does not match origin")
+    if not origin_path.exists() or not sidecar_path.exists():
+        raise StaticSecurityCertificationError("static sidecar pair is incomplete")
+    return {
+        "accepted": True,
+        "coding": coding,
+        "origin": os.fspath(origin_path),
+        "sidecar": os.fspath(sidecar_path),
+        "sidecar_size": sidecar_path.stat().st_size,
+    }
+
+
+def validate_static_content_length(
+    headers: Iterable[tuple[bytes | str, bytes | str]],
+    *,
+    expected_length: int,
+) -> dict[str, Any]:
+    normalized = [
+        (
+            name if isinstance(name, bytes) else str(name).encode("latin1"),
+            value if isinstance(value, bytes) else str(value).encode("latin1"),
+        )
+        for name, value in headers
+    ]
+    value = get_header([(name.lower(), header_value) for name, header_value in normalized], b"content-length")
+    if value is None:
+        return {"accepted": True, "content_length": None}
+    try:
+        parsed = int(value.decode("ascii"))
+    except ValueError as exc:
+        raise StaticSecurityCertificationError("invalid static content-length") from exc
+    if parsed != expected_length:
+        raise StaticSecurityCertificationError("static content-length mismatch")
+    return {"accepted": True, "content_length": parsed}
+
+
+def validate_static_range_amplification(
+    range_header: bytes | str,
+    *,
+    resource_length: int,
+    max_parts: int = 16,
+) -> dict[str, Any]:
+    value = range_header if isinstance(range_header, bytes) else str(range_header).encode("latin1")
+    if not value.lower().startswith(b"bytes="):
+        raise StaticSecurityCertificationError("unsupported static range unit")
+    parts = [part.strip() for part in value[6:].split(b",") if part.strip()]
+    if len(parts) > max_parts:
+        raise StaticSecurityCertificationError("static range amplification limit exceeded")
+    if resource_length < 0:
+        raise StaticSecurityCertificationError("invalid static resource length")
+    return {"accepted": True, "parts": len(parts), "resource_length": resource_length}
+
+
 def certify_static_delivery_security(evidence: Mapping[str, Any]) -> dict[str, Any]:
     corpus = evidence.get("negative_corpus") or {}
     required = ("dotdot_traversal", "encoded_traversal", "unicode_traversal", "symlink_escape")
@@ -226,3 +319,19 @@ def _validate_static_path_parts(path: str) -> StaticPathDecision:
 def _without_header(headers: HeaderList, name: bytes) -> HeaderList:
     lowered = name.lower()
     return [(header_name, value) for header_name, value in headers if header_name.lower() != lowered]
+
+
+def _raises_static_error(callback) -> bool:
+    try:
+        callback()
+    except StaticSecurityCertificationError:
+        return True
+    return False
+
+
+def _sidecar_suffix_map() -> dict[str, str]:
+    return {"br": ".br", "gzip": ".gz"}
+
+
+def _json_header_list(headers: Iterable[tuple[bytes, bytes]]) -> list[list[str]]:
+    return [[name.decode("latin1"), value.decode("latin1")] for name, value in headers]

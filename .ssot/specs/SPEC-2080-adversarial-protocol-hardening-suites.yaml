@@ -1,0 +1,47 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2080"
+number: 2080
+slug: "adversarial-protocol-hardening-suites"
+title: "Adversarial protocol hardening suites"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall assign adversarial protocol hardening tests to the package that owns the behavior and shall use certification only to preserve evidence."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-27T11:36:06Z"
+    note: "Add package-owned hardening-suite spec for current protocol and package owners."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Refresh hardening-suite spec to current protocol and package owners only."
+    at: "2026-06-27T11:39:31Z"
+references: []
+body: |-
+  # Adversarial protocol hardening suites
+  
+  Tigrcorn shall assign adversarial protocol hardening tests to the package that owns the behavior and shall use certification only to preserve evidence.
+  
+  Requirements:
+  
+  - HTTP/1.1 hardening shall live under `tigrcorn-protocols` HTTP/1 modules and cover slowloris, malformed chunking, request-smuggling variants, oversized headers, ambiguous connection headers, and premature EOF.
+  - HTTP/2 hardening shall live under `tigrcorn-protocols` HTTP/2 modules and cover rapid reset, continuation flood, stream exhaustion, SETTINGS churn, flow-control deadlock, invalid pseudo-header ordering, and h2c boundary behavior.
+  - HTTP/3/QUIC hardening shall split transport mechanics into `tigrcorn-transports` and HTTP/3/QPACK semantics into `tigrcorn-protocols`, covering packet loss, reordering, amplification limits, connection migration, CID rotation, 0-RTT rejection, stateless reset, QPACK blocked-stream pressure, and idle timeout enforcement.
+  - WebSocket hardening shall live under `tigrcorn-protocols` WebSocket modules and cover fragmented control frames, masked/unmasked frame validation, close-handshake races, permessage-deflate bombs, long-lived idle connections, and slow-consumer backpressure.
+  - WebTransport hardening shall live under `tigrcorn-protocols` WebTransport/H3 modules and cover stream/datagram buffering, session and stream flow control, reset/stop-sending mapping, GOAWAY/drain behavior, and resource governance.
+  - Static hardening shall live under `tigrcorn-static` for behavior and `tigrcorn-certification` for artifact preservation, covering traversal, symlink/hardlink escape, range amplification, sidecar mismatch, content-type ambiguity, and inode mutation during response.
+  - Observability expectations for hardening suites shall use `tigrcorn-observability` metric/log/trace schemas and stable event names.
+  - Certification suites shall consume package-owned tests and evidence outputs without becoming an implementation dependency of runtime, protocol, transport, security, static, or observability packages.
+  - This SPEC shall not expand into additional transport-security protocols, priority scheduling, broad cache/freshness claims, gateway integrity/signature products, or general gateway products outside existing carrier boundaries.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1066"
+  - "adr:1032"
+  - "adr:1047"
+  - "adr:1048"
+  - "adr:1050"
+  - "adr:1051"

@@ -67,6 +67,7 @@ def test_static_root_facade_exports_documented_surface() -> None:
         "StaticFilesApp",
         "StaticSecurityCertificationError",
         "StaticSecurityPolicy",
+        "build_static_certification_evidence",
         "certify_static_delivery_security",
         "mount_static_app",
         "normalize_static_route",
@@ -74,9 +75,12 @@ def test_static_root_facade_exports_documented_surface() -> None:
         "static_cache_headers",
         "static_delivery_certification_artifact",
         "static_security_policy",
+        "validate_static_content_length",
         "validate_static_early_hints",
         "validate_static_path",
+        "validate_static_range_amplification",
         "validate_static_range_request",
         "validate_static_resolved_path",
+        "validate_static_sidecar_pair",
     }
     assert set(static.__all__) == expected

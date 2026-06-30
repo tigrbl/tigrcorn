@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2038"
 number: 2038
@@ -11,9 +11,12 @@ tags: []
 summary: "Tigrcorn shall define and test publishable package boundaries before moving implementation out of the umbrella package."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1032"
+status_notes:
+  -
+    status: "draft"
+    note: "Expand package graph, ownership, and package-only versus cross-cutting test rules."
+    at: "2026-06-27T11:35:48Z"
+references: []
 body: |-
   # Package boundaries
   
@@ -27,5 +30,37 @@ body: |-
   - `tigrcorn-core` shall be the first extracted implementation package and shall not import inward from `tigrcorn` or higher-level `tigrcorn-*` packages.
   - Legacy `tigrcorn.constants`, `tigrcorn.errors`, and `tigrcorn.types` imports shall remain compatibility shims while new code can import from `tigrcorn_core`.
   - Tests shall verify workspace membership, dependency direction, package metadata, importability, and compatibility shims.
+  
+  Package graph:
+  
+  - `tigrcorn-core` has no Tigrcorn package dependencies.
+  - `tigrcorn-config`, `tigrcorn-http`, and `tigrcorn-asgi` depend only on `tigrcorn-core`.
+  - `tigrcorn-contract` depends on `tigrcorn-core`, `tigrcorn-asgi`, and the external `tigr-asgi-contract` surface.
+  - `tigrcorn-transports`, `tigrcorn-security`, and `tigrcorn-observability` depend on lower-layer core/config packages only.
+  - `tigrcorn-protocols` depends on core, config, ASGI, HTTP helpers, and transports.
+  - `tigrcorn-static` depends on core, ASGI, and HTTP helpers.
+  - `tigrcorn-runtime` depends on core, config, ASGI, transports, protocols, and security.
+  - `tigrcorn-compat` depends on core, ASGI, and runtime.
+  - `tigrcorn-certification` depends on compat and runtime and remains a leaf package.
+  - The `tigrcorn` umbrella distribution may depend on all split packages and preserve compatibility imports.
+  
+  Ownership rules:
+  
+  - Config models, source merging, validation, profile loading, and explain-plan output belong in `tigrcorn-config`.
+  - HTTP entity semantics, validators, ranges, Early Hints, Alt-Svc, and structured fields belong in `tigrcorn-http`.
+  - Static filesystem-origin behavior belongs in `tigrcorn-static`.
+  - Runtime app loading, lifecycle, listener orchestration, workers, and embedding belong in `tigrcorn-runtime`.
+  - Protocol parsing, protocol state, flow control, WebSocket, HTTP/3, and WebTransport carrier behavior belong in `tigrcorn-protocols`.
+  - TCP, UDP, Unix, pipe, in-process, and QUIC transport mechanics belong in `tigrcorn-transports`.
+  - TLS 1.3, ALPN, X.509, mTLS, OCSP, CRL, and cipher policy belong in `tigrcorn-security`.
+  - Certification commands, evidence bundles, interop replay, release gates, and promotion checks belong in `tigrcorn-certification`.
+  
+  Testing rules:
+  
+  - Package-only tests shall assert local import compatibility, module organization, and package-owned behavior.
+  - Cross-cutting tests shall cover integration across config, runtime, protocols, transports, security, static, observability, and certification.
+  - Root facade tests shall ensure `src/tigrcorn` does not own protocol, transport, runtime, static, security, or certification implementation.
+  - Module organization tests shall keep large packages split by responsibility submodule instead of permitting flat-file growth.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1032"

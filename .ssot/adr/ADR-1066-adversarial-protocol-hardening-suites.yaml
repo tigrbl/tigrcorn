@@ -1,0 +1,50 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1066"
+number: 1066
+slug: "adversarial-protocol-hardening-suites"
+title: "Adversarial protocol hardening is package-owned"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall model adversarial protocol hardening as package-owned negative and robustness suites rather than as a single monolithic certification bucket."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-27T11:36:03Z"
+    note: "Add scoped hardening-suite decision for current protocol and package owners."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Refresh hardening-suite scope to current protocol and package owners only."
+    at: "2026-06-27T11:39:12Z"
+references: []
+body: |-
+  # ADR 1066 - Adversarial protocol hardening suites
+  
+  Decision: Tigrcorn shall model adversarial protocol hardening as package-owned negative and robustness suites rather than as a single monolithic certification bucket.
+  
+  The package graph already separates HTTP helpers, protocol handlers, transports, security, static delivery, runtime orchestration, observability, and certification evidence. Adversarial hardening shall follow those boundaries so fixes land in the owning package and certification only preserves evidence.
+  
+  In-scope suite families:
+  
+  - HTTP/1.1 framing and resource-abuse cases.
+  - HTTP/2 stream, SETTINGS, continuation, and flow-control abuse cases.
+  - HTTP/3 and QUIC loss, reordering, amplification, migration, 0-RTT rejection, stateless reset, QPACK pressure, and idle-timeout cases.
+  - WebSocket fragmentation, masking, close-race, compression, idle, and slow-consumer cases.
+  - WebTransport session, stream, datagram, buffering, flow-control, drain, reset, and stop-sending cases.
+  - Static delivery traversal, filesystem boundary, validator, range, sidecar, and response-mutation cases.
+  
+  Out of scope for this ADR:
+  
+  - Transport-security extensions outside the accepted QUIC and TLS boundaries.
+  - General gateway products beyond existing scoped relay and carrier behavior.
+  - RFC 9218 prioritization, broad cache/freshness claims, and gateway integrity/signature products unless a future boundary ADR accepts them.
+  
+  Consequences:
+  
+  - Package-only tests prove behavior in the owning package.
+  - Cross-cutting tests prove integration across config, runtime, protocol, transport, security, observability, static, and certification.
+  - Certification artifacts preserve evidence but do not own the runtime behavior.

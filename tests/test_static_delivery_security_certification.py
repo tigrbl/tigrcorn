@@ -7,15 +7,19 @@ import pytest
 
 from tigrcorn.static import (
     StaticSecurityCertificationError,
+    build_static_certification_evidence,
     certify_static_delivery_security,
     static_alt_svc_headers,
     static_cache_headers,
     static_delivery_certification_artifact,
     static_security_policy,
+    validate_static_content_length,
     validate_static_early_hints,
     validate_static_path,
+    validate_static_range_amplification,
     validate_static_range_request,
     validate_static_resolved_path,
+    validate_static_sidecar_pair,
 )
 
 
@@ -164,3 +168,55 @@ def test_static_certification_fails_without_negative_corpus() -> None:
         }
     )
     assert result["certification_state"] == "certified"
+
+
+def test_static_certification_evidence_builder_passes_negative_corpus(tmp_path) -> None:
+    root = tmp_path / "public"
+    root.mkdir()
+    (root / "asset.txt").write_text("hello", encoding="utf-8")
+
+    evidence = build_static_certification_evidence(root, profile="static-origin")
+    result = certify_static_delivery_security(evidence)
+
+    assert evidence["mount_name"] == "public"
+    assert set(evidence["negative_corpus"].values()) == {True}
+    assert evidence["checks"]["alt_svc"] == []
+    assert result["certification_state"] == "certified"
+
+
+def test_static_sidecar_pair_validation(tmp_path) -> None:
+    origin = tmp_path / "asset.txt"
+    sidecar = tmp_path / "asset.txt.br"
+    mismatch = tmp_path / "asset.txt.gz"
+    origin.write_text("hello", encoding="utf-8")
+    sidecar.write_bytes(b"br")
+    mismatch.write_bytes(b"gzip")
+
+    assert validate_static_sidecar_pair(origin, sidecar, coding="br")["accepted"] is True
+    with pytest.raises(StaticSecurityCertificationError, match="sidecar name"):
+        validate_static_sidecar_pair(origin, mismatch, coding="br")
+    with pytest.raises(StaticSecurityCertificationError, match="unsupported"):
+        validate_static_sidecar_pair(origin, sidecar, coding="deflate")
+
+
+def test_static_content_length_validation() -> None:
+    assert validate_static_content_length([(b"content-length", b"5")], expected_length=5) == {
+        "accepted": True,
+        "content_length": 5,
+    }
+    assert validate_static_content_length([], expected_length=5) == {
+        "accepted": True,
+        "content_length": None,
+    }
+    with pytest.raises(StaticSecurityCertificationError, match="mismatch"):
+        validate_static_content_length([(b"content-length", b"6")], expected_length=5)
+
+
+def test_static_range_amplification_validation() -> None:
+    assert validate_static_range_amplification(b"bytes=0-0, 2-2", resource_length=5, max_parts=2) == {
+        "accepted": True,
+        "parts": 2,
+        "resource_length": 5,
+    }
+    with pytest.raises(StaticSecurityCertificationError, match="amplification"):
+        validate_static_range_amplification(b"bytes=0-0,1-1,2-2", resource_length=5, max_parts=2)
