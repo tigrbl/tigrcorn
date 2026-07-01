@@ -97,13 +97,13 @@ jobs:
           exit 1
 
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.12"
 
@@ -238,7 +238,7 @@ jobs:
           echo "commit_sha=${commit_sha}" >> "$GITHUB_OUTPUT"
 
       - name: Upload release plan
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: release-plan
           path: release-plan.json
@@ -257,11 +257,11 @@ jobs:
       version: ${{ steps.meta.outputs.version }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.12"
       - name: Upgrade pip
@@ -363,17 +363,17 @@ jobs:
           PY
           echo "version=$(cat .artifacts/version.txt)" >> "$GITHUB_OUTPUT"
       - name: Upload Python distributions
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: python-dist-${{ github.sha }}
           path: dist/
       - name: Upload release assets
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: release-assets-${{ github.sha }}
           path: .artifacts/release-assets/
       - name: Attest Python distributions
-        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26
+        uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763
         with:
           subject-path: dist/*
 
@@ -406,7 +406,7 @@ jobs:
           - tigrcorn-transports
     steps:
       - name: Download Python distributions
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: python-dist-${{ github.sha }}
           path: dist
@@ -469,7 +469,7 @@ jobs:
           - tigrcorn-transports
     steps:
       - name: Download Python distributions
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: python-dist-${{ github.sha }}
           path: dist
@@ -517,11 +517,11 @@ jobs:
         node-version: ["22", "23", "24", "25"]
     steps:
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -541,7 +541,7 @@ jobs:
         run: npm pack
       - name: Upload WebTransport peer probe tarball
         if: ${{ matrix.node-version == '25' }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: wt-peer-probes-${{ github.sha }}
           path: packages/wt-peer-probes/tigrcorn-wt-peer-probes-*.tgz
@@ -560,11 +560,11 @@ jobs:
         node-version: ["22", "23", "24", "25"]
     steps:
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -585,7 +585,7 @@ jobs:
         run: npm run test:peer-api -- --reporter=line
       - name: Upload WebTransport peer probe Playwright report
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: wt-peer-probes-playwright-node${{ matrix.node-version }}-${{ github.sha }}
           path: packages/wt-peer-probes/playwright-report/
@@ -602,13 +602,13 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out prepared release commit
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Download release plan
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: release-plan
           path: .
@@ -629,11 +629,11 @@ jobs:
       contents: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Download WebTransport peer probe tarball
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: wt-peer-probes-${{ github.sha }}
           path: .artifacts/wt-peer-probes
@@ -659,7 +659,7 @@ jobs:
       id-token: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Publish WebTransport peer probe package to npm dry run
@@ -697,16 +697,16 @@ jobs:
       contents: write
     steps:
       - name: Check out prepared release commit
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ needs.prepare-release.outputs.commit_sha }}
       - name: Download Python distributions
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: python-dist-${{ github.sha }}
           path: dist
       - name: Download release assets
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: release-assets-${{ github.sha }}
           path: .artifacts/release-assets
