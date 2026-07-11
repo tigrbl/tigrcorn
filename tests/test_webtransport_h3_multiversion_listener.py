@@ -38,6 +38,17 @@ def test_multiversion_settings_advertise_each_profile_and_shared_settings_once()
     }
 
 
+def test_default_webtransport_config_advertises_every_implemented_profile() -> None:
+    config = build_config()
+    settings = settings_for_profiles(
+        config.webtransport.profiles,
+        max_sessions=int(config.webtransport.max_sessions or 1),
+    )
+    assert settings[SETTING_ENABLE_WEBTRANSPORT] == 1
+    assert settings[SETTING_WT_MAX_SESSIONS] > 0
+    assert settings[SETTING_WT_ENABLED] == 1
+
+
 def test_profile_selection_prefers_preferred_then_configured_order() -> None:
     peer = {
         SETTING_ENABLE_WEBTRANSPORT: 1,

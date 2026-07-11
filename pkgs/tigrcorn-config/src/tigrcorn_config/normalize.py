@@ -100,19 +100,30 @@ def normalize_config(config: ServerConfig) -> None:
     ]
     if (
         config.webtransport.compatibility == 'draft13'
-        and configured_profiles == ['ietf-current']
+        and configured_profiles in (
+            ['ietf-current'],
+            ['draft02', 'draft13', 'ietf-current'],
+        )
         and config.webtransport.preferred_profile in {None, 'ietf-current', 'current'}
     ):
         configured_profiles = ['draft13']
         config.webtransport.preferred_profile = 'draft13'
     if not configured_profiles:
-        configured_profiles = ['draft13' if config.webtransport.compatibility == 'draft13' else 'ietf-current']
+        configured_profiles = (
+            ['draft13']
+            if config.webtransport.compatibility == 'draft13'
+            else ['draft02', 'draft13', 'ietf-current']
+        )
     config.webtransport.profiles = list(dict.fromkeys(configured_profiles))
     preferred = str(config.webtransport.preferred_profile or '').strip().lower()
     if preferred:
         preferred = aliases.get(preferred, preferred)
     else:
-        preferred = config.webtransport.profiles[0]
+        preferred = (
+            'ietf-current'
+            if 'ietf-current' in config.webtransport.profiles
+            else config.webtransport.profiles[0]
+        )
     config.webtransport.preferred_profile = preferred
     if preferred in {'ietf-current', 'draft13'}:
         config.webtransport.compatibility = 'draft13' if preferred == 'draft13' else 'current'

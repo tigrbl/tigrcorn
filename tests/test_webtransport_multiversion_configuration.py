@@ -6,7 +6,9 @@ from tigrcorn_core.errors import ConfigError
 
 
 def test_default_and_legacy_compatibility_map_to_concrete_profiles() -> None:
-    assert build_config().webtransport.profiles == ["ietf-current"]
+    current = build_config()
+    assert current.webtransport.profiles == ["draft02", "draft13", "ietf-current"]
+    assert current.webtransport.preferred_profile == "ietf-current"
     legacy = build_config(config={"webtransport": {"compatibility": "draft13"}})
     assert legacy.webtransport.profiles == ["draft13"]
     assert legacy.webtransport.preferred_profile == "draft13"
