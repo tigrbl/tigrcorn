@@ -265,6 +265,16 @@ class QuicConnectionReceiveMixin:
                 self._maybe_queue_max_stream_credit(frame.stream_id)
                 events.append(QuicEvent(kind='reset_stream', stream_id=frame.stream_id, packet_space=packet_space, detail=frame))
                 continue
+            if isinstance(frame, QuicResetStreamAtFrame):
+                if not (self.local_transport_parameters and self.local_transport_parameters.reset_stream_at):
+                    raise ProtocolError('RESET_STREAM_AT received without transport parameter negotiation')
+                ack_eliciting_received = True
+                self.flow.validate_receive(frame.stream_id, final_size=frame.final_size)
+                self.streams.apply_reset_at(frame)
+                self.flow.commit_receive(frame.stream_id, final_size=frame.final_size)
+                self._maybe_queue_max_stream_credit(frame.stream_id)
+                events.append(QuicEvent(kind='reset_stream_at', stream_id=frame.stream_id, packet_space=packet_space, detail=frame))
+                continue
             if isinstance(frame, QuicStopSendingFrame):
                 ack_eliciting_received = True
                 stream_state = self.streams.ensure_send_stream(frame.stream_id)

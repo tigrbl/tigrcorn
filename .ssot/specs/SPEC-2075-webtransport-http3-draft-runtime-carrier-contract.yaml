@@ -4,18 +4,23 @@ id: "spc:2075"
 number: 2075
 slug: "webtransport-http3-draft-runtime-carrier-contract"
 title: "WebTransport over HTTP/3 draft runtime carrier contract"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Defines Tigrcorn WebTransport-over-HTTP/3 runtime behavior for Extended CONNECT negotiation, session lifecycle, QUIC-backed stream and datagram handling, flow-control interactions, and evidence boundaries. Source specification: draft-ietf-webtrans-http3-15 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/. Claims remain draft-target claims until an RFC replaces the draft."
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "spc:2082"
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted to govern transport stack runtime behavior."
     at: "2026-06-17T12:48:47Z"
+    note: "Accepted to govern transport stack runtime behavior."
+    status: "accepted"
+  -
+    status: "superseded"
+    note: "Pinned draft-16 handshake contract replaces draft-13 and floating draft contracts"
+    at: "2026-07-11T10:25:37Z"
 references: []
 body: |-
   Defines Tigrcorn WebTransport-over-HTTP/3 runtime behavior for Extended CONNECT negotiation, session lifecycle, QUIC-backed stream and datagram handling, flow-control interactions, and evidence boundaries. Source specification: draft-ietf-webtrans-http3-15 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/. Claims remain draft-target claims until an RFC replaces the draft.

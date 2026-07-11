@@ -332,6 +332,18 @@ class QuicConnectionSendMixin:
         self._maybe_queue_max_stream_credit(stream_id)
         return packet
 
+    def reset_stream_at(self, stream_id: int, error_code: int, *, reliable_size: int) -> bytes:
+        if not (self.peer_transport_parameters and self.peer_transport_parameters.reset_stream_at):
+            raise ProtocolError('peer did not negotiate reset_stream_at')
+        stream_state = self.streams.ensure_send_stream(stream_id)
+        final_size = stream_state.send_offset
+        if reliable_size > final_size:
+            raise ProtocolError('RESET_STREAM_AT reliable size exceeds final size')
+        stream_state.mark_reset_sent(error_code, final_size=final_size)
+        packet = self._encode_short([QuicResetStreamAtFrame(stream_id, error_code, final_size, reliable_size)])
+        self._maybe_queue_max_stream_credit(stream_id)
+        return packet
+
     def stop_sending(self, stream_id: int, error_code: int) -> bytes:
         stream_state = self.streams.ensure_receive_stream(stream_id)
         stream_state.mark_stop_sending(error_code)

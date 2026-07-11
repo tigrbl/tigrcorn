@@ -23,6 +23,8 @@ def _require_positive(name: str, value: int | float | None) -> None:
 
 
 def validate_config(config: ServerConfig) -> None:
+    if config.webtransport.compatibility not in {'current', 'draft13'}:
+        raise ConfigError("webtransport.compatibility must be 'current' or 'draft13'")
     normalize_config(config)
     if config.app.profile is not None and config.app.profile not in set(list_blessed_profiles()):
         raise ConfigError(f"unsupported app.profile: {config.app.profile!r}")
@@ -220,6 +222,8 @@ def validate_config(config: ServerConfig) -> None:
                     raise ConfigError("webtransport requires quic and http3 on udp listeners")
                 if "3" not in listener.http_versions:
                     raise ConfigError("webtransport requires HTTP/3 on udp listeners")
+                if listener.alpn_protocols and 'h3' not in listener.alpn_protocols:
+                    raise ConfigError("webtransport requires h3 ALPN on udp listeners")
             if listener.ssl_ca_certs and not listener.ssl_enabled:
                 raise ConfigError("ssl_ca_certs requires ssl_certfile and ssl_keyfile on udp listeners")
             if listener.ssl_require_client_cert:

@@ -168,6 +168,10 @@ class HTTP3LifecycleMixin:
             max_streams_uni=self.config.scheduler.max_streams or 128,
             idle_timeout=int(self.config.quic.idle_timeout * 1000),
             max_datagram_frame_size=self.listener.max_datagram_size,
+            reset_stream_at=(
+                'webtransport' in self.listener.enabled_protocols
+                and self.config.webtransport.compatibility == 'current'
+            ),
         )
         session.quic.configure_handshake(
             QuicTlsHandshakeDriver(

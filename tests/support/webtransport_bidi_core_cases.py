@@ -11,7 +11,7 @@ from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.protocols.http3.codec import (
     FRAME_SETTINGS,
     SETTING_ENABLE_CONNECT_PROTOCOL,
-    SETTING_ENABLE_WEBTRANSPORT,
+    SETTING_WT_ENABLED,
     SETTING_H3_DATAGRAM,
     STREAM_TYPE_CONTROL,
     encode_frame,
@@ -19,7 +19,7 @@ from tigrcorn.protocols.http3.codec import (
 )
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.transports.quic import QuicConnection
-from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, generate_self_signed_certificate
+from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
 from tigrcorn.utils.bytes import encode_quic_varint
 from tests.fixtures_third_party.wt_stream_client import probe_wt_stream
 from tests.support.webtransport_bidi import (
@@ -72,6 +72,10 @@ class WebTransportBidiCoreCases:
                     is_client=True,
                     server_name="server.example",
                     trusted_certificates=[cert_pem],
+                    transport_parameters=TransportParameters(
+                        max_datagram_frame_size=65536,
+                        reset_stream_at=True,
+                    ),
                 )
             )
             core = HTTP3ConnectionCore()
@@ -95,7 +99,7 @@ class WebTransportBidiCoreCases:
                         {
                             SETTING_ENABLE_CONNECT_PROTOCOL: 1,
                             SETTING_H3_DATAGRAM: 1,
-                            SETTING_ENABLE_WEBTRANSPORT: 1,
+                            SETTING_WT_ENABLED: 1,
                         }
                     ),
                 )
@@ -105,12 +109,11 @@ class WebTransportBidiCoreCases:
                 connect_payload = core.get_request(0).encode_request(
                     [
                         (b":method", b"CONNECT"),
-                        (b":protocol", b"webtransport"),
+                        (b":protocol", b"webtransport-h3"),
                         (b":scheme", b"https"),
                         (b":path", b"/wt"),
                         (b":authority", b"server.example"),
                         (b"origin", b"https://localhost:8088"),
-                        (b"sec-webtransport-http3-draft", b"draft02"),
                     ]
                 )
                 sock.sendto(client.send_stream_data(0, connect_payload, fin=False), ("127.0.0.1", port))
@@ -247,7 +250,7 @@ class WebTransportBidiCoreCases:
         self.assertIn("datagram", response.quic_events)
         self.assertEqual(response.remote_settings[SETTING_ENABLE_CONNECT_PROTOCOL], 1)
         self.assertEqual(response.remote_settings[SETTING_H3_DATAGRAM], 1)
-        self.assertEqual(response.remote_settings[SETTING_ENABLE_WEBTRANSPORT], 1)
+        self.assertEqual(response.remote_settings[SETTING_WT_ENABLED], 1)
 
         _assert_transport_boundary_trace(self, trace)
         session_ids = _trace_session_ids(trace)

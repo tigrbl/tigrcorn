@@ -10,10 +10,18 @@ from examples.webtransport_mtls_demo.server import app
 from tigrcorn.config.load import build_config
 from tigrcorn.constants import DEFAULT_QUIC_SECRET
 from tigrcorn.protocols.http3 import HTTP3ConnectionCore
-from tigrcorn.protocols.http3.codec import FRAME_SETTINGS, STREAM_TYPE_CONTROL, encode_frame
+from tigrcorn.protocols.http3.codec import (
+    FRAME_SETTINGS,
+    SETTING_ENABLE_CONNECT_PROTOCOL,
+    SETTING_H3_DATAGRAM,
+    SETTING_WT_ENABLED,
+    STREAM_TYPE_CONTROL,
+    encode_frame,
+    encode_settings,
+)
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.transports.quic import QuicConnection
-from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, generate_self_signed_certificate
+from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
 from tigrcorn.utils.bytes import encode_quic_varint
 
 
@@ -50,6 +58,10 @@ class WebTransportMtlsDemoCleanupTests(unittest.IsolatedAsyncioTestCase):
                     is_client=True,
                     server_name="server.example",
                     trusted_certificates=[cert_pem],
+                    transport_parameters=TransportParameters(
+                        max_datagram_frame_size=65536,
+                        reset_stream_at=True,
+                    ),
                 )
             )
             core = HTTP3ConnectionCore()
@@ -67,14 +79,23 @@ class WebTransportMtlsDemoCleanupTests(unittest.IsolatedAsyncioTestCase):
                         break
 
                 control_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
-                control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(FRAME_SETTINGS, b"")
+                control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(
+                    FRAME_SETTINGS,
+                    encode_settings(
+                        {
+                            SETTING_ENABLE_CONNECT_PROTOCOL: 1,
+                            SETTING_H3_DATAGRAM: 1,
+                            SETTING_WT_ENABLED: 1,
+                        }
+                    ),
+                )
                 sock.sendto(client.send_stream_data(control_stream_id, control_payload, fin=False), ("127.0.0.1", port))
                 await asyncio.sleep(0.05)
 
                 payload = core.get_request(0).encode_request(
                     [
                         (b":method", b"CONNECT"),
-                        (b":protocol", b"webtransport"),
+                        (b":protocol", b"webtransport-h3"),
                         (b":scheme", b"https"),
                         (b":path", b"/wt"),
                         (b":authority", b"server.example"),

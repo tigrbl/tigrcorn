@@ -4,18 +4,23 @@ id: "spc:2069"
 number: 2069
 slug: "webtransport-over-http3-draft13-wire-contract"
 title: "WebTransport over HTTP/3 draft-13 wire contract"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "This SPEC defines Tigrcorn's canonical WebTransport over HTTP/3 and QUIC carrier contract for draft-ietf-webtrans-http3-13."
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "spc:2082"
 status_notes:
   -
     at: "2026-06-17T00:00:00Z"
     note: "Created to govern draft-13 WebTransport over HTTP/3 support separately from legacy draft02 compatibility behavior."
     status: "draft"
+  -
+    status: "superseded"
+    note: "Pinned draft-16 handshake contract replaces draft-13 and floating draft contracts"
+    at: "2026-07-11T10:25:37Z"
 references: []
 body: |-
   # WebTransport over HTTP/3 draft-13 wire contract

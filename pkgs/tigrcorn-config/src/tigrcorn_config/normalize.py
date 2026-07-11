@@ -90,6 +90,8 @@ def normalize_config(config: ServerConfig) -> None:
         config.webtransport.max_streams = int(config.webtransport.max_streams)
     if config.webtransport.max_datagram_size is not None:
         config.webtransport.max_datagram_size = int(config.webtransport.max_datagram_size)
+    config.webtransport.enabled = bool(config.webtransport.enabled)
+    config.webtransport.compatibility = str(config.webtransport.compatibility or 'current').strip().lower()
     config.webtransport.origins = [str(v).strip() for v in _ensure_list(config.webtransport.origins) if str(v).strip()]
     if config.webtransport.path is not None:
         path = str(config.webtransport.path).strip()
@@ -218,7 +220,10 @@ def normalize_config(config: ServerConfig) -> None:
                     listener.protocols.append("websocket")
         listener.websocket = config.websocket.enabled if listener.websocket else listener.websocket
         if listener.kind == "udp":
+            if config.webtransport.enabled and "webtransport" not in listener.protocols:
+                listener.protocols.append("webtransport")
             if "webtransport" in listener.protocols:
+                config.webtransport.enabled = True
                 if "quic" not in listener.protocols:
                     listener.protocols.insert(0, "quic")
                 if "http3" not in listener.protocols:

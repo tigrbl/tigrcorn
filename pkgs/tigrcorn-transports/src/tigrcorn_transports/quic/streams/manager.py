@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tigrcorn_core.errors import ProtocolError
-from .frames import QuicMaxStreamsFrame, QuicResetStreamFrame, QuicStreamFrame
+from .frames import QuicMaxStreamsFrame, QuicResetStreamAtFrame, QuicResetStreamFrame, QuicStreamFrame
 from .state import QuicStreamState
 
 class QuicStreamManager:
@@ -120,6 +120,12 @@ class QuicStreamManager:
 
     def apply_reset(self, frame: QuicResetStreamFrame) -> None:
         self.ensure_receive_stream(frame.stream_id).apply_reset(frame)
+
+    def apply_reset_at(self, frame: QuicResetStreamAtFrame) -> None:
+        state = self.ensure_receive_stream(frame.stream_id)
+        if state.highest_received_offset < frame.reliable_size:
+            raise ProtocolError('RESET_STREAM_AT reliable data has not been received')
+        state.apply_reset(QuicResetStreamFrame(frame.stream_id, frame.error_code, frame.final_size))
 
     def maybe_release_peer_stream_credit(self, stream_id: int) -> QuicMaxStreamsFrame | None:
         state = self._streams.get(stream_id)
