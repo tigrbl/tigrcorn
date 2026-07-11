@@ -4,18 +4,23 @@ id: "adr:1057"
 number: 1057
 slug: "webtransport-over-http3-draft13-carrier-compliance"
 title: "WebTransport over HTTP/3 draft-13 carrier compliance"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Tigrcorn shall certify WebTransport over HTTP/3 draft-13 as its own carrier compliance domain, separate from legacy draft02 compatibility and helper-only wire modeling."
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "adr:1068"
 status_notes:
   -
     at: "2026-06-17T00:00:00Z"
     note: "Created to govern draft-ietf-webtrans-http3-13 runtime compliance separately from legacy draft02 compatibility and helper-only wire modeling."
     status: "draft"
+  -
+    status: "superseded"
+    note: "Pinned current profile replaces draft-13-default and floating active-draft decisions"
+    at: "2026-07-11T10:25:36Z"
 references: []
 body: |-
   ## Decision

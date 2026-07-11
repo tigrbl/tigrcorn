@@ -13,14 +13,14 @@ from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.protocols.http3.codec import (
     FRAME_SETTINGS,
     SETTING_ENABLE_CONNECT_PROTOCOL,
-    SETTING_ENABLE_WEBTRANSPORT,
     SETTING_H3_DATAGRAM,
+    SETTING_WT_ENABLED,
     STREAM_TYPE_CONTROL,
     encode_frame,
     encode_settings,
 )
 from tigrcorn.transports.quic import QuicConnection
-from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver
+from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters
 from tigrcorn.utils.bytes import decode_quic_varint, encode_quic_varint
 
 
@@ -90,6 +90,7 @@ async def probe_wt_stream(
             is_client=True,
             server_name=authority.decode("ascii"),
             trusted_certificates=trusted_certificates or [],
+            transport_parameters=TransportParameters(max_datagram_frame_size=65536, reset_stream_at=True),
         )
     )
     core = HTTP3ConnectionCore()
@@ -141,7 +142,7 @@ async def probe_wt_stream(
             {
                 SETTING_ENABLE_CONNECT_PROTOCOL: 1,
                 SETTING_H3_DATAGRAM: 1,
-                SETTING_ENABLE_WEBTRANSPORT: 1,
+                SETTING_WT_ENABLED: 1,
             }
         )
         control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(FRAME_SETTINGS, settings)
@@ -152,12 +153,11 @@ async def probe_wt_stream(
         connect_payload = core.get_request(stream_id).encode_request(
             [
                 (b":method", b"CONNECT"),
-                (b":protocol", b"webtransport"),
+                (b":protocol", b"webtransport-h3"),
                 (b":scheme", b"https"),
                 (b":path", path),
                 (b":authority", authority),
                 (b"origin", origin),
-                (b"sec-webtransport-http3-draft", b"draft02"),
             ]
         )
         send(client.send_stream_data(stream_id, connect_payload, fin=False))

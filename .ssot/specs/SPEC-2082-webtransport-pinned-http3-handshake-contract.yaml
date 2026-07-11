@@ -1,0 +1,65 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2082"
+number: 2082
+slug: "webtransport-pinned-http3-handshake-contract"
+title: "Pinned WebTransport-over-HTTP/3 enablement and handshake contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn's current profile is pinned to draft-ietf-webtrans-http3-16. Enabling WebTransport selects the profile atomically and retains TLS ALPN `h3`."
+supersedes:
+  - "spc:2069"
+  - "spc:2075"
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T10:25:35Z"
+    note: "Accepted pinned draft-16 handshake contract"
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Pinned draft-16 handshake contract replaces draft-13 and floating draft contracts"
+    at: "2026-07-11T10:25:37Z"
+references: []
+body: |-
+  # Pinned WebTransport-over-HTTP/3 enablement and handshake contract
+
+  Tigrcorn's current profile is pinned to draft-ietf-webtrans-http3-16. Enabling WebTransport selects the profile atomically and retains TLS ALPN `h3`.
+
+  ## Connection requirements
+
+  - Servers send `SETTINGS_WT_ENABLED = 1` (`0x2c7cf000`), `SETTINGS_ENABLE_CONNECT_PROTOCOL = 1` (`0x08`), and `SETTINGS_H3_DATAGRAM = 1` (`0x33`).
+  - The current profile does not send draft-13 `SETTINGS_WT_MAX_SESSIONS`.
+  - Both peers negotiate positive QUIC `max_datagram_frame_size` and the empty `reset_stream_at` transport parameter.
+  - Tigrcorn records configured profile, peer SETTINGS receipt, peer transport parameters, selected profile, effective datagram capacity, and the exact missing requirement.
+  - Incoming current-profile requests are not dispatched before required peer negotiation completes.
+
+  ## Session establishment
+
+  - Current-profile requests use `CONNECT`, `:protocol = webtransport-h3`, `:scheme = https`, and valid `:authority` and `:path` values.
+  - Browser requests require Origin validation.
+  - Unknown extended CONNECT protocols follow RFC 9220 rejection behavior.
+  - Governance resources are reserved before a successful response and released on every rejection or termination path.
+  - The application task and `webtransport.connect` event begin only after wire admission succeeds.
+
+  ## Streams, datagrams, and termination
+
+  - Stream signal/type and session identifiers follow the selected profile.
+  - Current-profile stream resets use RESET_STREAM_AT; ordinary RESET_STREAM is not a substitute.
+  - Effective datagram payload is bounded by local WebTransport policy and both peers' QUIC capacity after framing overhead.
+  - Orphan streams and datagrams fail closed without cross-session dispatch.
+  - Existing public `webtransport.*` application events remain version-neutral.
+
+  ## Compatibility and evidence
+
+  - Draft-13 uses an explicit compatibility profile with its own settings, `:protocol = webtransport`, and wire parser.
+  - One connection selects one profile; incompatible formats are never mixed.
+  - Conformance evidence is separated into current, draft-13, HTTP/2, negative, browser, and independently authored peer lanes.
+  - Observability exposes bounded profile, ALPN, setting identifiers, missing requirement, CONNECT token, status, and session identity fields.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1050"
+  - "adr:1051"
+  - "adr:1068"

@@ -3,6 +3,37 @@ from __future__ import annotations
 from .imports import *
 
 class HTTP3WebTransportSupportMixin:
+    async def _admit_webtransport_connect(
+        self, session, stream_id, request_state, header_map, endpoint
+    ) -> list[bytes]:
+        profile = profile_spec(
+            self.config.webtransport.compatibility,
+            max_sessions=int(self.config.webtransport.max_sessions or 1),
+        )
+        peer = session.quic.peer_transport_parameters
+        missing = missing_peer_requirement(
+            profile,
+            session.h3.state.remote_settings,
+            max_datagram_frame_size=(peer.max_datagram_frame_size if peer else None),
+            reset_stream_at=bool(peer and peer.reset_stream_at),
+        )
+        if missing is None:
+            return await self._start_webtransport_stream_locked(
+                session, stream_id, request_state, header_map, endpoint
+            )
+        target = self._request_target_from_header_map(header_map)
+        self.trace_webtransport(
+            'webtransport.connection.requirement_missing',
+            **self._trace_session_fields(session),
+            profile=profile.profile.value,
+            requirement=missing,
+        )
+        self.access_logger.log_http(session.addr, 'CONNECT', target, 421, 'HTTP/3')
+        return self._build_http3_response_datagrams_locked(
+            session, stream_id, 421, [(b'content-type', b'text/plain')],
+            b'webtransport requirements not met', end_stream=True,
+        )
+
     def _webtransport_max_datagram_size(self) -> int:
         # Keep the public config path discoverable for SSOT proof checks: webtransport.max_datagram_size.
         configured = self.config.webtransport.max_datagram_size

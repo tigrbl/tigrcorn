@@ -6,7 +6,7 @@ from pathlib import Path
 
 from tests.fixtures_third_party.wt_stream_client import probe_wt_stream
 from tigrcorn.config.load import build_config
-from tigrcorn.protocols.http3.codec import SETTING_ENABLE_CONNECT_PROTOCOL, SETTING_ENABLE_WEBTRANSPORT, SETTING_H3_DATAGRAM
+from tigrcorn.protocols.http3.codec import SETTING_ENABLE_CONNECT_PROTOCOL, SETTING_H3_DATAGRAM, SETTING_WT_ENABLED
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.transports.quic.handshake import generate_self_signed_certificate
 
@@ -81,10 +81,9 @@ class WebTransportStreamProbeFixtureTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(response.received_initial_headers)
         self.assertEqual(response.body, b"wt:hello")
         self.assertTrue(response.ended)
-        self.assertIn((b"sec-webtransport-http3-draft", b"draft02"), response.headers)
         self.assertEqual(response.remote_settings.get(SETTING_ENABLE_CONNECT_PROTOCOL), 1)
         self.assertEqual(response.remote_settings.get(SETTING_H3_DATAGRAM), 1)
-        self.assertEqual(response.remote_settings.get(SETTING_ENABLE_WEBTRANSPORT), 1)
+        self.assertEqual(response.remote_settings.get(SETTING_WT_ENABLED), 1)
         self.assertIn("stream", response.quic_events)
         self.assertGreaterEqual(response.datagrams_sent, 3)
         self.assertGreaterEqual(response.datagrams_received, 2)

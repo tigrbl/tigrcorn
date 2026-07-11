@@ -38,6 +38,18 @@ class QuicResetStreamFrame:
 
 
 @dataclass(slots=True)
+class QuicResetStreamAtFrame:
+    stream_id: int
+    error_code: int
+    final_size: int
+    reliable_size: int
+
+    def __post_init__(self) -> None:
+        if self.reliable_size > self.final_size:
+            raise ProtocolError('RESET_STREAM_AT reliable size exceeds final size')
+
+
+@dataclass(slots=True)
 class QuicStopSendingFrame:
     stream_id: int
     error_code: int
@@ -141,6 +153,7 @@ QuicFrame = (
     QuicStreamFrame
     | QuicAckFrame
     | QuicResetStreamFrame
+    | QuicResetStreamAtFrame
     | QuicStopSendingFrame
     | QuicCryptoFrame
     | QuicNewTokenFrame

@@ -62,6 +62,7 @@ _TP_ACTIVE_CONNECTION_ID_LIMIT = 0x0E
 _TP_INITIAL_SOURCE_CONNECTION_ID = 0x0F
 _TP_RETRY_SOURCE_CONNECTION_ID = 0x10
 _TP_MAX_DATAGRAM_FRAME_SIZE = 0x20
+_TP_RESET_STREAM_AT = 0x17F7586D2CB571
 
 
 @dataclass(slots=True)
@@ -84,6 +85,7 @@ class TransportParameters:
     initial_source_connection_id: bytes | None = None
     retry_source_connection_id: bytes | None = None
     max_datagram_frame_size: int | None = None
+    reset_stream_at: bool = False
     unknown_parameters: dict[int, bytes] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -138,6 +140,9 @@ class TransportParameters:
         add_bytes(_TP_INITIAL_SOURCE_CONNECTION_ID, self.initial_source_connection_id)
         add_bytes(_TP_RETRY_SOURCE_CONNECTION_ID, self.retry_source_connection_id)
         add_int(_TP_MAX_DATAGRAM_FRAME_SIZE, self.max_datagram_frame_size)
+        if self.reset_stream_at:
+            payload.extend(encode_quic_varint(_TP_RESET_STREAM_AT))
+            payload.extend(encode_quic_varint(0))
         for parameter_id, value in sorted(self.unknown_parameters.items()):
             payload.extend(encode_quic_varint(parameter_id))
             payload.extend(encode_quic_varint(len(value)))
@@ -207,6 +212,10 @@ class TransportParameters:
                 values['retry_source_connection_id'] = raw
             elif parameter_id == _TP_MAX_DATAGRAM_FRAME_SIZE:
                 values['max_datagram_frame_size'] = decode_int(raw)
+            elif parameter_id == _TP_RESET_STREAM_AT:
+                if raw:
+                    raise ProtocolError('reset_stream_at transport parameter must be empty')
+                values['reset_stream_at'] = True
             else:
                 values['unknown_parameters'][parameter_id] = raw
         return cls(**values)
@@ -231,6 +240,7 @@ class TransportParameters:
             and current.ack_delay_exponent == self.ack_delay_exponent
             and current.max_ack_delay == self.max_ack_delay
             and current.disable_active_migration == self.disable_active_migration
+            and (not self.reset_stream_at or current.reset_stream_at)
         )
 
 

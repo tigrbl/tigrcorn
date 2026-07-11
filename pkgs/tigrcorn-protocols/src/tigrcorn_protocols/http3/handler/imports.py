@@ -31,6 +31,7 @@ from tigrcorn_protocols.http3.codec import (
     SETTING_MAX_FIELD_SECTION_SIZE,
     SETTING_QPACK_MAX_TABLE_CAPACITY,
     SETTING_WT_MAX_SESSIONS,
+    SETTING_WT_ENABLED,
     HTTP3ConnectionError,
     HTTP3StreamError,
     encode_frame,
@@ -44,6 +45,7 @@ from tigrcorn_protocols.http3.streams import (
 from tigrcorn_protocols.http3.websocket import H3WebSocketSession
 from tigrcorn_protocols.sessions import RuntimeConnectionInventory, peer_id_from_address
 from tigrcorn_protocols.webtransport.governance import WebTransportGovernanceError
+from tigrcorn_protocols.webtransport.profiles import missing_peer_requirement, profile_spec
 from tigrcorn_transports.quic.connection import QuicConnection
 from tigrcorn_transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters
 from tigrcorn_transports.quic.packets import QuicLongHeaderPacket, QuicLongHeaderType, QuicRetryPacket, QuicShortHeaderPacket, QuicVersionNegotiationPacket, decode_packet

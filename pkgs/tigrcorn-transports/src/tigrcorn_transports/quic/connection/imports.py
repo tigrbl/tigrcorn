@@ -53,6 +53,7 @@ from tigrcorn_transports.quic.streams import (
     QuicPathChallengeFrame,
     QuicPathResponseFrame,
     QuicResetStreamFrame,
+    QuicResetStreamAtFrame,
     QuicRetireConnectionIdFrame,
     QuicStopSendingFrame,
     QuicStreamDataBlockedFrame,

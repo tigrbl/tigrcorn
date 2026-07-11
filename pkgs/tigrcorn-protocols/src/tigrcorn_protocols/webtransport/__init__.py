@@ -30,6 +30,15 @@ from tigrcorn_protocols.webtransport.wire import (
     WebTransportWireError,
     WebTransportWireRuntime,
 )
+from tigrcorn_protocols.webtransport.profiles import (
+    CURRENT_PROFILE,
+    SETTING_WT_ENABLED,
+    WebTransportProfile,
+    WebTransportProfileSpec,
+    draft13_profile,
+    missing_peer_requirement,
+    profile_spec,
+)
 
 __all__ = [
     "CAPSULE_DATAGRAM",
@@ -47,6 +56,13 @@ __all__ = [
     "H3_STREAM_TYPE_WEBTRANSPORT",
     "SETTING_WEBTRANSPORT_MAX_SESSIONS",
     "SETTING_WT_MAX_SESSIONS",
+    "SETTING_WT_ENABLED",
+    "CURRENT_PROFILE",
+    "WebTransportProfile",
+    "WebTransportProfileSpec",
+    "draft13_profile",
+    "missing_peer_requirement",
+    "profile_spec",
     "StreamDirection",
     "WebTransportBudgetPolicy",
     "WebTransportGovernanceError",

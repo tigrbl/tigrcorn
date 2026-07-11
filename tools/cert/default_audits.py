@@ -27,7 +27,12 @@ def _jsonable(value: Any) -> Any:
 
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(_jsonable(payload), indent=2, sort_keys=True) + '\n', encoding='utf-8')
+    value = _jsonable(payload)
+    if path.is_relative_to(ROOT / '.ssot'):
+        rendered = json.dumps(value, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+    else:
+        rendered = json.dumps(value, indent=2, sort_keys=True) + '\n'
+    path.write_text(rendered, encoding='utf-8')
 
 
 def _render_markdown_table(rows: list[dict[str, Any]]) -> str:

@@ -282,16 +282,14 @@ class HTTP3PacketMixin:
                                     continue
                             protocol = header_map.get(b':protocol') if header_map is not None else None
                             if header_map is not None and protocol is not None and event.stream_id not in session.responded_streams:
-                                if protocol == b'webtransport' and 'webtransport' in self.listener.enabled_protocols:
-                                    outbound.extend(
-                                        await self._start_webtransport_stream_locked(
-                                            session,
-                                            event.stream_id,
-                                            request_state,
-                                            header_map,
-                                            endpoint,
-                                        )
-                                    )
+                                configured_profile = profile_spec(
+                                    self.config.webtransport.compatibility,
+                                    max_sessions=int(self.config.webtransport.max_sessions or 1),
+                                )
+                                if protocol == configured_profile.connect_token and 'webtransport' in self.listener.enabled_protocols:
+                                    outbound.extend(await self._admit_webtransport_connect(
+                                        session, event.stream_id, request_state, header_map, endpoint
+                                    ))
                                 elif protocol != b'websocket' or not self.listener.websocket:
                                     target = self._request_target_from_header_map(header_map)
                                     self.access_logger.log_http(session.addr, 'CONNECT', target, 501, 'HTTP/3')

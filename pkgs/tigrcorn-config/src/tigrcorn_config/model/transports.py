@@ -26,6 +26,8 @@ class QUICConfig:
 
 @dataclass(slots=True)
 class WebTransportConfig:
+    enabled: bool = False
+    compatibility: Literal["current", "draft13"] = "current"
     max_sessions: int | None = None
     max_streams: int | None = None
     max_datagram_size: int | None = None

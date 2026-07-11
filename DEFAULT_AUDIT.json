@@ -154,6 +154,8 @@
     "websocket.max_queue": 32,
     "websocket.ping_interval": null,
     "websocket.ping_timeout": null,
+    "webtransport.compatibility": "current",
+    "webtransport.enabled": false,
     "webtransport.max_datagram_size": null,
     "webtransport.max_sessions": null,
     "webtransport.max_streams": null,

@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1068"
+number: 1068
+slug: "webtransport-pinned-http3-wire-profile"
+title: "WebTransport enablement selects one pinned HTTP/3 wire profile"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`webtransport.enabled = true` selects one complete WebTransport-over-HTTP/3 profile pinned to draft-ietf-webtrans-http3-16. TLS ALPN remains `h3`."
+supersedes:
+  - "adr:1057"
+  - "adr:1061"
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T10:25:33Z"
+    note: "Accepted pinned current WebTransport profile"
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Pinned current profile replaces draft-13-default and floating active-draft decisions"
+    at: "2026-07-11T10:25:36Z"
+references: []
+body: |-
+  ## Decision
+
+  `webtransport.enabled = true` selects one complete WebTransport-over-HTTP/3 profile pinned to draft-ietf-webtrans-http3-16. TLS ALPN remains `h3`.
+
+  The current profile advertises `SETTINGS_WT_ENABLED = 1` at code point `0x2c7cf000`, `SETTINGS_ENABLE_CONNECT_PROTOCOL = 1`, and `SETTINGS_H3_DATAGRAM = 1`. It also advertises positive QUIC `max_datagram_frame_size` and the empty `reset_stream_at` transport parameter. Session establishment uses extended CONNECT with `:protocol = webtransport-h3` and `:scheme = https`.
+
+  `webtransport.max_sessions` remains local admission governance and is not encoded as draft-13 `SETTINGS_WT_MAX_SESSIONS` in the current profile. Draft-13 support is available only through explicit compatibility selection. Tigrcorn shall not combine incompatible setting identifiers, CONNECT tokens, stream formats, or reset behavior after selecting a profile.
+
+  ## Consequences
+
+  - Required SETTINGS and QUIC capabilities are enabled atomically rather than through independent operator flags.
+  - Incomplete local or peer capability combinations fail closed before application dispatch.
+  - Existing `webtransport.*` application events and ASGI scope semantics remain stable.
+  - Wire-draft changes require a deliberate ADR/SPEC revision; "latest draft" is not a runtime policy.
+  - Draft-13 evidence remains historical and compatibility-scoped and does not certify the current profile.

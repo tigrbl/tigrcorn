@@ -18,6 +18,7 @@ QUIC_FRAME_TYPE_LABELS: dict[int, str] = {
     FRAME_ACK: 'ACK',
     FRAME_RESET_STREAM: 'RESET_STREAM',
     FRAME_STOP_SENDING: 'STOP_SENDING',
+    FRAME_RESET_STREAM_AT: 'RESET_STREAM_AT',
     FRAME_CRYPTO: 'CRYPTO',
     FRAME_NEW_TOKEN: 'NEW_TOKEN',
     FRAME_STREAM: 'STREAM',
@@ -82,6 +83,7 @@ _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE: dict[str, frozenset[int]] = {
         FRAME_PADDING,
         FRAME_PING,
         FRAME_RESET_STREAM,
+        FRAME_RESET_STREAM_AT,
         FRAME_STOP_SENDING,
         FRAME_STREAM,
         FRAME_MAX_DATA,
@@ -95,12 +97,14 @@ _ALLOWED_FRAME_TYPES_BY_PACKET_SPACE: dict[str, frozenset[int]] = {
         FRAME_CONNECTION_CLOSE,
         FRAME_CONNECTION_CLOSE_APP,
         FRAME_DATAGRAM,
+        FRAME_RESET_STREAM_AT,
     }),
     _PACKET_SPACE_APPLICATION: frozenset({
         FRAME_PADDING,
         FRAME_PING,
         FRAME_ACK,
         FRAME_RESET_STREAM,
+        FRAME_RESET_STREAM_AT,
         FRAME_STOP_SENDING,
         FRAME_CRYPTO,
         FRAME_NEW_TOKEN,
@@ -136,6 +140,8 @@ def frame_type_value(frame: QuicFrame) -> int:
         return FRAME_ACK
     if isinstance(frame, QuicResetStreamFrame):
         return FRAME_RESET_STREAM
+    if isinstance(frame, QuicResetStreamAtFrame):
+        return FRAME_RESET_STREAM_AT
     if isinstance(frame, QuicStopSendingFrame):
         return FRAME_STOP_SENDING
     if isinstance(frame, QuicCryptoFrame):

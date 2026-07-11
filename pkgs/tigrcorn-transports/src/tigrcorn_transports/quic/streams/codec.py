@@ -38,6 +38,14 @@ def encode_frame(frame: QuicFrame) -> bytes:
             + encode_quic_varint(frame.error_code)
             + encode_quic_varint(frame.final_size)
         )
+    if isinstance(frame, QuicResetStreamAtFrame):
+        return (
+            encode_quic_varint(FRAME_RESET_STREAM_AT)
+            + encode_quic_varint(frame.stream_id)
+            + encode_quic_varint(frame.error_code)
+            + encode_quic_varint(frame.final_size)
+            + encode_quic_varint(frame.reliable_size)
+        )
     if isinstance(frame, QuicStopSendingFrame):
         return encode_quic_varint(FRAME_STOP_SENDING) + encode_quic_varint(frame.stream_id) + encode_quic_varint(frame.error_code)
     if isinstance(frame, QuicCryptoFrame):
@@ -129,6 +137,19 @@ def decode_frame(data: bytes, offset: int = 0) -> tuple[QuicFrame, int]:
         error_code, offset = decode_quic_varint(data, offset)
         final_size, offset = decode_quic_varint(data, offset)
         return QuicResetStreamFrame(stream_id=stream_id, error_code=error_code, final_size=final_size), offset
+    if frame_type == FRAME_RESET_STREAM_AT:
+        stream_id, offset = decode_quic_varint(data, offset)
+        error_code, offset = decode_quic_varint(data, offset)
+        final_size, offset = decode_quic_varint(data, offset)
+        reliable_size, offset = decode_quic_varint(data, offset)
+        if reliable_size > final_size:
+            raise ProtocolError('RESET_STREAM_AT reliable size exceeds final size')
+        return QuicResetStreamAtFrame(
+            stream_id=stream_id,
+            error_code=error_code,
+            final_size=final_size,
+            reliable_size=reliable_size,
+        ), offset
     if frame_type == FRAME_STOP_SENDING:
         stream_id, offset = decode_quic_varint(data, offset)
         error_code, offset = decode_quic_varint(data, offset)
