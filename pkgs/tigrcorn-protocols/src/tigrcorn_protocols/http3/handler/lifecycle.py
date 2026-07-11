@@ -170,10 +170,10 @@ class HTTP3LifecycleMixin:
             max_datagram_frame_size=self.listener.max_datagram_size,
             reset_stream_at=(
                 'webtransport' in self.listener.enabled_protocols
-                and profile_spec(
-                    self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
-                    max_sessions=int(self.config.webtransport.max_sessions or 1),
-                ).requires_reset_stream_at
+                and any(
+                    profile_spec(name, max_sessions=int(self.config.webtransport.max_sessions or 1)).requires_reset_stream_at
+                    for name in self.config.webtransport.profiles
+                )
             ),
         )
         session.quic.configure_handshake(

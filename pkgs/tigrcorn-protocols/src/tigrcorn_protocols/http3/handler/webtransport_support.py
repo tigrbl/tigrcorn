@@ -3,13 +3,107 @@ from __future__ import annotations
 from .imports import *
 
 class HTTP3WebTransportSupportMixin:
+    def _webtransport_settings_received(self, session: HTTP3Session) -> bool:
+        stream_id = session.h3.state.remote_control_stream_id
+        if stream_id is None:
+            return False
+        state = session.h3.state.uni_streams.get(stream_id)
+        return bool(state and state.settings_received)
+
+    def _is_configured_webtransport_token(self, token: bytes) -> bool:
+        max_sessions = int(self.config.webtransport.max_sessions or 1)
+        return any(
+            profile_spec(name, max_sessions=max_sessions).connect_token == token
+            for name in self.config.webtransport.profiles
+        )
+
+    def _ensure_webtransport_negotiation(self, session: HTTP3Session):
+        if session.webtransport_negotiation_frozen:
+            return session.webtransport_negotiation
+        if not self._webtransport_settings_received(session):
+            return None
+        result = negotiate_profiles(
+            self.config.webtransport.profiles,
+            self.config.webtransport.preferred_profile or self.config.webtransport.profiles[0],
+            session.h3.state.remote_settings,
+            max_sessions=int(self.config.webtransport.max_sessions or 1),
+        )
+        session.webtransport_negotiation = result
+        session.webtransport_negotiation_frozen = True
+        if self.metrics is not None:
+            if result.selected_profile is not None:
+                self.metrics.webtransport_profile_selected(result.selected_profile)
+            else:
+                self.metrics.webtransport_negotiation_rejected_observed()
+        self.trace_webtransport(
+            'webtransport.profile.selected' if result.selected_profile else 'webtransport.profile.rejected',
+            **self._trace_session_fields(session),
+            configured_profiles=list(result.configured_profiles),
+            advertised_codepoints=[f'{value:#x}' for value in result.advertised_codepoints],
+            peer_profiles=list(result.peer_profiles),
+            mutual_profiles=list(result.mutual_profiles),
+            preferred_profile=result.preferred_profile,
+            selected_profile=result.selected_profile,
+            failure_reason=result.failure_reason,
+        )
+        if self.connection_inventory is not None:
+            self.connection_inventory.update_connection(
+                self._connection_id_for_session(session),
+                security={
+                    'webtransport_profile': result.selected_profile,
+                    'webtransport_setting': (
+                        f'{profile_spec(result.selected_profile).setting_codepoint:#x}'
+                        if result.selected_profile else None
+                    ),
+                },
+            )
+        return result
+
     async def _admit_webtransport_connect(
         self, session, stream_id, request_state, header_map, endpoint
     ) -> list[bytes]:
+        negotiation = self._ensure_webtransport_negotiation(session)
+        if negotiation is None:
+            target = self._request_target_from_header_map(header_map)
+            self.trace_webtransport(
+                'webtransport.connect.rejected',
+                **self._trace_session_fields(session),
+                failure_reason='settings-not-received',
+            )
+            self.access_logger.log_http(session.addr, 'CONNECT', target, 425, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session, stream_id, 425, [(b'content-type', b'text/plain')],
+                b'webtransport negotiation incomplete', end_stream=True,
+            )
+        if negotiation.selected_profile is None:
+            target = self._request_target_from_header_map(header_map)
+            self.trace_webtransport(
+                'webtransport.connect.rejected',
+                **self._trace_session_fields(session),
+                failure_reason=negotiation.failure_reason,
+            )
+            self.access_logger.log_http(session.addr, 'CONNECT', target, 421, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session, stream_id, 421, [(b'content-type', b'text/plain')],
+                b'no mutually supported webtransport profile', end_stream=True,
+            )
         profile = profile_spec(
-            self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
+            negotiation.selected_profile,
             max_sessions=int(self.config.webtransport.max_sessions or 1),
         )
+        if header_map.get(b':protocol') != profile.connect_token:
+            target = self._request_target_from_header_map(header_map)
+            self.trace_webtransport(
+                'webtransport.connect.rejected',
+                **self._trace_session_fields(session),
+                selected_profile=profile.profile.value,
+                failure_reason='connect-token-mismatch',
+            )
+            self.access_logger.log_http(session.addr, 'CONNECT', target, 501, 'HTTP/3')
+            return self._build_http3_response_datagrams_locked(
+                session, stream_id, 501, [(b'content-type', b'text/plain')],
+                b'webtransport profile token mismatch', end_stream=True,
+            )
         peer = session.quic.peer_transport_parameters
         missing = missing_peer_requirement(
             profile,
@@ -19,6 +113,17 @@ class HTTP3WebTransportSupportMixin:
         )
         if missing is None:
             missing = missing_request_requirement(profile, header_map)
+        if missing is None:
+            conflict = conflicting_request_profile(
+                profile,
+                header_map,
+                tuple(
+                    profile_spec(name, max_sessions=int(self.config.webtransport.max_sessions or 1))
+                    for name in self.config.webtransport.profiles
+                ),
+            )
+            if conflict is not None:
+                missing = f'header-profile:{conflict}'
         if missing is None:
             return await self._start_webtransport_stream_locked(
                 session, stream_id, request_state, header_map, endpoint

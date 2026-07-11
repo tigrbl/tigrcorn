@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from tigrcorn_protocols.http3.streams import HTTP3ConnectionCore
 from tigrcorn_protocols.http3.websocket import H3WebSocketSession
 from tigrcorn_transports.quic.connection import QuicConnection
+from tigrcorn_protocols.webtransport.negotiation import WebTransportNegotiationResult
 
 @dataclass(slots=True)
 class HTTP3Session:
@@ -35,4 +36,6 @@ class HTTP3Session:
     peer_goaway_observed: bool = False
     last_quic_packets_lost_total: int = 0
     last_quic_pto_expirations_total: int = 0
+    webtransport_negotiation: WebTransportNegotiationResult | None = None
+    webtransport_negotiation_frozen: bool = False
 

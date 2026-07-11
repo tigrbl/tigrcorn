@@ -143,6 +143,20 @@ def missing_request_requirement(
     return None
 
 
+def conflicting_request_profile(
+    selected: WebTransportProfileSpec,
+    headers: Mapping[bytes, bytes],
+    candidates: tuple[WebTransportProfileSpec, ...],
+) -> str | None:
+    normalized = {bytes(name).lower(): bytes(value).lower() for name, value in headers.items()}
+    for candidate in candidates:
+        if candidate.profile is selected.profile or not candidate.required_request_headers:
+            continue
+        if all(normalized.get(name.lower()) == expected.lower() for name, expected in candidate.required_request_headers):
+            return candidate.profile.value
+    return None
+
+
 __all__ = [
     "CURRENT_PROFILE",
     "DRAFT02_PROFILE",
@@ -158,6 +172,7 @@ __all__ = [
     "draft13_profile",
     "missing_peer_requirement",
     "missing_request_requirement",
+    "conflicting_request_profile",
     "profile_spec",
     "profile_registry",
     "resolve_profile_id",

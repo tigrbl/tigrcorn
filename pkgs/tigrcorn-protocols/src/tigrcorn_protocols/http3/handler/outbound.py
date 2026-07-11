@@ -137,11 +137,12 @@ class HTTP3OutboundMixin:
         if self.listener.websocket:
             control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
         if 'webtransport' in self.listener.enabled_protocols:
-            configured_profile = profile_spec(
-                self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
-                max_sessions=int(self.config.webtransport.max_sessions or 1),
+            control_settings.update(
+                settings_for_profiles(
+                    self.config.webtransport.profiles,
+                    max_sessions=int(self.config.webtransport.max_sessions or 1),
+                )
             )
-            control_settings.update(configured_profile.settings_dict())
         control_payload = session.h3.encode_control_stream(control_settings)
         session.server_control_stream_sent = True
         return [session.quic.send_stream_data(session.server_control_stream_id, control_payload, fin=False)]

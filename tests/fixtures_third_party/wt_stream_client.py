@@ -16,6 +16,7 @@ from tigrcorn.protocols.http3.codec import (
     SETTING_ENABLE_WEBTRANSPORT,
     SETTING_H3_DATAGRAM,
     SETTING_WT_ENABLED,
+    SETTING_WT_MAX_SESSIONS,
     STREAM_TYPE_CONTROL,
     encode_frame,
     encode_settings,
@@ -85,6 +86,10 @@ async def probe_wt_stream(
     close_connection: bool = True,
     profile: str = "ietf-current",
     draft_marker: bytes | None = b"1",
+    send_settings: bool = True,
+    connect_token: bytes | None = None,
+    profile_setting_value: int = 1,
+    extra_connect_headers: tuple[tuple[bytes, bytes], ...] = (),
 ) -> WebTransportStreamProbeResult:
     target = (host, port)
     client = QuicConnection(is_client=True, secret=DEFAULT_QUIC_SECRET, local_cid=local_cid)
@@ -141,23 +146,32 @@ async def probe_wt_stream(
             raise RuntimeError("webtransport probe did not complete QUIC-TLS handshake")
 
         control_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
-        profile_id = "draft02" if profile in {"draft02", "chromium"} else "ietf-current"
-        profile_setting = SETTING_ENABLE_WEBTRANSPORT if profile_id == "draft02" else SETTING_WT_ENABLED
-        settings = encode_settings(
-            {
-                SETTING_ENABLE_CONNECT_PROTOCOL: 1,
-                SETTING_H3_DATAGRAM: 1,
-                profile_setting: 1,
-            }
-        )
-        control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(FRAME_SETTINGS, settings)
-        send(client.send_stream_data(control_stream_id, control_payload, fin=False))
-        await asyncio.sleep(0)
+        profile_id = "draft02" if profile in {"draft02", "chromium"} else profile
+        profile_setting = {
+            "draft02": SETTING_ENABLE_WEBTRANSPORT,
+            "draft13": SETTING_WT_MAX_SESSIONS,
+            "ietf-current": SETTING_WT_ENABLED,
+        }.get(profile_id, 0xDEAD)
+        if send_settings:
+            settings = encode_settings(
+                {
+                    SETTING_ENABLE_CONNECT_PROTOCOL: 1,
+                    SETTING_H3_DATAGRAM: 1,
+                    profile_setting: profile_setting_value,
+                }
+            )
+            control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(FRAME_SETTINGS, settings)
+            send(client.send_stream_data(control_stream_id, control_payload, fin=False))
+            await asyncio.sleep(0)
 
         stream_id = 0
         connect_headers = [
             (b":method", b"CONNECT"),
-            (b":protocol", b"webtransport" if profile_id == "draft02" else b"webtransport-h3"),
+            (
+                b":protocol",
+                connect_token
+                or (b"webtransport" if profile_id in {"draft02", "draft13"} else b"webtransport-h3"),
+            ),
             (b":scheme", b"https"),
             (b":path", path),
             (b":authority", authority),
@@ -165,6 +179,7 @@ async def probe_wt_stream(
         ]
         if profile_id == "draft02" and draft_marker is not None:
             connect_headers.append((b"sec-webtransport-http3-draft02", draft_marker))
+        connect_headers.extend(extra_connect_headers)
         connect_payload = core.get_request(stream_id).encode_request(connect_headers)
         send(client.send_stream_data(stream_id, connect_payload, fin=False))
 

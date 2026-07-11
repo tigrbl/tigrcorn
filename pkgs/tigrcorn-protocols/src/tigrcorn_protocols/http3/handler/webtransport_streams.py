@@ -196,8 +196,11 @@ class HTTP3WebTransportStreamsMixin:
         header_map: dict[bytes, bytes],
         endpoint: UDPEndpoint,
     ) -> list[bytes]:
+        negotiation = session.webtransport_negotiation
+        if negotiation is None or negotiation.selected_profile is None:
+            raise ProtocolError('WebTransport profile is not selected')
         profile = profile_spec(
-            self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
+            negotiation.selected_profile,
             max_sessions=int(self.config.webtransport.max_sessions or 1),
         )
         request = self._build_request(request_state, header_map)

@@ -52,6 +52,10 @@ class Metrics:
     http3_goaway_received: int = 0
     http3_qpack_encoder_streams: int = 0
     http3_qpack_decoder_streams: int = 0
+    webtransport_profile_draft02_selected: int = 0
+    webtransport_profile_draft13_selected: int = 0
+    webtransport_profile_ietf_current_selected: int = 0
+    webtransport_negotiation_rejected: int = 0
 
     def connection_opened(self) -> None:
         self.connections_opened += 1
@@ -143,6 +147,18 @@ class Metrics:
     def http3_qpack_decoder_stream_opened(self) -> None:
         self.http3_qpack_decoder_streams += 1
 
+    def webtransport_profile_selected(self, profile: str) -> None:
+        field_name = {
+            'draft02': 'webtransport_profile_draft02_selected',
+            'draft13': 'webtransport_profile_draft13_selected',
+            'ietf-current': 'webtransport_profile_ietf_current_selected',
+        }.get(profile)
+        if field_name is not None:
+            setattr(self, field_name, int(getattr(self, field_name)) + 1)
+
+    def webtransport_negotiation_rejected_observed(self) -> None:
+        self.webtransport_negotiation_rejected += 1
+
     @property
     def uptime_seconds(self) -> float:
         return max(0.0, monotonic() - self.started_at)
@@ -187,6 +203,10 @@ class Metrics:
             'http3_goaway_received': self.http3_goaway_received,
             'http3_qpack_encoder_streams': self.http3_qpack_encoder_streams,
             'http3_qpack_decoder_streams': self.http3_qpack_decoder_streams,
+            'webtransport_profile_draft02_selected': self.webtransport_profile_draft02_selected,
+            'webtransport_profile_draft13_selected': self.webtransport_profile_draft13_selected,
+            'webtransport_profile_ietf_current_selected': self.webtransport_profile_ietf_current_selected,
+            'webtransport_negotiation_rejected': self.webtransport_negotiation_rejected,
         }
 
     def render_prometheus(self, *, prefix: str = 'tigrcorn') -> str:
