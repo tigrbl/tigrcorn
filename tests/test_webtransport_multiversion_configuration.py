@@ -32,9 +32,13 @@ def test_unknown_or_unselected_preferred_profile_fails_startup() -> None:
         )
 
 
-def test_chromium_alias_fails_until_draft02_codec_is_implemented() -> None:
-    with pytest.raises(ConfigError, match="not implemented: draft02"):
-        build_config(webtransport_profiles=["chromium"])
+def test_chromium_alias_selects_implemented_draft02_profile() -> None:
+    config = build_config(
+        webtransport_profiles=["chromium"],
+        webtransport_preferred_profile="chromium",
+    )
+    assert config.webtransport.profiles == ["draft02"]
+    assert config.webtransport.preferred_profile == "draft02"
 
 
 def test_mapping_surface_accepts_profiles_and_preference() -> None:

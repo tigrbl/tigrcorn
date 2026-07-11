@@ -283,7 +283,7 @@ class HTTP3PacketMixin:
                             protocol = header_map.get(b':protocol') if header_map is not None else None
                             if header_map is not None and protocol is not None and event.stream_id not in session.responded_streams:
                                 configured_profile = profile_spec(
-                                    self.config.webtransport.compatibility,
+                                    self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
                                     max_sessions=int(self.config.webtransport.max_sessions or 1),
                                 )
                                 if protocol == configured_profile.connect_token and 'webtransport' in self.listener.enabled_protocols:

@@ -196,6 +196,10 @@ class HTTP3WebTransportStreamsMixin:
         header_map: dict[bytes, bytes],
         endpoint: UDPEndpoint,
     ) -> list[bytes]:
+        profile = profile_spec(
+            self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
+            max_sessions=int(self.config.webtransport.max_sessions or 1),
+        )
         request = self._build_request(request_state, header_map)
         authority = header_map.get(b':authority')
         if self.config.allowed_server_names and not authority_allowed(authority, self.config.allowed_server_names):
@@ -218,9 +222,9 @@ class HTTP3WebTransportStreamsMixin:
                 b'scheduler overloaded',
                 end_stream=True,
             )
-        response_headers: list[tuple[bytes, bytes]] = []
+        response_headers: list[tuple[bytes, bytes]] = list(profile.response_headers)
         draft = next((value for name, value in request_state.headers if name.lower() == b'sec-webtransport-http3-draft'), None)
-        if draft:
+        if draft and not response_headers:
             response_headers.append((b'sec-webtransport-http3-draft', draft))
         session.webtransport_streams.add(stream_id)
         session.webtransport_stream_owners[stream_id] = stream_id
@@ -244,7 +248,13 @@ class HTTP3WebTransportStreamsMixin:
                 connection_id=self._connection_id_for_session(session),
                 kind='webtransport',
                 stream_ids=(str(stream_id),),
-                metadata={'path': request.path, 'protocol': 'http3', 'carrier': 'h3'},
+                metadata={
+                    'path': request.path,
+                    'protocol': 'http3',
+                    'carrier': 'h3',
+                    'webtransport_profile': profile.profile.value,
+                    'webtransport_setting': f'{profile.setting_codepoint:#x}',
+                },
             )
         try:
             self._webtransport_register_session(session, webtransport)
@@ -271,6 +281,8 @@ class HTTP3WebTransportStreamsMixin:
             session_id=webtransport.session_id,
             stream_id=stream_id,
             path=request.path,
+            profile=profile.profile.value,
+            setting_id=f'{profile.setting_codepoint:#x}',
         )
         await webtransport.start()
         self.access_logger.log_http(session.addr, 'CONNECT', request.path, 200, 'HTTP/3')

@@ -138,7 +138,7 @@ class HTTP3OutboundMixin:
             control_settings[SETTING_ENABLE_CONNECT_PROTOCOL] = 1
         if 'webtransport' in self.listener.enabled_protocols:
             configured_profile = profile_spec(
-                self.config.webtransport.compatibility,
+                self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
                 max_sessions=int(self.config.webtransport.max_sessions or 1),
             )
             control_settings.update(configured_profile.settings_dict())

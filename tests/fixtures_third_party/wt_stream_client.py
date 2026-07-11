@@ -13,6 +13,7 @@ from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.protocols.http3.codec import (
     FRAME_SETTINGS,
     SETTING_ENABLE_CONNECT_PROTOCOL,
+    SETTING_ENABLE_WEBTRANSPORT,
     SETTING_H3_DATAGRAM,
     SETTING_WT_ENABLED,
     STREAM_TYPE_CONTROL,
@@ -82,6 +83,8 @@ async def probe_wt_stream(
     send_unidi: bool = False,
     burst_child_streams: bool = False,
     close_connection: bool = True,
+    profile: str = "ietf-current",
+    draft_marker: bytes | None = b"1",
 ) -> WebTransportStreamProbeResult:
     target = (host, port)
     client = QuicConnection(is_client=True, secret=DEFAULT_QUIC_SECRET, local_cid=local_cid)
@@ -138,11 +141,13 @@ async def probe_wt_stream(
             raise RuntimeError("webtransport probe did not complete QUIC-TLS handshake")
 
         control_stream_id = client.streams.next_stream_id(client=True, unidirectional=True)
+        profile_id = "draft02" if profile in {"draft02", "chromium"} else "ietf-current"
+        profile_setting = SETTING_ENABLE_WEBTRANSPORT if profile_id == "draft02" else SETTING_WT_ENABLED
         settings = encode_settings(
             {
                 SETTING_ENABLE_CONNECT_PROTOCOL: 1,
                 SETTING_H3_DATAGRAM: 1,
-                SETTING_WT_ENABLED: 1,
+                profile_setting: 1,
             }
         )
         control_payload = encode_quic_varint(STREAM_TYPE_CONTROL) + encode_frame(FRAME_SETTINGS, settings)
@@ -150,16 +155,17 @@ async def probe_wt_stream(
         await asyncio.sleep(0)
 
         stream_id = 0
-        connect_payload = core.get_request(stream_id).encode_request(
-            [
-                (b":method", b"CONNECT"),
-                (b":protocol", b"webtransport-h3"),
-                (b":scheme", b"https"),
-                (b":path", path),
-                (b":authority", authority),
-                (b"origin", origin),
-            ]
-        )
+        connect_headers = [
+            (b":method", b"CONNECT"),
+            (b":protocol", b"webtransport" if profile_id == "draft02" else b"webtransport-h3"),
+            (b":scheme", b"https"),
+            (b":path", path),
+            (b":authority", authority),
+            (b"origin", origin),
+        ]
+        if profile_id == "draft02" and draft_marker is not None:
+            connect_headers.append((b"sec-webtransport-http3-draft02", draft_marker))
+        connect_payload = core.get_request(stream_id).encode_request(connect_headers)
         send(client.send_stream_data(stream_id, connect_payload, fin=False))
 
         response_state = None
@@ -173,6 +179,28 @@ async def probe_wt_stream(
                 break
         if response_state is None:
             raise RuntimeError("webtransport probe did not receive CONNECT response headers")
+
+        response_header_map = {name.lower(): value for name, value in response_state.headers}
+        response_status = int(response_header_map.get(b":status", b"0"))
+        if response_status < 200 or response_status >= 300:
+            if close_connection:
+                send(client.close(application=True))
+            return WebTransportStreamProbeResult(
+                stream_id=stream_id,
+                status=response_status,
+                headers=tuple(response_state.headers),
+                body=b"".join(response_state.body_parts),
+                received_initial_headers=response_state.received_initial_headers,
+                ended=response_state.ended,
+                remote_settings=dict(core.state.remote_settings),
+                quic_events=tuple(quic_events),
+                datagrams_sent=datagrams_sent,
+                datagrams_received=datagrams_received,
+                stream_bodies={},
+                datagram_body=b"",
+                handshake_complete=bool(client.handshake_driver is not None and client.handshake_driver.complete),
+                connect_response_received=True,
+            )
 
         requested_payloads = child_payloads or (payload,)
         expected_child_streams = tuple(4 + (index * 4) for index in range(len(requested_payloads)))

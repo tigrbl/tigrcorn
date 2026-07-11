@@ -34,7 +34,9 @@ def test_aliases_resolve_without_becoming_registry_entries() -> None:
     assert "chromium" not in profile_registry()
 
 
-def test_draft02_is_registered_but_not_yet_advertisable() -> None:
+def test_draft02_is_registered_and_requires_the_chromium_marker() -> None:
     spec = profile_registry()["draft02"]
     assert spec.connect_token == b"webtransport"
-    assert spec.implemented is False
+    assert spec.implemented is True
+    assert spec.required_request_headers == ((b"sec-webtransport-http3-draft02", b"1"),)
+    assert spec.response_headers == ((b"sec-webtransport-http3-draft", b"draft02"),)

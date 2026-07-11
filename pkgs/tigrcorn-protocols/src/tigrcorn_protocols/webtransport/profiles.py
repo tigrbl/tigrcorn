@@ -32,6 +32,8 @@ class WebTransportProfileSpec:
     setting_codepoint: int
     setting_semantics: WebTransportSettingSemantics
     codec_family: str
+    required_request_headers: tuple[tuple[bytes, bytes], ...] = ()
+    response_headers: tuple[tuple[bytes, bytes], ...] = ()
     implemented: bool = True
 
     def settings_dict(self) -> dict[int, int]:
@@ -64,7 +66,8 @@ DRAFT02_PROFILE = WebTransportProfileSpec(
     setting_codepoint=SETTING_ENABLE_WEBTRANSPORT,
     setting_semantics=WebTransportSettingSemantics.BOOLEAN_ENABLEMENT,
     codec_family="draft02",
-    implemented=False,
+    required_request_headers=((b"sec-webtransport-http3-draft02", b"1"),),
+    response_headers=((b"sec-webtransport-http3-draft", b"draft02"),),
 )
 
 
@@ -129,6 +132,17 @@ def missing_peer_requirement(
     return None
 
 
+def missing_request_requirement(
+    spec: WebTransportProfileSpec,
+    headers: Mapping[bytes, bytes],
+) -> str | None:
+    normalized = {bytes(name).lower(): bytes(value).lower() for name, value in headers.items()}
+    for name, expected in spec.required_request_headers:
+        if normalized.get(name.lower()) != expected.lower():
+            return f"header:{name.decode('ascii')}"
+    return None
+
+
 __all__ = [
     "CURRENT_PROFILE",
     "DRAFT02_PROFILE",
@@ -143,6 +157,7 @@ __all__ = [
     "WebTransportSettingSemantics",
     "draft13_profile",
     "missing_peer_requirement",
+    "missing_request_requirement",
     "profile_spec",
     "profile_registry",
     "resolve_profile_id",

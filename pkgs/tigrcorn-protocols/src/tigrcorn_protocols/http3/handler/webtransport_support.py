@@ -7,7 +7,7 @@ class HTTP3WebTransportSupportMixin:
         self, session, stream_id, request_state, header_map, endpoint
     ) -> list[bytes]:
         profile = profile_spec(
-            self.config.webtransport.compatibility,
+            self.config.webtransport.preferred_profile or self.config.webtransport.compatibility,
             max_sessions=int(self.config.webtransport.max_sessions or 1),
         )
         peer = session.quic.peer_transport_parameters
@@ -17,6 +17,8 @@ class HTTP3WebTransportSupportMixin:
             max_datagram_frame_size=(peer.max_datagram_frame_size if peer else None),
             reset_stream_at=bool(peer and peer.reset_stream_at),
         )
+        if missing is None:
+            missing = missing_request_requirement(profile, header_map)
         if missing is None:
             return await self._start_webtransport_stream_locked(
                 session, stream_id, request_state, header_map, endpoint
