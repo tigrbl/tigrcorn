@@ -1,0 +1,30 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1007"
+number: 1007
+slug: "webtransport-multiversion-profile-configuration"
+title: "WebTransport multi-version profile configuration"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "When enabled, configuration shall provide a non-empty profile set and a preferred profile contained in that set. Concrete IDs and aliases shall resolve deterministically and deduplicate. `chromium` resolves to pinned `draft02`; `current` resolves to pinned `ietf-current`. CLI, environment, mapping, and Python APIs shall be equivalent."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:40Z"
+    note: "Accepted configuration contract"
+    status: "accepted"
+references: []
+body: |-
+  # Multi-version profile configuration
+
+  When enabled, configuration shall provide a non-empty profile set and a preferred profile contained in that set. Concrete IDs and aliases shall resolve deterministically and deduplicate. `chromium` resolves to pinned `draft02`; `current` resolves to pinned `ietf-current`. CLI, environment, mapping, and Python APIs shall be equivalent.
+
+  Defines: `feat:webtransport-profile-configuration` and `feat:webtransport-profile-alias-resolution`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"
+  - "adr:1069"
+  - "adr:1070"

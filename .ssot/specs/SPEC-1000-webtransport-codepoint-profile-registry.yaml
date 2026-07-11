@@ -1,0 +1,28 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1000"
+number: 1000
+slug: "webtransport-codepoint-profile-registry"
+title: "WebTransport codepoint-keyed profile registry"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The registry shall enforce unique profile IDs and setting codepoints. Each descriptor shall declare setting semantics, CONNECT contract, wire codec family, required H3 settings, required QUIC parameters, and lifecycle/error mappings. Incomplete or unverified descriptors shall not be advertised."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:32Z"
+    note: "Accepted profile registry contract"
+    status: "accepted"
+references: []
+body: |-
+  # WebTransport profile registry
+
+  The registry shall enforce unique profile IDs and setting codepoints. Each descriptor shall declare setting semantics, CONNECT contract, wire codec family, required H3 settings, required QUIC parameters, and lifecycle/error mappings. Incomplete or unverified descriptors shall not be advertised.
+
+  Defines: `feat:webtransport-profile-registry`, `feat:webtransport-profile-startup-validation`, and all profile adapters.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"

@@ -32,12 +32,18 @@ from tigrcorn_protocols.webtransport.wire import (
 )
 from tigrcorn_protocols.webtransport.profiles import (
     CURRENT_PROFILE,
+    DRAFT02_PROFILE,
+    PROFILE_ALIASES,
+    SETTING_ENABLE_WEBTRANSPORT,
     SETTING_WT_ENABLED,
     WebTransportProfile,
     WebTransportProfileSpec,
+    WebTransportSettingSemantics,
     draft13_profile,
     missing_peer_requirement,
     profile_spec,
+    profile_registry,
+    resolve_profile_id,
 )
 
 __all__ = [
@@ -57,12 +63,18 @@ __all__ = [
     "SETTING_WEBTRANSPORT_MAX_SESSIONS",
     "SETTING_WT_MAX_SESSIONS",
     "SETTING_WT_ENABLED",
+    "SETTING_ENABLE_WEBTRANSPORT",
     "CURRENT_PROFILE",
+    "DRAFT02_PROFILE",
+    "PROFILE_ALIASES",
     "WebTransportProfile",
     "WebTransportProfileSpec",
+    "WebTransportSettingSemantics",
     "draft13_profile",
     "missing_peer_requirement",
     "profile_spec",
+    "profile_registry",
+    "resolve_profile_id",
     "StreamDirection",
     "WebTransportBudgetPolicy",
     "WebTransportGovernanceError",

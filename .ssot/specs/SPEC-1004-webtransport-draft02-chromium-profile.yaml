@@ -1,0 +1,29 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1004"
+number: 1004
+slug: "webtransport-draft02-chromium-profile"
+title: "Chromium-compatible WebTransport draft-02 profile"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The draft-02 profile uses setting `0x2b603742`, boolean value `1`, CONNECT token `webtransport`, Chromium's draft-02 request marker, draft-02 stream/datagram formats, and QUIC DATAGRAM support. It does not require `reset_stream_at`. Independent Chromium evidence is required for compatibility claims."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:35Z"
+    note: "Accepted Chromium draft-02 contract"
+    status: "accepted"
+references: []
+body: |-
+  # Chromium draft-02 profile
+
+  The draft-02 profile uses setting `0x2b603742`, boolean value `1`, CONNECT token `webtransport`, Chromium's draft-02 request marker, draft-02 stream/datagram formats, and QUIC DATAGRAM support. It does not require `reset_stream_at`. Independent Chromium evidence is required for compatibility claims.
+
+  Defines: `feat:webtransport-draft02-profile` and `feat:webtransport-draft02-chromium-interop`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"
+  - "adr:1070"

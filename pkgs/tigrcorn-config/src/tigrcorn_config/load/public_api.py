@@ -64,6 +64,8 @@ def build_config(
     webtransport_max_datagram_size: int | None = None,
     webtransport_origins: list[str] | None = None,
     webtransport_path: str | None = None,
+    webtransport_profiles: list[str] | None = None,
+    webtransport_preferred_profile: str | None = None,
     pipe_mode: str = "rawframed",
     config: Mapping[str, Any] | None = None,
     default_headers: list[str] | list[tuple[str, str]] | None = None,
@@ -101,6 +103,8 @@ def build_config(
         webtransport_max_datagram_size=webtransport_max_datagram_size,
         webtransport_origins=webtransport_origins,
         webtransport_path=webtransport_path,
+        webtransport_profiles=webtransport_profiles,
+        webtransport_preferred_profile=webtransport_preferred_profile,
     )
     effective_websocket_enabled = True if websocket is None and direct_runtime_customized else bool(websocket)
     effective_h2c_enabled = _effective_h2c_enabled(enable_h2c, requested_http_versions)
@@ -158,6 +162,8 @@ def build_config(
         webtransport_max_datagram_size=webtransport_max_datagram_size,
         webtransport_origins=webtransport_origins,
         webtransport_path=webtransport_path,
+        webtransport_profiles=webtransport_profiles,
+        webtransport_preferred_profile=webtransport_preferred_profile,
     )
     _apply_listener_override_if_needed(
         overrides,
@@ -186,6 +192,8 @@ def build_config(
         webtransport_max_datagram_size=webtransport_max_datagram_size,
         webtransport_origins=webtransport_origins,
         webtransport_path=webtransport_path,
+        webtransport_profiles=webtransport_profiles,
+        webtransport_preferred_profile=webtransport_preferred_profile,
     )
     _apply_optional_http_overrides(
         overrides,
@@ -229,6 +237,8 @@ def _direct_runtime_customized(**values: Any) -> bool:
         or values["webtransport_max_datagram_size"] is not None
         or values["webtransport_origins"] is not None
         or values["webtransport_path"] is not None
+        or values["webtransport_profiles"] is not None
+        or values["webtransport_preferred_profile"] is not None
     )
 
 

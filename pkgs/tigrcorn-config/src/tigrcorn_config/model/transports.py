@@ -28,6 +28,8 @@ class QUICConfig:
 class WebTransportConfig:
     enabled: bool = False
     compatibility: Literal["current", "draft13"] = "current"
+    profiles: list[str] = field(default_factory=list)
+    preferred_profile: str | None = None
     max_sessions: int | None = None
     max_streams: int | None = None
     max_datagram_size: int | None = None

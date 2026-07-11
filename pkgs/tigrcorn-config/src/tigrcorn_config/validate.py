@@ -11,6 +11,7 @@ from tigrcorn_observability.metrics import parse_statsd_host
 from tigrcorn_observability.tracing import validate_otel_endpoint
 from tigrcorn_core.errors import ConfigError
 from tigrcorn_config.profiles import list_blessed_profiles
+from tigrcorn_protocols.webtransport.profiles import profile_registry
 
 _ALLOWED_PROTOCOLS = {"http1", "http2", "http3", "quic", "websocket", "webtransport", "rawframed", "custom"}
 _ALLOWED_WORKER_CLASSES = {"local", "process", *SUPPORTED_WORKER_CLASS_ALIASES}
@@ -26,6 +27,17 @@ def validate_config(config: ServerConfig) -> None:
     if config.webtransport.compatibility not in {'current', 'draft13'}:
         raise ConfigError("webtransport.compatibility must be 'current' or 'draft13'")
     normalize_config(config)
+    registry = profile_registry()
+    if config.webtransport.enabled and not config.webtransport.profiles:
+        raise ConfigError('webtransport.profiles must not be empty when WebTransport is enabled')
+    unknown_profiles = [name for name in config.webtransport.profiles if name not in registry]
+    if unknown_profiles:
+        raise ConfigError(f"unsupported WebTransport profiles: {', '.join(unknown_profiles)}")
+    if config.webtransport.preferred_profile not in config.webtransport.profiles:
+        raise ConfigError('webtransport.preferred_profile must be included in webtransport.profiles')
+    unavailable = [name for name in config.webtransport.profiles if not registry[name].implemented]
+    if unavailable:
+        raise ConfigError(f"WebTransport profiles are not implemented: {', '.join(unavailable)}")
     if config.app.profile is not None and config.app.profile not in set(list_blessed_profiles()):
         raise ConfigError(f"unsupported app.profile: {config.app.profile!r}")
     if config.app.interface not in {"auto", "tigr-asgi-contract", "asgi3"}:

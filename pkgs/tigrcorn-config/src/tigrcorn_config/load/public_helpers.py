@@ -58,6 +58,8 @@ def apply_webtransport_overrides(
     webtransport_max_datagram_size: int | None,
     webtransport_origins: list[str] | None,
     webtransport_path: str | None,
+    webtransport_profiles: list[str] | None,
+    webtransport_preferred_profile: str | None,
 ) -> None:
     if any(
         value is not None
@@ -67,6 +69,8 @@ def apply_webtransport_overrides(
             webtransport_max_datagram_size,
             webtransport_origins,
             webtransport_path,
+            webtransport_profiles,
+            webtransport_preferred_profile,
         )
     ):
         overrides["webtransport"] = {
@@ -75,6 +79,8 @@ def apply_webtransport_overrides(
             "max_datagram_size": webtransport_max_datagram_size,
             "origins": webtransport_origins or [],
             "path": webtransport_path,
+            "profiles": webtransport_profiles or [],
+            "preferred_profile": webtransport_preferred_profile,
         }
 
 
@@ -96,6 +102,8 @@ def apply_listener_override_if_needed(overrides: dict[str, Any], **values: Any) 
         or values["webtransport_max_datagram_size"] is not None
         or values["webtransport_origins"] is not None
         or values["webtransport_path"] is not None
+        or values["webtransport_profiles"] is not None
+        or values["webtransport_preferred_profile"] is not None
     )
     if not listener_customized:
         return

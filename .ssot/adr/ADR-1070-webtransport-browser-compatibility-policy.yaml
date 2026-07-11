@@ -1,0 +1,29 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1070"
+number: 1070
+slug: "webtransport-browser-compatibility-policy"
+title: "WebTransport browser compatibility uses pinned independently verified aliases"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Browser compatibility is an explicit pinned alias, not a synonym for the current IETF draft. The `chromium` alias initially resolves to the verified draft-02 profile. Alias changes require an explicit compatibility revision and independent Chromium evidence. Same-stack tests cannot certify Chromium compatibility."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted browser compatibility policy"
+    at: "2026-07-11T13:41:30Z"
+references: []
+body: |-
+  ## Decision
+
+  Browser compatibility is an explicit pinned alias, not a synonym for the current IETF draft. The `chromium` alias initially resolves to the verified draft-02 profile. Alias changes require an explicit compatibility revision and independent Chromium evidence. Same-stack tests cannot certify Chromium compatibility.
+
+  ## Governed features
+
+  - `feat:webtransport-profile-alias-resolution`
+  - `feat:webtransport-draft02-profile`
+  - `feat:webtransport-draft02-chromium-interop`

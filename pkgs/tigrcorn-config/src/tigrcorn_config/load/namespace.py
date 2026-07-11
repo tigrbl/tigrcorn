@@ -196,6 +196,8 @@ _NAMESPACE_MAPPING: dict[str, tuple[str, str]] = {
     "webtransport_max_streams": ("webtransport", "max_streams"),
     "webtransport_max_datagram_size": ("webtransport", "max_datagram_size"),
     "webtransport_path": ("webtransport", "path"),
+    "webtransport_profiles": ("webtransport", "profiles"),
+    "webtransport_preferred_profile": ("webtransport", "preferred_profile"),
     "log_level": ("logging", "level"),
     "access_log": ("logging", "access_log"),
     "access_log_file": ("logging", "access_log_file"),

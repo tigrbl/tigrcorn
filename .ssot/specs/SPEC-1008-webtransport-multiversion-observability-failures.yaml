@@ -1,0 +1,29 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1008"
+number: 1008
+slug: "webtransport-multiversion-observability-failures"
+title: "WebTransport multi-version observability and failure contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Structured events shall record configured, advertised, peer, mutual, preferred, and selected profiles and codepoints. Inventory shall expose the immutable selected profile. Metrics shall use bounded profile and reason labels. Failures shall distinguish no overlap, missing capability, malformed setting, token mismatch, premature traffic, and buffering exhaustion. Rejected negotiation shall not create an application session."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:42Z"
+    note: "Accepted observability and failure contract"
+    status: "accepted"
+references: []
+body: |-
+  # Multi-version observability and failures
+
+  Structured events shall record configured, advertised, peer, mutual, preferred, and selected profiles and codepoints. Inventory shall expose the immutable selected profile. Metrics shall use bounded profile and reason labels. Failures shall distinguish no overlap, missing capability, malformed setting, token mismatch, premature traffic, and buffering exhaustion. Rejected negotiation shall not create an application session.
+
+  Defines: observability, inventory, metrics, and no-mutual-profile failure features.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1000"
+  - "adr:1069"

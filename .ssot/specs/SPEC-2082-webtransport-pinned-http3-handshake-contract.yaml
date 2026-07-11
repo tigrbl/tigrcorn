@@ -4,7 +4,7 @@ id: "spc:2082"
 number: 2082
 slug: "webtransport-pinned-http3-handshake-contract"
 title: "Pinned WebTransport-over-HTTP/3 enablement and handshake contract"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
@@ -12,16 +12,21 @@ summary: "Tigrcorn's current profile is pinned to draft-ietf-webtrans-http3-16. 
 supersedes:
   - "spc:2069"
   - "spc:2075"
-superseded_by: []
+superseded_by:
+  - "spc:1003"
 status_notes:
   -
     at: "2026-07-11T10:25:35Z"
     note: "Accepted pinned draft-16 handshake contract"
     status: "accepted"
   -
-    status: "accepted"
-    note: "Pinned draft-16 handshake contract replaces draft-13 and floating draft contracts"
     at: "2026-07-11T10:25:37Z"
+    note: "Pinned draft-16 handshake contract replaces draft-13 and floating draft contracts"
+    status: "accepted"
+  -
+    status: "superseded"
+    note: "Controlled multi-version contract replaces the single-profile handshake contract"
+    at: "2026-07-11T13:42:13Z"
 references: []
 body: |-
   # Pinned WebTransport-over-HTTP/3 enablement and handshake contract

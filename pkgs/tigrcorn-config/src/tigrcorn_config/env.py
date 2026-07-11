@@ -81,6 +81,8 @@ _FLAT_ENV_MAP = {
     "WEBTRANSPORT_MAX_DATAGRAM_SIZE": ("webtransport", "max_datagram_size"),
     "WEBTRANSPORT_ORIGIN": ("webtransport", "origins"),
     "WEBTRANSPORT_PATH": ("webtransport", "path"),
+    "WEBTRANSPORT_PROFILES": ("webtransport", "profiles"),
+    "WEBTRANSPORT_PREFERRED_PROFILE": ("webtransport", "preferred_profile"),
     "TIMEOUT_KEEP_ALIVE": ("http", "keep_alive_timeout"),
     "READ_TIMEOUT": ("http", "read_timeout"),
     "WRITE_TIMEOUT": ("http", "write_timeout"),

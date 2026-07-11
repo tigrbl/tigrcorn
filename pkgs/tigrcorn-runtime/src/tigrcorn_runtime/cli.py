@@ -157,6 +157,8 @@ def build_parser() -> argparse.ArgumentParser:
     protocol_group.add_argument("--webtransport-max-datagram-size", type=int, default=None, help="Maximum WebTransport datagram payload size")
     protocol_group.add_argument("--webtransport-origin", action="append", default=None, help="Allowed WebTransport Origin value; repeat or use comma-separated values")
     protocol_group.add_argument("--webtransport-path", default=None, help="WebTransport CONNECT path prefix")
+    protocol_group.add_argument("--webtransport-profile", dest="webtransport_profiles", action="append", default=None, help=argparse.SUPPRESS)
+    protocol_group.add_argument("--webtransport-preferred-profile", default=None, help=argparse.SUPPRESS)
     protocol_group.add_argument("--pipe-mode", choices=["rawframed", "stream"], default=None)
     protocol_group.add_argument("--quic-secret", default=None, help=argparse.SUPPRESS)
     return parser

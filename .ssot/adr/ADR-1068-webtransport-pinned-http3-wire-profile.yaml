@@ -4,7 +4,7 @@ id: "adr:1068"
 number: 1068
 slug: "webtransport-pinned-http3-wire-profile"
 title: "WebTransport enablement selects one pinned HTTP/3 wire profile"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
@@ -12,16 +12,21 @@ summary: "`webtransport.enabled = true` selects one complete WebTransport-over-H
 supersedes:
   - "adr:1057"
   - "adr:1061"
-superseded_by: []
+superseded_by:
+  - "adr:1069"
 status_notes:
   -
     at: "2026-07-11T10:25:33Z"
     note: "Accepted pinned current WebTransport profile"
     status: "accepted"
   -
-    status: "accepted"
-    note: "Pinned current profile replaces draft-13-default and floating active-draft decisions"
     at: "2026-07-11T10:25:36Z"
+    note: "Pinned current profile replaces draft-13-default and floating active-draft decisions"
+    status: "accepted"
+  -
+    status: "superseded"
+    note: "Controlled multi-version negotiation replaces single-profile listener selection"
+    at: "2026-07-11T13:42:11Z"
 references: []
 body: |-
   ## Decision

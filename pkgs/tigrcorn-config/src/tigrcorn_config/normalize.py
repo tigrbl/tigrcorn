@@ -92,6 +92,30 @@ def normalize_config(config: ServerConfig) -> None:
         config.webtransport.max_datagram_size = int(config.webtransport.max_datagram_size)
     config.webtransport.enabled = bool(config.webtransport.enabled)
     config.webtransport.compatibility = str(config.webtransport.compatibility or 'current').strip().lower()
+    aliases = {'current': 'ietf-current', 'chromium': 'draft02'}
+    configured_profiles = [
+        aliases.get(str(value).strip().lower(), str(value).strip().lower())
+        for value in _ensure_list(config.webtransport.profiles)
+        if str(value).strip()
+    ]
+    if (
+        config.webtransport.compatibility == 'draft13'
+        and configured_profiles == ['ietf-current']
+        and config.webtransport.preferred_profile in {None, 'ietf-current', 'current'}
+    ):
+        configured_profiles = ['draft13']
+        config.webtransport.preferred_profile = 'draft13'
+    if not configured_profiles:
+        configured_profiles = ['draft13' if config.webtransport.compatibility == 'draft13' else 'ietf-current']
+    config.webtransport.profiles = list(dict.fromkeys(configured_profiles))
+    preferred = str(config.webtransport.preferred_profile or '').strip().lower()
+    if preferred:
+        preferred = aliases.get(preferred, preferred)
+    else:
+        preferred = config.webtransport.profiles[0]
+    config.webtransport.preferred_profile = preferred
+    if preferred in {'ietf-current', 'draft13'}:
+        config.webtransport.compatibility = 'draft13' if preferred == 'draft13' else 'current'
     config.webtransport.origins = [str(v).strip() for v in _ensure_list(config.webtransport.origins) if str(v).strip()]
     if config.webtransport.path is not None:
         path = str(config.webtransport.path).strip()
