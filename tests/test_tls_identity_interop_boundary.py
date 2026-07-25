@@ -54,7 +54,7 @@ from tigrcorn.security.tls13.handshake import (
     ServerHello,
     generate_self_signed_certificate,
 )
-from tigrcorn.security.tls13.messages import decode_handshake_messages
+from tigrcorn.security.tls13.messages import decode_handshake_message, decode_handshake_messages
 from tigrcorn.security.x509.path import CertificatePurpose, CertificateValidationPolicy, RevocationFetchPolicy, RevocationMode
 
 
@@ -125,6 +125,21 @@ def test_tls13_state_transition_completes_bidirectional_handshake() -> None:
     assert server.complete is False
     server.receive(client_finished)
     assert server.complete is True
+
+
+def test_tls13_server_transcript_preserves_exact_client_hello_wire_bytes() -> None:
+    cert_pem, key_pem = generate_self_signed_certificate('server.example')
+    client = QuicTlsHandshakeDriver(is_client=True, server_name='server.example', trusted_certificates=[cert_pem])
+    server = QuicTlsHandshakeDriver(is_client=False, server_name='server.example', certificate_pem=cert_pem, private_key_pem=key_pem)
+    encoded = client.initiate()
+    message, consumed = decode_handshake_message(encoded)
+    assert consumed == len(encoded)
+    wire_marker = b'wire-preservation-marker'
+
+    server._handle_client_hello(message, raw_message=encoded + wire_marker)
+
+    assert server._last_client_hello_bytes == encoded + wire_marker
+    assert server._transcript.as_bytes().startswith(encoded + wire_marker)
 
 
 def test_tls13_state_transition_supports_p384_certificate() -> None:

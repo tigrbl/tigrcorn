@@ -12,6 +12,7 @@ from .certificates import *
 
 class _QuicTlsServerHandshakeMixin:
     def _handle_client_hello(self, message: ClientHello, *, raw_message: bytes | None = None) -> bytes:
+        encoded_client_hello = raw_message if raw_message is not None else message.encode()
         extension_types = [int(extension.extension_type) for extension in message.extensions]
         if ExtensionType.PRE_SHARED_KEY in extension_types and extension_types[-1] != ExtensionType.PRE_SHARED_KEY:
             _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'pre_shared_key must be the final ClientHello extension')
@@ -149,7 +150,7 @@ class _QuicTlsServerHandshakeMixin:
                 self._selected_psk_index = index
                 self._selected_psk_ticket = ticket
                 self._early_secret = early_secret
-                self._client_early_secret = self._key_schedule.client_early_traffic_secret(early_secret, message.encode())
+                self._client_early_secret = self._key_schedule.client_early_traffic_secret(early_secret, encoded_client_hello)
                 if (
                     self.transport_mode == 'quic'
                     and client_requested_early_data
@@ -169,7 +170,7 @@ class _QuicTlsServerHandshakeMixin:
             self.early_data_accepted = False
 
         self._last_client_hello = message
-        self._last_client_hello_bytes = message.encode()
+        self._last_client_hello_bytes = encoded_client_hello
         self._transcript.append(self._last_client_hello_bytes)
 
         assert selected_group is not None
