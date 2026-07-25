@@ -8,6 +8,7 @@ class HTTP3OutboundMixin:
         if transport is not None and transport.is_closing():
             return
         if self._can_send_now(session, raw):
+            session.quic.confirm_datagram_sent(raw)
             endpoint.send(raw, addr)
             session.bytes_sent += len(raw)
             if self.metrics is not None:
@@ -168,6 +169,11 @@ class HTTP3OutboundMixin:
         return outbound
 
     def _queue_session_outbound_locked(self, session: HTTP3Session, outbound: list[bytes], endpoint: UDPEndpoint) -> None:
+        # QuicConnection records packets when they are encoded. Refund the
+        # complete batch before admitting it to the wire so later packets do
+        # not consume congestion credit ahead of earlier CRYPTO segments.
+        for raw in outbound:
+            session.quic.defer_datagram(raw)
         for raw in outbound:
             self._queue_or_send(session, raw, endpoint, session.addr)
         self._flush_pending_outbound(session, endpoint)

@@ -390,9 +390,5 @@ class HTTP3PacketMixin:
             self._update_h3_connection(session)
             outbound.extend(session.quic.take_handshake_datagrams())
             outbound.extend(session.quic.drain_scheduled_datagrams())
-            for raw in outbound:
-                self._queue_or_send(session, raw, endpoint, packet.addr)
-            self._flush_pending_outbound(session, endpoint)
-            if session.addr in self.sessions and self.sessions.get(session.addr) is session:
-                self._arm_session_timer(session, endpoint)
+            self._queue_session_outbound_locked(session, outbound, endpoint)
 

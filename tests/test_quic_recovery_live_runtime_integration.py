@@ -56,6 +56,45 @@ class QuicRecoveryLiveRuntimeIntegrationTests(unittest.TestCase):
 
 
 class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
+    def test_handler_admits_preencoded_batch_in_wire_order(self):
+        async def app(scope, receive, send):
+            raise AssertionError('app should not be invoked')
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(kind='udp', host='127.0.0.1', port=1, protocols=['http3'], quic_secret=b'shared'),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            def __init__(self):
+                self.sent = []
+                self.local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                self.sent.append((data, addr))
+
+        endpoint = Endpoint()
+        session = HTTP3Session(
+            addr=('127.0.0.1', 50000),
+            quic=QuicConnection(is_client=False, secret=b'shared', local_cid=b'srv1srv1', remote_cid=b'cli1cli1'),
+            address_validated=True,
+        )
+        session.quic.address_validated = True
+        outbound = [
+            session.quic.send_stream_data(1, bytes([index]) * 1000)
+            for index in range(4)
+        ]
+        session.quic.recovery.congestion_window = 2500
+        session.quic.recovery.pacing_budget = 2500
+
+        handler._queue_session_outbound_locked(session, outbound, endpoint)
+
+        sent = [raw for raw, _addr in endpoint.sent]
+        self.assertEqual(sent, outbound[:2])
+        self.assertEqual(session.pending_outbound, outbound[2:])
+
     def test_handler_defers_and_flushes_recovery_blocked_datagrams(self):
         async def app(scope, receive, send):
             raise AssertionError('app should not be invoked')
