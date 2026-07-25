@@ -148,6 +148,37 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
 
 
 class RemainingWorkQuicRoutingTests(unittest.IsolatedAsyncioTestCase):
+    async def test_http3_session_uses_listener_datagram_size(self):
+        async def app(scope, receive, send):
+            return None
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(
+                kind='udp',
+                host='127.0.0.1',
+                port=1,
+                protocols=['http3'],
+                quic_secret=b'shared',
+                max_datagram_size=4096,
+            ),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                return None
+
+        client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli-size')
+        await handler.handle_packet(
+            UDPPacket(data=client.build_initial(), addr=('127.0.0.1', 50000)),
+            Endpoint(),
+        )
+        session = next(iter(handler.sessions.values()))
+        self.assertEqual(session.quic.max_datagram_size, 4096)
     async def test_http3_session_survives_address_rebinding_via_connection_id(self):
         async def app(scope, receive, send):
             event = await receive()

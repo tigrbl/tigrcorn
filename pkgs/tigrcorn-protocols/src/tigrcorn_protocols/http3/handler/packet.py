@@ -73,6 +73,7 @@ class HTTP3PacketMixin:
                             local_cid=dcid or b'tigrcorn',
                             remote_cid=scid,
                             require_retry=self.listener.quic_require_retry,
+                            max_datagram_size=self.listener.max_datagram_size,
                         ),
                     )
                     self._assign_session_runtime_id(session)
@@ -100,6 +101,7 @@ class HTTP3PacketMixin:
                                 local_cid=candidate_packet.destination_connection_id,
                                 remote_cid=candidate_packet.destination_connection_id,
                                 require_retry=self.listener.quic_require_retry,
+                                max_datagram_size=self.listener.max_datagram_size,
                             ),
                         )
                         self._assign_session_runtime_id(probe)
