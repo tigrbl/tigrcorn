@@ -10,6 +10,18 @@ from tigrcorn.transports.quic.streams import FRAME_PING
 
 @unittest.skipUnless(importlib.util.find_spec('cryptography') is not None, 'cryptography package is not installed')
 class QuicTransportRuntimeCompletionTests(unittest.TestCase):
+    def test_crypto_flight_is_segmented_without_ip_fragmentation(self):
+        connection = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            remote_cid=b'cli1cli1',
+            max_datagram_size=1350,
+        )
+        first = connection.send_crypto_data(b'x' * 4096, packet_space=PACKET_SPACE_INITIAL)
+        datagrams = [first, *connection.take_handshake_datagrams()]
+        self.assertGreater(len(datagrams), 1)
+        self.assertTrue(all(len(datagram) <= 1350 for datagram in datagrams))
     def _issue_0rtt_ticket(self) -> tuple[bytes, bytes, object]:
         cert_pem, key_pem = generate_self_signed_certificate('server.example')
         client = QuicTlsHandshakeDriver(

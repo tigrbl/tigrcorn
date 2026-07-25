@@ -263,13 +263,37 @@ class QuicConnectionSendMixin:
         self._maybe_queue_max_stream_credit(stream_id)
         return packet
 
-    def send_crypto_data(self, data: bytes, *, offset: int | None = None, packet_space: str = PACKET_SPACE_INITIAL) -> bytes:
+    def _encode_crypto_packets(
+        self,
+        data: bytes,
+        *,
+        offset: int | None = None,
+        packet_space: str = PACKET_SPACE_INITIAL,
+    ) -> list[tuple[str, bytes]]:
         state = self._space_state(packet_space)
         frame_offset = state.crypto_send_offset if offset is None else offset
         state.crypto_send_offset = max(state.crypto_send_offset, frame_offset + len(data))
-        frame = QuicCryptoFrame(offset=frame_offset, data=data)
         self.state = 'establishing'
-        return self.send_frames([frame], packet_space=packet_space)
+        payload_limit = max(1, self.max_datagram_size - 128)
+        chunks = [data[index:index + payload_limit] for index in range(0, len(data), payload_limit)] or [b'']
+        return [
+            (
+                packet_space,
+                self.send_frames(
+                    [QuicCryptoFrame(offset=frame_offset + index * payload_limit, data=chunk)],
+                    packet_space=packet_space,
+                ),
+            )
+            for index, chunk in enumerate(chunks)
+        ]
+
+    def send_crypto_data(self, data: bytes, *, offset: int | None = None, packet_space: str = PACKET_SPACE_INITIAL) -> bytes:
+        datagrams = self._pack_encoded_packets(
+            self._encode_crypto_packets(data, offset=offset, packet_space=packet_space)
+        )
+        first, *rest = datagrams
+        self._pending_handshake_datagrams.extend(rest)
+        return first
 
     def _queue_handshake_payload(self, payload: bytes) -> bytes:
         if self.handshake_driver is None:
@@ -277,7 +301,11 @@ class QuicConnectionSendMixin:
         flights = self.handshake_driver.outbound_flights(payload)
         if not flights:
             return b''
-        encoded_packets = [(flight.packet_space, self.send_crypto_data(flight.data, packet_space=flight.packet_space)) for flight in flights]
+        encoded_packets = [
+            packet
+            for flight in flights
+            for packet in self._encode_crypto_packets(flight.data, packet_space=flight.packet_space)
+        ]
         datagrams = self._pack_encoded_packets(encoded_packets)
         first, *rest = datagrams
         self._pending_handshake_datagrams.extend(rest)
