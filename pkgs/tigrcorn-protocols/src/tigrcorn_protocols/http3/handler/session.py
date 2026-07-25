@@ -31,6 +31,7 @@ class HTTP3Session:
     webtransport_streams: set[int] = field(default_factory=set)
     webtransport_stream_owners: dict[int, int] = field(default_factory=dict)
     webtransport_stream_prefaces: dict[int, bytearray] = field(default_factory=dict)
+    webtransport_server_prefaced_streams: set[int] = field(default_factory=set)
     stream_work_leases: dict[int, object] = field(default_factory=dict)
     early_data_accounted: bool = False
     peer_goaway_observed: bool = False

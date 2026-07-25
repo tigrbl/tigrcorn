@@ -68,6 +68,18 @@ class WebTransportStreamProbeResult:
         }
 
 
+def _decode_webtransport_bidi_response(data: bytes, *, session_id: int) -> bytes:
+    signal, offset = decode_quic_varint(data, 0)
+    if signal != 0x41:
+        raise RuntimeError(f"missing WebTransport bidi response prefix: {signal:#x}")
+    owner_session_id, offset = decode_quic_varint(data, offset)
+    if owner_session_id != session_id:
+        raise RuntimeError(
+            f"WebTransport bidi response owner mismatch: {owner_session_id} != {session_id}"
+        )
+    return data[offset:]
+
+
 async def probe_wt_stream(
     host: str,
     port: int,
@@ -257,7 +269,12 @@ async def probe_wt_stream(
                 if streams_complete and datagram_complete:
                     break
 
-            stream_bodies = {stream_id_: bytes(body) for stream_id_, body in stream_body_parts.items()}
+            stream_bodies = {
+                stream_id_: _decode_webtransport_bidi_response(
+                    bytes(body), session_id=stream_id
+                )
+                for stream_id_, body in stream_body_parts.items()
+            }
             first_child_fin = stream_fins.get(first_child_stream_id, False)
         else:
             for child_stream_id, child_data in zip(expected_child_streams, requested_payloads):
@@ -273,7 +290,9 @@ async def probe_wt_stream(
                             child_fin = child_fin or event.fin
                     if child_body or child_fin:
                         break
-                stream_bodies[child_stream_id] = bytes(child_body)
+                stream_bodies[child_stream_id] = _decode_webtransport_bidi_response(
+                    bytes(child_body), session_id=stream_id
+                )
                 if child_stream_id == first_child_stream_id:
                     first_child_fin = child_fin
 

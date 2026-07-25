@@ -174,11 +174,23 @@ class HTTP3WebTransportStreamsMixin:
         if owner_stream_id == stream_id:
             outbound = self._build_http3_data_datagrams_locked(session, stream_id, data, end_stream=end_stream)
         else:
-            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, data, fin=end_stream)]
+            wire_data = data
+            if (
+                self._stream_is_client_initiated_bidi(stream_id)
+                and stream_id not in session.webtransport_server_prefaced_streams
+            ):
+                wire_data = (
+                    encode_quic_varint(self._WEBTRANSPORT_BIDI_STREAM_SIGNAL)
+                    + encode_quic_varint(owner_stream_id)
+                    + wire_data
+                )
+                session.webtransport_server_prefaced_streams.add(stream_id)
+            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, wire_data, fin=end_stream)]
         if end_stream:
             session.webtransport_streams.discard(stream_id)
             session.webtransport_stream_owners.pop(stream_id, None)
             session.webtransport_stream_prefaces.pop(stream_id, None)
+            session.webtransport_server_prefaced_streams.discard(stream_id)
             if owner_stream_id == stream_id:
                 webtransport = session.webtransport_sessions.pop(stream_id, None)
                 if webtransport is not None:

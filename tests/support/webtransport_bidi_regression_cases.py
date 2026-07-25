@@ -21,7 +21,10 @@ from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
 from tigrcorn.utils.bytes import encode_quic_varint
-from tests.fixtures_third_party.wt_stream_client import probe_wt_stream
+from tests.fixtures_third_party.wt_stream_client import (
+    _decode_webtransport_bidi_response,
+    probe_wt_stream,
+)
 from tests.support.webtransport_bidi import (
     _assert_no_bad_trace_events,
     _assert_session_lifecycle_trace,
@@ -228,7 +231,10 @@ class WebTransportBidiRegressionCases:
                     if child_data or child_fin:
                         break
 
-                self.assertEqual(bytes(child_data), b"echo:child-payload")
+                self.assertEqual(
+                    _decode_webtransport_bidi_response(bytes(child_data), session_id=0),
+                    b"echo:child-payload",
+                )
                 self.assertTrue(child_fin)
             finally:
                 sock.close()

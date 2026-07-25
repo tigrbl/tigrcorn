@@ -202,6 +202,7 @@ class HTTP3WebTransportSupportMixin:
         session.webtransport_streams.clear()
         session.webtransport_stream_owners.clear()
         session.webtransport_stream_prefaces.clear()
+        session.webtransport_server_prefaced_streams.clear()
         for session_id in session_ids:
             if self.connection_inventory is not None:
                 self.connection_inventory.close_session(session_id, reason='abort-session')
@@ -233,6 +234,7 @@ class HTTP3WebTransportSupportMixin:
         session.webtransport_streams.discard(stream_id)
         session.webtransport_stream_owners.pop(stream_id, None)
         session.webtransport_stream_prefaces.pop(stream_id, None)
+        session.webtransport_server_prefaced_streams.discard(stream_id)
         self._release_stream_work_lease(session, stream_id)
         session.h3.abandon_stream(stream_id)
         if webtransport is not None:
