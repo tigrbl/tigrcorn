@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1072"
+number: 1072
+slug: "tls13-wire-transcript-and-certificate-signature-selection"
+title: "TLS 1.3 preserves wire transcripts and selects certificate-compatible signatures"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn preserves the exact received TLS 1.3 handshake bytes in the transcript and chooses CertificateVerify signature schemes from the intersection of the peer offer, the end-entity certificate key, and Tigrcorn support."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern exact ClientHello transcript use and P-256/P-384 CertificateVerify selection."
+    at: "2026-07-25T21:10:16Z"
+references: []
+body: |-
+  # Decision
+  
+  Tigrcorn preserves the exact received TLS 1.3 handshake bytes in the transcript and chooses CertificateVerify signature schemes from the intersection of the peer offer, the end-entity certificate key, and Tigrcorn support.
+  
+  For ECDSA certificates, a P-256 leaf selects `ecdsa_secp256r1_sha256` (`0x0403`) and a P-384 leaf selects `ecdsa_secp384r1_sha384` (`0x0503`). Tigrcorn fails closed when the peer offers no compatible scheme, when the selected scheme does not match the leaf key, or when signature verification fails.
+  
+  Certificate-chain signature algorithms, CertificateVerify signature schemes, and ephemeral ECDHE key-share groups are separate protocol decisions. A P-384 identity certificate does not require a P-384 key share.
+  
+  # Consequences
+  
+  - The server hashes the raw ClientHello handshake message rather than a re-encoded model.
+  - PSK binder and early-secret processing use the correct wire transcript.
+  - Supported-scheme metadata and negative interoperability tests remain explicit.
+  - QUIC certification includes a live P-384 certificate flight because larger certificate material exercises CRYPTO packetization.
+  
+  # Standards
+  
+  RFC 8446 Sections 4.2.3 and 4.4.3, and RFC 9001 Section 4.

@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2033"
 number: 2033
@@ -12,18 +12,18 @@ summary: "Tigrcorn shall expose TLS and security metadata through contract metad
 supersedes: []
 superseded_by: []
 status_notes: []
-references:
-  - "ADR-1020"
+references: []
 body: |-
   # TLS and security metadata
-  
+
   Tigrcorn shall expose TLS and security metadata through contract metadata and ASGI/3 extensions.
-  
+
   Requirements:
-  
+
   - Native scopes expose available TLS version, cipher, ALPN, SNI, certificate, and verification metadata.
   - Sensitive metadata is redacted or omitted according to documented policy.
   - ASGI/3 compatibility exposes TLS metadata through extension keys.
   - Tests cover metadata presence, absence, and redaction behavior.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1072"

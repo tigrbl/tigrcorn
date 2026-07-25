@@ -1,0 +1,37 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2083"
+number: 2083
+slug: "quic-datagram-budget-crypto-packetization-fifo-admission"
+title: "QUIC datagram budget, CRYPTO packetization, and FIFO admission"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Configured-size enforcement and final encoded-length checks are local conformance evidence. PMTU discovery, DPLPMTUD, and independent peer interoperability require separate evidence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # QUIC datagram budget and ordered emission contract
+
+  ## Requirements
+
+  1. The HTTP/3 listener shall propagate its configured maximum UDP payload to each `QuicConnection` and per-path recovery context.
+  2. The configured value shall be described as a ceiling, not as discovered PMTU evidence.
+  3. Every emitted UDP datagram shall be no larger than the effective send budget.
+  4. CRYPTO frames shall use contiguous, non-overlapping offsets and retain their original encryption level during initial transmission and retransmission.
+  5. Multi-datagram flights shall preserve wire order across receive batches and deferred-send queues.
+  6. Congestion, pacing, and anti-amplification admission shall stop at the first blocked datagram. Later datagrams shall not bypass it.
+  7. Send and recovery accounting shall be confirmed only after socket emission is accepted.
+  8. ACK processing may release congestion or pacing capacity without changing FIFO order.
+  9. Tests shall cover exact-fit, one-byte-over, minimum-size, loss, reorder, duplicate ACK, multi-packet flight, and PTO cases.
+  10. QUIC packet budget, QUIC DATAGRAM frame payload budget, and WebTransport application payload budget shall remain separately represented.
+
+  ## Evidence boundary
+
+  Configured-size enforcement and final encoded-length checks are local conformance evidence. PMTU discovery, DPLPMTUD, and independent peer interoperability require separate evidence.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1071"

@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1071"
+number: 1071
+slug: "quic-datagram-budget-and-fifo-admission"
+title: "QUIC datagram budgets and outbound admission preserve wire order"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn treats QUIC datagram budgeting, CRYPTO-flight packetization, outbound admission, and send confirmation as one ordered transport contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the implemented listener budget propagation, CRYPTO flight segmentation, FIFO admission, and send confirmation behavior."
+    at: "2026-07-25T21:10:09Z"
+references: []
+body: |-
+  # Decision
+  
+  Tigrcorn treats QUIC datagram budgeting, CRYPTO-flight packetization, outbound admission, and send confirmation as one ordered transport contract.
+  
+  The configured listener `max_datagram_size` is a configured UDP-payload ceiling, not proof of a discovered path MTU. Each `QuicConnection` and its recovery state receive that ceiling. The effective send budget must ultimately be the minimum applicable configured ceiling, peer `max_udp_payload_size`, and validated path maximum UDP payload size.
+  
+  TLS handshake bytes are carried in contiguous, non-overlapping CRYPTO ranges at their original encryption level. A flight may produce multiple QUIC packets and UDP datagrams, but every emitted datagram must fit the effective budget.
+  
+  Outbound datagrams remain FIFO across receive batches, congestion or pacing blocks, anti-amplification blocks, ACK processing, loss detection, and PTO. A blocked earlier datagram cannot be bypassed by later traffic. Recovery accounting is confirmed only when a datagram is actually emitted.
+  
+  # Consequences
+  
+  - HTTP/3 listeners propagate the configured ceiling into every new, retried, resumed, or migrated QUIC connection.
+  - QUIC packetization validates final encoded datagram length; a fixed overhead estimate is not the normative contract.
+  - QUIC UDP-payload limits, QUIC DATAGRAM frame payload limits, and WebTransport application-datagram limits remain separate concepts.
+  - Certification distinguishes configured-size enforcement from PMTU discovery or DPLPMTUD support.
+  - ACK-driven capacity release may resume emission but must not reorder queued datagrams.
+  
+  # Standards
+  
+  RFC 9000 Sections 13 and 14, RFC 9001 Section 4, and RFC 9002.

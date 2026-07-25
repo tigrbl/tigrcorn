@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2031"
 number: 2031
@@ -38,3 +38,4 @@ adr_ids:
   - "adr:1011"
   - "adr:1050"
   - "adr:1055"
+  - "adr:1071"

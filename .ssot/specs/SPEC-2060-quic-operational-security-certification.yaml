@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2060"
 number: 2060
@@ -15,9 +15,9 @@ status_notes: []
 references: []
 body: |-
   Tigrcorn QUIC certification shall include operational security behavior beyond happy-path HTTP/3 and WebTransport traffic.
-  
+
   Requirements:
-  
+
   - Certification shall cover anti-amplification limits, Retry token acceptance, Retry token rejection, and spoofed address handling.
   - Certification shall cover path validation, NAT rebinding, disabled migration, preferred-address handling, and connection ID rotation.
   - Certification shall cover congestion control, loss recovery, deferred send behavior, and close behavior after transport-integrity failure.
@@ -29,3 +29,4 @@ adr_ids:
   - "adr:1024"
   - "adr:1040"
   - "adr:1047"
+  - "adr:1071"
