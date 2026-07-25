@@ -178,6 +178,9 @@ class HTTP3WebTransportSupportMixin:
     def _stream_is_client_initiated_bidi(self, stream_id: int) -> bool:
         return (stream_id & 0x03) == 0x00
 
+    def _stream_is_server_initiated_bidi(self, stream_id: int) -> bool:
+        return (stream_id & 0x03) == 0x01
+
     def _stream_is_client_initiated_unidi(self, stream_id: int) -> bool:
         return (stream_id & 0x03) == 0x02
 

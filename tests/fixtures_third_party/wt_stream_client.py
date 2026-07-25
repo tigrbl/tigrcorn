@@ -69,15 +69,8 @@ class WebTransportStreamProbeResult:
 
 
 def _decode_webtransport_bidi_response(data: bytes, *, session_id: int) -> bytes:
-    signal, offset = decode_quic_varint(data, 0)
-    if signal != 0x41:
-        raise RuntimeError(f"missing WebTransport bidi response prefix: {signal:#x}")
-    owner_session_id, offset = decode_quic_varint(data, offset)
-    if owner_session_id != session_id:
-        raise RuntimeError(
-            f"WebTransport bidi response owner mismatch: {owner_session_id} != {session_id}"
-        )
-    return data[offset:]
+    del session_id
+    return data
 
 
 async def probe_wt_stream(

@@ -176,7 +176,7 @@ class HTTP3WebTransportStreamsMixin:
         else:
             wire_data = data
             if (
-                self._stream_is_client_initiated_bidi(stream_id)
+                self._stream_is_server_initiated_bidi(stream_id)
                 and stream_id not in session.webtransport_server_prefaced_streams
             ):
                 wire_data = (
