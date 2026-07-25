@@ -197,7 +197,10 @@ class _HTTP3WebTransportSession:
         if self.closed:
             return
         event_stream_id = str(self.stream_id if stream_id is None else stream_id)
-        if data:
+        # QUIC may deliver FIN in a zero-length STREAM frame after the final
+        # data frame. Surface that terminal event so applications can finish
+        # buffering a message previously delivered with `more=True`.
+        if data or end_stream:
             event = {
                 "type": "webtransport.stream.receive",
                 "session_id": self.session_id,
