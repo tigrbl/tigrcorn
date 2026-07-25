@@ -36,7 +36,7 @@ class HTTP3OutboundMixin:
         if transport is not None and transport.is_closing():
             return
         remaining: list[bytes] = []
-        for raw in session.pending_outbound:
+        for index, raw in enumerate(session.pending_outbound):
             if self._can_send_now(session, raw):
                 session.quic.confirm_datagram_sent(raw)
                 endpoint.send(raw, session.addr)
@@ -44,7 +44,8 @@ class HTTP3OutboundMixin:
                 if self.metrics is not None:
                     self.metrics.quic_datagram_sent(len(raw))
             else:
-                remaining.append(raw)
+                remaining.extend(session.pending_outbound[index:])
+                break
         session.pending_outbound = remaining
 
     def _can_send_now(self, session: HTTP3Session, raw: bytes) -> bool:
@@ -174,8 +175,14 @@ class HTTP3OutboundMixin:
         # not consume congestion credit ahead of earlier CRYPTO segments.
         for raw in outbound:
             session.quic.defer_datagram(raw)
+        blocked = False
         for raw in outbound:
+            if blocked:
+                session.pending_outbound.append(raw)
+                continue
+            pending_before = len(session.pending_outbound)
             self._queue_or_send(session, raw, endpoint, session.addr)
+            blocked = len(session.pending_outbound) > pending_before
         self._flush_pending_outbound(session, endpoint)
         if session.addr in self.sessions and self.sessions.get(session.addr) is session:
             self._arm_session_timer(session, endpoint)

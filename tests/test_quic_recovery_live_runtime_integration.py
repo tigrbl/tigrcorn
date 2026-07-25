@@ -83,8 +83,8 @@ class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
         )
         session.quic.address_validated = True
         outbound = [
-            session.quic.send_stream_data(1, bytes([index]) * 1000)
-            for index in range(4)
+            session.quic.send_stream_data(1, bytes([index]) * size)
+            for index, size in enumerate((1000, 1000, 1000, 10))
         ]
         session.quic.recovery.congestion_window = 2500
         session.quic.recovery.pacing_budget = 2500
