@@ -95,6 +95,14 @@ class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
         self.assertEqual(sent, outbound[:2])
         self.assertEqual(session.pending_outbound, outbound[2:])
 
+        followup = session.quic.send_stream_data(1, b'followup')
+        session.quic.recovery.congestion_window = 10_000
+        session.quic.recovery.pacing_budget = 10_000
+        handler._queue_session_outbound_locked(session, [followup], endpoint)
+
+        sent = [raw for raw, _addr in endpoint.sent]
+        self.assertEqual(sent, outbound + [followup])
+        self.assertEqual(session.pending_outbound, [])
     def test_handler_defers_and_flushes_recovery_blocked_datagrams(self):
         async def app(scope, receive, send):
             raise AssertionError('app should not be invoked')
