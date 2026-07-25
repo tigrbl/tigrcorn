@@ -4,11 +4,14 @@ import asyncio
 import contextlib
 import json
 import tempfile
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
 from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
 from cryptography.x509 import ocsp
 
 from tests.fixtures_pkg.interop_ocsp_fixtures import (
@@ -41,6 +44,7 @@ from tigrcorn.security.tls import (
     build_server_ssl_context,
     verify_certificate_chain,
 )
+from tigrcorn.security.tls13 import SIG_ECDSA_SECP384R1_SHA384
 from tigrcorn.security.tls13.handshake import (
     Certificate,
     CertificateVerify,
@@ -122,6 +126,65 @@ def test_tls13_state_transition_completes_bidirectional_handshake() -> None:
     server.receive(client_finished)
     assert server.complete is True
 
+
+def test_tls13_state_transition_supports_p384_certificate() -> None:
+    key = ec.generate_private_key(ec.SECP384R1())
+    subject = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, 'server.example')])
+    now = datetime.now(timezone.utc)
+    certificate = (
+        x509.CertificateBuilder()
+        .subject_name(subject)
+        .issuer_name(subject)
+        .public_key(key.public_key())
+        .serial_number(x509.random_serial_number())
+        .not_valid_before(now - timedelta(minutes=1))
+        .not_valid_after(now + timedelta(days=1))
+        .add_extension(x509.SubjectAlternativeName([x509.DNSName('server.example')]), critical=False)
+        .add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
+        .add_extension(x509.SubjectKeyIdentifier.from_public_key(key.public_key()), critical=False)
+        .add_extension(x509.AuthorityKeyIdentifier.from_issuer_public_key(key.public_key()), critical=False)
+        .add_extension(
+            x509.KeyUsage(
+                digital_signature=True,
+                key_encipherment=False,
+                content_commitment=False,
+                data_encipherment=False,
+                key_agreement=False,
+                key_cert_sign=False,
+                crl_sign=False,
+                encipher_only=False,
+                decipher_only=False,
+            ),
+            critical=True,
+        )
+        .add_extension(x509.ExtendedKeyUsage([ExtendedKeyUsageOID.SERVER_AUTH]), critical=False)
+        .sign(key, hashes.SHA384())
+    )
+    cert_pem = certificate.public_bytes(serialization.Encoding.PEM)
+    key_pem = key.private_bytes(
+        serialization.Encoding.PEM,
+        serialization.PrivateFormat.PKCS8,
+        serialization.NoEncryption(),
+    )
+    client = QuicTlsHandshakeDriver(
+        is_client=True,
+        server_name='server.example',
+        trusted_certificates=[cert_pem],
+    )
+    server = QuicTlsHandshakeDriver(
+        is_client=False,
+        server_name='server.example',
+        certificate_pem=cert_pem,
+        private_key_pem=key_pem,
+    )
+    server_flight = server.receive(client.initiate())
+    messages = decode_handshake_messages(server_flight)
+    certificate_verify = next(message for message in messages if isinstance(message, CertificateVerify))
+    assert certificate_verify.algorithm == SIG_ECDSA_SECP384R1_SHA384
+    client_finished = client.receive(server_flight)
+    server.receive(client_finished)
+    assert client.complete is True
+    assert server.complete is True
 
 def test_tls13_shutdown_emits_close_notify_once() -> None:
     async def scenario() -> None:

@@ -10,7 +10,10 @@ def _signature_algorithms_for_public_key(public_key: object) -> tuple[int, ...]:
     if isinstance(public_key, rsa.RSAPublicKey):
         return (SIG_RSA_PSS_RSAE_SHA256, SIG_RSA_PSS_PSS_SHA256)
     if isinstance(public_key, ec.EllipticCurvePublicKey):
-        return (SIG_ECDSA_SECP256R1_SHA256,)
+        if isinstance(public_key.curve, ec.SECP256R1):
+            return (SIG_ECDSA_SECP256R1_SHA256,)
+        if isinstance(public_key.curve, ec.SECP384R1):
+            return (SIG_ECDSA_SECP384R1_SHA384,)
     return ()
 
 
@@ -38,9 +41,13 @@ def _sign_with_scheme(private_key: object, scheme: int, payload: bytes) -> bytes
             hashes.SHA256(),
         )
     if scheme == SIG_ECDSA_SECP256R1_SHA256:
-        if not isinstance(private_key, ec.EllipticCurvePrivateKey):
-            _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'certificate key is not compatible with ECDSA')
+        if not isinstance(private_key, ec.EllipticCurvePrivateKey) or not isinstance(private_key.curve, ec.SECP256R1):
+            _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'certificate key is not compatible with ECDSA P-256')
         return private_key.sign(payload, ec.ECDSA(hashes.SHA256()))
+    if scheme == SIG_ECDSA_SECP384R1_SHA384:
+        if not isinstance(private_key, ec.EllipticCurvePrivateKey) or not isinstance(private_key.curve, ec.SECP384R1):
+            _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'certificate key is not compatible with ECDSA P-384')
+        return private_key.sign(payload, ec.ECDSA(hashes.SHA384()))
     _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'unsupported certificate verify signature algorithm')
 
 
@@ -63,9 +70,14 @@ def _verify_with_scheme(public_key: object, scheme: int, signature: bytes, paylo
             )
             return
         if scheme == SIG_ECDSA_SECP256R1_SHA256:
-            if not isinstance(public_key, ec.EllipticCurvePublicKey):
-                _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'peer certificate key is not compatible with ECDSA')
+            if not isinstance(public_key, ec.EllipticCurvePublicKey) or not isinstance(public_key.curve, ec.SECP256R1):
+                _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'peer certificate key is not compatible with ECDSA P-256')
             public_key.verify(signature, payload, ec.ECDSA(hashes.SHA256()))
+            return
+        if scheme == SIG_ECDSA_SECP384R1_SHA384:
+            if not isinstance(public_key, ec.EllipticCurvePublicKey) or not isinstance(public_key.curve, ec.SECP384R1):
+                _raise_tls(AlertDescription.ILLEGAL_PARAMETER, 'peer certificate key is not compatible with ECDSA P-384')
+            public_key.verify(signature, payload, ec.ECDSA(hashes.SHA384()))
             return
     except TlsAlertError:
         raise
