@@ -44,7 +44,8 @@ from tigrcorn.security.tls import (
     build_server_ssl_context,
     verify_certificate_chain,
 )
-from tigrcorn.security.tls13 import SIG_ECDSA_SECP384R1_SHA384
+from tigrcorn.security.tls13 import SIG_ECDSA_SECP256R1_SHA256, SIG_ECDSA_SECP384R1_SHA384
+from tigrcorn_security.tls13.handshake.signatures import _select_certificate_verify_scheme
 from tigrcorn.security.tls13.handshake import (
     Certificate,
     CertificateVerify,
@@ -141,6 +142,11 @@ def test_tls13_server_transcript_preserves_exact_client_hello_wire_bytes() -> No
     assert server._last_client_hello_bytes == encoded + wire_marker
     assert server._transcript.as_bytes().startswith(encoded + wire_marker)
 
+
+def test_tls13_p384_certificate_rejects_incompatible_p256_only_offer() -> None:
+    public_key = ec.generate_private_key(ec.SECP384R1()).public_key()
+    with pytest.raises(Exception, match='no compatible certificate signature algorithm'):
+        _select_certificate_verify_scheme((SIG_ECDSA_SECP256R1_SHA256,), public_key)
 
 def test_tls13_state_transition_supports_p384_certificate() -> None:
     key = ec.generate_private_key(ec.SECP384R1())

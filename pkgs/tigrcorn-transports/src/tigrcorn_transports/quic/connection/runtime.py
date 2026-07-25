@@ -101,10 +101,17 @@ class QuicConnectionRuntimeMixin:
             nonlocal long_header_group
             if not long_header_group:
                 return
-            datagrams.extend(coalesce_packets(long_header_group, max_datagram_size=self.max_datagram_size))
+            datagrams.extend(
+                coalesce_packets(
+                    long_header_group,
+                    max_datagram_size=self._effective_send_datagram_size(),
+                )
+            )
             long_header_group = []
 
         for packet_space, raw in encoded_packets:
+            if len(raw) > self._effective_send_datagram_size():
+                raise ProtocolError('encoded QUIC packet exceeds effective UDP payload ceiling')
             if packet_space == PACKET_SPACE_APPLICATION:
                 flush_long_group()
                 datagrams.append(raw)
@@ -294,6 +301,8 @@ class QuicConnectionRuntimeMixin:
 
     def can_transmit_datagram(self, datagram: bytes, *, now: float | None = None) -> bool:
         at = time.monotonic() if now is None else now
+        if len(datagram) > self._effective_send_datagram_size():
+            return False
         if not self.can_send_amplification_limited(len(datagram)):
             return False
         refs = self._packet_refs_for_datagram(datagram)

@@ -170,6 +170,7 @@ class _PathRuntime:
     key: Any
     addr: tuple[str, int] | None
     recovery: QuicLossRecovery
+    max_udp_payload_size: int
 
 
 @dataclass(slots=True)

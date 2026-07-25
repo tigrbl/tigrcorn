@@ -1,6 +1,7 @@
 import importlib.util
 import unittest
 
+from tigrcorn.errors import ProtocolError
 from tigrcorn.transports.quic import QuicConnection, decode_packet
 from tigrcorn.transports.quic.connection import PACKET_SPACE_INITIAL
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
@@ -22,6 +23,59 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
         datagrams = [first, *connection.take_handshake_datagrams()]
         self.assertGreater(len(datagrams), 1)
         self.assertTrue(all(len(datagram) <= 1350 for datagram in datagrams))
+        self.assertIn(1350, [len(datagram) for datagram in datagrams])
+
+        receiver = QuicConnection(
+            is_client=True,
+            secret=b'shared',
+            local_cid=b'cli1cli1',
+            remote_cid=b'srv1srv1',
+            max_datagram_size=1350,
+        )
+        crypto_frames = [
+            event.detail
+            for datagram in datagrams
+            for event in receiver.receive_datagram(datagram)
+            if event.kind == 'crypto'
+        ]
+        self.assertEqual(b''.join(frame.data for frame in crypto_frames), b'x' * 4096)
+        expected_offset = 0
+        for frame in crypto_frames:
+            self.assertEqual(frame.offset, expected_offset)
+            expected_offset += len(frame.data)
+
+    def test_configured_peer_and_path_datagram_ceilings_are_independent(self):
+        connection = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            remote_cid=b'cli1cli1',
+            max_datagram_size=1500,
+        )
+        self.assertEqual(connection.configured_max_datagram_size, 1500)
+        self.assertEqual(connection._effective_send_datagram_size(), 1500)
+
+        connection.peer_max_udp_payload_size = 1300
+        connection.max_datagram_size = 1300
+        connection._path_state(connection._active_path_key).max_udp_payload_size = 1250
+        self.assertEqual(connection._effective_send_datagram_size(), 1250)
+
+        first = connection.send_crypto_data(b'y' * 3000, packet_space=PACKET_SPACE_INITIAL)
+        datagrams = [first, *connection.take_handshake_datagrams()]
+        self.assertTrue(all(len(datagram) <= 1250 for datagram in datagrams))
+    def test_oversize_application_packet_fails_before_send_state_changes(self):
+        connection = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            remote_cid=b'cli1cli1',
+            max_datagram_size=1200,
+        )
+        with self.assertRaisesRegex(ProtocolError, 'effective UDP payload ceiling'):
+            connection.send_stream_data(1, b'z' * 1200)
+        self.assertEqual(connection.packet_numbers.application_send, 0)
+        self.assertEqual(connection.recovery.bytes_in_flight, 0)
+
     def _issue_0rtt_ticket(self) -> tuple[bytes, bytes, object]:
         cert_pem, key_pem = generate_self_signed_certificate('server.example')
         client = QuicTlsHandshakeDriver(

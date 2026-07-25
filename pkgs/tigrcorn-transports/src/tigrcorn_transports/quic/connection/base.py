@@ -35,11 +35,29 @@ class QuicConnectionBaseMixin:
         state = self._path_states.get(path_key)
         if state is None:
             addr = None if path_key == _DEFAULT_PATH_KEY else path_key
-            state = _PathRuntime(key=path_key, addr=addr, recovery=QuicLossRecovery(max_datagram_size=self.max_datagram_size))
+            path_budget = min(
+                self.configured_max_datagram_size,
+                self.peer_max_udp_payload_size or self.configured_max_datagram_size,
+            )
+            state = _PathRuntime(
+                key=path_key,
+                addr=addr,
+                recovery=QuicLossRecovery(max_datagram_size=path_budget),
+                max_udp_payload_size=path_budget,
+            )
             if self.peer_transport_parameters is not None:
                 state.recovery.rtt.max_ack_delay = self.recovery.rtt.max_ack_delay
             self._path_states[path_key] = state
         return state
+
+    def _effective_send_datagram_size(self, path_key: Any | None = None) -> int:
+        selected = self._active_path_key if path_key is None else path_key
+        path = self._path_state(selected)
+        return min(
+            self.configured_max_datagram_size,
+            self.peer_max_udp_payload_size or self.configured_max_datagram_size,
+            path.max_udp_payload_size,
+        )
 
     def _activate_path(self, path_key: Any) -> _PathRuntime:
         state = self._path_state(path_key)
@@ -283,6 +301,12 @@ class QuicConnectionBaseMixin:
             if self._peer_initial_source_connection_id is not None and peer.initial_source_connection_id != self._peer_initial_source_connection_id:
                 raise ProtocolError('client initial_source_connection_id transport parameter mismatch')
         self.peer_transport_parameters = peer
+        self.peer_max_udp_payload_size = max(int(peer.max_udp_payload_size), _MIN_INITIAL_DATAGRAM_SIZE)
+        self.max_datagram_size = min(self.configured_max_datagram_size, self.peer_max_udp_payload_size)
+        for path in self._path_states.values():
+            path.max_udp_payload_size = min(path.max_udp_payload_size, self.max_datagram_size)
+            path.recovery.max_datagram_size = path.max_udp_payload_size
+            path.recovery.minimum_congestion_window = 2 * path.max_udp_payload_size
         self.local_transport_parameters = self.handshake_driver.transport_parameters
         ack_delay_exponent = peer.ack_delay_exponent if peer.ack_delay_exponent >= 0 else 3
         max_ack_delay = max(peer.max_ack_delay, 0) / 1000.0

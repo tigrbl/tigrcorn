@@ -3,6 +3,60 @@ from __future__ import annotations
 from .imports import *
 
 class QuicConnectionSendMixin:
+    def _packet_wire_size(
+        self,
+        *,
+        packet_space: str,
+        frames: list[object],
+        token: bytes | None = None,
+    ) -> int:
+        destination_connection_id = self.remote_cid or self.local_cid
+        plaintext_length = sum(len(encode_frame(frame)) for frame in frames)
+        protected_payload_length = plaintext_length + 16
+        packet_number = self._space_state(packet_space).send.to_bytes(4, 'big')
+        if packet_space == PACKET_SPACE_APPLICATION:
+            packet = QuicShortHeaderPacket(
+                destination_connection_id=destination_connection_id,
+                packet_number=packet_number,
+                payload=b'\x00' * protected_payload_length,
+                key_phase=bool(self._send_key_phase),
+            )
+            return len(packet.header_bytes()) + protected_payload_length
+        packet_type = {
+            PACKET_SPACE_INITIAL: QuicLongHeaderType.INITIAL,
+            PACKET_SPACE_HANDSHAKE: QuicLongHeaderType.HANDSHAKE,
+            PACKET_SPACE_ZERO_RTT: QuicLongHeaderType.ZERO_RTT,
+        }[packet_space]
+        packet = QuicLongHeaderPacket(
+            packet_type=packet_type,
+            version=self.version,
+            destination_connection_id=destination_connection_id,
+            source_connection_id=self.local_cid,
+            packet_number=packet_number,
+            payload=b'\x00' * protected_payload_length,
+            token=(self._retry_token if token is None else token) if packet_space == PACKET_SPACE_INITIAL else b'',
+        )
+        wire_size = len(packet.header_bytes()) + protected_payload_length
+        if packet_space == PACKET_SPACE_INITIAL and self.is_client:
+            wire_size = max(wire_size, _MIN_INITIAL_DATAGRAM_SIZE)
+        return wire_size
+
+    def _crypto_chunk_size(self, *, packet_space: str, offset: int, remaining: bytes) -> int:
+        budget = self._effective_send_datagram_size()
+        low, high = 0, min(len(remaining), budget)
+        while low < high:
+            candidate = (low + high + 1) // 2
+            size = self._packet_wire_size(
+                packet_space=packet_space,
+                frames=[QuicCryptoFrame(offset=offset, data=remaining[:candidate])],
+            )
+            if size <= budget:
+                low = candidate
+            else:
+                high = candidate - 1
+        if remaining and low == 0:
+            raise ProtocolError('effective UDP payload ceiling cannot carry a QUIC CRYPTO frame')
+        return low
     def _record_packet_send(
         self,
         *,
@@ -93,6 +147,8 @@ class QuicConnectionSendMixin:
             pn_offset=packet.pn_offset,
             keys=keys,
         )
+        if len(raw) > self._effective_send_datagram_size():
+            raise ProtocolError('encoded QUIC packet exceeds effective UDP payload ceiling')
         state.send += 1
         self._sync_packet_number_snapshot()
         self._record_packet_send(
@@ -158,6 +214,8 @@ class QuicConnectionSendMixin:
             pn_offset=packet.pn_offset,
             keys=self._send_1rtt_keys,
         )
+        if len(raw) > self._effective_send_datagram_size():
+            raise ProtocolError('encoded QUIC packet exceeds effective UDP payload ceiling')
         state.send += 1
         self._sync_packet_number_snapshot()
         self._record_packet_send(
@@ -244,7 +302,10 @@ class QuicConnectionSendMixin:
         return packet
 
     def send_datagram_frame(self, data: bytes) -> bytes:
-        if len(data) > self.max_datagram_size:
+        if self._packet_wire_size(
+            packet_space=PACKET_SPACE_APPLICATION,
+            frames=[QuicDatagramFrame(data=bytes(data))],
+        ) > self._effective_send_datagram_size():
             raise ProtocolError('QUIC DATAGRAM payload exceeds max_datagram_size')
         self.state = 'established'
         return self._encode_short([QuicDatagramFrame(data=bytes(data))])
@@ -272,20 +333,29 @@ class QuicConnectionSendMixin:
     ) -> list[tuple[str, bytes]]:
         state = self._space_state(packet_space)
         frame_offset = state.crypto_send_offset if offset is None else offset
-        state.crypto_send_offset = max(state.crypto_send_offset, frame_offset + len(data))
         self.state = 'establishing'
-        payload_limit = max(1, self.max_datagram_size - 128)
-        chunks = [data[index:index + payload_limit] for index in range(0, len(data), payload_limit)] or [b'']
-        return [
-            (
-                packet_space,
-                self.send_frames(
-                    [QuicCryptoFrame(offset=frame_offset + index * payload_limit, data=chunk)],
-                    packet_space=packet_space,
-                ),
+        encoded: list[tuple[str, bytes]] = []
+        cursor = 0
+        while cursor < len(data) or not encoded:
+            remaining = data[cursor:]
+            chunk_size = self._crypto_chunk_size(
+                packet_space=packet_space,
+                offset=frame_offset + cursor,
+                remaining=remaining,
             )
-            for index, chunk in enumerate(chunks)
-        ]
+            chunk = remaining[:chunk_size]
+            raw = self.send_frames(
+                [QuicCryptoFrame(offset=frame_offset + cursor, data=chunk)],
+                packet_space=packet_space,
+            )
+            if len(raw) > self._effective_send_datagram_size():
+                raise ProtocolError('encoded QUIC CRYPTO packet exceeds effective UDP payload ceiling')
+            encoded.append((packet_space, raw))
+            if not remaining:
+                break
+            cursor += chunk_size
+        state.crypto_send_offset = max(state.crypto_send_offset, frame_offset + len(data))
+        return encoded
 
     def send_crypto_data(self, data: bytes, *, offset: int | None = None, packet_space: str = PACKET_SPACE_INITIAL) -> bytes:
         datagrams = self._pack_encoded_packets(

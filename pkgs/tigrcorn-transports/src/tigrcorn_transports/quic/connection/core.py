@@ -36,7 +36,10 @@ class QuicConnection(
         self.local_cid = generate_connection_id() if local_cid is None else local_cid
         self.remote_cid = generate_connection_id() if (is_client and remote_cid is None) else remote_cid
         self.secret = secret or derive_secret(self.local_cid, b'tigrcorn-quic')
-        self.max_datagram_size = max(max_datagram_size, 1200)
+        self.configured_max_datagram_size = max(int(max_datagram_size), _MIN_INITIAL_DATAGRAM_SIZE)
+        self.peer_max_udp_payload_size: int | None = None
+        # Backward-compatible alias for the currently effective QUIC UDP send ceiling.
+        self.max_datagram_size = self.configured_max_datagram_size
         self.require_retry = require_retry
         self.retry_token_lifetime_ms = retry_token_lifetime_ms
         self.new_token_lifetime_ms = new_token_lifetime_ms
@@ -69,6 +72,7 @@ class QuicConnection(
                 key=_DEFAULT_PATH_KEY,
                 addr=None,
                 recovery=QuicLossRecovery(max_datagram_size=self.max_datagram_size),
+                max_udp_payload_size=self.configured_max_datagram_size,
             )
         }
         self._active_path_key: Any = _DEFAULT_PATH_KEY
