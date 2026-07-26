@@ -27,7 +27,7 @@ class HTTP3ResponsesMixin:
         payload = bytearray(encode_frame(FRAME_HEADERS, header_block))
         if body:
             payload.extend(encode_frame(FRAME_DATA, body))
-        return [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, bytes(payload), fin=end_stream)]
+        return [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, bytes(payload), fin=end_stream)]
 
     async def _send_http3_streamed_response_locked(
         self,
@@ -47,7 +47,7 @@ class HTTP3ResponsesMixin:
                 stream_id,
                 [(b':status', str(interim_status).encode('ascii')), *sanitize_early_hints_headers(interim_headers)],
             )
-            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, encode_frame(FRAME_HEADERS, interim_header_block), fin=False)]
+            outbound = [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, encode_frame(FRAME_HEADERS, interim_header_block), fin=False)]
             self._queue_session_outbound_locked(session, outbound, endpoint)
         has_body = response_body_segments_have_bytes(body_segments)
         response_headers = apply_response_header_policy(
@@ -58,7 +58,7 @@ class HTTP3ResponsesMixin:
             alt_svc_values=configured_alt_svc_values(self.config, request_http_version='3'),
         )
         header_block = session.h3.encode_headers(stream_id, [(b':status', str(status).encode('ascii')), *response_headers])
-        outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, encode_frame(FRAME_HEADERS, header_block), fin=(not has_body and not trailers))]
+        outbound = [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, encode_frame(FRAME_HEADERS, header_block), fin=(not has_body and not trailers))]
         self._queue_session_outbound_locked(session, outbound, endpoint)
         if not has_body and not trailers:
             return
@@ -69,7 +69,7 @@ class HTTP3ResponsesMixin:
                 self._queue_session_outbound_locked(session, outbound, endpoint)
         if trailers:
             trailer_block = session.h3.encode_headers(stream_id, list(trailers))
-            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, encode_frame(FRAME_HEADERS, trailer_block), fin=True)]
+            outbound = [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, encode_frame(FRAME_HEADERS, trailer_block), fin=True)]
         else:
             outbound = self._build_http3_data_datagrams_locked(session, stream_id, b'', end_stream=True)
         self._queue_session_outbound_locked(session, outbound, endpoint)
@@ -83,4 +83,4 @@ class HTTP3ResponsesMixin:
         end_stream: bool,
     ) -> list[bytes]:
         payload = encode_frame(FRAME_DATA, data) if data else b''
-        return [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, payload, fin=end_stream)]
+        return [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, payload, fin=end_stream)]

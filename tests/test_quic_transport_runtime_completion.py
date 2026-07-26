@@ -154,7 +154,7 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
         retry_events = client.receive_datagram(retry_datagram)
         self.assertTrue(any(event.kind == 'retry' for event in retry_events))
         second_initial = client.build_initial()
-        post_retry_events = server.receive_datagram(second_initial, addr=('127.0.0.1', 4444))
+        post_retry_events = server.receive_datagram(second_initial, addr=('127.0.0.1', 5555))
         self.assertTrue(any(event.kind == 'packet' for event in post_retry_events))
         self.assertTrue(server.address_validated)
 
@@ -165,6 +165,26 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
         self.assertTrue(any(event.kind == 'new_token' for event in token_events))
         self.assertEqual(token_client.peer_new_tokens, (token,))
 
+    def test_retry_token_rejects_a_different_client_ip(self):
+        client = QuicConnection(
+            is_client=True, secret=b'shared',
+            local_cid=b'cli1cli1', remote_cid=b'srv1srv1',
+        )
+        server = QuicConnection(
+            is_client=False, secret=b'shared',
+            local_cid=b'srv1srv1', require_retry=True,
+        )
+        server.receive_datagram(
+            client.build_initial(), addr=('192.0.2.10', 4444),
+        )
+        client.receive_datagram(server.take_pending_datagrams()[0])
+
+        events = server.receive_datagram(
+            client.build_initial(), addr=('192.0.2.11', 5555),
+        )
+
+        self.assertTrue(any(event.kind == 'close' for event in events))
+        self.assertFalse(server.address_validated)
     def test_zero_rtt_stream_data_is_decrypted_after_client_hello(self):
         cert_pem, key_pem, ticket = self._issue_0rtt_ticket()
         client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1cli1', remote_cid=b'srv1srv1')

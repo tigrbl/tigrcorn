@@ -4,6 +4,10 @@ from .imports import *
 
 class QuicConnectionBaseMixin:
     @property
+    def retry_source_connection_id(self) -> bytes | None:
+        return self._retry_source_connection_id
+
+    @property
     def peer_new_tokens(self) -> tuple[bytes, ...]:
         return tuple(self._peer_new_tokens)
 
@@ -113,7 +117,7 @@ class QuicConnectionBaseMixin:
         original_destination_connection_id: bytes = b'',
         retry_source_connection_id: bytes = b'',
     ) -> bytes:
-        address_bytes = _serialize_address(addr)
+        address_bytes = _serialize_address((addr[0], 0) if addr is not None else None)
         if len(original_destination_connection_id) > 255 or len(retry_source_connection_id) > 255:
             raise ValueError('connection ids are too large to encode in a QUIC token')
         body = bytearray()
@@ -182,8 +186,13 @@ class QuicConnectionBaseMixin:
         if end != len(body):
             return None
         retry_source_connection_id = body[offset:end]
-        if addr is not None and address_bytes and address_bytes != _serialize_address(addr):
-            return None
+        if addr is not None and address_bytes:
+            try:
+                token_address = _parse_serialized_address(address_bytes)
+            except ProtocolError:
+                return None
+            if token_address[0] != addr[0] or token_address[1] not in {0, addr[1]}:
+                return None
         now_ms = _current_time_ms()
         if issued_at_ms > now_ms + 60_000:
             return None

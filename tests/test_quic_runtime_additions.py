@@ -7,6 +7,7 @@ from tigrcorn.observability.logging import AccessLogger, configure_logging
 from tigrcorn.protocols.http3.handler import HTTP3DatagramHandler
 from tigrcorn.protocols.http3.streams import HTTP3ConnectionCore
 from tigrcorn.transports.quic import QuicConnection
+from tigrcorn.transports.quic.packets import QuicRetryPacket, decode_packet
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, generate_self_signed_certificate
 from tigrcorn.transports.udp.packet import UDPPacket
 
@@ -49,6 +50,56 @@ class QuicRuntimeAdditionsTests(unittest.TestCase):
 
 
 class QuicAmplificationRuntimeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_http3_retry_survives_client_udp_port_rebinding(self):
+        async def app(scope, receive, send):
+            return None
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(
+                kind='udp', host='127.0.0.1', port=1, protocols=['http3'],
+                quic_secret=b'shared', quic_require_retry=True,
+            ),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            def __init__(self):
+                self.sent = []
+                self.local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                self.sent.append((data, addr))
+
+        endpoint = Endpoint()
+        client = QuicConnection(
+            is_client=True, secret=b'shared',
+            local_cid=b'cli1cli1', remote_cid=b'srv1srv1',
+        )
+        await handler.handle_packet(
+            UDPPacket(data=client.build_initial(), addr=('127.0.0.1', 50000)),
+            endpoint,
+        )
+        retry_datagram = next(
+            raw for raw, _addr in endpoint.sent
+            if raw[0] & 0x80 and isinstance(decode_packet(raw), QuicRetryPacket)
+        )
+        client.receive_datagram(retry_datagram)
+        retry_cid = client.remote_cid
+        endpoint.sent.clear()
+
+        await handler.handle_packet(
+            UDPPacket(data=client.build_initial(), addr=('127.0.0.1', 50001)),
+            endpoint,
+        )
+
+        self.assertEqual(len(handler.sessions), 1)
+        session = next(iter(handler.sessions.values()))
+        self.assertEqual(session.addr, ('127.0.0.1', 50001))
+        self.assertTrue(session.quic.address_validated)
+        self.assertIs(handler.sessions_by_local_cid[retry_cid], session)
+
     async def test_http3_runtime_applies_anti_amplification_limit(self):
         async def app(scope, receive, send):
             await receive()

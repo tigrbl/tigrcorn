@@ -104,7 +104,7 @@ class HTTP3RequestsMixin:
             header_lines = [(b':status', b'400'), (b'content-type', b'text/plain')]
             header_block = session.h3.encode_headers(stream_id, header_lines)
             payload = encode_frame(FRAME_HEADERS, header_block) + encode_frame(FRAME_DATA, b'bad request')
-            return [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, payload, fin=True)]
+            return [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, payload, fin=True)]
         if not self._admit_stream_work(session, stream_id):
             return self._build_http3_response_datagrams_locked(
                 session,
@@ -296,7 +296,7 @@ class HTTP3RequestsMixin:
             self.sessions[session.addr] = session
             if self.metrics is not None:
                 self.metrics.http3_request_served()
-            return [*qpack_outbound, session.quic.send_stream_data(stream_id, bytes(frame_payload), fin=True)]
+            return [*qpack_outbound, *session.quic.send_stream_data_packets(stream_id, bytes(frame_payload), fin=True)]
         finally:
             if self.connection_inventory is not None and inventory_session_id is not None:
                 self.connection_inventory.increment_session_counter(inventory_session_id, 'responses')

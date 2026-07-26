@@ -47,7 +47,7 @@ class _CustomQuicSend:
             raise RuntimeError(f'unexpected custom quic send event: {typ!r}')
         data = bytes(message.get('data', b''))
         fin = not bool(message.get('more_data', False))
-        self.messages.append(self.session.quic.send_stream_data(self.stream_id, data, fin=fin))
+        self.messages.extend(self.session.quic.send_stream_data_packets(self.stream_id, data, fin=fin))
 
     def flush(self) -> list[bytes]:
         return list(self.messages)

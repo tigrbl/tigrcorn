@@ -152,6 +152,8 @@ class HTTP3PacketMixin:
                 self._update_h3_connection(session)
             if session.quic.local_cid:
                 self.sessions_by_local_cid[session.quic.local_cid] = session
+            if session.quic.retry_source_connection_id:
+                self.sessions_by_local_cid[session.quic.retry_source_connection_id] = session
             session.request_packets += 1
             outbound.extend(self._ensure_server_control_stream_locked(session))
             for event in events:
