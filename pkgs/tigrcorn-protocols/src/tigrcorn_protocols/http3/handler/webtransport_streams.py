@@ -41,11 +41,17 @@ class HTTP3WebTransportStreamsMixin:
         if owner_stream_id is not None and owner_stream_id != stream_id:
             webtransport = session.webtransport_sessions.get(owner_stream_id)
             if webtransport is not None:
+                stream_direction = (
+                    'client_to_server'
+                    if self._stream_is_client_initiated_unidi(stream_id)
+                    else 'bidi'
+                )
                 await webtransport.feed_stream_data(
                     data,
                     end_stream=fin,
                     disconnect_on_end=False,
                     stream_id=stream_id,
+                    stream_direction=stream_direction,
                 )
                 if fin and self._stream_is_client_initiated_unidi(stream_id):
                     session.webtransport_streams.discard(stream_id)
