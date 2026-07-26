@@ -293,12 +293,15 @@ class QuicConnectionReceiveMixin:
                 final_size = frame.offset + len(frame.data) if frame.fin else None
                 self.flow.validate_receive(frame.stream_id, end_offset=frame.offset + len(frame.data), final_size=final_size)
                 stream_state = self.streams.ensure_receive_stream(frame.stream_id)
+                was_receive_terminal = stream_state.receive_terminal
                 data_chunk, _delta = stream_state.apply_with_metrics(frame)
                 self.flow.commit_receive(frame.stream_id, end_offset=frame.offset + len(frame.data), final_size=final_size)
                 if _delta > 0:
                     self._maybe_queue_receive_credit(frame.stream_id)
                 self._maybe_queue_max_stream_credit(frame.stream_id)
                 self.state = 'established'
+                if not data_chunk and was_receive_terminal:
+                    continue
                 events.append(
                     QuicEvent(
                         kind='stream',

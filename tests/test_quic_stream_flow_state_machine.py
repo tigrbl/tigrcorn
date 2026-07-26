@@ -5,7 +5,7 @@ from tigrcorn.errors import ProtocolError
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.transports.quic.connection import PACKET_SPACE_APPLICATION
 from tigrcorn.transports.quic.handshake import TransportParameters
-from tigrcorn.transports.quic.streams import QuicResetStreamFrame
+from tigrcorn.transports.quic.streams import QuicResetStreamFrame, QuicStreamFrame
 
 
 class QuicStreamFlowStateMachineTests(unittest.TestCase):
@@ -87,7 +87,10 @@ class QuicStreamFlowStateMachineTests(unittest.TestCase):
             max_stream_data_bidi_remote=10,
             max_stream_data_uni=10,
         )
-        server.receive_datagram(client.send_stream_data(0, b'abc', fin=False))
+        # Stay below the automatic receive-window replenishment threshold so
+        # the RESET_STREAM final size is evaluated against the advertised
+        # four-byte connection limit.
+        server.receive_datagram(client.send_stream_data(0, b'a', fin=False))
         oversized_reset = client.send_frames(
             [QuicResetStreamFrame(stream_id=0, error_code=1, final_size=5)],
             packet_space=PACKET_SPACE_APPLICATION,
@@ -117,6 +120,23 @@ class QuicStreamFlowStateMachineTests(unittest.TestCase):
         self.assertEqual(len(max_stream_events), 1)
         self.assertTrue(max_stream_events[0].detail.bidirectional)
         self.assertEqual(max_stream_events[0].detail.maximum_streams, 2)
+
+    def test_retransmitted_terminal_stream_frame_is_not_redispatched(self):
+        client, server = self._pair()
+        first = client.send_stream_data(0, b'request', fin=True)
+        first_events = server.receive_datagram(first)
+
+        retransmission = client.send_frames(
+            [QuicStreamFrame(stream_id=0, offset=0, data=b'request', fin=True)],
+            packet_space=PACKET_SPACE_APPLICATION,
+        )
+        duplicate_events = server.receive_datagram(retransmission)
+
+        self.assertEqual(
+            [event.data for event in first_events if event.kind == 'stream'],
+            [b'request'],
+        )
+        self.assertFalse(any(event.kind == 'stream' for event in duplicate_events))
 
     def test_ack_delay_exponent_is_used_when_encoding_ack_frames(self):
         _client, server = self._pair()
