@@ -358,6 +358,10 @@ class HTTP3PacketMixin:
                                 session.webtransport_streams.discard(event.stream_id)
                                 session.webtransport_stream_prefaces.pop(event.stream_id, None)
                                 session.webtransport_stream_owners.pop(event.stream_id, None)
+                                if webtransport is not None:
+                                    self._webtransport_release_stream(
+                                        webtransport, event.stream_id
+                                    )
                                 webtransport = session.webtransport_sessions.pop(owner_stream_id, None) if owner_stream_id == event.stream_id else None
                                 if webtransport is not None:
                                     await webtransport.abort()

@@ -88,6 +88,11 @@ class WebTransportGovernanceManager:
         session.streams.add(stream_id)
         return session.as_dict()
 
+    def close_stream(self, session_id: str, stream_id: str) -> dict[str, Any]:
+        session = self._active_session(session_id)
+        session.streams.discard(stream_id)
+        return session.as_dict()
+
     def send_datagram(self, session_id: str, datagram_id: str, payload: bytes) -> dict[str, Any]:
         session = self._active_session(session_id)
         if len(payload) > self.policy.max_datagram_size:

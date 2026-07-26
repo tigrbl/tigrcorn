@@ -4,6 +4,31 @@ from .imports import *
 from .webtransport import _HTTP3WebTransportSession
 
 class HTTP3WebTransportStreamsMixin:
+    async def _open_webtransport_server_stream(
+        self,
+        session: HTTP3Session,
+        owner_stream_id: int,
+        *,
+        endpoint: UDPEndpoint,
+    ) -> int:
+        async with self._lock:
+            if (
+                session.addr not in self.sessions
+                or self.sessions.get(session.addr) is not session
+            ):
+                raise ProtocolError("WebTransport session is no longer connected")
+            webtransport = session.webtransport_sessions.get(owner_stream_id)
+            if webtransport is None or webtransport.closed:
+                raise ProtocolError("WebTransport session is no longer active")
+            stream_id = session.quic.streams.next_stream_id(
+                client=False,
+                unidirectional=True,
+            )
+            session.webtransport_streams.add(stream_id)
+            session.webtransport_stream_owners[stream_id] = owner_stream_id
+            self._webtransport_register_stream(webtransport, stream_id)
+            return stream_id
+
     async def _consume_webtransport_stream_event_locked(
         self,
         session: HTTP3Session,
@@ -22,6 +47,12 @@ class HTTP3WebTransportStreamsMixin:
                     disconnect_on_end=False,
                     stream_id=stream_id,
                 )
+                if fin and self._stream_is_client_initiated_unidi(stream_id):
+                    session.webtransport_streams.discard(stream_id)
+                    session.webtransport_stream_owners.pop(stream_id, None)
+                    session.webtransport_stream_prefaces.pop(stream_id, None)
+                    self._webtransport_release_stream(webtransport, stream_id)
+                    session.h3.abandon_stream(stream_id)
             return True, b''
         if owner_stream_id == stream_id:
             return False, data
@@ -77,6 +108,11 @@ class HTTP3WebTransportStreamsMixin:
                 stream_id=stream_id,
                 stream_direction='client_to_server',
             )
+            if fin:
+                session.webtransport_streams.discard(stream_id)
+                session.webtransport_stream_owners.pop(stream_id, None)
+                self._webtransport_release_stream(webtransport, stream_id)
+                session.h3.abandon_stream(stream_id)
             return True, b''
         if stream_id in session.h3.requests:
             return False, data
@@ -185,12 +221,25 @@ class HTTP3WebTransportStreamsMixin:
                     + wire_data
                 )
                 session.webtransport_server_prefaced_streams.add(stream_id)
+            elif (
+                self._stream_is_server_initiated_unidi(stream_id)
+                and stream_id not in session.webtransport_server_prefaced_streams
+            ):
+                wire_data = (
+                    encode_quic_varint(self._WEBTRANSPORT_UNIDI_STREAM_SIGNAL)
+                    + encode_quic_varint(owner_stream_id)
+                    + wire_data
+                )
+                session.webtransport_server_prefaced_streams.add(stream_id)
             outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, wire_data, fin=end_stream)]
         if end_stream:
             session.webtransport_streams.discard(stream_id)
             session.webtransport_stream_owners.pop(stream_id, None)
             session.webtransport_stream_prefaces.pop(stream_id, None)
             session.webtransport_server_prefaced_streams.discard(stream_id)
+            webtransport = session.webtransport_sessions.get(owner_stream_id)
+            if owner_stream_id != stream_id and webtransport is not None:
+                self._webtransport_release_stream(webtransport, stream_id)
             if owner_stream_id == stream_id:
                 webtransport = session.webtransport_sessions.pop(stream_id, None)
                 if webtransport is not None:

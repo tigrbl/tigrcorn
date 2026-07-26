@@ -184,6 +184,9 @@ class HTTP3WebTransportSupportMixin:
     def _stream_is_client_initiated_unidi(self, stream_id: int) -> bool:
         return (stream_id & 0x03) == 0x02
 
+    def _stream_is_server_initiated_unidi(self, stream_id: int) -> bool:
+        return (stream_id & 0x03) == 0x03
+
     def _parse_webtransport_bidi_stream_prefix(self, payload: bytes) -> tuple[int, int, bytes] | None:
         try:
             signal, offset = decode_quic_varint(payload, 0)

@@ -8,6 +8,7 @@ import pytest
 from tigrcorn.config import ListenerConfig, ServerConfig
 from tigrcorn_protocols.http3.handler.core import HTTP3DatagramHandler, HTTP3Session
 from tigrcorn_protocols.http3.handler.webtransport import _HTTP3WebTransportSession
+from tigrcorn.utils.bytes import encode_quic_varint
 from tigrcorn_protocols.webtransport.governance import (
     WebTransportBudgetPolicy,
     WebTransportGovernanceError,
@@ -24,14 +25,36 @@ class _AccessLogger:
         return None
 
 
+class _Streams:
+    def __init__(self) -> None:
+        self.next_server_unidirectional_id = 3
+
+    def next_stream_id(
+        self, *, client: bool = False, unidirectional: bool = False
+    ) -> int:
+        assert client is False
+        assert unidirectional is True
+        stream_id = self.next_server_unidirectional_id
+        self.next_server_unidirectional_id += 4
+        return stream_id
+
+
 class _Quic:
     local_cid = b"local-cid"
     remote_cid = b"remote-cid"
     state = "active"
     address_validated = True
 
+    def __init__(self) -> None:
+        self.streams = _Streams()
+        self.sent_streams: list[tuple[int, bytes, bool]] = []
+
     def send_datagram_frame(self, payload: bytes) -> bytes:
         return b"datagram:" + payload
+
+    def send_stream_data(self, stream_id: int, data: bytes, *, fin: bool) -> bytes:
+        self.sent_streams.append((stream_id, data, fin))
+        return b"stream-packet"
 
 
 def _policy() -> WebTransportBudgetPolicy:
@@ -113,6 +136,11 @@ def test_webtransport_stream_open_enforces_runtime_budget() -> None:
     snapshot = handler._webtransport_budget_snapshot()
     assert snapshot["sessions"][webtransport.session_id]["streams"] == ("0",)
 
+    handler._webtransport_release_stream(webtransport, 0)
+    handler._webtransport_register_stream(webtransport, 4)
+    snapshot = handler._webtransport_budget_snapshot()
+    assert snapshot["sessions"][webtransport.session_id]["streams"] == ("4",)
+
 
 def test_webtransport_datagram_runtime_path_closes_on_abuse() -> None:
     handler, session, webtransport = _runtime()
@@ -159,3 +187,37 @@ def test_webtransport_shutdown_releases_budgeted_resources() -> None:
     assert snapshot["released_sessions"] == (webtransport.session_id,)
     assert snapshot["sessions"][webtransport.session_id]["streams"] == ()
     assert snapshot["sessions"][webtransport.session_id]["closed"] is True
+
+
+def test_server_unidirectional_send_allocates_server_owned_quic_stream() -> None:
+    handler, session, webtransport = _runtime()
+    handler._webtransport_register_session(session, webtransport)
+    handler._flush_qpack_streams = lambda _session: []
+
+    async def run() -> None:
+        await webtransport._send(
+            {"type": "webtransport.accept", "session_id": webtransport.session_id}
+        )
+        await webtransport._send(
+            {
+                "type": "webtransport.stream.send",
+                "session_id": webtransport.session_id,
+                "stream_id": "room-event-1",
+                "stream_direction": "server_to_client",
+                "data": b"presence-event",
+                "more": False,
+            }
+        )
+
+    asyncio.run(run())
+    stream_id, wire_data, fin = session.quic.sent_streams[-1]
+    assert stream_id % 4 == 3
+    assert wire_data == (
+        encode_quic_varint(handler._WEBTRANSPORT_UNIDI_STREAM_SIGNAL)
+        + encode_quic_varint(webtransport.stream_id)
+        + b"presence-event"
+    )
+    assert fin is True
+    assert webtransport.server_stream_ids == {}
+    snapshot = handler._webtransport_budget_snapshot()
+    assert snapshot["sessions"][webtransport.session_id]["streams"] == ()

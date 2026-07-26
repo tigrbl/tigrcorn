@@ -108,6 +108,14 @@ class HTTP3LifecycleMixin:
             return None
         return manager.open_stream(webtransport.session_id, str(stream_id))
 
+    def _webtransport_release_stream(
+        self, webtransport: _HTTP3WebTransportSession, stream_id: int | str
+    ) -> dict[str, Any] | None:
+        manager = self.webtransport_governance
+        if manager is None:
+            return None
+        return manager.close_stream(webtransport.session_id, str(stream_id))
+
     def _webtransport_register_datagram(
         self,
         webtransport: _HTTP3WebTransportSession,

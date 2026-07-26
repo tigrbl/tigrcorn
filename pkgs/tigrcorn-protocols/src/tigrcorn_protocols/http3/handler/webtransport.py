@@ -43,6 +43,7 @@ class _HTTP3WebTransportSession:
         self.accepted = False
         self.closed = False
         self.connect_stream_ended = False
+        self.server_stream_ids: dict[str, int] = {}
 
     def _trace_session_fields(self) -> dict[str, object]:
         trace_fields = getattr(self.handler, "_trace_session_fields", None)
@@ -150,7 +151,18 @@ class _HTTP3WebTransportSession:
             stream_direction = str(message.get("stream_direction", "bidi"))
             if stream_direction not in {"bidi", "server_to_client"}:
                 raise RuntimeError("webtransport.stream.send requires bidi or server_to_client stream_direction")
-            target_stream_id = int(message.get("stream_id", self.stream_id))
+            logical_stream_id = str(message.get("stream_id", self.stream_id))
+            if stream_direction == "server_to_client":
+                target_stream_id = self.server_stream_ids.get(logical_stream_id)
+                if target_stream_id is None:
+                    target_stream_id = await self.handler._open_webtransport_server_stream(
+                        self.session,
+                        self.stream_id,
+                        endpoint=self.endpoint,
+                    )
+                    self.server_stream_ids[logical_stream_id] = target_stream_id
+            else:
+                target_stream_id = int(logical_stream_id)
             await self.handler._send_webtransport_stream_data(
                 self.session,
                 target_stream_id,
@@ -158,6 +170,10 @@ class _HTTP3WebTransportSession:
                 end_stream=not bool(message.get("more", False)),
                 endpoint=self.endpoint,
             )
+            if stream_direction == "server_to_client" and not bool(
+                message.get("more", False)
+            ):
+                self.server_stream_ids.pop(logical_stream_id, None)
             return
         if typ and str(typ).startswith("webtransport.message."):
             raise RuntimeError("webtransport message is not a native WebTransport lane")
