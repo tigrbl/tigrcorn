@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import time
 from dataclasses import dataclass, field
 from tigrcorn_protocols.http3.streams import HTTP3ConnectionCore
 from tigrcorn_protocols.http3.websocket import H3WebSocketSession
@@ -24,7 +25,10 @@ class HTTP3Session:
     address_validated: bool = False
     session_ticket_issued: bool = False
     pending_outbound: list[bytes] = field(default_factory=list)
+    pending_priority_outbound: list[bytes] = field(default_factory=list)
+    outbound_priority_turn: bool = True
     timer_handle: asyncio.TimerHandle | None = None
+    last_activity_at: float = field(default_factory=time.monotonic)
     connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
     websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
     webtransport_sessions: dict[int, _HTTP3WebTransportSession] = field(default_factory=dict)

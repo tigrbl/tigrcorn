@@ -30,23 +30,38 @@ class HTTP3OutboundMixin:
             session.last_quic_pto_expirations_total += 1
 
     def _flush_pending_outbound(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
-        if not session.pending_outbound:
+        if not session.pending_priority_outbound and not session.pending_outbound:
             return
         transport = getattr(endpoint, 'transport', None)
         if transport is not None and transport.is_closing():
             return
-        remaining: list[bytes] = []
-        for index, raw in enumerate(session.pending_outbound):
-            if self._can_send_now(session, raw):
-                session.quic.confirm_datagram_sent(raw)
-                endpoint.send(raw, session.addr)
-                session.bytes_sent += len(raw)
-                if self.metrics is not None:
-                    self.metrics.quic_datagram_sent(len(raw))
-            else:
-                remaining.extend(session.pending_outbound[index:])
-                break
-        session.pending_outbound = remaining
+        while session.pending_priority_outbound or session.pending_outbound:
+            preferred = (
+                session.pending_priority_outbound
+                if session.outbound_priority_turn
+                else session.pending_outbound
+            )
+            alternate = (
+                session.pending_outbound
+                if session.outbound_priority_turn
+                else session.pending_priority_outbound
+            )
+            queue = preferred or alternate
+            raw = queue[0]
+            if not self._can_send_now(session, raw):
+                if not alternate or alternate is queue:
+                    break
+                queue = alternate
+                raw = queue[0]
+                if not self._can_send_now(session, raw):
+                    break
+            queue.pop(0)
+            session.quic.confirm_datagram_sent(raw)
+            endpoint.send(raw, session.addr)
+            session.bytes_sent += len(raw)
+            if self.metrics is not None:
+                self.metrics.quic_datagram_sent(len(raw))
+            session.outbound_priority_turn = queue is session.pending_outbound
 
     def _can_send_now(self, session: HTTP3Session, raw: bytes) -> bool:
         amplification_ok = session.address_validated or (session.bytes_sent + len(raw) <= (session.bytes_received * 3))
@@ -59,10 +74,15 @@ class HTTP3OutboundMixin:
 
     def _next_session_delay(self, session: HTTP3Session) -> float | None:
         delays: list[float] = []
+        idle_timeout = float(self.config.quic.idle_timeout)
+        if idle_timeout > 0:
+            delays.append(
+                max(0.0, idle_timeout - (time.monotonic() - session.last_activity_at))
+            )
         runtime_delay = session.quic.next_runtime_deadline()
         if runtime_delay is not None:
             delays.append(runtime_delay)
-        for raw in session.pending_outbound:
+        for raw in (*session.pending_priority_outbound, *session.pending_outbound):
             delay = session.quic.next_transmit_delay(raw)
             if delay is not None:
                 delays.append(delay)
@@ -118,6 +138,21 @@ class HTTP3OutboundMixin:
                 return
             if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
                 return
+            idle_timeout = float(self.config.quic.idle_timeout)
+            if (
+                idle_timeout > 0
+                and time.monotonic() - session.last_activity_at >= idle_timeout
+            ):
+                self.trace_webtransport(
+                    "quic.connection.idle_timeout",
+                    **self._trace_session_fields(session),
+                    idle_timeout=idle_timeout,
+                )
+                await self._abort_session_tunnels(session)
+                await self._abort_session_websockets(session)
+                await self._abort_session_webtransports(session)
+                self._close_session(session)
+                return
             outbound = session.quic.drain_scheduled_datagrams()
             for raw in outbound:
                 self._queue_or_send(session, raw, endpoint, session.addr)
@@ -169,23 +204,23 @@ class HTTP3OutboundMixin:
             outbound.append(session.quic.send_stream_data(session.server_qpack_decoder_stream_id, decoder_data, fin=False))
         return outbound
 
-    def _queue_session_outbound_locked(self, session: HTTP3Session, outbound: list[bytes], endpoint: UDPEndpoint) -> None:
+    def _queue_session_outbound_locked(
+        self,
+        session: HTTP3Session,
+        outbound: list[bytes],
+        endpoint: UDPEndpoint,
+        *,
+        priority: bool = False,
+    ) -> None:
         # QuicConnection records packets when they are encoded. Refund the
         # complete batch before admitting it to the wire so later packets do
         # not consume congestion credit ahead of earlier CRYPTO segments.
         for raw in outbound:
             session.quic.defer_datagram(raw)
-        # Existing queued packets always receive newly available amplification
-        # and congestion credit before packets generated by a later receive.
-        self._flush_pending_outbound(session, endpoint)
-        blocked = bool(session.pending_outbound)
-        for raw in outbound:
-            if blocked:
-                session.pending_outbound.append(raw)
-                continue
-            pending_before = len(session.pending_outbound)
-            self._queue_or_send(session, raw, endpoint, session.addr)
-            blocked = len(session.pending_outbound) > pending_before
+        target = (
+            session.pending_priority_outbound if priority else session.pending_outbound
+        )
+        target.extend(outbound)
         self._flush_pending_outbound(session, endpoint)
         if session.addr in self.sessions and self.sessions.get(session.addr) is session:
             self._arm_session_timer(session, endpoint)

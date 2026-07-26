@@ -1,5 +1,8 @@
 from __future__ import annotations
 from .imports import *
+
+logger = logging.getLogger("tigrcorn")
+
 class HTTP3PacketMixin:
     async def handle_packet(self, packet: UDPPacket, endpoint: UDPEndpoint) -> None:
         async with self._lock:
@@ -128,6 +131,7 @@ class HTTP3PacketMixin:
             else:
                 session.quic.remote_cid = scid or session.quic.remote_cid
             outbound: list[bytes] = []
+            session.last_activity_at = time.monotonic()
             session.bytes_received += len(packet.data)
             if self.metrics is not None:
                 self.metrics.quic_datagram_received(len(packet.data))
@@ -384,7 +388,19 @@ class HTTP3PacketMixin:
                         )
                         await self._dispatch_webtransport_datagram_locked(session, event.data)
                 elif event.kind == 'close':
-                    self.trace_webtransport('quic.connection.close.receive', **self._trace_session_fields(session))
+                    close_reason = getattr(event.detail, 'reason', '')
+                    close_code = getattr(event.detail, 'error_code', None)
+                    self.trace_webtransport(
+                        'quic.connection.close.receive',
+                        **self._trace_session_fields(session),
+                        error_code=close_code,
+                        reason=close_reason,
+                    )
+                    logger.warning(
+                        "QUIC connection closing code=%s reason=%s",
+                        close_code,
+                        close_reason or "peer did not provide a reason",
+                    )
                     await self._abort_session_tunnels(session)
                     await self._abort_session_websockets(session)
                     await self._abort_session_webtransports(session)
@@ -395,4 +411,3 @@ class HTTP3PacketMixin:
             outbound.extend(session.quic.take_handshake_datagrams())
             outbound.extend(session.quic.drain_scheduled_datagrams())
             self._queue_session_outbound_locked(session, outbound, endpoint)
-

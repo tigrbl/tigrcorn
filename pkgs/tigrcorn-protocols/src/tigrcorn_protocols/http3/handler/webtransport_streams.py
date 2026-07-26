@@ -181,6 +181,7 @@ class HTTP3WebTransportStreamsMixin:
         end_stream: bool,
         endpoint: UDPEndpoint,
         already_locked: bool = False,
+        priority: bool = False,
     ) -> None:
         if not already_locked:
             async with self._lock:
@@ -191,6 +192,7 @@ class HTTP3WebTransportStreamsMixin:
                     end_stream=end_stream,
                     endpoint=endpoint,
                     already_locked=True,
+                    priority=priority,
                 )
             return
         if session.addr not in self.sessions or self.sessions.get(session.addr) is not session:
@@ -237,7 +239,12 @@ class HTTP3WebTransportStreamsMixin:
                     + wire_data
                 )
                 session.webtransport_server_prefaced_streams.add(stream_id)
-            outbound = [*self._flush_qpack_streams(session), session.quic.send_stream_data(stream_id, wire_data, fin=end_stream)]
+            outbound = [
+                *self._flush_qpack_streams(session),
+                *session.quic.send_stream_data_packets(
+                    stream_id, wire_data, fin=end_stream
+                ),
+            ]
         if end_stream:
             session.webtransport_streams.discard(stream_id)
             session.webtransport_stream_owners.pop(stream_id, None)
@@ -254,7 +261,9 @@ class HTTP3WebTransportStreamsMixin:
                     self._webtransport_release_session(webtransport.session_id, reason='stream-closed')
                 self._release_stream_work_lease(session, stream_id)
             session.h3.abandon_stream(stream_id)
-        self._queue_session_outbound_locked(session, outbound, endpoint)
+        self._queue_session_outbound_locked(
+            session, outbound, endpoint, priority=priority
+        )
     async def _start_webtransport_stream_locked(
         self,
         session: HTTP3Session,

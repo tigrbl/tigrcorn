@@ -67,10 +67,10 @@ _TP_RESET_STREAM_AT = 0x17F7586D2CB571
 
 @dataclass(slots=True)
 class TransportParameters:
-    max_data: int = 65536
-    max_stream_data_bidi_local: int = 65536
-    max_stream_data_bidi_remote: int = 65536
-    max_stream_data_uni: int = 65536
+    max_data: int = 16 * 1024 * 1024
+    max_stream_data_bidi_local: int = 2 * 1024 * 1024
+    max_stream_data_bidi_remote: int = 2 * 1024 * 1024
+    max_stream_data_uni: int = 2 * 1024 * 1024
     max_streams_bidi: int = 128
     max_streams_uni: int = 128
     idle_timeout: int = 30000

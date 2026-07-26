@@ -20,8 +20,9 @@ def supported_flow_control_certification_scopes() -> tuple[str, ...]:
 
 @dataclass(slots=True)
 class QuicFlowControl:
-    connection_window: int = 1_048_576
-    local_connection_window: int = 1_048_576
+    connection_window: int = 16 * 1024 * 1024
+    local_connection_window: int = 16 * 1024 * 1024
+    local_connection_window_size: int = 16 * 1024 * 1024
     local_is_client: bool = True
     stream_windows: dict[int, int] = field(default_factory=dict)
     stream_receive_windows: dict[int, int] = field(default_factory=dict)
@@ -29,12 +30,12 @@ class QuicFlowControl:
     connection_bytes_received: int = 0
     stream_bytes_sent: dict[int, int] = field(default_factory=dict)
     stream_bytes_received: dict[int, int] = field(default_factory=dict)
-    peer_bidi_local_window: int = 65_535
-    peer_bidi_remote_window: int = 65_535
-    peer_uni_window: int = 65_535
-    local_bidi_local_window: int = 65_535
-    local_bidi_remote_window: int = 65_535
-    local_uni_window: int = 65_535
+    peer_bidi_local_window: int = 2 * 1024 * 1024
+    peer_bidi_remote_window: int = 2 * 1024 * 1024
+    peer_uni_window: int = 2 * 1024 * 1024
+    local_bidi_local_window: int = 2 * 1024 * 1024
+    local_bidi_remote_window: int = 2 * 1024 * 1024
+    local_uni_window: int = 2 * 1024 * 1024
 
     def _default_send_limit(self, stream_id: int) -> int:
         if stream_is_unidirectional(stream_id):
@@ -80,6 +81,7 @@ class QuicFlowControl:
         max_stream_data_uni: int,
     ) -> None:
         self.local_connection_window = max_data
+        self.local_connection_window_size = max_data
         self.local_bidi_local_window = max_stream_data_bidi_local
         self.local_bidi_remote_window = max_stream_data_bidi_remote
         self.local_uni_window = max_stream_data_uni
@@ -135,6 +137,31 @@ class QuicFlowControl:
             raise ValueError('amount must be non-negative')
         self.ensure_stream(stream_id)
         self.stream_receive_windows[stream_id] += amount
+
+    def replenish_receive_windows(self, stream_id: int) -> tuple[int | None, int | None]:
+        """Extend advertised receive limits only after half a window is consumed."""
+
+        self.ensure_stream(stream_id)
+        connection_limit: int | None = None
+        stream_limit: int | None = None
+
+        connection_window = max(self.local_connection_window_size, 1)
+        connection_remaining = self.local_connection_window - self.connection_bytes_received
+        if connection_remaining <= connection_window // 2:
+            self.local_connection_window = self.connection_bytes_received + connection_window
+            connection_limit = self.local_connection_window
+
+        stream_window = max(self._default_receive_limit(stream_id), 1)
+        stream_remaining = (
+            self.stream_receive_windows[stream_id] - self.stream_bytes_received[stream_id]
+        )
+        if stream_remaining <= stream_window // 2:
+            self.stream_receive_windows[stream_id] = (
+                self.stream_bytes_received[stream_id] + stream_window
+            )
+            stream_limit = self.stream_receive_windows[stream_id]
+
+        return connection_limit, stream_limit
 
     def update_send_limit_connection(self, maximum_data: int) -> None:
         if maximum_data > self.connection_window:

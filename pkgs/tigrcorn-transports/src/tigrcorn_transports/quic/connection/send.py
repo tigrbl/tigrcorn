@@ -282,6 +282,18 @@ class QuicConnectionSendMixin:
         if frame is not None:
             self._pending_handshake_datagrams.append(self._encode_short([frame]))
 
+    def _maybe_queue_receive_credit(self, stream_id: int) -> None:
+        connection_limit, stream_limit = self.flow.replenish_receive_windows(stream_id)
+        frames: list[object] = []
+        if connection_limit is not None:
+            frames.append(QuicMaxDataFrame(maximum_data=connection_limit))
+        if stream_limit is not None:
+            frames.append(
+                QuicMaxStreamDataFrame(stream_id=stream_id, maximum_data=stream_limit)
+            )
+        if frames:
+            self._pending_handshake_datagrams.append(self._encode_short(frames))
+
     def send_stream_data(self, stream_id: int, data: bytes, *, fin: bool = False) -> bytes:
         try:
             stream_state = self.streams.ensure_send_stream(stream_id)
@@ -300,6 +312,72 @@ class QuicConnectionSendMixin:
         packet = self._encode_short([frame])
         self._maybe_queue_max_stream_credit(stream_id)
         return packet
+
+    def send_stream_data_packets(
+        self, stream_id: int, data: bytes, *, fin: bool = False
+    ) -> list[bytes]:
+        """Encode STREAM data into MTU-safe 1-RTT packets."""
+        try:
+            stream_state = self.streams.ensure_send_stream(stream_id)
+        except ProtocolError:
+            self._queue_streams_blocked_if_needed(stream_id)
+            raise
+        self._prepare_stream_window(stream_id)
+        if data and not self.flow.can_send(stream_id, len(data)):
+            self._queue_flow_blocked_frames(stream_id, len(data))
+            raise ProtocolError('insufficient QUIC flow-control credit')
+
+        packets: list[bytes] = []
+        cursor = 0
+        budget = self._effective_send_datagram_size()
+        while cursor < len(data) or not packets:
+            remaining = data[cursor:]
+            low, high = 0, min(len(remaining), budget)
+            while low < high:
+                candidate = (low + high + 1) // 2
+                candidate_fin = fin and cursor + candidate == len(data)
+                size = self._packet_wire_size(
+                    packet_space=PACKET_SPACE_APPLICATION,
+                    frames=[
+                        QuicStreamFrame(
+                            stream_id=stream_id,
+                            offset=stream_state.send_offset,
+                            data=remaining[:candidate],
+                            fin=candidate_fin,
+                        )
+                    ],
+                )
+                if size <= budget:
+                    low = candidate
+                else:
+                    high = candidate - 1
+            if remaining and low == 0:
+                raise ProtocolError(
+                    'effective UDP payload ceiling cannot carry a QUIC STREAM frame'
+                )
+            chunk = remaining[:low]
+            chunk_fin = fin and cursor + len(chunk) == len(data)
+            offset = stream_state.reserve_send(chunk, fin=chunk_fin)
+            if chunk:
+                self.flow.consume_send(stream_id, len(chunk))
+            packets.append(
+                self._encode_short(
+                    [
+                        QuicStreamFrame(
+                            stream_id=stream_id,
+                            offset=offset,
+                            data=chunk,
+                            fin=chunk_fin,
+                        )
+                    ]
+                )
+            )
+            cursor += len(chunk)
+            if not remaining:
+                break
+        self.state = 'established'
+        self._maybe_queue_max_stream_credit(stream_id)
+        return packets
 
     def send_datagram_frame(self, data: bytes) -> bytes:
         if self._packet_wire_size(

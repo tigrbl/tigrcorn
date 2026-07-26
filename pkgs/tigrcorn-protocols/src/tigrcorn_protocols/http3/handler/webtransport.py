@@ -2,15 +2,50 @@ from __future__ import annotations
 
 import asyncio
 from contextlib import suppress
+from itertools import count
+import logging
 from typing import TYPE_CHECKING
-
-from tigrcorn_asgi.receive import QueueReceive
 
 if TYPE_CHECKING:
     from tigrcorn_protocols.http1.parser import ParsedRequest
     from tigrcorn_transports.udp.endpoint import UDPEndpoint
 
     from .core import HTTP3DatagramHandler, HTTP3Session
+
+
+logger = logging.getLogger("tigrcorn")
+WEBTRANSPORT_ASGI_CHUNK_SIZE = 16 * 1024
+
+
+class _WebTransportReceive:
+    """Lane-aware ASGI receive queue with FIFO ordering inside each priority."""
+
+    def __init__(self, max_size: int | None = None) -> None:
+        self._sequence = count()
+        self._queue: asyncio.PriorityQueue[tuple[int, int, dict]] = (
+            asyncio.PriorityQueue(maxsize=0 if not max_size else max_size)
+        )
+
+    @staticmethod
+    def _priority(message: dict) -> int:
+        event_type = str(message.get("type", ""))
+        if event_type in {"webtransport.connect", "webtransport.disconnect"}:
+            return 0
+        if (
+            event_type == "webtransport.stream.receive"
+            and message.get("stream_direction") == "bidi"
+        ):
+            return 1
+        if event_type == "webtransport.datagram.receive":
+            return 2
+        return 3
+
+    async def put(self, message: dict) -> None:
+        await self._queue.put((self._priority(message), next(self._sequence), message))
+
+    async def __call__(self) -> dict:
+        _priority, _sequence, message = await self._queue.get()
+        return message
 
 
 class _HTTP3WebTransportSession:
@@ -38,12 +73,20 @@ class _HTTP3WebTransportSession:
         self.work_lease = work_lease
         h3_session_id = getattr(session, "runtime_id", "") or session.quic.local_cid.hex() or "session"
         self.session_id = f"h3-{h3_session_id}-{stream_id}"
-        self.receive = QueueReceive(max_size=handler.config.webtransport.max_streams)
+        # A persistent stream can yield many packet-sized ASGI events. Stream
+        # concurrency is therefore not a valid event-queue bound; retain a
+        # bounded queue while allowing each admitted stream a useful window.
+        self.receive = _WebTransportReceive(
+            max_size=max(
+                256, int(handler.config.webtransport.max_streams or 1) * 64
+            )
+        )
         self.task: asyncio.Task[None] | None = None
         self.accepted = False
         self.closed = False
         self.connect_stream_ended = False
         self.server_stream_ids: dict[str, int] = {}
+        self.client_stream_buffers: dict[str, bytearray] = {}
 
     def _trace_session_fields(self) -> dict[str, object]:
         trace_fields = getattr(self.handler, "_trace_session_fields", None)
@@ -109,6 +152,9 @@ class _HTTP3WebTransportSession:
     async def _start_webtransport_app(self, scope: dict) -> None:
         try:
             await self.handler.app(scope, self.receive, self._send)
+        except Exception:
+            logger.exception("WebTransport application failed")
+            raise
         finally:
             self._trace_webtransport(
                 "webtransport.app.complete",
@@ -126,6 +172,7 @@ class _HTTP3WebTransportSession:
                         b"",
                         end_stream=True,
                         endpoint=self.endpoint,
+                        priority=True,
                     )
             self.handler._on_webtransport_stream_closed(self.session, self.stream_id)
 
@@ -169,6 +216,11 @@ class _HTTP3WebTransportSession:
                 bytes(message.get("data", b"")),
                 end_stream=not bool(message.get("more", False)),
                 endpoint=self.endpoint,
+                priority=(
+                    stream_direction == "bidi"
+                    or logical_stream_id.startswith("event-")
+                    or bool(message.get("priority", False))
+                ),
             )
             if stream_direction == "server_to_client" and not bool(
                 message.get("more", False)
@@ -189,6 +241,8 @@ class _HTTP3WebTransportSession:
             )
             return
         if typ in {"webtransport.close", "webtransport.disconnect"}:
+            if self.closed:
+                return
             self.closed = True
             await self.handler._send_webtransport_stream_data(
                 self.session,
@@ -196,6 +250,7 @@ class _HTTP3WebTransportSession:
                 b"",
                 end_stream=True,
                 endpoint=self.endpoint,
+                priority=True,
             )
             return
         raise RuntimeError(f"unexpected webtransport send message: {typ!r}")
@@ -205,7 +260,7 @@ class _HTTP3WebTransportSession:
         data: bytes,
         *,
         end_stream: bool = False,
-        disconnect_on_end: bool = True,
+        disconnect_on_end: bool = False,
         stream_id: int | None = None,
         stream_direction: str = "bidi",
         framing: str | None = None,
@@ -213,32 +268,21 @@ class _HTTP3WebTransportSession:
         if self.closed:
             return
         event_stream_id = str(self.stream_id if stream_id is None else stream_id)
-        # QUIC may deliver FIN in a zero-length STREAM frame after the final
-        # data frame. Surface that terminal event so applications can finish
-        # buffering a message previously delivered with `more=True`.
-        if data or end_stream:
-            event = {
-                "type": "webtransport.stream.receive",
-                "session_id": self.session_id,
-                "stream_id": event_stream_id,
-                "stream_direction": stream_direction,
-                "data": data,
-                "more": not end_stream,
-            }
-            if framing is not None:
-                event["framing"] = framing
-            self._trace_webtransport(
-                "webtransport.asgi.receive",
-                **self._trace_session_fields(),
-                stream_id=event_stream_id,
-                session_id=self.session_id,
-                owner_stream_id=self.stream_id,
-                type="webtransport.stream.receive",
-                stream_direction=stream_direction,
-                bytes=len(data),
-                fin=bool(end_stream),
+        if stream_direction == "client_to_server":
+            await self._feed_client_stream_data(
+                event_stream_id,
+                data,
+                end_stream=end_stream,
+                framing=framing,
             )
-            await self.receive.put(event)
+            return
+        await self._put_stream_event(
+            event_stream_id,
+            data,
+            end_stream=end_stream,
+            stream_direction=stream_direction,
+            framing=framing,
+        )
         if end_stream and disconnect_on_end and not self.closed:
             self.closed = True
             self._trace_webtransport(
@@ -249,6 +293,74 @@ class _HTTP3WebTransportSession:
                 type="webtransport.disconnect",
             )
             await self.receive.put({"type": "webtransport.disconnect", "session_id": self.session_id, "code": 0, "reason": ""})
+
+    async def _feed_client_stream_data(
+        self,
+        stream_id: str,
+        data: bytes,
+        *,
+        end_stream: bool,
+        framing: str | None,
+    ) -> None:
+        buffer = self.client_stream_buffers.setdefault(stream_id, bytearray())
+        buffer.extend(data)
+        while len(buffer) >= WEBTRANSPORT_ASGI_CHUNK_SIZE:
+            chunk = bytes(buffer[:WEBTRANSPORT_ASGI_CHUNK_SIZE])
+            del buffer[:WEBTRANSPORT_ASGI_CHUNK_SIZE]
+            final_chunk = end_stream and not buffer
+            await self._put_stream_event(
+                stream_id,
+                chunk,
+                end_stream=final_chunk,
+                stream_direction="client_to_server",
+                framing=framing,
+            )
+        if end_stream:
+            if buffer or not data:
+                await self._put_stream_event(
+                    stream_id,
+                    bytes(buffer),
+                    end_stream=True,
+                    stream_direction="client_to_server",
+                    framing=framing,
+                )
+            self.client_stream_buffers.pop(stream_id, None)
+
+    async def _put_stream_event(
+        self,
+        stream_id: str,
+        data: bytes,
+        *,
+        end_stream: bool,
+        stream_direction: str,
+        framing: str | None,
+    ) -> None:
+        # QUIC may deliver FIN in a zero-length STREAM frame after the final
+        # data frame. Surface that terminal event so applications can finish
+        # buffering a message previously delivered with `more=True`.
+        if data or end_stream:
+            event = {
+                "type": "webtransport.stream.receive",
+                "session_id": self.session_id,
+                "stream_id": stream_id,
+                "stream_direction": stream_direction,
+                "data": data,
+                "more": not end_stream,
+            }
+            if framing is not None:
+                event["framing"] = framing
+            self._trace_webtransport(
+                "webtransport.asgi.receive",
+                **self._trace_session_fields(),
+                stream_id=stream_id,
+                session_id=self.session_id,
+                owner_stream_id=self.stream_id,
+                type="webtransport.stream.receive",
+                stream_direction=stream_direction,
+                bytes=len(data),
+                fin=bool(end_stream),
+            )
+            await self.receive.put(event)
 
     async def feed_connect_stream_data(self, data: bytes, *, end_stream: bool = False) -> None:
         if self.closed:
@@ -283,14 +395,28 @@ class _HTTP3WebTransportSession:
         await self.receive.put(event)
 
     async def abort(self) -> None:
-        self.closed = True
+        if self.closed:
+            return
         self._trace_webtransport(
             "webtransport.app.abort",
             **self._trace_session_fields(),
             stream_id=self.stream_id,
             session_id=self.session_id,
         )
+        await self.receive.put(
+            {
+                "type": "webtransport.disconnect",
+                "session_id": self.session_id,
+                "code": 0,
+                "reason": "transport-closed",
+            }
+        )
+        self.client_stream_buffers.clear()
         if self.task is not None:
-            self.task.cancel()
-            with suppress(asyncio.CancelledError):
-                await self.task
+            try:
+                await asyncio.wait_for(asyncio.shield(self.task), timeout=1.0)
+            except TimeoutError:
+                self.task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await self.task
+        self.closed = True

@@ -295,6 +295,8 @@ class QuicConnectionReceiveMixin:
                 stream_state = self.streams.ensure_receive_stream(frame.stream_id)
                 data_chunk, _delta = stream_state.apply_with_metrics(frame)
                 self.flow.commit_receive(frame.stream_id, end_offset=frame.offset + len(frame.data), final_size=final_size)
+                if _delta > 0:
+                    self._maybe_queue_receive_credit(frame.stream_id)
                 self._maybe_queue_max_stream_credit(frame.stream_id)
                 self.state = 'established'
                 events.append(
