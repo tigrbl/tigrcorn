@@ -397,6 +397,11 @@ class _HTTP3WebTransportSession:
     async def abort(self) -> None:
         if self.closed:
             return
+        # Mark the session closed before waking or cancelling the application.
+        # Its task finalizer otherwise attempts to send a terminal stream frame
+        # and reacquire the handler lock while connection cleanup is awaiting
+        # this method under that same lock.
+        self.closed = True
         self._trace_webtransport(
             "webtransport.app.abort",
             **self._trace_session_fields(),
@@ -419,4 +424,3 @@ class _HTTP3WebTransportSession:
                 self.task.cancel()
                 with suppress(asyncio.CancelledError):
                     await self.task
-        self.closed = True
