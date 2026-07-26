@@ -245,6 +245,10 @@ class HTTP3WebTransportStreamsMixin:
                     stream_id, wire_data, fin=end_stream
                 ),
             ]
+            # STREAM FIN can replenish the peer's bidi/unidi stream credit.
+            # Emit MAX_STREAMS with this response instead of waiting for
+            # unrelated traffic to trigger a later pending-datagram drain.
+            outbound.extend(session.quic.take_handshake_datagrams())
         if end_stream:
             session.webtransport_streams.discard(stream_id)
             session.webtransport_stream_owners.pop(stream_id, None)

@@ -48,7 +48,18 @@ class _Quic:
     def __init__(self) -> None:
         self.streams = _Streams()
         self.sent_streams: list[tuple[int, bytes, bool]] = []
+        self.pending_control: list[bytes] = []
 
+    def send_stream_data_packets(self, stream_id: int, data: bytes, *, fin: bool) -> list[bytes]:
+        packet = self.send_stream_data(stream_id, data, fin=fin)
+        if fin and stream_id % 4 == 0:
+            self.pending_control.append(b"max-streams-credit")
+        return [packet]
+
+    def take_handshake_datagrams(self) -> list[bytes]:
+        pending = list(self.pending_control)
+        self.pending_control.clear()
+        return pending
     def send_datagram_frame(self, payload: bytes) -> bytes:
         return b"datagram:" + payload
 
@@ -221,3 +232,27 @@ def test_server_unidirectional_send_allocates_server_owned_quic_stream() -> None
     assert webtransport.server_stream_ids == {}
     snapshot = handler._webtransport_budget_snapshot()
     assert snapshot["sessions"][webtransport.session_id]["streams"] == ()
+
+def test_finished_client_bidi_response_immediately_emits_max_streams_credit() -> None:
+    handler, session, webtransport = _runtime()
+    handler._webtransport_register_session(session, webtransport)
+    handler._flush_qpack_streams = lambda _session: []
+    session.webtransport_streams.add(4)
+    session.webtransport_stream_owners[4] = 0
+    captured: list[bytes] = []
+    handler._queue_session_outbound_locked = (
+        lambda _session, outbound, _endpoint, **_kwargs: captured.extend(outbound)
+    )
+
+    asyncio.run(
+        handler._send_webtransport_stream_data(
+            session,
+            4,
+            b"rpc-response",
+            end_stream=True,
+            endpoint=webtransport.endpoint,
+            priority=True,
+        )
+    )
+
+    assert captured == [b"stream-packet", b"max-streams-credit"]
