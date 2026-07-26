@@ -412,4 +412,9 @@ class HTTP3PacketMixin:
             self._update_h3_connection(session)
             outbound.extend(session.quic.take_handshake_datagrams())
             outbound.extend(session.quic.drain_scheduled_datagrams())
-            self._queue_session_outbound_locked(session, outbound, endpoint)
+            # This path carries transport ACK/flow-control plus request
+            # responses. Keep it ahead of bulk application media so ACKs can
+            # continuously release congestion credit.
+            self._queue_session_outbound_locked(
+                session, outbound, endpoint, priority=True
+            )

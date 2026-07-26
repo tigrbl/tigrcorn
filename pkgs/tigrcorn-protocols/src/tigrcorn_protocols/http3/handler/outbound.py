@@ -3,7 +3,15 @@ from __future__ import annotations
 from .imports import *
 
 class HTTP3OutboundMixin:
-    def _queue_or_send(self, session: HTTP3Session, raw: bytes, endpoint: UDPEndpoint, addr: tuple[str, int]) -> None:
+    def _queue_or_send(
+        self,
+        session: HTTP3Session,
+        raw: bytes,
+        endpoint: UDPEndpoint,
+        addr: tuple[str, int],
+        *,
+        priority: bool = False,
+    ) -> None:
         transport = getattr(endpoint, 'transport', None)
         if transport is not None and transport.is_closing():
             return
@@ -15,7 +23,12 @@ class HTTP3OutboundMixin:
                 self.metrics.quic_datagram_sent(len(raw))
             return
         session.quic.defer_datagram(raw)
-        session.pending_outbound.append(raw)
+        target = (
+            session.pending_priority_outbound
+            if priority
+            else session.pending_outbound
+        )
+        target.append(raw)
 
     def _sync_quic_loss_metrics(self, session: HTTP3Session) -> None:
         if self.metrics is None:
@@ -155,7 +168,11 @@ class HTTP3OutboundMixin:
                 return
             outbound = session.quic.drain_scheduled_datagrams()
             for raw in outbound:
-                self._queue_or_send(session, raw, endpoint, session.addr)
+                # ACKs, PTO probes, and loss retransmissions must not sit
+                # behind a large application-media queue.
+                self._queue_or_send(
+                    session, raw, endpoint, session.addr, priority=True
+                )
             self._flush_pending_outbound(session, endpoint)
             self._arm_session_timer(session, endpoint)
     def _ensure_server_control_stream_locked(self, session: HTTP3Session) -> list[bytes]:

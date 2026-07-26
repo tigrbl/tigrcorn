@@ -140,6 +140,20 @@ class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
         self.assertEqual(len(endpoint.sent), 1)
         self.assertEqual(session.pending_outbound, [])
 
+        recovery = session.quic.recovery
+        recovery.congestion_window = 0
+        priority_raw = session.quic.send_stream_data(5, b"ack-or-probe", fin=True)
+        handler._queue_or_send(
+            session, priority_raw, endpoint, session.addr, priority=True
+        )
+        self.assertEqual(session.pending_priority_outbound, [priority_raw])
+
+        recovery.congestion_window = 64_000
+        recovery.pacing_budget = 64_000
+        handler._flush_pending_outbound(session, endpoint)
+        self.assertEqual(session.pending_priority_outbound, [])
+        self.assertEqual(endpoint.sent[-1][0], priority_raw)
+
     def test_handler_flushes_control_priority_before_queued_media(self):
         async def app(scope, receive, send):
             raise AssertionError('app should not be invoked')
