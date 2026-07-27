@@ -146,15 +146,15 @@ class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
         handler._queue_or_send(
             session, priority_raw, endpoint, session.addr, priority=True
         )
-        self.assertEqual(session.pending_priority_outbound, [priority_raw])
+        self.assertEqual(session.pending_outbound, [priority_raw])
 
         recovery.congestion_window = 64_000
         recovery.pacing_budget = 64_000
         handler._flush_pending_outbound(session, endpoint)
-        self.assertEqual(session.pending_priority_outbound, [])
+        self.assertEqual(session.pending_outbound, [])
         self.assertEqual(endpoint.sent[-1][0], priority_raw)
 
-    def test_handler_flushes_control_priority_before_queued_media(self):
+    def test_handler_preserves_packet_number_order_across_lane_priorities(self):
         async def app(scope, receive, send):
             raise AssertionError('app should not be invoked')
 
@@ -189,15 +189,13 @@ class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
         )
 
         self.assertEqual(endpoint.sent, [])
-        self.assertEqual(session.pending_outbound, [media])
-        self.assertEqual(session.pending_priority_outbound, [control])
+        self.assertEqual(session.pending_outbound, [media, control])
 
         session.quic.recovery.congestion_window = 64_000
         session.quic.recovery.pacing_budget = 64_000
         handler._flush_pending_outbound(session, endpoint)
 
-        self.assertEqual([raw for raw, _addr in endpoint.sent], [control, media])
-        self.assertEqual(session.pending_priority_outbound, [])
+        self.assertEqual([raw for raw, _addr in endpoint.sent], [media, control])
         self.assertEqual(session.pending_outbound, [])
 
 

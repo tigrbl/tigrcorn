@@ -23,12 +23,10 @@ class HTTP3OutboundMixin:
                 self.metrics.quic_datagram_sent(len(raw))
             return
         session.quic.defer_datagram(raw)
-        target = (
-            session.pending_priority_outbound
-            if priority
-            else session.pending_outbound
-        )
-        target.append(raw)
+        # Packet numbers are assigned before this scheduler sees the datagram.
+        # Reordering already-numbered packets creates spurious QUIC loss, so
+        # priority remains advisory until it can be applied before encoding.
+        session.pending_outbound.append(raw)
 
     def _sync_quic_loss_metrics(self, session: HTTP3Session) -> None:
         if self.metrics is None:
@@ -43,38 +41,21 @@ class HTTP3OutboundMixin:
             session.last_quic_pto_expirations_total += 1
 
     def _flush_pending_outbound(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
-        if not session.pending_priority_outbound and not session.pending_outbound:
+        if not session.pending_outbound:
             return
         transport = getattr(endpoint, 'transport', None)
         if transport is not None and transport.is_closing():
             return
-        while session.pending_priority_outbound or session.pending_outbound:
-            preferred = (
-                session.pending_priority_outbound
-                if session.outbound_priority_turn
-                else session.pending_outbound
-            )
-            alternate = (
-                session.pending_outbound
-                if session.outbound_priority_turn
-                else session.pending_priority_outbound
-            )
-            queue = preferred or alternate
-            raw = queue[0]
+        while session.pending_outbound:
+            raw = session.pending_outbound[0]
             if not self._can_send_now(session, raw):
-                if not alternate or alternate is queue:
-                    break
-                queue = alternate
-                raw = queue[0]
-                if not self._can_send_now(session, raw):
-                    break
-            queue.pop(0)
+                break
+            session.pending_outbound.pop(0)
             session.quic.confirm_datagram_sent(raw)
             endpoint.send(raw, session.addr)
             session.bytes_sent += len(raw)
             if self.metrics is not None:
                 self.metrics.quic_datagram_sent(len(raw))
-            session.outbound_priority_turn = queue is session.pending_outbound
 
     def _can_send_now(self, session: HTTP3Session, raw: bytes) -> bool:
         amplification_ok = session.address_validated or (session.bytes_sent + len(raw) <= (session.bytes_received * 3))
@@ -95,7 +76,7 @@ class HTTP3OutboundMixin:
         runtime_delay = session.quic.next_runtime_deadline()
         if runtime_delay is not None:
             delays.append(runtime_delay)
-        for raw in (*session.pending_priority_outbound, *session.pending_outbound):
+        for raw in session.pending_outbound:
             delay = session.quic.next_transmit_delay(raw)
             if delay is not None:
                 delays.append(delay)
@@ -234,10 +215,9 @@ class HTTP3OutboundMixin:
         # not consume congestion credit ahead of earlier CRYPTO segments.
         for raw in outbound:
             session.quic.defer_datagram(raw)
-        target = (
-            session.pending_priority_outbound if priority else session.pending_outbound
-        )
-        target.extend(outbound)
+        # Preserve QUIC packet-number order. Stream/lane priority must be
+        # resolved before packet encoding, never by reordering wire datagrams.
+        session.pending_outbound.extend(outbound)
         self._flush_pending_outbound(session, endpoint)
         if session.addr in self.sessions and self.sessions.get(session.addr) is session:
             self._arm_session_timer(session, endpoint)
