@@ -13,6 +13,9 @@ if TYPE_CHECKING:
     from .core import HTTP3DatagramHandler, HTTP3Session
 
 
+from .webtransport_send import send_message
+
+
 logger = logging.getLogger("tigrcorn")
 WEBTRANSPORT_ASGI_CHUNK_SIZE = 16 * 1024
 
@@ -87,6 +90,7 @@ class _HTTP3WebTransportSession:
         self.connect_stream_ended = False
         self.server_stream_ids: dict[str, int] = {}
         self.client_stream_buffers: dict[str, bytearray] = {}
+        self._send_lock = asyncio.Lock()
 
     def _trace_session_fields(self) -> dict[str, object]:
         trace_fields = getattr(self.handler, "_trace_session_fields", None)
@@ -177,83 +181,8 @@ class _HTTP3WebTransportSession:
             self.handler._on_webtransport_stream_closed(self.session, self.stream_id)
 
     async def _send(self, message: dict) -> None:
-        typ = message.get("type")
-        self._trace_webtransport(
-            "webtransport.asgi.send",
-            **self._trace_session_fields(),
-            stream_id=message.get("stream_id", self.stream_id),
-            session_id=self.session_id,
-            owner_stream_id=self.stream_id,
-            type=str(typ),
-            bytes=len(bytes(message.get("data", b""))) if message.get("data") is not None else None,
-        )
-        if typ == "webtransport.accept":
-            if self.accepted:
-                raise RuntimeError("webtransport.accept sent more than once")
-            self.accepted = True
-            return
-        if typ == "webtransport.stream.send":
-            if not self.accepted:
-                raise RuntimeError("webtransport.stream.send before webtransport.accept")
-            stream_direction = str(message.get("stream_direction", "bidi"))
-            if stream_direction not in {"bidi", "server_to_client"}:
-                raise RuntimeError("webtransport.stream.send requires bidi or server_to_client stream_direction")
-            logical_stream_id = str(message.get("stream_id", self.stream_id))
-            if stream_direction == "server_to_client":
-                target_stream_id = self.server_stream_ids.get(logical_stream_id)
-                if target_stream_id is None:
-                    target_stream_id = await self.handler._open_webtransport_server_stream(
-                        self.session,
-                        self.stream_id,
-                        endpoint=self.endpoint,
-                    )
-                    self.server_stream_ids[logical_stream_id] = target_stream_id
-            else:
-                target_stream_id = int(logical_stream_id)
-            await self.handler._send_webtransport_stream_data(
-                self.session,
-                target_stream_id,
-                bytes(message.get("data", b"")),
-                end_stream=not bool(message.get("more", False)),
-                endpoint=self.endpoint,
-                priority=(
-                    stream_direction == "bidi"
-                    or logical_stream_id.startswith("event-")
-                    or bool(message.get("priority", False))
-                ),
-            )
-            if stream_direction == "server_to_client" and not bool(
-                message.get("more", False)
-            ):
-                self.server_stream_ids.pop(logical_stream_id, None)
-            return
-        if typ and str(typ).startswith("webtransport.message."):
-            raise RuntimeError("webtransport message is not a native WebTransport lane")
-        if typ == "webtransport.datagram.send":
-            if not self.accepted:
-                raise RuntimeError("webtransport.datagram.send before webtransport.accept")
-            await self.handler._send_webtransport_datagram(
-                self.session,
-                self.stream_id,
-                bytes(message.get("data", b"")),
-                datagram_id=str(message.get("datagram_id", "datagram")),
-                endpoint=self.endpoint,
-            )
-            return
-        if typ in {"webtransport.close", "webtransport.disconnect"}:
-            if self.closed:
-                return
-            self.closed = True
-            await self.handler._send_webtransport_stream_data(
-                self.session,
-                self.stream_id,
-                b"",
-                end_stream=True,
-                endpoint=self.endpoint,
-                priority=True,
-            )
-            return
-        raise RuntimeError(f"unexpected webtransport send message: {typ!r}")
+        async with self._send_lock:
+            await send_message(self, message)
 
     async def feed_stream_data(
         self,

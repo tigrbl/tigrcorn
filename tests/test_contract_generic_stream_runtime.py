@@ -24,6 +24,7 @@ def test_generic_stream_runtime_preserves_order_and_completion() -> None:
     assert complete == {
         "type": "transport.emit.complete",
         "unit_id": "stream-1",
+        "emit_id": "stream-1",
         "level": "accepted_by_runtime",
         "status": "ok",
     }

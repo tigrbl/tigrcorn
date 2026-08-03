@@ -23,6 +23,7 @@ def test_emit_completion_event_accepts_canonical_enums_and_detail() -> None:
     assert event == {
         "type": "transport.emit.complete",
         "unit_id": "unit-1",
+        "emit_id": "unit-1",
         "level": "accepted_by_runtime",
         "status": "rejected",
         "detail": "queue closed",

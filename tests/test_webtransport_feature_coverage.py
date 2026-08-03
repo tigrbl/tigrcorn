@@ -216,6 +216,7 @@ def test_webtransport_contract_completion_events_normalize_acknowledged_alias() 
     assert complete == {
         "type": "transport.emit.complete",
         "unit_id": "s1",
+        "emit_id": "s1",
         "level": "peer_acknowledged",
         "status": "ok",
     }

@@ -367,6 +367,8 @@ def webtransport_stream_send(
     stream_direction: str = "bidi",
     framing: str | None = None,
     more: bool = False,
+    emit_id: str | None = None,
+    completion_level: str | CompletionLevel | None = None,
 ) -> dict[str, Any]:
     event = _event(
         "webtransport.stream.send",
@@ -378,6 +380,12 @@ def webtransport_stream_send(
     )
     if framing is not None:
         event["framing"] = framing
+    if emit_id is not None:
+        event["emit_id"] = str(emit_id)
+    if completion_level is not None:
+        event["completion_level"] = CompletionLevel(
+            _normalize_completion_level(str(completion_level))
+        ).value
     return event
 
 
@@ -388,10 +396,24 @@ def webtransport_datagram_receive(session_id: str, datagram_id: str, data: bytes
     return event
 
 
-def webtransport_datagram_send(session_id: str, datagram_id: str, data: bytes, *, framing: str | None = None) -> dict[str, Any]:
+def webtransport_datagram_send(
+    session_id: str,
+    datagram_id: str,
+    data: bytes,
+    *,
+    framing: str | None = None,
+    emit_id: str | None = None,
+    completion_level: str | CompletionLevel | None = None,
+) -> dict[str, Any]:
     event = _event("webtransport.datagram.send", session_id=session_id, datagram_id=datagram_id, data=data)
     if framing is not None:
         event["framing"] = framing
+    if emit_id is not None:
+        event["emit_id"] = str(emit_id)
+    if completion_level is not None:
+        event["completion_level"] = CompletionLevel(
+            _normalize_completion_level(str(completion_level))
+        ).value
     return event
 
 
@@ -401,6 +423,7 @@ def emit_complete(
     level: str | CompletionLevel = CompletionLevel.FLUSHED_TO_TRANSPORT,
     status: str | CompletionStatus = CompletionStatus.OK,
     detail: str | None = None,
+    emit_id: str | None = None,
 ) -> dict[str, Any]:
     try:
         completion_level = CompletionLevel(_normalize_completion_level(str(level)))
@@ -410,7 +433,13 @@ def emit_complete(
         completion_status = CompletionStatus(str(status))
     except ValueError as exc:
         raise ProtocolError(f"unsupported completion status: {status!r}") from exc
-    event = _event("transport.emit.complete", unit_id=_require_unit_id(unit_id), level=completion_level.value, status=completion_status.value)
+    event = _event(
+        "transport.emit.complete",
+        unit_id=_require_unit_id(unit_id),
+        emit_id=str(emit_id or unit_id),
+        level=completion_level.value,
+        status=completion_status.value,
+    )
     if detail:
         event["detail"] = detail
     return event

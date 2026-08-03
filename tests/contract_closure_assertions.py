@@ -161,7 +161,7 @@ class ContractClosureAssertions(unittest.TestCase):
 
     def assert_completion_event(self) -> None:
         complete = emit_complete("unit-1", level="transport", status="ok")
-        self.assertEqual(complete, {"type": "transport.emit.complete", "unit_id": "unit-1", "level": "flushed_to_transport", "status": "ok"})
+        self.assertEqual(complete, {"type": "transport.emit.complete", "unit_id": "unit-1", "emit_id": "unit-1", "level": "flushed_to_transport", "status": "ok"})
 
     def assert_binding_classification(self, kind: str) -> None:
         expected = {
