@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to govern evidence-centered proof authority for schema 0.8.0."
     at: "2026-06-07T13:05:50Z"
+    note: "Created to govern evidence-centered proof authority for schema 0.8.0."
+    status: "draft"
 references: []
 body: |-
   Summary

@@ -11,7 +11,11 @@ tags: []
 summary: "This SPEC defines the machine-actionable gates that determine whether a claim may be treated as valid at `T1`, `T2`, `T3`, or `T4`."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-06-07T13:06:55Z"
+    note: "Updated claim-tier gates to evaluate evidence-centered proof authority."
+    status: "draft"
 references: []
 body: |-
   ## Scope

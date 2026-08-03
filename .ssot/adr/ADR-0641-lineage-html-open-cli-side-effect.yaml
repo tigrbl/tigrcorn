@@ -1,0 +1,23 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0641"
+number: 641
+slug: "lineage-html-open-cli-side-effect"
+title: "Lineage HTML opening is an explicit CLI side effect"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision
+  The graph lineage HTML opener is an explicit CLI convenience side effect. The core lineage export API remains responsible only for generating the HTML artifact and returning its path.
+  
+  Consequences
+  The CLI may call a platform-aware opener after successful export when the operator passes --open. The flag is opt-in and defaults to disabled so CI, automation, and API callers keep deterministic file-generation behavior.
+  
+  The CLI shall report opener failures as clear command errors. It shall also reject directory output targets before attempting to write or open a lineage artifact.

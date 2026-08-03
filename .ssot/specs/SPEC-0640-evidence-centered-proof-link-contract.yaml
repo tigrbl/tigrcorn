@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define schema 0.8.0 evidence-centered proof link semantics."
     at: "2026-06-07T13:06:35Z"
+    note: "Created to define schema 0.8.0 evidence-centered proof link semantics."
+    status: "draft"
 references: []
 body: |-
   Scope
@@ -45,4 +45,3 @@ adr_ids:
   - "adr:0640"
   - "adr:0634"
   - "adr:0635"
-  - "adr:0603"

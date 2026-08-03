@@ -8,7 +8,7 @@ status: "draft"
 origin: "ssot-origin"
 decision_date: null
 tags: []
-summary: "`feature create` SHALL default to proof-graph scaffolding for new feature rows unless an explicit CLI override or effective repo-local config disables that behavior."
+summary: "Scope"
 supersedes: []
 superseded_by: []
 status_notes:
@@ -16,29 +16,27 @@ status_notes:
     at: "2026-05-24T10:52:03Z"
     note: "Created to govern default proof-graph scaffolding during feature creation."
     status: "draft"
+  -
+    at: "2026-06-07T13:07:32Z"
+    note: "Updated default proof scaffold shape for evidence-centered links."
+    status: "draft"
 references: []
 body: |-
-  ## Contract
+  Scope
+  This SPEC defines default proof-graph scaffolding behavior during feature creation.
   
-  `feature create` SHALL default to proof-graph scaffolding for new feature rows unless an explicit CLI override or effective repo-local config disables that behavior.
+  Default behavior
+  `feature create` shall default to proof-graph scaffolding for new feature rows unless an explicit CLI override or effective repo-local config disables that behavior.
   
-  The default scaffold SHALL create or link the minimally valid claim, test, and evidence graph required for a governed feature row in the same transaction as feature creation. The command SHALL validate and save atomically.
+  Evidence-centered scaffold shape
+  The default scaffold shall create or link the minimally valid claim, producer test, and evidence graph required for a governed feature row in the same transaction as feature creation. The evidence rows shall support the scaffolded claims and shall record test provenance when scaffold tests are created.
   
-  CLI precedence SHALL be:
-  1. explicit `--auto-scaffold-proof-graph` or `--no-auto-scaffold-proof-graph`
-  2. command-scoped repo-local config for feature creation
-  3. global repo-local config
-  4. built-in default
+  Tier separation
+  When scaffolded proof includes more than one claim tier, scaffold support shall remain tier-separated. The command shall not collapse distinct scaffolded claim tiers onto one ambiguous proof triangle. Shared evidence may aggregate across tiers only when it explicitly supports each claim and satisfies the tier and source-lineage requirements for each target claim.
   
-  The built-in default SHALL be scaffold enabled.
-  
-  The command SHALL expose an auditable result that makes clear when proof-graph scaffolding occurred, what ids were created or linked, and what files were materialized.
-  
-  Repositories MAY disable the default through repo-local config for narrow workflows such as inventory-only umbrella-parent creation, but such policy does not change the canonical meaning of features, parent links, profiles, claims, tests, or evidence.
-  
-  Repeated scaffolded creation attempts against an unchanged target SHALL be idempotent or fail cleanly without duplicating stable rows.
+  Overrides and auditability
+  The precedence order remains explicit CLI flag, repo-local config, then built-in default. The command shall expose an auditable result that makes clear when proof-graph scaffolding occurred, what ids were created or linked, and what files were materialized.
 spec_kind: "operational"
 adr_ids:
-  - "adr:0601"
-  - "adr:0627"
   - "adr:0636"
+  - "adr:0640"

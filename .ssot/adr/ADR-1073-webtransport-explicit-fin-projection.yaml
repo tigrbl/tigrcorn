@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1073"
+number: 1073
+slug: "webtransport-explicit-fin-projection"
+title: "ASGI WebTransport continuation state is authoritative for QUIC FIN"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn projects explicit WebTransport stream continuation state onto QUIC. It does not infer stream termination from JSON, JSON-RPC, application-record completion, handler return, or operation completion. more=true preserves the sending direction; more=false or webtransport.stream.close emits terminal stream intent. Missing continuation state fails closed. Session and child-stream lifetimes remain independent."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted with explicit FIN projection in Tigrcorn."
+    at: "2026-08-03T22:24:41Z"
+references: []
+body: |-
+  Tigrcorn projects explicit WebTransport stream continuation state onto QUIC. It does not infer stream termination from JSON, JSON-RPC, application-record completion, handler return, or operation completion. more=true preserves the sending direction; more=false or webtransport.stream.close emits terminal stream intent. Missing continuation state fails closed. Session and child-stream lifetimes remain independent.

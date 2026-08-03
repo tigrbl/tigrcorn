@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2010"
 number: 2010
@@ -21,29 +21,29 @@ status_notes:
     note: "Updated WebTransport contract with native lane separation."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated WebTransport contract to separate lane facts from inner app framing semantics."
     at: "2026-05-27T18:11:52Z"
+    note: "Updated WebTransport contract to separate lane facts from inner app framing semantics."
+    status: "draft"
 references: []
 body: |-
   ## Content
-
+  
   # WebTransport contract target
-
+  
   Tigrcorn shall implement first-class WebTransport support through carrier-specific HTTP/3 draft-13 and HTTP/2 fallback wire contracts.
-
+  
   The tracked WebTransport API reference is the W3C WebTransport Working Draft, with the latest published W3C technical report used for drift checks. Protocol behavior for the HTTP/3 carrier is tracked through draft-ietf-webtrans-http3-13 and `spc:2069`. Protocol behavior for the HTTP/2 fallback carrier is tracked through draft-ietf-webtrans-http2-08 and `spc:2068`. MDN WebTransport pages are informative developer-facing references for API shape, browser availability, examples, and terminology; they do not supersede W3C, IETF, or this repo-local SSOT contract.
-
+  
   ## Carrier-specific wire contracts
-
+  
   - HTTP/3 over QUIC is the canonical native WebTransport carrier and is governed by `adr:1011` and `spc:2069`.
   - HTTP/2 is a separately gated fallback carrier and is governed by `adr:1055` and `spc:2068`.
   - H3 WebTransport uses native QUIC streams and QUIC DATAGRAM semantics where negotiated.
   - H2 WebTransport uses HTTP/2 extended CONNECT plus WebTransport capsules carried in HTTP/2 DATA frames.
   - Runtime projection shall preserve common `webtransport.*` contract events while exposing carrier metadata that distinguishes native QUIC stream/datagram backing from H2 capsule backing.
-
+  
   ## Required runtime surface
-
+  
   - Contract `webtransport` scope construction.
   - `webtransport.connect` and `webtransport.accept` session admission.
   - `webtransport.disconnect` and `webtransport.close` session termination.
@@ -53,9 +53,9 @@ body: |-
   - `transport.emit.complete` completion signaling for session, stream, and datagram emission paths.
   - Contract validation against the SSOT-declared tigr-asgi-contract schema target and classification matrix.
   - ASGI/3 exposure only through documented Tigrcorn extensions when compatibility is explicitly selected.
-
+  
   ## W3C WebTransport alignment
-
+  
   - Session termination shall preserve the W3C WebTransport `close()` / `closed` model: clean closes carry a close code and reason, while failed transport closure is observable as an error path.
   - Stream termination shall preserve the W3C send/receive split: writable close maps to a FIN-style send close, writable abort maps to aborting/resetting the send direction, and readable cancel maps to aborting the receive direction.
   - Bidirectional stream handling shall treat each direction independently and shall not collapse stream close into session close.
@@ -66,9 +66,9 @@ body: |-
   - Tigrcorn does not own application-level message framing semantics inside WebTransport stream or datagram payloads unless separately governed.
   - W3C API concepts are tracked as interoperability semantics; Tigrcorn's public runtime contract remains the repo-local `webtransport.*` event surface declared in this SPEC and linked feature rows.
   - MDN examples and browser-support notes may be used to shape examples, operator docs, and test descriptions, but conformance requirements must trace to the W3C/IETF references and SSOT feature rows.
-
+  
   ## Required operator surface
-
+  
   - Tigrcorn shall accept `webtransport` as a public `--protocol` value.
   - A listener that selects `webtransport` shall resolve to the required H3/QUIC carrier state unless an explicitly governed H2 fallback selector is added.
   - WebTransport protocol selection shall require UDP transport semantics.
@@ -76,13 +76,13 @@ body: |-
   - Tigrcorn shall fail closed when WebTransport is selected on a non-UDP listener or when required carrier state is malformed.
   - Tigrcorn shall expose WebTransport tuning through a `[webtransport]` config block, prefixed environment variables, public config-construction APIs, and equivalent CLI flags.
   - WebTransport tuning shall include maximum sessions, maximum streams, maximum datagram size, allowed origins, and path prefix controls.
-
+  
   ## Boundary exclusions
-
+  
   Tigrcorn shall not implement REST or JSON-RPC as product runtimes. Those bindings remain application/framework responsibilities above ASGI HTTP.
-
+  
   Tigrcorn may keep REST and JSON-RPC contract metadata visible for validation, classification, or interoperability reporting, but that metadata does not create a runtime implementation obligation.
-
+  
   Client-session topology coverage for WebTransport sessions, streams, and datagrams is governed by `spc:2053`; this SPEC remains the WebTransport runtime contract.
 spec_kind: "local-policy"
 adr_ids:
@@ -94,3 +94,4 @@ adr_ids:
   - "adr:1040"
   - "adr:1050"
   - "adr:1055"
+  - "adr:1073"

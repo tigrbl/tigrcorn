@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2071"
 number: 2071
@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines the proof levels that separate WebTransport helper-level wire modeling from in-process carrier runtime behavior and independent peer interoperability."
+summary: "This SPEC defines the proof levels that separate WebTransport helper-level wire modeling from in-process carrier runtime behavior and independent peer interoperability."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -16,16 +16,14 @@ status_notes:
     at: "2026-06-17T00:00:00Z"
     note: "Created to prevent helper-only WebTransport proof from satisfying carrier runtime compliance claims."
     status: "draft"
-references:
-  - "IETF draft-ietf-webtrans-http2-08: https://www.ietf.org/archive/id/draft-ietf-webtrans-http2-08.html"
-  - "IETF draft-ietf-webtrans-http3-13: https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3-13"
+references: []
 body: |-
   # WebTransport carrier runtime conformance matrix
-
+  
   This SPEC defines the proof levels that separate WebTransport helper-level wire modeling from in-process carrier runtime behavior and independent peer interoperability.
-
+  
   Requirements:
-
+  
   - WebTransport helper or codec tests may prove wire-model behavior, but they shall not satisfy carrier runtime claims by themselves.
   - Carrier runtime claims shall exercise the actual Tigrcorn HTTP/2 or HTTP/3 handler path, including negotiated settings, session admission, frame/capsule IO, stream/datagram dispatch, flow control, and session termination.
   - Independent peer claims shall exercise a non-Tigrcorn client or browser peer against the Tigrcorn listener and preserve replayable artifacts when required by the certification boundary.
@@ -37,3 +35,4 @@ spec_kind: "operational"
 adr_ids:
   - "adr:1055"
   - "adr:1057"
+  - "adr:1073"

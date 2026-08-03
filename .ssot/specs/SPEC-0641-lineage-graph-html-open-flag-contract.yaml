@@ -1,0 +1,32 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0641"
+number: 641
+slug: "lineage-graph-html-open-flag-contract"
+title: "Lineage graph HTML open flag contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Scope"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Scope
+  The graph lineage command shall support an explicit --open flag that opens the generated self-contained HTML lineage artifact with the local platform opener after a successful export.
+  
+  Default behavior
+  Without --open, graph lineage shall continue to write the HTML artifact and return its payload without launching any desktop application or browser.
+  
+  Open behavior
+  With --open, graph lineage shall first complete export, then open the returned output_path using the host platform opener. Windows shall use os.startfile. macOS shall invoke open. Other platforms shall invoke xdg-open.
+  
+  The command payload shall include opened: true when the open action was requested and completed. It shall include opened: false when no open action was requested.
+  
+  Invalid output paths
+  An existing directory passed to --output shall be rejected with a clear command error stating that the lineage graph output path must be a file.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0641"

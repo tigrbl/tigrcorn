@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2022"
 number: 2022
@@ -13,17 +13,17 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Updated stream and datagram validation against contract classification matrix."
     at: "2026-05-27T17:41:02Z"
+    note: "Updated stream and datagram validation against contract classification matrix."
+    status: "draft"
 references: []
 body: |-
   # Stream and datagram runtime
-
+  
   Tigrcorn shall model stream and datagram behavior as contract-native runtime families.
-
+  
   Requirements:
-
+  
   - Native scopes declare stream and datagram capabilities where supported.
   - Stream events preserve stream identity, direction, close state, and flow-control state.
   - WebTransport stream events declare or derive whether the stream is bidirectional, client-to-server unidirectional, or server-to-client unidirectional.
@@ -42,3 +42,4 @@ adr_ids:
   - "adr:1039"
   - "adr:1050"
   - "adr:1055"
+  - "adr:1073"

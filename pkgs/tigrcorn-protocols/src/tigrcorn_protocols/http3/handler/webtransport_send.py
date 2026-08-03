@@ -119,7 +119,11 @@ async def _send_stream(owner: Any, message: dict[str, Any]) -> None:
             owner.server_stream_ids[logical_id] = target_id
     else:
         target_id = int(logical_id)
-    more = bool(message.get("more", False))
+    if "more" not in message or not isinstance(message["more"], bool):
+        raise RuntimeError(
+            "webtransport.stream.send requires explicit boolean more continuation"
+        )
+    more = message["more"]
     await owner.handler._send_webtransport_stream_data(
         owner.session,
         target_id,
