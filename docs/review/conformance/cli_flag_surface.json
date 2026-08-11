@@ -493,6 +493,8 @@
         "--webtransport-max-sessions",
         "--webtransport-max-streams",
         "--webtransport-max-datagram-size",
+        "--webtransport-stream-receive-coalesce-bytes",
+        "--webtransport-stream-receive-max-delay-ms",
         "--webtransport-origin",
         "--webtransport-path",
         "--pipe-mode"
@@ -578,6 +580,6 @@
       ]
     }
   ],
-  "public_flag_string_count": 130,
-  "promotion_ready_count": 130
+  "public_flag_string_count": 132,
+  "promotion_ready_count": 132
 }

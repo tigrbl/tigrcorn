@@ -23,6 +23,10 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
                 "64",
                 "--webtransport-max-datagram-size",
                 "1200",
+                "--webtransport-stream-receive-coalesce-bytes",
+                "8192",
+                "--webtransport-stream-receive-max-delay-ms",
+                "7",
                 "--webtransport-origin",
                 "https://example.test,https://api.example.test",
                 "--webtransport-path",
@@ -39,6 +43,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
         self.assertEqual(config.webtransport.max_sessions, 8)
         self.assertEqual(config.webtransport.max_streams, 64)
         self.assertEqual(config.webtransport.max_datagram_size, 1200)
+        self.assertEqual(config.webtransport.stream_receive_coalesce_bytes, 8192)
+        self.assertEqual(config.webtransport.stream_receive_max_delay_ms, 7)
         self.assertEqual(config.webtransport.origins, ["https://example.test", "https://api.example.test"])
         self.assertEqual(config.webtransport.path, "/wt")
 
@@ -50,6 +56,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
                     "max_sessions": "2",
                     "max_streams": "16",
                     "max_datagram_size": "900",
+                    "stream_receive_coalesce_bytes": "4096",
+                    "stream_receive_max_delay_ms": "3",
                     "origins": "https://example.test",
                     "path": "/transport",
                 },
@@ -60,6 +68,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
         self.assertEqual(config.webtransport.max_sessions, 2)
         self.assertEqual(config.webtransport.max_streams, 16)
         self.assertEqual(config.webtransport.max_datagram_size, 900)
+        self.assertEqual(config.webtransport.stream_receive_coalesce_bytes, 4096)
+        self.assertEqual(config.webtransport.stream_receive_max_delay_ms, 3)
         self.assertEqual(config.webtransport.origins, ["https://example.test"])
         self.assertEqual(config.webtransport.path, "/transport")
 
@@ -72,6 +82,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
                 "WT_WEBTRANSPORT_MAX_SESSIONS": "3",
                 "WT_WEBTRANSPORT_MAX_STREAMS": "24",
                 "WT_WEBTRANSPORT_MAX_DATAGRAM_SIZE": "1000",
+                "WT_WEBTRANSPORT_STREAM_RECEIVE_COALESCE_BYTES": "2048",
+                "WT_WEBTRANSPORT_STREAM_RECEIVE_MAX_DELAY_MS": "2",
                 "WT_WEBTRANSPORT_ORIGIN": "https://one.test,https://two.test",
                 "WT_WEBTRANSPORT_PATH": "wt",
             },
@@ -83,6 +95,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
         self.assertEqual(config.webtransport.max_sessions, 3)
         self.assertEqual(config.webtransport.max_streams, 24)
         self.assertEqual(config.webtransport.max_datagram_size, 1000)
+        self.assertEqual(config.webtransport.stream_receive_coalesce_bytes, 2048)
+        self.assertEqual(config.webtransport.stream_receive_max_delay_ms, 2)
         self.assertEqual(config.webtransport.origins, ["https://one.test", "https://two.test"])
         self.assertEqual(config.webtransport.path, "/wt")
 
@@ -93,6 +107,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
             webtransport_max_sessions=4,
             webtransport_max_streams=32,
             webtransport_max_datagram_size=1100,
+            webtransport_stream_receive_coalesce_bytes=1024,
+            webtransport_stream_receive_max_delay_ms=1,
             webtransport_origins=["https://example.test"],
             webtransport_path="/wt",
         )
@@ -101,6 +117,8 @@ class WebTransportOperatorSurfaceTests(unittest.TestCase):
         self.assertEqual(config.webtransport.max_sessions, 4)
         self.assertEqual(config.webtransport.max_streams, 32)
         self.assertEqual(config.webtransport.max_datagram_size, 1100)
+        self.assertEqual(config.webtransport.stream_receive_coalesce_bytes, 1024)
+        self.assertEqual(config.webtransport.stream_receive_max_delay_ms, 1)
         self.assertEqual(config.webtransport.origins, ["https://example.test"])
         self.assertEqual(config.webtransport.path, "/wt")
 

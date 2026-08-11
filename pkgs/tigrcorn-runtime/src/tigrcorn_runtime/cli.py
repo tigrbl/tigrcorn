@@ -155,6 +155,8 @@ def build_parser() -> argparse.ArgumentParser:
     protocol_group.add_argument("--webtransport-max-sessions", type=int, default=None, help="Maximum concurrently active WebTransport sessions")
     protocol_group.add_argument("--webtransport-max-streams", type=int, default=None, help="Maximum concurrently active WebTransport streams")
     protocol_group.add_argument("--webtransport-max-datagram-size", type=int, default=None, help="Maximum WebTransport datagram payload size")
+    protocol_group.add_argument("--webtransport-stream-receive-coalesce-bytes", type=int, default=None, help="Maximum buffered client-stream bytes before emitting an ASGI receive event")
+    protocol_group.add_argument("--webtransport-stream-receive-max-delay-ms", type=int, default=None, help="Maximum delay before buffered client-stream bytes are emitted to the ASGI application")
     protocol_group.add_argument("--webtransport-origin", action="append", default=None, help="Allowed WebTransport Origin value; repeat or use comma-separated values")
     protocol_group.add_argument("--webtransport-path", default=None, help="WebTransport CONNECT path prefix")
     protocol_group.add_argument("--webtransport-profile", dest="webtransport_profiles", action="append", default=None, help=argparse.SUPPRESS)

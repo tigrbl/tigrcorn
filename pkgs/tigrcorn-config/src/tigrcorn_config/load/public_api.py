@@ -62,6 +62,8 @@ def build_config(
     webtransport_max_sessions: int | None = None,
     webtransport_max_streams: int | None = None,
     webtransport_max_datagram_size: int | None = None,
+    webtransport_stream_receive_coalesce_bytes: int | None = None,
+    webtransport_stream_receive_max_delay_ms: int | None = None,
     webtransport_origins: list[str] | None = None,
     webtransport_path: str | None = None,
     webtransport_profiles: list[str] | None = None,
@@ -101,6 +103,8 @@ def build_config(
         webtransport_max_sessions=webtransport_max_sessions,
         webtransport_max_streams=webtransport_max_streams,
         webtransport_max_datagram_size=webtransport_max_datagram_size,
+        webtransport_stream_receive_coalesce_bytes=webtransport_stream_receive_coalesce_bytes,
+        webtransport_stream_receive_max_delay_ms=webtransport_stream_receive_max_delay_ms,
         webtransport_origins=webtransport_origins,
         webtransport_path=webtransport_path,
         webtransport_profiles=webtransport_profiles,
@@ -160,6 +164,8 @@ def build_config(
         webtransport_max_sessions=webtransport_max_sessions,
         webtransport_max_streams=webtransport_max_streams,
         webtransport_max_datagram_size=webtransport_max_datagram_size,
+        webtransport_stream_receive_coalesce_bytes=webtransport_stream_receive_coalesce_bytes,
+        webtransport_stream_receive_max_delay_ms=webtransport_stream_receive_max_delay_ms,
         webtransport_origins=webtransport_origins,
         webtransport_path=webtransport_path,
         webtransport_profiles=webtransport_profiles,
@@ -190,6 +196,8 @@ def build_config(
         webtransport_max_sessions=webtransport_max_sessions,
         webtransport_max_streams=webtransport_max_streams,
         webtransport_max_datagram_size=webtransport_max_datagram_size,
+        webtransport_stream_receive_coalesce_bytes=webtransport_stream_receive_coalesce_bytes,
+        webtransport_stream_receive_max_delay_ms=webtransport_stream_receive_max_delay_ms,
         webtransport_origins=webtransport_origins,
         webtransport_path=webtransport_path,
         webtransport_profiles=webtransport_profiles,
@@ -235,6 +243,8 @@ def _direct_runtime_customized(**values: Any) -> bool:
         or values["webtransport_max_sessions"] is not None
         or values["webtransport_max_streams"] is not None
         or values["webtransport_max_datagram_size"] is not None
+        or values["webtransport_stream_receive_coalesce_bytes"] is not None
+        or values["webtransport_stream_receive_max_delay_ms"] is not None
         or values["webtransport_origins"] is not None
         or values["webtransport_path"] is not None
         or values["webtransport_profiles"] is not None

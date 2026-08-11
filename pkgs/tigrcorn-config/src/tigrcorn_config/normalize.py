@@ -90,6 +90,12 @@ def normalize_config(config: ServerConfig) -> None:
         config.webtransport.max_streams = int(config.webtransport.max_streams)
     if config.webtransport.max_datagram_size is not None:
         config.webtransport.max_datagram_size = int(config.webtransport.max_datagram_size)
+    config.webtransport.stream_receive_coalesce_bytes = int(
+        config.webtransport.stream_receive_coalesce_bytes
+    )
+    config.webtransport.stream_receive_max_delay_ms = int(
+        config.webtransport.stream_receive_max_delay_ms
+    )
     config.webtransport.enabled = bool(config.webtransport.enabled)
     config.webtransport.compatibility = str(config.webtransport.compatibility or 'current').strip().lower()
     aliases = {'current': 'ietf-current', 'chromium': 'draft02'}

@@ -79,6 +79,8 @@ _FLAT_ENV_MAP = {
     "WEBTRANSPORT_MAX_SESSIONS": ("webtransport", "max_sessions"),
     "WEBTRANSPORT_MAX_STREAMS": ("webtransport", "max_streams"),
     "WEBTRANSPORT_MAX_DATAGRAM_SIZE": ("webtransport", "max_datagram_size"),
+    "WEBTRANSPORT_STREAM_RECEIVE_COALESCE_BYTES": ("webtransport", "stream_receive_coalesce_bytes"),
+    "WEBTRANSPORT_STREAM_RECEIVE_MAX_DELAY_MS": ("webtransport", "stream_receive_max_delay_ms"),
     "WEBTRANSPORT_ORIGIN": ("webtransport", "origins"),
     "WEBTRANSPORT_PATH": ("webtransport", "path"),
     "WEBTRANSPORT_PROFILES": ("webtransport", "profiles"),

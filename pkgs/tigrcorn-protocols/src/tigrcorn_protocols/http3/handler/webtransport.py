@@ -18,6 +18,7 @@ from .webtransport_send import send_message
 
 logger = logging.getLogger("tigrcorn")
 WEBTRANSPORT_ASGI_CHUNK_SIZE = 16 * 1024
+WEBTRANSPORT_ASGI_MAX_DELAY_MS = 5
 
 
 class _WebTransportReceive:
@@ -90,6 +91,8 @@ class _HTTP3WebTransportSession:
         self.connect_stream_ended = False
         self.server_stream_ids: dict[str, int] = {}
         self.client_stream_buffers: dict[str, bytearray] = {}
+        self.client_stream_framings: dict[str, str | None] = {}
+        self.client_stream_flush_tasks: dict[str, asyncio.Task[None]] = {}
         self._send_lock = asyncio.Lock()
 
     def _trace_session_fields(self) -> dict[str, object]:
@@ -232,11 +235,14 @@ class _HTTP3WebTransportSession:
         framing: str | None,
     ) -> None:
         buffer = self.client_stream_buffers.setdefault(stream_id, bytearray())
+        self.client_stream_framings[stream_id] = framing
         buffer.extend(data)
-        while len(buffer) >= WEBTRANSPORT_ASGI_CHUNK_SIZE:
-            chunk = bytes(buffer[:WEBTRANSPORT_ASGI_CHUNK_SIZE])
-            del buffer[:WEBTRANSPORT_ASGI_CHUNK_SIZE]
+        chunk_size = self._client_stream_coalesce_bytes()
+        while len(buffer) >= chunk_size:
+            chunk = bytes(buffer[:chunk_size])
+            del buffer[:chunk_size]
             final_chunk = end_stream and not buffer
+            self._trace_client_stream_flush(stream_id, chunk, reason="size")
             await self._put_stream_event(
                 stream_id,
                 chunk,
@@ -245,7 +251,9 @@ class _HTTP3WebTransportSession:
                 framing=framing,
             )
         if end_stream:
+            self._cancel_client_stream_flush(stream_id)
             if buffer or not data:
+                self._trace_client_stream_flush(stream_id, bytes(buffer), reason="fin")
                 await self._put_stream_event(
                     stream_id,
                     bytes(buffer),
@@ -254,6 +262,74 @@ class _HTTP3WebTransportSession:
                     framing=framing,
                 )
             self.client_stream_buffers.pop(stream_id, None)
+            self.client_stream_framings.pop(stream_id, None)
+        elif buffer:
+            self._schedule_client_stream_flush(stream_id)
+        else:
+            self._cancel_client_stream_flush(stream_id)
+
+    def _client_stream_coalesce_bytes(self) -> int:
+        config = getattr(getattr(self.handler, "config", None), "webtransport", None)
+        configured = getattr(config, "stream_receive_coalesce_bytes", None)
+        return max(1, int(configured or WEBTRANSPORT_ASGI_CHUNK_SIZE))
+
+    def _client_stream_max_delay_ms(self) -> int:
+        config = getattr(getattr(self.handler, "config", None), "webtransport", None)
+        configured = getattr(config, "stream_receive_max_delay_ms", None)
+        return max(
+            0,
+            int(WEBTRANSPORT_ASGI_MAX_DELAY_MS if configured is None else configured),
+        )
+
+    def _schedule_client_stream_flush(self, stream_id: str) -> None:
+        if stream_id in self.client_stream_flush_tasks:
+            return
+        delay_ms = self._client_stream_max_delay_ms()
+        self.client_stream_flush_tasks[stream_id] = asyncio.create_task(
+            self._flush_client_stream_after_delay(stream_id, delay_ms),
+            name=f"tigrcorn-webtransport-flush-{self.session_id}-{stream_id}",
+        )
+
+    async def _flush_client_stream_after_delay(
+        self, stream_id: str, delay_ms: int
+    ) -> None:
+        try:
+            if delay_ms:
+                await asyncio.sleep(delay_ms / 1000)
+            if self.closed:
+                return
+            buffer = self.client_stream_buffers.get(stream_id)
+            if not buffer:
+                return
+            chunk = bytes(buffer)
+            buffer.clear()
+            self._trace_client_stream_flush(stream_id, chunk, reason="deadline")
+            await self._put_stream_event(
+                stream_id,
+                chunk,
+                end_stream=False,
+                stream_direction="client_to_server",
+                framing=self.client_stream_framings.get(stream_id),
+            )
+        finally:
+            self.client_stream_flush_tasks.pop(stream_id, None)
+
+    def _cancel_client_stream_flush(self, stream_id: str) -> None:
+        task = self.client_stream_flush_tasks.pop(stream_id, None)
+        if task is not None and task is not asyncio.current_task():
+            task.cancel()
+
+    def _trace_client_stream_flush(
+        self, stream_id: str, data: bytes, *, reason: str
+    ) -> None:
+        self._trace_webtransport(
+            "webtransport.stream.buffer.flush",
+            **self._trace_session_fields(),
+            stream_id=stream_id,
+            session_id=self.session_id,
+            bytes=len(data),
+            reason=reason,
+        )
 
     async def _put_stream_event(
         self,
@@ -346,6 +422,10 @@ class _HTTP3WebTransportSession:
             }
         )
         self.client_stream_buffers.clear()
+        self.client_stream_framings.clear()
+        for task in self.client_stream_flush_tasks.values():
+            task.cancel()
+        self.client_stream_flush_tasks.clear()
         if self.task is not None:
             try:
                 await asyncio.wait_for(asyncio.shield(self.task), timeout=1.0)

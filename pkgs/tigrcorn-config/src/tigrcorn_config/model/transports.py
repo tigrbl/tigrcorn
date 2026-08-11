@@ -33,6 +33,8 @@ class WebTransportConfig:
     max_sessions: int | None = None
     max_streams: int | None = None
     max_datagram_size: int | None = None
+    stream_receive_coalesce_bytes: int = 16 * 1024
+    stream_receive_max_delay_ms: int = 5
     origins: list[str] = field(default_factory=list)
     path: str | None = None
 

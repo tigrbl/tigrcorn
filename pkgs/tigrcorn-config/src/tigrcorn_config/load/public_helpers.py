@@ -56,6 +56,8 @@ def apply_webtransport_overrides(
     webtransport_max_sessions: int | None,
     webtransport_max_streams: int | None,
     webtransport_max_datagram_size: int | None,
+    webtransport_stream_receive_coalesce_bytes: int | None,
+    webtransport_stream_receive_max_delay_ms: int | None,
     webtransport_origins: list[str] | None,
     webtransport_path: str | None,
     webtransport_profiles: list[str] | None,
@@ -67,6 +69,8 @@ def apply_webtransport_overrides(
             webtransport_max_sessions,
             webtransport_max_streams,
             webtransport_max_datagram_size,
+            webtransport_stream_receive_coalesce_bytes,
+            webtransport_stream_receive_max_delay_ms,
             webtransport_origins,
             webtransport_path,
             webtransport_profiles,
@@ -77,6 +81,8 @@ def apply_webtransport_overrides(
             "max_sessions": webtransport_max_sessions,
             "max_streams": webtransport_max_streams,
             "max_datagram_size": webtransport_max_datagram_size,
+            "stream_receive_coalesce_bytes": webtransport_stream_receive_coalesce_bytes,
+            "stream_receive_max_delay_ms": webtransport_stream_receive_max_delay_ms,
             "origins": webtransport_origins or [],
             "path": webtransport_path,
             "profiles": webtransport_profiles or [],
@@ -100,6 +106,8 @@ def apply_listener_override_if_needed(overrides: dict[str, Any], **values: Any) 
         or values["webtransport_max_sessions"] is not None
         or values["webtransport_max_streams"] is not None
         or values["webtransport_max_datagram_size"] is not None
+        or values["webtransport_stream_receive_coalesce_bytes"] is not None
+        or values["webtransport_stream_receive_max_delay_ms"] is not None
         or values["webtransport_origins"] is not None
         or values["webtransport_path"] is not None
         or values["webtransport_profiles"] is not None

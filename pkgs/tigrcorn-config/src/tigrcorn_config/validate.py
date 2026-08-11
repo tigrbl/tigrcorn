@@ -102,6 +102,7 @@ def validate_config(config: ServerConfig) -> None:
         "webtransport.max_sessions": config.webtransport.max_sessions,
         "webtransport.max_streams": config.webtransport.max_streams,
         "webtransport.max_datagram_size": config.webtransport.max_datagram_size,
+        "webtransport.stream_receive_coalesce_bytes": config.webtransport.stream_receive_coalesce_bytes,
         "tls.ocsp_cache_size": config.tls.ocsp_cache_size,
         "scheduler.limit_concurrency": config.scheduler.limit_concurrency,
         "scheduler.max_connections": config.scheduler.max_connections,
@@ -110,6 +111,11 @@ def validate_config(config: ServerConfig) -> None:
         "process.worker_healthcheck_timeout": config.process.worker_healthcheck_timeout,
     }.items():
         _require_positive(field_name, value)
+
+    if config.webtransport.stream_receive_max_delay_ms < 0:
+        raise ConfigError(
+            "webtransport.stream_receive_max_delay_ms must be nonnegative"
+        )
 
     if config.http.alt_svc_max_age < 0:
         raise ConfigError('http.alt_svc_max_age must be non-negative')
