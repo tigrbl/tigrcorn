@@ -13,8 +13,6 @@ from .base import BaseListener
 
 
 class _UDPProtocol(asyncio.DatagramProtocol):
-    _NORMAL_DISPATCH_QUANTUM_SECONDS = 0.001
-
     def __init__(
         self,
         callback: Callable[..., Awaitable[None] | None],
@@ -45,7 +43,7 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         ]
         for index, queue in enumerate(queues):
             task = asyncio.create_task(
-                self._dispatch(queue, urgent=queue is self.urgent_queue),
+                self._dispatch(queue),
                 name=f"tigrcorn-udp-dispatch-{index}",
             )
             self.tasks.add(task)
@@ -59,21 +57,10 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         queue = self.urgent_queue if data and data[0] & 0x80 else self.normal_queue
         queue.put_nowait((self._sequence, packet))
 
-    async def _dispatch(
-        self,
-        queue: asyncio.Queue[tuple[int, UDPPacket]],
-        *,
-        urgent: bool,
-    ) -> None:
+    async def _dispatch(self, queue: asyncio.Queue[tuple[int, UDPPacket]]) -> None:
         while True:
             _sequence, packet = await queue.get()
             try:
-                if not urgent:
-                    # Selector datagram transports read one packet per ready
-                    # callback.  Yield a small I/O quantum before bulk work so
-                    # an Initial behind media in the kernel queue is discovered
-                    # before Chromium's four-second opening deadline.
-                    await asyncio.sleep(self._NORMAL_DISPATCH_QUANTUM_SECONDS)
                 if self.endpoint is None:
                     continue
                 result = self.callback(packet, self.endpoint)
@@ -99,6 +86,45 @@ class _UDPProtocol(asyncio.DatagramProtocol):
             task.cancel()
 
 
+class _BatchedUDPReader:
+    """Drain multiple queued datagrams per selector readiness callback."""
+
+    _MAX_BATCH_DATAGRAMS = 256
+
+    def __init__(
+        self,
+        loop: asyncio.AbstractEventLoop,
+        protocol: _UDPProtocol,
+        sock: socket.socket,
+    ) -> None:
+        self.loop = loop
+        self.protocol = protocol
+        self.sock = sock
+
+    def start(self) -> None:
+        self.loop.add_reader(self.sock.fileno(), self._read_ready)
+
+    def _read_ready(self) -> None:
+        for _ in range(self._MAX_BATCH_DATAGRAMS):
+            try:
+                data, addr = self.sock.recvfrom(65536)
+            except (BlockingIOError, InterruptedError):
+                return
+            except OSError as exc:
+                self.loop.call_exception_handler(
+                    {
+                        "message": "Tigrcorn UDP batch receive failed",
+                        "exception": exc,
+                    }
+                )
+                return
+            self.protocol.datagram_received(data, addr)
+
+    def close(self) -> None:
+        self.loop.remove_reader(self.sock.fileno())
+        self.sock.close()
+
+
 class UDPListener(BaseListener):
     def __init__(
         self,
@@ -116,6 +142,7 @@ class UDPListener(BaseListener):
         self.sock = sock
         self.transport: asyncio.DatagramTransport | None = None
         self.protocol: _UDPProtocol | None = None
+        self.batch_reader: _BatchedUDPReader | None = None
 
     def _get_socket(self) -> socket.socket | None:
         if self.sock is not None:
@@ -139,8 +166,24 @@ class UDPListener(BaseListener):
         )
         self.transport = transport
         self.protocol = protocol
+        transport_socket = transport.get_extra_info("socket")
+        if transport_socket is not None and hasattr(transport, "pause_reading"):
+            duplicate = transport_socket.dup()
+            duplicate.setblocking(False)
+            reader = _BatchedUDPReader(loop, protocol, duplicate)
+            try:
+                transport.pause_reading()
+                reader.start()
+            except (NotImplementedError, AttributeError, OSError):
+                reader.sock.close()
+                transport.resume_reading()
+            else:
+                self.batch_reader = reader
 
     async def close(self) -> None:
+        if self.batch_reader is not None:
+            self.batch_reader.close()
+            self.batch_reader = None
         if self.transport is not None:
             self.transport.close()
             self.transport = None

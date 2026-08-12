@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 
-from tigrcorn_transports.listeners.udp import _UDPProtocol
+from tigrcorn_transports.listeners.udp import _BatchedUDPReader, _UDPProtocol
 
 
 class _Transport:
@@ -75,22 +75,31 @@ async def _bounded_worker_case() -> None:
         protocol.connection_lost(None)
 
 
-def test_udp_dispatch_gives_ingress_an_io_quantum_before_media_work() -> None:
-    asyncio.run(_ingress_quantum_case())
+def test_udp_reader_drains_a_bounded_batch_per_readiness_callback() -> None:
+    received: list[tuple[bytes, tuple[str, int]]] = []
 
+    class _Protocol:
+        def datagram_received(self, data, addr) -> None:
+            received.append((data, addr))
 
-async def _ingress_quantum_case() -> None:
-    media_started = asyncio.Event()
+    class _Socket:
+        def __init__(self) -> None:
+            self.packets = [
+                (b"media-1", ("127.0.0.1", 50000)),
+                (b"media-2", ("127.0.0.1", 50000)),
+                (b"\xc0initial", ("127.0.0.1", 50001)),
+            ]
 
-    async def callback(_packet, _endpoint) -> None:
-        media_started.set()
+        def recvfrom(self, _size):
+            if not self.packets:
+                raise BlockingIOError
+            return self.packets.pop(0)
 
-    protocol = _UDPProtocol(callback, dispatch_workers=2)
-    protocol.connection_made(_Transport())  # type: ignore[arg-type]
-    try:
-        protocol.datagram_received(b"media", ("127.0.0.1", 50000))
-        await asyncio.sleep(0)
-        assert not media_started.is_set()
-        await asyncio.wait_for(media_started.wait(), timeout=0.2)
-    finally:
-        protocol.connection_lost(None)
+    reader = _BatchedUDPReader(None, _Protocol(), _Socket())  # type: ignore[arg-type]
+    reader._read_ready()
+
+    assert received == [
+        (b"media-1", ("127.0.0.1", 50000)),
+        (b"media-2", ("127.0.0.1", 50000)),
+        (b"\xc0initial", ("127.0.0.1", 50001)),
+    ]
