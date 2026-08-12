@@ -73,3 +73,24 @@ async def _bounded_worker_case() -> None:
     finally:
         release.set()
         protocol.connection_lost(None)
+
+
+def test_udp_dispatch_gives_ingress_an_io_quantum_before_media_work() -> None:
+    asyncio.run(_ingress_quantum_case())
+
+
+async def _ingress_quantum_case() -> None:
+    media_started = asyncio.Event()
+
+    async def callback(_packet, _endpoint) -> None:
+        media_started.set()
+
+    protocol = _UDPProtocol(callback, dispatch_workers=2)
+    protocol.connection_made(_Transport())  # type: ignore[arg-type]
+    try:
+        protocol.datagram_received(b"media", ("127.0.0.1", 50000))
+        await asyncio.sleep(0)
+        assert not media_started.is_set()
+        await asyncio.wait_for(media_started.wait(), timeout=0.2)
+    finally:
+        protocol.connection_lost(None)

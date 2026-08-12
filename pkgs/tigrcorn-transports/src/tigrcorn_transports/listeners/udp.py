@@ -13,6 +13,8 @@ from .base import BaseListener
 
 
 class _UDPProtocol(asyncio.DatagramProtocol):
+    _NORMAL_DISPATCH_QUANTUM_SECONDS = 0.001
+
     def __init__(
         self,
         callback: Callable[..., Awaitable[None] | None],
@@ -43,7 +45,7 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         ]
         for index, queue in enumerate(queues):
             task = asyncio.create_task(
-                self._dispatch(queue),
+                self._dispatch(queue, urgent=queue is self.urgent_queue),
                 name=f"tigrcorn-udp-dispatch-{index}",
             )
             self.tasks.add(task)
@@ -57,10 +59,21 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         queue = self.urgent_queue if data and data[0] & 0x80 else self.normal_queue
         queue.put_nowait((self._sequence, packet))
 
-    async def _dispatch(self, queue: asyncio.Queue[tuple[int, UDPPacket]]) -> None:
+    async def _dispatch(
+        self,
+        queue: asyncio.Queue[tuple[int, UDPPacket]],
+        *,
+        urgent: bool,
+    ) -> None:
         while True:
             _sequence, packet = await queue.get()
             try:
+                if not urgent:
+                    # Selector datagram transports read one packet per ready
+                    # callback.  Yield a small I/O quantum before bulk work so
+                    # an Initial behind media in the kernel queue is discovered
+                    # before Chromium's four-second opening deadline.
+                    await asyncio.sleep(self._NORMAL_DISPATCH_QUANTUM_SECONDS)
                 if self.endpoint is None:
                     continue
                 result = self.callback(packet, self.endpoint)
