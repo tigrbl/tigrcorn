@@ -5,14 +5,47 @@ logger = logging.getLogger("tigrcorn")
 
 class HTTP3PacketMixin:
     async def handle_packet(self, packet: UDPPacket, endpoint: UDPEndpoint) -> None:
+        # Route established traffic directly to its connection lock. Sending
+        # every media packet through the global registry creates an event-loop
+        # convoy even when the lock itself is held only briefly.
+        known_session = None
+        try:
+            routing_packet = decode_packet(
+                packet.data,
+                destination_connection_id_length=8,
+            )
+        except Exception:
+            routing_packet = None
+        if isinstance(routing_packet, QuicLongHeaderPacket):
+            routing_dcid = routing_packet.destination_connection_id
+            routing_fresh_initial = (
+                routing_packet.packet_type == QuicLongHeaderType.INITIAL
+                and not routing_packet.token
+            )
+            known_session = self.sessions_by_local_cid.get(routing_dcid)
+            if known_session is None and not routing_fresh_initial:
+                known_session = self.sessions.get(packet.addr)
+        elif isinstance(routing_packet, QuicShortHeaderPacket):
+            known_session = self.sessions_by_local_cid.get(
+                routing_packet.destination_connection_id
+            ) or self.sessions.get(packet.addr)
+
         # QUIC long-header packets carry Initial/Handshake traffic. Admit that
         # work ahead of established short-header media so a busy presentation
         # cannot consume Chromium's four-second connection-opening budget.
-        lock_context = (
-            self._lock.urgent()
-            if packet.data and packet.data[0] & 0x80
-            else self._lock.normal()
-        )
+        is_long_header = bool(packet.data and packet.data[0] & 0x80)
+        if known_session is not None:
+            lock_context = (
+                known_session.lock.urgent()
+                if is_long_header
+                else known_session.lock.normal()
+            )
+        else:
+            lock_context = (
+                self._lock.urgent()
+                if is_long_header
+                else self._lock.normal()
+            )
         async with lock_context as packet_lock:
             try:
                 parsed = decode_packet(packet.data, destination_connection_id_length=8)
@@ -71,6 +104,11 @@ class HTTP3PacketMixin:
                         dcid = candidate.destination_connection_id
                         session = known_session
                         break
+            if known_session is not None and session is None:
+                # The routed session closed while this packet waited for its
+                # connection lock. It must not be recreated without returning
+                # through the registry path.
+                return
             predecoded_events = None
             if session is None:
                 if 'http3' in self.listener.enabled_protocols:

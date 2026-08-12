@@ -50,6 +50,53 @@ class QuicRuntimeAdditionsTests(unittest.TestCase):
 
 
 class QuicAmplificationRuntimeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_established_connection_packet_bypasses_busy_registry(self):
+        async def app(scope, receive, send):
+            return None
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(
+                kind='udp', host='127.0.0.1', port=1, protocols=['http3'],
+                quic_secret=b'shared', quic_require_retry=True,
+            ),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            def __init__(self):
+                self.sent = []
+                self.local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                self.sent.append((data, addr))
+
+        endpoint = Endpoint()
+        client = QuicConnection(
+            is_client=True, secret=b'shared',
+            local_cid=b'client01', remote_cid=b'server01',
+        )
+        client_addr = ('127.0.0.1', 50000)
+        await handler.handle_packet(
+            UDPPacket(data=client.build_initial(), addr=client_addr),
+            endpoint,
+        )
+        retry_datagram = next(raw for raw, addr in endpoint.sent if addr == client_addr)
+        client.receive_datagram(retry_datagram)
+
+        await handler._lock.acquire()
+        try:
+            await asyncio.wait_for(
+                handler.handle_packet(
+                    UDPPacket(data=client.build_initial(), addr=client_addr),
+                    endpoint,
+                ),
+                timeout=0.2,
+            )
+        finally:
+            handler._lock.release()
+
     async def test_busy_connection_does_not_block_new_retry_handshake(self):
         async def app(scope, receive, send):
             return None
