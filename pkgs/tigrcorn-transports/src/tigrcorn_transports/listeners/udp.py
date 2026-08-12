@@ -20,13 +20,14 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         dispatch_workers: int = 4,
     ) -> None:
         self.callback = callback
-        self.dispatch_workers = max(1, dispatch_workers)
+        # One worker is reserved for QUIC long-header traffic.  A minimum of
+        # two workers ensures bulk media can never occupy the handshake lane.
+        self.dispatch_workers = max(2, dispatch_workers)
         self.transport: asyncio.DatagramTransport | None = None
         self.endpoint: UDPEndpoint | None = None
         self.tasks: set[asyncio.Task[None]] = set()
-        self.queue: asyncio.PriorityQueue[tuple[int, int, UDPPacket]] = (
-            asyncio.PriorityQueue()
-        )
+        self.urgent_queue: asyncio.Queue[tuple[int, UDPPacket]] = asyncio.Queue()
+        self.normal_queue: asyncio.Queue[tuple[int, UDPPacket]] = asyncio.Queue()
         self._sequence = 0
 
     def connection_made(self, transport: asyncio.BaseTransport) -> None:
@@ -36,9 +37,13 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         if sock is not None:
             configure_udp_socket(sock)
         self.endpoint = UDPEndpoint(transport=transport, local_addr=sockname)
-        for index in range(self.dispatch_workers):
+        queues = [
+            self.urgent_queue,
+            *([self.normal_queue] * (self.dispatch_workers - 1)),
+        ]
+        for index, queue in enumerate(queues):
             task = asyncio.create_task(
-                self._dispatch(),
+                self._dispatch(queue),
                 name=f"tigrcorn-udp-dispatch-{index}",
             )
             self.tasks.add(task)
@@ -48,13 +53,13 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         if self.endpoint is None:
             return
         packet = UDPPacket(data=data, addr=addr)
-        priority = 0 if data and data[0] & 0x80 else 1
         self._sequence += 1
-        self.queue.put_nowait((priority, self._sequence, packet))
+        queue = self.urgent_queue if data and data[0] & 0x80 else self.normal_queue
+        queue.put_nowait((self._sequence, packet))
 
-    async def _dispatch(self) -> None:
+    async def _dispatch(self, queue: asyncio.Queue[tuple[int, UDPPacket]]) -> None:
         while True:
-            _priority, _sequence, packet = await self.queue.get()
+            _sequence, packet = await queue.get()
             try:
                 if self.endpoint is None:
                     continue
@@ -74,7 +79,7 @@ class _UDPProtocol(asyncio.DatagramProtocol):
                     }
                 )
             finally:
-                self.queue.task_done()
+                queue.task_done()
 
     def connection_lost(self, exc: Exception | None) -> None:
         for task in list(self.tasks):
