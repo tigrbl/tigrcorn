@@ -125,7 +125,7 @@ class HTTP3OutboundMixin:
         loop.create_task(self._on_session_timer(session, endpoint))
 
     async def _on_session_timer(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
-        async with self._lock:
+        async with session.lock:
             session.timer_handle = None
             transport = getattr(endpoint, 'transport', None)
             if transport is None or transport.is_closing():

@@ -50,6 +50,68 @@ class QuicRuntimeAdditionsTests(unittest.TestCase):
 
 
 class QuicAmplificationRuntimeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_busy_connection_does_not_block_new_retry_handshake(self):
+        async def app(scope, receive, send):
+            return None
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(
+                kind='udp', host='127.0.0.1', port=1, protocols=['http3'],
+                quic_secret=b'shared', quic_require_retry=True,
+            ),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            def __init__(self):
+                self.sent = []
+                self.local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                self.sent.append((data, addr))
+
+        endpoint = Endpoint()
+        presenter = QuicConnection(
+            is_client=True, secret=b'shared',
+            local_cid=b'present1', remote_cid=b'server01',
+        )
+        presenter_addr = ('127.0.0.1', 50000)
+        await handler.handle_packet(
+            UDPPacket(data=presenter.build_initial(), addr=presenter_addr),
+            endpoint,
+        )
+        retry_datagram = next(raw for raw, addr in endpoint.sent if addr == presenter_addr)
+        presenter.receive_datagram(retry_datagram)
+        presenter_session = handler.sessions[presenter_addr]
+
+        await presenter_session.lock.acquire()
+        blocked_presenter_packet = asyncio.create_task(
+            handler.handle_packet(
+                UDPPacket(data=presenter.build_initial(), addr=presenter_addr),
+                endpoint,
+            )
+        )
+        await asyncio.sleep(0)
+
+        audience_addr = ('127.0.0.1', 50001)
+        audience = QuicConnection(
+            is_client=True, secret=b'shared',
+            local_cid=b'audienc1', remote_cid=b'server02',
+        )
+        await asyncio.wait_for(
+            handler.handle_packet(
+                UDPPacket(data=audience.build_initial(), addr=audience_addr),
+                endpoint,
+            ),
+            timeout=0.2,
+        )
+        self.assertTrue(any(addr == audience_addr for _raw, addr in endpoint.sent))
+
+        presenter_session.lock.release()
+        await blocked_presenter_packet
+
     async def test_http3_retry_survives_client_udp_port_rebinding(self):
         async def app(scope, receive, send):
             return None

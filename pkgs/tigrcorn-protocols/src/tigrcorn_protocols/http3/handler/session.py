@@ -8,10 +8,13 @@ from tigrcorn_protocols.http3.websocket import H3WebSocketSession
 from tigrcorn_transports.quic.connection import QuicConnection
 from tigrcorn_protocols.webtransport.negotiation import WebTransportNegotiationResult
 
+from .priority_lock import PriorityLock
+
 @dataclass(slots=True)
 class HTTP3Session:
     addr: tuple[str, int]
     quic: QuicConnection
+    lock: PriorityLock = field(default_factory=PriorityLock)
     runtime_id: str = ''
     h3: HTTP3ConnectionCore = field(default_factory=lambda: HTTP3ConnectionCore(role='server'))
     server_control_stream_sent: bool = False
@@ -41,4 +44,3 @@ class HTTP3Session:
     last_quic_pto_expirations_total: int = 0
     webtransport_negotiation: WebTransportNegotiationResult | None = None
     webtransport_negotiation_frozen: bool = False
-

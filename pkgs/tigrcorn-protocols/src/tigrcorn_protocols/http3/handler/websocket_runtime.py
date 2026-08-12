@@ -15,7 +15,7 @@ class HTTP3WebSocketRuntimeMixin:
         already_locked: bool = False,
     ) -> None:
         if not already_locked:
-            async with self._lock:
+            async with session.lock:
                 await self._send_http3_websocket_headers(
                     session,
                     stream_id,
@@ -60,7 +60,7 @@ class HTTP3WebSocketRuntimeMixin:
         already_locked: bool = False,
     ) -> None:
         if not already_locked:
-            async with self._lock:
+            async with session.lock:
                 await self._send_http3_websocket_data(
                     session,
                     stream_id,
@@ -94,7 +94,7 @@ class HTTP3WebSocketRuntimeMixin:
         already_locked: bool = False,
     ) -> None:
         if not already_locked:
-            async with self._lock:
+            async with session.lock:
                 await self._reset_http3_websocket_stream(
                     session,
                     stream_id,

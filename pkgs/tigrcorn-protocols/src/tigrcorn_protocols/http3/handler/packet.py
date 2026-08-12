@@ -11,9 +11,9 @@ class HTTP3PacketMixin:
         lock_context = (
             self._lock.urgent()
             if packet.data and packet.data[0] & 0x80
-            else self._lock
+            else self._lock.normal()
         )
-        async with lock_context:
+        async with lock_context as packet_lock:
             try:
                 parsed = decode_packet(packet.data, destination_connection_id_length=8)
             except Exception as exc:
@@ -138,6 +138,14 @@ class HTTP3PacketMixin:
                     self.metrics.quic_session_opened()
             else:
                 session.quic.remote_cid = scid or session.quic.remote_cid
+            # Session discovery and registration require only the short global
+            # critical section above. All QUIC/H3 state after this point is
+            # connection-local, so media backpressure on one connection must
+            # not consume another connection's handshake budget.
+            await packet_lock.handoff(
+                session.lock,
+                urgent=isinstance(parsed, QuicLongHeaderPacket),
+            )
             outbound: list[bytes] = []
             session.last_activity_at = time.monotonic()
             session.bytes_received += len(packet.data)

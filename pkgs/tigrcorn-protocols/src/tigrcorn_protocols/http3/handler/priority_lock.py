@@ -10,9 +10,23 @@ class _PriorityLockContext(AbstractAsyncContextManager[None]):
     def __init__(self, lock: "PriorityLock", *, urgent: bool) -> None:
         self._lock = lock
         self._urgent = urgent
+        self._acquired = False
 
-    async def __aenter__(self) -> None:
+    async def __aenter__(self) -> "_PriorityLockContext":
         await self._lock.acquire(urgent=self._urgent)
+        self._acquired = True
+        return self
+
+    async def handoff(self, lock: "PriorityLock", *, urgent: bool = False) -> None:
+        """Release the current lock before acquiring a narrower-scope lock."""
+        if lock is self._lock:
+            return
+        self._lock.release()
+        self._acquired = False
+        self._lock = lock
+        self._urgent = urgent
+        await self._lock.acquire(urgent=urgent)
+        self._acquired = True
 
     async def __aexit__(
         self,
@@ -20,7 +34,9 @@ class _PriorityLockContext(AbstractAsyncContextManager[None]):
         exc_value: BaseException | None,
         traceback: TracebackType | None,
     ) -> None:
-        self._lock.release()
+        if self._acquired:
+            self._lock.release()
+            self._acquired = False
 
 
 class PriorityLock(AbstractAsyncContextManager[None]):
@@ -75,8 +91,12 @@ class PriorityLock(AbstractAsyncContextManager[None]):
     def urgent(self) -> _PriorityLockContext:
         return _PriorityLockContext(self, urgent=True)
 
-    async def __aenter__(self) -> None:
+    def normal(self) -> _PriorityLockContext:
+        return _PriorityLockContext(self, urgent=False)
+
+    async def __aenter__(self) -> "PriorityLock":
         await self.acquire()
+        return self
 
     async def __aexit__(
         self,

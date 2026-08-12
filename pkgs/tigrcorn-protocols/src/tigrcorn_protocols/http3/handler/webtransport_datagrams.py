@@ -63,7 +63,7 @@ class HTTP3WebTransportDatagramsMixin:
         already_locked: bool = False,
     ) -> None:
         if not already_locked:
-            async with self._lock:
+            async with session.lock:
                 await self._send_webtransport_datagram(
                     session,
                     stream_id,

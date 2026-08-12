@@ -11,7 +11,7 @@ class HTTP3WebTransportStreamsMixin:
         *,
         endpoint: UDPEndpoint,
     ) -> int:
-        async with self._lock:
+        async with session.lock:
             if (
                 session.addr not in self.sessions
                 or self.sessions.get(session.addr) is not session
@@ -184,7 +184,7 @@ class HTTP3WebTransportStreamsMixin:
         priority: bool = False,
     ) -> None:
         if not already_locked:
-            async with self._lock:
+            async with session.lock:
                 await self._send_webtransport_stream_data(
                     session,
                     stream_id,

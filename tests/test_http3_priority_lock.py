@@ -53,3 +53,68 @@ def test_cancelled_urgent_waiter_does_not_wedge_lock() -> None:
             return True
 
     assert asyncio.run(exercise()) is True
+
+
+def test_handoff_releases_registry_before_waiting_for_session() -> None:
+    async def exercise() -> list[str]:
+        registry = PriorityLock()
+        busy_session = PriorityLock()
+        order: list[str] = []
+        release_session = asyncio.Event()
+
+        async def media_owner() -> None:
+            async with busy_session:
+                order.append("media")
+                await release_session.wait()
+
+        async def blocked_packet() -> None:
+            async with registry.normal() as packet_lock:
+                order.append("routed")
+                await packet_lock.handoff(busy_session)
+                order.append("same-session")
+
+        async def new_handshake() -> None:
+            async with registry.urgent():
+                order.append("new-handshake")
+
+        media_task = asyncio.create_task(media_owner())
+        await asyncio.sleep(0)
+        blocked_task = asyncio.create_task(blocked_packet())
+        await asyncio.sleep(0)
+        handshake_task = asyncio.create_task(new_handshake())
+        await asyncio.sleep(0)
+        release_session.set()
+        await asyncio.gather(media_task, blocked_task, handshake_task)
+        return order
+
+    assert asyncio.run(exercise()) == [
+        "media",
+        "routed",
+        "new-handshake",
+        "same-session",
+    ]
+
+
+def test_cancelled_handoff_does_not_release_another_sessions_owner() -> None:
+    async def exercise() -> bool:
+        registry = PriorityLock()
+        session = PriorityLock()
+        await session.acquire()
+
+        async def blocked_handoff() -> None:
+            async with registry.normal() as packet_lock:
+                await packet_lock.handoff(session)
+
+        task = asyncio.create_task(blocked_handoff())
+        await asyncio.sleep(0)
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+        session.release()
+        async with session:
+            return True
+
+    assert asyncio.run(exercise()) is True
