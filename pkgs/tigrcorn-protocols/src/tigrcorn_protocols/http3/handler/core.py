@@ -6,6 +6,7 @@ from .custom import HTTP3CustomQuicMixin
 from .lifecycle import HTTP3LifecycleMixin
 from .outbound import HTTP3OutboundMixin
 from .packet import HTTP3PacketMixin
+from .priority_lock import PriorityLock
 from .requests import HTTP3RequestsMixin
 from .responses import HTTP3ResponsesMixin
 from .websocket_runtime import HTTP3WebSocketRuntimeMixin
@@ -54,7 +55,7 @@ class HTTP3DatagramHandler(
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._session_sequence = 0
-        self._lock = asyncio.Lock()
+        self._lock = PriorityLock()
         self.webtransport_trace: list[dict[str, object]] = []
 
 

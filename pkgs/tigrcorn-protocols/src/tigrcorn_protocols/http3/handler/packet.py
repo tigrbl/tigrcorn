@@ -5,7 +5,15 @@ logger = logging.getLogger("tigrcorn")
 
 class HTTP3PacketMixin:
     async def handle_packet(self, packet: UDPPacket, endpoint: UDPEndpoint) -> None:
-        async with self._lock:
+        # QUIC long-header packets carry Initial/Handshake traffic. Admit that
+        # work ahead of established short-header media so a busy presentation
+        # cannot consume Chromium's four-second connection-opening budget.
+        lock_context = (
+            self._lock.urgent()
+            if packet.data and packet.data[0] & 0x80
+            else self._lock
+        )
+        async with lock_context:
             try:
                 parsed = decode_packet(packet.data, destination_connection_id_length=8)
             except Exception as exc:
