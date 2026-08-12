@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+import logging
 import socket
 from collections.abc import Awaitable, Callable
 
@@ -10,6 +11,8 @@ from tigrcorn_transports.udp.packet import UDPPacket
 from tigrcorn_transports.udp.socketopts import configure_udp_socket
 
 from .base import BaseListener
+
+logger = logging.getLogger("tigrcorn")
 
 
 class _UDPProtocol(asyncio.DatagramProtocol):
@@ -177,8 +180,13 @@ class UDPListener(BaseListener):
             except (NotImplementedError, AttributeError, OSError):
                 reader.sock.close()
                 transport.resume_reading()
+                logger.info("UDP listener using asyncio single-datagram receive path")
             else:
                 self.batch_reader = reader
+                logger.info(
+                    "UDP listener using bounded batch receive path batch_size=%d",
+                    reader._MAX_BATCH_DATAGRAMS,
+                )
 
     async def close(self) -> None:
         if self.batch_reader is not None:

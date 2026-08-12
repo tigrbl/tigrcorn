@@ -89,6 +89,13 @@ class HTTP3PacketMixin:
                 and parsed.packet_type == QuicLongHeaderType.INITIAL
                 and not parsed.token
             )
+            if fresh_initial:
+                logger.info(
+                    "QUIC fresh Initial dequeued addr=%s:%s ingress_queue_ms=%.1f",
+                    packet.addr[0],
+                    packet.addr[1],
+                    (time.monotonic() - packet.received_at) * 1000,
+                )
             session = self.sessions_by_local_cid.get(dcid)
             allow_addr_fallback = not fresh_initial
             if session is None and allow_addr_fallback:
@@ -472,3 +479,11 @@ class HTTP3PacketMixin:
             self._queue_session_outbound_locked(
                 session, outbound, endpoint, priority=True
             )
+            if fresh_initial:
+                logger.info(
+                    "QUIC fresh Initial response queued addr=%s:%s total_ms=%.1f datagrams=%d",
+                    packet.addr[0],
+                    packet.addr[1],
+                    (time.monotonic() - packet.received_at) * 1000,
+                    len(outbound),
+                )
