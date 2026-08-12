@@ -13,29 +13,68 @@ from .base import BaseListener
 
 
 class _UDPProtocol(asyncio.DatagramProtocol):
-    def __init__(self, callback: Callable[..., Awaitable[None] | None]) -> None:
+    def __init__(
+        self,
+        callback: Callable[..., Awaitable[None] | None],
+        *,
+        dispatch_workers: int = 4,
+    ) -> None:
         self.callback = callback
+        self.dispatch_workers = max(1, dispatch_workers)
         self.transport: asyncio.DatagramTransport | None = None
         self.endpoint: UDPEndpoint | None = None
         self.tasks: set[asyncio.Task[None]] = set()
+        self.queue: asyncio.PriorityQueue[tuple[int, int, UDPPacket]] = (
+            asyncio.PriorityQueue()
+        )
+        self._sequence = 0
 
     def connection_made(self, transport: asyncio.BaseTransport) -> None:
         self.transport = transport  # runtime transport provided by asyncio
-        sockname = transport.get_extra_info('sockname')
-        sock = transport.get_extra_info('socket')
+        sockname = transport.get_extra_info("sockname")
+        sock = transport.get_extra_info("socket")
         if sock is not None:
             configure_udp_socket(sock)
         self.endpoint = UDPEndpoint(transport=transport, local_addr=sockname)
+        for index in range(self.dispatch_workers):
+            task = asyncio.create_task(
+                self._dispatch(),
+                name=f"tigrcorn-udp-dispatch-{index}",
+            )
+            self.tasks.add(task)
+            task.add_done_callback(self.tasks.discard)
 
     def datagram_received(self, data: bytes, addr) -> None:  # type: ignore[override]
         if self.endpoint is None:
             return
         packet = UDPPacket(data=data, addr=addr)
-        result = self.callback(packet, self.endpoint)
-        if inspect.isawaitable(result):
-            task = asyncio.create_task(result)
-            self.tasks.add(task)
-            task.add_done_callback(self.tasks.discard)
+        priority = 0 if data and data[0] & 0x80 else 1
+        self._sequence += 1
+        self.queue.put_nowait((priority, self._sequence, packet))
+
+    async def _dispatch(self) -> None:
+        while True:
+            _priority, _sequence, packet = await self.queue.get()
+            try:
+                if self.endpoint is None:
+                    continue
+                result = self.callback(packet, self.endpoint)
+                if inspect.isawaitable(result):
+                    await result
+            except asyncio.CancelledError:
+                raise
+            # A bad application callback must not permanently reduce the fixed
+            # dispatcher pool or stop later QUIC handshakes from being served.
+            except Exception as exc:  # noqa: BLE001
+                asyncio.get_running_loop().call_exception_handler(
+                    {
+                        "message": "Tigrcorn UDP datagram callback failed",
+                        "exception": exc,
+                        "protocol": self,
+                    }
+                )
+            finally:
+                self.queue.task_done()
 
     def connection_lost(self, exc: Exception | None) -> None:
         for task in list(self.tasks):
@@ -43,7 +82,15 @@ class _UDPProtocol(asyncio.DatagramProtocol):
 
 
 class UDPListener(BaseListener):
-    def __init__(self, host: str, port: int, *, reuse_port: bool = False, fd: int | None = None, sock: socket.socket | None = None) -> None:
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        *,
+        reuse_port: bool = False,
+        fd: int | None = None,
+        sock: socket.socket | None = None,
+    ) -> None:
         self.host = host
         self.port = port
         self.reuse_port = reuse_port
