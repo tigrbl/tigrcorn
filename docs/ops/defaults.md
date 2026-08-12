@@ -131,6 +131,8 @@ This page is generated from the runtime default audit and reviewed flag-contract
 | `--webtransport-max-sessions` | `webtransport.max_sessions` | `None` | `None` | `reviewed_phase2` |
 | `--webtransport-max-streams` | `webtransport.max_streams` | `None` | `None` | `reviewed_phase2` |
 | `--webtransport-max-datagram-size` | `webtransport.max_datagram_size` | `None` | `None` | `reviewed_phase2` |
+| `--webtransport-stream-receive-coalesce-bytes` | `webtransport.stream_receive_coalesce_bytes` | `None` | `16384` | `reviewed_phase2` |
+| `--webtransport-stream-receive-max-delay-ms` | `webtransport.stream_receive_max_delay_ms` | `None` | `5` | `reviewed_phase2` |
 | `--webtransport-origin` | `webtransport.origins` | `None` | `[]` | `reviewed_phase2` |
 | `--webtransport-path` | `webtransport.path` | `None` | `None` | `reviewed_phase2` |
 | `--pipe-mode` | `listeners[].pipe_mode` | `None` | `rawframed` | `reviewed_phase2` |

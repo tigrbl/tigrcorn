@@ -160,7 +160,13 @@
     "webtransport.max_sessions": null,
     "webtransport.max_streams": null,
     "webtransport.origins": [],
-    "webtransport.path": null
+    "webtransport.path": null,
+    "webtransport.preferred_profile": "ietf-current",
+    "webtransport.profiles[0]": "draft02",
+    "webtransport.profiles[1]": "draft13",
+    "webtransport.profiles[2]": "ietf-current",
+    "webtransport.stream_receive_coalesce_bytes": 16384,
+    "webtransport.stream_receive_max_delay_ms": 5
   },
   "flags": [
     {
@@ -1053,6 +1059,20 @@
       "review_status": "reviewed_phase2"
     },
     {
+      "config_path": "webtransport.stream_receive_coalesce_bytes",
+      "effective_default": 16384,
+      "flag": "--webtransport-stream-receive-coalesce-bytes",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "webtransport.stream_receive_max_delay_ms",
+      "effective_default": 5,
+      "flag": "--webtransport-stream-receive-max-delay-ms",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
       "config_path": "webtransport.origins",
       "effective_default": [],
       "flag": "--webtransport-origin",
@@ -1165,8 +1185,14 @@
     "listeners.to[0].user": null,
     "listeners.to[0].websocket": true,
     "proxy.server_header.from": "tigrcorn",
-    "proxy.server_header.to": ""
+    "proxy.server_header.to": "",
+    "webtransport.preferred_profile.from": null,
+    "webtransport.preferred_profile.to": "ietf-current",
+    "webtransport.profiles.from": [],
+    "webtransport.profiles.to[0]": "draft02",
+    "webtransport.profiles.to[1]": "draft13",
+    "webtransport.profiles.to[2]": "ietf-current"
   },
-  "parser_public_flag_count": 130,
+  "parser_public_flag_count": 132,
   "profile": "default"
 }

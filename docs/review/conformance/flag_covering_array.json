@@ -2,7 +2,7 @@
   "schema_version": 1,
   "target_name": "phase8_flag_covering_array",
   "status": "planned",
-  "public_flag_string_count": 130,
+  "public_flag_string_count": 132,
   "strategy": {
     "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
     "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
@@ -3475,7 +3475,67 @@
       "status": "implemented"
     },
     {
-      "case_id": "flag-159-webtransport_origin",
+      "case_id": "flag-159-webtransport_stream_receive_coalesce_bytes",
+
+      "strength": 1,
+
+      "dimensions": [
+
+        {
+
+          "flag": "--webtransport-stream-receive-coalesce-bytes",
+
+          "value": 8192
+
+        }
+
+      ],
+
+      "deployment_profiles": [
+
+        "http3_quic"
+
+      ],
+
+      "claim_plane": "rfc_scoped",
+
+      "status": "implemented"
+
+    },
+
+    {
+
+      "case_id": "flag-160-webtransport_stream_receive_max_delay_ms",
+
+      "strength": 1,
+
+      "dimensions": [
+
+        {
+
+          "flag": "--webtransport-stream-receive-max-delay-ms",
+
+          "value": 5
+
+        }
+
+      ],
+
+      "deployment_profiles": [
+
+        "http3_quic"
+
+      ],
+
+      "claim_plane": "rfc_scoped",
+
+      "status": "implemented"
+
+    },
+
+    {
+
+      "case_id": "flag-161-webtransport_origin",
       "strength": 1,
       "dimensions": [
         {
@@ -3490,7 +3550,7 @@
       "status": "implemented"
     },
     {
-      "case_id": "flag-160-webtransport_path",
+      "case_id": "flag-162-webtransport_path",
       "strength": 1,
       "dimensions": [
         {

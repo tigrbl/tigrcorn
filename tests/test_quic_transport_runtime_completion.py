@@ -165,6 +165,42 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
         self.assertTrue(any(event.kind == 'new_token' for event in token_events))
         self.assertEqual(token_client.peer_new_tokens, (token,))
 
+    def test_duplicate_initials_preserve_retry_connection_identity(self):
+        client = QuicConnection(
+            is_client=True,
+            secret=b'shared',
+            local_cid=b'cli1cli1',
+            remote_cid=b'srv1srv1',
+        )
+        server = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            require_retry=True,
+        )
+        address = ('127.0.0.1', 4444)
+        initial = client.build_initial()
+
+        server.receive_datagram(initial, addr=address)
+        first_retry = server.take_pending_datagrams()[0]
+        server.receive_datagram(initial, addr=address)
+        duplicate_retry = server.take_pending_datagrams()[0]
+
+        first_packet = decode_packet(first_retry)
+        duplicate_packet = decode_packet(duplicate_retry)
+        self.assertEqual(
+            duplicate_packet.source_connection_id,
+            first_packet.source_connection_id,
+        )
+
+        client.receive_datagram(first_retry)
+        post_retry_events = server.receive_datagram(
+            client.build_initial(),
+            addr=address,
+        )
+        self.assertTrue(any(event.kind == 'packet' for event in post_retry_events))
+        self.assertTrue(server.address_validated)
+
     def test_retry_token_rejects_a_different_client_ip(self):
         client = QuicConnection(
             is_client=True, secret=b'shared',

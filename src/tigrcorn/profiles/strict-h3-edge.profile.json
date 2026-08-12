@@ -192,11 +192,21 @@
       "ping_timeout": null
     },
     "webtransport": {
+      "compatibility": "current",
+      "enabled": false,
       "max_datagram_size": null,
       "max_sessions": null,
       "max_streams": null,
       "origins": [],
-      "path": null
+      "path": null,
+      "preferred_profile": "ietf-current",
+      "profiles": [
+        "draft02",
+        "draft13",
+        "ietf-current"
+      ],
+      "stream_receive_coalesce_bytes": 16384,
+      "stream_receive_max_delay_ms": 5
     }
   },
   "explicit_posture": {

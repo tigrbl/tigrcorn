@@ -44,7 +44,15 @@ class QuicConnectionReceiveMixin:
                 raise ProtocolError('unknown QUIC token purpose')
             return None
         if self.require_retry and not self.address_validated:
-            retry = self.build_retry(packet, client_addr=addr)
+            # A client can retransmit its tokenless Initial before the first
+            # Retry reaches it. Keep one Retry connection identity for the
+            # lifetime of this connection; rotating the Retry SCID here makes
+            # a token from an earlier, valid Retry fail the source-CID check.
+            retry = self.build_retry(
+                packet,
+                client_addr=addr,
+                source_connection_id=self._retry_source_connection_id,
+            )
             self._pending_handshake_datagrams.append(retry)
             return [QuicEvent(kind='retry', detail=decode_packet(retry))]
         return None

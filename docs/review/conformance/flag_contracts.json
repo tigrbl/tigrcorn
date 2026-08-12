@@ -10323,6 +10323,132 @@
     },
     {
       "claim_class": "rfc_scoped",
+      "claim_text": "Public delivery contract for --webtransport-stream-receive-coalesce-bytes at webtransport.stream_receive_coalesce_bytes. This surface bounds WebTransport client-stream receive coalescing without changing protocol ownership.",
+      "config_path": "webtransport.stream_receive_coalesce_bytes",
+      "contract_id": "webtransport_stream_receive_coalesce_bytes",
+      "default": 16384,
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Protocol / transport",
+      "flag_id": "protocols",
+      "flag_strings": [
+        "--webtransport-stream-receive-coalesce-bytes"
+      ],
+      "help_text": "Maximum buffered client-stream bytes before emitting an ASGI receive event",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [
+        "RFC 9114",
+        "RFC 9000",
+        "WebTransport over HTTP/3"
+      ],
+      "runtime_modules": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/normalize.py",
+        "src/tigrcorn/config/validate.py"
+      ],
+      "scope": "listener-resolved",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "operator_bundle_only",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true,
+        "release_note": "WebTransport stream receive coalescing is operator-configurable."
+      },
+      "unit_tests": [
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_cli_protocol_webtransport_wires_h3_quic_and_tuning_flags",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_config_mapping_accepts_webtransport_block",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_env_vars_configure_webtransport_tuning",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_public_api_accepts_webtransport_tuning",
+        "tests/test_webtransport_receive_coalescing.py"
+      ],
+      "validation_rules": [
+        "positive integer"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 8192
+      }
+    },
+    {
+      "claim_class": "rfc_scoped",
+      "claim_text": "Public delivery contract for --webtransport-stream-receive-max-delay-ms at webtransport.stream_receive_max_delay_ms. This surface bounds WebTransport client-stream delivery delay without changing protocol ownership.",
+      "config_path": "webtransport.stream_receive_max_delay_ms",
+      "contract_id": "webtransport_stream_receive_max_delay_ms",
+      "default": 5,
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Protocol / transport",
+      "flag_id": "protocols",
+      "flag_strings": [
+        "--webtransport-stream-receive-max-delay-ms"
+      ],
+      "help_text": "Maximum delay before buffered client-stream bytes are emitted to the ASGI application",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [
+        "RFC 9114",
+        "RFC 9000",
+        "WebTransport over HTTP/3"
+      ],
+      "runtime_modules": [
+        "src/tigrcorn/cli.py",
+        "src/tigrcorn/config/load.py",
+        "src/tigrcorn/config/model.py",
+        "src/tigrcorn/config/normalize.py",
+        "src/tigrcorn/config/validate.py"
+      ],
+      "scope": "listener-resolved",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "operator_bundle_only",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true,
+        "release_note": "WebTransport stream receive flush delay is operator-configurable."
+      },
+      "unit_tests": [
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_cli_protocol_webtransport_wires_h3_quic_and_tuning_flags",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_config_mapping_accepts_webtransport_block",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_env_vars_configure_webtransport_tuning",
+        "tests/test_webtransport_operator_surface.py::WebTransportOperatorSurfaceTests::test_public_api_accepts_webtransport_tuning",
+        "tests/test_webtransport_receive_coalescing.py"
+      ],
+      "validation_rules": [
+        "nonnegative integer"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 5
+      }
+    },
+    {
+      "claim_class": "rfc_scoped",
       "claim_text": "Public delivery contract for --webtransport-origin at webtransport.origins. This surface configures WebTransport-over-H3/QUIC listener tuning without introducing REST, JSON-RPC, ASGI2, WSGI, or RSGI runtime ownership.",
       "config_path": "webtransport.origins",
       "contract_id": "webtransport_origin",
@@ -10576,7 +10702,7 @@
   ],
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "current_state": {
-    "contract_rows_defined": 130,
+    "contract_rows_defined": 132,
     "notes": [
       "WebTransport operator surface adds --protocol webtransport and WebTransport-specific tuning flags with CLI/config/env/API tests.",
       "Phase 7 reconciles markdown, JSON, CLI help snapshots, and current-state truth for the full 124-flag public surface.",
@@ -10593,9 +10719,9 @@
       "Step 2 descopes trio from the public runtime surface until an end-to-end trio server core is implemented.",
       "Phase 2 adds server-native static route/mount/index/expires controls and closes standard ASGI http.response.pathsend-backed file delivery."
     ],
-    "promotion_ready_rows": 130,
+    "promotion_ready_rows": 132,
     "review_status": "reviewed_phase2",
-    "reviewed_contract_rows": 130,
+    "reviewed_contract_rows": 132,
     "runtime_gap_flags": [],
     "strict_target_pending_flags": [
       "--connect-allow",
@@ -10616,10 +10742,10 @@
   "phase2_review": {
     "default_audit": "DEFAULT_AUDIT.json",
     "profile_defaults_dir": ".ssot/reports/profile-defaults",
-    "public_flag_string_count": 130,
+    "public_flag_string_count": 132,
     "review_status": "reviewed_phase2",
     "reviewed": true,
-    "reviewed_contract_rows": 130
+    "reviewed_contract_rows": 132
   },
   "phase3_review": {
     "contract_doc": "docs/conformance/proxy_contract.md",
@@ -10677,7 +10803,7 @@
     "status": "frozen",
     "status_doc": "docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md"
   },
-  "public_flag_string_count": 130,
+  "public_flag_string_count": 132,
   "schema_version": 1,
   "strict_target_boundary": "docs/review/conformance/certification_boundary.strict_target.json",
   "target_name": "phase8_family_flag_contracts"

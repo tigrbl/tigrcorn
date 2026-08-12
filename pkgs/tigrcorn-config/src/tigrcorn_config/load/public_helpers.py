@@ -81,8 +81,16 @@ def apply_webtransport_overrides(
             "max_sessions": webtransport_max_sessions,
             "max_streams": webtransport_max_streams,
             "max_datagram_size": webtransport_max_datagram_size,
-            "stream_receive_coalesce_bytes": webtransport_stream_receive_coalesce_bytes,
-            "stream_receive_max_delay_ms": webtransport_stream_receive_max_delay_ms,
+            **(
+                {"stream_receive_coalesce_bytes": webtransport_stream_receive_coalesce_bytes}
+                if webtransport_stream_receive_coalesce_bytes is not None
+                else {}
+            ),
+            **(
+                {"stream_receive_max_delay_ms": webtransport_stream_receive_max_delay_ms}
+                if webtransport_stream_receive_max_delay_ms is not None
+                else {}
+            ),
             "origins": webtransport_origins or [],
             "path": webtransport_path,
             "profiles": webtransport_profiles or [],

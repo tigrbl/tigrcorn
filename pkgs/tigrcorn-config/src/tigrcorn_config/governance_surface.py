@@ -223,8 +223,6 @@ APPROVED_LEGACY_UNITTEST_FILES = (
     'tests/test_stream_probe_fixtures.py',
     'tests/test_websocket_uix_demo.py',
     'tests/test_webtransport_bidi_stream_context.py',
-    'tests/test_webtransport_feature_demo_app.py',
-    'tests/test_webtransport_feature_coverage.py',
     'tests/test_webtransport_mtls_demo.py',
     'tests/test_webtransport_mtls_demo_cleanup.py',
     'tests/test_webtransport_mtls_demo_runtime.py',
@@ -241,7 +239,9 @@ def scan_legacy_unittest_files(root: Path) -> list[str]:
     detected: list[str] = []
     for path in sorted(tests_root.glob('test_*.py')):
         text = path.read_text(encoding='utf-8')
-        if 'import unittest' in text or 'from unittest' in text:
+        # unittest.mock is a standalone mock utility and does not make a
+        # pytest module a legacy unittest test module.
+        if 'import unittest' in text or 'from unittest import' in text:
             detected.append(path.as_posix().split(root.as_posix() + '/', 1)[-1])
     return detected
 
