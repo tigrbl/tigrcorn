@@ -75,6 +75,37 @@ async def _bounded_worker_case() -> None:
         protocol.connection_lost(None)
 
 
+def test_udp_dispatch_yields_to_initial_under_continuous_media() -> None:
+    asyncio.run(_continuous_media_priority_case())
+
+
+async def _continuous_media_priority_case() -> None:
+    initial_started = asyncio.Event()
+    media_started = 0
+
+    async def callback(packet, _endpoint) -> None:
+        nonlocal media_started
+        if packet.data == b"\xc0new-initial":
+            initial_started.set()
+            return
+
+        media_started += 1
+        if media_started == 1:
+            protocol.datagram_received(b"\xc0new-initial", ("127.0.0.1", 50001))
+        if media_started < 100:
+            protocol.datagram_received(b"media", ("127.0.0.1", 50000))
+
+    protocol = _UDPProtocol(callback, dispatch_workers=2)
+    protocol.connection_made(_Transport())  # type: ignore[arg-type]
+    try:
+        protocol.datagram_received(b"media", ("127.0.0.1", 50000))
+        await asyncio.wait_for(initial_started.wait(), timeout=0.2)
+
+        assert media_started <= 2
+    finally:
+        protocol.connection_lost(None)
+
+
 def test_udp_reader_drains_a_bounded_batch_per_readiness_callback() -> None:
     received: list[tuple[bytes, tuple[str, int]]] = []
 

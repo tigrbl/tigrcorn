@@ -46,7 +46,7 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         ]
         for index, queue in enumerate(queues):
             task = asyncio.create_task(
-                self._dispatch(queue),
+                self._dispatch(queue, urgent=queue is self.urgent_queue),
                 name=f"tigrcorn-udp-dispatch-{index}",
             )
             self.tasks.add(task)
@@ -60,10 +60,21 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         queue = self.urgent_queue if data and data[0] & 0x80 else self.normal_queue
         queue.put_nowait((self._sequence, packet))
 
-    async def _dispatch(self, queue: asyncio.Queue[tuple[int, UDPPacket]]) -> None:
+    async def _dispatch(
+        self,
+        queue: asyncio.Queue[tuple[int, UDPPacket]],
+        *,
+        urgent: bool,
+    ) -> None:
         while True:
             _sequence, packet = await queue.get()
             try:
+                if not urgent:
+                    # queue.get() and a lightweight callback can both finish
+                    # synchronously while media keeps this queue non-empty.
+                    # Yield so the reserved long-header worker can service an
+                    # Initial already captured by the batched socket reader.
+                    await asyncio.sleep(0)
                 if self.endpoint is None:
                     continue
                 result = self.callback(packet, self.endpoint)
