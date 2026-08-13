@@ -29,6 +29,7 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
+  "cryptography>=46.0.0",
   "tigrcorn-core==0.3.18.dev2",
   "tigrcorn-config==0.3.18.dev2",
 ]
