@@ -11,12 +11,14 @@ from .requests import HTTP3RequestsMixin
 from .responses import HTTP3ResponsesMixin
 from .websocket_runtime import HTTP3WebSocketRuntimeMixin
 from .webtransport_datagrams import HTTP3WebTransportDatagramsMixin
+from .webtransport_stream_flow import HTTP3WebTransportStreamFlowMixin
 from .webtransport_streams import HTTP3WebTransportStreamsMixin
 from .webtransport_support import HTTP3WebTransportSupportMixin
 
 
 class HTTP3DatagramHandler(
     HTTP3PacketMixin,
+    HTTP3WebTransportStreamFlowMixin,
     HTTP3WebTransportStreamsMixin,
     HTTP3WebTransportDatagramsMixin,
     HTTP3WebTransportSupportMixin,

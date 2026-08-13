@@ -2,33 +2,9 @@ from __future__ import annotations
 
 from .imports import *
 from .webtransport import _HTTP3WebTransportSession
+from .webtransport_stream_flow import send_nonpriority_stream_data
 
 class HTTP3WebTransportStreamsMixin:
-    async def _open_webtransport_server_stream(
-        self,
-        session: HTTP3Session,
-        owner_stream_id: int,
-        *,
-        endpoint: UDPEndpoint,
-    ) -> int:
-        async with session.lock:
-            if (
-                session.addr not in self.sessions
-                or self.sessions.get(session.addr) is not session
-            ):
-                raise ProtocolError("WebTransport session is no longer connected")
-            webtransport = session.webtransport_sessions.get(owner_stream_id)
-            if webtransport is None or webtransport.closed:
-                raise ProtocolError("WebTransport session is no longer active")
-            stream_id = session.quic.streams.next_stream_id(
-                client=False,
-                unidirectional=True,
-            )
-            session.webtransport_streams.add(stream_id)
-            session.webtransport_stream_owners[stream_id] = owner_stream_id
-            self._webtransport_register_stream(webtransport, stream_id)
-            return stream_id
-
     async def _consume_webtransport_stream_event_locked(
         self,
         session: HTTP3Session,
@@ -184,6 +160,16 @@ class HTTP3WebTransportStreamsMixin:
         priority: bool = False,
     ) -> None:
         if not already_locked:
+            if not priority:
+                await send_nonpriority_stream_data(
+                    self,
+                    session,
+                    stream_id,
+                    data,
+                    end_stream=end_stream,
+                    endpoint=endpoint,
+                )
+                return
             async with session.lock:
                 await self._send_webtransport_stream_data(
                     session,
