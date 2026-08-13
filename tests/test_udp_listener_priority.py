@@ -106,6 +106,41 @@ async def _continuous_media_priority_case() -> None:
         protocol.connection_lost(None)
 
 
+def test_udp_dispatch_prioritizes_new_peer_control_behind_media() -> None:
+    asyncio.run(_new_peer_control_priority_case())
+
+
+async def _new_peer_control_priority_case() -> None:
+    control_started = asyncio.Event()
+    media_started = 0
+    new_peer = ("127.0.0.1", 50001)
+
+    async def callback(packet, _endpoint) -> None:
+        nonlocal media_started
+        if packet.data == b"\x40control":
+            control_started.set()
+            return
+        if packet.data.startswith(b"media"):
+            media_started += 1
+            if media_started == 1:
+                protocol.datagram_received(b"\xc0new-initial", new_peer)
+                protocol.datagram_received(b"\x40control", new_peer)
+
+    protocol = _UDPProtocol(callback, dispatch_workers=2)
+    protocol.connection_made(_Transport())  # type: ignore[arg-type]
+    try:
+        for index in range(100):
+            protocol.datagram_received(
+                f"media-{index}".encode(),
+                ("127.0.0.1", 50000),
+            )
+        await asyncio.wait_for(control_started.wait(), timeout=0.2)
+
+        assert media_started <= 2
+    finally:
+        protocol.connection_lost(None)
+
+
 def test_udp_reader_drains_a_bounded_batch_per_readiness_callback() -> None:
     received: list[tuple[bytes, tuple[str, int]]] = []
 

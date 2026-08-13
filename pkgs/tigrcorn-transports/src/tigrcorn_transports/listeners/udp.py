@@ -16,6 +16,8 @@ logger = logging.getLogger("tigrcorn")
 
 
 class _UDPProtocol(asyncio.DatagramProtocol):
+    _PEER_STARTUP_PRIORITY_SECONDS = 4.0
+
     def __init__(
         self,
         callback: Callable[..., Awaitable[None] | None],
@@ -31,6 +33,7 @@ class _UDPProtocol(asyncio.DatagramProtocol):
         self.tasks: set[asyncio.Task[None]] = set()
         self.urgent_queue: asyncio.Queue[tuple[int, UDPPacket]] = asyncio.Queue()
         self.normal_queue: asyncio.Queue[tuple[int, UDPPacket]] = asyncio.Queue()
+        self._peer_priority_until: dict[tuple[str, int], float] = {}
         self._sequence = 0
 
     def connection_made(self, transport: asyncio.BaseTransport) -> None:
@@ -57,7 +60,27 @@ class _UDPProtocol(asyncio.DatagramProtocol):
             return
         packet = UDPPacket(data=data, addr=addr)
         self._sequence += 1
-        queue = self.urgent_queue if data and data[0] & 0x80 else self.normal_queue
+        loop_time = asyncio.get_running_loop().time()
+        is_long_header = bool(data and data[0] & 0x80)
+        if is_long_header:
+            self._peer_priority_until[addr] = (
+                loop_time + self._PEER_STARTUP_PRIORITY_SECONDS
+            )
+        priority_until = self._peer_priority_until.get(addr, 0.0)
+        if priority_until and loop_time >= priority_until:
+            self._peer_priority_until.pop(addr, None)
+            priority_until = 0.0
+        if self._sequence % 256 == 0:
+            self._peer_priority_until = {
+                peer: deadline
+                for peer, deadline in self._peer_priority_until.items()
+                if loop_time < deadline
+            }
+        queue = (
+            self.urgent_queue
+            if is_long_header or priority_until
+            else self.normal_queue
+        )
         queue.put_nowait((self._sequence, packet))
 
     async def _dispatch(
