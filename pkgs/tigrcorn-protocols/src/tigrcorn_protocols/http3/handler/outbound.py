@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .imports import *
 
+
 class HTTP3OutboundMixin:
     def _queue_or_send(
         self,
@@ -15,6 +16,16 @@ class HTTP3OutboundMixin:
         transport = getattr(endpoint, 'transport', None)
         if transport is not None and transport.is_closing():
             return
+        # Packet numbers are assigned during encoding. Drain every older
+        # datagram before admitting this one so a freshly encoded ACK, PTO
+        # probe, or control response cannot overtake queued stream data and
+        # trigger spurious packet-threshold loss at the peer.
+        if session.pending_outbound:
+            self._flush_pending_outbound(session, endpoint)
+        if session.pending_outbound:
+            session.quic.defer_datagram(raw)
+            session.pending_outbound.append(raw)
+            return
         if self._can_send_now(session, raw):
             session.quic.confirm_datagram_sent(raw)
             endpoint.send(raw, addr)
@@ -23,9 +34,6 @@ class HTTP3OutboundMixin:
                 self.metrics.quic_datagram_sent(len(raw))
             return
         session.quic.defer_datagram(raw)
-        # Packet numbers are assigned before this scheduler sees the datagram.
-        # Reordering already-numbered packets creates spurious QUIC loss, so
-        # priority remains advisory until it can be applied before encoding.
         session.pending_outbound.append(raw)
 
     def _sync_quic_loss_metrics(self, session: HTTP3Session) -> None:

@@ -198,6 +198,49 @@ class HTTP3RecoveryRuntimeSendPathTests(unittest.TestCase):
         self.assertEqual([raw for raw, _addr in endpoint.sent], [media, control])
         self.assertEqual(session.pending_outbound, [])
 
+    def test_fresh_runtime_packet_cannot_bypass_older_pending_datagram(self):
+        async def app(scope, receive, send):
+            raise AssertionError('app should not be invoked')
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(kind='udp', host='127.0.0.1', port=1, protocols=['http3'], quic_secret=b'shared'),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            def __init__(self):
+                self.sent = []
+                self.local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                self.sent.append((data, addr))
+
+        endpoint = Endpoint()
+        session = HTTP3Session(
+            addr=('127.0.0.1', 50000),
+            quic=QuicConnection(is_client=False, secret=b'shared', local_cid=b'srv1srv1', remote_cid=b'cli1cli1'),
+            address_validated=True,
+        )
+        session.quic.address_validated = True
+        older = session.quic.send_stream_data(3, b'older-media', fin=False)
+        session.quic.recovery.congestion_window = 0
+        handler._queue_or_send(session, older, endpoint, session.addr)
+
+        session.quic.recovery.congestion_window = 64_000
+        session.quic.recovery.pacing_budget = 64_000
+        newer = session.quic.send_stream_data(1, b'newer-control', fin=True)
+        handler._queue_or_send(
+            session, newer, endpoint, session.addr, priority=True
+        )
+
+        self.assertEqual(
+            [raw for raw, _addr in endpoint.sent],
+            [older, newer],
+        )
+        self.assertEqual(session.pending_outbound, [])
+
 
 if __name__ == '__main__':
     unittest.main()
