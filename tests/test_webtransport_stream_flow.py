@@ -4,12 +4,13 @@ import asyncio
 from types import SimpleNamespace
 
 from tigrcorn_protocols.http3.handler.webtransport_stream_flow import (
+    _OUTBOUND_MAX_PENDING_DATAGRAMS,
     _STREAM_CHUNK_BYTES,
     send_nonpriority_stream_data,
 )
 
 
-def test_nonpriority_stream_send_waits_between_bounded_chunks() -> None:
+def test_nonpriority_stream_send_uses_bounded_packet_window() -> None:
     asyncio.run(_bounded_chunks_case())
 
 
@@ -43,7 +44,9 @@ async def _bounded_chunks_case() -> None:
             assert already_locked is True
             assert priority is False
             self.sent.append((data, end_stream))
-            session.pending_outbound.append(object())
+            session.pending_outbound.extend(
+                object() for _ in range(_OUTBOUND_MAX_PENDING_DATAGRAMS)
+            )
 
     handler = _Handler()
     payload = b"x" * (_STREAM_CHUNK_BYTES * 2 + 7)

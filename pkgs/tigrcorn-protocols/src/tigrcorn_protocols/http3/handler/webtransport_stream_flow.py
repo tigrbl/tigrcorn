@@ -5,8 +5,8 @@ from typing import Any
 
 from .imports import *
 
-
 _STREAM_CHUNK_BYTES = 16 * 1024
+_OUTBOUND_MAX_PENDING_DATAGRAMS = 32
 _OUTBOUND_DRAIN_POLL_SECONDS = 0.001
 
 
@@ -37,10 +37,12 @@ class HTTP3WebTransportStreamFlowMixin:
             return stream_id
 
 
-async def _wait_for_outbound_drain(
+async def _wait_for_outbound_capacity(
     handler: Any,
     session: Any,
     endpoint: Any,
+    *,
+    max_pending: int,
 ) -> bool:
     while True:
         async with session.lock:
@@ -50,7 +52,7 @@ async def _wait_for_outbound_drain(
             ):
                 return False
             handler._flush_pending_outbound(session, endpoint)
-            if not session.pending_outbound:
+            if len(session.pending_outbound) < max_pending:
                 return True
         await asyncio.sleep(_OUTBOUND_DRAIN_POLL_SECONDS)
 
@@ -70,7 +72,12 @@ async def send_nonpriority_stream_data(
         for offset in range(0, len(data), _STREAM_CHUNK_BYTES)
     ] or [b""]
     for index, chunk in enumerate(chunks):
-        if not await _wait_for_outbound_drain(handler, session, endpoint):
+        if not await _wait_for_outbound_capacity(
+            handler,
+            session,
+            endpoint,
+            max_pending=_OUTBOUND_MAX_PENDING_DATAGRAMS,
+        ):
             return
         async with session.lock:
             await handler._send_webtransport_stream_data(
@@ -83,7 +90,12 @@ async def send_nonpriority_stream_data(
                 priority=False,
             )
         await asyncio.sleep(0)
-    await _wait_for_outbound_drain(handler, session, endpoint)
+    await _wait_for_outbound_capacity(
+        handler,
+        session,
+        endpoint,
+        max_pending=1,
+    )
 
 
 __all__ = [
