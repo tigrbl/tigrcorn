@@ -29,6 +29,11 @@ class QuicConnection(
         retry_token_lifetime_ms: int = 10_000,
         new_token_lifetime_ms: int = 7 * 24 * 60 * 60 * 1000,
         max_datagram_size: int = 1200,
+        congestion_controller_factory: CongestionControllerFactory | None = None,
+        congestion_controller_options: Mapping[str, object] | None = None,
+        congestion_controller_options_validated: bool = False,
+        clock: Callable[[], float] | None = None,
+        deferred_send_accounting: bool = False,
     ) -> None:
         self.is_client = is_client
         self.version = version
@@ -40,6 +45,18 @@ class QuicConnection(
         self.peer_max_udp_payload_size: int | None = None
         # Backward-compatible alias for the currently effective QUIC UDP send ceiling.
         self.max_datagram_size = self.configured_max_datagram_size
+        self._congestion_controller_factory = validate_factory(
+            congestion_controller_factory or reno_factory
+        )
+        self._congestion_controller_options = dict(
+            congestion_controller_options or {}
+            if congestion_controller_options_validated
+            else self._congestion_controller_factory.validate_options(
+                congestion_controller_options or {}
+            )
+        )
+        self._congestion_clock = clock
+        self._deferred_send_accounting = bool(deferred_send_accounting)
         self.require_retry = require_retry
         self.retry_token_lifetime_ms = retry_token_lifetime_ms
         self.new_token_lifetime_ms = new_token_lifetime_ms
@@ -71,7 +88,13 @@ class QuicConnection(
             _DEFAULT_PATH_KEY: _PathRuntime(
                 key=_DEFAULT_PATH_KEY,
                 addr=None,
-                recovery=QuicLossRecovery(max_datagram_size=self.max_datagram_size),
+                recovery=QuicLossRecovery(
+                    max_datagram_size=self.max_datagram_size,
+                    congestion_controller_factory=self._congestion_controller_factory,
+                    congestion_controller_options=self._congestion_controller_options,
+                    congestion_controller_options_validated=True,
+                    clock=self._congestion_clock,
+                ),
                 max_udp_payload_size=self.configured_max_datagram_size,
             )
         }

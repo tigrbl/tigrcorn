@@ -32,7 +32,15 @@ dependencies = [
   "cryptography>=46.0.0",
   "tigrcorn-core==0.3.18.dev2",
   "tigrcorn-config==0.3.18.dev2",
+  "tigrcorn-quic-cc==0.3.18.dev2",
+  "tigrcorn-quic-cc-reno==0.3.18.dev2",
 ]
+
+[tool.uv.sources]
+tigrcorn-core = { workspace = true }
+tigrcorn-config = { workspace = true }
+tigrcorn-quic-cc = { workspace = true }
+tigrcorn-quic-cc-reno = { workspace = true }
 
 [tool.setuptools]
 package-dir = {"" = "src"}

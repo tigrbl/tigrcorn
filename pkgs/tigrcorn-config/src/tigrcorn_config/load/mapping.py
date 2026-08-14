@@ -7,7 +7,7 @@ from typing import Any, Mapping
 from tigrcorn_config.defaults import default_config
 from tigrcorn_config.files import load_config_source
 from tigrcorn_config.merge import merge_config_dicts
-from tigrcorn_config.model import ListenerConfig, ServerConfig
+from tigrcorn_config.model import CongestionControlConfig, ListenerConfig, ServerConfig
 from tigrcorn_config.normalize import normalize_config
 from tigrcorn_config.profiles import resolve_effective_profile_mapping, resolve_requested_profile
 from tigrcorn_config.validate import validate_config
@@ -40,6 +40,10 @@ def _apply_mapping(target: Any, data: Mapping[str, Any]) -> None:
                     _apply_mapping(listener, entry)
                     listeners.append(listener)
             setattr(target, key, listeners)
+        elif key == "congestion_control" and isinstance(value, Mapping):
+            congestion_control = CongestionControlConfig()
+            _apply_mapping(congestion_control, value)
+            setattr(target, key, congestion_control)
         elif dataclasses.is_dataclass(current) and isinstance(value, Mapping):
             _apply_mapping(current, value)
         else:

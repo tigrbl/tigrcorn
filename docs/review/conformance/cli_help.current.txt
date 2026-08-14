@@ -78,6 +78,8 @@ usage: tigrcorn [-h] [--app-interface {auto,tigr-asgi-contract,asgi3}]
                 [--quic-max-datagram-size QUIC_MAX_DATAGRAM_SIZE]
                 [--quic-idle-timeout QUIC_IDLE_TIMEOUT]
                 [--quic-early-data-policy {allow,deny,require}]
+                [--quic-congestion-control QUIC_CONGESTION_CONTROL]
+                [--quic-congestion-control-options QUIC_CONGESTION_CONTROL_OPTIONS]
                 [--webtransport-max-sessions WEBTRANSPORT_MAX_SESSIONS]
                 [--webtransport-max-streams WEBTRANSPORT_MAX_STREAMS]
                 [--webtransport-max-datagram-size WEBTRANSPORT_MAX_DATAGRAM_SIZE]
@@ -354,6 +356,12 @@ Protocol / transport:
   --quic-early-data-policy {allow,deny,require}
                         QUIC early-data policy: deny, allow, or require with
                         425 downgrade handling
+  --quic-congestion-control QUIC_CONGESTION_CONTROL
+                        Installed QUIC congestion-control provider id
+                        (default: reno)
+  --quic-congestion-control-options QUIC_CONGESTION_CONTROL_OPTIONS
+                        JSON object passed to the selected QUIC congestion-
+                        control provider at listener startup
   --webtransport-max-sessions WEBTRANSPORT_MAX_SESSIONS
                         Maximum concurrently active WebTransport sessions
   --webtransport-max-streams WEBTRANSPORT_MAX_STREAMS

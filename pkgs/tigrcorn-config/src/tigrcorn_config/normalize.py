@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import secrets
 
-from tigrcorn_config.model import ListenerConfig, ServerConfig
+from tigrcorn_config.model import CongestionControlConfig, ListenerConfig, ServerConfig
 from tigrcorn_core.constants import (
     DEFAULT_HTTP2_INITIAL_CONNECTION_WINDOW_SIZE,
     DEFAULT_HTTP2_INITIAL_STREAM_WINDOW_SIZE,
@@ -97,6 +97,12 @@ def normalize_config(config: ServerConfig) -> None:
         config.webtransport.stream_receive_max_delay_ms
     )
     config.webtransport.enabled = bool(config.webtransport.enabled)
+    config.quic.congestion_control.algorithm = str(
+        config.quic.congestion_control.algorithm or "reno"
+    ).strip().lower()
+    config.quic.congestion_control.options = dict(
+        config.quic.congestion_control.options or {}
+    )
     config.webtransport.compatibility = str(config.webtransport.compatibility or 'current').strip().lower()
     aliases = {'current': 'ietf-current', 'chromium': 'draft02'}
     configured_profiles = [
@@ -275,6 +281,16 @@ def normalize_config(config: ServerConfig) -> None:
             if "http3" in listener.protocols and "quic" not in listener.protocols:
                 listener.protocols.insert(0, "quic")
             listener.max_datagram_size = int(config.quic.max_datagram_size or listener.max_datagram_size)
+            listener_cc = listener.congestion_control or CongestionControlConfig()
+            listener.congestion_control = CongestionControlConfig(
+                algorithm=str(
+                    listener_cc.algorithm or config.quic.congestion_control.algorithm
+                ).strip().lower(),
+                options={
+                    **config.quic.congestion_control.options,
+                    **dict(listener_cc.options or {}),
+                },
+            )
             listener.quic_require_retry = bool(config.quic.require_retry or listener.quic_require_retry)
             listener.quic_secret = listener.quic_secret or config.quic.quic_secret or secrets.token_bytes(32)
         if not listener.scheme:

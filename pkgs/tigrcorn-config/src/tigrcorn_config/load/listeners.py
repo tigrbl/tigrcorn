@@ -120,3 +120,7 @@ def _apply_listener_quic_fields(ns: Namespace, listener: dict[str, Any]) -> None
         listener["max_datagram_size"] = ns.quic_max_datagram_size
     if ns.quic_secret is not None:
         listener["quic_secret"] = ns.quic_secret.encode("utf-8") if isinstance(ns.quic_secret, str) else ns.quic_secret
+    if getattr(ns, "quic_congestion_control", None) is not None:
+        listener.setdefault("congestion_control", {})["algorithm"] = ns.quic_congestion_control
+    if getattr(ns, "quic_congestion_control_options", None) is not None:
+        listener.setdefault("congestion_control", {})["options"] = dict(ns.quic_congestion_control_options)

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tigrcorn-quic-cc"
+version = "0.3.18.dev2"
+description = "Versioned congestion-controller contracts and provider discovery for Tigrcorn QUIC transports."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+license = {file = "LICENSE"}
+authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+keywords = ["tigrcorn", "quic", "congestion-control", "provider", "networking", "http3"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+license-files = ["LICENSE"]
+
+[tool.setuptools.package-data]
+tigrcorn_quic_cc = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

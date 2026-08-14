@@ -26,6 +26,7 @@ class _TigrCornServerBase:
         self._connection_inventory = RuntimeConnectionInventory()
         self._connection_sequence = 0
         self._quic_operational_security: dict[str, QuicOperationalSecurityRuntime] = {}
+        self._quic_congestion_controls: dict[int, Any] = {}
         self._webtransport_governance = WebTransportGovernanceManager(default_webtransport_budget_policy())
         self._should_exit = asyncio.Event()
         self._started = False

@@ -116,6 +116,10 @@ def _populate_special_blocks(
         blocks["websocket"]["enabled"] = not ns.disable_websocket
     if ns.quic_secret is not None:
         blocks["quic"]["quic_secret"] = ns.quic_secret.encode("utf-8") if isinstance(ns.quic_secret, str) else ns.quic_secret
+    if getattr(ns, "quic_congestion_control", None) is not None:
+        blocks["quic"].setdefault("congestion_control", {})["algorithm"] = ns.quic_congestion_control
+    if getattr(ns, "quic_congestion_control_options", None) is not None:
+        blocks["quic"].setdefault("congestion_control", {})["options"] = dict(ns.quic_congestion_control_options)
     if getattr(ns, "webtransport_origin", None):
         blocks["webtransport"]["origins"] = listify(ns.webtransport_origin)
 

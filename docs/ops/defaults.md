@@ -136,6 +136,8 @@ This page is generated from the runtime default audit and reviewed flag-contract
 | `--webtransport-origin` | `webtransport.origins` | `None` | `[]` | `reviewed_phase2` |
 | `--webtransport-path` | `webtransport.path` | `None` | `None` | `reviewed_phase2` |
 | `--pipe-mode` | `listeners[].pipe_mode` | `None` | `rawframed` | `reviewed_phase2` |
+| `--quic-congestion-control` | `quic.congestion_control.algorithm` | `None` | `reno` | `reviewed_phase2` |
+| `--quic-congestion-control-options` | `quic.congestion_control.options` | `None` | `None` | `reviewed_phase2` |
 
 ## Profile audits
 
@@ -143,7 +145,7 @@ This page is generated from the runtime default audit and reviewed flag-contract
 |---|---|---|---|
 | `default` | `.ssot/reports/profile-defaults/default.json` | `.ssot/reports/profile-defaults/default.md` | `0` |
 | `strict-h1-origin` | `.ssot/reports/profile-defaults/strict-h1-origin.json` | `.ssot/reports/profile-defaults/strict-h1-origin.md` | `2` |
-| `strict-h2-origin` | `.ssot/reports/profile-defaults/strict-h2-origin.json` | `.ssot/reports/profile-defaults/strict-h2-origin.md` | `89` |
-| `strict-h3-edge` | `.ssot/reports/profile-defaults/strict-h3-edge.json` | `.ssot/reports/profile-defaults/strict-h3-edge.md` | `134` |
-| `strict-mtls-origin` | `.ssot/reports/profile-defaults/strict-mtls-origin.json` | `.ssot/reports/profile-defaults/strict-mtls-origin.md` | `95` |
+| `strict-h2-origin` | `.ssot/reports/profile-defaults/strict-h2-origin.json` | `.ssot/reports/profile-defaults/strict-h2-origin.md` | `91` |
+| `strict-h3-edge` | `.ssot/reports/profile-defaults/strict-h3-edge.json` | `.ssot/reports/profile-defaults/strict-h3-edge.md` | `137` |
+| `strict-mtls-origin` | `.ssot/reports/profile-defaults/strict-mtls-origin.json` | `.ssot/reports/profile-defaults/strict-mtls-origin.md` | `97` |
 | `static-origin` | `.ssot/reports/profile-defaults/static-origin.json` | `.ssot/reports/profile-defaults/static-origin.md` | `12` |

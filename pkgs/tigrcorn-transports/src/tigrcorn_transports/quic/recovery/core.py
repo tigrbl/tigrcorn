@@ -1,7 +1,18 @@
 from __future__ import annotations
 
 import time
+from collections.abc import Callable, Mapping
 
+from tigrcorn_quic_cc import (
+    AckReceived,
+    CongestionControllerFactory,
+    PacketSent,
+    PacketsLost,
+    PersistentCongestion,
+)
+
+from ..congestion import QuicCongestionRuntime
+from .congestion import QuicRecoveryCongestionMixin
 from .model import (
     _GRANULARITY,
     _PACKET_THRESHOLD,
@@ -13,13 +24,27 @@ from .model import (
     RttStats,
 )
 
-class QuicLossRecovery:
-    def __init__(self, *, max_datagram_size: int = 1200) -> None:
+
+class QuicLossRecovery(QuicRecoveryCongestionMixin):
+    def __init__(
+        self,
+        *,
+        max_datagram_size: int = 1200,
+        congestion_controller_factory: CongestionControllerFactory | None = None,
+        congestion_controller_options: Mapping[str, object] | None = None,
+        congestion_controller_options_validated: bool = False,
+        clock: Callable[[], float] | None = None,
+    ) -> None:
+        self._clock = clock or time.monotonic
         self.max_datagram_size = max_datagram_size
-        self.minimum_congestion_window = 2 * max_datagram_size
-        self.congestion_window = min(10 * max_datagram_size, max(self.minimum_congestion_window, 14720))
+        self.congestion = QuicCongestionRuntime(
+            max_datagram_size=max_datagram_size,
+            factory=congestion_controller_factory,
+            options=congestion_controller_options,
+            options_validated=congestion_controller_options_validated,
+            clock=self._clock,
+        )
         self.bytes_in_flight = 0
-        self.ssthresh = 2**31 - 1
         self.pto_count = 0
         self.rtt = RttStats()
         self.spaces: dict[str, LossSpace] = {
@@ -27,11 +52,8 @@ class QuicLossRecovery:
             'handshake': LossSpace(name='handshake'),
             'application': LossSpace(name='application'),
         }
-        self.congestion_recovery_start_time: float | None = None
-        self.pacing_rate = float(self.congestion_window) / max(self.rtt.max_ack_delay, _GRANULARITY)
-        self.pacing_budget = float(self.congestion_window)
-        self._pacer_last_update: float | None = None
         self.persistent_congestion = False
+        self.persistent_congestion_total = 0
 
     @property
     def outstanding(self) -> dict[int, PacketRecord]:
@@ -45,58 +67,13 @@ class QuicLossRecovery:
         return max(space.largest_acked for space in self.spaces.values())
 
     def now(self) -> float:
-        return time.monotonic()
+        return self._clock()
 
     def _space(self, packet_space: str) -> LossSpace:
         normalized = 'application' if packet_space == '0rtt' else packet_space
         if normalized not in self.spaces:
             self.spaces[normalized] = LossSpace(name=normalized)
         return self.spaces[normalized]
-
-    def _update_pacing_rate(self) -> None:
-        smoothed = self.rtt.smoothed_rtt or self.rtt.latest_rtt or self.rtt.max_ack_delay or 0.333
-        self.pacing_rate = max(float(self.max_datagram_size) / _GRANULARITY, float(self.congestion_window) / max(smoothed, _GRANULARITY))
-
-    def _refresh_pacing_budget(self, now: float) -> None:
-        self._update_pacing_rate()
-        if self._pacer_last_update is None:
-            self._pacer_last_update = now
-            self.pacing_budget = min(float(self.congestion_window), max(self.pacing_budget, float(self.max_datagram_size)))
-            return
-        elapsed = max(0.0, now - self._pacer_last_update)
-        self._pacer_last_update = now
-        self.pacing_budget = min(float(self.congestion_window), self.pacing_budget + (elapsed * self.pacing_rate))
-
-    def available_send_budget(self, *, now: float | None = None) -> float:
-        at = self.now() if now is None else now
-        self._refresh_pacing_budget(at)
-        return self.pacing_budget
-
-    def can_send(self, bytes_sent: int, *, now: float | None = None) -> bool:
-        at = self.now() if now is None else now
-        self._refresh_pacing_budget(at)
-        return (self.bytes_in_flight + bytes_sent) <= self.congestion_window and float(bytes_sent) <= self.pacing_budget
-
-    def time_until_send(self, bytes_sent: int, *, now: float | None = None) -> float | None:
-        at = self.now() if now is None else now
-        self._refresh_pacing_budget(at)
-        if (self.bytes_in_flight + bytes_sent) > self.congestion_window:
-            return None
-        if float(bytes_sent) <= self.pacing_budget:
-            return 0.0
-        if self.pacing_rate <= 0:
-            return None
-        return max(0.0, (float(bytes_sent) - self.pacing_budget) / self.pacing_rate)
-
-    def spend_budget(self, bytes_sent: int, *, now: float | None = None) -> None:
-        at = self.now() if now is None else now
-        self._refresh_pacing_budget(at)
-        self.pacing_budget = max(0.0, self.pacing_budget - float(bytes_sent))
-
-    def refund_budget(self, bytes_sent: int, *, now: float | None = None) -> None:
-        at = self.now() if now is None else now
-        self._refresh_pacing_budget(at)
-        self.pacing_budget = min(float(self.congestion_window), self.pacing_budget + float(bytes_sent))
 
     def on_packet_sent(
         self,
@@ -125,6 +102,14 @@ class QuicLossRecovery:
         if ack_eliciting and transmitted:
             self.bytes_in_flight += bytes_sent
             self.spend_budget(bytes_sent, now=sent_at)
+            self.congestion.on_packet_sent(
+                PacketSent(
+                    now=sent_at,
+                    packet=self._packet_info(record),
+                    bytes_in_flight=self.bytes_in_flight,
+                )
+            )
+            record.controller_notified = True
 
     def deactivate_packet(
         self,
@@ -162,6 +147,15 @@ class QuicLossRecovery:
         record.in_flight = True
         self.bytes_in_flight += record.bytes_sent
         self.spend_budget(record.bytes_sent, now=self.now() if now is None else now)
+        if not record.controller_notified:
+            self.congestion.on_packet_sent(
+                PacketSent(
+                    now=sent_at,
+                    packet=self._packet_info(record),
+                    bytes_in_flight=self.bytes_in_flight,
+                )
+            )
+            record.controller_notified = True
         return True
 
     def discard_space(self, packet_space: str) -> None:
@@ -198,32 +192,31 @@ class QuicLossRecovery:
     def _persistent_congestion_duration(self, *, packet_space: str) -> float:
         return self.pto_timeout(packet_space=packet_space) * _PERSISTENT_CONGESTION_THRESHOLD
 
-    def _on_packets_acked(self, bytes_acked: int) -> None:
-        if bytes_acked <= 0:
-            return
-        if self.congestion_window < self.ssthresh:
-            self.congestion_window += bytes_acked
-        else:
-            increment = max(1, (self.max_datagram_size * bytes_acked) // max(self.congestion_window, 1))
-            self.congestion_window += increment
-        self._update_pacing_rate()
-
     def _on_congestion_event(self, lost_records: list[PacketRecord], *, now: float, packet_space: str) -> None:
         if not lost_records:
             return
-        newest_lost_sent_time = max(record.sent_time for record in lost_records)
-        if self.congestion_recovery_start_time is None or newest_lost_sent_time > self.congestion_recovery_start_time:
-            self.congestion_recovery_start_time = now
-            self.ssthresh = max(self.congestion_window // 2, self.minimum_congestion_window)
-            self.congestion_window = self.ssthresh
-            self._update_pacing_rate()
+        self.congestion.on_packets_lost(
+            PacketsLost(
+                now=now,
+                packets=tuple(self._packet_info(record) for record in lost_records),
+                bytes_lost=sum(record.bytes_sent for record in lost_records if record.in_flight),
+                bytes_in_flight=self.bytes_in_flight,
+                packet_space=packet_space,
+            )
+        )
         ack_eliciting_lost = [record for record in sorted(lost_records, key=lambda item: item.sent_time) if record.ack_eliciting]
         if len(ack_eliciting_lost) >= 2:
             duration = ack_eliciting_lost[-1].sent_time - ack_eliciting_lost[0].sent_time
             if duration >= self._persistent_congestion_duration(packet_space=packet_space):
-                self.congestion_window = self.minimum_congestion_window
                 self.persistent_congestion = True
-                self._update_pacing_rate()
+                self.persistent_congestion_total += 1
+                self.congestion.on_persistent_congestion(
+                    PersistentCongestion(
+                        now=now,
+                        packet_space=packet_space,
+                        duration=duration,
+                    )
+                )
 
     def on_ack_received(
         self,
@@ -244,15 +237,28 @@ class QuicLossRecovery:
             adjusted_ack_delay = min(ack_delay, self.rtt.max_ack_delay) if space.name == 'application' else 0.0
             self._update_rtt(sample, adjusted_ack_delay)
         bytes_acked = 0
+        acked_records: list[PacketRecord] = []
         for packet_number in acked:
             record = space.outstanding.pop(packet_number, None)
             if record is None:
                 continue
+            acked_records.append(record)
             if record.in_flight:
                 self.bytes_in_flight = max(0, self.bytes_in_flight - record.bytes_sent)
                 bytes_acked += record.bytes_sent
         space.largest_acked = max(space.largest_acked, largest)
-        self._on_packets_acked(bytes_acked)
+        self.congestion.on_ack_received(
+            AckReceived(
+                now=at,
+                packets=tuple(self._packet_info(record) for record in acked_records),
+                bytes_acked=bytes_acked,
+                bytes_in_flight=self.bytes_in_flight,
+                latest_rtt=self.rtt.latest_rtt,
+                min_rtt=self.rtt.min_rtt,
+                smoothed_rtt=self.rtt.smoothed_rtt,
+                rttvar=self.rtt.rttvar,
+            )
+        )
         self.pto_count = 0
         self.persistent_congestion = False
         return self.detect_lost_packets(now=at, packet_space=space.name)

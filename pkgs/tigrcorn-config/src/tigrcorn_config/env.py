@@ -76,6 +76,8 @@ _FLAT_ENV_MAP = {
     "QUIC_MAX_DATAGRAM_SIZE": ("quic", "max_datagram_size"),
     "QUIC_IDLE_TIMEOUT": ("quic", "idle_timeout"),
     "QUIC_EARLY_DATA_POLICY": ("quic", "early_data_policy"),
+    "QUIC_CONGESTION_CONTROL": ("quic", "congestion_control", "algorithm"),
+    "QUIC_CONGESTION_CONTROL_OPTIONS": ("quic", "congestion_control", "options"),
     "WEBTRANSPORT_MAX_SESSIONS": ("webtransport", "max_sessions"),
     "WEBTRANSPORT_MAX_STREAMS": ("webtransport", "max_streams"),
     "WEBTRANSPORT_MAX_DATAGRAM_SIZE": ("webtransport", "max_datagram_size"),

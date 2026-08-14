@@ -5,6 +5,15 @@ from .imports import *
 class _TigrCornServerClientHandlerMixin:
     def _make_client_handler(self, listener_cfg: ListenerConfig):
         if listener_cfg.kind == 'udp':
+            listener_congestion_control = (
+                listener_cfg.congestion_control
+                or self.config.quic.congestion_control
+            )
+            congestion_control = resolve_congestion_control(
+                listener_congestion_control.algorithm or "reno",
+                listener_congestion_control.options,
+            )
+            self._quic_congestion_controls[id(listener_cfg)] = congestion_control
             h3_handler = HTTP3DatagramHandler(
                 app=self.app,
                 config=self.config,
@@ -14,6 +23,8 @@ class _TigrCornServerClientHandlerMixin:
                 metrics=self.state.metrics,
                 webtransport_governance=self._webtransport_governance,
                 connection_inventory=self._connection_inventory,
+                congestion_controller_factory=congestion_control.factory,
+                congestion_controller_options=congestion_control.options,
             )
             self._datagram_handlers.append(h3_handler)
 

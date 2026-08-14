@@ -10698,11 +10698,129 @@
           "stream"
         ]
       }
+    },
+    {
+      "claim_class": "rfc_scoped",
+      "claim_text": "Selects the listener-startup QUIC congestion-controller provider without changing RFC 9002 loss-detection ownership.",
+      "config_path": "quic.congestion_control.algorithm",
+      "contract_id": "quic_congestion_control",
+      "default": "reno",
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Protocol / transport",
+      "flag_id": "protocols",
+      "flag_strings": [
+        "--quic-congestion-control"
+      ],
+      "help_text": "Installed QUIC congestion-control provider id (default: reno)",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [
+        "http3_clean"
+      ],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [
+        "RFC 9000",
+        "RFC 9002"
+      ],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/quic_cc.py"
+      ],
+      "scope": "listener-resolved",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_contract_tests",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true,
+        "release_note": "QUIC congestion-control providers are selected once per listener startup."
+      },
+      "unit_tests": [
+        "tests/test_quic_cc_extension.py::test_config_precedence_cli_and_listener_override"
+      ],
+      "validation_rules": [
+        "non-empty installed provider id",
+        "API v1 compatibility"
+      ],
+      "value_space": {
+        "kind": "installed-provider-id",
+        "sample": "reno"
+      }
+    },
+    {
+      "claim_class": "rfc_scoped",
+      "claim_text": "Passes listener-startup options to the selected QUIC congestion-controller provider after JSON-object parsing.",
+      "config_path": "quic.congestion_control.options",
+      "contract_id": "quic_congestion_control_options",
+      "default": null,
+      "deployment_profiles": [
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Protocol / transport",
+      "flag_id": "protocols",
+      "flag_strings": [
+        "--quic-congestion-control-options"
+      ],
+      "help_text": "JSON object passed to the selected QUIC congestion-control provider at listener startup",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [
+        "http3_clean"
+      ],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [
+        "RFC 9000",
+        "RFC 9002"
+      ],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/quic_cc.py"
+      ],
+      "scope": "listener-resolved",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_contract_tests",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true,
+        "release_note": "Provider-specific options share the normalized config, CLI, and environment surface."
+      },
+      "unit_tests": [
+        "tests/test_quic_cc_extension.py::test_config_precedence_cli_and_listener_override"
+      ],
+      "validation_rules": [
+        "JSON object",
+        "selected provider validates keys and values"
+      ],
+      "value_space": {
+        "kind": "json-object",
+        "sample": {
+          "pacing_gain": 1.0
+        }
+      }
     }
   ],
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "current_state": {
-    "contract_rows_defined": 132,
+    "contract_rows_defined": 134,
     "notes": [
       "WebTransport operator surface adds --protocol webtransport and WebTransport-specific tuning flags with CLI/config/env/API tests.",
       "Phase 7 reconciles markdown, JSON, CLI help snapshots, and current-state truth for the full 124-flag public surface.",
@@ -10719,9 +10837,9 @@
       "Step 2 descopes trio from the public runtime surface until an end-to-end trio server core is implemented.",
       "Phase 2 adds server-native static route/mount/index/expires controls and closes standard ASGI http.response.pathsend-backed file delivery."
     ],
-    "promotion_ready_rows": 132,
+    "promotion_ready_rows": 134,
     "review_status": "reviewed_phase2",
-    "reviewed_contract_rows": 132,
+    "reviewed_contract_rows": 134,
     "runtime_gap_flags": [],
     "strict_target_pending_flags": [
       "--connect-allow",
@@ -10742,10 +10860,10 @@
   "phase2_review": {
     "default_audit": "DEFAULT_AUDIT.json",
     "profile_defaults_dir": ".ssot/reports/profile-defaults",
-    "public_flag_string_count": 132,
+    "public_flag_string_count": 134,
     "review_status": "reviewed_phase2",
     "reviewed": true,
-    "reviewed_contract_rows": 132
+    "reviewed_contract_rows": 134
   },
   "phase3_review": {
     "contract_doc": "docs/conformance/proxy_contract.md",
@@ -10803,7 +10921,7 @@
     "status": "frozen",
     "status_doc": "docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md"
   },
-  "public_flag_string_count": 132,
+  "public_flag_string_count": 134,
   "schema_version": 1,
   "strict_target_boundary": "docs/review/conformance/certification_boundary.strict_target.json",
   "target_name": "phase8_family_flag_contracts"

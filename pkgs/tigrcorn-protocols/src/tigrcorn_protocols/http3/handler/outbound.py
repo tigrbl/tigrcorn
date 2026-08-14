@@ -47,6 +47,16 @@ class HTTP3OutboundMixin:
         while pto_total > session.last_quic_pto_expirations_total:
             self.metrics.quic_pto_expired()
             session.last_quic_pto_expirations_total += 1
+        persistent_total = int(
+            getattr(session.quic.recovery, 'persistent_congestion_total', 0)
+        )
+        while persistent_total > session.last_quic_persistent_congestion_total:
+            self.metrics.quic_persistent_congestion_observed()
+            session.last_quic_persistent_congestion_total += 1
+        controller_failed = bool(session.quic.recovery.congestion.failed)
+        if controller_failed and not session.quic_congestion_controller_failure_reported:
+            self.metrics.quic_congestion_controller_failed()
+            session.quic_congestion_controller_failure_reported = True
 
     def _flush_pending_outbound(self, session: HTTP3Session, endpoint: UDPEndpoint) -> None:
         if not session.pending_outbound:

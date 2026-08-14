@@ -76,6 +76,7 @@ class QuicConnectionSendMixin:
             ack_eliciting=ack_eliciting,
             packet_space=recovery_space,
             is_pto_probe=is_pto_probe,
+            transmitted=not self._deferred_send_accounting,
         )
         self._sent_packets[(recovery_space, packet_number)] = _SentPacketMeta(
             packet_space=packet_space,
@@ -86,9 +87,11 @@ class QuicConnectionSendMixin:
             token=token,
             ack_eliciting=ack_eliciting,
             is_pto_probe=is_pto_probe,
+            transmitted=not self._deferred_send_accounting,
         )
         self._register_datagram_packets(raw, [(recovery_space, packet_number)])
-        self.bytes_sent += len(raw)
+        if not self._deferred_send_accounting:
+            self.bytes_sent += len(raw)
         self._refresh_congestion_snapshot(path_state.recovery)
         self._update_runtime_timers()
 

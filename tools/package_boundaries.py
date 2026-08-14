@@ -21,6 +21,19 @@ PACKAGE_BOUNDARIES: tuple[PackageBoundary, ...] = (
         owns=("constants", "errors", "types", "utils primitives"),
     ),
     PackageBoundary(
+        distribution="tigrcorn-quic-cc",
+        import_name="tigrcorn_quic_cc",
+        layer=0,
+        owns=("QUIC congestion-controller API", "provider discovery", "provider compliance helpers"),
+    ),
+    PackageBoundary(
+        distribution="tigrcorn-quic-cc-reno",
+        import_name="tigrcorn_quic_cc_reno",
+        layer=1,
+        owns=("default Reno congestion-control policy",),
+        depends_on=("tigrcorn-quic-cc",),
+    ),
+    PackageBoundary(
         distribution="tigrcorn-config",
         import_name="tigrcorn_config",
         layer=1,
@@ -55,7 +68,7 @@ PACKAGE_BOUNDARIES: tuple[PackageBoundary, ...] = (
         import_name="tigrcorn_transports",
         layer=2,
         owns=("listener registry", "tcp", "udp", "unix", "pipe", "inproc", "quic transport primitives"),
-        depends_on=("tigrcorn-core", "tigrcorn-config"),
+        depends_on=("tigrcorn-core", "tigrcorn-config", "tigrcorn-quic-cc", "tigrcorn-quic-cc-reno"),
     ),
     PackageBoundary(
         distribution="tigrcorn-security",
@@ -110,6 +123,8 @@ PACKAGE_BOUNDARIES: tuple[PackageBoundary, ...] = (
             "tigrcorn-transports",
             "tigrcorn-protocols",
             "tigrcorn-security",
+            "tigrcorn-quic-cc",
+            "tigrcorn-quic-cc-reno",
         ),
         optional_dependencies=("uvloop", "trio"),
     ),

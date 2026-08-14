@@ -33,6 +33,8 @@ classifiers = [
 ]
 dependencies = [
     "tigrcorn-core==0.3.18.dev2",
+    "tigrcorn-quic-cc==0.3.18.dev2",
+    "tigrcorn-quic-cc-reno==0.3.18.dev2",
     "tigrcorn-config==0.3.18.dev2",
     "tigrcorn-asgi==0.3.18.dev2",
     "tigrcorn-contract==0.3.18.dev2",
@@ -113,6 +115,8 @@ members = ["pkgs/*"]
 
 [tool.uv.sources]
 tigrcorn-core = { workspace = true }
+tigrcorn-quic-cc = { workspace = true }
+tigrcorn-quic-cc-reno = { workspace = true }
 tigrcorn-config = { workspace = true }
 tigrcorn-asgi = { workspace = true }
 tigrcorn-contract = { workspace = true }

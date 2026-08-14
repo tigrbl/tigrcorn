@@ -3,5 +3,5 @@
 This file is generated from code.
 
 - Claim: `TC-AUDIT-PROFILE-EFFECTIVE-DEFAULTS`
-- Effective-default key count: `164`
-- Overlay key count: `89`
+- Effective-default key count: `166`
+- Overlay key count: `91`

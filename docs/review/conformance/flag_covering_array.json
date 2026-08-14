@@ -2,7 +2,7 @@
   "schema_version": 1,
   "target_name": "phase8_flag_covering_array",
   "status": "planned",
-  "public_flag_string_count": 132,
+  "public_flag_string_count": 134,
   "strategy": {
     "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
     "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
@@ -64,8 +64,8 @@
         "--fd"
       ],
       "rationale": "Development and process controls must not create invalid inherited-listener combinations."
-    }
-  ],
+    }
+  ],
   "cases": [
     {
       "case_id": "flag-001-access_log",
@@ -3563,7 +3563,65 @@
       ],
       "claim_plane": "rfc_scoped",
       "status": "implemented"
-    }
+    },
+
+    {
+
+      "case_id": "flag-163-quic_congestion_control",
+      "strength": 1,
+
+      "dimensions": [
+
+        {
+
+          "flag": "--quic-congestion-control",
+
+          "value": "reno"
+
+        }
+
+      ],
+
+      "deployment_profiles": [
+
+        "http3_quic"
+
+      ],
+
+      "claim_plane": "rfc_scoped",
+
+      "status": "implemented"
+
+    },
+
+    {
+
+      "case_id": "flag-164-quic_congestion_control_options",
+      "strength": 1,
+
+      "dimensions": [
+
+        {
+
+          "flag": "--quic-congestion-control-options",
+
+          "value": "{\"pacing_gain\":1.0}"
+
+        }
+
+      ],
+
+      "deployment_profiles": [
+
+        "http3_quic"
+
+      ],
+
+      "claim_plane": "rfc_scoped",
+
+      "status": "implemented"
+
+    }
   ],
   "promotion_contract_contract_freeze": {
     "status": "frozen",

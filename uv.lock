@@ -14,6 +14,8 @@ members = [
     "tigrcorn-http",
     "tigrcorn-observability",
     "tigrcorn-protocols",
+    "tigrcorn-quic-cc",
+    "tigrcorn-quic-cc-reno",
     "tigrcorn-runtime",
     "tigrcorn-security",
     "tigrcorn-static",
@@ -906,6 +908,8 @@ dependencies = [
     { name = "tigrcorn-http" },
     { name = "tigrcorn-observability" },
     { name = "tigrcorn-protocols" },
+    { name = "tigrcorn-quic-cc" },
+    { name = "tigrcorn-quic-cc-reno" },
     { name = "tigrcorn-runtime" },
     { name = "tigrcorn-security" },
     { name = "tigrcorn-static" },
@@ -1003,6 +1007,8 @@ requires-dist = [
     { name = "tigrcorn-http", editable = "pkgs/tigrcorn-http" },
     { name = "tigrcorn-observability", editable = "pkgs/tigrcorn-observability" },
     { name = "tigrcorn-protocols", editable = "pkgs/tigrcorn-protocols" },
+    { name = "tigrcorn-quic-cc", editable = "pkgs/tigrcorn-quic-cc" },
+    { name = "tigrcorn-quic-cc-reno", editable = "pkgs/tigrcorn-quic-cc-reno" },
     { name = "tigrcorn-runtime", editable = "pkgs/tigrcorn-runtime" },
     { name = "tigrcorn-security", editable = "pkgs/tigrcorn-security" },
     { name = "tigrcorn-static", editable = "pkgs/tigrcorn-static" },
@@ -1191,6 +1197,22 @@ requires-dist = [
 ]
 
 [[package]]
+name = "tigrcorn-quic-cc"
+version = "0.3.18.dev2"
+source = { editable = "pkgs/tigrcorn-quic-cc" }
+
+[[package]]
+name = "tigrcorn-quic-cc-reno"
+version = "0.3.18.dev2"
+source = { editable = "pkgs/tigrcorn-quic-cc-reno" }
+dependencies = [
+    { name = "tigrcorn-quic-cc" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "tigrcorn-quic-cc", editable = "pkgs/tigrcorn-quic-cc" }]
+
+[[package]]
 name = "tigrcorn-runtime"
 version = "0.3.18.dev2"
 source = { editable = "pkgs/tigrcorn-runtime" }
@@ -1199,6 +1221,8 @@ dependencies = [
     { name = "tigrcorn-config" },
     { name = "tigrcorn-core" },
     { name = "tigrcorn-protocols" },
+    { name = "tigrcorn-quic-cc" },
+    { name = "tigrcorn-quic-cc-reno" },
     { name = "tigrcorn-security" },
     { name = "tigrcorn-transports" },
 ]
@@ -1217,6 +1241,8 @@ requires-dist = [
     { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
     { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
     { name = "tigrcorn-protocols", editable = "pkgs/tigrcorn-protocols" },
+    { name = "tigrcorn-quic-cc", editable = "pkgs/tigrcorn-quic-cc" },
+    { name = "tigrcorn-quic-cc-reno", editable = "pkgs/tigrcorn-quic-cc-reno" },
     { name = "tigrcorn-security", editable = "pkgs/tigrcorn-security" },
     { name = "tigrcorn-transports", editable = "pkgs/tigrcorn-transports" },
     { name = "trio", marker = "extra == 'trio'", specifier = ">=0.25.0" },
@@ -1271,6 +1297,8 @@ dependencies = [
     { name = "cryptography" },
     { name = "tigrcorn-config" },
     { name = "tigrcorn-core" },
+    { name = "tigrcorn-quic-cc" },
+    { name = "tigrcorn-quic-cc-reno" },
 ]
 
 [package.metadata]
@@ -1278,6 +1306,8 @@ requires-dist = [
     { name = "cryptography", specifier = ">=46.0.0" },
     { name = "tigrcorn-config", editable = "pkgs/tigrcorn-config" },
     { name = "tigrcorn-core", editable = "pkgs/tigrcorn-core" },
+    { name = "tigrcorn-quic-cc", editable = "pkgs/tigrcorn-quic-cc" },
+    { name = "tigrcorn-quic-cc-reno", editable = "pkgs/tigrcorn-quic-cc-reno" },
 ]
 
 [[package]]

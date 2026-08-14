@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 from tigrcorn_core.constants import (
     DEFAULT_BACKLOG,
@@ -16,12 +16,21 @@ from .types import ListenerKind
 
 
 @dataclass(slots=True)
+class CongestionControlConfig:
+    algorithm: str | None = None
+    options: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
 class QUICConfig:
     quic_secret: bytes | None = None
     require_retry: bool = False
     max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
     idle_timeout: float = DEFAULT_IDLE_TIMEOUT
     early_data_policy: Literal["allow", "deny", "require"] = "deny"
+    congestion_control: CongestionControlConfig = field(
+        default_factory=lambda: CongestionControlConfig(algorithm="reno")
+    )
 
 
 @dataclass(slots=True)
@@ -75,6 +84,7 @@ class ListenerConfig:
     quic_secret: bytes | None = None
     quic_require_retry: bool = False
     max_datagram_size: int = DEFAULT_MAX_DATAGRAM_SIZE
+    congestion_control: CongestionControlConfig | None = None
     pipe_mode: Literal["rawframed", "stream"] = DEFAULT_PIPE_MODE
     user: str | int | None = None
     group: str | int | None = None

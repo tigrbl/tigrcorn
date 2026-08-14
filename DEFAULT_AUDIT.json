@@ -54,6 +54,7 @@
     "listeners[0].alpn_protocols[0]": "http/1.1",
     "listeners[0].backlog": 2048,
     "listeners[0].bind": null,
+    "listeners[0].congestion_control": null,
     "listeners[0].crl_mode": "off",
     "listeners[0].endpoint": null,
     "listeners[0].fd": null,
@@ -118,6 +119,7 @@
     "proxy.root_path": "",
     "proxy.server_header": "",
     "proxy.server_names": [],
+    "quic.congestion_control.algorithm": "reno",
     "quic.early_data_policy": "deny",
     "quic.idle_timeout": 30.0,
     "quic.max_datagram_size": 1200,
@@ -1092,6 +1094,20 @@
       "flag": "--pipe-mode",
       "parser_default": null,
       "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "quic.congestion_control.algorithm",
+      "effective_default": "reno",
+      "flag": "--quic-congestion-control",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "quic.congestion_control.options",
+      "effective_default": null,
+      "flag": "--quic-congestion-control-options",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
     }
   ],
   "normalization_backfills_flat": {
@@ -1104,6 +1120,7 @@
     "listeners.from[0].alpn_protocols": [],
     "listeners.from[0].backlog": 2048,
     "listeners.from[0].bind": null,
+    "listeners.from[0].congestion_control": null,
     "listeners.from[0].crl_mode": "off",
     "listeners.from[0].endpoint": null,
     "listeners.from[0].fd": null,
@@ -1145,6 +1162,7 @@
     "listeners.to[0].alpn_protocols[1]": "http/1.1",
     "listeners.to[0].backlog": 2048,
     "listeners.to[0].bind": null,
+    "listeners.to[0].congestion_control": null,
     "listeners.to[0].crl_mode": "off",
     "listeners.to[0].endpoint": null,
     "listeners.to[0].fd": null,
@@ -1193,6 +1211,6 @@
     "webtransport.profiles.to[1]": "draft13",
     "webtransport.profiles.to[2]": "ietf-current"
   },
-  "parser_public_flag_count": 132,
+  "parser_public_flag_count": 134,
   "profile": "default"
 }

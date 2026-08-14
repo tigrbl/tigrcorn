@@ -17,6 +17,7 @@ class PacketRecord:
     in_flight: bool = True
     packet_space: str = 'application'
     is_pto_probe: bool = False
+    controller_notified: bool = False
 
 
 @dataclass(slots=True)

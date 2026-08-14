@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 
@@ -16,6 +17,16 @@ from tigrcorn_runtime.server.supervisor import ServerSupervisor
 def _add_flag_pair(group: argparse._ArgumentGroup, positive: str, negative: str, *, dest: str, help_text: str) -> None:
     group.add_argument(positive, action='store_true', dest=dest, default=None, help=help_text)
     group.add_argument(negative, action='store_false', dest=dest, default=None, help=f"Disable {help_text.lower()}")
+
+
+def _json_object(value: str) -> dict[str, object]:
+    try:
+        parsed = json.loads(value)
+    except json.JSONDecodeError as exc:
+        raise argparse.ArgumentTypeError(f"invalid JSON object: {exc.msg}") from exc
+    if not isinstance(parsed, dict):
+        raise argparse.ArgumentTypeError("value must be a JSON object")
+    return parsed
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -152,6 +163,8 @@ def build_parser() -> argparse.ArgumentParser:
     protocol_group.add_argument("--quic-max-datagram-size", type=int, default=None, help=quic_flag_help("--quic-max-datagram-size"))
     protocol_group.add_argument("--quic-idle-timeout", type=float, default=None, help=quic_flag_help("--quic-idle-timeout"))
     protocol_group.add_argument("--quic-early-data-policy", choices=["allow", "deny", "require"], default=None, help=quic_flag_help("--quic-early-data-policy"))
+    protocol_group.add_argument("--quic-congestion-control", default=None, help=quic_flag_help("--quic-congestion-control"))
+    protocol_group.add_argument("--quic-congestion-control-options", type=_json_object, default=None, help=quic_flag_help("--quic-congestion-control-options"))
     protocol_group.add_argument("--webtransport-max-sessions", type=int, default=None, help="Maximum concurrently active WebTransport sessions")
     protocol_group.add_argument("--webtransport-max-streams", type=int, default=None, help="Maximum concurrently active WebTransport streams")
     protocol_group.add_argument("--webtransport-max-datagram-size", type=int, default=None, help="Maximum WebTransport datagram payload size")

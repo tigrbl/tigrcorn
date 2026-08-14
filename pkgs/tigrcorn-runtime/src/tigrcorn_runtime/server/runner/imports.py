@@ -34,6 +34,7 @@ from tigrcorn_protocols.sessions import RuntimeConnectionInventory, peer_id_from
 from tigrcorn_security.tls import build_server_ssl_context, tls_extension_payload
 from tigrcorn_runtime.server.hooks import run_async_hooks
 from tigrcorn_runtime.server.state import ServerState
+from tigrcorn_runtime.quic_cc import resolve_congestion_control
 from tigrcorn_transports.tcp.reader import PrebufferedReader
 from tigrcorn_transports.registry import (
     TRANSPORTS,

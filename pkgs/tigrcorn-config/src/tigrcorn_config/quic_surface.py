@@ -94,6 +94,8 @@ QUIC_FLAG_HELP: dict[str, str] = {
     '--quic-max-datagram-size': 'Maximum QUIC UDP payload size advertised and accepted by package-owned QUIC listeners',
     '--quic-idle-timeout': 'QUIC idle timeout in seconds for package-owned UDP listeners',
     '--quic-early-data-policy': 'QUIC early-data policy: deny, allow, or require with 425 downgrade handling',
+    '--quic-congestion-control': 'Installed QUIC congestion-control provider id (default: reno)',
+    '--quic-congestion-control-options': 'JSON object passed to the selected QUIC congestion-control provider at listener startup',
 }
 
 

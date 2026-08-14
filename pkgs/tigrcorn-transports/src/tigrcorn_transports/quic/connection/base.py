@@ -46,7 +46,13 @@ class QuicConnectionBaseMixin:
             state = _PathRuntime(
                 key=path_key,
                 addr=addr,
-                recovery=QuicLossRecovery(max_datagram_size=path_budget),
+                recovery=QuicLossRecovery(
+                    max_datagram_size=path_budget,
+                    congestion_controller_factory=self._congestion_controller_factory,
+                    congestion_controller_options=self._congestion_controller_options,
+                    congestion_controller_options_validated=True,
+                    clock=self._congestion_clock,
+                ),
                 max_udp_payload_size=path_budget,
             )
             if self.peer_transport_parameters is not None:
@@ -314,8 +320,7 @@ class QuicConnectionBaseMixin:
         self.max_datagram_size = min(self.configured_max_datagram_size, self.peer_max_udp_payload_size)
         for path in self._path_states.values():
             path.max_udp_payload_size = min(path.max_udp_payload_size, self.max_datagram_size)
-            path.recovery.max_datagram_size = path.max_udp_payload_size
-            path.recovery.minimum_congestion_window = 2 * path.max_udp_payload_size
+            path.recovery.update_max_datagram_size(path.max_udp_payload_size)
         self.local_transport_parameters = self.handshake_driver.transport_parameters
         ack_delay_exponent = peer.ack_delay_exponent if peer.ack_delay_exponent >= 0 else 3
         max_ack_delay = max(peer.max_ack_delay, 0) / 1000.0

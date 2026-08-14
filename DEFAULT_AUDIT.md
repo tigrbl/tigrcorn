@@ -136,3 +136,5 @@ This file is generated from code. It records the Phase 2 base default audit for 
 | `--webtransport-origin` | `webtransport.origins` | `None` | `[]` | `reviewed_phase2` |
 | `--webtransport-path` | `webtransport.path` | `None` | `None` | `reviewed_phase2` |
 | `--pipe-mode` | `listeners[].pipe_mode` | `None` | `rawframed` | `reviewed_phase2` |
+| `--quic-congestion-control` | `quic.congestion_control.algorithm` | `None` | `reno` | `reviewed_phase2` |
+| `--quic-congestion-control-options` | `quic.congestion_control.options` | `None` | `None` | `reviewed_phase2` |

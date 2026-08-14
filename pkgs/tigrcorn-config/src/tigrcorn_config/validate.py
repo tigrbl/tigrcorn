@@ -139,6 +139,8 @@ def validate_config(config: ServerConfig) -> None:
         raise ConfigError(f"unsupported websocket compression mode: {config.websocket.compression!r}")
     if config.quic.early_data_policy not in {"allow", "deny", "require"}:
         raise ConfigError(f"unsupported quic early data policy: {config.quic.early_data_policy!r}")
+    if not config.quic.congestion_control.algorithm:
+        raise ConfigError("quic.congestion_control.algorithm must not be empty")
     if config.quic.quic_secret is not None and len(config.quic.quic_secret) == 0:
         raise ConfigError('quic.quic_secret must not be empty when provided')
     if config.webtransport.path is not None and not config.webtransport.path.startswith('/'):
@@ -233,6 +235,8 @@ def validate_config(config: ServerConfig) -> None:
                 raise ConfigError("max_datagram_size must be positive for udp listeners")
             if listener.quic_secret is not None and len(listener.quic_secret) == 0:
                 raise ConfigError('udp listener quic_secret must not be empty when provided')
+            if listener.congestion_control is None or not listener.congestion_control.algorithm:
+                raise ConfigError("udp listener congestion_control.algorithm must not be empty")
             if "http3" in listener.enabled_protocols and "quic" not in listener.enabled_protocols:
                 raise ConfigError("http3 requires quic on udp listeners")
             if "webtransport" in listener.enabled_protocols:

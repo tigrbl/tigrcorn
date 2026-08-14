@@ -21,6 +21,7 @@ class _TigrCornServerDiagnosticsMixin:
                     "bound_endpoint": bound_endpoints[index] if index < len(bound_endpoints) else None,
                     "protocols": list(protocols),
                     "http_versions": list(listener.http_versions),
+                    "quic_congestion_control": self._describe_congestion_control(listener),
                     "tls": {
                         "enabled": listener.ssl_enabled,
                         "alpn_protocols": list(listener.alpn_protocols),
@@ -55,6 +56,7 @@ class _TigrCornServerDiagnosticsMixin:
                     "transport.inproc",
                     "transport.pipe",
                     "transport.quic",
+                    "transport.quic.congestion-control.v1",
                     "transport.tcp",
                     "transport.udp",
                     "transport.unix",
@@ -152,6 +154,39 @@ class _TigrCornServerDiagnosticsMixin:
     @staticmethod
     def _redact(value: Any) -> str | None:
         return "<redacted>" if value else None
+
+    @staticmethod
+    def _redact_provider_options(options: dict[str, Any]) -> dict[str, Any]:
+        sensitive = ("secret", "token", "password", "credential", "key")
+        return {
+            key: "<redacted>" if any(part in key.lower() for part in sensitive) else value
+            for key, value in options.items()
+        }
+
+    def _describe_congestion_control(self, listener: ListenerConfig) -> dict[str, Any] | None:
+        if listener.kind != "udp":
+            return None
+        congestion_control = (
+            listener.congestion_control or self.config.quic.congestion_control
+        )
+        resolved = self._quic_congestion_controls.get(id(listener))
+        metadata = None
+        if resolved is not None:
+            metadata = {
+                "algorithm_id": resolved.metadata.algorithm_id,
+                "display_name": resolved.metadata.display_name,
+                "distribution": resolved.metadata.distribution,
+                "distribution_version": resolved.metadata.distribution_version,
+                "api_version": resolved.metadata.api_version,
+                "capabilities": list(resolved.metadata.capabilities),
+            }
+        return {
+            "algorithm": congestion_control.algorithm,
+            "options": self._redact_provider_options(
+                congestion_control.options
+            ),
+            "resolved_provider": metadata,
+        }
 
     @staticmethod
     def _jsonable(value: Any) -> Any:

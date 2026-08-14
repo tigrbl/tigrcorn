@@ -154,20 +154,16 @@ def generate() -> None:
         'Generated effective-default audits for the blessed profiles live here.\n',
         encoding='utf-8',
     )
-    (profile_dir / 'MUT.json').write_text(
-        json.dumps(
-            {
-                'state': 'mutable',
-                'scope': 'profile_default_audits',
-                'reason': 'Generated Phase 2 profile-effective-default audits.',
-                'file_name_max': 24,
-                'folder_name_max': 16,
-                'path_max': 120,
-            },
-            indent=2,
-        )
-        + '\n',
-        encoding='utf-8',
+    _write_json(
+        profile_dir / 'MUT.json',
+        {
+            'state': 'mutable',
+            'scope': 'profile_default_audits',
+            'reason': 'Generated Phase 2 profile-effective-default audits.',
+            'file_name_max': 24,
+            'folder_name_max': 16,
+            'path_max': 120,
+        },
     )
 
     defaults_doc = [

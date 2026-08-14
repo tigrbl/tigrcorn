@@ -490,6 +490,8 @@
         "--quic-max-datagram-size",
         "--quic-idle-timeout",
         "--quic-early-data-policy",
+        "--quic-congestion-control",
+        "--quic-congestion-control-options",
         "--webtransport-max-sessions",
         "--webtransport-max-streams",
         "--webtransport-max-datagram-size",
@@ -580,6 +582,6 @@
       ]
     }
   ],
-  "public_flag_string_count": 132,
-  "promotion_ready_count": 132
+  "public_flag_string_count": 134,
+  "promotion_ready_count": 134
 }

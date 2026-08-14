@@ -47,6 +47,8 @@ class Metrics:
     quic_path_migrations: int = 0
     quic_packets_lost: int = 0
     quic_pto_expirations: int = 0
+    quic_congestion_controller_failures: int = 0
+    quic_persistent_congestion_events: int = 0
     http3_requests_served: int = 0
     http3_stream_resets: int = 0
     http3_goaway_received: int = 0
@@ -132,6 +134,12 @@ class Metrics:
     def quic_pto_expired(self) -> None:
         self.quic_pto_expirations += 1
 
+    def quic_congestion_controller_failed(self) -> None:
+        self.quic_congestion_controller_failures += 1
+
+    def quic_persistent_congestion_observed(self) -> None:
+        self.quic_persistent_congestion_events += 1
+
     def http3_request_served(self) -> None:
         self.http3_requests_served += 1
 
@@ -198,6 +206,8 @@ class Metrics:
             'quic_path_migrations': self.quic_path_migrations,
             'quic_packets_lost': self.quic_packets_lost,
             'quic_pto_expirations': self.quic_pto_expirations,
+            'quic_congestion_controller_failures': self.quic_congestion_controller_failures,
+            'quic_persistent_congestion_events': self.quic_persistent_congestion_events,
             'http3_requests_served': self.http3_requests_served,
             'http3_stream_resets': self.http3_stream_resets,
             'http3_goaway_received': self.http3_goaway_received,

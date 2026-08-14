@@ -48,6 +48,7 @@ _CATALOG: tuple[CapabilityDefinition, ...] = (
     CapabilityDefinition("transport.inproc", "transport", "In-process transport", "inproc" in TRANSPORTS, certifiable=True, certified=False),
     CapabilityDefinition("transport.pipe", "transport", "Pipe transport", "pipe" in TRANSPORTS, certifiable=True, certified=False),
     CapabilityDefinition("transport.quic", "transport", "QUIC transport", "quic" in TRANSPORTS and importlib_util.find_spec("aioquic") is not None, certifiable=True, certified=True, optional=True),
+    CapabilityDefinition("transport.quic.congestion-control.v1", "transport", "Pluggable QUIC congestion control API v1", True, certifiable=True, certified=False),
     CapabilityDefinition("transport.tcp", "transport", "TCP transport", "tcp" in TRANSPORTS, certifiable=True, certified=True),
     CapabilityDefinition("transport.udp", "transport", "UDP transport", "udp" in TRANSPORTS, certifiable=True, certified=False),
     CapabilityDefinition("transport.unix", "transport", "Unix domain socket transport", "unix" in TRANSPORTS, certifiable=True, certified=False),
@@ -98,6 +99,7 @@ def _configured_capability_ids(config: Mapping[str, Any]) -> set[str]:
                 configured.add("protocol.http3")
                 configured.add("protocol.quic")
                 configured.add("transport.quic")
+                configured.add("transport.quic.congestion-control.v1")
         if http.get("alt_svc_auto") or http.get("alt_svc_headers"):
             configured.add("protocol.http3")
         if http.get("content_codings"):
@@ -141,7 +143,7 @@ def _configured_capability_ids(config: Mapping[str, Any]) -> set[str]:
             configured.add(f"transport.{kind}")
         for protocol in value.get("protocols") or ():
             if protocol == "quic":
-                configured.update({"protocol.quic", "transport.quic"})
+                configured.update({"protocol.quic", "transport.quic", "transport.quic.congestion-control.v1"})
             elif protocol in {"http1", "http2", "http3", "websocket", "webtransport"}:
                 configured.add(f"protocol.{protocol}")
         for version in value.get("http_versions") or ():
@@ -150,7 +152,7 @@ def _configured_capability_ids(config: Mapping[str, Any]) -> set[str]:
             elif str(version) == "2":
                 configured.add("protocol.http2")
             elif str(version) == "3":
-                configured.update({"protocol.http3", "protocol.quic", "transport.quic"})
+                configured.update({"protocol.http3", "protocol.quic", "transport.quic", "transport.quic.congestion-control.v1"})
         if value.get("websocket"):
             configured.add("protocol.websocket")
         if value.get("alpn_protocols"):

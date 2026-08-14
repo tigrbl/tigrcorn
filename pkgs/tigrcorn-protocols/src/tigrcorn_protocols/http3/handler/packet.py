@@ -130,6 +130,10 @@ class HTTP3PacketMixin:
                             remote_cid=scid,
                             require_retry=self.listener.quic_require_retry,
                             max_datagram_size=self.listener.max_datagram_size,
+                            congestion_controller_factory=self.congestion_controller_factory,
+                            congestion_controller_options=self.congestion_controller_options,
+                            congestion_controller_options_validated=True,
+                            deferred_send_accounting=True,
                         ),
                     )
                     self._assign_session_runtime_id(session)
@@ -158,6 +162,10 @@ class HTTP3PacketMixin:
                                 remote_cid=candidate_packet.destination_connection_id,
                                 require_retry=self.listener.quic_require_retry,
                                 max_datagram_size=self.listener.max_datagram_size,
+                                congestion_controller_factory=self.congestion_controller_factory,
+                                congestion_controller_options=self.congestion_controller_options,
+                                congestion_controller_options_validated=True,
+                                deferred_send_accounting=True,
                             ),
                         )
                         self._assign_session_runtime_id(probe)

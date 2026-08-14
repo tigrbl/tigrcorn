@@ -45,6 +45,8 @@ class HTTP3DatagramHandler(
         metrics: Metrics | None = None,
         webtransport_governance: Any | None = None,
         connection_inventory: RuntimeConnectionInventory | None = None,
+        congestion_controller_factory: Any | None = None,
+        congestion_controller_options: Any | None = None,
     ) -> None:
         self.app = app
         self.config = config
@@ -54,6 +56,8 @@ class HTTP3DatagramHandler(
         self.metrics = metrics
         self.webtransport_governance = webtransport_governance
         self.connection_inventory = connection_inventory
+        self.congestion_controller_factory = congestion_controller_factory
+        self.congestion_controller_options = dict(congestion_controller_options or {})
         self.sessions: dict[tuple[str, int], HTTP3Session] = {}
         self.sessions_by_local_cid: dict[bytes, HTTP3Session] = {}
         self._session_sequence = 0
