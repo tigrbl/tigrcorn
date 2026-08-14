@@ -1,0 +1,40 @@
+﻿schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2086"
+number: 2086
+slug: "quic-congestion-controller-api-v1"
+title: "QUIC congestion-controller API v1"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "QUIC congestion-controller API v1"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # QUIC congestion-controller API v1
+
+  ## Requirements
+
+  1. The public contract shall define immutable normalized events for packet sent, ACK received, packets lost, ECN feedback, persistent congestion, and MTU changes.
+  2. Event models shall use seconds for monotonic time and bytes for sizes and rates unless a field explicitly states otherwise.
+  3. ACK events shall carry per-packet acknowledgement metadata, newly acknowledged bytes, bytes in flight, RTT measurements, application-limited state, delivery-rate samples when available, and validated ECN counts when available.
+  4. Controllers shall return a congestion window, pacing rate in bytes per second, and send quantum through a standardized send-limits value.
+  5. Controllers shall expose a standardized snapshot containing algorithm identity, mode, congestion window, pacing rate, and optional bounded algorithm measurements.
+  6. Controllers shall not own sockets, packet encoding, cryptography, loss detection, retransmission, flow control, or wire ordering.
+  7. Tigrcorn shall validate controller output for finiteness, non-negativity, configured lower bounds, and safe datagram admission before use.
+  8. Provider exceptions and invalid output shall fail closed and produce bounded diagnostics.
+  9. The API major version shall be encoded in the entry-point group. Breaking changes require a new major group.
+  10. The contract shall support deterministic clocks for repeatable trace tests.
+
+  ## Features
+
+  - `feat:quic-cc-contract`
+  - `feat:quic-cc-per-path-lifecycle`
+  - `feat:quic-cc-pacer-integration`
+spec_kind: "normative"
+adr_ids:
+  - "adr:1074"
+  - "adr:1075"

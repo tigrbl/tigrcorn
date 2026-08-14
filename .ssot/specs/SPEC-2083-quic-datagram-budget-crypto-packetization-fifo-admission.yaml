@@ -1,4 +1,4 @@
-schema_version: "0.8.0"
+﻿schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2083"
 number: 2083
@@ -28,6 +28,8 @@ body: |-
   8. ACK processing may release congestion or pacing capacity without changing FIFO order.
   9. Tests shall cover exact-fit, one-byte-over, minimum-size, loss, reorder, duplicate ACK, multi-packet flight, and PTO cases.
   10. QUIC packet budget, QUIC DATAGRAM frame payload budget, and WebTransport application payload budget shall remain separately represented.
+  11. A congestion-controller provider may restrict admission and propose pacing time, but it shall not reorder queued datagrams, encode packets, confirm socket emission, or bypass anti-amplification and flow-control limits.
+  12. Every supported provider shall pass the same FIFO, exact-fit, blocked-head, ACK-release, loss, and PTO admission matrix.
 
   ## Evidence boundary
 
@@ -35,3 +37,4 @@ body: |-
 spec_kind: "operational"
 adr_ids:
   - "adr:1071"
+  - "adr:1074"

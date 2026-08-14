@@ -24,3 +24,5 @@ body: |-
   - Certification artifacts can include observability conformance evidence.
   - Operators can correlate protocol behavior with transport degradation.
   - Logging and telemetry standards remain aligned with runtime-owned metadata.
+  - QUIC telemetry reports the selected controller identity, contract version, mode, congestion window, pacing rate, delivery-rate estimate, and ECN response where available.
+  - Controller identity uses bounded provider identifiers; raw provider options and per-connection values must not become unbounded metric labels or leak secrets.

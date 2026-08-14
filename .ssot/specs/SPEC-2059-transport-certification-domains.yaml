@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+﻿schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2059"
 number: 2059
@@ -25,6 +25,8 @@ body: |-
   - WebTransport over HTTP/2 certification shall be a separate fallback-carrier domain layered on HTTP/2 evidence, with capsule-backed streams, datagrams, flow control, and close/drain behavior preserved.
   - Unsupported or unavailable transport capabilities shall fail closed during strict profile validation.
   - Transport evidence shall remain distinct from protocol handler evidence even when the same test scenario exercises both.
+  - QUIC provider certification shall be a QUIC transport subdomain and shall run the same recovery separation, FIFO, anti-amplification, pacing, migration, fairness, latency, throughput, and interoperability matrix for every provider claiming compatibility.
+  - Provider certification shall prove that changing algorithms does not change HTTP/3 or WebTransport protocol semantics or bypass transport safety invariants.
 spec_kind: "operational"
 adr_ids:
   - "adr:1002"
@@ -33,3 +35,5 @@ adr_ids:
   - "adr:1031"
   - "adr:1046"
   - "adr:1055"
+  - "adr:1074"
+  - "adr:1075"

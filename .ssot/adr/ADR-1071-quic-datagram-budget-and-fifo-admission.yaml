@@ -35,6 +35,8 @@ body: |-
   - QUIC UDP-payload limits, QUIC DATAGRAM frame payload limits, and WebTransport application-datagram limits remain separate concepts.
   - Certification distinguishes configured-size enforcement from PMTU discovery or DPLPMTUD support.
   - ACK-driven capacity release may resume emission but must not reorder queued datagrams.
+  - A congestion-control provider may delay admission or reduce a send budget, but it cannot reorder datagrams or bypass anti-amplification, flow-control, or configured-size checks.
+  - Send confirmation remains transport-owned and occurs only after emission; providers consume normalized events and never encode packets or datagrams.
   
   # Standards
   

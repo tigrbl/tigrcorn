@@ -1,0 +1,39 @@
+﻿schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1075"
+number: 1075
+slug: "quic-congestion-controller-provider-packages"
+title: "Versioned standalone QUIC congestion-controller providers"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn congestion-controller implementations shall be independently publishable provider packages discovered through the versioned Python entry-point group `tigrcorn.quic_cc.v1`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Decision
+
+  Tigrcorn congestion-controller implementations shall be independently publishable provider packages discovered through the versioned Python entry-point group `tigrcorn.quic_cc.v1`.
+
+  The dependency-light `tigrcorn-quic-cc` package owns the public contract, event models, provider metadata, discovery rules, errors, and reusable compliance harness. Algorithm packages depend on that contract and shall not depend on `tigrcorn-transports`. `tigrcorn-transports` depends on the contract and on the default `tigrcorn-quic-cc-reno` provider.
+
+  Provider discovery occurs once during listener startup. The selected provider factory creates independent controller instances per network path. Duplicate provider names, incompatible API versions, invalid options, and explicitly selected missing providers fail startup. Tigrcorn shall not silently substitute Reno when an explicitly configured provider cannot load.
+
+  Configuration reload may change the provider for new connections. Established connections and paths remain pinned to the provider with which they were created; live algorithm switching and state translation are outside the initial contract.
+
+  # Consequences
+
+  - The default provider is installed and versioned independently while remaining available in every supported Tigrcorn installation.
+  - Additional algorithms can be installed without modifying Tigrcorn core packages.
+  - Provider package and API versions are observable and certifiable.
+  - Installed providers are trusted executable code, while transport invariants remain runtime-enforced.
+
+  # Governed features
+
+  - `feat:quic-cc-provider-registry`
+  - `feat:quic-cc-runtime-selection`
+  - `feat:quic-cc-reno-provider`
+  - `feat:quic-cc-provider-packaging`

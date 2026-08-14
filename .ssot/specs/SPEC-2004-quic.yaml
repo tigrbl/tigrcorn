@@ -1,4 +1,4 @@
-schema_version: "0.8.0"
+﻿schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2004"
 number: 2004
@@ -30,6 +30,7 @@ body: |-
   - multiplexed stream frames, ACK ranges, RESET_STREAM / STOP_SENDING / CRYPTO / MAX_DATA / MAX_STREAM_DATA / MAX_STREAMS / PATH_CHALLENGE / PATH_RESPONSE / HANDSHAKE_DONE / CONNECTION_CLOSE frame handling in the codec
   - connection-ID-based runtime session routing in the HTTP/3 UDP server path
   - live recovery, ACK, loss, PTO, and pacing integration in the runtime
+  - a versioned congestion-controller provider boundary that consumes normalized recovery events while leaving RFC 9002 loss detection, packet encoding, pacing, and transport safety checks transport-owned
   - public API / CLI startup for certificate-driven QUIC-TLS listeners over UDP
   - UDP listener client-certificate verification through `ssl_ca_certs` and `ssl_require_client_cert`
   - UDP listener Retry configuration through `quic_require_retry` / `--quic-require-retry`
@@ -42,9 +43,9 @@ body: |-
 
   QUIC evidence is now split explicitly:
 
-  - **local conformance** — RFC 9000, RFC 9001, RFC 9002, RFC 7301, and local TLS / X.509 fixtures in `corpus.json`
-  - **same-stack replay** — `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/`
-  - **independent certification** — `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/`
+  - **local conformance** â€” RFC 9000, RFC 9001, RFC 9002, RFC 7301, and local TLS / X.509 fixtures in `corpus.json`
+  - **same-stack replay** â€” `docs/review/conformance/external_matrix.same_stack_replay.json` and the canonical same-stack bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix/`
+  - **independent certification** â€” `docs/review/conformance/external_matrix.release.json` and the canonical independent bundle under `docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix/`
 
   ## Current Certification Status
 
@@ -55,6 +56,10 @@ body: |-
   Broader flow-control and strict all-surfaces-independent follow-on work remains tracked separately and does not change the current passing release-gate result.
 
   Client-session topology coverage for QUIC connection identity, streams, and datagrams is governed by `spc:2053`; this SPEC remains the QUIC carrier support contract.
+
+  Congestion-controller selection is configuration, not a protocol fork: HTTP/3 and WebTransport
+  handlers must behave identically across conforming providers, and unavailable or incompatible
+  providers fail listener startup closed.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1011"
@@ -62,3 +67,5 @@ adr_ids:
   - "adr:1057"
   - "adr:1071"
   - "adr:1072"
+  - "adr:1074"
+  - "adr:1075"

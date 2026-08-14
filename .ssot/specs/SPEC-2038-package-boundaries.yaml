@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Expand package graph, ownership, and package-only versus cross-cutting test rules."
     at: "2026-06-27T11:35:48Z"
+    note: "Expand package graph, ownership, and package-only versus cross-cutting test rules."
+    status: "draft"
 references: []
 body: |-
   # Package boundaries
@@ -43,6 +43,9 @@ body: |-
   - `tigrcorn-compat` depends on core, ASGI, and runtime.
   - `tigrcorn-certification` depends on compat and runtime and remains a leaf package.
   - The `tigrcorn` umbrella distribution may depend on all split packages and preserve compatibility imports.
+  - `tigrcorn-quic-cc` shall own the stable, dependency-light congestion-controller API and provider metadata contract.
+  - Standalone algorithm packages shall depend on `tigrcorn-quic-cc` and shall not import Tigrcorn protocol, runtime, or certification packages.
+  - `tigrcorn-transports` shall integrate the contract and default Reno provider without making non-default providers mandatory dependencies.
   
   Ownership rules:
   
@@ -61,6 +64,8 @@ body: |-
   - Cross-cutting tests shall cover integration across config, runtime, protocols, transports, security, static, observability, and certification.
   - Root facade tests shall ensure `src/tigrcorn` does not own protocol, transport, runtime, static, security, or certification implementation.
   - Module organization tests shall keep large packages split by responsibility submodule instead of permitting flat-file growth.
+  - Fresh-wheel tests shall prove provider discovery from independently built distributions, and dependency-DAG tests shall reject reverse or protocol-layer imports.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1032"
+  - "adr:1075"

@@ -26,3 +26,14 @@ body: |-
   - a carrier that exposes request-body streaming shall replenish receive-side credit from application consumption or explicit backlog release, not merely from bytes accepted off the socket
   - HTTP/2 request streaming and same-stream request/response interleaving shall therefore use bounded per-stream backlog plus consumption-driven `WINDOW_UPDATE` behavior
   - client-session pressure coverage is classified by ADR-1039 and must name the topology and protocol carrier being proven
+
+  Congestion-control integration preserves five distinct responsibilities:
+
+  - congestion control computes aggregate network-path sending capacity from recovery events
+  - QUIC flow control enforces connection and stream receive-credit limits
+  - the scheduler chooses eligible streams without violating ordering or priority contracts
+  - the pacer enforces when admitted packets may leave the transport
+  - application backpressure bounds queued work, while media-rate adaptation controls encoder production
+
+  A congestion-controller result may restrict admission or pacing, but it cannot bypass flow
+  control, anti-amplification, FIFO admission, or application backlog limits.

@@ -1,8 +1,1 @@
-{
-  "state": "mutable",
-  "scope": "profile_default_audits",
-  "reason": "Generated Phase 2 profile-effective-default audits.",
-  "file_name_max": 24,
-  "folder_name_max": 16,
-  "path_max": 120
-}
+{"file_name_max":24,"folder_name_max":16,"path_max":120,"reason":"Generated Phase 2 profile-effective-default audits.","scope":"profile_default_audits","state":"mutable"}

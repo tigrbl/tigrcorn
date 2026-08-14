@@ -1,4 +1,4 @@
-schema_version: "0.8.0"
+﻿schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2055"
 number: 2055
@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Specify public capability API, CLI require checks, and describe integration."
     at: "2026-06-27T11:35:51Z"
+    note: "Specify public capability API, CLI require checks, and describe integration."
+    status: "draft"
 references: []
 body: |-
   # Runtime capability registry
@@ -39,8 +39,11 @@ body: |-
   - Runtime instance `.describe()` output shall reference capability ids rather than inventing a parallel support vocabulary.
   - Runtime connection inventory describes live peer, connection, and protocol-session instances and is governed separately by `spc:2081`. It shall not be treated as a capability registry, and capability records shall not be inferred from live connection records.
   - Transport capability discovery shall align with the same capability id vocabulary.
+  - QUIC congestion-control capability records shall distinguish contract availability, installed providers, selected provider, default provider, incompatible providers, and unavailable providers.
+  - Provider capability ids shall use stable bounded provider identifiers; arbitrary provider options shall not become capability ids.
 spec_kind: "operational"
 adr_ids:
   - "adr:1021"
   - "adr:1031"
   - "adr:1041"
+  - "adr:1075"

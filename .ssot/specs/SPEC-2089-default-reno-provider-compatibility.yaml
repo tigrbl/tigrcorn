@@ -1,0 +1,36 @@
+﻿schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2089"
+number: 2089
+slug: "default-reno-provider-compatibility"
+title: "Default Reno provider compatibility"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Default Reno provider compatibility"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Default Reno provider compatibility
+
+  ## Requirements
+
+  1. Existing Reno-style congestion behavior shall be extracted into `tigrcorn-quic-cc-reno` without changing RFC 9002 loss recovery.
+  2. The extracted provider shall preserve initial congestion window, slow start, congestion avoidance, congestion-event reduction, persistent-congestion collapse, and pacing behavior under equivalent inputs.
+  3. Golden traces shall compare the existing implementation and provider implementation for ACK, loss, PTO, application-limited, duplicate-ACK, and persistent-congestion sequences.
+  4. Randomized differential tests shall compare send-limit and snapshot outputs across deterministic generated traces.
+  5. Compatibility imports for current public recovery surfaces shall remain available during migration.
+  6. Packet ordering, anti-amplification, send confirmation, retransmission, and flow-control behavior shall remain transport-owned and behaviorally unchanged.
+  7. Reno remains the default until another default is accepted through a separate decision and certified performance boundary.
+
+  ## Features
+
+  - `feat:quic-cc-reno-provider`
+  - `feat:quic-cc-pacer-integration`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1074"
+  - "adr:1075"

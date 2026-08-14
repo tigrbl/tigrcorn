@@ -1,0 +1,1 @@
+{"claim_ids":["clm:media-rate-control-boundary.t0"],"feature_id":"feat:media-rate-control-boundary","schema_version":"ssot.evidence.scaffold.v1","status":"planned","target_tier":"T0","test_ids":["tst:pytest.media-rate-control-boundary.t0.proof-graph"]}

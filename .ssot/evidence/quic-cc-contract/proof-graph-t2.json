@@ -1,0 +1,1 @@
+{"claim_ids":["clm:quic-cc-contract.t0","clm:quic-cc-contract.t1","clm:quic-cc-contract.t2"],"feature_id":"feat:quic-cc-contract","schema_version":"ssot.evidence.scaffold.v1","status":"planned","target_tier":"T2","test_ids":["tst:pytest.quic-cc-contract.t0.proof-graph","tst:pytest.quic-cc-contract.t1.proof-graph","tst:pytest.quic-cc-contract.t2.proof-graph"]}

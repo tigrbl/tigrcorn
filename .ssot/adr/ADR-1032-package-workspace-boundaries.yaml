@@ -56,3 +56,11 @@ body: |-
   - `tigrcorn-protocols` may own multiple protocol families, but new work must land in protocol-family subpackages.
   - `tigrcorn-transports` may own QUIC transport primitives, but transport-security expansion requires a separate boundary decision.
   - `tigrcorn-certification` may orchestrate evidence and command implementations, but runtime, protocol, and transport packages must not import it.
+
+  Congestion-control providers use an additional governed extension boundary:
+
+  - `tigrcorn-quic-cc` owns the dependency-light versioned controller contract below transport implementations.
+  - Each algorithm provider is independently distributable and depends on `tigrcorn-quic-cc`, not on protocol or runtime packages.
+  - `tigrcorn-transports` depends on the contract and the default Reno provider; it owns recovery-event translation, pacing, packet admission, and safety checks.
+  - Runtime and configuration layers resolve and inject a provider per listener and path; protocol handlers remain unaware of the selected algorithm.
+  - `feat:quic-cc-provider-packaging`, `feat:quic-cc-provider-registry`, and `feat:quic-cc-reno-provider` govern this package boundary.

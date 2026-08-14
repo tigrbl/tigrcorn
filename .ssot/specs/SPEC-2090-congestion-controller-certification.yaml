@@ -1,0 +1,40 @@
+﻿schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2090"
+number: 2090
+slug: "congestion-controller-certification"
+title: "Congestion-controller certification"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Congestion-controller certification"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Congestion-controller certification
+
+  ## Requirements
+
+  1. Every provider shall pass the common API, invariant, lifecycle, packaging, recovery-separation, FIFO, anti-amplification, and observability suites.
+  2. Deterministic traces shall cover no loss, random loss, burst loss, reordering, duplicate ACKs, delayed ACKs, changing RTT, application-limited sending, persistent congestion, and migration.
+  3. Performance matrices shall cover bandwidth-delay products, queue depth, random loss, competing flows, fairness, control latency under bulk media, and recovery time after congestion.
+  4. Performance gates shall use distributions and declared envelopes rather than exact throughput values.
+  5. Certification artifacts shall record provider ID, package version, API version, options, Tigrcorn version, environment, network profile, raw samples, and correctness result.
+  6. Fresh-wheel tests shall install the contract, Tigrcorn transport, and selected provider into an isolated environment and verify entry-point discovery.
+  7. Third-party QUIC interoperability and multi-client WebTransport soak evidence are required before release certification.
+  8. T1 proves direct provider behavior, T2 adds robustness dimensions, and T3 requires a governed release boundary. T4 requires independent external validation.
+
+  ## Features
+
+  - `feat:quic-cc-provider-certification`
+  - `feat:quic-cc-observability`
+  - `feat:quic-cc-cubic-provider`
+  - `feat:quic-cc-bbrv3-provider`
+  - `feat:quic-cc-prague-provider`
+spec_kind: "operational"
+adr_ids:
+  - "adr:1074"
+  - "adr:1075"

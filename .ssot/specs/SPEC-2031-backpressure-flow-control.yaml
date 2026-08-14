@@ -31,6 +31,8 @@ body: |-
   - WebTransport over HTTP/2 shall implement and test WebTransport flow-control capsules before claiming stream/datagram backpressure support.
   - WebTransport over HTTP/3 shall distinguish QUIC transport flow control from WebTransport session and stream limits negotiated by draft-13 settings and capsules.
   - WebTransport resource governance shall connect configured budgets to carrier flow-control behavior without treating local limits as a substitute for negotiated wire semantics.
+  - Congestion control shall represent aggregate network-path capacity; it shall not be used as a synonym for QUIC connection/stream flow control, scheduler eligibility, pacing, application backlog, or media encoder rate control.
+  - A provider's congestion window and send-time result shall be combined with transport flow-control, anti-amplification, FIFO, and application-backpressure limits; it shall never override them.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1003"
@@ -40,3 +42,5 @@ adr_ids:
   - "adr:1055"
   - "adr:1071"
   - "adr:1073"
+  - "adr:1074"
+  - "adr:1076"

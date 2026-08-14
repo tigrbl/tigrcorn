@@ -22,3 +22,9 @@ body: |-
   HTTP/1.1, HTTP/2, HTTP/3, WebSocket, raw framed, and custom protocols.
 
   Client-session topology coverage is governed separately by ADR-1039 and does not collapse transport or protocol support into one axis.
+
+  QUIC loss detection and recovery remain transport-owned RFC 9002 mechanisms. Congestion
+  policy may be supplied by a versioned provider, but a provider must not import or call HTTP/3,
+  WebTransport, ASGI, or application protocol handlers. `feat:quic-cc-contract`,
+  `feat:quic-cc-per-path-lifecycle`, and `feat:quic-cc-pacer-integration` are governed by this
+  separation.

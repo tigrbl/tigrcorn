@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2056"
 number: 2056
@@ -24,9 +24,12 @@ body: |-
   - Describe output shall identify caller-owned, server-owned, borrowed, and transferred runtime resources without exposing secrets or private key material.
   - Describe output shall include observability exporter posture and redacted correlation identifiers where configured.
   - Describe output shall be distinct from capability export: capability export says what is supportable, while describe output says what is active now.
+  - QUIC listener descriptions shall include the effective congestion-controller provider id, distribution and version, contract API version, selection source, and redacted validated options.
+  - Runtime summaries may aggregate active connection counts by bounded provider id, but shall not expose per-connection identifiers as metric labels or disclose provider secrets.
 spec_kind: "operational"
 adr_ids:
   - "adr:1038"
   - "adr:1041"
   - "adr:1042"
   - "adr:1043"
+  - "adr:1075"

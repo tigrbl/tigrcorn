@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+﻿schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2008"
 number: 2008
@@ -45,6 +45,14 @@ body: |-
 
   The WebTransport CLI tuning flags shall map to the `webtransport.*` config model and shall have equivalent config, environment, and public API surfaces where applicable.
 
+  ## QUIC congestion-control selection
+
+  - `--quic-congestion-control <provider-id>` shall select the provider for newly created QUIC connections on the listener.
+  - Repeatable `--quic-congestion-option KEY=VALUE` values shall populate the selected provider's validated option namespace.
+  - Selection and options shall obey CLI greater than environment greater than config file greater than defaults precedence.
+  - Missing providers, incompatible API versions, unknown options, and invalid values shall fail startup closed rather than silently falling back.
+  - Inspection and describe output shall report the effective provider identity and redacted effective options.
+
   ## Validation and generated truth
 
   - Public CLI behavior shall be reflected in parser help, CLI flag surface metadata, flag contracts, default audits, SSOT test links, and executable tests.
@@ -55,3 +63,4 @@ adr_ids:
   - "adr:1011"
   - "adr:1050"
   - "adr:1055"
+  - "adr:1075"
