@@ -208,12 +208,18 @@ class UDPListener(BaseListener):
             duplicate = transport_socket.dup()
             duplicate.setblocking(False)
             reader = _BatchedUDPReader(loop, protocol, duplicate)
+            paused = False
             try:
                 transport.pause_reading()
+                paused = True
                 reader.start()
             except (NotImplementedError, AttributeError, OSError):
                 reader.sock.close()
-                transport.resume_reading()
+                if paused:
+                    try:
+                        transport.resume_reading()
+                    except (NotImplementedError, AttributeError, OSError):
+                        pass
                 logger.info("UDP listener using asyncio single-datagram receive path")
             else:
                 self.batch_reader = reader

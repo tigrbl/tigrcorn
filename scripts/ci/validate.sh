@@ -13,6 +13,7 @@ python tools/cert/negative_surface.py
 python tools/cert/governance_surface.py
 python tools/cert/release_auto.py
 python tools/govchk.py scan
+ssot-registry validate .
 python -m compileall -q src benchmarks tools
 python -m pytest -q \
   tests/test_default_audits.py \
@@ -33,5 +34,7 @@ python -m pytest -q \
   tests/test_p8_gov.py \
   tests/test_p8_sf.py \
   tests/test_release_auto.py
+
+python -m pytest -q tests/test_ssot_registry.py
 
 python tools/cert/status.py

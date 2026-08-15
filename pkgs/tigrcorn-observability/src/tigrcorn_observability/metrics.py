@@ -47,6 +47,16 @@ class Metrics:
     quic_path_migrations: int = 0
     quic_packets_lost: int = 0
     quic_pto_expirations: int = 0
+    quic_pto_probes: int = 0
+    quic_stream_bytes_retransmitted: int = 0
+    quic_crypto_bytes_retransmitted: int = 0
+    quic_datagram_frames_abandoned: int = 0
+    quic_frames_regenerated: int = 0
+    quic_bytes_in_flight: int = 0
+    quic_congestion_window_bytes: int = 0
+    quic_smoothed_rtt_seconds: float = 0.0
+    quic_pacing_rate_bytes_per_second: float = 0.0
+    quic_pending_outbound_datagrams: int = 0
     quic_congestion_controller_failures: int = 0
     quic_persistent_congestion_events: int = 0
     http3_requests_served: int = 0
@@ -134,6 +144,36 @@ class Metrics:
     def quic_pto_expired(self) -> None:
         self.quic_pto_expirations += 1
 
+    def quic_recovery_observed(
+        self,
+        *,
+        pto_probes: int = 0,
+        stream_bytes_retransmitted: int = 0,
+        crypto_bytes_retransmitted: int = 0,
+        datagram_frames_abandoned: int = 0,
+        frames_regenerated: int = 0,
+    ) -> None:
+        self.quic_pto_probes += max(0, int(pto_probes))
+        self.quic_stream_bytes_retransmitted += max(0, int(stream_bytes_retransmitted))
+        self.quic_crypto_bytes_retransmitted += max(0, int(crypto_bytes_retransmitted))
+        self.quic_datagram_frames_abandoned += max(0, int(datagram_frames_abandoned))
+        self.quic_frames_regenerated += max(0, int(frames_regenerated))
+
+    def quic_transport_state_observed(
+        self,
+        *,
+        bytes_in_flight: int,
+        congestion_window: int,
+        smoothed_rtt: float,
+        pacing_rate: float,
+        pending_outbound: int,
+    ) -> None:
+        self.quic_bytes_in_flight = max(0, int(bytes_in_flight))
+        self.quic_congestion_window_bytes = max(0, int(congestion_window))
+        self.quic_smoothed_rtt_seconds = max(0.0, float(smoothed_rtt))
+        self.quic_pacing_rate_bytes_per_second = max(0.0, float(pacing_rate))
+        self.quic_pending_outbound_datagrams = max(0, int(pending_outbound))
+
     def quic_congestion_controller_failed(self) -> None:
         self.quic_congestion_controller_failures += 1
 
@@ -206,6 +246,16 @@ class Metrics:
             'quic_path_migrations': self.quic_path_migrations,
             'quic_packets_lost': self.quic_packets_lost,
             'quic_pto_expirations': self.quic_pto_expirations,
+            'quic_pto_probes': self.quic_pto_probes,
+            'quic_stream_bytes_retransmitted': self.quic_stream_bytes_retransmitted,
+            'quic_crypto_bytes_retransmitted': self.quic_crypto_bytes_retransmitted,
+            'quic_datagram_frames_abandoned': self.quic_datagram_frames_abandoned,
+            'quic_frames_regenerated': self.quic_frames_regenerated,
+            'quic_bytes_in_flight': self.quic_bytes_in_flight,
+            'quic_congestion_window_bytes': self.quic_congestion_window_bytes,
+            'quic_smoothed_rtt_seconds': self.quic_smoothed_rtt_seconds,
+            'quic_pacing_rate_bytes_per_second': self.quic_pacing_rate_bytes_per_second,
+            'quic_pending_outbound_datagrams': self.quic_pending_outbound_datagrams,
             'quic_congestion_controller_failures': self.quic_congestion_controller_failures,
             'quic_persistent_congestion_events': self.quic_persistent_congestion_events,
             'http3_requests_served': self.http3_requests_served,
@@ -233,7 +283,17 @@ class Metrics:
 
 
 def _is_gauge_metric(name: str) -> bool:
-    return name.startswith('active_') or name == 'uptime_seconds'
+    return (
+        name.startswith('active_')
+        or name == 'uptime_seconds'
+        or name in {
+            'quic_bytes_in_flight',
+            'quic_congestion_window_bytes',
+            'quic_smoothed_rtt_seconds',
+            'quic_pacing_rate_bytes_per_second',
+            'quic_pending_outbound_datagrams',
+        }
+    )
 
 
 def iter_statsd_lines(snapshot: Mapping[str, Any], *, previous: Mapping[str, Any] | None = None, prefix: str = 'tigrcorn') -> list[str]:

@@ -33,6 +33,20 @@ class Phase6ObservabilitySurfaceTests(unittest.TestCase):
         metrics.quic_path_migrated()
         metrics.quic_packets_lost_observed(3)
         metrics.quic_pto_expired()
+        metrics.quic_recovery_observed(
+            pto_probes=2,
+            stream_bytes_retransmitted=4096,
+            crypto_bytes_retransmitted=128,
+            datagram_frames_abandoned=3,
+            frames_regenerated=4,
+        )
+        metrics.quic_transport_state_observed(
+            bytes_in_flight=8192,
+            congestion_window=12000,
+            smoothed_rtt=0.025,
+            pacing_rate=480000.0,
+            pending_outbound=7,
+        )
         metrics.http3_request_served()
         metrics.http3_stream_reset()
         metrics.http3_goaway_observed()
@@ -47,6 +61,16 @@ class Phase6ObservabilitySurfaceTests(unittest.TestCase):
         self.assertEqual(snapshot['quic_early_data_rejected'], 1)
         self.assertEqual(snapshot['quic_packets_lost'], 3)
         self.assertEqual(snapshot['quic_pto_expirations'], 1)
+        self.assertEqual(snapshot['quic_pto_probes'], 2)
+        self.assertEqual(snapshot['quic_stream_bytes_retransmitted'], 4096)
+        self.assertEqual(snapshot['quic_crypto_bytes_retransmitted'], 128)
+        self.assertEqual(snapshot['quic_datagram_frames_abandoned'], 3)
+        self.assertEqual(snapshot['quic_frames_regenerated'], 4)
+        self.assertEqual(snapshot['quic_bytes_in_flight'], 8192)
+        self.assertEqual(snapshot['quic_congestion_window_bytes'], 12000)
+        self.assertEqual(snapshot['quic_smoothed_rtt_seconds'], 0.025)
+        self.assertEqual(snapshot['quic_pacing_rate_bytes_per_second'], 480000.0)
+        self.assertEqual(snapshot['quic_pending_outbound_datagrams'], 7)
         self.assertEqual(snapshot['http3_requests_served'], 1)
         self.assertEqual(snapshot['http3_stream_resets'], 1)
         self.assertEqual(snapshot['http3_goaway_received'], 1)

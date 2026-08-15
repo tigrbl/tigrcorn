@@ -3,21 +3,6 @@ from __future__ import annotations
 from .imports import *
 
 class QuicConnectionRuntimeMixin:
-    def _ack_eliciting(self, frames: Iterable[object]) -> bool:
-        for frame in frames:
-            frame_type = frame_type_value(frame) if not isinstance(frame, int) or frame in {FRAME_PADDING, FRAME_PING} else int(frame)
-            if frame_type not in {FRAME_PADDING, FRAME_ACK, FRAME_CONNECTION_CLOSE, FRAME_CONNECTION_CLOSE_APP}:
-                return True
-        return False
-
-    def _retransmittable_frames(self, frames: Iterable[object]) -> list[object]:
-        retransmittable: list[object] = []
-        for frame in frames:
-            frame_type = frame_type_value(frame) if not isinstance(frame, int) or frame in {FRAME_PADDING, FRAME_PING} else int(frame)
-            if frame_type in {FRAME_PADDING, FRAME_ACK}:
-                continue
-            retransmittable.append(frame)
-        return retransmittable
 
     def _schedule_ack(self, packet_space: str, *, immediate: bool = False, now: float | None = None) -> None:
         normalized = self._recovery_space(packet_space)
@@ -139,12 +124,15 @@ class QuicConnectionRuntimeMixin:
             if meta is None:
                 continue
             self._wire_datagram_packets.pop(meta.raw, None)
-            retransmittable = self._retransmittable_frames(meta.frames)
-            if not retransmittable:
+            recoverable = self._recovery_frames(
+                meta.frames,
+                record_abandonment=True,
+            )
+            if not recoverable:
                 continue
             self._queue_scheduled_spec(
                 packet_space=meta.packet_space,
-                frames=retransmittable,
+                frames=recoverable,
                 token=meta.token,
                 path_key=path_key,
             )
@@ -217,26 +205,29 @@ class QuicConnectionRuntimeMixin:
             outstanding.sort(key=lambda item: item.packet_number)
             if outstanding:
                 for meta in outstanding:
-                    retransmittable = self._retransmittable_frames(meta.frames)
-                    if not retransmittable:
+                    recoverable = self._recovery_frames(meta.frames)
+                    if not recoverable:
                         continue
                     self._queue_scheduled_spec(
                         packet_space=meta.packet_space,
-                        frames=retransmittable,
+                        frames=recoverable,
                         token=meta.token,
                         path_key=path_key,
                         is_pto_probe=True,
                     )
+                    self.pto_probes_total += 1
                     probes_sent += 1
                     break
             else:
                 probe_space = PACKET_SPACE_APPLICATION if space == PACKET_SPACE_APPLICATION else space
                 self._queue_scheduled_spec(packet_space=probe_space, frames=[FRAME_PING], path_key=path_key, is_pto_probe=True)
+                self.pto_probes_total += 1
                 probes_sent += 1
             if probes_sent >= 2:
                 break
         if probes_sent == 1:
             self._queue_scheduled_spec(packet_space=PACKET_SPACE_APPLICATION if due_spaces and due_spaces[0] == PACKET_SPACE_APPLICATION else (due_spaces[0] if due_spaces else PACKET_SPACE_APPLICATION), frames=[FRAME_PING], path_key=path_key, is_pto_probe=True)
+            self.pto_probes_total += 1
 
     def _run_loss_detection(self, *, now: float | None = None) -> None:
         at = time.monotonic() if now is None else now

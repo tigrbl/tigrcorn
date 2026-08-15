@@ -1,4 +1,4 @@
-﻿schema_version: "0.8.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2083"
 number: 2083
@@ -15,9 +15,9 @@ status_notes: []
 references: []
 body: |-
   # QUIC datagram budget and ordered emission contract
-
+  
   ## Requirements
-
+  
   1. The HTTP/3 listener shall propagate its configured maximum UDP payload to each `QuicConnection` and per-path recovery context.
   2. The configured value shall be described as a ceiling, not as discovered PMTU evidence.
   3. Every emitted UDP datagram shall be no larger than the effective send budget.
@@ -30,9 +30,14 @@ body: |-
   10. QUIC packet budget, QUIC DATAGRAM frame payload budget, and WebTransport application payload budget shall remain separately represented.
   11. A congestion-controller provider may restrict admission and propose pacing time, but it shall not reorder queued datagrams, encode packets, confirm socket emission, or bypass anti-amplification and flow-control limits.
   12. Every supported provider shall pass the same FIFO, exact-fit, blocked-head, ACK-release, loss, and PTO admission matrix.
-
+  13. Every supported QUIC frame type shall have exactly one recovery disposition: retransmit original data, regenerate current state, or abandon.
+  14. QUIC DATAGRAM frames shall remain ack-eliciting but shall be abandoned after packet-threshold loss, time-threshold loss, and PTO processing.
+  15. STREAM and CRYPTO recovery shall retain original byte ranges; flow-control frames shall be regenerated from current connection or stream state.
+  16. Urgent application control work shall be selected before packet encoding. Encoded datagrams shall never be reordered to implement application priority.
+  17. Bulk WebTransport stream writes shall use bounded encoder bursts and yield between bursts so queued urgent work receives a bounded admission opportunity.
+  
   ## Evidence boundary
-
+  
   Configured-size enforcement and final encoded-length checks are local conformance evidence. PMTU discovery, DPLPMTUD, and independent peer interoperability require separate evidence.
 spec_kind: "operational"
 adr_ids:

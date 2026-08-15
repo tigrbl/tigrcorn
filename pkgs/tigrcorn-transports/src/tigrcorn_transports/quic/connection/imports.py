@@ -34,7 +34,12 @@ from tigrcorn_transports.quic.packets import (
     decode_packet,
     split_coalesced_packets,
 )
-from tigrcorn_transports.quic.recovery import QuicLossRecovery
+from tigrcorn_transports.quic.recovery import (
+    QuicLossRecovery,
+    RecoveryDisposition,
+    frame_is_ack_eliciting,
+    recovery_disposition,
+)
 from tigrcorn_transports.quic.scheduler import QuicTimerWheel
 from tigrcorn_transports.quic.streams import (
     FRAME_ACK,

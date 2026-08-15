@@ -23,11 +23,11 @@ HARDENING_SUITE_CATALOG: dict[str, dict[str, Any]] = {
     },
     "http3_quic": {
         "owner_package": "tigrcorn-transports",
-        "package_tests": ["tests/test_quic_operational_security_certification.py"],
-        "cross_cutting_tests": ["tests/test_quic_operational_security_integration.py"],
+        "package_tests": ["tests/test_quic_operational_security_certification.py", "tests/test_quic_impairment_policy.py"],
+        "cross_cutting_tests": ["tests/test_quic_operational_security_integration.py", "tests/test_quic_recovery_live_runtime_integration.py"],
         "feature_ids": ["feat:quic-operational-security-certification", "feat:adversarial-protocol-hardening-suites"],
         "spec_ids": ["spc:2060", "spc:2080"],
-        "cases": ["packet_loss", "packet_reordering", "amplification_limit", "connection_migration", "cid_rotation"],
+        "cases": ["packet_loss", "packet_reordering", "packet_duplication", "controlled_delay", "reliable_stream_recovery", "datagram_abandonment", "amplification_limit", "connection_migration", "cid_rotation"],
     },
     "websocket": {
         "owner_package": "tigrcorn-protocols",

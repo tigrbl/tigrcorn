@@ -27,9 +27,22 @@ This file is generated from the package-owned observability metadata.
 
 - `quic_packets_lost`: `counter`
 - `quic_pto_expirations`: `counter`
+- `quic_pto_probes`: `counter`
+- `quic_stream_bytes_retransmitted`: `counter`
+- `quic_crypto_bytes_retransmitted`: `counter`
+- `quic_datagram_frames_abandoned`: `counter`
+- `quic_frames_regenerated`: `counter`
 - `quic_path_challenges`: `counter`
 - `quic_path_responses`: `counter`
 - `quic_path_migrations`: `counter`
+
+## Congestion counters
+
+- `quic_bytes_in_flight`: `gauge`
+- `quic_congestion_window_bytes`: `gauge`
+- `quic_smoothed_rtt_seconds`: `gauge`
+- `quic_pacing_rate_bytes_per_second`: `gauge`
+- `quic_pending_outbound_datagrams`: `gauge`
 
 ## Http3 counters
 

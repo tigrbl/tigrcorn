@@ -1,38 +1,47 @@
-﻿schema_version: "0.8.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1074"
 number: 1074
 slug: "quic-loss-recovery-congestion-policy-separation"
 title: "Separate QUIC loss recovery from congestion policy"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Tigrcorn shall separate RFC 9002 loss recovery from congestion-control policy."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-08-15T07:07:20Z"
+    note: "Accepted with exhaustive frame recovery classification, transport-owned pacing, and bounded recovery telemetry implemented and tested."
+    status: "accepted"
 references: []
 body: |-
   # Decision
-
+  
   Tigrcorn shall separate RFC 9002 loss recovery from congestion-control policy.
-
+  
   Tigrcorn owns packet-number spaces, sent-packet tracking, RTT estimation, ACK processing, loss detection, PTO, retransmission scheduling, anti-amplification, flow control, packet encoding, send confirmation, and wire ordering. A congestion-controller provider consumes normalized transport measurements and returns congestion-window and pacing-rate limits.
-
+  
   The provider shall not receive UDP sockets, encoded datagrams, cryptographic state, stream buffers, or connection-closing authority. Provider output is advisory until Tigrcorn validates and enforces it. Invalid output or provider failure shall fail closed without permitting uncontrolled transmission.
-
+  
   Controller state is scoped to one validated QUIC network path. A migrated path receives independent controller state. Tigrcorn may retain a connection-level view for diagnostics but shall not share mutable congestion state across connections or paths.
-
+  
+  Loss recovery classifies every supported frame before scheduling recovery. STREAM and CRYPTO frames retransmit original bytes; flow-control limit and blocked-state frames are regenerated from current transport state; ACK, PADDING, PATH_RESPONSE, CONNECTION_CLOSE, and DATAGRAM frames are abandoned. DATAGRAM remains ack-eliciting for congestion accounting but is never replayed after loss.
+  
+  Application traffic class is resolved before packet encoding. Urgent control work is admitted ahead of queued bulk work, while encoded UDP datagrams remain FIFO by packet number. Bulk writes are packetized in bounded chunks so they yield the encoder between bursts.
+  
   # Consequences
-
+  
   - RFC 9002 recovery remains stable independently of provider choice.
   - Congestion policy becomes replaceable without granting providers wire ownership.
   - The Tigrcorn pacer enforces provider-requested pacing within transport-owned safety limits.
   - Existing anti-amplification and FIFO admission rules remain authoritative.
-
+  - Recovery and congestion telemetry uses bounded, connection-aggregate counters and gauges; stream IDs are not metric labels.
+  
   # Governed features
-
+  
   - `feat:quic-cc-contract`
   - `feat:quic-cc-per-path-lifecycle`
   - `feat:quic-cc-pacer-integration`

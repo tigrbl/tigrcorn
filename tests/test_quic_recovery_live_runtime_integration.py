@@ -43,6 +43,17 @@ class QuicRecoveryLiveRuntimeIntegrationTests(unittest.TestCase):
         self.assertTrue(probes)
         self.assertGreater(client.recovery.pto_count, 0)
 
+    def test_ack_driven_datagram_loss_is_not_retransmitted(self):
+        client, server = self._pair()
+        packets = [client.send_datagram_frame(chunk) for chunk in (b'a', b'b', b'c', b'd')]
+        server.receive_datagram(packets[2])
+        server.receive_datagram(packets[3])
+        acknowledgements = server.take_pending_datagrams()
+        self.assertEqual(len(acknowledgements), 1)
+        client.receive_datagram(acknowledgements[0])
+        self.assertEqual(client.take_pending_datagrams(), [])
+        self.assertEqual(client.datagram_frames_abandoned_total, 1)
+
     def test_recovery_state_is_tracked_per_path_after_rebinding(self):
         stationary = QuicConnection(is_client=False, secret=b'shared', local_cid=b'srv1srv1', remote_cid=b'cli1cli1')
         mover = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1cli1', remote_cid=b'srv1srv1')

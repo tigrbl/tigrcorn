@@ -1,4 +1,4 @@
-﻿schema_version: "0.8.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2090"
 number: 2090
@@ -15,9 +15,9 @@ status_notes: []
 references: []
 body: |-
   # Congestion-controller certification
-
+  
   ## Requirements
-
+  
   1. Every provider shall pass the common API, invariant, lifecycle, packaging, recovery-separation, FIFO, anti-amplification, and observability suites.
   2. Deterministic traces shall cover no loss, random loss, burst loss, reordering, duplicate ACKs, delayed ACKs, changing RTT, application-limited sending, persistent congestion, and migration.
   3. Performance matrices shall cover bandwidth-delay products, queue depth, random loss, competing flows, fairness, control latency under bulk media, and recovery time after congestion.
@@ -26,9 +26,12 @@ body: |-
   6. Fresh-wheel tests shall install the contract, Tigrcorn transport, and selected provider into an isolated environment and verify entry-point discovery.
   7. Third-party QUIC interoperability and multi-client WebTransport soak evidence are required before release certification.
   8. T1 proves direct provider behavior, T2 adds robustness dimensions, and T3 requires a governed release boundary. T4 requires independent external validation.
-
+  9. The deterministic UDP impairment surface shall independently parameterize loss, duplication, reordering, and delay per direction and produce repeatable traces.
+  10. Recovery evidence shall distinguish STREAM bytes retransmitted, CRYPTO bytes retransmitted, flow-control frames regenerated, DATAGRAM frames abandoned, and PTO probes.
+  11. Runtime gauges shall expose congestion window, bytes in flight, smoothed RTT, pacing rate, and pending outbound datagrams without unbounded connection or stream labels.
+  
   ## Features
-
+  
   - `feat:quic-cc-provider-certification`
   - `feat:quic-cc-observability`
   - `feat:quic-cc-cubic-provider`

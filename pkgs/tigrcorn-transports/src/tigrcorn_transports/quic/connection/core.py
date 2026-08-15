@@ -5,6 +5,7 @@ from .base import QuicConnectionBaseMixin
 from .decode import QuicConnectionDecodeMixin
 from .loss_api import QuicConnectionLossApiMixin
 from .receive import QuicConnectionReceiveMixin
+from .recovery_policy import QuicConnectionRecoveryPolicyMixin
 from .runtime import QuicConnectionRuntimeMixin
 from .send import QuicConnectionSendMixin
 
@@ -12,6 +13,7 @@ class QuicConnection(
     QuicConnectionReceiveMixin,
     QuicConnectionDecodeMixin,
     QuicConnectionSendMixin,
+    QuicConnectionRecoveryPolicyMixin,
     QuicConnectionRuntimeMixin,
     QuicConnectionLossApiMixin,
     QuicConnectionBaseMixin,
@@ -134,5 +136,10 @@ class QuicConnection(
         self._ack_delay_exponent = 3
         self.packets_lost_total = 0
         self.pto_expirations_total = 0
+        self.stream_bytes_retransmitted_total = 0
+        self.crypto_bytes_retransmitted_total = 0
+        self.datagram_frames_abandoned_total = 0
+        self.frames_regenerated_total = 0
+        self.pto_probes_total = 0
         self._sync_packet_number_snapshot()
 

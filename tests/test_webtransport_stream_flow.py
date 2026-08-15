@@ -8,6 +8,7 @@ from tigrcorn_protocols.http3.handler.webtransport_stream_flow import (
     _STREAM_CHUNK_BYTES,
     send_nonpriority_stream_data,
 )
+from tigrcorn_protocols.http3.handler.priority_lock import PriorityLock
 
 
 def test_nonpriority_stream_send_uses_bounded_packet_window() -> None:
@@ -17,7 +18,7 @@ def test_nonpriority_stream_send_uses_bounded_packet_window() -> None:
 async def _bounded_chunks_case() -> None:
     session = SimpleNamespace(
         addr=("127.0.0.1", 50000),
-        lock=asyncio.Lock(),
+        lock=PriorityLock(),
         pending_outbound=[],
     )
 

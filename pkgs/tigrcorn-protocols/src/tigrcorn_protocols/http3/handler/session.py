@@ -42,6 +42,11 @@ class HTTP3Session:
     peer_goaway_observed: bool = False
     last_quic_packets_lost_total: int = 0
     last_quic_pto_expirations_total: int = 0
+    last_quic_pto_probes_total: int = 0
+    last_quic_stream_bytes_retransmitted_total: int = 0
+    last_quic_crypto_bytes_retransmitted_total: int = 0
+    last_quic_datagram_frames_abandoned_total: int = 0
+    last_quic_frames_regenerated_total: int = 0
     last_quic_persistent_congestion_total: int = 0
     quic_congestion_controller_failure_reported: bool = False
     webtransport_negotiation: WebTransportNegotiationResult | None = None

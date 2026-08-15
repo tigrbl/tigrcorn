@@ -17,9 +17,9 @@ status_notes:
     note: "Add package-owned hardening-suite spec for current protocol and package owners."
     status: "draft"
   -
-    status: "draft"
-    note: "Refresh hardening-suite spec to current protocol and package owners only."
     at: "2026-06-27T11:39:31Z"
+    note: "Refresh hardening-suite spec to current protocol and package owners only."
+    status: "draft"
 references: []
 body: |-
   # Adversarial protocol hardening suites
@@ -30,7 +30,7 @@ body: |-
   
   - HTTP/1.1 hardening shall live under `tigrcorn-protocols` HTTP/1 modules and cover slowloris, malformed chunking, request-smuggling variants, oversized headers, ambiguous connection headers, and premature EOF.
   - HTTP/2 hardening shall live under `tigrcorn-protocols` HTTP/2 modules and cover rapid reset, continuation flood, stream exhaustion, SETTINGS churn, flow-control deadlock, invalid pseudo-header ordering, and h2c boundary behavior.
-  - HTTP/3/QUIC hardening shall split transport mechanics into `tigrcorn-transports` and HTTP/3/QPACK semantics into `tigrcorn-protocols`, covering packet loss, reordering, amplification limits, connection migration, CID rotation, 0-RTT rejection, stateless reset, QPACK blocked-stream pressure, and idle timeout enforcement.
+  - HTTP/3/QUIC hardening shall split transport mechanics into `tigrcorn-transports` and HTTP/3/QPACK semantics into `tigrcorn-protocols`, covering deterministic packet loss, burst loss, reordering, duplication, controlled delay, reliable STREAM recovery, DATAGRAM abandonment, amplification limits, connection migration, CID rotation, 0-RTT rejection, stateless reset, QPACK blocked-stream pressure, and idle timeout enforcement.
   - WebSocket hardening shall live under `tigrcorn-protocols` WebSocket modules and cover fragmented control frames, masked/unmasked frame validation, close-handshake races, permessage-deflate bombs, long-lived idle connections, and slow-consumer backpressure.
   - WebTransport hardening shall live under `tigrcorn-protocols` WebTransport/H3 modules and cover stream/datagram buffering, session and stream flow control, reset/stop-sending mapping, GOAWAY/drain behavior, and resource governance.
   - Static hardening shall live under `tigrcorn-static` for behavior and `tigrcorn-certification` for artifact preservation, covering traversal, symlink/hardlink escape, range amplification, sidecar mismatch, content-type ambiguity, and inode mutation during response.

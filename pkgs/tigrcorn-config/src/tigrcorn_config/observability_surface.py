@@ -28,9 +28,21 @@ METRICS_SCHEMA = {
         'loss': [
             'quic_packets_lost',
             'quic_pto_expirations',
+            'quic_pto_probes',
+            'quic_stream_bytes_retransmitted',
+            'quic_crypto_bytes_retransmitted',
+            'quic_datagram_frames_abandoned',
+            'quic_frames_regenerated',
             'quic_path_challenges',
             'quic_path_responses',
             'quic_path_migrations',
+        ],
+        'congestion': [
+            'quic_bytes_in_flight',
+            'quic_congestion_window_bytes',
+            'quic_smoothed_rtt_seconds',
+            'quic_pacing_rate_bytes_per_second',
+            'quic_pending_outbound_datagrams',
         ],
         'http3': [
             'http3_requests_served',
@@ -45,6 +57,11 @@ METRICS_SCHEMA = {
         'active_connections',
         'active_websocket_connections',
         'active_quic_sessions',
+        'quic_bytes_in_flight',
+        'quic_congestion_window_bytes',
+        'quic_smoothed_rtt_seconds',
+        'quic_pacing_rate_bytes_per_second',
+        'quic_pending_outbound_datagrams',
     ],
     'notes': {
         'aggregation': 'Counters are monotonic totals; gauges report current in-process state.',

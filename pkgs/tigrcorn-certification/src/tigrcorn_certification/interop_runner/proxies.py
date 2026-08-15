@@ -3,6 +3,7 @@ from __future__ import annotations
 from .imports import *
 from .helpers import *
 from .ports import _normalize_sockaddr
+from .impairment import UDPImpairmentPolicy
 
 class _PacketTraceWriter:
     def __init__(self, path: Path) -> None:
@@ -124,7 +125,7 @@ class TCPRecordProxy:
 
 
 class UDPRecordProxy:
-    def __init__(self, *, listen_host: str, listen_port: int, target_host: str, target_port: int, packet_trace_path: Path, ip_family: str = 'ipv4') -> None:
+    def __init__(self, *, listen_host: str, listen_port: int, target_host: str, target_port: int, packet_trace_path: Path, ip_family: str = 'ipv4', impairment: UDPImpairmentPolicy | None = None) -> None:
         family = socket.AF_INET6 if ip_family == 'ipv6' else socket.AF_INET
         self.listen_host = listen_host
         self.listen_port = listen_port
@@ -144,6 +145,14 @@ class UDPRecordProxy:
         self._stop = threading.Event()
         self._thread = threading.Thread(target=self._loop, daemon=True)
         self._last_client: tuple[str, int] | None = None
+        self._impairment = impairment
+
+    def _forward_payloads(self, direction: str, payload: bytes) -> tuple[bytes, ...]:
+        if self._impairment is None:
+            return (payload,)
+        if self._impairment.profile.delay_seconds:
+            time.sleep(self._impairment.profile.delay_seconds)
+        return self._impairment.apply(direction, payload)
 
     def start(self) -> None:
         self._thread.start()
@@ -170,10 +179,11 @@ class UDPRecordProxy:
                             remote=(self.target_host, self.target_port),
                             payload=payload,
                         )
-                        try:
-                            self._upstream.sendto(payload, target)
-                        except OSError:
-                            continue
+                        for forwarded in self._forward_payloads('client_to_server', payload):
+                            try:
+                                self._upstream.sendto(forwarded, target)
+                            except OSError:
+                                continue
                     elif key.fileobj is self._upstream:
                         try:
                             payload, _addr = self._upstream.recvfrom(65535)
@@ -188,10 +198,11 @@ class UDPRecordProxy:
                             remote=self._last_client,
                             payload=payload,
                         )
-                        try:
-                            self._downstream.sendto(payload, self._last_client)
-                        except OSError:
-                            continue
+                        for forwarded in self._forward_payloads('server_to_client', payload):
+                            try:
+                                self._downstream.sendto(forwarded, self._last_client)
+                            except OSError:
+                                continue
         finally:
             selector.close()
 

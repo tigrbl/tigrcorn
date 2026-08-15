@@ -5,6 +5,7 @@ from .process import *
 from .helpers import *
 from .adapters import *
 from .proxies import *
+from .impairment import *
 from .ports import *
 from .environment import *
 from .assertions import *

@@ -117,6 +117,10 @@
       "server_names": []
     },
     "quic": {
+      "congestion_control": {
+        "algorithm": "reno",
+        "options": {}
+      },
       "early_data_policy": "deny",
       "idle_timeout": 30.0,
       "max_datagram_size": 1200,

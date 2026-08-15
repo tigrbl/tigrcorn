@@ -170,7 +170,9 @@ class HTTP3WebTransportStreamsMixin:
                     endpoint=endpoint,
                 )
                 return
-            async with session.lock:
+            # Resolve the control-vs-bulk decision before QUIC packet numbers
+            # are assigned. Already encoded datagrams must remain FIFO.
+            async with session.lock.urgent():
                 await self._send_webtransport_stream_data(
                     session,
                     stream_id,

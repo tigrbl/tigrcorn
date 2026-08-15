@@ -6,7 +6,7 @@ from typing import Any
 from .imports import *
 
 _STREAM_CHUNK_BYTES = 16 * 1024
-_OUTBOUND_MAX_PENDING_DATAGRAMS = 64
+_OUTBOUND_MAX_PENDING_DATAGRAMS = 8
 _OUTBOUND_DRAIN_POLL_SECONDS = 0.001
 
 
@@ -18,7 +18,7 @@ class HTTP3WebTransportStreamFlowMixin:
         *,
         endpoint: UDPEndpoint,
     ) -> int:
-        async with session.lock:
+        async with session.lock.normal():
             if (
                 session.addr not in self.sessions
                 or self.sessions.get(session.addr) is not session
@@ -45,7 +45,7 @@ async def _wait_for_outbound_capacity(
     max_pending: int,
 ) -> bool:
     while True:
-        async with session.lock:
+        async with session.lock.normal():
             if (
                 session.addr not in handler.sessions
                 or handler.sessions.get(session.addr) is not session

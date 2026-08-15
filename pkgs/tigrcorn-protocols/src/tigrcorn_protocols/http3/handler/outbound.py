@@ -47,6 +47,30 @@ class HTTP3OutboundMixin:
         while pto_total > session.last_quic_pto_expirations_total:
             self.metrics.quic_pto_expired()
             session.last_quic_pto_expirations_total += 1
+        recovery_totals = {
+            'pto_probes': int(getattr(session.quic, 'pto_probes_total', 0)),
+            'stream_bytes_retransmitted': int(getattr(session.quic, 'stream_bytes_retransmitted_total', 0)),
+            'crypto_bytes_retransmitted': int(getattr(session.quic, 'crypto_bytes_retransmitted_total', 0)),
+            'datagram_frames_abandoned': int(getattr(session.quic, 'datagram_frames_abandoned_total', 0)),
+            'frames_regenerated': int(getattr(session.quic, 'frames_regenerated_total', 0)),
+        }
+        last_fields = {
+            name: f'last_quic_{name}_total' for name in recovery_totals
+        }
+        deltas = {
+            name: max(0, total - int(getattr(session, last_fields[name])))
+            for name, total in recovery_totals.items()
+        }
+        self.metrics.quic_recovery_observed(**deltas)
+        for name, total in recovery_totals.items():
+            setattr(session, last_fields[name], total)
+        self.metrics.quic_transport_state_observed(
+            bytes_in_flight=session.quic.recovery.bytes_in_flight,
+            congestion_window=session.quic.recovery.congestion_window,
+            smoothed_rtt=session.quic.recovery.rtt.smoothed_rtt,
+            pacing_rate=session.quic.recovery.pacing_rate,
+            pending_outbound=len(session.pending_outbound),
+        )
         persistent_total = int(
             getattr(session.quic.recovery, 'persistent_congestion_total', 0)
         )
