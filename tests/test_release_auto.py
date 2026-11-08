@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import yaml
+
 from tools.cert import release_auto
 from tools import create_release_promotion_checkpoint as release_promotion
 
@@ -46,7 +48,10 @@ def test_publish_all_packages_workflow_uses_tokens_choices_and_pinned_actions():
     assert '- tigrcorn-core' in workflow
     assert '- wt-peer-probes' in workflow
     assert 'environment: testpypi' in workflow
-    assert 'environment: pypi' in workflow
+    pypi_job = yaml.safe_load(workflow)['jobs']['publish-python-pypi']
+    assert pypi_job['environment'] == (
+        "${{ matrix.package == 'tigrcorn-quic-cc-reno' && 'pypi-quic-cc-reno' || 'pypi' }}"
+    )
     assert 'id-token: write' in workflow
     assert 'user: __token__' not in workflow
     assert 'password: ${{ secrets.PYPI_API_TOKEN }}' not in workflow
