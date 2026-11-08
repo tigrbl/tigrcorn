@@ -444,7 +444,8 @@ jobs:
     needs: python-dist
     if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.pypi_publish && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) && (github.event_name != 'release' || github.event.release.prerelease == false) }}
     runs-on: ubuntu-latest
-    environment: pypi
+    # PyPI pending publishers require distinct workflow/environment identities.
+    environment: ${{ matrix.package == 'tigrcorn-quic-cc-reno' && 'pypi-quic-cc-reno' || 'pypi' }}
     permissions:
       contents: read
       id-token: write
