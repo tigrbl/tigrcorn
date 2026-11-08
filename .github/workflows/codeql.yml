@@ -12,7 +12,6 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    environment: ci
     permissions:
       actions: read
       contents: read

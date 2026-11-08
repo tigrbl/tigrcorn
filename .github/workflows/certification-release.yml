@@ -21,7 +21,6 @@ jobs:
   certification-environment-and-release-checkpoints:
     name: Certification Environment and Release Checkpoints (${{ matrix.python-version }})
     runs-on: ubuntu-latest
-    environment: staging
     permissions:
       contents: read
     strategy:
@@ -42,24 +41,7 @@ jobs:
         run: python -m pip install -U pip
 
       - name: Install workspace packages
-        run: |
-          python -m pip install \
-            -e pkgs/tigrcorn-core \
-            -e pkgs/tigrcorn-config \
-            -e pkgs/tigrcorn-asgi \
-            -e pkgs/tigrcorn-contract \
-            -e pkgs/tigrcorn-transports \
-            -e pkgs/tigrcorn-protocols \
-            -e pkgs/tigrcorn-http \
-            -e pkgs/tigrcorn-security \
-            -e pkgs/tigrcorn-runtime \
-            -e pkgs/tigrcorn-static \
-            -e pkgs/tigrcorn-observability \
-            -e pkgs/tigrcorn-compat \
-            -e pkgs/tigrcorn-certification
-
-      - name: Install certification dependencies
-        run: python -m pip install -e ".[certification,dev]"
+        run: bash ./scripts/ci/install-workspace.sh
 
       - name: Freeze certification environment
         run: |

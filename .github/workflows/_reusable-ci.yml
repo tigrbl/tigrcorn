@@ -7,7 +7,6 @@ jobs:
   validate:
     name: validate-py${{ matrix.python-version }}
     runs-on: ubuntu-latest
-    environment: ci
     permissions:
       contents: read
     strategy:
@@ -24,23 +23,7 @@ jobs:
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
       - name: Install workspace packages
-        run: |
-          python -m pip install \
-            -e pkgs/tigrcorn-core \
-            -e pkgs/tigrcorn-config \
-            -e pkgs/tigrcorn-asgi \
-            -e pkgs/tigrcorn-contract \
-            -e pkgs/tigrcorn-transports \
-            -e pkgs/tigrcorn-protocols \
-            -e pkgs/tigrcorn-http \
-            -e pkgs/tigrcorn-security \
-            -e pkgs/tigrcorn-runtime \
-            -e pkgs/tigrcorn-static \
-            -e pkgs/tigrcorn-observability \
-            -e pkgs/tigrcorn-compat \
-            -e pkgs/tigrcorn-certification
-      - name: Install project
-        run: python -m pip install -e ".[certification,dev]"
+        run: bash ./scripts/ci/install-workspace.sh
       - name: Validate tree
         uses: ./.github/actions/ci-shell
         with:
@@ -105,8 +88,7 @@ jobs:
 
   validate-wt-peer-probes:
     name: validate-wt-peer-probes-node${{ matrix.node-version }}
-    runs-on: ubuntu-latest
-    environment: ci
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     strategy:
