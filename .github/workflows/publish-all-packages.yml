@@ -462,6 +462,8 @@ jobs:
           - tigrcorn-http
           - tigrcorn-observability
           - tigrcorn-protocols
+          - tigrcorn-quic-cc
+          - tigrcorn-quic-cc-reno
           - tigrcorn-runtime
           - tigrcorn-security
           - tigrcorn-static
