@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .imports import *
+from .io import TLS13_HANDSHAKE_STATE_TABLE
 
 def tls13_handshake_state_table() -> tuple[dict[str, object], ...]:
     return tuple(dict(entry) for entry in TLS13_HANDSHAKE_STATE_TABLE)

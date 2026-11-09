@@ -38,12 +38,24 @@ async def _read_h3_response_with_client_progress(
     loop = asyncio.get_running_loop()
     response_state = None
     for _ in range(256):
-        data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 5.0)
+        idle_deadline = loop.time() + 5.0
+        while True:
+            for raw in client.take_handshake_datagrams() + client.drain_scheduled_datagrams():
+                sock.sendto(raw, addr)
+            remaining = idle_deadline - loop.time()
+            if remaining <= 0:
+                raise TimeoutError('timed out waiting for an HTTP/3 response datagram')
+            delay = client.next_runtime_deadline()
+            timeout = min(remaining, delay) if delay is not None else remaining
+            try:
+                data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), timeout)
+                break
+            except TimeoutError:
+                # The receive may be idle while a delayed ACK or PTO becomes due.
+                continue
         for event in client.receive_datagram(data):
             if event.kind == 'stream' and event.stream_id == 0:
                 response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-        for raw in client.take_handshake_datagrams() + client.drain_scheduled_datagrams():
-            sock.sendto(raw, addr)
         if response_state is not None and response_state.ended:
             return response_state.headers, response_state.body
     raise AssertionError('timed out waiting for full HTTP/3 response body')
@@ -158,7 +170,8 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
                         (b'range', b'bytes=16384-32767'),
                     ], body=b'x' * 6000)
                     target = ('127.0.0.1', port)
-                    sock.sendto(client.send_stream_data(0, request_payload, fin=True), target)
+                    for packet in client.send_stream_data_packets(0, request_payload, fin=True):
+                        sock.sendto(packet, target)
                     response_headers, body = await _read_h3_response_with_client_progress(sock, core, client, target)
                     header_map = dict(response_headers)
                     self.assertEqual(header_map[b':status'], b'206')
