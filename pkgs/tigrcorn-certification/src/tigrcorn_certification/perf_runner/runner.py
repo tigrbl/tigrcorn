@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from dataclasses import asdict
+from tempfile import TemporaryDirectory
+
 from .imports import *
 from .models import *
 from .stats import *
@@ -14,6 +17,22 @@ from .metrics import (
     _evaluate_thresholds,
     _summarize_measurement,
 )
+
+def _measure_profile(profile: PerfProfile, source_root: Path) -> dict[str, Any]:
+    with TemporaryDirectory(prefix='tigrcorn-profile-') as temp:
+        output = Path(temp) / 'measurement.json'
+        try:
+            subprocess.run(
+                [sys.executable, '-m', 'tigrcorn_certification.perf_runner.profile_worker', str(output)],
+                input=json.dumps(asdict(profile)),
+                text=True,
+                cwd=source_root,
+                check=True,
+            )
+        except subprocess.CalledProcessError as exc:
+            raise PerfRunnerError(f'benchmark worker failed for {profile.profile_id}') from exc
+        return json.loads(output.read_text(encoding='utf-8'))
+
 
 def run_performance_matrix(
     source_root: str | Path,
@@ -55,12 +74,9 @@ def run_performance_matrix(
     commit_hash = _resolve_commit_hash(source_root)
     environment = _environment_snapshot(matrix=matrix, command=sys.argv)
 
-    from benchmarks.registry import get_driver
-
     results: list[PerfProfileResult] = []
     for profile in selected_profiles:
-        driver = get_driver(profile.driver)
-        measurement = driver(profile, source_root=source_root)
+        measurement = _measure_profile(profile, source_root)
         profile_dir = artifact_root / profile.profile_id
         profile_dir.mkdir(parents=True, exist_ok=True)
         metrics = _summarize_measurement(measurement, profile=profile)

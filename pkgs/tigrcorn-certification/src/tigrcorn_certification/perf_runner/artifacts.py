@@ -145,6 +145,7 @@ def _write_run_summary(
             {
                 'profile_id': result.profile_id,
                 'passed': result.passed,
+                'baseline_evaluated': bool(result.relative_regression.get('evaluated')),
                 'artifact_dir': result.artifact_dir,
                 'failure_reasons': result.failure_reasons,
             }

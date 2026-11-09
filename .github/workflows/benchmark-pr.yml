@@ -15,9 +15,19 @@ jobs:
   benchmark:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          path: candidate
+          persist-credentials: false
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
           persist-credentials: false
 
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
@@ -25,17 +35,40 @@ jobs:
           python-version: '3.12'
 
       - name: Install workspace packages
-        run: bash scripts/ci/install-workspace.sh
+        run: |
+          for tree in baseline candidate; do
+            venv="$RUNNER_TEMP/benchmark-$tree"
+            python -m venv "$venv"
+            (cd "$tree" && PATH="$venv/bin:$PATH" bash scripts/ci/install-workspace.sh)
+          done
 
-      - name: Run benchmark measurements
+      - name: Measure the base revision
+        working-directory: baseline
+        run: |
+          baseline_root="$RUNNER_TEMP/benchmark-results/baseline"
+          python="$RUNNER_TEMP/benchmark-baseline/bin/python"
+          profile_list=$("$python" tools/run_perf_matrix.py --list-profiles)
+          test -n "$profile_list"
+          while IFS=$'\t' read -r profile _; do
+            # One invocation per profile also isolates older base revisions.
+            rm -f "$baseline_root/summary.json" "$baseline_root/index.json"
+            "$python" tools/run_perf_matrix.py --establish-baseline \
+              --profile "$profile" --artifact-root "$baseline_root" || test -s "$baseline_root/summary.json"
+          done <<< "$profile_list"
+          rm -f "$baseline_root/summary.json" "$baseline_root/index.json"
+
+      - name: Compare the PR against the same runner baseline
+        working-directory: candidate
         run: |
           artifact_root="$RUNNER_TEMP/benchmark-results"
-          mkdir -p "$artifact_root"
-          if python tools/run_perf_matrix.py --establish-baseline --shuffle --artifact-root "$artifact_root"; then
-            exit 0
+          python="$RUNNER_TEMP/benchmark-candidate/bin/python"
+          if ! "$python" tools/run_perf_matrix.py --seed 3470812123 \
+            --baseline-root "$artifact_root/baseline" --artifact-root "$artifact_root/candidate"; then
+            test -s "$artifact_root/candidate/summary.json"
+            echo "::warning::Some benchmark profiles missed their configured checks. See the measurement artifacts."
           fi
-          test -s "$artifact_root/summary.json"
-          echo "::warning::Some benchmark profiles missed their thresholds. See the measurement artifacts."
+          "$python" tools/fmt_benchmark_comment.py "$artifact_root/candidate/summary.json" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload measurements
         if: ${{ !cancelled() }}
@@ -46,12 +79,11 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-
       - name: Upload comment summary
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: benchmark-summary
-          path: ${{ runner.temp }}/benchmark-results/summary.json
+          path: ${{ runner.temp }}/benchmark-results/candidate/summary.json
           if-no-files-found: ignore
           retention-days: 7
