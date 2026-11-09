@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 from pathlib import Path
-from unittest import mock
 
 import pytest
 from tigrcorn import EmbeddedServer
@@ -88,7 +87,7 @@ async def test_shutdown_hook_failures_are_suppressed_during_close() -> None:
     assert events == ['hook.shutdown']
 
 
-def test_reload_hooks_run_before_child_restart_and_receive_config() -> None:
+def test_reload_hooks_run_before_child_restart_and_receive_config(monkeypatch) -> None:
     events: list[str] = []
     config = build_config(app='tests.fixtures_pkg.appmod:app', host='127.0.0.1', port=8000)
 
@@ -99,11 +98,9 @@ def test_reload_hooks_run_before_child_restart_and_receive_config() -> None:
     config.hooks.on_reload = [on_reload]
     reloader = PollingReloader([], config=config)
 
-    with (
-        mock.patch.object(PollingReloader, 'stop_child', autospec=True, side_effect=lambda _self: events.append('stop_child')),
-        mock.patch.object(PollingReloader, 'spawn_child', autospec=True, side_effect=lambda _self: events.append('spawn_child')),
-    ):
-        reloader.restart_child()
+    monkeypatch.setattr(PollingReloader, 'stop_child', lambda _self: events.append('stop_child'))
+    monkeypatch.setattr(PollingReloader, 'spawn_child', lambda _self: events.append('spawn_child'))
+    reloader.restart_child()
 
     assert events == ['hook.reload', 'stop_child', 'spawn_child']
 
