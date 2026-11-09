@@ -1,7 +1,7 @@
 {
   "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
   "generated_at": "2026-03-28T06:47:37.839025+00:00",
-  "source_checkpoint": "phase9i_release_assembly",
+  "source_checkpoint": "release_assembly",
   "promotion_ready": true,
   "strict_target_complete": true,
   "bundle_count": 16,

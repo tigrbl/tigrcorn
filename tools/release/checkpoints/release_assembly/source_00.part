@@ -1,0 +1,325 @@
+from __future__ import annotations
+
+import importlib.util
+import json
+import shutil
+import subprocess
+import sys
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / 'src'
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from tigrcorn.compat.aioquic_preflight import (
+    run_aioquic_adapter_preflight,
+    write_status_documents as write_aioquic_preflight_status_documents,
+)
+from tigrcorn.compat.certification_env import (
+    write_certification_environment_bundle,
+    write_status_documents as write_certification_environment_status_documents,
+)
+from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target
+
+CONFORMANCE = ROOT / 'docs' / 'review' / 'conformance'
+PERF = ROOT / 'docs' / 'review' / 'performance'
+RELEASE_ROOT = CONFORMANCE / 'releases' / '0.3.9' / 'release-0.3.9'
+FLAG_BUNDLE = RELEASE_ROOT / 'tigrcorn-flag-surface-certification-bundle'
+OPERATOR_BUNDLE = RELEASE_ROOT / 'tigrcorn-operator-surface-certification-bundle'
+PERFORMANCE_BUNDLE = RELEASE_ROOT / 'tigrcorn-performance-certification-bundle'
+CERT_ENV_BUNDLE = RELEASE_ROOT / 'tigrcorn-certification-environment-bundle'
+AIOQUIC_PREFLIGHT_BUNDLE = RELEASE_ROOT / 'tigrcorn-aioquic-adapter-preflight-bundle'
+RELEASE_ASSEMBLY_STATUS_JSON = CONFORMANCE / 'release_assembly.current.json'
+RELEASE_ASSEMBLY_STATUS_MD = CONFORMANCE / 'RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md'
+DELIVERY_NOTES = ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md'
+RELEASE_ROOT_BUNDLE_INDEX = RELEASE_ROOT / 'bundle_index.json'
+RELEASE_ROOT_BUNDLE_SUMMARY = RELEASE_ROOT / 'bundle_summary.json'
+RELEASE_GATE_STATUS_JSON = CONFORMANCE / 'release_gate_status.current.json'
+RELEASE_GATE_STATUS_MD = CONFORMANCE / 'RELEASE_GATE_STATUS.md'
+PACKAGE_REVIEW_JSON = CONFORMANCE / 'package_compliance_review_release_assembly.current.json'
+PACKAGE_REVIEW_MD = CONFORMANCE / 'PACKAGE_COMPLIANCE_REVIEW_RELEASE_ASSEMBLY.md'
+
+
+
+LEGACY_CANONICAL_RELEASE_ROOT = 'docs/review/conformance/releases/0.3.6/release-0.3.6'
+
+
+def load_optional_json(path: Path) -> Any | None:
+    if not path.exists():
+        return None
+    return load_json(path)
+
+
+def current_release_promotion_state() -> dict[str, Any]:
+    manifest = load_optional_json(RELEASE_ROOT / 'manifest.json') or {}
+    promotion_payload = load_optional_json(CONFORMANCE / 'release_promotion.current.json') or {}
+    promotion_state = promotion_payload.get('current_state', {}) if isinstance(promotion_payload, dict) else {}
+    package_version = load_pyproject_version()
+    release_notes = str(
+        manifest.get('release_notes')
+        or promotion_state.get('release_notes')
+        or f'docs/release-notes/RELEASE_NOTES_{package_version}.md'
+    )
+    version_bump_performed = bool(
+        manifest.get('version_bump_performed')
+        or promotion_state.get('version_bump_performed')
+    )
+    canonical_release_promoted = bool(
+        manifest.get('canonical_release_promoted')
+        or version_bump_performed
+        or promotion_state.get('canonical_authoritative_release_root') == relative_path(RELEASE_ROOT)
+    )
+    release_notes_promoted = bool(
+        manifest.get('release_notes_promoted')
+        or promotion_state.get('release_notes_promoted')
+        or (canonical_release_promoted and (ROOT / release_notes).exists())
+    )
+    canonical_authoritative_release_root = (
+        relative_path(RELEASE_ROOT) if canonical_release_promoted else LEGACY_CANONICAL_RELEASE_ROOT
+    )
+    return {
+        'package_version': package_version,
+        'canonical_release_promoted': canonical_release_promoted,
+        'canonical_authoritative_release_root': canonical_authoritative_release_root,
+        'version_bump_performed': version_bump_performed,
+        'release_notes_promoted': release_notes_promoted,
+        'release_notes': release_notes,
+    }
+
+
+def sync_certification_environment_status_from_bundle() -> None:
+    environment_path = CERT_ENV_BUNDLE / 'environment.json'
+    if not environment_path.exists():
+        return
+    snapshot = load_json(environment_path)
+    write_certification_environment_status_documents(
+        ROOT,
+        snapshot,
+        release_root=relative_path(RELEASE_ROOT),
+        bundle_root=relative_path(CERT_ENV_BUNDLE),
+        workflow_path='.github/workflows/certification-release.yml',
+        wrapper_path='tools/run_certification_release_workflow.py',
+    )
+
+
+def sync_aioquic_preflight_status_from_bundle() -> None:
+    preflight_path = AIOQUIC_PREFLIGHT_BUNDLE / 'preflight.json'
+    index_path = AIOQUIC_PREFLIGHT_BUNDLE / 'index.json'
+    if not preflight_path.exists() or not index_path.exists():
+        return
+    preflight_payload = load_json(preflight_path)
+    index = load_json(index_path)
+    snapshot = {
+        'checkpoint': 'aioquic_adapter_preflight',
+        'status': 'aioquic_adapter_preflight_passed' if index.get('all_adapters_passed') else 'aioquic_adapter_preflight_failed',
+        'current_state': {
+            'release_root': relative_path(RELEASE_ROOT),
+            'bundle_root': index['artifact_root'],
+            'matrix_path': index['matrix_path'],
+            'scenario_ids': list(index.get('scenario_ids', [])),
+            'scenario_records': list(preflight_payload.get('scenario_records', [])),
+            'environment': dict(preflight_payload.get('environment', {})),
+            'all_adapters_passed': index['all_adapters_passed'],
+            'no_peer_exit_code_2': index['no_peer_exit_code_2'],
+            'negotiation_metadata_emitted': index['negotiation_metadata_emitted'],
+            'transcript_metadata_emitted': index['transcript_metadata_emitted'],
+            'all_protocols_h3': index['all_protocols_h3'],
+            'all_handshakes_complete': index['all_handshakes_complete'],
+            'certificate_inputs_ready': index['certificate_inputs_ready'],
+            'packet_traces_emitted': index['packet_traces_emitted'],
+            'qlogs_emitted': index['qlogs_emitted'],
+            'gate_status_after_preflight': dict(preflight_payload.get('gate_status_after_preflight', index.get('gate_status_after_preflight', {}))),
+        },
+        'remaining_strict_target_blockers': [],
+    }
+    write_aioquic_preflight_status_documents(
+        ROOT,
+        snapshot,
+        release_root=relative_path(RELEASE_ROOT),
+        bundle_root=relative_path(AIOQUIC_PREFLIGHT_BUNDLE),
+    )
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def load_json(path: Path) -> Any:
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def dump_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=False) + '\n', encoding='utf-8')
+
+
+def relative_path(value: str | Path) -> str:
+    path = Path(value)
+    try:
+        return str(path.resolve().relative_to(ROOT.resolve()))
+    except Exception:
+        try:
+            return str(path.relative_to(ROOT))
+        except Exception:
+            return str(path)
+
+
+def normalize_workspace_paths(value: Any) -> Any:
+    if isinstance(value, str):
+        root_text = str(ROOT.resolve())
+        if value.startswith(root_text):
+            try:
+                return str(Path(value).resolve().relative_to(ROOT.resolve()))
+            except Exception:
+                return value.replace(root_text + '/', '')
+        return value
+    if isinstance(value, list):
+        return [normalize_workspace_paths(item) for item in value]
+    if isinstance(value, dict):
+        normalized: dict[Any, Any] = {}
+        for key, item in value.items():
+            normalized_key = normalize_workspace_paths(key) if isinstance(key, str) else key
+            normalized[normalized_key] = normalize_workspace_paths(item)
+        return normalized
+    return value
+
+
+def truth_word(value: bool) -> str:
+    return 'green' if value else 'not green'
+
+
+def strict_target_gap_rfcs(strict_report: Any) -> list[str]:
+    gaps: list[str] = []
+    for rfc, status in strict_report.rfc_status.items():
+        if status.get('highest_observed_evidence_tier') != status.get('highest_required_evidence_tier'):
+            gaps.append(rfc)
+    return sorted(gaps)
+
+
+def scenario_failures(strict_report: Any) -> list[str]:
+    failures: set[str] = set()
+    for status in strict_report.rfc_status.values():
+        for tier_entries in status.get('resolved_evidence', {}).values():
+            for entry in tier_entries:
+                if isinstance(entry, dict) and entry.get('artifact_status') == 'failed' and entry.get('scenario_id'):
+                    failures.add(str(entry['scenario_id']))
+    return sorted(failures)
+
+
+def replace_in_obj(value: Any, old: str, new: str) -> Any:
+    if isinstance(value, str):
+        return value.replace(old, new)
+    if isinstance(value, list):
+        return [replace_in_obj(item, old, new) for item in value]
+    if isinstance(value, dict):
+        return {k: replace_in_obj(v, old, new) for k, v in value.items()}
+    return value
+
+
+def rewrite_json_tree(root: Path, old: str, new: str) -> None:
+    for path in root.rglob('*.json'):
+        payload = load_json(path)
+        payload = replace_in_obj(payload, old, new)
+        dump_json(path, payload)
+
+
+def build_flag_bundle() -> None:
+    if FLAG_BUNDLE.exists():
+        shutil.rmtree(FLAG_BUNDLE)
+    FLAG_BUNDLE.mkdir(parents=True)
+
+    contracts_payload = load_json(CONFORMANCE / 'flag_contracts.json')
+    covering_payload = load_json(CONFORMANCE / 'flag_covering_array.json')
+    concurrency_keepalive = load_json(CONFORMANCE / 'concurrency_keepalive_concurrency_keepalive.current.json')
+    contracts = contracts_payload['contracts']
+    family_counts = Counter(row['family'] for row in contracts)
+    state_counts = Counter(row['status']['current_runtime_state'] for row in contracts)
+    ready_count = sum(1 for row in contracts if row['status']['promotion_ready'])
+    hazard_clusters = [entry['cluster_id'] for entry in covering_payload['hazard_clusters']]
+
+    manifest = {
+        'bundle_kind': 'flag_surface_certification_bundle',
+        'generated_at': _now(),
+        'release_gate_eligible': True,
+        'source_contracts': 'docs/review/conformance/flag_contracts.json',
+        'source_covering_array': 'docs/review/conformance/flag_covering_array.json',
+        'source_status': 'docs/review/conformance/concurrency_keepalive_concurrency_keepalive.current.json',
+        'note': 'This assembled bundle freezes the fully promotion-ready public flag surface for the 0.3.9 working release root.',
+    }
+    index = {
+        'artifact_root': str(FLAG_BUNDLE.relative_to(ROOT)),
+        'bundle_kind': 'flag_surface_certification_bundle',
+        'generated_at': manifest['generated_at'],
+        'public_flag_count': contracts_payload['public_flag_string_count'],
+        'contract_row_count': len(contracts),
+        'promotion_ready_count': ready_count,
+        'runtime_state_counts': dict(sorted(state_counts.items())),
+        'families': [
+            {'family': family, 'flag_count': count}
+            for family, count in sorted(family_counts.items())
+        ],
+        'family_count': len(family_counts),
+        'hazard_clusters': hazard_clusters,
+        'hazard_cluster_count': len(hazard_clusters),
+        'hazard_clusters_green': ready_count == len(contracts) and concurrency_keepalive['current_state']['remaining_flag_runtime_blockers'] == [],
+        'note': 'All current public flags are promotion-ready in this checkpoint; the flag surface is green.',
+        'release_gate_eligible': True,
+    }
+    summary = {
+        'artifact_root': index['artifact_root'],
+        'bundle_kind': index['bundle_kind'],
+        'generated_at': index['generated_at'],
+        'public_flag_count': index['public_flag_count'],
+        'promotion_ready_count': index['promotion_ready_count'],
+        'hazard_cluster_count': index['hazard_cluster_count'],
+        'hazard_clusters_green': index['hazard_clusters_green'],
+    }
+    dump_json(FLAG_BUNDLE / 'manifest.json', manifest)
+    dump_json(FLAG_BUNDLE / 'index.json', index)
+    dump_json(FLAG_BUNDLE / 'summary.json', summary)
+    (FLAG_BUNDLE / 'README.md').write_text(
+        '# Flag surface certification bundle\n\n'
+        'This bundle freezes the fully promotion-ready public flag surface for the 0.3.9 working release root.\n',
+        encoding='utf-8',
+    )
+
+
+def build_operator_bundle() -> None:
+    if OPERATOR_BUNDLE.exists():
+        shutil.rmtree(OPERATOR_BUNDLE)
+    OPERATOR_BUNDLE.mkdir(parents=True)
+
+    phase4 = load_json(CONFORMANCE / 'phase4_operator_surface_status.current.json')
+    manifest = {
+        'bundle_kind': 'operator_surface_certification_bundle',
+        'generated_at': _now(),
+        'release_gate_eligible': True,
+        'source_doc': 'docs/review/conformance/PHASE4_OPERATOR_SURFACE_STATUS.md',
+        'source_status': 'docs/review/conformance/phase4_operator_surface_status.current.json',
+        'note': 'This assembled bundle freezes the operator-surface implementation/testing plane for the 0.3.9 working release root.',
+    }
+    index = {
+        'artifact_root': str(OPERATOR_BUNDLE.relative_to(ROOT)),
+        'bundle_kind': 'operator_surface_certification_bundle',
+        'generated_at': manifest['generated_at'],
+        'implemented': dict(sorted(phase4['implemented'].items())),
+        'implemented_count': sum(1 for value in phase4['implemented'].values() if value),
+        'validation': phase4['validation'],
+        'note': 'This bundle freezes the operator-surface implementation/testing plane. It does not waive any strict RFC evidence requirement.',
+        'release_gate_eligible': True,
+    }
+    summary = {
+        'artifact_root': index['artifact_root'],
+        'bundle_kind': index['bundle_kind'],
+        'generated_at': index['generated_at'],
+        'implemented_count': index['implemented_count'],
+        'validation': index['validation'],
+    }
+    dump_json(OPERATOR_BUNDLE / 'manifest.json', manifest)
+    dump_json(OPERATOR_BUNDLE / 'index.json', index)
+    dump_json(OPERATOR_BUNDLE / 'summary.json', summary)
+    (OPERATOR_BUNDLE / 'README.md').write_text(

@@ -1,7 +1,7 @@
 {
   "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-independent-harness-foundation-bundle",
   "bundle_kind": "independent_harness_foundation",
-  "commit_hash": "phase9b-independent-harness-foundation",
+  "commit_hash": "independent_harness-independent-harness-foundation",
   "failed": 0,
   "matrix_name": "tigrcorn-independent-certification-release-matrix",
   "passed": 1,

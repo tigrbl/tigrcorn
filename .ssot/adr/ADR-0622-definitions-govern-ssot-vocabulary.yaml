@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0622"
+number: 622
+slug: "definitions-govern-ssot-vocabulary"
+title: "Definitions govern SSOT vocabulary"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "SSOT governance uses recurring terms across authored ADRs, authored SPECs, registry rows, CLI output, generated projections, evidence artifacts, releases, boundaries, and downstream conformance work. Those terms currently appear across many documents, but there is no single governed vocabulary authority."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  SSOT governance uses recurring terms across authored ADRs, authored SPECs, registry rows, CLI output, generated projections, evidence artifacts, releases, boundaries, and downstream conformance work. Those terms currently appear across many documents, but there is no single governed vocabulary authority.
+  
+  Without a definitions authority, readers and tools can interpret entity families, proof terms, lifecycle terms, projections, and assurance terms inconsistently. That weakens traceability and makes release or certification claims harder to audit.
+  
+  ## Decision
+  
+  SSOT vocabulary SHALL be governed by a dedicated definitions SPEC.
+  
+  Defined SSOT terms SHALL override informal usage in README files, generated reports, examples, comments, and downstream prose.
+  
+  Entity-family terms SHALL be interpreted according to the definitions SPEC unless a more specific accepted SPEC narrows a term for its own explicit scope.
+  
+  Undefined terms retain their ordinary technical meaning, but they SHALL NOT create conformance, certification, release, or implementation obligations by implication.
+  
+  Downstream repositories MAY add stricter local definitions, but they SHALL NOT redefine upstream SSOT terms to claim stronger assurance than the upstream registry, authored documents, claims, tests, and evidence support.
+  
+  ## Consequences
+  
+  New ADRs and SPECs should reuse defined terms where possible instead of creating parallel vocabulary.
+  
+  Definitions that affect validation, synchronization, conformance, release, or certification behavior must be added to the governed definitions SPEC or to a narrower accepted SPEC that states its scope.
+  
+  Generated projections and CLI summaries must not introduce authoritative definitions that do not exist in authored governance.

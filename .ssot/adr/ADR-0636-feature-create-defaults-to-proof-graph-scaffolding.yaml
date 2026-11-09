@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0636"
+number: 636
+slug: "feature-create-defaults-to-proof-graph-scaffolding"
+title: "Feature create defaults to proof-graph scaffolding"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision: `feature create` shall default to proof-graph scaffolding for new feature rows unless the operator explicitly disables that behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-24T10:51:51Z"
+    note: "Created to govern scaffold-first feature creation defaults and explicit opt-out behavior."
+    status: "draft"
+references: []
+body: |-
+  Decision: `feature create` shall default to proof-graph scaffolding for new feature rows unless the operator explicitly disables that behavior.
+  
+  `ssot-registry` already treats features as the targetable units and fail-closes when targeted or implemented features do not carry linked proof-chain closure. In practice, downstream operators repeatedly discover `feature create` before they discover the scaffold flows, then either hit validation failure or attach new work to an unrelated existing feature that already has claim and test closure. That behavior preserves validation but weakens traceability and encourages feature overloading.
+  
+  The default authoring path therefore shall align with the proof model instead of fighting it.
+  
+  When an operator creates a feature row through `feature create`, the command shall behave as though proof-graph scaffolding were requested unless an explicit CLI override or repo-local config setting disables it. The default scaffold shall create or link the minimally valid proof graph needed for a new governed feature row in the same transaction.
+  
+  When the scaffolded proof graph includes more than one claim tier, scaffold support shall remain tier-separated. At minimum, a scaffolded T0 claim shall receive its own scaffold test row and a scaffolded T1 claim shall receive its own scaffold test row. The scaffold is not required to label those tests as unit or integration tests, but it shall not collapse distinct scaffolded claim tiers onto one shared placeholder test row.
+  
+  This default does not change the meaning of `parent_feature_ids`, `feature.requires`, profiles, or claim tiers. It changes only the default creation behavior for feature rows so the first successful path matches the governed model.
+  
+  Inventory-only umbrella parents remain valid, but they are now an explicit opt-out case. Operators who are creating a non-targeted composition row may disable the default scaffold through CLI override or command-scoped repo-local config. The explicit opt-out keeps the fail-closed assurance model intact while making the common downstream path succeed by default.

@@ -1,0 +1,32 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2051"
+number: 2051
+slug: "supported-runtime-loop-surface"
+title: "Supported runtime loop surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose only the current supported runtime loop surface through public operator and packaging interfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Supported runtime loop surface
+  
+  Tigrcorn shall expose only the current supported runtime loop surface through public operator and packaging interfaces.
+  
+  Requirements:
+  
+  - Supported runtime loop values shall be `auto`, `asyncio`, and `uvloop`.
+  - `auto` shall resolve to the documented default runtime selection behavior.
+  - `asyncio` shall remain a supported explicit runtime selection.
+  - `uvloop` shall remain a supported explicit runtime selection where the dependency is available.
+  - `trio` shall not be accepted as a supported public runtime selection in the current boundary.
+  - Reserved dependency metadata for Trio shall not be treated as a runtime implementation or certification claim.
+  - Public docs, parser choices, config validation, and feature planning shall stay aligned with this support boundary.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1038"

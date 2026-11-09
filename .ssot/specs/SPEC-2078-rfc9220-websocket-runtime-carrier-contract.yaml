@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2078"
+number: 2078
+slug: "rfc9220-websocket-runtime-carrier-contract"
+title: "RFC 9220 WebSocket runtime carrier contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn RFC 9220 WebSocket-over-HTTP/3 runtime behavior as one WebSocket session carried by one Extended CONNECT HTTP/3 stream. Source specification: RFC 9220 https://www.rfc-editor.org/rfc/rfc9220. Runtime evidence for this spec must remain separate from WebTransport-over-H3 evidence."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack runtime behavior."
+    at: "2026-06-17T12:48:54Z"
+references: []
+body: |-
+  Defines Tigrcorn RFC 9220 WebSocket-over-HTTP/3 runtime behavior as one WebSocket session carried by one Extended CONNECT HTTP/3 stream. Source specification: RFC 9220 https://www.rfc-editor.org/rfc/rfc9220. Runtime evidence for this spec must remain separate from WebTransport-over-H3 evidence.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1064"

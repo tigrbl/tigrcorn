@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>tigrcorn WT peer probe</title></head>
+  <body>
+    <pre id="out"></pre>
+    <script type="module">
+      import { runTigrcornWTPeerProbe } from "../dist/index.js";
+
+      const report = await runTigrcornWTPeerProbe({
+        peerId: new URLSearchParams(location.search).get("peerId") ?? "manual-browser-peer",
+        wtUrl: new URLSearchParams(location.search).get("wt") ?? "https://localhost:8443/__tigrcorn/probe/wt",
+        reportUrl: new URLSearchParams(location.search).get("report") ?? "https://localhost:8443/__tigrcorn/probe/wt/report",
+        timeoutMs: 5000
+      });
+
+      document.getElementById("out").textContent = JSON.stringify(report, null, 2);
+    </script>
+  </body>
+</html>

@@ -1,21 +1,7 @@
 from __future__ import annotations
 
-from tigrcorn.utils.headers import get_header, header_contains_token
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def keep_alive_for_request(http_version: str, headers: list[tuple[bytes, bytes]]) -> bool:
-    if http_version == "1.0":
-        return header_contains_token(headers, b"connection", b"keep-alive")
-    if header_contains_token(headers, b"connection", b"close"):
-        return False
-    return True
-
-
-def expect_continue(headers: list[tuple[bytes, bytes]]) -> bool:
-    value = get_header(headers, b"expect")
-    return bool(value and value.lower() == b"100-continue")
-
-
-
-def apply_keep_alive_policy(request_keep_alive: bool, *, enabled: bool) -> bool:
-    return request_keep_alive and enabled
+_module = _import_module('tigrcorn_protocols.http1.keepalive')
+_sys.modules[__name__] = _module

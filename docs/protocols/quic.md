@@ -12,9 +12,45 @@ This repository includes a concrete QUIC transport core rather than only packet 
 - multiplexed stream frames, ACK ranges, RESET_STREAM / STOP_SENDING / CRYPTO / MAX_DATA / MAX_STREAM_DATA / MAX_STREAMS / PATH_CHALLENGE / PATH_RESPONSE / HANDSHAKE_DONE / CONNECTION_CLOSE frame handling in the codec
 - connection-ID-based runtime session routing in the HTTP/3 UDP server path
 - live recovery, ACK, loss, PTO, and pacing integration in the runtime
+- a versioned congestion-controller extension API in `tigrcorn-quic-cc`
+- a separately distributable default Reno provider in `tigrcorn-quic-cc-reno`
+- one fresh controller instance per QUIC network path, with loss detection,
+  packet accounting, pacing enforcement, anti-amplification, and wire ordering
+  retained by the Tigrcorn transport
 - public API / CLI startup for certificate-driven QUIC-TLS listeners over UDP
 - UDP listener client-certificate verification through `ssl_ca_certs` and `ssl_require_client_cert`
 - UDP listener Retry configuration through `quic_require_retry` / `--quic-require-retry`
+
+## Congestion-controller selection
+
+Reno remains the default. A provider is selected once when each UDP listener
+starts; each connection path then receives a new controller from the resolved
+factory. Providers register under the `tigrcorn.quic_cc.v1` entry-point group.
+
+```toml
+[quic.congestion_control]
+algorithm = "reno"
+
+[quic.congestion_control.options]
+initial_window_packets = 10
+initial_window_cap_bytes = 14720
+pacing_gain = 1.0
+```
+
+The equivalent CLI is:
+
+```console
+tigrcorn example:app --quic-bind 0.0.0.0:443 \
+  --quic-congestion-control reno \
+  --quic-congestion-control-options '{"pacing_gain":1.0}'
+```
+
+Environment configuration accepts `TIGRCORN_QUIC_CONGESTION_CONTROL` and a
+JSON object in `TIGRCORN_QUIC_CONGESTION_CONTROL_OPTIONS`. Listener-specific
+`congestion_control` blocks override the global algorithm and merge their
+options over the global options. Missing providers, duplicate provider IDs,
+incompatible API versions, and invalid options fail listener startup. Invalid
+runtime output closes the provider's send gate for that path.
 
 ## Evidence tiers
 

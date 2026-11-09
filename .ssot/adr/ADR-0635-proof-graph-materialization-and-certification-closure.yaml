@@ -1,0 +1,34 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0635"
+number: 635
+slug: "proof-graph-materialization-and-certification-closure"
+title: "Proof Graph Materialization And Certification Closure"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Summary"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-21T05:59:14Z"
+    note: "Created to govern operator materialization and higher-tier proof-graph closure flows."
+    status: "draft"
+  -
+    at: "2026-06-07T13:06:21Z"
+    note: "Updated scaffold and closure semantics around evidence-owned proof links."
+    status: "draft"
+references: []
+body: |-
+  Summary
+  Proof graphs shall be materializable and closable through supported operator workflows, with evidence rows owning proof links.
+  
+  Decision
+  The SSOT CLI and MCP surfaces shall support atomic or fail-closed materialization of a minimally valid evidence-centered proof graph and a repeatable closure workflow for higher-tier evidence, boundary context, release certification, and certification feedback propagation.
+  
+  A minimally valid create-time scaffold shall create scoped claims, producer tests when applicable, and evidence rows that link to the claims they support and the tests or other provenance that produced them. Scaffolded claim tiers shall remain tier-separated. When a scaffold creates T0 and T1 claims, it shall create evidence-centered support for each tier rather than collapsing proof authority onto one ambiguous placeholder triangle.
+  
+  Implications
+  A user shall not need hidden row-order knowledge to author or close a valid proof graph. T2 and T3 closure metadata, including robustness dimensions, source evidence links, and release context, shall be first-class operator inputs on evidence rows. Release certification outcomes that satisfy claim-tier gates shall be reattachable to linked proof evidence without direct registry edits.

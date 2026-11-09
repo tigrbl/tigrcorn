@@ -1,3 +1,12 @@
-from .connection import PipeConnection
+from __future__ import annotations
 
-__all__ = ["PipeConnection"]
+from __future__ import annotations
+
+from importlib import import_module as _import_module
+
+_module = _import_module("tigrcorn_transports.pipe")
+__all__ = list(getattr(_module, "__all__", ()))
+
+
+def __getattr__(name: str):
+    return getattr(_module, name)

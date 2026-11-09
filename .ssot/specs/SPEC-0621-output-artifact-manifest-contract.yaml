@@ -1,0 +1,39 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0621"
+number: 621
+slug: "output-artifact-manifest-contract"
+title: "Output Artifact Manifest Contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:03Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft contract.
+  
+  ## Contract
+  
+  An output artifact manifest records release id, artifact rows, paths or URIs, artifact kind, media type, size, SHA-256 digest, produced-at metadata, and optional relation to source snapshot and evidence bundle ids.
+  
+  ## Build Neutrality
+  
+  The manifest does not prescribe how artifacts are built. It records local outputs and their hashes after they exist.
+  
+  ## Validation
+  
+  Validation checks required fields, local path existence when paths are local, size and digest consistency, duplicate artifact ids, and release linkage.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0618"
+  - "adr:0620"

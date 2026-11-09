@@ -1,0 +1,37 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1069"
+number: 1069
+slug: "webtransport-controlled-multiversion-listener"
+title: "WebTransport listeners negotiate one profile from all advertised local profiles"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A controlled multi-version HTTP/3 listener advertises every configured and fully implemented WebTransport setting codepoint. After peer SETTINGS arrive, Tigrcorn computes the mutual profile set and selects exactly one preferred mutual profile for the connection. Selection is immutable. CONNECT requests and native streams are not processed before selection. No mutual profile fails deterministically without starting an application session."
+supersedes:
+  - "adr:1068"
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:29Z"
+    note: "Accepted controlled multi-version listener decision"
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Controlled multi-version negotiation replaces single-profile listener selection"
+    at: "2026-07-11T13:42:11Z"
+references: []
+body: |-
+  ## Decision
+
+  A controlled multi-version HTTP/3 listener advertises every configured and fully implemented WebTransport setting codepoint. After peer SETTINGS arrive, Tigrcorn computes the mutual profile set and selects exactly one preferred mutual profile for the connection. Selection is immutable. CONNECT requests and native streams are not processed before selection. No mutual profile fails deterministically without starting an application session.
+
+  ## Governed features
+
+  - `feat:webtransport-multiversion-settings-advertisement`
+  - `feat:webtransport-peer-profile-intersection`
+  - `feat:webtransport-connection-profile-selection`
+  - `feat:webtransport-negotiation-gating`
+  - `feat:webtransport-profile-aware-connect-dispatch`
+  - `feat:webtransport-no-mutual-profile-failure`

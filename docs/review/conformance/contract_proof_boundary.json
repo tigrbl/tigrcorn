@@ -1,0 +1,37 @@
+{
+  "boundary_id": "bnd:contract-proof-next",
+  "status": "closed",
+  "feature_ids": [
+    "feat:contract-docs-migration",
+    "feat:contract-examples",
+    "feat:ssot-contract-boundary-sync",
+    "feat:contract-release-evidence",
+    "feat:asgi3-app-compat-suite",
+    "feat:contract-conformance-tests"
+  ],
+  "upstream_boundaries": [
+    "bnd:contract-core-next",
+    "bnd:compat-http-next"
+  ],
+  "canonical_registry_source": ".ssot/registry.json",
+  "canonical_docs": [
+    "docs/review/conformance/README.md",
+    "docs/review/conformance/CERTIFICATION_BOUNDARY.md",
+    "docs/review/conformance/CONTRACT_PROOF_BOUNDARY.md"
+  ],
+  "examples": [
+    "examples/contract/native_contract_app.py",
+    "examples/contract/asgi3_compat_app.py"
+  ],
+  "release_evidence_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
+  "release_evidence_files": [
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/manifest.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_index.json",
+    "docs/review/conformance/releases/0.3.9/release-0.3.9/bundle_summary.json"
+  ],
+  "conformance_tests": [
+    "tests/test_contract_core_boundary.py",
+    "tests/test_compat_http_boundary.py",
+    "tests/test_contract_proof_boundary.py"
+  ]
+}

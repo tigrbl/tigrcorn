@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0620"
+number: 620
+slug: "local-evidence-bundles-are-derived-release-artifacts"
+title: "Local Evidence Bundles Are Derived Release Artifacts"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft. This is a tentative proposal for future implementation."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:02Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft. This is a tentative proposal for future implementation.
+  
+  ## Context
+  
+  Claims, tests, evidence rows, boundaries, and releases already form a proof chain. Operators still lack a single local artifact that bundles the release proof with source snapshot and artifact manifest references.
+  
+  ## Decision
+  
+  Treat local evidence bundles as derived SSOT release artifacts. Bundles are generated from registry truth and linked files; they are not a second source of truth. They should be canonical JSON, locally hashable, locally verifiable, and safe to regenerate.
+  
+  ## Consequences
+  
+  Verification can consume a portable local bundle while the registry remains authoritative. Bundle drift is detected through canonical hashing and release gates rather than external signatures.

@@ -1,14 +1,7 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from collections.abc import Awaitable, Callable
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-class BaseListener(ABC):
-    @abstractmethod
-    async def start(self, client_connected_cb: Callable[..., Awaitable[None]]) -> None:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def close(self) -> None:
-        raise NotImplementedError
+_module = _import_module('tigrcorn_transports.listeners.base')
+_sys.modules[__name__] = _module

@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-import asyncio
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-async def write_all(writer: asyncio.StreamWriter, data: bytes) -> None:
-    writer.write(data)
-    await writer.drain()
+_module = _import_module('tigrcorn_transports.tcp.writer')
+_sys.modules[__name__] = _module

@@ -1,0 +1,134 @@
+name: _reusable-ci
+
+on:
+  workflow_call:
+
+jobs:
+  validate:
+    name: validate-py${{ matrix.python-version }}
+    runs-on: ${{ matrix.python-version == '3.10' && 'ubuntu-22.04' || 'ubuntu-latest' }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Python
+        if: matrix.python-version != '3.10'
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up runner Python 3.10
+        if: matrix.python-version == '3.10'
+        run: bash ./scripts/ci/setup-python310.sh
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      - name: Install workspace packages
+        run: bash ./scripts/ci/install-workspace.sh
+      - name: Validate tree
+        uses: ./.github/actions/ci-shell
+        with:
+          command: bash ./scripts/ci/validate.sh
+      - name: Upload validation artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: validation-py${{ matrix.python-version }}
+          path: |
+            DEFAULT_AUDIT.json
+            DEFAULT_AUDIT.md
+            PROFILE_DEFAULTS/
+            profiles/
+            docs/conformance/profile_bundles.json
+            docs/conformance/profile_bundles.md
+            docs/conformance/proxy_contract.json
+            docs/conformance/proxy_contract.md
+            docs/conformance/policy_surface.json
+            docs/conformance/early_data_contract.json
+            docs/conformance/early_data_contract.md
+            docs/conformance/quic_state.json
+            docs/conformance/quic_state.md
+            docs/conformance/origin_contract.json
+            docs/conformance/origin_contract.md
+            docs/conformance/origin_negatives.json
+            docs/conformance/origin_negatives.md
+            docs/conformance/metrics_schema.json
+            docs/conformance/metrics_schema.md
+            docs/conformance/qlog_experimental.json
+            docs/conformance/qlog_experimental.md
+            docs/conformance/fail_state_registry.json
+            docs/conformance/fail_state_registry.md
+            docs/conformance/negative_corpora.json
+            docs/conformance/negative_corpora.md
+            docs/conformance/negative_bundles.json
+            docs/conformance/negative_bundles.md
+            docs/conformance/negative_bundles/
+            docs/conformance/sf9651.json
+            docs/conformance/sf9651.md
+            docs/conformance/interop_retention.json
+            docs/conformance/interop_retention.md
+            docs/conformance/perf_retention.json
+            docs/conformance/perf_retention.md
+            docs/conformance/claim_rep.json
+            docs/conformance/claim_rep.md
+            docs/conformance/risk_stat.json
+            docs/conformance/risk_stat.md
+            docs/conformance/evidence_ix.json
+            docs/conformance/evidence_ix.md
+            docs/conformance/release_auto.json
+            docs/conformance/relnotes.json
+            docs/conformance/relnotes.md
+            docs/ops/profiles.md
+            docs/ops/defaults.md
+            docs/ops/policies.md
+            docs/ops/origin.md
+            docs/ops/observability.md
+            LEGACY_UNITTEST_INVENTORY.json
+            docs/review/conformance/cli_help.current.txt
+            docs/review/conformance/release_gate_status.current.json
+            docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md
+
+  validate-wt-peer-probes:
+    name: validate-wt-peer-probes-node${{ matrix.node-version }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "23", "24", "25"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: packages/wt-peer-probes/package-lock.json
+      - name: Install WebTransport peer probe dependencies
+        working-directory: packages/wt-peer-probes
+        run: npm ci --workspaces=false
+      - name: Install Playwright browsers
+        if: ${{ matrix.node-version != '24' }}
+        working-directory: packages/wt-peer-probes
+        run: timeout 90m npx playwright install --with-deps chromium firefox webkit
+      - name: Build WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm run build --workspaces=false
+      - name: Test WebTransport peer probe package
+        working-directory: packages/wt-peer-probes
+        run: npm test --workspaces=false
+      - name: Validate browser WebTransport peer API probes
+        if: ${{ matrix.node-version != '24' }}
+        working-directory: packages/wt-peer-probes
+        run: npm run test:peer-api -- --reporter=line
+      - name: Upload WebTransport peer probe Playwright report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wt-peer-probes-playwright-node${{ matrix.node-version }}-${{ github.sha }}
+          path: packages/wt-peer-probes/playwright-report/
+          if-no-files-found: ignore

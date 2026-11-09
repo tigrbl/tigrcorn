@@ -1,0 +1,12 @@
+RFC 9113 HTTP/2 wire-level negative coverage
+Date: 2026-05-10
+Command:
+uv run pytest tests/test_http2_rfc9113_server_negatives.py -q
+
+Result:
+..                                                                       [100%]
+2 passed in 4.78s
+
+Covered behaviors:
+- malformed HTTP/2 requests do not reach the application
+- unsafe HTTP/2 server push methods do not emit PUSH_PROMISE

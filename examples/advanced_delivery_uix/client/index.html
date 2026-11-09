@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn Advanced Delivery Lab</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ASGI3 over Tigrcorn</p>
+          <h1>Advanced Delivery Lab</h1>
+        </div>
+        <div class="origin">
+          <span>origin</span>
+          <code id="origin">http://localhost:8021</code>
+        </div>
+      </header>
+
+      <section class="controls" aria-label="Feature probes">
+        <button data-feature="connect">CONNECT Relay</button>
+        <button data-feature="trailers">Trailer Fields</button>
+        <button data-feature="coding">Content Coding</button>
+        <button data-feature="conditional">Conditional Miss</button>
+        <button data-feature="conditional-hit">Conditional Hit</button>
+        <button data-feature="range">Range 206</button>
+        <button data-feature="range-unsatisfied">Range 416</button>
+        <button data-feature="early">Early Hints</button>
+        <button data-feature="alt-svc">Bounded Alt-Svc</button>
+      </section>
+
+      <section class="workbench">
+        <aside class="panel">
+          <label for="base-url">Fetch origin</label>
+          <input id="base-url" value="http://localhost:8021">
+          <button id="inspect" type="button">Inspect ASGI Scope</button>
+          <button id="fetch-resource" type="button">Fetch Resource</button>
+          <dl id="headers"></dl>
+        </aside>
+        <section class="panel terminal">
+          <div class="terminal-head">
+            <h2 id="title">Response</h2>
+            <span id="status">idle</span>
+          </div>
+          <pre id="output"></pre>
+        </section>
+      </section>
+    </main>
+    <script src="./main.js"></script>
+  </body>
+</html>

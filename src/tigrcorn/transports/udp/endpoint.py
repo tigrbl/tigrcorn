@@ -1,16 +1,7 @@
 from __future__ import annotations
 
-import asyncio
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class UDPEndpoint:
-    transport: asyncio.DatagramTransport
-    local_addr: tuple[str, int] | None = None
-
-    def send(self, data: bytes, addr: tuple[str, int]) -> None:
-        self.transport.sendto(data, addr)
-
-    def close(self) -> None:
-        self.transport.close()
+_module = _import_module('tigrcorn_transports.udp.endpoint')
+_sys.modules[__name__] = _module

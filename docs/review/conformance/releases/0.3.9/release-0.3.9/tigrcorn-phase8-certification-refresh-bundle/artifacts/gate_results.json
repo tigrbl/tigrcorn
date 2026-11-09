@@ -92,7 +92,7 @@
       "docs/review/performance/performance_slos.json",
       "docs/review/performance/artifacts/phase6_current_release",
       "docs/review/conformance/STRICT_PROFILE_TARGET.md",
-      "docs/review/conformance/PHASE9H_PROMOTION_EVALUATOR_HARDENING.md"
+      "docs/review/conformance/PROMOTION_HARDENING_PROMOTION_EVALUATOR_HARDENING.md"
     ]
   }
 }

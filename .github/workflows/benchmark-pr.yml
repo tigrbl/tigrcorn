@@ -2,76 +2,52 @@ name: benchmark-pr
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    branches: [master]
 
 permissions:
-  pull-requests: write
   contents: read
+
+concurrency:
+  group: benchmark-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   benchmark:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          python-version: '3.11'
+          persist-credentials: false
 
-      - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
-      - name: Install dependencies
-        run: uv pip install --system -e ".[certification,dev]"
-
-      - name: Run benchmarks
-        id: bench
-        run: |
-          mkdir -p .perf-artifacts
-          set +e
-          PYTHONPATH=src python tools/run_perf_matrix.py \
-            --establish-baseline \
-            --shuffle \
-            --artifact-root .perf-artifacts \
-            > .perf-artifacts/runner_output.json 2>&1
-          EXIT_CODE=$?
-          set -e
-          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
-
-      - name: Format benchmark comment
-        run: |
-          PYTHONPATH=src python tools/format_benchmark_comment.py \
-            .perf-artifacts/summary.json > .perf-artifacts/comment.md
-
-      - name: Post or update PR comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          COMMENT_TAG="<!-- benchmark-results -->"
-          BODY=$(cat .perf-artifacts/comment.md)
-          FULL_BODY="${COMMENT_TAG}
-          ${BODY}"
-
-          EXISTING=$(gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
-            --jq '[.[] | select(.body | startswith("<!-- benchmark-results -->")) | .id][0]' 2>/dev/null || true)
-
-          if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
-            gh api "repos/${{ github.repository }}/issues/comments/${EXISTING}" \
-              -X PATCH -f body="$FULL_BODY"
-          else
-            gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
-              -f body="$FULL_BODY"
-          fi
-
-      - name: Upload benchmark artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
         with:
-          name: benchmark-artifacts-${{ github.event.pull_request.number }}
-          path: .perf-artifacts/
+          python-version: '3.12'
 
-      - name: Fail if benchmarks failed
-        if: steps.bench.outputs.exit_code != '0'
-        run: exit 1
+      - name: Install workspace packages
+        run: bash scripts/ci/install-workspace.sh
+
+      - name: Run benchmark measurements
+        run: |
+          artifact_root="$RUNNER_TEMP/benchmark-results"
+          mkdir -p "$artifact_root"
+          python tools/run_perf_matrix.py --establish-baseline --shuffle --artifact-root "$artifact_root"
+
+      - name: Upload measurements
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: benchmark-results
+          path: ${{ runner.temp }}/benchmark-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+
+      - name: Upload comment summary
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: benchmark-summary
+          path: ${{ runner.temp }}/benchmark-results/summary.json
+          if-no-files-found: ignore
+          retention-days: 7

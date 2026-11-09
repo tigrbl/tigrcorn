@@ -102,14 +102,14 @@
       "--bundle-name",
       "tigrcorn-certification-environment-bundle",
       "--workflow-path",
-      ".github/workflows/phase9-certification-release.yml",
+      ".github/workflows/release_certification-certification-release.yml",
       "--wrapper-path",
-      "tools/run_phase9_release_workflow.py"
+      "tools/run_release_certification_release_workflow.py"
     ]
   },
   "release_workflow": {
-    "workflow_path": ".github/workflows/phase9-certification-release.yml",
-    "wrapper_path": "tools/run_phase9_release_workflow.py"
+    "workflow_path": ".github/workflows/release_certification-certification-release.yml",
+    "wrapper_path": "tools/run_release_certification_release_workflow.py"
   },
   "validation": {
     "required_imports": [

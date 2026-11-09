@@ -1,6 +1,6 @@
 # OCSP local validation artifacts
 
-This document records the local OCSP validation vectors preserved during **Phase 9E**.
+This document records the local OCSP validation vectors preserved during **OCSP certification**.
 
 Artifact bundle:
 

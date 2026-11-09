@@ -1,0 +1,28 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1005"
+number: 1005
+slug: "webtransport-draft13-registered-profile"
+title: "Registered WebTransport draft-13 profile"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The draft-13 profile uses `SETTINGS_WT_MAX_SESSIONS` at `0x14e9cd29`, retains its numeric setting semantics and `webtransport` CONNECT token, and routes exclusively through the existing draft-13 codec and lifecycle implementation."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:37Z"
+    note: "Accepted registered draft-13 contract"
+    status: "accepted"
+references: []
+body: |-
+  # Draft-13 registered profile
+
+  The draft-13 profile uses `SETTINGS_WT_MAX_SESSIONS` at `0x14e9cd29`, retains its numeric setting semantics and `webtransport` CONNECT token, and routes exclusively through the existing draft-13 codec and lifecycle implementation.
+
+  Defines: `feat:webtransport-draft13-profile-adapter`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"

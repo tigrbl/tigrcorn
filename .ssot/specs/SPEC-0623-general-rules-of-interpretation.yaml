@@ -1,0 +1,82 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0623"
+number: 623
+slug: "general-rules-of-interpretation"
+title: "General rules of interpretation"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "SSOT readers and tooling SHALL interpret governed documents, registry entities, generated projections, evidence, and release gates using the rules in this SPEC."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Overview
+  
+  SSOT readers and tooling SHALL interpret governed documents, registry entities, generated projections, evidence, and release gates using the rules in this SPEC.
+  
+  ## Normative Language
+  
+  The uppercase terms `MUST`, `MUST NOT`, `SHALL`, `SHALL NOT`, `REQUIRED`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`, `MAY`, and `OPTIONAL` carry their ordinary normative meanings in SSOT documents.
+  
+  `MUST`, `SHALL`, and `REQUIRED` identify conformance requirements.
+  
+  `MUST NOT` and `SHALL NOT` identify prohibited behavior.
+  
+  `SHOULD` and `RECOMMENDED` identify expected behavior unless a governed exception or stronger scoped rule applies.
+  
+  `MAY` and `OPTIONAL` identify permitted behavior that is not required for conformance.
+  
+  ## Authority Order
+  
+  When surfaces disagree, interpretation SHALL use this authority order:
+  
+  1. accepted ADRs and SPECs with explicit supersession or scoped narrowing,
+  2. accepted ADRs and SPECs without supersession,
+  3. `.ssot/registry.json` for current machine-readable entity state and relationships,
+  4. draft ADRs and SPECs as planning context only,
+  5. generated exports, reports, graphs, snapshots, and CLI summaries,
+  6. README files and narrative documentation,
+  7. comments, examples, and external prose.
+  
+  A lower-authority surface SHALL NOT override a higher-authority surface.
+  
+  ## Conflict Resolution
+  
+  Specific accepted rules SHALL narrow or override general accepted rules only within their stated scope.
+  
+  A later ADR or SPEC SHALL NOT implicitly supersede an earlier ADR or SPEC. Supersession requires explicit `supersedes` and `superseded_by` lineage, or an explicit scoped-narrowing statement.
+  
+  Draft documents SHALL NOT override accepted documents.
+  
+  ## Registry Interpretation
+  
+  `.ssot/registry.json` SHALL be interpreted as the canonical machine-readable entity graph for the current checkout.
+  
+  Entity IDs, lifecycle states, implementation states, claim tiers, evidence tiers, boundary membership, release membership, and relationship arrays SHALL be interpreted according to their active governing SPECs.
+  
+  Absence of a feature, claim, test, evidence, risk, issue, boundary, release, ADR, or SPEC row means no governed assertion exists for that entity. Tooling SHALL NOT infer implementation, evidence, conformance, or release support from an absent row.
+  
+  ## Projection Interpretation
+  
+  Generated exports, reports, graphs, README tables, lock snapshots, and CLI summaries are derived projections unless an accepted SPEC explicitly declares one of those surfaces canonical for a defined purpose.
+  
+  Projection drift SHALL be repaired by synchronizing from the governing document or registry source. Projection drift SHALL NOT be resolved by treating the projection as independent authority.
+  
+  ## Gate Interpretation
+  
+  Conformance, certification, promotion, publication, and release gates SHALL resolve ambiguity fail-closed.
+  
+  A gate SHALL NOT pass when required governed evidence is missing, ambiguous, stale, projection-only, below the required claim tier, or linked only through draft governance.
+  
+  ## Downstream Interpretation
+  
+  Downstream repositories MAY adopt stricter local rules of interpretation.
+  
+  Downstream repositories SHALL NOT use local interpretation rules to claim stronger SSOT assurance than the upstream authored documents, registry state, linked claims, linked tests, and linked evidence support.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0621"

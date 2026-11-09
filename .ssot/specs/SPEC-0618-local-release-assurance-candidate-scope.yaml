@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0618"
+number: 618
+slug: "local-release-assurance-candidate-scope"
+title: "Local Release Assurance Candidate Scope"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft candidate scope."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:02Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft candidate scope.
+  
+  ## Scope
+  
+  This SPEC defines the exploratory local release assurance scope. The candidate surface includes governed source snapshots, deterministic root hashes, local evidence bundles, output artifact manifests, local verification reports, tamper detection, and release gate integration.
+  
+  Local release assurance artifacts MAY be configured as `T3` release-certification inputs. A `T3` claim is not merely `T2` evidence attached to a release id; it must be covered by release, boundary, or profile certification scope and pass the configured release certification guard.
+  
+  ## Out Of Scope
+  
+  Mandatory CUE, Bazel, Nix, Sigstore, Cosign, Rekor, Docker-only artifact handling, network services, and required external build systems are out of scope. Optional adapters may be proposed separately later.
+  
+  ## Tentative Nature
+  
+  Rows linked to this SPEC should remain draft, absent, backlog, or future until implementation and proof chains exist.
+spec_kind: "governance"
+adr_ids:
+  - "adr:0618"
+  - "adr:0625"

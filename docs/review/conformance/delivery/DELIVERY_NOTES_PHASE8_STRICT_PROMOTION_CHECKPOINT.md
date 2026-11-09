@@ -15,7 +15,7 @@ This checkpoint completes the requested Phase 8 target-documentation and promoti
 - `docs/review/conformance/PHASE8_STRICT_PROMOTION_TARGET_STATUS.md`
 - `docs/review/conformance/phase8_strict_promotion_target_status.current.json`
 - `tools/create_phase8_promotion_target_status.py`
-- `tests/test_phase8_promotion_targets.py`
+- `tests/test_promotion_targets.py`
 
 ## What was updated
 
@@ -62,11 +62,11 @@ This checkpoint completes the requested Phase 8 target-documentation and promoti
 The updated tree passes the targeted validation set:
 
 - `tests/test_release_gates.py`
-- `tests/test_phase2_cli_config_surface.py`
-- `tests/test_phase6_performance_harness.py`
-- `tests/test_phase7_release_candidate.py`
+- `tests/test_cli_config_surface.py`
+- `tests/test_performance_harness.py`
+- `tests/test_release_candidate.py`
 - `tests/test_documentation_reconciliation.py`
-- `tests/test_phase8_promotion_targets.py`
+- `tests/test_promotion_targets.py`
 
 ## Honest status
 

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn WSS ASGI3 Lab</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar">
+        <div>
+          <h1>Tigrcorn WSS ASGI3 Lab</h1>
+          <p id="statusText">Disconnected</p>
+        </div>
+        <div class="connection-state" id="stateBadge">closed</div>
+      </section>
+
+      <section class="workspace">
+        <aside class="controls">
+          <label>
+            Endpoint
+            <input id="endpoint" spellcheck="false">
+          </label>
+          <label>
+            Room
+            <input id="room" value="lab" spellcheck="false">
+          </label>
+          <label>
+            Client name
+            <input id="clientName" value="browser" spellcheck="false">
+          </label>
+          <div class="button-row">
+            <button id="connect">Connect</button>
+            <button id="disconnect">Disconnect</button>
+          </div>
+          <button id="trustCert" class="secondary">Open TLS Health</button>
+          <dl>
+            <div><dt>Subprotocol</dt><dd id="subprotocol">-</dd></div>
+            <div><dt>Messages</dt><dd id="messageCount">0</dd></div>
+            <div><dt>Latency</dt><dd id="latency">-</dd></div>
+          </dl>
+        </aside>
+
+        <section class="console">
+          <div class="composer">
+            <input id="message" value="hello over WSS" spellcheck="false">
+            <button id="send">Send</button>
+            <button id="sendBytes">Send Bytes</button>
+          </div>
+          <ol id="log" aria-live="polite"></ol>
+        </section>
+      </section>
+    </main>
+    <script src="/config.js"></script>
+    <script src="/main.js"></script>
+  </body>
+</html>

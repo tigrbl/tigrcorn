@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2077"
+number: 2077
+slug: "rfc8441-websocket-runtime-carrier-contract"
+title: "RFC 8441 WebSocket runtime carrier contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn RFC 8441 WebSocket-over-HTTP/2 runtime behavior as one WebSocket session carried by one Extended CONNECT HTTP/2 stream. Source specification: RFC 8441 https://www.rfc-editor.org/rfc/rfc8441. This spec covers WebSocket framing after establishment, stream closure mapping, backpressure, and evidence boundaries."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack runtime behavior."
+    at: "2026-06-17T12:48:52Z"
+references: []
+body: |-
+  Defines Tigrcorn RFC 8441 WebSocket-over-HTTP/2 runtime behavior as one WebSocket session carried by one Extended CONNECT HTTP/2 stream. Source specification: RFC 8441 https://www.rfc-editor.org/rfc/rfc8441. This spec covers WebSocket framing after establishment, stream closure mapping, backpressure, and evidence boundaries.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1063"

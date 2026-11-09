@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2073"
+number: 2073
+slug: "http2-stream-runtime-lifecycle-flow-control"
+title: "HTTP/2 stream runtime lifecycle and flow control"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrcorn HTTP/2 runtime ownership for stream identifiers, initiator rules, lifecycle transitions, reset handling, and connection-level plus stream-level flow control. Source specification: RFC 9113 https://www.rfc-editor.org/rfc/rfc9113. Runtime evidence for this spec applies to HTTP/2 only."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack runtime behavior."
+    at: "2026-06-17T12:48:42Z"
+references: []
+body: |-
+  Defines Tigrcorn HTTP/2 runtime ownership for stream identifiers, initiator rules, lifecycle transitions, reset handling, and connection-level plus stream-level flow control. Source specification: RFC 9113 https://www.rfc-editor.org/rfc/rfc9113. Runtime evidence for this spec applies to HTTP/2 only.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1059"

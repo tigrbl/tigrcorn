@@ -219,7 +219,7 @@ def main() -> int:
             'matrix_kind': 'minimum-certified-intermediary-proxy',
             'bundle_root': _rel(CORPUS_ROOT),
             'generated_at': datetime.now(timezone.utc).isoformat(),
-            'scope_note': 'Reference matrix for the minimum certified intermediary/proxy-adjacent corpus promoted in Phase 5.',
+            'scope_note': 'Reference matrix for the minimum certified intermediary/proxy-adjacent corpus promoted into the active certification boundary.',
         },
         'scenarios': matrix_scenarios,
     })

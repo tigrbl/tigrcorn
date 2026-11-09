@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0618"
+number: 618
+slug: "local-release-assurance-remains-ssot-native"
+title: "Local Release Assurance Remains SSOT Native"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft. This is a tentative proposal record, not an accepted implementation mandate."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:33:02Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft. This is a tentative proposal record, not an accepted implementation mandate.
+  
+  ## Context
+  
+  The registry already governs ADRs, SPECs, features, tests, claims, evidence, boundaries, releases, reports, and snapshots. We want to explore release-assurance capabilities without adding mandatory external services or build systems.
+  
+  ## Decision
+  
+  Keep local release assurance SSOT-native. Candidate capabilities must use existing registry data, local files, canonical JSON, SHA-256 hashes, validation reports, certification reports, and release gates. CUE, Bazel, Nix, Sigstore, Cosign, Rekor, Docker-only assumptions, network services, and mandatory external build tools are out of scope for the core proposal.
+  
+  ## Consequences
+  
+  The implementation can remain portable and dependency-light. Any future external integration must be optional and adapter-based, not part of the core assurance contract.

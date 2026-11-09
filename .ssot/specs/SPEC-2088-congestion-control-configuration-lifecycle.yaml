@@ -1,0 +1,40 @@
+﻿schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2088"
+number: 2088
+slug: "congestion-control-configuration-lifecycle"
+title: "Congestion-control configuration and lifecycle"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Congestion-control configuration and lifecycle"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Congestion-control configuration and lifecycle
+
+  ## Requirements
+
+  1. Global configuration shall expose `quic.congestion_control.algorithm` and `quic.congestion_control.options`.
+  2. Supported command-line and environment surfaces shall map to the same normalized configuration.
+  3. Listener-specific configuration may override the global selection before listener startup.
+  4. Configuration precedence and effective values shall be inspectable through runtime describe output.
+  5. Provider discovery and option validation occur once per listener startup, not once per connection.
+  6. Each QUIC network path receives a fresh controller instance from the selected factory.
+  7. Migrated paths shall not reuse mutable controller state from the old path unless a future provider contract explicitly governs safe state transfer.
+  8. Configuration reload applies to new connections only. Established paths remain pinned.
+  9. Programmatic embedding may inject a provider factory directly for testing and controlled integrations.
+  10. Client-controlled algorithm negotiation is outside the v1 surface.
+
+  ## Features
+
+  - `feat:quic-cc-runtime-selection`
+  - `feat:quic-cc-per-path-lifecycle`
+  - `feat:quic-cc-provider-registry`
+spec_kind: "operational"
+adr_ids:
+  - "adr:1074"
+  - "adr:1075"

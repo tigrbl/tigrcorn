@@ -1,29 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class BufferLimits:
-    read_limit: int = 64 * 1024
-    write_limit: int = 64 * 1024
-
-
-@dataclass(slots=True)
-class ByteBuffer:
-    limit: int = 64 * 1024
-    data: bytearray = field(default_factory=bytearray)
-
-    def append(self, payload: bytes) -> None:
-        if len(self.data) + len(payload) > self.limit:
-            raise BufferError('buffer limit exceeded')
-        self.data.extend(payload)
-
-    def take(self, n: int = -1) -> bytes:
-        if n < 0 or n >= len(self.data):
-            payload = bytes(self.data)
-            self.data.clear()
-            return payload
-        payload = bytes(self.data[:n])
-        del self.data[:n]
-        return payload
+_module = _import_module("tigrcorn_protocols.flow.buffers")
+_sys.modules[__name__] = _module
