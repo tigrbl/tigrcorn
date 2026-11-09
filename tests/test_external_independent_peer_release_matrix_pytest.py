@@ -115,7 +115,7 @@ def test_committed_release_artifact_bundle_is_present_and_passing_for_enabled_sc
     assert quic_result["negotiation"]["peer"]["verification"] == "OK"
 
 
-def test_release_matrix_can_be_replayed_with_local_independent_peers() -> None:
+def test_release_matrix_can_be_replayed_with_local_independent_peers(tmp_path: Path) -> None:
     if os.environ.get("TIGRCORN_RUN_EXTERNAL_RELEASE_MATRIX") != "1":
         pytest.skip("set TIGRCORN_RUN_EXTERNAL_RELEASE_MATRIX=1 to rerun the enabled independent-peer matrix")
     if shutil.which("curl") is None:
@@ -127,12 +127,19 @@ def test_release_matrix_can_be_replayed_with_local_independent_peers() -> None:
     if importlib.util.find_spec("h2") is None:
         pytest.skip("python-h2 is not available")
 
-    with tempfile.TemporaryDirectory() as artifact_root:
+    from tests.fixtures_pkg.interop_ocsp_fixtures import make_ocsp_replay_env, revocation_http_server
+
+    matrix = load_external_matrix(MATRIX_PATH)
+    ocsp_scenario = next(scenario for scenario in matrix.scenarios if scenario.id == "tls-server-ocsp-validation-openssl-client")
+    with tempfile.TemporaryDirectory() as artifact_root, revocation_http_server() as responder:
+        sut_env, peer_env = make_ocsp_replay_env(tmp_path, responder)
+        ocsp_scenario.sut.env.update(sut_env)
+        ocsp_scenario.peer_process.env.update(peer_env)
         prior = os.environ.get("TIGRCORN_COMMIT_HASH")
         os.environ["TIGRCORN_COMMIT_HASH"] = "test-independent-peer-release-matrix"
         try:
             runner = ExternalInteropRunner(
-                matrix=load_external_matrix(MATRIX_PATH),
+                matrix=matrix,
                 artifact_root=artifact_root,
                 source_root=ROOT,
             )
@@ -142,6 +149,8 @@ def test_release_matrix_can_be_replayed_with_local_independent_peers() -> None:
                 os.environ.pop("TIGRCORN_COMMIT_HASH", None)
             else:
                 os.environ["TIGRCORN_COMMIT_HASH"] = prior
+
+        assert responder.count("POST", "/ocsp-good") >= 1
 
     assert summary.total == len(EXPECTED_ENABLED_SCENARIO_IDS)
     assert summary.passed == len(EXPECTED_ENABLED_SCENARIO_IDS)
