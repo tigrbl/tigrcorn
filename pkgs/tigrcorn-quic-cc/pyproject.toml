@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-quic-cc"
-version = "0.3.18.dev2"
+version = "0.3.18.dev3"
 description = "Versioned congestion-controller contracts and provider discovery for Tigrcorn QUIC transports."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
