@@ -18,6 +18,7 @@ def format_comment(summary: object, run_url: str) -> str:
     if not isinstance(profiles, list) or not 1 <= len(profiles) <= 100:
         raise ValueError('expected 1 to 100 benchmark profiles')
     results: dict[str, bool] = {}
+    compared = 0
     for profile in profiles:
         if not isinstance(profile, dict):
             raise ValueError('expected a benchmark profile object')
@@ -27,6 +28,10 @@ def format_comment(summary: object, run_url: str) -> str:
             raise ValueError('invalid or repeated benchmark profile ID')
         if type(passed) is not bool:
             raise ValueError('invalid benchmark profile verdict')
+        baseline_evaluated = profile.get('baseline_evaluated', False)
+        if type(baseline_evaluated) is not bool:
+            raise ValueError('invalid benchmark baseline verdict')
+        compared += baseline_evaluated
         results[name] = passed
 
     passed_count = sum(results.values())
@@ -35,7 +40,10 @@ def format_comment(summary: object, run_url: str) -> str:
         '## Benchmark measurements',
         '',
         f'{passed_count}/{len(results)} profiles passed their configured checks.',
-        'This run used absolute thresholds and did not compare against a reference baseline.',
+        (
+            f'{compared}/{len(results)} profiles were also compared with the reference baseline.'
+            if compared else 'This run used absolute thresholds without a reference baseline comparison.'
+        ),
         f'[Workflow run and full measurement artifacts]({run_url})',
     ]
     failed_profiles = [name for name, passed in results.items() if not passed]

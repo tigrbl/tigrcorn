@@ -145,7 +145,7 @@ Non-2xx or 3xx responses: 4
 
     def test_runner_can_write_wrk2_artifacts_with_mocked_driver(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            with patch("benchmarks.drivers_wrk2._run_wrk2_http11", return_value=_mock_measurement()):
+            with patch("tigrcorn_certification.perf_runner.runner._measure_profile", return_value=_mock_measurement()):
                 summary = run_performance_matrix(
                     ROOT,
                     matrix_path=WRK2_MATRIX,
@@ -161,7 +161,7 @@ Non-2xx or 3xx responses: 4
 
     def test_runner_can_write_vegeta_artifacts_with_mocked_driver(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
-            with patch("benchmarks.drivers_vegeta._run_vegeta_http11", return_value=_mock_measurement()):
+            with patch("tigrcorn_certification.perf_runner.runner._measure_profile", return_value=_mock_measurement()):
                 summary = run_performance_matrix(
                     ROOT,
                     matrix_path=VEGETA_MATRIX,
