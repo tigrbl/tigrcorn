@@ -19,6 +19,14 @@ If your work is operator-facing, also read:
 - `docs/ops/public.md`
 - `docs/LIFECYCLE_AND_EMBEDDED_SERVER.md`
 
+## Running the test suites
+
+From the repository root, install the workspace and development dependencies with
+`uv sync --extra certification --extra dev`. Run the existing unittest suite with
+`uv run make test` and the pytest mirror with `uv run make test-pytest`.
+The mirror covers a subset of the existing tests. For a shell without Make, the mirror command is
+`uv run python -m pytest -o "python_files=test_*_pytest.py" tests`.
+
 ## What kinds of changes are welcome
 
 - bug fixes inside the current product boundary

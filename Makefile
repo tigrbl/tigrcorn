@@ -1,4 +1,4 @@
-.PHONY: test certification-env-freeze release_certification-release-workflow
+.PHONY: test test-pytest certification-env-freeze release_certification-release-workflow
 
 test:
 	PYTHONPATH=src python -m unittest discover -s tests -p 'test_*.py' -v
@@ -10,3 +10,6 @@ certification-env-freeze:
 
 release_certification-release-workflow:
 	PYTHONPATH=src python tools/run_release_certification_release_workflow.py
+
+test-pytest:
+	python -m pytest -o python_files=test_*_pytest.py tests $(PYTEST_ARGS)

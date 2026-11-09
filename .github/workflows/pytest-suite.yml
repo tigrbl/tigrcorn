@@ -1,0 +1,45 @@
+name: pytest-suite
+
+on:
+  push:
+    branches: [master]
+    paths: &test_paths
+      - 'src/**'
+      - 'pkgs/**'
+      - 'tests/**'
+      - 'scripts/ci/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/pytest-suite.yml'
+  pull_request:
+    paths: *test_paths
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: '${{ matrix.python-version }}'
+      - name: Install workspace packages
+        run: bash scripts/ci/install-workspace.sh
+      - name: Run the pytest mirror
+        run: make test-pytest PYTEST_ARGS=--junitxml=pytest-results.xml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: pytest-results.xml
+          if-no-files-found: ignore
