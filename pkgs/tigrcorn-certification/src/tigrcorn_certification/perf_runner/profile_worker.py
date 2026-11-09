@@ -7,6 +7,7 @@ import os
 import sys
 from pathlib import Path
 
+from .artifacts import _jsonable
 from .models import PerfProfile
 
 
@@ -24,7 +25,7 @@ def main() -> None:
         'worker_pid': os.getpid(),
         'worker_peak_before_workload_kib': peak_before,
     }
-    output.write_text(json.dumps(measurement), encoding='utf-8')
+    output.write_text(json.dumps(_jsonable(measurement)), encoding='utf-8')
 
 
 if __name__ == '__main__':

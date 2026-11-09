@@ -86,13 +86,13 @@ def test_matrix_runs_each_profile_in_a_fresh_process(tmp_path):
     summary = run_performance_matrix(
         ROOT,
         artifact_root=tmp_path,
-        profile_ids=['http11_baseline', 'http11_keepalive'],
+        profile_ids=['http11_baseline', 'http11_keepalive', 'content_coding_under_load'],
         establish_baseline=True,
     )
 
-    assert summary.total == 2
+    assert summary.total == 3
     metadata = [result.metrics['profile_metadata'] for result in summary.profiles]
     worker_pids = {record['worker_pid'] for record in metadata}
-    assert len(worker_pids) == 2
+    assert len(worker_pids) == summary.total
     assert os.getpid() not in worker_pids
     assert all(record['worker_peak_before_workload_kib'] >= 0 for record in metadata)
