@@ -4,7 +4,7 @@
   "generated_at": "2026-03-28T06:47:35.560515+00:00",
   "note": "This bundle freezes the preserved strict-performance artifacts and threshold metadata for the 0.3.9 working release root.",
   "release_gate_eligible": true,
-  "phase9g_status": {
+  "strict_performance_status": {
     "document_role": "archival_named_current_snapshot_for_stability",
     "current_truth_source": false,
     "truth_scope": "archival_snapshot",
@@ -12,7 +12,7 @@
     "documentation_truth_reviewed_at": "2026-03-26",
     "archival_note": "Historical snapshot retained in place for provenance and stable references; not the canonical package-wide current-state source.",
     "phase": "9G",
-    "checkpoint": "phase9g_strict_performance_closure",
+    "checkpoint": "strict_performance_strict_performance_closure",
     "status": "performance_section_green_not_yet_strict_complete",
     "current_state": {
       "authoritative_boundary_passed": true,
@@ -25,14 +25,14 @@
       "remaining_non_passing_independent_scenarios": [
         "http3-content-coding-aioquic-client"
       ],
-      "remaining_plan_phases": [
+      "remaining_plan_steps": [
         "9H",
         "9I"
       ],
       "remaining_missing_independent_scenarios": []
     },
     "performance_contract": {
-      "matrix_name": "tigrcorn-phase9g-strict-performance-matrix",
+      "matrix_name": "tigrcorn-strict_performance-strict-performance-matrix",
       "profile_count": 32,
       "lane_counts": {
         "end_to_end_release": 23,

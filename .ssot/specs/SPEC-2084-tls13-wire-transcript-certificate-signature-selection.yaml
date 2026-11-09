@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2084"
+number: 2084
+slug: "tls13-wire-transcript-certificate-signature-selection"
+title: "TLS 1.3 wire transcript and certificate signature selection"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "In-memory state-transition tests establish local behavior. Independent certification requires a preserved external-peer handshake with the package-owned TLS and QUIC stack."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # TLS 1.3 transcript and certificate signature-selection contract
+
+  ## Requirements
+
+  1. Tigrcorn shall preserve exact received ClientHello handshake bytes for transcript hashing.
+  2. PSK binder truncation and early-secret derivation shall operate on the correct wire representation.
+  3. CertificateVerify selection shall intersect the peer `signature_algorithms` offer with schemes compatible with the end-entity certificate public key.
+  4. P-256 ECDSA leaf keys shall use `ecdsa_secp256r1_sha256`; P-384 ECDSA leaf keys shall use `ecdsa_secp384r1_sha384`.
+  5. No compatible scheme, curve/scheme mismatch, or invalid signature shall fail closed with the appropriate TLS alert behavior.
+  6. Certificate signature algorithm, CertificateVerify scheme, and ECDHE key-share group shall be modeled and tested independently.
+  7. QUIC integration shall carry a P-384 certificate flight across multiple MTU-bounded CRYPTO packets and complete with an independent peer.
+  8. Non-secret diagnostics may expose leaf key type and curve, selected CertificateVerify scheme, flight byte count, and datagram count.
+
+  ## Evidence boundary
+
+  In-memory state-transition tests establish local behavior. Independent certification requires a preserved external-peer handshake with the package-owned TLS and QUIC stack.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1072"

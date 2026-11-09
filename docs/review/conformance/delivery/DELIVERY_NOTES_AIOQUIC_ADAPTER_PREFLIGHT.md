@@ -1,13 +1,13 @@
 # Delivery notes — aioquic adapter preflight
 
-This checkpoint adds a direct aioquic adapter preflight on top of the existing Phase 9I release-assembly repository.
+This checkpoint adds a direct aioquic adapter preflight on top of the existing Release assembly release-assembly repository.
 
 What changed:
 
 - added a reusable aioquic preflight module at `src/tigrcorn/compat/aioquic_preflight.py`
 - added a runnable checkpoint tool at `tools/preflight_aioquic_adapters.py`
 - added a preserved preflight bundle under the 0.3.9 working release root
-- updated the release workflow and local wrapper so aioquic adapter preflight is now mandatory before Phase 9 checkpoint scripts run
+- updated the release workflow and local wrapper so aioquic adapter preflight is now mandatory before Release certification checkpoint scripts run
 - updated current-state documentation
 
 Current result:

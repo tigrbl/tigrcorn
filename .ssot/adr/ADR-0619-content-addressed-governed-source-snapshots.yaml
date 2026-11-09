@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0619"
+number: 619
+slug: "content-addressed-governed-source-snapshots"
+title: "Content Addressed Governed Source Snapshots"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft. This records an exploratory direction for later feature rows."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:02Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft. This records an exploratory direction for later feature rows.
+  
+  ## Context
+  
+  Current SSOT validation hashes ADR and SPEC document bodies and release snapshots hash selected linked test and evidence paths. That does not yet provide a release-scoped source-state root over governed files.
+  
+  ## Decision
+  
+  Represent governed source state as deterministic file hashes plus a canonical root hash over the governed file hash map. The default scope should be declared or governed paths, not the entire repository. Full-repo hashing may be offered only as explicit opt-in policy.
+  
+  ## Consequences
+  
+  Release verification can detect drift across governed source, tests, evidence, documents, and artifacts while avoiding local cache, virtual environment, build-output, and temp-file noise.

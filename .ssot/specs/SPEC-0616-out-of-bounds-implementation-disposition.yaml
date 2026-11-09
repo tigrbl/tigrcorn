@@ -1,0 +1,51 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0616"
+number: 616
+slug: "out-of-bounds-implementation-disposition"
+title: "Out-of-bounds implementation disposition"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Feature `plan` MAY include:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Registry Field
+  
+  Feature `plan` MAY include:
+  
+  ```json
+  {"out_of_bounds_disposition": "tolerated"}
+  ```
+  
+  Allowed values:
+  
+  - `tolerated`
+  - `prohibited`
+  
+  The field is only valid when `plan.horizon` is `out_of_bounds`.
+  
+  ## Validation Rules
+  
+  For a feature where `plan.horizon == out_of_bounds`:
+  
+  1. If `implementation_status` is `absent`, `out_of_bounds_disposition` is optional.
+  2. If `implementation_status` is `partial` or `implemented`, `out_of_bounds_disposition` is required.
+  3. A non-absent out-of-bounds feature with any disposition must have a non-empty `lifecycle.note`.
+  4. A `tolerated` out-of-bounds feature must not target lifecycle `removed`.
+  5. A `prohibited` out-of-bounds feature must set `plan.target_lifecycle_stage` to `removed`.
+  6. A `prohibited` out-of-bounds feature with non-absent implementation must have at least one open release-blocking issue or active release-blocking risk linked to the feature.
+  7. Any out-of-bounds feature must not be present in the active boundary.
+  
+  ## CLI and API
+  
+  Feature creation and planning commands expose `--out-of-bounds-disposition`.
+  
+  The Python `plan_features()` API accepts `out_of_bounds_disposition`. Planning a feature away from `out_of_bounds` clears the field unless a new value is explicitly supplied and then rejected by validation.
+spec_kind: "normative"
+adr_ids:
+  - "adr:0616"

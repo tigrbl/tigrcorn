@@ -1,0 +1,18 @@
+services:
+  tigrcorn-static-asgi3:
+    build:
+      context: ../..
+      dockerfile: examples/static_uix_demo/Dockerfile.backend
+    image: tigrcorn-static-asgi3-demo:local
+    ports:
+      - "8020:8000/tcp"
+
+  tigrcorn-static-uix:
+    build:
+      context: ../..
+      dockerfile: examples/static_uix_demo/Dockerfile.client
+    image: tigrcorn-static-uix-demo:local
+    ports:
+      - "8092:8080/tcp"
+    depends_on:
+      - tigrcorn-static-asgi3

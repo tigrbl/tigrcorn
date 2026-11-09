@@ -54,7 +54,7 @@
   "metadata": {
     "peer_implementation": "python-websockets",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "websockets.http11_client",
+    "independent_harness_wrapper_id": "websockets.http11_client",
     "rfc": [
       "RFC 7692",
       "RFC 6455"

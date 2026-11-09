@@ -8,6 +8,7 @@ from tigrcorn.listeners.pipe import PipeListener
 
 import pytest
 
+@pytest.mark.asyncio
 async def test_inproc_listener_dispatch():
     seen = []
 
@@ -20,6 +21,7 @@ async def test_inproc_listener_dispatch():
     await listener.close()
     assert seen == [b'payload']
 @pytest.mark.skipif(not hasattr(os, 'mkfifo'), reason='named pipes unavailable')
+@pytest.mark.asyncio
 async def test_pipe_listener_start_close():
     with tempfile.TemporaryDirectory() as tmp:
         path = os.path.join(tmp, 'sock.pipe')

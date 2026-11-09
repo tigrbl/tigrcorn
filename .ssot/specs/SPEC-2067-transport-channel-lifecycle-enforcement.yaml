@@ -1,0 +1,24 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2067"
+number: 2067
+slug: "transport-channel-lifecycle-enforcement"
+title: "Transport channel lifecycle enforcement"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines tigrcorn projection and enforcement for contract channel_lifecycle states. It maps HTTP/2 RFC 9113 half-closed remote and local, RST_STREAM, GOAWAY, and flow-control exhaustion; HTTP/3 RFC 9114 request cancellation, rejection, GOAWAY, and stream errors; QUIC RFC 9000 send and receive stream states, RESET_STREAM, STOP_SENDING, connection close, draining, and idle timeout; and WebSocket tunnel lifecycle from RFC 8441 and RFC 9220 when applicable. It requires writes to be blocked after write_closed, inbound waits to stop after read_closed, new sends to be suppressed during closing, and failed or lost states to project into disconnect and cancellation observations when applicable."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-14T07:42:14Z"
+    note: "Accepted for tigrcorn lifecycle enforcement planning."
+    status: "accepted"
+references: []
+body: |-
+  This SPEC defines tigrcorn projection and enforcement for contract channel_lifecycle states. It maps HTTP/2 RFC 9113 half-closed remote and local, RST_STREAM, GOAWAY, and flow-control exhaustion; HTTP/3 RFC 9114 request cancellation, rejection, GOAWAY, and stream errors; QUIC RFC 9000 send and receive stream states, RESET_STREAM, STOP_SENDING, connection close, draining, and idle timeout; and WebSocket tunnel lifecycle from RFC 8441 and RFC 9220 when applicable. It requires writes to be blocked after write_closed, inbound waits to stop after read_closed, new sends to be suppressed during closing, and failed or lost states to project into disconnect and cancellation observations when applicable.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1054"

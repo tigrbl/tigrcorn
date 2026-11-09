@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1042"
+number: 1042
+slug: "runtime-introspection-describe-contract"
+title: "Runtime instances expose a stable describe contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn runtime instances shall expose a stable describe contract for active event loop, protocol, transport, TLS, deployment profile, worker, and observability state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn runtime instances shall expose a stable describe contract for active event loop, protocol, transport, TLS, deployment profile, worker, and observability state.
+  
+  The capability registry describes what a build or runtime can support. The describe contract describes what a specific running server is currently using. Describe output must redact secrets and avoid exposing private key, token, or certificate material beyond governed metadata.
+  
+  Consequences:
+  
+  - Operators can inspect live runtime posture without parsing logs.
+  - Certification evidence can bind to actual runtime state.
+  - Embedded deployments can verify that caller-provided configuration produced the intended listener, profile, and transport state.
+  - Describe output becomes a stable compatibility contract for diagnostics and automation.

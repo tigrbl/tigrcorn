@@ -1,19 +1,7 @@
 from __future__ import annotations
 
-import asyncio
-from dataclasses import dataclass, field
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class InProcChannel:
-    capacity: int = 0
-    _queue: asyncio.Queue[bytes] = field(init=False)
-
-    def __post_init__(self) -> None:
-        self._queue = asyncio.Queue(maxsize=self.capacity)
-
-    async def send(self, payload: bytes) -> None:
-        await self._queue.put(payload)
-
-    async def recv(self) -> bytes:
-        return await self._queue.get()
+_module = _import_module('tigrcorn_transports.inproc.channel')
+_sys.modules[__name__] = _module

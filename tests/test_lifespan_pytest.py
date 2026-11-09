@@ -4,6 +4,7 @@ from tigrcorn.protocols.lifespan.driver import LifespanManager
 
 import pytest
 
+@pytest.mark.asyncio
 async def test_lifespan_start_stop():
     events = []
 

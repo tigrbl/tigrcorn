@@ -1,0 +1,27 @@
+{
+  "app": {
+    "target": "examples.websocket_uix_demo.app:app",
+    "interface": "asgi3",
+    "lifespan": "on"
+  },
+  "listeners": [
+    {
+      "kind": "tcp",
+      "host": "0.0.0.0",
+      "port": 8765,
+      "http_versions": ["1.1"],
+      "websocket": true,
+      "protocols": ["http1", "websocket"]
+    }
+  ],
+  "websocket": {
+    "enabled": true,
+    "compression": "permessage-deflate",
+    "max_queue": 32
+  },
+  "logging": {
+    "level": "info",
+    "access_log": true
+  }
+}
+

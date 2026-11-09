@@ -19,6 +19,7 @@ class QuicRFCUpgradePathTests(unittest.TestCase):
             max_udp_payload_size=1400,
             ack_delay_exponent=4,
             max_ack_delay=31,
+            max_datagram_frame_size=1200,
             disable_active_migration=True,
             initial_source_connection_id=b'cli-cid',
             original_destination_connection_id=b'orig-cid',
@@ -33,7 +34,14 @@ class QuicRFCUpgradePathTests(unittest.TestCase):
         self.assertEqual(decoded.initial_source_connection_id, b'cli-cid')
         self.assertEqual(decoded.original_destination_connection_id, b'orig-cid')
         self.assertEqual(decoded.stateless_reset_token, b'0123456789abcdef')
+        self.assertEqual(decoded.max_datagram_frame_size, 1200)
         self.assertEqual(decoded.unknown_parameters[0x40], b'opaque')
+
+    def test_transport_parameters_datagram_0rtt_compatibility_is_monotonic(self):
+        previous = TransportParameters(max_datagram_frame_size=1200)
+        self.assertTrue(previous.is_0rtt_compatible_with(TransportParameters(max_datagram_frame_size=1400)))
+        self.assertFalse(previous.is_0rtt_compatible_with(TransportParameters()))
+        self.assertFalse(previous.is_0rtt_compatible_with(TransportParameters(max_datagram_frame_size=1000)))
 
     def test_server_handshake_flight_is_split_across_initial_and_handshake_spaces(self):
         cert_pem, key_pem = generate_self_signed_certificate('server.example')

@@ -1,7 +1,7 @@
 {
   "artifact_schema_version": 1,
   "bundle_kind": "independent_harness_foundation",
-  "commit_hash": "phase9b-independent-harness-foundation",
+  "commit_hash": "independent_harness-independent-harness-foundation",
   "dimensions": {
     "cipher_group": [
       null
@@ -85,7 +85,7 @@
       "version": "3.13.5"
     },
     "tigrcorn": {
-      "commit_hash": "phase9b-independent-harness-foundation",
+      "commit_hash": "independent_harness-independent-harness-foundation",
       "source_tree_sha256": "b927546a301f57286a73a0e7f0202af94a356f0753e4a3c28b864bd91579c9dd",
       "version": "0.3.6"
     },

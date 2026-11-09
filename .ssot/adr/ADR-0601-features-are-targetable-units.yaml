@@ -1,0 +1,23 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0601"
+number: 601
+slug: "features-are-targetable-units"
+title: "Features are the targetable units"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Features are the only targetable implementation units. There is no separate `targets[]` section."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Features are the only targetable implementation units. There is no separate `targets[]` section.
+  
+  Because features are the targetable units, the default authoring path for new feature rows shall align with proof requirements. New `feature create` operations are expected to scaffold minimally valid proof-graph closure by default unless the operator explicitly disables that behavior.
+  
+  Feature inventory naming MAY use umbrella/leaf conventions when a repository needs grouped readability, but that convention is not a runtime dependency model. `feature.requires` is reserved for prerequisite features that must independently pass before the dependent feature can pass.
+  
+  Profiles remain the preferred grouped evaluation surface. Operators should not overload umbrella feature names to represent certification or bundle evaluation when a profile is the correct modeled unit.

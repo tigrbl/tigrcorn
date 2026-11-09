@@ -33,6 +33,7 @@ def _compress_ws_message(payload: bytes) -> bytes:
 
 
 
+@pytest.mark.asyncio
 async def test_cli_phase3_flags_round_trip_into_config():
     parser = build_parser()
     ns = parser.parse_args([
@@ -65,6 +66,7 @@ async def test_cli_phase3_flags_round_trip_into_config():
     assert config.http.content_coding_policy == 'strict'
     assert config.http.content_codings == ['gzip', 'deflate']
     assert config.websocket.compression == 'permessage-deflate'
+@pytest.mark.asyncio
 async def test_http11_websocket_compression_auto_negotiates_when_enabled():
     seen = {}
 
@@ -107,6 +109,7 @@ async def test_http11_websocket_compression_auto_negotiates_when_enabled():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http11_websocket_compression_policy_off_strips_app_requested_extension():
     async def app(scope, receive, send):
         await receive()
@@ -137,6 +140,7 @@ async def test_http11_websocket_compression_policy_off_strips_app_requested_exte
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http11_connect_policy_deny_and_allowlist():
     received = bytearray()
 
@@ -193,6 +197,7 @@ async def test_http11_connect_policy_deny_and_allowlist():
         upstream.close()
         await upstream.wait_closed()
 
+@pytest.mark.asyncio
 async def test_http11_trailer_policy_drop_suppresses_trailer_event():
     seen_types = []
 
@@ -228,6 +233,7 @@ async def test_http11_trailer_policy_drop_suppresses_trailer_event():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http11_content_coding_identity_only_disables_gzip():
     async def app(scope, receive, send):
         await receive()

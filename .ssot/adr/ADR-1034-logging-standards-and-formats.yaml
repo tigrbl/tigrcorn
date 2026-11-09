@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1034"
+number: 1034
+slug: "logging-standards-and-formats"
+title: "Adopt stdlib logging with governed structured formats"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn logging shall be based on Python stdlib logging, with governed JSON Lines, syslog, OTEL, and qlog conformance targets."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "PEP 282"
+  - "PEP 391"
+  - "RFC 5424"
+  - "JSON Lines"
+  - "OpenTelemetry Logs Data Model"
+body: |-
+  # ADR 1034 - Logging standards and formats
+
+  Decision: Tigrcorn logging shall use Python standard-library logging as the application logging substrate. PEP 282 defines the logger, handler, formatter, filter, level, and record model that Tigrcorn builds on.
+
+  Structured runtime logs shall be tracked as JSON Lines: UTF-8, one valid JSON value per physical line, and newline terminated when written to files or streams. JSON Lines is the governed operator format for machine-readable app/access/error records.
+
+  Syslog interoperability shall be tracked separately as RFC 5424 conformance. RFC 5424 payloads are not the default local file format; they are a transport and envelope compatibility target with explicit message-size and truncation behavior.
+
+  OpenTelemetry support shall be tracked as a telemetry mapping target. Tigrcorn may export metrics/spans independently from app log records, but log correlation fields such as trace_id and span_id remain reserved for OTEL-compatible mapping.
+
+  qlog support shall remain a QUIC/HTTP3 conformance artifact surface. qlog is not the generic application log format; it is a protocol-debug and certification evidence format with its own redaction and schema-version rules.
+
+  Consequences:
+
+  - The default logger remains `logging.getLogger("tigrcorn")`.
+  - File and stream formatters must not invent a second logging framework.
+  - `--structured-log` means JSON Lines-compatible single-record structured output.
+  - PEP 391 dict configuration is a separate feature from Tigrcorn's lightweight logging profile files.
+  - RFC 5424, OTEL logs, and qlog each receive distinct feature rows and conformance tests.

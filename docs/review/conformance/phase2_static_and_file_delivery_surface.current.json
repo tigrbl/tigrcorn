@@ -37,8 +37,8 @@
     "src/tigrcorn/static.py",
     "src/tigrcorn/protocols/http2/handler.py",
     "src/tigrcorn/protocols/http3/handler.py",
-    "tests/test_phase2_cli_config_surface.py",
-    "tests/test_phase2_static_delivery_surface.py",
+    "tests/test_cli_config_surface.py",
+    "tests/test_static_delivery_surface.py",
     "docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md",
     "docs/review/conformance/state/checkpoints/CURRENT_REPOSITORY_STATE_PHASE2_STATIC_AND_FILE_DELIVERY_SURFACE_CHECKPOINT.md",
     "docs/review/conformance/CLI_FLAG_SURFACE.md",
@@ -57,16 +57,16 @@
       "passed": true
     },
     "targeted_pytest": {
-      "command": "PYTHONPATH=src pytest -q tests/test_phase2_cli_config_surface.py tests/test_phase2_static_delivery_surface.py tests/test_static_delivery_productionization_checkpoint.py tests/test_phase9i_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_phase8_promotion_targets.py",
+      "command": "PYTHONPATH=src pytest -q tests/test_cli_config_surface.py tests/test_static_delivery_surface.py tests/test_static_delivery_productionization_checkpoint.py tests/test_release_assembly_checkpoint.py tests/test_release_gates.py tests/test_promotion_targets.py",
       "passed": true,
       "summary": "30 passed",
       "tests": [
-        "tests/test_phase2_cli_config_surface.py",
-        "tests/test_phase2_static_delivery_surface.py",
+        "tests/test_cli_config_surface.py",
+        "tests/test_static_delivery_surface.py",
         "tests/test_static_delivery_productionization_checkpoint.py",
-        "tests/test_phase9i_release_assembly_checkpoint.py",
+        "tests/test_release_assembly_checkpoint.py",
         "tests/test_release_gates.py",
-        "tests/test_phase8_promotion_targets.py"
+        "tests/test_promotion_targets.py"
       ]
     },
     "evaluate_release_gates_authoritative": {

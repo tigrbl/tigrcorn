@@ -2,48 +2,44 @@ name: pytest-suite
 
 on:
   push:
-    paths:
+    branches: [master]
+    paths: &test_paths
       - 'src/**'
+      - 'pkgs/**'
       - 'tests/**'
+      - 'scripts/ci/**'
       - 'pyproject.toml'
+      - 'uv.lock'
       - '.github/workflows/pytest-suite.yml'
   pull_request:
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'pyproject.toml'
-      - '.github/workflows/pytest-suite.yml'
+    paths: *test_paths
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   pytest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         python-version: ['3.11', '3.12']
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          enable-cache: true
-
-      - name: Set up Python ${{ matrix.python-version }}
-        run: uv python install ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: uv sync --extra dev
-
-      - name: Run pytest suite
-        run: uv run python -m pytest tests/ -v --tb=short --junitxml=pytest-results-${{ matrix.python-version }}.xml
-
-      - name: Upload test results
+          persist-credentials: false
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: '${{ matrix.python-version }}'
+      - name: Install workspace packages
+        run: bash scripts/ci/install-workspace.sh
+      - name: Run the pytest mirror
+        run: make test-pytest PYTEST_ARGS=--junitxml=pytest-results.xml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: pytest-results-${{ matrix.python-version }}
-          path: pytest-results-${{ matrix.python-version }}.xml
+          path: pytest-results.xml
+          if-no-files-found: ignore

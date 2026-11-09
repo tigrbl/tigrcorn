@@ -1,0 +1,26 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0634"
+number: 634
+slug: "worker-actionability-and-repair-loop"
+title: "Worker actionability and repair loop"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This specification defines worker behavior for blocked slices. When claim_next_maturation_slice returns kind=blocked, workers SHALL inspect reason and problem_detail, invoke recommended SSOT MCP repair tools when applicable, retry the scoped claim, and abandon only when the blocker is not repairable through MCP, the lease is stale, or honest claim elevation is impossible."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:23Z"
+    note: "Created to govern SSOT MCP scoped repair and worker maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  This specification defines worker behavior for blocked slices. When claim_next_maturation_slice returns kind=blocked, workers SHALL inspect reason and problem_detail, invoke recommended SSOT MCP repair tools when applicable, retry the scoped claim, and abandon only when the blocker is not repairable through MCP, the lease is stale, or honest claim elevation is impossible.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0629"
+  - "adr:0630"
+  - "adr:0632"

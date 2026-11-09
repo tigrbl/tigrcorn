@@ -1,0 +1,39 @@
+﻿schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2087"
+number: 2087
+slug: "congestion-controller-provider-discovery-packaging"
+title: "Congestion-controller provider discovery and packaging"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Congestion-controller provider discovery and packaging"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Congestion-controller provider discovery and packaging
+
+  ## Requirements
+
+  1. Providers shall register through `tigrcorn.quic_cc.v1` entry points.
+  2. Provider metadata shall declare algorithm ID, display name, package version, API version, capabilities, and an option validator or schema.
+  3. Discovery shall import only the selected provider during listener startup.
+  4. Duplicate algorithm IDs shall fail deterministically.
+  5. Missing, incompatible, or invalid explicitly selected providers shall fail listener startup without fallback.
+  6. The `tigrcorn-quic-cc` contract distribution shall not depend on `tigrcorn-transports`.
+  7. Algorithm distributions shall depend only on the compatible contract and their own implementation dependencies.
+  8. `tigrcorn-transports` shall depend on the contract and default Reno provider so transport-only installations remain functional.
+  9. Built wheels shall preserve entry-point metadata, typed packages, package README files, licenses, and version reporting.
+  10. A reusable provider-compliance harness shall be available to third-party provider packages.
+
+  ## Features
+
+  - `feat:quic-cc-provider-registry`
+  - `feat:quic-cc-provider-packaging`
+  - `feat:quic-cc-reno-provider`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1075"

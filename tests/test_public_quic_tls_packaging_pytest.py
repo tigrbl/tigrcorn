@@ -51,6 +51,7 @@ def test_client_initial_datagrams_meet_the_rfc_minimum_size():
     )
     assert len(client.start_handshake()) >= 1200
 
+@pytest.mark.asyncio
 async def test_http3_roundtrip_works_with_public_udp_tls_config():
     async def app(scope, receive, send):
         assert scope['type'] == 'http'
@@ -126,12 +127,13 @@ async def test_http3_roundtrip_works_with_public_udp_tls_config():
 
             assert response_state is not None
             assert response_state is not None
-            assert (b':status' in b'200'), response_state.headers
+            assert (b':status', b'200') in response_state.headers
             assert response_state.body == b'echo:hello'
         finally:
             sock.close()
             await server.close()
 
+@pytest.mark.asyncio
 async def test_http3_roundtrip_supports_quic_client_auth():
     async def app(scope, receive, send):
         assert scope['type'] == 'http'
@@ -214,12 +216,13 @@ async def test_http3_roundtrip_supports_quic_client_auth():
 
             assert response_state is not None
             assert response_state is not None
-            assert (b':status' in b'200'), response_state.headers
+            assert (b':status', b'200') in response_state.headers
             assert response_state.body == b'mtls:hello'
         finally:
             sock.close()
             await server.close()
 
+@pytest.mark.asyncio
 async def test_http3_websocket_roundtrip_works_with_public_udp_tls_config():
     seen = {}
 
@@ -309,8 +312,8 @@ async def test_http3_websocket_roundtrip_works_with_public_udp_tls_config():
 
             assert response_state is not None
             assert response_state is not None
-            assert (b':status' in b'200'), response_state.headers
-            assert (b'sec-websocket-protocol' in b'chat'), response_state.headers
+            assert (b':status', b'200') in response_state.headers
+            assert (b'sec-websocket-protocol', b'chat') in response_state.headers
             assert seen['text'] == 'hello-h3-tls'
             first_len = _frame_wire_length(response_state.body)
             message_frame = parse_frame_bytes(response_state.body[:first_len], expect_masked=False)

@@ -256,4 +256,3 @@ def test_local_crl_material_is_loaded_and_revoked_client_cert_is_rejected() -> N
                 [ca_path.read_bytes()],
                 policy=policy,
             )
-

@@ -8,6 +8,7 @@ from tigrcorn.transports.quic import QuicConnection
 
 import pytest
 
+@pytest.mark.asyncio
 async def test_quic_custom_scope_roundtrip():
     async def app(scope, receive, send):
         assert scope['type'] == 'tigrcorn.quic'

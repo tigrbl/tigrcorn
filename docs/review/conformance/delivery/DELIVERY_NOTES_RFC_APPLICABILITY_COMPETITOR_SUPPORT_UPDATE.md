@@ -43,7 +43,7 @@ It also records a current competitor matrix for:
 ## Validation run for this update
 
 ```bash
-PYTHONPATH=src:. pytest -q   tests/test_rfc_applicability_and_competitor_status.py   tests/test_http_integrity_caching_signatures_status.py   tests/test_release_gates.py   tests/test_phase8_promotion_targets.py
+PYTHONPATH=src:. pytest -q   tests/test_rfc_applicability_and_competitor_status.py   tests/test_http_integrity_caching_signatures_status.py   tests/test_release_gates.py   tests/test_promotion_targets.py
 ```
 
 The authoritative release-gate boundary remains green after this documentation and test update. The stricter promotion target remains red for the previously documented reasons.

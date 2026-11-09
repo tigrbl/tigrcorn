@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1047"
+number: 1047
+slug: "quic-operational-security-certification"
+title: "QUIC certification includes operational security behavior"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn QUIC certification shall include operational security behavior in addition to nominal RFC conformance."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn QUIC certification shall include operational security behavior in addition to nominal RFC conformance.
+  
+  Certification must cover amplification protection, retry token behavior, spoofed address handling, path validation, NAT rebinding, connection ID rotation, congestion control, and loss recovery evidence.
+  
+  Consequences:
+  
+  - QUIC support cannot be promoted solely because happy-path HTTP/3 traffic succeeds.
+  - qlog, diagnostics, and negative tests become part of the certification path.
+  - WebTransport and HTTP/3 profiles inherit a stronger QUIC security baseline.
+  - Release evidence can distinguish protocol conformance from operational security certification.

@@ -1,0 +1,32 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1059"
+number: 1059
+slug: "http2-runtime-stream-identity-lifecycle-flow-control"
+title: "HTTP/2 runtime owns stream identity lifecycle and flow control"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn owns HTTP/2 stream IDs, lifecycle transitions, connection and stream flow control, and runtime evidence for RFC 9113 behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:41:45Z"
+references: []
+body: |-
+  Decision: Tigrcorn owns HTTP/2 stream IDs, lifecycle transitions, connection and stream flow control, and runtime evidence for RFC 9113 behavior.
+  
+  Owned boundary:
+  - Tigrcorn owns HTTP/2 stream ID allocation and validation, initiator rules, half-close/reset behavior, HPACK-adjacent runtime integration, and flow-control window enforcement.
+  - Tigrcorn owns runtime conformance and evidence for HTTP/2 stream behavior.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns contract vocabulary and lifecycle projection.
+  - Tigrbl owns app binding projection.
+  
+  Forbidden claims:
+  - Tigrcorn must not use HTTP/2 evidence to claim HTTP/3, QUIC, or WebTransport semantics.

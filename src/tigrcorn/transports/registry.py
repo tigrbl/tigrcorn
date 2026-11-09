@@ -1,10 +1,7 @@
-from .base import TransportDescriptor
+from __future__ import annotations
 
-TRANSPORTS = {
-    "tcp": TransportDescriptor(name="tcp", multiplexed=False),
-    "udp": TransportDescriptor(name="udp", multiplexed=False),
-    "unix": TransportDescriptor(name="unix", multiplexed=False),
-    "pipe": TransportDescriptor(name="pipe", multiplexed=False),
-    "inproc": TransportDescriptor(name="inproc", multiplexed=False),
-    "quic": TransportDescriptor(name="quic", multiplexed=True),
-}
+from importlib import import_module as _import_module
+import sys as _sys
+
+_module = _import_module('tigrcorn_transports.registry')
+_sys.modules[__name__] = _module

@@ -370,4 +370,3 @@ async def test_http3_early_hints_are_preserved_before_final_headers():
     finally:
         sock.close()
         await server.close()
-

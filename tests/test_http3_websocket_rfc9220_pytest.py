@@ -52,6 +52,7 @@ def _frame_wire_length(data: bytes) -> int:
 
 
 
+@pytest.mark.asyncio
 async def test_extended_connect_websocket_roundtrip():
     seen = {}
 
@@ -110,8 +111,8 @@ async def test_extended_connect_websocket_roundtrip():
 
         assert response_state is not None
         assert response_state is not None
-        assert (b':status' in b'200'), response_state.headers
-        assert (b'sec-websocket-protocol' in b'chat'), response_state.headers
+        assert (b':status', b'200') in response_state.headers
+        assert (b'sec-websocket-protocol', b'chat') in response_state.headers
         assert seen['text'] == 'hello-h3-ws'
         first_len = _frame_wire_length(response_state.body)
         message_frame = parse_frame_bytes(response_state.body[:first_len], expect_masked=False)
@@ -124,6 +125,7 @@ async def test_extended_connect_websocket_roundtrip():
         sock.close()
         await server.close()
 
+@pytest.mark.asyncio
 async def test_unknown_extended_connect_protocol_returns_501():
     async def app(scope, receive, send):
         raise AssertionError('unsupported extended CONNECT should not dispatch to the ASGI app')
@@ -167,7 +169,7 @@ async def test_unknown_extended_connect_protocol_returns_501():
 
         assert response_state is not None
         assert response_state is not None
-        assert (b':status' in b'501'), response_state.headers
+        assert (b':status', b'501') in response_state.headers
         assert response_state.body == b'unsupported extended connect protocol'
     finally:
         sock.close()

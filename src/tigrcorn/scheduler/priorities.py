@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(frozen=True, slots=True, order=True)
-class Priority:
-    value: int = 0
+_module = _import_module("tigrcorn_protocols.scheduler.priorities")
+_sys.modules[__name__] = _module

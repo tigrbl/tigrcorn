@@ -7,6 +7,7 @@ from tigrcorn.transports.tcp.reader import PrebufferedReader
 
 import pytest
 
+@pytest.mark.asyncio
 async def test_prebuffered_reader():
     reader = asyncio.StreamReader()
     reader.feed_data(b'world\nrest')
@@ -14,6 +15,7 @@ async def test_prebuffered_reader():
     wrapped = PrebufferedReader(reader, b'hello ')
     assert await wrapped.readuntil(b'\n') == b'hello world\n'
     assert await wrapped.read() == b'rest'
+@pytest.mark.asyncio
 async def test_inproc_channel_and_custom_adapters():
     channel = InProcChannel(capacity=1)
     await channel.send(b'data')

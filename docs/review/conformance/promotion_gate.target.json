@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "target_name": "phase9j_release_repair_and_promotion_program",
-  "status": "phase9_release_promoted_canonical",
+  "target_name": "released_repair_promotion_release_repair_and_promotion_program",
+  "status": "release_certification_release_promoted_canonical",
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "strict_target_boundary": {
     "boundary_path": "docs/review/conformance/certification_boundary.strict_target.json"
@@ -140,9 +140,9 @@
         ]
       },
       {
-        "path": "docs/review/conformance/PHASE9H_PROMOTION_EVALUATOR_HARDENING.md",
+        "path": "docs/review/conformance/PROMOTION_HARDENING_PROMOTION_EVALUATOR_HARDENING.md",
         "must_contain": [
-          "Phase 9H",
+          "Promotion hardening",
           "promotion evaluator",
           "strict target honestly",
           "not yet certifiably fully featured",
@@ -151,11 +151,11 @@
       }
     ]
   },
-  "phase9a_contract_freeze": {
-    "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md",
-    "status_json": "docs/review/conformance/phase9a_promotion_contract.current.json",
-    "backlog_doc": "docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md",
-    "backlog_json": "docs/review/conformance/phase9a_execution_backlog.current.json",
+  "promotion_contract_contract_freeze": {
+    "status_doc": "docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md",
+    "status_json": "docs/review/conformance/promotion_contract_promotion_contract.current.json",
+    "backlog_doc": "docs/review/conformance/PROMOTION_CONTRACT_EXECUTION_BACKLOG.md",
+    "backlog_json": "docs/review/conformance/promotion_contract_execution_backlog.current.json",
     "candidate_root_policy": {
       "immutable_candidate_release_root": "docs/review/conformance/releases/0.3.8/release-0.3.8",
       "next_promotable_release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",

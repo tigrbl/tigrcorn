@@ -20,6 +20,7 @@ async def _start_server(app):
 
 
 
+@pytest.mark.asyncio
 async def test_websocket_echo():
     async def app(scope, receive, send):
         assert scope["type"] == "websocket"
@@ -60,5 +61,3 @@ async def test_websocket_echo():
         await writer.wait_closed()
     finally:
         await server.close()
-
-

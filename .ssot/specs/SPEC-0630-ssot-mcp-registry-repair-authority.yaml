@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0630"
+number: 630
+slug: "ssot-mcp-registry-repair-authority"
+title: "SSOT MCP registry repair authority"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This specification defines the SSOT MCP registry repair authority surface. ssot-mcp SHALL expose registry get, list, search, create, update, delete, link, unlink, CLI delegation, target-claim scaffold repair, blocked-transition repair, and bulk blocked-transition repair. Workers SHALL use these tools instead of hand-editing registry files. Repair responses SHALL report changed entity ids, validation result, and retry guidance."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:19Z"
+    note: "Created to govern SSOT MCP scoped repair and worker maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  This specification defines the SSOT MCP registry repair authority surface. ssot-mcp SHALL expose registry get, list, search, create, update, delete, link, unlink, CLI delegation, target-claim scaffold repair, blocked-transition repair, and bulk blocked-transition repair. Workers SHALL use these tools instead of hand-editing registry files. Repair responses SHALL report changed entity ids, validation result, and retry guidance.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0629"

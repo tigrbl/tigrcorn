@@ -47,6 +47,7 @@ def test_handshake_driver_integrates_with_connection_crypto_frames():
     assert client.address_validated
     assert server.address_validated
 
+@pytest.mark.asyncio
 async def test_http3_runtime_applies_anti_amplification_limit():
     async def app(scope, receive, send):
         await receive()
@@ -61,10 +62,10 @@ async def test_http3_runtime_applies_anti_amplification_limit():
     )
 
     class Endpoint:
-        def __init__():
+        def __init__(self):
             self.sent = []
             self.local_addr = ('127.0.0.1', 4433)
-        def send(data, addr):
+        def send(self, data, addr):
             self.sent.append((data, addr))
 
     endpoint = Endpoint()

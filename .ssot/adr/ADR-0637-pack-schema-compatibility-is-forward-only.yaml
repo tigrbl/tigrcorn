@@ -1,0 +1,60 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0637"
+number: 637
+slug: "pack-schema-compatibility-is-forward-only"
+title: "Pack schema compatibility is forward-only"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Governance packs are installable distribution artifacts that publish ADR and"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-01T00:00:00Z"
+    note: "Created to govern forward-only governance-pack schema compatibility."
+    status: "draft"
+references: []
+body: |-
+  ## Context
+  
+  Governance packs are installable distribution artifacts that publish ADR and
+  SPEC templates into downstream SSOT registries. A pack manifest carries
+  `minimum_schema_version` so sync can reject documents that require a newer
+  target registry schema than the downstream repository currently supports.
+  
+  Treating that field as a historical parser selector would require the
+  registry to retain every past ADR and SPEC document dialect indefinitely. That
+  would weaken canonicalization, complicate validation, and allow newly
+  published packs to keep emitting obsolete document shapes.
+  
+  ## Decision
+  
+  `minimum_schema_version` SHALL be a manifest lower-bound compatibility gate
+  only. Pack sync SHALL compare the target registry schema version against the
+  manifest row minimum and fail closed when the target is too old.
+  
+  Governance-pack documents SHALL be upgraded to the current canonical ADR and
+  SPEC document shape before publication. A new pack release SHALL NOT rely on
+  historical per-document schemas for parsing.
+  
+  Downstream registries SHALL NOT dispatch historical ADR or SPEC parsers by
+  per-document manifest version. Manifest version metadata does not select a
+  document dialect.
+  
+  Materialized ADR and SPEC rows SHALL keep normalized provenance fields,
+  package version, and content hash metadata. They SHALL NOT persist
+  `raw_manifest_row`, row-level `minimum_schema_version`, or
+  `source_minimum_schema_version`.
+  
+  ## Consequences
+  
+  - Governance packs must canonicalize documents before release.
+  - The registry keeps one current ADR/SPEC document shape instead of a parser
+    matrix for historical pack dialects.
+  - Sync remains fail-closed for genuinely unsupported target registries.
+  - Publish gates become the release proof: build the local wheel, install it in
+    a clean downstream repository pinned to the declared supported registry
+    range, run `ssot pack sync`, then run `ssot validate`.

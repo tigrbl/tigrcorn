@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class SchedulerPolicy:
-    max_connections: int = 10_000
-    max_tasks: int = 50_000
-    max_streams_per_session: int = 128
-    limit_concurrency: int | None = None
-    drain_on_shutdown: bool = True
+_module = _import_module("tigrcorn_protocols.scheduler.policy")
+_sys.modules[__name__] = _module

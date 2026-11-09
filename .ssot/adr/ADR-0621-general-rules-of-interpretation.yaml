@@ -1,0 +1,44 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0621"
+number: 621
+slug: "general-rules-of-interpretation"
+title: "General rules of interpretation govern SSOT meaning"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "SSOT governance relies on authored ADRs, authored SPECs, registry entities, generated projections, CLI summaries, evidence artifacts, and repository documentation. Those surfaces are intentionally different, but the repository does not yet have a general rule set for resolving interpretation questions across them."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  SSOT governance relies on authored ADRs, authored SPECs, registry entities, generated projections, CLI summaries, evidence artifacts, and repository documentation. Those surfaces are intentionally different, but the repository does not yet have a general rule set for resolving interpretation questions across them.
+  
+  Without a governed interpretation rule, readers and automation can over-weight generated views, treat draft proposals as binding, infer support from missing rows, or resolve ambiguous certification and release questions permissively.
+  
+  ## Decision
+  
+  SSOT governance SHALL use general rules of interpretation for authority, conflict resolution, normative language, projections, entity absence, and fail-closed release decisions.
+  
+  The rules are:
+  
+  - authored ADRs and SPECs govern intent, rationale, and normative requirements;
+  - `.ssot/registry.json` governs current machine-readable entity state and relationships;
+  - generated exports, reports, graphs, README tables, and CLI summaries are projections unless a SPEC explicitly declares a surface canonical;
+  - specific accepted rules narrow or override general accepted rules for their exact scope;
+  - accepted documents override draft documents;
+  - later documents override earlier documents only through explicit supersession or explicit scoped narrowing;
+  - absence of a governed row means absence of a governed assertion;
+  - ambiguity in conformance, certification, promotion, publication, and release gates is resolved fail-closed.
+  
+  ## Consequences
+  
+  Validation, synchronization, certification, and release tooling must not treat generated projections as independent authority when they disagree with authored documents or the canonical registry.
+  
+  Draft ADRs and SPECs may guide planning, but they must not create binding conformance requirements until accepted or otherwise promoted by the repository's governed lifecycle.
+  
+  Downstream projects may add stricter local rules, but they must not interpret missing, ambiguous, or projection-only data as stronger assurance than the originating SSOT registry supports.

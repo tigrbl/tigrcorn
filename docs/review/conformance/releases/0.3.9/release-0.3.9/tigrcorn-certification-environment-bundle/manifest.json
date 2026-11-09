@@ -5,7 +5,7 @@
   "artifact_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
   "install_command": "python -m pip install -e \".[certification,dev]\"",
   "verify_command": "python - <<'PY'\nimport aioquic, h2, websockets, wsproto\nprint('certification deps OK')\nPY",
-  "workflow_path": ".github/workflows/phase9-certification-release.yml",
-  "wrapper_path": "tools/run_phase9_release_workflow.py",
+  "workflow_path": ".github/workflows/release_certification-certification-release.yml",
+  "wrapper_path": "tools/run_release_certification_release_workflow.py",
   "note": "This bundle freezes the certification-environment installation contract and the observed execution environment for the strict-promotion workflow."
 }

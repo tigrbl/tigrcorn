@@ -126,6 +126,7 @@ def test_phase3_env_surface_is_respected():
     assert config.http.http1_header_read_timeout == 0.75
     assert not (config.http.http1_keep_alive)
     assert config.websocket.max_queue == 12
+@pytest.mark.asyncio
 async def test_http11_parser_applies_incomplete_event_cap():
     reader = asyncio.StreamReader()
     request = (
@@ -142,6 +143,7 @@ async def test_http11_parser_applies_incomplete_event_cap():
             max_incomplete_event_size=64,
         )
 
+@pytest.mark.asyncio
 async def test_http11_buffer_size_controls_streaming_request_chunks():
     seen_chunks: list[int] = []
 
@@ -178,6 +180,7 @@ async def test_http11_buffer_size_controls_streaming_request_chunks():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http11_keep_alive_disable_forces_connection_close():
     seen_paths: list[str] = []
 
@@ -209,6 +212,7 @@ async def test_http11_keep_alive_disable_forces_connection_close():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http11_header_read_timeout_tightens_generic_timeout():
     async def app(scope, receive, send):
         await receive()
@@ -232,6 +236,7 @@ async def test_http11_header_read_timeout_tightens_generic_timeout():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_queue_receive_honors_max_size():
     receive = QueueReceive(max_size=1)
     await receive.put({'type': 'one'})

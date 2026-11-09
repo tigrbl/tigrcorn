@@ -1,5 +1,7 @@
+import importlib.util
 import unittest
 
+from tigrcorn.errors import ProtocolError
 from tigrcorn.transports.quic import QuicConnection, decode_packet
 from tigrcorn.transports.quic.connection import PACKET_SPACE_INITIAL
 from tigrcorn.transports.quic.handshake import QuicTlsHandshakeDriver, TransportParameters, generate_self_signed_certificate
@@ -7,7 +9,73 @@ from tigrcorn.transports.quic.packets import QuicVersionNegotiationPacket, split
 from tigrcorn.transports.quic.streams import FRAME_PING
 
 
+@unittest.skipUnless(importlib.util.find_spec('cryptography') is not None, 'cryptography package is not installed')
 class QuicTransportRuntimeCompletionTests(unittest.TestCase):
+    def test_crypto_flight_is_segmented_without_ip_fragmentation(self):
+        connection = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            remote_cid=b'cli1cli1',
+            max_datagram_size=1350,
+        )
+        first = connection.send_crypto_data(b'x' * 4096, packet_space=PACKET_SPACE_INITIAL)
+        datagrams = [first, *connection.take_handshake_datagrams()]
+        self.assertGreater(len(datagrams), 1)
+        self.assertTrue(all(len(datagram) <= 1350 for datagram in datagrams))
+        self.assertIn(1350, [len(datagram) for datagram in datagrams])
+
+        receiver = QuicConnection(
+            is_client=True,
+            secret=b'shared',
+            local_cid=b'cli1cli1',
+            remote_cid=b'srv1srv1',
+            max_datagram_size=1350,
+        )
+        crypto_frames = [
+            event.detail
+            for datagram in datagrams
+            for event in receiver.receive_datagram(datagram)
+            if event.kind == 'crypto'
+        ]
+        self.assertEqual(b''.join(frame.data for frame in crypto_frames), b'x' * 4096)
+        expected_offset = 0
+        for frame in crypto_frames:
+            self.assertEqual(frame.offset, expected_offset)
+            expected_offset += len(frame.data)
+
+    def test_configured_peer_and_path_datagram_ceilings_are_independent(self):
+        connection = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            remote_cid=b'cli1cli1',
+            max_datagram_size=1500,
+        )
+        self.assertEqual(connection.configured_max_datagram_size, 1500)
+        self.assertEqual(connection._effective_send_datagram_size(), 1500)
+
+        connection.peer_max_udp_payload_size = 1300
+        connection.max_datagram_size = 1300
+        connection._path_state(connection._active_path_key).max_udp_payload_size = 1250
+        self.assertEqual(connection._effective_send_datagram_size(), 1250)
+
+        first = connection.send_crypto_data(b'y' * 3000, packet_space=PACKET_SPACE_INITIAL)
+        datagrams = [first, *connection.take_handshake_datagrams()]
+        self.assertTrue(all(len(datagram) <= 1250 for datagram in datagrams))
+    def test_oversize_application_packet_fails_before_send_state_changes(self):
+        connection = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            remote_cid=b'cli1cli1',
+            max_datagram_size=1200,
+        )
+        with self.assertRaisesRegex(ProtocolError, 'effective UDP payload ceiling'):
+            connection.send_stream_data(1, b'z' * 1200)
+        self.assertEqual(connection.packet_numbers.application_send, 0)
+        self.assertEqual(connection.recovery.bytes_in_flight, 0)
+
     def _issue_0rtt_ticket(self) -> tuple[bytes, bytes, object]:
         cert_pem, key_pem = generate_self_signed_certificate('server.example')
         client = QuicTlsHandshakeDriver(
@@ -86,7 +154,7 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
         retry_events = client.receive_datagram(retry_datagram)
         self.assertTrue(any(event.kind == 'retry' for event in retry_events))
         second_initial = client.build_initial()
-        post_retry_events = server.receive_datagram(second_initial, addr=('127.0.0.1', 4444))
+        post_retry_events = server.receive_datagram(second_initial, addr=('127.0.0.1', 5555))
         self.assertTrue(any(event.kind == 'packet' for event in post_retry_events))
         self.assertTrue(server.address_validated)
 
@@ -97,6 +165,62 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
         self.assertTrue(any(event.kind == 'new_token' for event in token_events))
         self.assertEqual(token_client.peer_new_tokens, (token,))
 
+    def test_duplicate_initials_preserve_retry_connection_identity(self):
+        client = QuicConnection(
+            is_client=True,
+            secret=b'shared',
+            local_cid=b'cli1cli1',
+            remote_cid=b'srv1srv1',
+        )
+        server = QuicConnection(
+            is_client=False,
+            secret=b'shared',
+            local_cid=b'srv1srv1',
+            require_retry=True,
+        )
+        address = ('127.0.0.1', 4444)
+        initial = client.build_initial()
+
+        server.receive_datagram(initial, addr=address)
+        first_retry = server.take_pending_datagrams()[0]
+        server.receive_datagram(initial, addr=address)
+        duplicate_retry = server.take_pending_datagrams()[0]
+
+        first_packet = decode_packet(first_retry)
+        duplicate_packet = decode_packet(duplicate_retry)
+        self.assertEqual(
+            duplicate_packet.source_connection_id,
+            first_packet.source_connection_id,
+        )
+
+        client.receive_datagram(first_retry)
+        post_retry_events = server.receive_datagram(
+            client.build_initial(),
+            addr=address,
+        )
+        self.assertTrue(any(event.kind == 'packet' for event in post_retry_events))
+        self.assertTrue(server.address_validated)
+
+    def test_retry_token_rejects_a_different_client_ip(self):
+        client = QuicConnection(
+            is_client=True, secret=b'shared',
+            local_cid=b'cli1cli1', remote_cid=b'srv1srv1',
+        )
+        server = QuicConnection(
+            is_client=False, secret=b'shared',
+            local_cid=b'srv1srv1', require_retry=True,
+        )
+        server.receive_datagram(
+            client.build_initial(), addr=('192.0.2.10', 4444),
+        )
+        client.receive_datagram(server.take_pending_datagrams()[0])
+
+        events = server.receive_datagram(
+            client.build_initial(), addr=('192.0.2.11', 5555),
+        )
+
+        self.assertTrue(any(event.kind == 'close' for event in events))
+        self.assertFalse(server.address_validated)
     def test_zero_rtt_stream_data_is_decrypted_after_client_hello(self):
         cert_pem, key_pem, ticket = self._issue_0rtt_ticket()
         client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1cli1', remote_cid=b'srv1srv1')
@@ -127,6 +251,28 @@ class QuicTransportRuntimeCompletionTests(unittest.TestCase):
                 for event in zero_rtt_events
             )
         )
+
+    def test_session_ticket_can_disable_early_data_advertisement(self):
+        cert_pem, key_pem, _ticket = self._issue_0rtt_ticket()
+        server = QuicTlsHandshakeDriver(
+            is_client=False,
+            server_name='server.example',
+            certificate_pem=cert_pem,
+            private_key_pem=key_pem,
+            enable_early_data=True,
+        )
+        client = QuicTlsHandshakeDriver(
+            is_client=True,
+            server_name='server.example',
+            trusted_certificates=[cert_pem],
+            enable_early_data=True,
+        )
+        client_finished = client.receive(server.receive(client.initiate()))
+        server.receive(client_finished)
+        ticket_bytes = server.issue_session_ticket(max_early_data_size=0)
+        client.receive(ticket_bytes)
+        assert client.received_session_ticket is not None
+        self.assertEqual(client.received_session_ticket.max_early_data_size, 0)
 
     def test_blocked_frames_and_connection_close_surface_runtime_events(self):
         client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli1cli1', remote_cid=b'srv1srv1')

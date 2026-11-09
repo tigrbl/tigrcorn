@@ -26,7 +26,7 @@ class AppLoaderTests(unittest.TestCase):
             load_app('tests.fixtures_pkg.appmod:missing')
 
     def test_load_app_from_current_working_directory_without_app_dir(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=os.getcwd()) as td:
             app_path = os.path.join(td, 'app.py')
             with open(app_path, 'w', encoding='utf-8') as handle:
                 handle.write('async def app(scope, receive, send):\n    return None\n')
@@ -43,7 +43,7 @@ class AppLoaderTests(unittest.TestCase):
                 os.chdir(previous)
 
     def test_load_factory_from_current_working_directory_without_app_dir(self):
-        with tempfile.TemporaryDirectory() as td:
+        with tempfile.TemporaryDirectory(dir=os.getcwd()) as td:
             app_path = os.path.join(td, 'app.py')
             with open(app_path, 'w', encoding='utf-8') as handle:
                 handle.write('def factory():\n    async def app(scope, receive, send):\n        return None\n    return app\n')

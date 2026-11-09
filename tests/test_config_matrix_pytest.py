@@ -1,116 +1,53 @@
-import pytest
-
-from tigrcorn.config.load import build_config
 from tigrcorn.config.model import ListenerConfig, ServerConfig
 from tigrcorn.config.validate import validate_config
 from tigrcorn.errors import ConfigError
 
 
-def test_tcp_defaults() -> None:
-    config = build_config(host="127.0.0.1", port=1234, lifespan="off")
-    listener = config.listeners[0]
-    assert listener.kind == "tcp"
-    assert "http1" in listener.enabled_protocols
-    assert "websocket" in listener.enabled_protocols
-
-
-def test_udp_http3_defaults() -> None:
-    config = build_config(
-        transport="udp",
-        host="127.0.0.1",
-        port=9443,
-        lifespan="off",
-        http_versions=["3"],
-        protocols=["http3"],
-    )
-    listener = config.listeners[0]
-    assert listener.kind == "udp"
-    assert listener.scheme == "https"
-    assert listener.enabled_protocols[:2] == ("quic", "http3")
-
-
-def test_pipe_label() -> None:
-    listener = ListenerConfig(kind="pipe", path="/tmp/tigrcorn.pipe")
-    assert listener.label == "pipe:///tmp/tigrcorn.pipe"
-    assert listener.enabled_protocols == ("rawframed",)
-
-
-def test_udp_ssl_is_accepted_for_quic_tls() -> None:
-    config = ServerConfig(
-        listeners=[ListenerConfig(kind="udp", host="127.0.0.1", port=1, ssl_certfile="x", ssl_keyfile="y")]
-    )
+def test_secure_defaults_fail_closed_for_operator_posture():
+    config = ServerConfig()
     validate_config(config)
+    assert config.http.connect_policy == 'deny'
+    assert config.quic.early_data_policy == 'deny'
+    assert config.http.enable_h2c is False
+    assert config.proxy.include_server_header is False
+    assert config.server_header_value is None
 
 
-def test_udp_client_auth_is_accepted_with_a_trust_store() -> None:
-    config = ServerConfig(
-        listeners=[
-            ListenerConfig(
-                kind="udp",
-                host="127.0.0.1",
-                port=1,
-                ssl_certfile="x",
-                ssl_keyfile="y",
-                ssl_ca_certs="ca.pem",
-                ssl_require_client_cert=True,
-            )
-        ]
-    )
+def test_udp_listener_randomizes_quic_secret_when_not_explicit():
+    first = ServerConfig(listeners=[ListenerConfig(kind='udp', host='127.0.0.1', port=1, http_versions=['3'])])
+    second = ServerConfig(listeners=[ListenerConfig(kind='udp', host='127.0.0.1', port=2, http_versions=['3'])])
+    validate_config(first)
+    validate_config(second)
+    assert first.listeners[0].quic_secret is not None
+    assert second.listeners[0].quic_secret is not None
+    assert len(first.listeners[0].quic_secret) == 32
+    assert len(second.listeners[0].quic_secret) == 32
+    assert first.listeners[0].quic_secret != second.listeners[0].quic_secret
+
+
+def test_partial_server_config_normalizes_http2_defaults():
+    config = ServerConfig()
     validate_config(config)
+    assert config.http.http2_max_concurrent_streams == 128
+    assert config.http.http2_max_headers_size == config.http.max_header_size
+    assert config.http.http2_max_frame_size == 16_384
 
 
-def test_udp_client_auth_requires_an_explicit_trust_store() -> None:
+def test_udp_client_auth_requires_explicit_trust_store():
     config = ServerConfig(
         listeners=[
             ListenerConfig(
-                kind="udp",
-                host="127.0.0.1",
+                kind='udp',
+                host='127.0.0.1',
                 port=1,
-                ssl_certfile="x",
-                ssl_keyfile="y",
+                ssl_certfile='x',
+                ssl_keyfile='y',
                 ssl_require_client_cert=True,
             )
         ]
     )
-    with pytest.raises(ConfigError):
+    try:
         validate_config(config)
-
-
-def test_tcp_client_auth_is_accepted_with_a_trust_store() -> None:
-    config = ServerConfig(
-        listeners=[
-            ListenerConfig(
-                kind="tcp",
-                host="127.0.0.1",
-                port=1,
-                ssl_certfile="x",
-                ssl_keyfile="y",
-                ssl_ca_certs="ca.pem",
-                ssl_require_client_cert=True,
-            )
-        ]
-    )
-    validate_config(config)
-
-
-def test_tcp_client_auth_requires_an_explicit_trust_store() -> None:
-    config = ServerConfig(
-        listeners=[
-            ListenerConfig(
-                kind="tcp",
-                host="127.0.0.1",
-                port=1,
-                ssl_certfile="x",
-                ssl_keyfile="y",
-                ssl_require_client_cert=True,
-            )
-        ]
-    )
-    with pytest.raises(ConfigError):
-        validate_config(config)
-
-
-def test_invalid_pipe_requires_path() -> None:
-    config = ServerConfig(listeners=[ListenerConfig(kind="pipe", path=None)])
-    with pytest.raises(ConfigError):
-        validate_config(config)
+    except ConfigError:
+        return
+    raise AssertionError('expected ConfigError when udp client auth omits ssl_ca_certs')

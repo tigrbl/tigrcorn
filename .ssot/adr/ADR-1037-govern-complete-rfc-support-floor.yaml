@@ -1,0 +1,44 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1037"
+number: 1037
+slug: "govern-complete-rfc-support-floor"
+title: "Govern complete RFC support floor"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall govern and support every RFC target requested for the HTTP/1.1, QUIC, TLS, HTTP/2, HTTP/3, WebSocket, WebTransport, early-data, trailer, URI, applicability, and manageability support floor. Every governed target shall have at least a T2 local-conformance claim."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "spc:2044"
+  - "RFC 3986"
+  - "RFC 8441"
+  - "RFC 8446"
+  - "RFC 8470"
+  - "RFC 9000"
+  - "RFC 9001"
+  - "RFC 9002"
+  - "RFC 9112"
+  - "RFC 9113"
+  - "RFC 9114"
+  - "RFC 9114 Section 10.9"
+  - "RFC 9204"
+  - "RFC 9220"
+  - "RFC 9221"
+  - "RFC 9297"
+  - "RFC 9308"
+  - "RFC 9312"
+body: |-
+  Decision: Tigrcorn shall govern and support every RFC target requested for the HTTP/1.1, QUIC, TLS, HTTP/2, HTTP/3, WebSocket, WebTransport, early-data, trailer, URI, applicability, and manageability support floor.
+
+  The governed support floor includes RFC 9112 for HTTP/1.1 messaging and framing; RFC 9000, RFC 9001, RFC 9002, RFC 9114, RFC 9204, RFC 9221, RFC 9312, RFC 9308, RFC 8446, RFC 8470, RFC 9114 Section 10.9, RFC 9297, RFC 9220, RFC 3986, RFC 8441, RFC 9113; and the existing trailer-field target RFC 9110 Section 6.5.
+
+  Consequences:
+  - Each target must remain inside docs/review/conformance/certification_boundary.json.
+  - Each target must have a generated feature row linked to SPEC-2044.
+  - Each generated RFC feature must remain current and implemented.
+  - Each generated RFC feature must have at least one promoted T2-or-higher claim and local evidence.
+  - Targets with independent or same-stack evidence keep their stronger evidence tiers; newly governed floor targets may start at T2 local conformance until stronger third-party proof is added.

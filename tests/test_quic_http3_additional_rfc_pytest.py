@@ -49,6 +49,7 @@ def test_out_of_order_stream_data_is_reassembled():
     assert state.apply(QuicStreamFrame(stream_id=0, offset=0, data=b'hello')) == b'helloworld'
     assert state.received_final
 
+@pytest.mark.asyncio
 async def test_server_control_stream_uses_server_unidirectional_id_and_stays_open():
     async def app(scope, receive, send):
         await send({'type': 'http.response.start', 'status': 204, 'headers': []})
@@ -78,6 +79,7 @@ async def test_server_control_stream_uses_server_unidirectional_id_and_stays_ope
         sock.close()
         await server.close()
 
+@pytest.mark.asyncio
 async def test_connection_core_accepts_control_stream_on_server_uni_id():
     sender = HTTP3ConnectionCore()
     receiver = HTTP3ConnectionCore()
@@ -85,6 +87,7 @@ async def test_connection_core_accepts_control_stream_on_server_uni_id():
     assert receiver.receive_stream_data(3, payload, fin=False) is None
     assert receiver.state.remote_control_stream_id == 3
     assert receiver.state.remote_settings == {1: 0, 6: 1200}
+@pytest.mark.asyncio
 async def test_validate_request_headers_rejects_uppercase_field_name():
     async def app(scope, receive, send):
         return None

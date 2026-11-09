@@ -8,6 +8,11 @@ from tigrcorn.server.runner import TigrCornServer
 
 import pytest
 
+@pytest.mark.skipif(
+    not (hasattr(asyncio, "start_unix_server") and hasattr(asyncio, "open_unix_connection")),
+    reason="asyncio Unix sockets are not available on this platform",
+)
+@pytest.mark.asyncio
 async def test_unix_http_roundtrip():
     async def app(scope, receive, send):
         event = await receive()

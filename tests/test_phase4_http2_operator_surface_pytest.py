@@ -181,6 +181,7 @@ def test_generic_and_http2_specific_limits_are_coherent():
     assert explicit.http.http2_max_concurrent_streams == 7
     assert explicit.http.http2_max_headers_size == 4096
     assert explicit.http.http2_max_frame_size == 32768
+@pytest.mark.asyncio
 async def test_http2_server_advertises_configured_local_settings():
     async def app(scope, receive, send):
         await receive()
@@ -221,6 +222,7 @@ async def test_http2_server_advertises_configured_local_settings():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http2_initial_connection_window_emits_stream_zero_window_update():
     async def app(scope, receive, send):
         await receive()
@@ -250,6 +252,7 @@ async def test_http2_initial_connection_window_emits_stream_zero_window_update()
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http2_adaptive_window_growth_emits_window_updates():
     async def app(scope, receive, send):
         await send({'type': 'http.response.start', 'status': 204, 'headers': []})
@@ -277,7 +280,7 @@ async def test_http2_adaptive_window_growth_emits_window_updates():
         send_window=handler.state.initial_window_size,
         receive_window=handler.state.local_initial_window_size,
     )
-    assert next_adaptive_window_target(65535 == 40000), 131070
+    assert next_adaptive_window_target(65535, 40000) == 131070
     handler.state.connection_receive_window.consume(40000)
     state.receive_window.consume(40000)
     await handler._maybe_replenish_receive_credit(1, 40000)
@@ -290,6 +293,7 @@ async def test_http2_adaptive_window_growth_emits_window_updates():
     window_updates = [frame for frame in frames if frame.frame_type == FRAME_WINDOW_UPDATE]
     assert {frame.stream_id for frame in window_updates} == {0, 1}
     assert all(parse_window_update(frame.payload) > 0 for frame in window_updates)
+@pytest.mark.asyncio
 async def test_http2_keepalive_sends_ping_then_closes_on_timeout():
     async def app(scope, receive, send):
         await send({'type': 'http.response.start', 'status': 204, 'headers': []})
@@ -318,5 +322,3 @@ async def test_http2_keepalive_sends_ping_then_closes_on_timeout():
         await writer.wait_closed()
     finally:
         await server.close()
-
-

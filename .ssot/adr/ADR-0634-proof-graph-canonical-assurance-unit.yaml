@@ -1,0 +1,34 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0634"
+number: 634
+slug: "proof-graph-canonical-assurance-unit"
+title: "Proof Graph Is The Canonical Assurance Unit"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Summary"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-21T05:59:13Z"
+    note: "Created to govern proof-graph-first assurance semantics after downstream MCP and certification closure work."
+    status: "draft"
+  -
+    at: "2026-06-07T13:06:10Z"
+    note: "Updated to define evidence as the canonical proof carrier."
+    status: "draft"
+references: []
+body: |-
+  Summary
+  The governed assurance unit is a linked proof graph, but the canonical proof carrier is evidence.
+  
+  Decision
+  A certifiable SSOT assertion shall be represented as a connected graph containing target features, scoped claims, evidence that supports those claims, and producer or provenance records for that evidence. The canonical proof path is `test -> evidence -> claim`; a claim remains directly scoped to one or more features through `claim.feature_ids`.
+  
+  Tests do not prove claims directly. Tests produce or validate evidence. Evidence proves or supports claims. Any direct claim-test relationship retained during compatibility windows is an index, planning hint, or derived view, not the proof authority.
+  
+  Implications
+  Operators may continue to edit rows individually, but registry truth, tier gates, and certification closure shall be evaluated against evidence-centered proof linkage. Row-complete but evidence-incomplete states shall not be treated as certified or honestly fully featured. Future CLI, MCP, graph, and lineage surfaces shall prefer evidence-valid materialization over ad hoc row creation that leaves ambiguous proof triangles.

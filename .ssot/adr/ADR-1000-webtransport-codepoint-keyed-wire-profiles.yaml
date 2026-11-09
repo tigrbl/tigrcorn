@@ -1,0 +1,32 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1000"
+number: 1000
+slug: "webtransport-codepoint-keyed-wire-profiles"
+title: "WebTransport setting codepoints identify immutable wire profiles"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Each WebTransport HTTP/3 setting codepoint identifies exactly one immutable wire profile. A profile owns its setting semantics, CONNECT token and headers, stream and datagram formats, capsules, transport requirements, resets, closures, and errors. TLS ALPN remains `h3` and does not select the WebTransport profile."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted controlled profile registry decision"
+    at: "2026-07-11T13:41:27Z"
+references: []
+body: |-
+  ## Decision
+
+  Each WebTransport HTTP/3 setting codepoint identifies exactly one immutable wire profile. A profile owns its setting semantics, CONNECT token and headers, stream and datagram formats, capsules, transport requirements, resets, closures, and errors. TLS ALPN remains `h3` and does not select the WebTransport profile.
+
+  ## Governed features
+
+  - `feat:webtransport-profile-registry`
+  - `feat:webtransport-profile-startup-validation`
+  - `feat:webtransport-profile-aware-wire-routing`
+  - `feat:webtransport-draft02-profile`
+  - `feat:webtransport-draft13-profile-adapter`
+  - `feat:webtransport-ietf-current-profile-adapter`

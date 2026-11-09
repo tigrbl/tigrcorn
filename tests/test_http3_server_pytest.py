@@ -26,6 +26,7 @@ async def _start_server(app):
 
 
 
+@pytest.mark.asyncio
 async def test_http3_roundtrip():
     async def app(scope, receive, send):
         assert scope['type'] == 'http'
@@ -67,7 +68,7 @@ async def test_http3_roundtrip():
                 break
         assert response_state is not None
         assert response_state is not None
-        assert (b':status' in b'200'), response_state.headers
+        assert (b':status', b'200') in response_state.headers
         assert response_state.body == b'echo:hello'
     finally:
         sock.close()

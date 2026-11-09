@@ -1,0 +1,53 @@
+from __future__ import annotations
+
+import asyncio
+import time
+from dataclasses import dataclass, field
+from tigrcorn_protocols.http3.streams import HTTP3ConnectionCore
+from tigrcorn_protocols.http3.websocket import H3WebSocketSession
+from tigrcorn_transports.quic.connection import QuicConnection
+from tigrcorn_protocols.webtransport.negotiation import WebTransportNegotiationResult
+
+from .priority_lock import PriorityLock
+
+@dataclass(slots=True)
+class HTTP3Session:
+    addr: tuple[str, int]
+    quic: QuicConnection
+    lock: PriorityLock = field(default_factory=PriorityLock)
+    runtime_id: str = ''
+    h3: HTTP3ConnectionCore = field(default_factory=lambda: HTTP3ConnectionCore(role='server'))
+    server_control_stream_sent: bool = False
+    server_control_stream_id: int | None = None
+    responded_streams: set[int] = field(default_factory=set)
+    request_packets: int = 0
+    server_qpack_encoder_stream_id: int | None = None
+    server_qpack_decoder_stream_id: int | None = None
+    bytes_received: int = 0
+    bytes_sent: int = 0
+    address_validated: bool = False
+    session_ticket_issued: bool = False
+    pending_outbound: list[bytes] = field(default_factory=list)
+    timer_handle: asyncio.TimerHandle | None = None
+    last_activity_at: float = field(default_factory=time.monotonic)
+    connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
+    websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
+    webtransport_sessions: dict[int, _HTTP3WebTransportSession] = field(default_factory=dict)
+    webtransport_streams: set[int] = field(default_factory=set)
+    webtransport_stream_owners: dict[int, int] = field(default_factory=dict)
+    webtransport_stream_prefaces: dict[int, bytearray] = field(default_factory=dict)
+    webtransport_server_prefaced_streams: set[int] = field(default_factory=set)
+    stream_work_leases: dict[int, object] = field(default_factory=dict)
+    early_data_accounted: bool = False
+    peer_goaway_observed: bool = False
+    last_quic_packets_lost_total: int = 0
+    last_quic_pto_expirations_total: int = 0
+    last_quic_pto_probes_total: int = 0
+    last_quic_stream_bytes_retransmitted_total: int = 0
+    last_quic_crypto_bytes_retransmitted_total: int = 0
+    last_quic_datagram_frames_abandoned_total: int = 0
+    last_quic_frames_regenerated_total: int = 0
+    last_quic_persistent_congestion_total: int = 0
+    quic_congestion_controller_failure_reported: bool = False
+    webtransport_negotiation: WebTransportNegotiationResult | None = None
+    webtransport_negotiation_frozen: bool = False

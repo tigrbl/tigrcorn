@@ -18,6 +18,7 @@ async def _start_server(app):
 
 
 
+@pytest.mark.asyncio
 async def test_extended_connect_websocket_roundtrip():
     seen = {}
 
@@ -74,8 +75,8 @@ async def test_extended_connect_websocket_roundtrip():
             if response_headers and ws_data and end_stream:
                 break
 
-        assert (b':status' in b'200'), response_headers
-        assert (b'sec-websocket-protocol' in b'chat'), response_headers
+        assert (b':status', b'200') in response_headers
+        assert (b'sec-websocket-protocol', b'chat') in response_headers
         frame = parse_frame_bytes(bytes(ws_data), expect_masked=False)
         assert frame.payload.decode('utf-8') == 'hello-h2-ws'
         assert seen['text'] == 'hello-h2-ws'

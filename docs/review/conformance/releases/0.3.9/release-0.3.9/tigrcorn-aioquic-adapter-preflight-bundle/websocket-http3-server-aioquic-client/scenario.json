@@ -51,7 +51,7 @@
     "certification_status": "ready_for_preserved_artifact_promotion",
     "peer_implementation": "aioquic",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "aioquic.http3_websocket_client",
+    "independent_harness_wrapper_id": "aioquic.http3_websocket_client",
     "rfc": [
       "RFC 8446",
       "RFC 9000",

@@ -7,7 +7,7 @@
       "tests.fixtures_pkg.external_curl_client",
       "--http1"
     ],
-    "cwd": "/mnt/data/tigrcorn_phase9a/tigrcorn_phase9a_promotion_contract_freeze_checkpoint",
+    "cwd": "/mnt/data/tigrcorn_promotion_contract/tigrcorn_promotion_contract_promotion_contract_freeze_checkpoint",
     "version_command": [
       "python",
       "-m",
@@ -34,7 +34,7 @@
       "--lifespan",
       "off"
     ],
-    "cwd": "/mnt/data/tigrcorn_phase9a/tigrcorn_phase9a_promotion_contract_freeze_checkpoint",
+    "cwd": "/mnt/data/tigrcorn_promotion_contract/tigrcorn_promotion_contract_promotion_contract_freeze_checkpoint",
     "version_command": [
       "python",
       "-m",

@@ -1,13 +1,7 @@
 from __future__ import annotations
 
-import socket
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-def configure_socket(sock, *, nodelay: bool = True) -> None:
-    if sock is None:
-        return
-    if nodelay and sock.family in {socket.AF_INET, socket.AF_INET6} and sock.type == socket.SOCK_STREAM:
-        try:
-            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-        except OSError:
-            pass
+_module = _import_module('tigrcorn_transports.tcp.socketopts')
+_sys.modules[__name__] = _module

@@ -1,39 +1,39 @@
 {
-  "artifact_dir": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified",
+  "artifact_dir": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified",
   "artifacts": {
     "packet_trace": {
       "exists": true,
-      "path": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified/packet_trace.jsonl",
+      "path": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified\\packet_trace.jsonl",
       "sha256": "4aa68547fbc53d49bbe76eec077714523f0277c0256060f4dbda577309ebe607",
       "size": 2039
     },
     "peer_negotiation": {
       "exists": true,
-      "path": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified/peer_negotiation.json",
+      "path": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified\\peer_negotiation.json",
       "sha256": "0568a91254c15f1aecf8ff0118aab805fefd7c97cb96166e04284d92c0bedadc",
       "size": 123
     },
     "peer_transcript": {
       "exists": true,
-      "path": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified/peer_transcript.json",
+      "path": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified\\peer_transcript.json",
       "sha256": "db17066f914af0ac7ca299e19b33ddfcea1e8bc1372d65fb99b7b6f7c02ee149",
       "size": 407
     },
     "qlog": {
       "exists": false,
-      "path": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified/qlog.json",
+      "path": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified\\qlog.json",
       "sha256": null,
       "size": 0
     },
     "sut_negotiation": {
       "exists": false,
-      "path": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified/sut_negotiation.json",
+      "path": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified\\sut_negotiation.json",
       "sha256": null,
       "size": 0
     },
     "sut_transcript": {
       "exists": false,
-      "path": "docs/review/conformance/intermediary_proxy_corpus_minimum_certified/cases/http2-h2-origin-form-post-certified/sut_transcript.json",
+      "path": "docs\\review\\conformance\\intermediary_proxy_corpus_minimum_certified\\cases\\http2-h2-origin-form-post-certified\\sut_transcript.json",
       "sha256": null,
       "size": 0
     }

@@ -1,0 +1,82 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0601"
+number: 601
+slug: "cli"
+title: "CLI"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Primary distribution: `ssot-cli`"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Primary distribution: `ssot-cli`
+  
+  Compatibility aliases retained during migration:
+  - `ssot`
+  - `ssot-registry`
+  
+  Public commands:
+  - `ssot-registry init`
+  - `ssot-registry validate`
+  - `ssot-registry upgrade`
+  - `ssot-registry adr create|get|list|update|delete|sync`
+  - `ssot-registry adr reserve create|list`
+  - `ssot-registry spec create|get|list|update|delete|sync`
+  - `ssot-registry spec reserve create|list`
+  - `ssot-registry feature plan`
+  - `ssot-registry feature lifecycle set`
+  - `ssot-registry issue plan`
+  - `ssot-registry claim evaluate`
+  - `ssot-registry evidence verify`
+  - `ssot-registry boundary freeze`
+  - `ssot-registry release certify`
+  - `ssot-registry release promote`
+  - `ssot-registry release publish`
+  - `ssot-registry release revoke`
+  - `ssot-registry graph export`
+  
+  Root metadata flags:
+  - `ssot --version`, `ssot-cli --version`, and `ssot-registry --version` SHALL print a line-oriented package version report and exit successfully without requiring a subcommand.
+  - The first output line SHALL identify the invoked program and the report type as `<prog> package versions:`.
+  - The report body SHALL include one line per visible `ssot-*` distribution using `<distribution-name> <version>` format.
+  - The report SHALL include at least the primary CLI/runtime packages that are present in the active environment, including `ssot-cli`, `ssot-core`, `ssot-conformance`, `ssot-contracts`, and `ssot-pack-contracts`.
+  - Installed distribution versions SHALL be resolved from Python package metadata.
+  - In a source-tree checkout, local package `pyproject.toml` metadata MAY override older installed distribution metadata so local development reports the source-tree package versions.
+  - Root version handling SHALL run before subcommand dispatch so it works even though normal CLI execution requires a subcommand.
+  
+  ADR and SPEC authoring commands SHALL support two body source flags:
+  - `--body`
+  - `--body-file`
+  
+  CLI source-selection rules:
+  - `adr create` and `spec create` SHALL require exactly one of `--body` or `--body-file`
+  - `adr update` and `spec update` SHALL allow zero or one of `--body` or `--body-file`
+  - create and update commands SHALL reject requests that provide both `--body` and `--body-file`
+  
+  CLI body flags SHALL map directly onto the corresponding runtime document mutation inputs.
+  
+  Entity create and update commands for `feature`, `test`, `issue`, `boundary`, `profile`, `claim`, `evidence`, `risk`, and `release` SHALL also support two body source flags:
+  - `--body`
+  - `--body-file`
+  
+  Entity CLI source-selection rules:
+  - entity `create` commands MAY omit both `--body` and `--body-file`
+  - entity `update` commands MAY omit both `--body` and `--body-file`
+  - entity `create` and `update` commands SHALL reject requests that provide both `--body` and `--body-file`
+  - when `--body` is provided, the entity row `body` field SHALL be set from the inline UTF-8 text
+  - when `--body-file` is provided, the entity row `body` field SHALL be set from the referenced UTF-8 text file
+  
+  CLI surface coverage rules:
+  - `ssot-cli` SHALL maintain a parser-derived command surface manifest that lists every global flag, top-level command, command path, subcommand path, and command-specific flag exposed by the live `argparse` parser.
+  - The `ssot-cli` PyPI README SHALL include every command path and flag from the parser-derived manifest so documented CLI support cannot lag the implemented command surface.
+  - Integration tests SHALL compare the checked-in manifest to the live parser and fail when commands, subcommands, or flags are added without updating the manifest and README.
+  - Integration tests SHALL exercise valid help output for every command and subcommand path.
+  - Integration tests SHALL exercise invalid CLI input output for every command and subcommand path, including parser errors for missing required arguments, invalid choices, or unknown flags.
+  - Integration tests SHALL exercise valid and invalid global rendering flags, including supported output formats and invalid output format rejection.
+spec_kind: "operational"
+adr_ids: []

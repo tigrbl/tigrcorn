@@ -44,6 +44,7 @@ async def _open_websocket(port: int):
 
 
 
+@pytest.mark.asyncio
 async def test_accept_rejects_extension_negotiation():
     sender = _WSAppSend(
         writer=type(
@@ -75,6 +76,7 @@ async def test_accept_rejects_extension_negotiation():
             }
         )
 
+@pytest.mark.asyncio
 async def test_invalid_utf8_text_message_closes_with_1007():
     disconnects: list[dict] = []
 
@@ -101,6 +103,7 @@ async def test_invalid_utf8_text_message_closes_with_1007():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_fragmented_message_limit_closes_with_1009():
     disconnects: list[dict] = []
 

@@ -16,6 +16,7 @@ class _FakeConnection:
 
 
 
+@pytest.mark.asyncio
 async def test_frame_dispatch():
     async def app(scope, receive, send):
         assert scope['type'] == 'tigrcorn.rawframed'

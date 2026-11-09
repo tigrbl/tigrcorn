@@ -56,6 +56,7 @@ async def _start_server(
 
 
 
+@pytest.mark.asyncio
 async def test_http11_invalid_request_trailer_returns_400():
     seen = {"dispatched": False}
     server, port = await _start_server(http_versions=["1.1"], seen=seen)
@@ -76,6 +77,7 @@ async def test_http11_invalid_request_trailer_returns_400():
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http2_invalid_request_trailer_returns_400():
     seen = {"dispatched": False}
     server, port = await _start_server(http_versions=["2"], seen=seen)
@@ -112,13 +114,14 @@ async def test_http2_invalid_request_trailer_returns_400():
                 elif frame.frame_type == FRAME_HEADERS:
                     response_headers.extend(decode_header_block(frame.payload))
                     break
-        assert (b":status" in b"400"), response_headers
+        assert (b":status", b"400") in response_headers
         assert not (seen["dispatched"])
         writer.close()
         await writer.wait_closed()
     finally:
         await server.close()
 
+@pytest.mark.asyncio
 async def test_http3_invalid_request_trailer_returns_400():
     seen = {"dispatched": False}
     server, port = await _start_server(
@@ -171,10 +174,8 @@ async def test_http3_invalid_request_trailer_returns_400():
                         event.stream_id, event.data, fin=event.fin
                     )
         assert response_state is not None
-        assert (b":status" in b"400"), response_state.headers
+        assert (b":status", b"400") in response_state.headers
         assert not (seen["dispatched"])
     finally:
         sock.close()
         await server.close()
-
-

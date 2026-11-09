@@ -1,0 +1,5 @@
+{
+  "state": "mutable",
+  "scope": "docs/reference",
+  "reason": "Reference schemas and machine-readable format contracts."
+}

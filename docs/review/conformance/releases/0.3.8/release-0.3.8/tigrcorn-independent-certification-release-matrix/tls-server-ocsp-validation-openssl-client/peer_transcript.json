@@ -7,15 +7,15 @@
     "-servername",
     "localhost",
     "-CAfile",
-    "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/ca_bundle.pem",
+    "/mnt/data/ocsp_certification_work2/tigrcorn_content_coding_independent_content_coding_independent_closure_checkpoint/.artifacts/ocsp_certification_ocsp_runs/tmp06my23xj/materials/ca_bundle.pem",
     "-verify_return_error",
     "-alpn",
     "http/1.1",
     "-quiet",
     "-cert",
-    "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/client_good_chain.pem",
+    "/mnt/data/ocsp_certification_work2/tigrcorn_content_coding_independent_content_coding_independent_closure_checkpoint/.artifacts/ocsp_certification_ocsp_runs/tmp06my23xj/materials/client_good_chain.pem",
     "-key",
-    "/mnt/data/phase9e_work2/tigrcorn_phase9d3_content_coding_independent_closure_checkpoint/.artifacts/phase9e_ocsp_runs/tmp06my23xj/materials/client_good_key.pem"
+    "/mnt/data/ocsp_certification_work2/tigrcorn_content_coding_independent_content_coding_independent_closure_checkpoint/.artifacts/ocsp_certification_ocsp_runs/tmp06my23xj/materials/client_good_key.pem"
   ],
   "handshake_established": true,
   "request": {

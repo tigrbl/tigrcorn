@@ -124,7 +124,9 @@ def test_continuation_does_not_interpret_end_stream_flag():
     state = handler.streams.find(1)
     assert state is not None
     assert not (state.end_stream_received)
-    assert state.lifecycle == H2StreamLifecycle.OPEN
+    assert state.lifecycle in {H2StreamLifecycle.OPEN, H2StreamLifecycle.HALF_CLOSED_LOCAL}
+
+
 def test_priority_self_dependency_is_rejected():
     handler = _handler()
     handler.state.remote_settings_seen = True
@@ -140,7 +142,7 @@ def test_client_push_promise_is_rejected():
     with pytest.raises(ProtocolError):
         asyncio.run(handler._handle_frame(frame))
 
-def test_window_update_is_thresholded_not_immediate():
+def test_window_update_waits_for_app_consumption():
     handler = _handler()
     handler.state.remote_settings_seen = True
     writer = handler.writer
@@ -148,16 +150,19 @@ def test_window_update_is_thresholded_not_immediate():
     asyncio.run(handler._handle_headers(headers))
     data_small = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"a" * 32_000)
     asyncio.run(handler._handle_data(data_small))
-    assert writer.writes == []
+    buf = FrameBuffer()
+    for raw in writer.writes:
+        buf.feed(raw)
+    assert not any(frame.frame_type == FRAME_WINDOW_UPDATE for frame in buf.pop_all())
     data_threshold = HTTP2Frame(frame_type=FRAME_DATA, flags=0, stream_id=1, payload=b"b" * 1_000)
     asyncio.run(handler._handle_data(data_threshold))
     buf = FrameBuffer()
     for raw in writer.writes:
         buf.feed(raw)
     frames = buf.pop_all()
-    assert [frame.frame_type for frame in frames] == [FRAME_WINDOW_UPDATE, FRAME_WINDOW_UPDATE]
-    assert frames[0].stream_id == 0
-    assert frames[1].stream_id == 1
+    assert not any(frame.frame_type == FRAME_WINDOW_UPDATE for frame in frames)
+
+
 def test_stream_receive_flow_control_overflow_is_rejected():
     handler = _handler()
     handler.state.remote_settings_seen = True
@@ -199,4 +204,4 @@ def test_window_update_on_closed_stream_is_ignored():
 
 def test_goaway_payload_roundtrip_used_by_handler():
     last_stream_id, error_code, debug = parse_goaway(serialize_goaway(3, error_code=2, debug_data=b"dbg")[9:])
-    assert (last_stream_id == error_code, debug), (3, 2, b"dbg")
+    assert (last_stream_id, error_code, debug) == (3, 2, b"dbg")

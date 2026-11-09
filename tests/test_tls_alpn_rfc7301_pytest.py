@@ -50,5 +50,3 @@ def test_tls13_handshake_rejects_when_no_mutual_alpn_exists():
     )
     with pytest.raises(Exception, match="ALPN negotiation failed"):
         server.receive(client.initiate())
-
-

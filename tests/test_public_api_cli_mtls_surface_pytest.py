@@ -14,6 +14,7 @@ async def _app(scope, receive, send):
 
 
 
+@pytest.mark.asyncio
 async def test_serve_builds_config_with_client_certificate_options():
     config = object()
     server = SimpleNamespace(serve_forever=AsyncMock(), request_shutdown=object())
@@ -46,6 +47,7 @@ async def test_serve_builds_config_with_client_certificate_options():
     install_signal_handlers.assert_called_once()
     server.serve_forever.assert_awaited_once()
 
+@pytest.mark.asyncio
 async def test_serve_import_string_forwards_client_certificate_options():
     serve = AsyncMock()
     with (

@@ -24,8 +24,8 @@
     "environment_ready_for_release_workflow": false,
     "release_root": "docs/review/conformance/releases/0.3.9/release-0.3.9",
     "bundle_root": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-certification-environment-bundle",
-    "workflow_path": ".github/workflows/phase9-certification-release.yml",
-    "wrapper_path": "tools/run_phase9_release_workflow.py"
+    "workflow_path": ".github/workflows/release_certification-certification-release.yml",
+    "wrapper_path": "tools/run_release_certification_release_workflow.py"
   },
   "validation": {
     "python_version_ready": true,
@@ -39,7 +39,7 @@
     ]
   },
   "notes": [
-    "The release workflow must install the package with both the certification and dev extras before any Phase 9 checkpoint script is executed.",
+    "The release workflow must install the package with both the certification and dev extras before any Release certification checkpoint script is executed.",
     "The local/offline checkpoint environment may still be non-ready even when the installation contract has been frozen; current readiness is recorded, not assumed.",
     "This checkpoint closes the operational ambiguity around how the strict-promotion environment is provisioned, but it does not by itself turn the strict RFC target green."
   ]

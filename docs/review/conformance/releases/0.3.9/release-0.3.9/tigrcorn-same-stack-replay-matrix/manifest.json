@@ -61,7 +61,7 @@
   },
   "environment": {
     "curation": {
-      "note": "This canonical 0.3.9 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Phase 9 closure artifacts while keeping the underlying packet traces and peer transcripts intact."
+      "note": "This canonical 0.3.9 release root consolidates preserved evidence from the historical 0.3.2, 0.3.6-current, 0.3.6-rfc-hardening, and Release certification closure artifacts while keeping the underlying packet traces and peer transcripts intact."
     },
     "tigrcorn": {
       "bundle_scope": "curated-preserved-artifacts",

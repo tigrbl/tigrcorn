@@ -49,8 +49,8 @@ def test_recovery_state_is_tracked_per_path_after_rebinding():
     stationary.receive_datagram(mover.send_stream_data(4, b'second', fin=False), addr=('127.0.0.1', 1001))
     second_path = stationary.recovery
     assert first_path is not second_path
-    assert ('127.0.0.1' in 1000), stationary._path_states
-    assert ('127.0.0.1' in 1001), stationary._path_states
+    assert ('127.0.0.1', 1000) in stationary._path_states
+    assert ('127.0.0.1', 1001) in stationary._path_states
 
 def test_handler_defers_and_flushes_recovery_blocked_datagrams():
     async def app(scope, receive, send):
@@ -64,11 +64,11 @@ def test_handler_defers_and_flushes_recovery_blocked_datagrams():
     )
 
     class Endpoint:
-        def __init__():
+        def __init__(self):
             self.sent = []
             self.local_addr = ('127.0.0.1', 4433)
 
-        def send(data, addr):
+        def send(self, data, addr):
             self.sent.append((data, addr))
 
     endpoint = Endpoint()

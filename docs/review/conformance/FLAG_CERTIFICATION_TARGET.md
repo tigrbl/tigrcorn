@@ -47,12 +47,12 @@ It instead requires:
 - pure-operator flags are certified as operator surfaces, not as RFC claims
 - non-RFC custom values remain explicitly excluded from RFC compliance claims
 
-## Phase 9A contract freeze
+## Promotion contract contract freeze
 
-Phase 9A now freezes the remaining family-flag work in:
+Promotion contract now freezes the remaining family-flag work in:
 
-- `docs/review/conformance/PHASE9A_EXECUTION_BACKLOG.md`
-- `docs/review/conformance/phase9a_execution_backlog.current.json`
+- `docs/review/conformance/PROMOTION_CONTRACT_EXECUTION_BACKLOG.md`
+- `docs/review/conformance/promotion_contract_execution_backlog.current.json`
 
 The remaining six runtime gaps each now have:
 
@@ -65,9 +65,9 @@ The remaining six runtime gaps each now have:
 Row-level delivery metadata for those seven blockers is now embedded directly in `flag_contracts.json`, while `flag_covering_array.json` records the affected hazard clusters that must remain covered when the flags are closed.
 
 
-## Phase 9F2 observability closure
+## Observability surface observability closure
 
-Phase 9F2 closes the remaining pure-operator observability runtime gaps for:
+Observability surface closes the remaining pure-operator observability runtime gaps for:
 
 - `--log-config`
 - `--statsd-host`
@@ -76,9 +76,9 @@ Phase 9F2 closes the remaining pure-operator observability runtime gaps for:
 Those surfaces are now implemented at runtime, covered by startup/shutdown/failure-mode tests, and no longer count as flag-surface promotion blockers.
 
 
-## Phase 9F3 concurrency / keepalive closure
+## Concurrency keepalive concurrency / keepalive closure
 
-Phase 9F3 closes the remaining hybrid/runtime gaps for:
+Concurrency keepalive closes the remaining hybrid/runtime gaps for:
 
 - `--limit-concurrency`
 - `--websocket-ping-interval`

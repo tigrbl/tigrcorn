@@ -20,6 +20,7 @@ async def _start_server(*, http_versions: list[str], transport: str = 'tcp'):
     if transport == 'udp':
         kwargs.update({'transport': 'udp', 'protocols': ['http3'], 'quic_secret': b'shared'})
     config = build_config(**kwargs)
+    config.http.connect_policy = 'relay'
     server = TigrCornServer(app, config)
     await server.start()
     if transport == 'udp':

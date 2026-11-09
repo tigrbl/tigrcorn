@@ -1,0 +1,40 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2079"
+number: 2079
+slug: "certification-command-namespace"
+title: "Certification command namespace"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define a narrow certification command namespace whose implementations live in `tigrcorn-certification`."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Add operator command namespace spec for certification."
+    at: "2026-06-27T11:36:00Z"
+references: []
+body: |-
+  # Certification command namespace
+  
+  Tigrcorn shall define a narrow certification command namespace whose implementations live in `tigrcorn-certification`.
+  
+  Requirements:
+  
+  - The public CLI namespace shall be `tigrcorn certify <surface>`.
+  - The umbrella package may dispatch `tigrcorn certify` subcommands.
+  - Certification command implementations shall live in `tigrcorn-certification`.
+  - Runtime, protocol, transport, security, static, observability, config, ASGI, HTTP, contract, compat, and core packages shall not import from `tigrcorn-certification`.
+  - Certification commands shall consume public package-owned APIs, capability records, profile resolution, conformance fixtures, and evidence schemas.
+  - Certification commands shall produce deterministic machine-readable output under an operator-provided output directory.
+  - Certification commands shall report unavailable capabilities and invalid profiles as failures, not silent skips.
+  - Initial command coverage shall include `tigrcorn certify static --mount <path> --profile <profile> --output <dir>`.
+  - Additional surfaces may be added only when a surface-specific SPEC defines input, artifact, and acceptance behavior.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1065"
+  - "adr:1041"
+  - "adr:1048"

@@ -132,4 +132,3 @@ def test_lifecycle_and_embedded_server_docs_exist() -> None:
     assert 'lifespan.startup()' in contract
     assert 'lifespan.shutdown()' in contract
     assert 'Failure semantics' in contract
-

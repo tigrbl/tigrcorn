@@ -169,5 +169,3 @@ def test_missing_live_listener_metadata_fails() -> None:
         assert 'http11_baseline command.json does not preserve lane="end_to_end_release"' in failures
     finally:
         shutil.rmtree(root)
-
-

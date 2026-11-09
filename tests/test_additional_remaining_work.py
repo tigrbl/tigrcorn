@@ -1,6 +1,5 @@
 import asyncio
 import base64
-from contextlib import suppress
 import os
 import socket
 import unittest
@@ -18,10 +17,10 @@ from tigrcorn.transports.udp.packet import UDPPacket
 from tigrcorn.protocols.websocket.frames import encode_frame, read_frame
 
 
-async def _start_http_server(app, websocket_compression: str | None = None):
+async def _start_http_server(app):
     config = build_config(host='127.0.0.1', port=0, lifespan='off', http_versions=['1.1'])
-    if websocket_compression is not None:
-        config.websocket.compression = websocket_compression
+    config.http.connect_policy = 'relay'
+    config.websocket.compression = 'permessage-deflate'
     server = TigrCornServer(app, config)
     await server.start()
     port = server._listeners[0].server.sockets[0].getsockname()[1]
@@ -111,15 +110,15 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
 
         async def app(scope, receive, send):
             await receive()
-            await send({'type': 'websocket.accept', 'headers': [(b'sec-websocket-extensions', b'permessage-deflate')]})
+            await send({'type': 'websocket.accept', 'headers': []})
             event = await receive()
             seen['event'] = event
             await send({'type': 'websocket.send', 'text': event['text']})
             await send({'type': 'websocket.close', 'code': 1000})
 
-        server, port = await _start_http_server(app, websocket_compression='permessage-deflate')
+        server, port = await _start_http_server(app)
         try:
-            reader, writer = await asyncio.wait_for(asyncio.open_connection('127.0.0.1', port), 1.0)
+            reader, writer = await asyncio.open_connection('127.0.0.1', port)
             key = base64.b64encode(os.urandom(16))
             writer.write(
                 b'GET /ws HTTP/1.1\r\n'
@@ -130,12 +129,12 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
                 b'Sec-WebSocket-Key: ' + key + b'\r\n'
                 b'Sec-WebSocket-Extensions: permessage-deflate\r\n\r\n'
             )
-            await asyncio.wait_for(writer.drain(), 1.0)
-            response = await asyncio.wait_for(reader.readuntil(b'\r\n\r\n'), 1.0)
+            await writer.drain()
+            response = await reader.readuntil(b'\r\n\r\n')
             self.assertIn(b'sec-websocket-extensions: permessage-deflate', response.lower())
             compressed = _compress_ws_message(b'hello compressed')
             writer.write(encode_frame(0x1, compressed, fin=True, masked=True, rsv1=True))
-            await asyncio.wait_for(writer.drain(), 1.0)
+            await writer.drain()
             frame = await asyncio.wait_for(read_frame(reader, max_payload_size=4096, expect_masked=False, allow_rsv1=True), 1.0)
             self.assertTrue(frame.rsv1)
             decompressor = zlib.decompressobj(wbits=-15)
@@ -143,14 +142,43 @@ class RemainingWorkWebSocketTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(echoed, b'hello compressed')
             self.assertEqual(seen['event']['text'], 'hello compressed')
             writer.close()
-            await asyncio.wait_for(writer.wait_closed(), 1.0)
+            await writer.wait_closed()
         finally:
-            server.request_shutdown()
-            with suppress(asyncio.TimeoutError, asyncio.CancelledError):
-                await asyncio.wait_for(server.close(), 2.0)
+            await server.close()
 
 
 class RemainingWorkQuicRoutingTests(unittest.IsolatedAsyncioTestCase):
+    async def test_http3_session_uses_listener_datagram_size(self):
+        async def app(scope, receive, send):
+            return None
+
+        handler = HTTP3DatagramHandler(
+            app=app,
+            config=default_config(),
+            listener=ListenerConfig(
+                kind='udp',
+                host='127.0.0.1',
+                port=1,
+                protocols=['http3'],
+                quic_secret=b'shared',
+                max_datagram_size=4096,
+            ),
+            access_logger=AccessLogger(configure_logging('warning'), enabled=False),
+        )
+
+        class Endpoint:
+            local_addr = ('127.0.0.1', 4433)
+
+            def send(self, data, addr):
+                return None
+
+        client = QuicConnection(is_client=True, secret=b'shared', local_cid=b'cli-size')
+        await handler.handle_packet(
+            UDPPacket(data=client.build_initial(), addr=('127.0.0.1', 50000)),
+            Endpoint(),
+        )
+        session = next(iter(handler.sessions.values()))
+        self.assertEqual(session.quic.max_datagram_size, 4096)
     async def test_http3_session_survives_address_rebinding_via_connection_id(self):
         async def app(scope, receive, send):
             event = await receive()

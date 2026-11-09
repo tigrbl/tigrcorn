@@ -1,0 +1,37 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0602"
+number: 602
+slug: "graph-model"
+title: "Graph model"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "The authored registry is entity-centric JSON."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The authored registry is entity-centric JSON.
+  The graph export is derived and consists of nodes and typed edges.
+  
+  Representative edge types:
+  - `SCOPES`
+  - `USES_BOUNDARY`
+  - `ASSERTS`
+  - `VERIFIES`
+  - `SUPPORTS`
+  - `DERIVES_FROM`
+  - `AFFECTS`
+  - `PUBLISHES`
+  - `INCLUDES`
+  - `REQUIRES`
+  
+  A `REQUIRES` edge derived from `feature.requires` SHALL represent a passing prerequisite relationship.
+  It SHALL NOT be used to model parent/leaf, umbrella/member, category/item, or inventory grouping
+  composition. Such grouping remains a feature inventory convention unless represented through a separate
+  SSOT entity with its own semantics.
+spec_kind: "normative"
+adr_ids: []

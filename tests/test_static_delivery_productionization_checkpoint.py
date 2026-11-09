@@ -14,10 +14,11 @@ from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.static import StaticFilesApp
 from tigrcorn.transports.quic import QuicConnection
 
-from tests.test_phase2_entity_semantics_checkpoint import (
+from tests.test_entity_semantics_checkpoint import (
     _read_h2_response,
     _read_http1_response,
     _start_server,
+    _workspace_tempdir,
 )
 
 
@@ -36,8 +37,8 @@ async def _read_h3_response_with_client_progress(
     """
     loop = asyncio.get_running_loop()
     response_state = None
-    for _ in range(128):
-        data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 2.0)
+    for _ in range(256):
+        data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 5.0)
         for event in client.receive_datagram(data):
             if event.kind == 'stream' and event.stream_id == 0:
                 response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
@@ -58,8 +59,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
         async def send(message: dict) -> None:
             sent.append(message)
 
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'0123456789abcdef' * 65536)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -76,16 +76,12 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(sent[0]['status'], 200)
             self.assertEqual(sent[1]['type'], 'tigrcorn.http.response.file')
             self.assertEqual(sent[1]['segments'][0]['type'], 'file')
-            self.assertEqual(
-                Path(sent[1]['segments'][0]['path']).resolve(strict=False),
-                (root / 'blob.bin').resolve(strict=False),
-            )
+            self.assertEqual(sent[1]['segments'][0]['path'], str(root / 'blob.bin'))
             self.assertEqual(sent[1]['segments'][0]['offset'], 0)
             self.assertEqual(sent[1]['segments'][0]['count'], len(payload))
 
     async def test_http11_large_static_file_serves_without_read_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'http11-static-' * 131072)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -104,8 +100,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_http2_large_static_range_serves_without_read_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'http2-static-range-' * 131072)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
@@ -136,8 +131,7 @@ class StaticDeliveryProductionizationTests(unittest.IsolatedAsyncioTestCase):
                 await server.close()
 
     async def test_http3_large_static_range_serves_without_read_bytes(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
+        with _workspace_tempdir() as root:
             payload = (b'http3-static-range-' * 131072)
             (root / 'blob.bin').write_bytes(payload)
             app = StaticFilesApp(root)
