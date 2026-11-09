@@ -58,6 +58,7 @@ jobs:
         if: steps.target.outputs.artifact != ''
         with:
           artifact-ids: ${{ steps.target.outputs.artifact }}
+          merge-multiple: true
           path: ${{ runner.temp }}/benchmark-results
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
@@ -71,7 +72,7 @@ jobs:
           current_sha=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq '.head.sha')
           [[ "$current_sha" == "$HEAD_SHA" ]] || exit 0
           summary="$RUNNER_TEMP/benchmark-results/summary.json"
-          [[ -f "$summary" ]] || exit 0
+          test -f "$summary"
           comment="$RUNNER_TEMP/benchmark-comment.md"
           python tools/fmt_benchmark_comment.py "$summary" \
             "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" > "$comment"
