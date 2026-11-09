@@ -142,6 +142,8 @@ class TestResponsePipelineStreamingIntegration:
                             for event in client.receive_datagram(data):
                                 if event.kind == 'stream':
                                     core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+                        # Give the pre-shared-key fixture enough amplification credit
+                        # for the response and QUIC packet overhead.
                         request_payload = core.get_request(0).encode_request(
                             [
                                 (b':method', b'GET'),
@@ -149,7 +151,7 @@ class TestResponsePipelineStreamingIntegration:
                                 (b':path', b'/'),
                                 (b':authority', b'localhost'),
                             ],
-                            body=b'x' * 6000,
+                            body=b'x' * 32_768,
                         )
                         target = ('127.0.0.1', port)
                         for packet in client.send_stream_data_packets(0, request_payload, fin=True):

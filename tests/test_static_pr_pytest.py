@@ -136,13 +136,15 @@ class TestStaticDeliveryProductionization:
                             if event.kind == 'stream':
                                 core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
 
+                    # Give the pre-shared-key fixture enough amplification credit
+                    # for the response and QUIC packet overhead.
                     request_payload = core.get_request(0).encode_request([
                         (b':method', b'GET'),
                         (b':scheme', b'https'),
                         (b':path', b'/blob.bin'),
                         (b':authority', b'localhost'),
                         (b'range', b'bytes=16384-32767'),
-                    ], body=b'x' * 6000)
+                    ], body=b'x' * 32_768)
                     target = ('127.0.0.1', port)
                     for packet in client.send_stream_data_packets(0, request_payload, fin=True):
                         sock.sendto(packet, target)
