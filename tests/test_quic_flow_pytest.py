@@ -8,7 +8,12 @@ from tigrcorn.errors import ProtocolError
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.transports.quic.connection import PACKET_SPACE_APPLICATION
 from tigrcorn.transports.quic.handshake import TransportParameters
-from tigrcorn.transports.quic.streams import QuicResetStreamFrame, QuicStreamFrame
+from tigrcorn.transports.quic.streams import (
+    QuicMaxStreamsFrame,
+    QuicResetStreamFrame,
+    QuicStreamFrame,
+    QuicStreamsBlockedFrame,
+)
 
 
 def _pair() -> tuple[QuicConnection, QuicConnection]:
@@ -168,3 +173,20 @@ def test_credit_connection_and_stream_expand_local_receive_limits_only():
     server.credit_stream(0, 5)
     assert server.flow.window_for_stream(0) == stream_send_limit
     assert server.flow.receive_window_for_stream(0) == stream_recv_limit + 5
+
+
+@pytest.mark.parametrize("bidirectional", [True, False])
+def test_runtime_recovery_regenerates_current_stream_limits(bidirectional: bool) -> None:
+    connection, _ = _pair()
+    connection.streams.configure_local_initial_limits(bidirectional=7, unidirectional=11)
+    connection.streams.configure_peer_initial_limits(bidirectional=13, unidirectional=17)
+
+    recovered = connection._recovery_frames([
+        QuicMaxStreamsFrame(1, bidirectional=bidirectional),
+        QuicStreamsBlockedFrame(2, bidirectional=bidirectional),
+    ])
+
+    assert recovered == [
+        QuicMaxStreamsFrame(7 if bidirectional else 11, bidirectional=bidirectional),
+        QuicStreamsBlockedFrame(13 if bidirectional else 17, bidirectional=bidirectional),
+    ]

@@ -17,7 +17,7 @@ class QuicConnectionRecoveryPolicyMixin:
             )
         if isinstance(frame, QuicMaxStreamsFrame):
             return QuicMaxStreamsFrame(
-                self.streams.local_max_streams(frame.bidirectional),
+                self.streams.local_stream_limit(bidirectional=frame.bidirectional),
                 bidirectional=frame.bidirectional,
             )
         if isinstance(frame, QuicDataBlockedFrame):
@@ -29,7 +29,7 @@ class QuicConnectionRecoveryPolicyMixin:
             )
         if isinstance(frame, QuicStreamsBlockedFrame):
             return QuicStreamsBlockedFrame(
-                self.streams.peer_max_streams(frame.bidirectional),
+                self.streams.peer_stream_limit(bidirectional=frame.bidirectional),
                 bidirectional=frame.bidirectional,
             )
         raise ValueError(f"cannot regenerate QUIC recovery state for {type(frame)!r}")

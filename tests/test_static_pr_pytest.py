@@ -23,9 +23,40 @@ from tests.test_entity_semantics_checkpoint import (
     _start_server,
     _workspace_tempdir,
 )
-from tests.test_static_delivery_productionization_checkpoint import (
-    _read_h3_response_with_client_progress,
-)
+
+async def _read_h3_response_with_client_progress(
+    sock: socket.socket,
+    core: HTTP3ConnectionCore,
+    client: QuicConnection,
+    addr: tuple[str, int],
+) -> tuple[list[tuple[bytes, bytes]], bytes]:
+    """Drive QUIC timers while keeping each UDP receive alive until it completes."""
+    loop = asyncio.get_running_loop()
+    for _ in range(256):
+        idle_deadline = loop.time() + 5.0
+        receiver = asyncio.create_task(loop.sock_recvfrom(sock, 65535))
+        try:
+            while not receiver.done():
+                for raw in client.take_handshake_datagrams() + client.drain_scheduled_datagrams():
+                    sock.sendto(raw, addr)
+                remaining = idle_deadline - loop.time()
+                if remaining <= 0:
+                    raise TimeoutError('timed out waiting for an HTTP/3 response datagram')
+                delay = client.next_runtime_deadline()
+                # A timer firing must not cancel a receive that may have consumed a datagram.
+                timeout = min(remaining, delay) if delay is not None else remaining
+                await asyncio.wait((receiver,), timeout=timeout)
+            data, _addr = receiver.result()
+        finally:
+            if not receiver.done():
+                receiver.cancel()
+                await asyncio.gather(receiver, return_exceptions=True)
+        for event in client.receive_datagram(data):
+            if event.kind == 'stream' and event.stream_id == 0:
+                response = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+                if response.ended:
+                    return response.headers, response.body
+    raise AssertionError('timed out waiting for full HTTP/3 response body')
 
 
 class TestStaticDeliveryProductionization:
@@ -136,13 +167,15 @@ class TestStaticDeliveryProductionization:
                             if event.kind == 'stream':
                                 core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
 
+                    # Give the pre-shared-key fixture enough amplification credit
+                    # for the response and QUIC packet overhead.
                     request_payload = core.get_request(0).encode_request([
                         (b':method', b'GET'),
                         (b':scheme', b'https'),
                         (b':path', b'/blob.bin'),
                         (b':authority', b'localhost'),
                         (b'range', b'bytes=16384-32767'),
-                    ], body=b'x' * 6000)
+                    ], body=b'x' * 32_768)
                     target = ('127.0.0.1', port)
                     for packet in client.send_stream_data_packets(0, request_payload, fin=True):
                         sock.sendto(packet, target)

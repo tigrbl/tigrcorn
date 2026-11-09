@@ -19,7 +19,7 @@ from tigrcorn.static import StaticFilesApp, mount_static_app
 from tigrcorn.transports.quic import QuicConnection
 
 from tests.test_entity_semantics_checkpoint import _read_h2_response, _read_http1_response, _start_server, _workspace_tempdir
-from tests.test_static_delivery_productionization_checkpoint import _read_h3_response_with_client_progress
+from tests.test_static_pr_pytest import _read_h3_response_with_client_progress
 
 
 class TestStaticAndPathsendSurface:
@@ -173,12 +173,14 @@ class TestStaticAndPathsendSurface:
                     for event in client.receive_datagram(data):
                         if event.kind == 'stream':
                             core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
+                # Give the pre-shared-key fixture enough amplification credit
+                # for the response and QUIC packet overhead.
                 request_payload = core.get_request(0).encode_request([
                     (b':method', b'GET'),
                     (b':scheme', b'https'),
                     (b':path', b'/'),
                     (b':authority', b'localhost'),
-                ], body=b'x' * 6000)
+                ], body=b'x' * 32_768)
                 for packet in client.send_stream_data_packets(0, request_payload, fin=True):
                     sock.sendto(packet, target)
                 response_headers, body = await _read_h3_response_with_client_progress(sock, core, client, target)
