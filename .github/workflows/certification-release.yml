@@ -20,8 +20,7 @@ on:
 jobs:
   certification-environment-and-release-checkpoints:
     name: Certification Environment and Release Checkpoints (${{ matrix.python-version }})
-    runs-on: ubuntu-latest
-    environment: staging
+    runs-on: ${{ matrix.python-version == '3.10' && 'ubuntu-22.04' || 'ubuntu-latest' }}
     permissions:
       contents: read
     strategy:
@@ -34,32 +33,20 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Set up Python
+        if: matrix.python-version != '3.10'
         uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Set up runner Python 3.10
+        if: matrix.python-version == '3.10'
+        run: bash ./scripts/ci/setup-python310.sh
 
       - name: Upgrade pip
         run: python -m pip install -U pip
 
       - name: Install workspace packages
-        run: |
-          python -m pip install \
-            -e pkgs/tigrcorn-core \
-            -e pkgs/tigrcorn-config \
-            -e pkgs/tigrcorn-asgi \
-            -e pkgs/tigrcorn-contract \
-            -e pkgs/tigrcorn-transports \
-            -e pkgs/tigrcorn-protocols \
-            -e pkgs/tigrcorn-http \
-            -e pkgs/tigrcorn-security \
-            -e pkgs/tigrcorn-runtime \
-            -e pkgs/tigrcorn-static \
-            -e pkgs/tigrcorn-observability \
-            -e pkgs/tigrcorn-compat \
-            -e pkgs/tigrcorn-certification
-
-      - name: Install certification dependencies
-        run: python -m pip install -e ".[certification,dev]"
+        run: bash ./scripts/ci/install-workspace.sh
 
       - name: Freeze certification environment
         run: |

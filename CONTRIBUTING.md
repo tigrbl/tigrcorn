@@ -7,7 +7,7 @@ This repository is not organized as a loose collection of notes and code. It has
 ## Read this first
 
 1. `README.md`
-2. `.codex/AGENTS.md`
+2. [`.codex/AGENTS.md`](.codex/AGENTS.md)
 3. `docs/review/conformance/state/CURRENT_REPOSITORY_STATE.md`
 4. `docs/review/conformance/CERTIFICATION_BOUNDARY.md`
 5. `docs/review/conformance/BOUNDARY_NON_GOALS.md`
@@ -107,7 +107,7 @@ PowerShell equivalent (run from the repository root):
 
 ```powershell
 $env:PYTHONPATH = "src"
-'@
+@'
 from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target
 
 print(evaluate_release_gates('.').passed)

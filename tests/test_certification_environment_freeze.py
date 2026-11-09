@@ -91,9 +91,15 @@ def test_certification_environment_bundle_writer_strict_mode_tracks_readiness() 
 
 def test_release_workflow_and_wrapper_enforce_freeze_before_release_certification_scripts() -> None:
     workflow = (ROOT / '.github' / 'workflows' / 'certification-release.yml').read_text(encoding='utf-8')
+    installer = (ROOT / 'scripts' / 'ci' / 'install-workspace.sh').read_text(encoding='utf-8')
     wrapper = (ROOT / 'tools' / 'run_certification_release_workflow.py').read_text(encoding='utf-8')
-    assert 'pip install -e ".[certification,dev]"' in workflow
-    assert 'tools/freeze_certification_environment.py' in workflow
+    assert 'pip install' in installer
+    assert "-e '.[certification,dev]'" in installer
+    assert (
+        workflow.index('bash ./scripts/ci/install-workspace.sh')
+        < workflow.index('tools/freeze_certification_environment.py')
+        < workflow.index('tools/run_certification_release_workflow.py')
+    )
     assert '--require-imports' in workflow
     assert 'freeze_certification_environment.py' in wrapper
     assert '--require-imports' in wrapper

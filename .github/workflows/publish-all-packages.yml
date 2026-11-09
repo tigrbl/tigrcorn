@@ -248,7 +248,6 @@ jobs:
     needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.pypi_publish || inputs.gh_release) && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes') }}
     runs-on: ubuntu-latest
-    environment: staging
     permissions:
       contents: write
       attestations: write
@@ -445,7 +444,8 @@ jobs:
     needs: python-dist
     if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.pypi_publish && inputs.package_selection != 'probes' && inputs.package_selection != 'wt-peer-probes')) && (github.event_name != 'release' || github.event.release.prerelease == false) }}
     runs-on: ubuntu-latest
-    environment: pypi
+    # PyPI pending publishers require distinct workflow/environment identities.
+    environment: ${{ matrix.package == 'tigrcorn-quic-cc-reno' && 'pypi-quic-cc-reno' || 'pypi' }}
     permissions:
       contents: read
       id-token: write
@@ -463,6 +463,8 @@ jobs:
           - tigrcorn-http
           - tigrcorn-observability
           - tigrcorn-protocols
+          - tigrcorn-quic-cc
+          - tigrcorn-quic-cc-reno
           - tigrcorn-runtime
           - tigrcorn-security
           - tigrcorn-static
@@ -508,7 +510,6 @@ jobs:
     needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.npmjs_publish || inputs.gh_release) && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
     runs-on: ubuntu-latest
-    environment: ci
     permissions:
       contents: read
     strategy:
@@ -550,8 +551,7 @@ jobs:
     name: wt-peer-probes-browser-tests-node${{ matrix.node-version }}
     needs: prepare-release
     if: ${{ github.event_name != 'workflow_dispatch' || ((inputs.npmjs_publish || inputs.gh_release) && (inputs.package_selection == 'all' || inputs.package_selection == 'probes' || inputs.package_selection == 'wt-peer-probes')) }}
-    runs-on: ubuntu-latest
-    environment: ci
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     strategy:
