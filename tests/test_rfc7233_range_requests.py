@@ -47,6 +47,33 @@ def test_rfc7233_byte_range_engine_supports_single_multi_and_unsatisfied_ranges(
     assert get_header(unsatisfied.headers, b'content-range') == b'bytes */11'
 
 
+def test_rfc7233_byte_range_engine_supports_suffix_and_open_ended_ranges() -> None:
+    body = b'hello world'
+    headers = [(b'content-type', b'text/plain')]
+
+    suffix = apply_byte_ranges(
+        method='GET',
+        request_headers=[(b'range', b'bytes=-5')],
+        response_headers=headers,
+        body=body,
+        status=200,
+    )
+    assert suffix.status == 206
+    assert suffix.body == b'world'
+    assert get_header(suffix.headers, b'content-range') == b'bytes 6-10/11'
+
+    open_ended = apply_byte_ranges(
+        method='GET',
+        request_headers=[(b'range', b'bytes=6-')],
+        response_headers=headers,
+        body=body,
+        status=200,
+    )
+    assert open_ended.status == 206
+    assert open_ended.body == b'world'
+    assert get_header(open_ended.headers, b'content-range') == b'bytes 6-10/11'
+
+
 def test_rfc7233_if_range_honors_matching_etag_and_rejects_stale_date() -> None:
     body = b'hello world'
     headers = [
