@@ -1,0 +1,85 @@
+name: benchmark-comment
+
+on:
+  workflow_run:
+    workflows: [benchmark-pr]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  comment:
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.path == '.github/workflows/benchmark-pr.yml' &&
+      contains(fromJSON('["success", "failure"]'), github.event.workflow_run.conclusion)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    concurrency:
+      group: benchmark-comment-${{ github.event.workflow_run.head_repository.id }}-${{ github.event.workflow_run.head_branch }}
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    env:
+      RUN_ID: ${{ github.event.workflow_run.id }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      HEAD_REPO: ${{ github.event.workflow_run.head_repository.full_name }}
+      HEAD_REPO_ID: ${{ github.event.workflow_run.head_repository.id }}
+      HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+    steps:
+      - name: Find the open pull request for this run
+        id: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          candidates=$(gh api --method GET "repos/$GITHUB_REPOSITORY/pulls" \
+            -f state=open -f base=master -f head="${HEAD_REPO%%/*}:$HEAD_BRANCH")
+          pr=$(jq -r --arg sha "$HEAD_SHA" --arg repo_id "$HEAD_REPO_ID" '
+            [.[] | select(.head.sha == $sha and (.head.repo.id | tostring) == $repo_id)]
+            | if length == 1 then .[0].number else empty end
+          ' <<< "$candidates")
+          echo "number=$pr" >> "$GITHUB_OUTPUT"
+          if [[ -n "$pr" ]]; then
+            artifact=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/artifacts?name=benchmark-summary" \
+              --jq '.artifacts[] | select(.expired == false and .size_in_bytes <= 262144) | .id')
+            if [[ "$artifact" =~ ^[0-9]+$ ]]; then
+              echo "artifact=$artifact" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: steps.target.outputs.artifact != ''
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: steps.target.outputs.artifact != ''
+        with:
+          artifact-ids: ${{ steps.target.outputs.artifact }}
+          path: ${{ runner.temp }}/benchmark-results
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Post or update the benchmark comment
+        if: steps.target.outputs.artifact != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.target.outputs.number }}
+        run: |
+          current_sha=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq '.head.sha')
+          [[ "$current_sha" == "$HEAD_SHA" ]] || exit 0
+          summary="$RUNNER_TEMP/benchmark-results/summary.json"
+          [[ -f "$summary" ]] || exit 0
+          comment="$RUNNER_TEMP/benchmark-comment.md"
+          python tools/fmt_benchmark_comment.py "$summary" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" > "$comment"
+          existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- benchmark-results -->"))) | .id' \
+            | sed -n '1p')
+          if [[ -n "$existing" ]]; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -F body=@"$comment"
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" -F body=@"$comment"
+          fi
