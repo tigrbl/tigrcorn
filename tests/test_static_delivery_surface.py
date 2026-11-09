@@ -171,7 +171,8 @@ class StaticAndPathsendSurfaceTests(unittest.IsolatedAsyncioTestCase):
                     (b':path', b'/'),
                     (b':authority', b'localhost'),
                 ], body=b'x' * 6000)
-                sock.sendto(client.send_stream_data(0, request_payload, fin=True), target)
+                for packet in client.send_stream_data_packets(0, request_payload, fin=True):
+                    sock.sendto(packet, target)
                 response_headers, body = await _read_h3_response_with_client_progress(sock, core, client, target)
                 self.assertEqual(dict(response_headers)[b':status'], b'200')
                 self.assertEqual(body, payload)

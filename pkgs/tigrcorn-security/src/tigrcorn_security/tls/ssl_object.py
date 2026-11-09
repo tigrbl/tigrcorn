@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .imports import *
 from .models import *
+from .certificates import describe_peer_certificate
 
 class PackageOwnedSSLObject:
     def __init__(

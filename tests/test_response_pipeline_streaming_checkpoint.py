@@ -145,7 +145,8 @@ class ResponsePipelineStreamingIntegrationTests(unittest.IsolatedAsyncioTestCase
                             body=b'x' * 6000,
                         )
                         target = ('127.0.0.1', port)
-                        sock.sendto(client.send_stream_data(0, request_payload, fin=True), target)
+                        for packet in client.send_stream_data_packets(0, request_payload, fin=True):
+                            sock.sendto(packet, target)
                         response_headers, body = await _read_h3_response_with_client_progress(sock, core, client, target)
                     finally:
                         sock.close()
