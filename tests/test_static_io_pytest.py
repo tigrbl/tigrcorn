@@ -19,7 +19,7 @@ from tigrcorn.static import StaticFilesApp, mount_static_app
 from tigrcorn.transports.quic import QuicConnection
 
 from tests.test_entity_semantics_checkpoint import _read_h2_response, _read_http1_response, _start_server, _workspace_tempdir
-from tests.test_static_delivery_productionization_checkpoint import _read_h3_response_with_client_progress
+from tests.test_static_pr_pytest import _read_h3_response_with_client_progress
 
 
 class TestStaticAndPathsendSurface:

@@ -25,7 +25,7 @@ from tests.test_entity_semantics_checkpoint import (
     _read_http1_response,
     _start_server,
 )
-from tests.test_static_delivery_productionization_checkpoint import (
+from tests.test_static_pr_pytest import (
     _read_h3_response_with_client_progress,
 )
 
