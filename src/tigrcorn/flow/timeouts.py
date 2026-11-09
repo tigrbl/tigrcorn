@@ -1,17 +1,7 @@
 from __future__ import annotations
 
-import asyncio
-from dataclasses import dataclass
-from typing import Any
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class TimeoutPolicy:
-    read_timeout: float = 30.0
-    write_timeout: float = 30.0
-
-    async def wait_read(self, awaitable):
-        return await asyncio.wait_for(awaitable, timeout=self.read_timeout)
-
-    async def wait_write(self, awaitable):
-        return await asyncio.wait_for(awaitable, timeout=self.write_timeout)
+_module = _import_module("tigrcorn_protocols.flow.timeouts")
+_sys.modules[__name__] = _module

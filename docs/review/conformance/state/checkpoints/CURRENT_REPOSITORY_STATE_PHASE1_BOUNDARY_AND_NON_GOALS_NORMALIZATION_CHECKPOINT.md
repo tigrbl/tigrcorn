@@ -59,7 +59,7 @@ This checkpoint makes the following items explicit non-goals for the current pac
 Validation was re-run against this checkpoint using the local repository snapshot.
 
 - `python -m compileall -q src benchmarks tools`
-- `PYTHONPATH=src pytest -q tests/test_public_api_cli_mtls_surface.py tests/test_public_api_tls_cipher_surface.py tests/test_documentation_truth_normalization_checkpoint.py tests/test_certification_policy_alignment.py tests/test_documentation_reconciliation.py tests/test_dependency_declaration_reconciliation_checkpoint.py tests/test_trio_runtime_surface_reconciliation_checkpoint.py tests/test_rfc_applicability_and_competitor_status.py tests/test_phase9_implementation_plan.py tests/test_phase9a_promotion_contract_freeze.py`
+- `PYTHONPATH=src pytest -q tests/test_public_api_cli_mtls_surface.py tests/test_public_api_tls_cipher_surface.py tests/test_documentation_truth_normalization_checkpoint.py tests/test_certification_policy_alignment.py tests/test_documentation_reconciliation.py tests/test_dependency_declaration_reconciliation_checkpoint.py tests/test_trio_runtime_surface_reconciliation_checkpoint.py tests/test_rfc_applicability_and_competitor_status.py tests/test_certification_delivery_plan.py tests/test_promotion_contract_freeze.py`
 - `PYTHONPATH=src python -c "from tigrcorn.compat.release_gates import evaluate_release_gates, evaluate_promotion_target; ..."`
 
 Results from this checkpoint:

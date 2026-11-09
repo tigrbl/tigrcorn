@@ -1,0 +1,55 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0622"
+number: 622
+slug: "local-release-verification-and-gate-contract"
+title: "Local Release Verification And Gate Contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Draft contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-08T07:34:03Z"
+    note: "Tentative local release assurance proposal; not accepted or implementation-bound."
+    status: "draft"
+references: []
+body: |-
+  ## Status
+  
+  Draft contract.
+  
+  ## Verification
+  
+  A local verifier validates schemas, recomputes governed source hashes, recomputes source root hash, validates evidence bundle contents, verifies evidence paths, compares artifact hashes, and emits a canonical verification report.
+  
+  ## Gates
+  
+  Release certification, promotion, and publication may be configured to require a current source snapshot, evidence bundle, artifact manifest, and passing verification report.
+  
+  When configured for `T3` enforcement, the local release verification report is a `T3` gate input. `T3` evidence or verification reports SHOULD record:
+  
+  - release id,
+  - boundary ids,
+  - source snapshot id or hash,
+  - evidence bundle id or hash,
+  - artifact manifest id or hash,
+  - verification report result,
+  - certification guard result,
+  - blocking issue result,
+  - blocking risk result.
+  
+  `T3` evidence SHALL NOT be treated as a repeated `T2` test report without release, boundary, or profile certification context.
+  
+  ## Policy
+  
+  Policy controls should define required artifact kinds, path policy mode, required bundle/report presence, and whether assurance gates are advisory or blocking.
+spec_kind: "governance"
+adr_ids:
+  - "adr:0618"
+  - "adr:0619"
+  - "adr:0620"
+  - "adr:0625"

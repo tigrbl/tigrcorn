@@ -1,0 +1,504 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Any
+
+from tigrcorn_core.errors import ProtocolError
+
+HTTP_EVENT_MAP = {
+    "request.open": "http.request",
+    "request.body_in": "http.request",
+    "request.disconnect": "http.disconnect",
+    "response.open": "http.response.start",
+    "response.body_out": "http.response.body",
+    "response.close": "http.response.body",
+    "response.emit_complete": "transport.emit.complete",
+}
+WEBSOCKET_EVENT_MAP = {
+    "session.open": "websocket.connect",
+    "message.in": "websocket.receive",
+    "message.out": "websocket.send",
+    "session.accept": "websocket.accept",
+    "session.close": "websocket.close",
+    "session.disconnect": "websocket.disconnect",
+    "session.emit_complete": "transport.emit.complete",
+}
+LIFESPAN_EVENT_MAP = {
+    "session.open": "lifespan.startup",
+    "session.ready": "lifespan.startup.complete",
+    "session.close": "lifespan.shutdown",
+    "session.disconnect": "lifespan.shutdown.complete",
+}
+WEBTRANSPORT_EVENT_MAP = {
+    "session.open": "webtransport.connect",
+    "session.accept": "webtransport.accept",
+    "session.close": "webtransport.close",
+    "session.disconnect": "webtransport.disconnect",
+    "stream.chunk_in": "webtransport.stream.receive",
+    "stream.chunk_out": "webtransport.stream.send",
+    "datagram.in": "webtransport.datagram.receive",
+    "datagram.out": "webtransport.datagram.send",
+    "stream.emit_complete": "transport.emit.complete",
+    "datagram.emit_complete": "transport.emit.complete",
+    "session.emit_complete": "transport.emit.complete",
+}
+
+
+class CompletionLevel(StrEnum):
+    ACCEPTED_BY_RUNTIME = "accepted_by_runtime"
+    QUEUED_FOR_TRANSPORT = "queued_for_transport"
+    FLUSHED_TO_TRANSPORT = "flushed_to_transport"
+    PEER_ACKNOWLEDGED = "peer_acknowledged"
+    FAILED_DURING_EMIT = "failed_during_emit"
+    ABORTED_BY_PEER = "aborted_by_peer"
+
+
+class CompletionStatus(StrEnum):
+    OK = "ok"
+    REJECTED = "rejected"
+    FAILED = "failed"
+
+
+@dataclass(frozen=True, slots=True)
+class EventOrderRule:
+    required_first: str
+    allowed_after_close: tuple[str, ...] = ()
+
+
+@dataclass(slots=True)
+class GenericStreamRuntime:
+    _events: list[dict[str, Any]]
+    _completed: set[str]
+
+    def __init__(self) -> None:
+        self._events = []
+        self._completed = set()
+
+    @property
+    def events(self) -> tuple[dict[str, Any], ...]:
+        return tuple(dict(event) for event in self._events)
+
+    def receive(self, stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
+        self._ensure_open(stream_id)
+        event = stream_receive(stream_id, data, more=more)
+        self._events.append(event)
+        return event
+
+    def send(self, stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
+        self._ensure_open(stream_id)
+        event = stream_send(stream_id, data, more=more)
+        self._events.append(event)
+        return event
+
+    def complete(
+        self,
+        stream_id: str,
+        *,
+        level: str | CompletionLevel = CompletionLevel.FLUSHED_TO_TRANSPORT,
+        status: str | CompletionStatus = CompletionStatus.OK,
+        detail: str | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open(stream_id)
+        event = emit_complete(stream_id, level=level, status=status, detail=detail)
+        self._completed.add(stream_id)
+        self._events.append(event)
+        return event
+
+    def _ensure_open(self, stream_id: str) -> None:
+        if stream_id in self._completed:
+            raise ProtocolError(f"stream unit already completed: {stream_id}")
+
+
+@dataclass(slots=True)
+class GenericDatagramRuntime:
+    _events: list[dict[str, Any]]
+    _completed: set[str]
+
+    def __init__(self) -> None:
+        self._events = []
+        self._completed = set()
+
+    @property
+    def events(self) -> tuple[dict[str, Any], ...]:
+        return tuple(dict(event) for event in self._events)
+
+    def receive(self, datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
+        self._ensure_open(datagram_id)
+        event = datagram_receive(datagram_id, data, flow_controlled=flow_controlled)
+        self._events.append(event)
+        return event
+
+    def send(self, datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
+        self._ensure_open(datagram_id)
+        event = datagram_send(datagram_id, data, flow_controlled=flow_controlled)
+        self._events.append(event)
+        return event
+
+    def complete(
+        self,
+        datagram_id: str,
+        *,
+        level: str | CompletionLevel = CompletionLevel.FLUSHED_TO_TRANSPORT,
+        status: str | CompletionStatus = CompletionStatus.OK,
+        detail: str | None = None,
+    ) -> dict[str, Any]:
+        self._ensure_open(datagram_id)
+        event = emit_complete(datagram_id, level=level, status=status, detail=detail)
+        self._completed.add(datagram_id)
+        self._events.append(event)
+        return event
+
+    def _ensure_open(self, datagram_id: str) -> None:
+        if datagram_id in self._completed:
+            raise ProtocolError(f"datagram unit already completed: {datagram_id}")
+
+
+def _event(event_type: str, **payload: Any) -> dict[str, Any]:
+    return {"type": event_type, **payload}
+
+
+def _require_unit_id(unit_id: str) -> str:
+    if not isinstance(unit_id, str) or not unit_id.strip():
+        raise ProtocolError("contract event requires unit_id")
+    return unit_id
+
+
+def _require_bytes(name: str, value: bytes) -> bytes:
+    if not isinstance(value, bytes):
+        raise ProtocolError(f"{name} must be bytes")
+    return value
+
+
+def _require_bool(name: str, value: bool) -> bool:
+    if not isinstance(value, bool):
+        raise ProtocolError(f"{name} must be a boolean")
+    return value
+
+
+def http_request(unit_id: str, *, body: bytes = b"", more_body: bool = False) -> dict[str, Any]:
+    return _event("http.request", unit_id=_require_unit_id(unit_id), body=body, more_body=more_body)
+
+
+def http_disconnect(unit_id: str) -> dict[str, Any]:
+    return _event("http.disconnect", unit_id=_require_unit_id(unit_id))
+
+
+def http_response_start(unit_id: str, *, status: int, headers: list[tuple[bytes, bytes]] | None = None) -> dict[str, Any]:
+    if not 100 <= status <= 599:
+        raise ProtocolError(f"invalid HTTP response status: {status!r}")
+    return _event("http.response.start", unit_id=_require_unit_id(unit_id), status=status, headers=headers or [])
+
+
+def http_response_body(unit_id: str, *, body: bytes = b"", more_body: bool = False) -> dict[str, Any]:
+    return _event("http.response.body", unit_id=_require_unit_id(unit_id), body=body, more_body=more_body)
+
+
+def http_response_pathsend(
+    unit_id: str,
+    *,
+    path: str,
+    headers: list[tuple[bytes, bytes]] | None = None,
+    stat_result: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if not path:
+        raise ProtocolError("pathsend event requires path")
+    event = _event("http.response.pathsend", unit_id=_require_unit_id(unit_id), path=path)
+    if headers is not None:
+        event["headers"] = headers
+    if stat_result is not None:
+        event["stat_result"] = stat_result
+    return event
+
+
+def websocket_connect(unit_id: str) -> dict[str, Any]:
+    return _event("websocket.connect", unit_id=_require_unit_id(unit_id))
+
+
+def _derive_framing(*, text: str | None = None, bytes_: bytes | None = None, framing: str | None = None) -> str:
+    if framing is not None:
+        return framing
+    if text is not None:
+        return "text"
+    if bytes_ is not None:
+        return "bytes"
+    raise ProtocolError("cannot derive framing without text or bytes")
+
+
+def websocket_receive(
+    unit_id: str,
+    *,
+    text: str | None = None,
+    bytes_: bytes | None = None,
+    framing: str | None = None,
+) -> dict[str, Any]:
+    if text is None and bytes_ is None:
+        raise ProtocolError("websocket receive requires text or bytes")
+    return _event("websocket.receive", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_, framing=_derive_framing(text=text, bytes_=bytes_, framing=framing))
+
+
+def websocket_send(
+    unit_id: str,
+    *,
+    text: str | None = None,
+    bytes_: bytes | None = None,
+    framing: str | None = None,
+) -> dict[str, Any]:
+    if text is None and bytes_ is None:
+        raise ProtocolError("websocket send requires text or bytes")
+    return _event("websocket.send", unit_id=_require_unit_id(unit_id), text=text, bytes=bytes_, framing=_derive_framing(text=text, bytes_=bytes_, framing=framing))
+
+
+def websocket_accept(unit_id: str, *, subprotocol: str | None = None) -> dict[str, Any]:
+    event = _event("websocket.accept", unit_id=_require_unit_id(unit_id))
+    if subprotocol is not None:
+        event["subprotocol"] = subprotocol
+    return event
+
+
+def websocket_disconnect(unit_id: str, *, code: int = 1005, reason: str = "") -> dict[str, Any]:
+    return _event("websocket.disconnect", unit_id=_require_unit_id(unit_id), code=code, reason=reason)
+
+
+def websocket_close(unit_id: str, *, code: int = 1000, reason: str = "") -> dict[str, Any]:
+    return _event("websocket.close", unit_id=_require_unit_id(unit_id), code=code, reason=reason)
+
+
+def lifespan_startup(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.startup", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_startup_complete(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.startup.complete", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_startup_failed(unit_id: str, *, message: str) -> dict[str, Any]:
+    return _event("lifespan.startup.failed", unit_id=_require_unit_id(unit_id), message=message)
+
+
+def lifespan_shutdown(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.shutdown", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_shutdown_complete(unit_id: str) -> dict[str, Any]:
+    return _event("lifespan.shutdown.complete", unit_id=_require_unit_id(unit_id))
+
+
+def lifespan_shutdown_failed(unit_id: str, *, message: str) -> dict[str, Any]:
+    return _event("lifespan.shutdown.failed", unit_id=_require_unit_id(unit_id), message=message)
+
+
+def map_contract_event(binding: str, subevent: str) -> str:
+    maps = {
+        "http": HTTP_EVENT_MAP,
+        "http.stream": HTTP_EVENT_MAP,
+        "websocket": WEBSOCKET_EVENT_MAP,
+        "lifespan": LIFESPAN_EVENT_MAP,
+        "webtransport": WEBTRANSPORT_EVENT_MAP,
+    }
+    event_map = maps.get(binding)
+    if event_map is None:
+        raise ProtocolError(f"unsupported contract event binding: {binding!r}")
+    try:
+        return event_map[subevent]
+    except KeyError as exc:
+        raise ProtocolError(f"illegal subevent {subevent!r} for binding {binding!r}") from exc
+
+
+def stream_receive(stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
+    return _event("transport.stream.receive", stream_id=_require_unit_id(stream_id), data=_require_bytes("stream data", data), more=_require_bool("stream more", more))
+
+
+def stream_send(stream_id: str, data: bytes, *, more: bool = False) -> dict[str, Any]:
+    return _event("transport.stream.send", stream_id=_require_unit_id(stream_id), data=_require_bytes("stream data", data), more=_require_bool("stream more", more))
+
+
+def datagram_receive(datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
+    return _event("transport.datagram.receive", datagram_id=_require_unit_id(datagram_id), data=_require_bytes("datagram data", data), flow_controlled=_require_bool("datagram flow_controlled", flow_controlled))
+
+
+def datagram_send(datagram_id: str, data: bytes, *, flow_controlled: bool = False) -> dict[str, Any]:
+    return _event("transport.datagram.send", datagram_id=_require_unit_id(datagram_id), data=_require_bytes("datagram data", data), flow_controlled=_require_bool("datagram flow_controlled", flow_controlled))
+
+
+def webtransport_connect(session_id: str) -> dict[str, Any]:
+    return _event("webtransport.connect", session_id=session_id)
+
+
+def webtransport_accept(session_id: str) -> dict[str, Any]:
+    return _event("webtransport.accept", session_id=session_id)
+
+
+def webtransport_disconnect(session_id: str, *, code: int = 0, reason: str = "") -> dict[str, Any]:
+    return _event("webtransport.disconnect", session_id=session_id, code=code, reason=reason)
+
+
+def webtransport_close(session_id: str, *, code: int = 0, reason: str = "") -> dict[str, Any]:
+    return _event("webtransport.close", session_id=session_id, code=code, reason=reason)
+
+
+def webtransport_stream_receive(
+    session_id: str,
+    stream_id: str,
+    data: bytes,
+    *,
+    stream_direction: str = "bidi",
+    framing: str | None = None,
+    more: bool = False,
+) -> dict[str, Any]:
+    event = _event(
+        "webtransport.stream.receive",
+        session_id=session_id,
+        stream_id=stream_id,
+        stream_direction=stream_direction,
+        data=data,
+        more=more,
+    )
+    if framing is not None:
+        event["framing"] = framing
+    return event
+
+
+def webtransport_stream_send(
+    session_id: str,
+    stream_id: str,
+    data: bytes,
+    *,
+    stream_direction: str = "bidi",
+    framing: str | None = None,
+    more: bool = False,
+    emit_id: str | None = None,
+    completion_level: str | CompletionLevel | None = None,
+) -> dict[str, Any]:
+    event = _event(
+        "webtransport.stream.send",
+        session_id=session_id,
+        stream_id=stream_id,
+        stream_direction=stream_direction,
+        data=data,
+        more=more,
+    )
+    if framing is not None:
+        event["framing"] = framing
+    if emit_id is not None:
+        event["emit_id"] = str(emit_id)
+    if completion_level is not None:
+        event["completion_level"] = CompletionLevel(
+            _normalize_completion_level(str(completion_level))
+        ).value
+    return event
+
+
+def webtransport_datagram_receive(session_id: str, datagram_id: str, data: bytes, *, framing: str | None = None) -> dict[str, Any]:
+    event = _event("webtransport.datagram.receive", session_id=session_id, datagram_id=datagram_id, data=data)
+    if framing is not None:
+        event["framing"] = framing
+    return event
+
+
+def webtransport_datagram_send(
+    session_id: str,
+    datagram_id: str,
+    data: bytes,
+    *,
+    framing: str | None = None,
+    emit_id: str | None = None,
+    completion_level: str | CompletionLevel | None = None,
+) -> dict[str, Any]:
+    event = _event("webtransport.datagram.send", session_id=session_id, datagram_id=datagram_id, data=data)
+    if framing is not None:
+        event["framing"] = framing
+    if emit_id is not None:
+        event["emit_id"] = str(emit_id)
+    if completion_level is not None:
+        event["completion_level"] = CompletionLevel(
+            _normalize_completion_level(str(completion_level))
+        ).value
+    return event
+
+
+def emit_complete(
+    unit_id: str,
+    *,
+    level: str | CompletionLevel = CompletionLevel.FLUSHED_TO_TRANSPORT,
+    status: str | CompletionStatus = CompletionStatus.OK,
+    detail: str | None = None,
+    emit_id: str | None = None,
+) -> dict[str, Any]:
+    try:
+        completion_level = CompletionLevel(_normalize_completion_level(str(level)))
+    except ValueError as exc:
+        raise ProtocolError(f"unsupported completion level: {level!r}") from exc
+    try:
+        completion_status = CompletionStatus(str(status))
+    except ValueError as exc:
+        raise ProtocolError(f"unsupported completion status: {status!r}") from exc
+    event = _event(
+        "transport.emit.complete",
+        unit_id=_require_unit_id(unit_id),
+        emit_id=str(emit_id or unit_id),
+        level=completion_level.value,
+        status=completion_status.value,
+    )
+    if detail:
+        event["detail"] = detail
+    return event
+
+
+def validate_stream_event(event: dict[str, Any]) -> None:
+    if not isinstance(event, dict):
+        raise ProtocolError("stream event must be a mapping")
+    if event.get("type") not in {"transport.stream.receive", "transport.stream.send"}:
+        raise ProtocolError(f"unsupported stream event type: {event.get('type')!r}")
+    _require_unit_id(event.get("stream_id"))
+    _require_bytes("stream data", event.get("data"))
+    _require_bool("stream more", event.get("more", False))
+
+
+def validate_datagram_event(event: dict[str, Any]) -> None:
+    if not isinstance(event, dict):
+        raise ProtocolError("datagram event must be a mapping")
+    if event.get("type") not in {"transport.datagram.receive", "transport.datagram.send"}:
+        raise ProtocolError(f"unsupported datagram event type: {event.get('type')!r}")
+    _require_unit_id(event.get("datagram_id"))
+    _require_bytes("datagram data", event.get("data"))
+    _require_bool("datagram flow_controlled", event.get("flow_controlled", False))
+
+
+def _normalize_completion_level(level: str) -> str:
+    aliases = {
+        "buffered": CompletionLevel.ACCEPTED_BY_RUNTIME.value,
+        "accepted": CompletionLevel.ACCEPTED_BY_RUNTIME.value,
+        "queued": CompletionLevel.QUEUED_FOR_TRANSPORT.value,
+        "flushed": CompletionLevel.FLUSHED_TO_TRANSPORT.value,
+        "transport": CompletionLevel.FLUSHED_TO_TRANSPORT.value,
+        "acknowledged": CompletionLevel.PEER_ACKNOWLEDGED.value,
+        "failed": CompletionLevel.FAILED_DURING_EMIT.value,
+        "aborted": CompletionLevel.ABORTED_BY_PEER.value,
+    }
+    return aliases.get(level, level)
+
+
+def validate_event_order(events: list[dict[str, Any]], *, required_first: str, terminal_prefixes: tuple[str, ...]) -> None:
+    if not events:
+        raise ProtocolError("contract event sequence is empty")
+    if not required_first:
+        raise ProtocolError("contract event order requires a first event type")
+    if not terminal_prefixes:
+        raise ProtocolError("contract event order requires terminal prefixes")
+    if events[0].get("type") != required_first:
+        raise ProtocolError(f"first contract event must be {required_first}")
+    closed = False
+    for index, event in enumerate(events):
+        if not isinstance(event, dict):
+            raise ProtocolError("contract event must be a mapping")
+        event_type_raw = event.get("type")
+        if not isinstance(event_type_raw, str) or not event_type_raw:
+            raise ProtocolError("contract event type must be a non-empty string")
+        event_type = event_type_raw
+        if closed:
+            raise ProtocolError("contract event emitted after terminal event")
+        if index > 0 and event_type == required_first:
+            raise ProtocolError(f"contract event sequence repeated first event {required_first}")
+        if event_type.startswith(terminal_prefixes):
+            closed = True

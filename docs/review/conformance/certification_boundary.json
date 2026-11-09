@@ -30,11 +30,20 @@
     "RFC 9002",
     "RFC 7541",
     "RFC 9204",
+    "RFC 9221",
     "RFC 6455",
     "RFC 7692",
+    "RFC 7936",
+    "RFC 8307",
     "RFC 8441",
     "RFC 9220",
+    "RFC 9297",
     "RFC 8446",
+    "RFC 8470",
+    "RFC 3986",
+    "RFC 9308",
+    "RFC 9312",
+    "RFC 9114 Section 10.9",
     "RFC 9110 \u00a79.3.6",
     "RFC 9110 \u00a76.5",
     "RFC 9110 \u00a78",
@@ -76,7 +85,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "http3-server-surface"
+          "http3-server-surface",
+          "http3-request-control-strictness-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post",
@@ -102,7 +112,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "quic-packet-codec"
+          "quic-packet-codec",
+          "quic-packet-space-legality-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post-retry",
@@ -122,7 +133,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "quic-tls-initial-vectors"
+          "quic-tls-initial-vectors",
+          "quic-tls-protection-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post-mtls",
@@ -140,7 +152,8 @@
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "quic-recovery"
+          "quic-recovery",
+          "quic-recovery-edge-cases-deep"
         ],
         "same_stack_replay": [
           "http3-server-public-client-post-retry",
@@ -183,6 +196,15 @@
         ]
       }
     },
+    "RFC 9221": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "quic-datagram-frame",
+          "quic-datagram-frame-deep"
+        ]
+      }
+    },
     "RFC 6455": {
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
@@ -195,10 +217,31 @@
       }
     },
     "RFC 7692": {
-      "highest_required_evidence_tier": "local_conformance",
+      "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
           "websocket-permessage-deflate"
+        ],
+        "independent_certification": [
+          "websocket-http11-server-websockets-client-permessage-deflate",
+          "websocket-http2-server-h2-client-permessage-deflate",
+          "websocket-http3-server-aioquic-client-permessage-deflate"
+        ]
+      }
+    },
+    "RFC 7936": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-subprotocol-registry-semantics"
+        ]
+      }
+    },
+    "RFC 8307": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "websocket-well-known-uri"
         ]
       }
     },
@@ -229,16 +272,71 @@
         ]
       }
     },
+    "RFC 9297": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-datagram-h3-carrier",
+          "http-datagram-h3-carrier-deep"
+        ]
+      }
+    },
     "RFC 8446": {
       "highest_required_evidence_tier": "independent_certification",
       "declared_evidence": {
         "local_conformance": [
-          "tls13-package-subsystem"
+          "tls13-package-subsystem",
+          "tls13-quic-handshake-rejection-deep"
         ],
         "independent_certification": [
           "http2-tls-server-curl-client",
           "http2-tls-server-h2-client",
           "http3-server-openssl-quic-handshake"
+        ]
+      }
+    },
+    "RFC 8470": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http-early-data-policy",
+          "http-early-data-policy-deep"
+        ]
+      }
+    },
+    "RFC 3986": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "uri-generic-syntax-request-target",
+          "uri-generic-syntax-request-target-deep"
+        ]
+      }
+    },
+    "RFC 9308": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "quic-applicability-profile",
+          "quic-applicability-profile-deep"
+        ]
+      }
+    },
+    "RFC 9312": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "quic-manageability-observability",
+          "quic-manageability-observability-deep"
+        ]
+      }
+    },
+    "RFC 9114 Section 10.9": {
+      "highest_required_evidence_tier": "local_conformance",
+      "declared_evidence": {
+        "local_conformance": [
+          "http3-early-data-section-10-9",
+          "http3-early-data-section-10-9-deep"
         ]
       }
     },
@@ -340,7 +438,8 @@
     "require_docs_reference_canonical_boundary": true,
     "require_conformance_corpus": true,
     "require_rfc_evidence_map": true,
-    "require_preserved_artifacts_for_independent_scenarios": true
+    "require_preserved_artifacts_for_independent_scenarios": true,
+    "require_governance_graph": true
   },
   "docs_that_must_reference_boundary": [
     "README.md",

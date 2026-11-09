@@ -1,0 +1,15 @@
+name: ci-shell
+description: Run a repo-local CI shell command with PYTHONPATH pointed at src
+inputs:
+  command:
+    description: Shell command to execute
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Run command
+      shell: bash
+      run: |
+        set -euo pipefail
+        export PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}src"
+        ${{ inputs.command }}

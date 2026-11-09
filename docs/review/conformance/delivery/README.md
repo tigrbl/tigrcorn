@@ -4,8 +4,8 @@ This directory contains delivery notes and checkpoint handoff notes that used to
 
 Use these locations:
 
-- Phase 9 release assembly notes: `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9I_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
-- Phase 9 promotion notes: `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
+- Release certification release assembly notes: `docs/review/conformance/delivery/DELIVERY_NOTES_RELEASE_ASSEMBLY_AND_CERTIFIABLE_CHECKPOINT.md`
+- Release certification promotion notes: `docs/review/conformance/delivery/DELIVERY_NOTES_RELEASE_PROMOTION_AND_VERSION_UPDATE.md`
 - certification environment freeze notes: `docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md`
 - historical delivery-note archive: this directory
 

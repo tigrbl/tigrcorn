@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1022"
+number: 1022
+slug: "binding-and-subevent-legality"
+title: "enforce contract binding and subevent legality"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall validate binding, family, exchange, and subevent combinations against the contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1022 - Binding and subevent legality
+
+  Decision: Tigrcorn shall validate binding, family, exchange, and subevent combinations against the contract.
+
+  Illegal combinations must be rejected before runtime dispatch or event emission. ASGI3 compatibility may classify traffic with contract bindings, but it must not invent application-level runtimes for bindings outside Tigrcorn's server boundary.
+
+  Consequences:
+
+  - REST, JSON-RPC, SSE, WebSocket, WebTransport, and streaming classifications are governed consistently.
+  - Invalid metadata cannot silently pass into evidence.
+  - Adapter tests must include negative legality cases.

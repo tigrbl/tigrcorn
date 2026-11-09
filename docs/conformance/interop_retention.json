@@ -1,0 +1,17 @@
+[
+  {
+    "bundle_id": "independent_release_matrix",
+    "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-independent-certification-release-matrix",
+    "role": "independent_certification"
+  },
+  {
+    "bundle_id": "same_stack_replay_matrix",
+    "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-same-stack-replay-matrix",
+    "role": "same_stack_replay"
+  },
+  {
+    "bundle_id": "mixed_compatibility_matrix",
+    "path": "docs/review/conformance/releases/0.3.9/release-0.3.9/tigrcorn-mixed-compatibility-release-matrix",
+    "role": "mixed_compatibility"
+  }
+]

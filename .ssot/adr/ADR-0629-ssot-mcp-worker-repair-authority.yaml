@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0629"
+number: 629
+slug: "ssot-mcp-worker-repair-authority"
+title: "SSOT MCP workers may request registry repair authority"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision: SSOT MCP workers may request creation, update, deletion, listing, search, linking, unlinking, CLI delegation, and repair of SSOT registry entities through ssot-mcp. Workers still must not hand-edit .ssot/registry.json. Rationale: pull-worker campaigns must be able to backfill lower-tier claim tranches, repair missing target-tier claim wiring, and resolve blocker rows without requiring direct registry edits or operator-only intervention."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:14Z"
+    note: "Created to govern SSOT MCP worker repair and scoped maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  Decision: SSOT MCP workers may request creation, update, deletion, listing, search, linking, unlinking, CLI delegation, and repair of SSOT registry entities through ssot-mcp. Workers still must not hand-edit .ssot/registry.json. Rationale: pull-worker campaigns must be able to backfill lower-tier claim tranches, repair missing target-tier claim wiring, and resolve blocker rows without requiring direct registry edits or operator-only intervention.

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tigrcorn WebSocket UIX</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Tigrcorn ASGI3</p>
+          <h1>WebSocket UIX</h1>
+        </div>
+        <div class="status-strip" aria-live="polite">
+          <span id="statusDot" class="dot"></span>
+          <span id="statusText">Disconnected</span>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="panel controls">
+          <label>
+            WebSocket URL
+            <input id="urlInput" type="url" value="ws://localhost:8765/ws" spellcheck="false">
+          </label>
+          <div class="button-row">
+            <button id="connectBtn" type="button">Connect</button>
+            <button id="disconnectBtn" type="button" disabled>Close</button>
+          </div>
+          <label>
+            Peer name
+            <input id="nameInput" type="text" value="operator" maxlength="40">
+          </label>
+          <button id="renameBtn" type="button" disabled>Set name</button>
+          <label>
+            Message
+            <textarea id="messageInput" rows="5">hello from the browser</textarea>
+          </label>
+          <div class="button-row">
+            <button id="sendBtn" type="button" disabled>Broadcast</button>
+            <button id="echoBtn" type="button" disabled>Echo</button>
+          </div>
+          <div class="button-row">
+            <button id="pingBtn" type="button" disabled>Ping</button>
+            <button id="binaryBtn" type="button" disabled>Binary</button>
+          </div>
+        </aside>
+
+        <section class="panel metrics">
+          <div class="metric">
+            <span>Connected</span>
+            <strong id="connectedCount">0</strong>
+          </div>
+          <div class="metric">
+            <span>Total sessions</span>
+            <strong id="totalConnections">0</strong>
+          </div>
+          <div class="metric">
+            <span>Total messages</span>
+            <strong id="totalMessages">0</strong>
+          </div>
+          <div class="metric">
+            <span>Last RTT</span>
+            <strong id="lastRtt">--</strong>
+          </div>
+          <div class="peers">
+            <h2>Peers</h2>
+            <ul id="peerList"></ul>
+          </div>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="log-head">
+            <h2>Event Stream</h2>
+            <button id="clearBtn" type="button">Clear</button>
+          </div>
+          <ol id="eventLog" class="event-log"></ol>
+        </section>
+      </section>
+    </main>
+    <script src="./main.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1041"
+number: 1041
+slug: "runtime-capability-registry"
+title: "Runtime capability registry is the machine-readable source for support claims"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall expose a machine-readable capability registry for protocol, transport, TLS, lifecycle, embedded runtime, observability, and certification surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall expose a machine-readable capability registry for protocol, transport, TLS, lifecycle, embedded runtime, observability, and certification surfaces.
+  
+  Capability records must distinguish compiled, configured, enabled, certified, unavailable, and explicitly unsupported states. Package descriptions, README claims, profile defaults, and release notes may describe capabilities, but they must not be the authoritative runtime support source.
+  
+  Consequences:
+  
+  - Deployment profiles can validate required capabilities before serving traffic.
+  - Certification tooling can compare claimed support against current runtime evidence.
+  - Compatibility checks can fail closed when a protocol, transport, TLS, or lifecycle capability is absent or uncertified.
+  - Public support claims become auditable against a stable machine-readable surface.

@@ -1,7 +1,7 @@
 {
   "artifact_root": "docs/review/conformance/releases/0.3.8/release-0.3.8/tigrcorn-rfc7692-local-negative-artifacts",
   "bundle_kind": "local_negative_artifacts",
-  "commit_hash": "phase9c-rfc7692-checkpoint",
+  "commit_hash": "rfc7692_independent-rfc7692-checkpoint",
   "matrix_name": "tigrcorn-rfc7692-local-negative-artifacts",
   "total": 3,
   "passed": 3,

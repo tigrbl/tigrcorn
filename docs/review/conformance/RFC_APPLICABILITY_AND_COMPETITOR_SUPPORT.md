@@ -73,7 +73,7 @@ If the package decides to grow further into broader HTTP metadata / integrity se
    - only if `tigrcorn` deliberately adopts cache-aware origin behavior
 3. **RFC 9421 HTTP Message Signatures**
    - only if `tigrcorn` deliberately adopts signed edge / gateway responsibilities
-4. **RFC 8941 Structured Field Values** (supporting dependency, if digest/signature work is adopted)
+4. **RFC 9651 Structured Fields** (supporting dependency, if digest/signature work is adopted)
 
 ### RFCs that should remain optional unless the product boundary changes
 

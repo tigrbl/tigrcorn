@@ -1,0 +1,28 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1006"
+number: 1006
+slug: "webtransport-ietf-current-registered-profile"
+title: "Registered WebTransport IETF-current profile"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The IETF-current profile uses `SETTINGS_WT_ENABLED` at `0x2c7cf000`, CONNECT token `webtransport-h3`, H3 and QUIC DATAGRAM support, and `reset_stream_at`. It incorporates the existing current SETTINGS, CONNECT, and QUIC capability implementation without claiming Chromium compatibility."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-07-11T13:41:39Z"
+    note: "Accepted registered IETF-current contract"
+    status: "accepted"
+references: []
+body: |-
+  # IETF-current registered profile
+
+  The IETF-current profile uses `SETTINGS_WT_ENABLED` at `0x2c7cf000`, CONNECT token `webtransport-h3`, H3 and QUIC DATAGRAM support, and `reset_stream_at`. It incorporates the existing current SETTINGS, CONNECT, and QUIC capability implementation without claiming Chromium compatibility.
+
+  Defines: `feat:webtransport-ietf-current-profile-adapter`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"

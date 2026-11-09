@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0630"
+number: 630
+slug: "scoped-maturation-claims-and-blockers"
+title: "Scoped maturation claims ignore unrelated blockers"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Decision: scoped maturation pulls are evaluated only against the requested feature, profile, or boundary scope. Open blockers outside that scope must not prevent targeted work from receiving a lease. Rationale: global backlog blockers caused targeted workers to churn even after the selected feature had been repaired."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:15Z"
+    note: "Created to govern SSOT MCP worker repair and scoped maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  Decision: scoped maturation pulls are evaluated only against the requested feature, profile, or boundary scope. Open blockers outside that scope must not prevent targeted work from receiving a lease. Rationale: global backlog blockers caused targeted workers to churn even after the selected feature had been repaired.

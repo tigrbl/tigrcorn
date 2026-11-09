@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2085"
+number: 2085
+slug: "webtransport-explicit-stream-continuation-runtime"
+title: "WebTransport explicit stream-continuation runtime contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn preserves a WebTransport child stream while ASGI stream sends declare more=true and emits QUIC FIN only for more=false or an explicit stream-close event. Missing continuation state is rejected rather than interpreted as terminal. Application framing and operation completion do not influence carrier lifetime. Stream ownership, flow control, emit correlation, and cleanup remain session scoped."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Implemented and covered by persistent-stream tests."
+    at: "2026-08-03T22:24:44Z"
+references: []
+body: |-
+  Tigrcorn preserves a WebTransport child stream while ASGI stream sends declare more=true and emits QUIC FIN only for more=false or an explicit stream-close event. Missing continuation state is rejected rather than interpreted as terminal. Application framing and operation completion do not influence carrier lifetime. Stream ownership, flow control, emit correlation, and cleanup remain session scoped.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1073"

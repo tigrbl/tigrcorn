@@ -10,7 +10,7 @@
       "--cacert",
       "tests/fixtures_certs/interop-localhost-cert.pem"
     ],
-    "cwd": "/mnt/data/step6work/tigrcorn_phase9i_release_assembly_checkpoint",
+    "cwd": "/mnt/data/step6work/tigrcorn_release_assembly_checkpoint",
     "version_command": [
       "/mnt/data/step6venv/bin/python",
       "-m",
@@ -45,7 +45,7 @@
       "off",
       "--disable-websocket"
     ],
-    "cwd": "/mnt/data/step6work/tigrcorn_phase9i_release_assembly_checkpoint",
+    "cwd": "/mnt/data/step6work/tigrcorn_release_assembly_checkpoint",
     "version_command": [
       "python",
       "-m",

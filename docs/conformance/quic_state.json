@@ -1,0 +1,156 @@
+{
+  "canonical_release_root": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9",
+  "claims": [
+    {
+      "claim_id": "TC-STATE-QUIC-RETRY",
+      "feature": "retry",
+      "notes": "Retry is preserved through a third-party aioquic HTTP/3 request/response scenario with Retry observed.",
+      "protocols": [
+        "QUIC",
+        "HTTP/3"
+      ],
+      "scenarios": [
+        {
+          "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-retry",
+          "evidence_tier": "independent_certification",
+          "feature": "post-echo-retry",
+          "peer": "aioquic",
+          "peer_transcript": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-retry\\peer_transcript.json",
+          "protocol": "http3",
+          "qlog": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-retry\\qlog.json",
+          "result": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-retry\\result.json",
+          "scenario_id": "http3-server-aioquic-client-post-retry",
+          "summary": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-retry\\summary.json"
+        }
+      ],
+      "third_party_required": true,
+      "title": "QUIC Retry"
+    },
+    {
+      "claim_id": "TC-STATE-QUIC-RESUMPTION",
+      "feature": "resumption",
+      "notes": "Resumption is preserved through a third-party aioquic HTTP/3 scenario using QUIC-TLS session tickets.",
+      "protocols": [
+        "QUIC",
+        "HTTP/3"
+      ],
+      "scenarios": [
+        {
+          "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-resumption",
+          "evidence_tier": "independent_certification",
+          "feature": "post-echo-resumption",
+          "peer": "aioquic",
+          "peer_transcript": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-resumption\\peer_transcript.json",
+          "protocol": "http3",
+          "qlog": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-resumption\\qlog.json",
+          "result": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-resumption\\result.json",
+          "scenario_id": "http3-server-aioquic-client-post-resumption",
+          "summary": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-resumption\\summary.json"
+        }
+      ],
+      "third_party_required": true,
+      "title": "QUIC Resumption"
+    },
+    {
+      "claim_id": "TC-STATE-QUIC-0RTT",
+      "feature": "zero_rtt",
+      "notes": "0-RTT state is preserved through a third-party aioquic HTTP/3 scenario with early data requested and observed.",
+      "protocols": [
+        "QUIC",
+        "HTTP/3"
+      ],
+      "scenarios": [
+        {
+          "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-zero-rtt",
+          "evidence_tier": "independent_certification",
+          "feature": "post-echo-zero-rtt",
+          "peer": "aioquic",
+          "peer_transcript": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-zero-rtt\\peer_transcript.json",
+          "protocol": "http3",
+          "qlog": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-zero-rtt\\qlog.json",
+          "result": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-zero-rtt\\result.json",
+          "scenario_id": "http3-server-aioquic-client-post-zero-rtt",
+          "summary": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-zero-rtt\\summary.json"
+        }
+      ],
+      "third_party_required": true,
+      "title": "QUIC 0-RTT"
+    },
+    {
+      "claim_id": "TC-STATE-QUIC-MIGRATION",
+      "feature": "migration",
+      "notes": "Connection migration state is preserved through a third-party aioquic HTTP/3 migration scenario.",
+      "protocols": [
+        "QUIC",
+        "HTTP/3"
+      ],
+      "scenarios": [
+        {
+          "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-migration",
+          "evidence_tier": "independent_certification",
+          "feature": "post-echo-migration",
+          "peer": "aioquic",
+          "peer_transcript": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-migration\\peer_transcript.json",
+          "protocol": "http3",
+          "qlog": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-migration\\qlog.json",
+          "result": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-migration\\result.json",
+          "scenario_id": "http3-server-aioquic-client-post-migration",
+          "summary": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-migration\\summary.json"
+        }
+      ],
+      "third_party_required": true,
+      "title": "QUIC Migration"
+    },
+    {
+      "claim_id": "TC-STATE-QUIC-GOAWAY",
+      "feature": "goaway",
+      "notes": "GOAWAY semantics are preserved through the third-party aioquic post-goaway scenario.",
+      "protocols": [
+        "HTTP/3"
+      ],
+      "scenarios": [
+        {
+          "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack",
+          "evidence_tier": "independent_certification",
+          "feature": "post-echo-goaway-qpack",
+          "peer": "aioquic",
+          "peer_transcript": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\peer_transcript.json",
+          "protocol": "http3",
+          "qlog": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\qlog.json",
+          "result": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\result.json",
+          "scenario_id": "http3-server-aioquic-client-post-goaway-qpack",
+          "summary": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\summary.json"
+        }
+      ],
+      "third_party_required": true,
+      "title": "HTTP/3 GOAWAY"
+    },
+    {
+      "claim_id": "TC-STATE-QUIC-QPACK",
+      "feature": "qpack_blocking",
+      "notes": "QPACK encoder/decoder stream pressure is preserved through the third-party aioquic GOAWAY/QPACK scenario.",
+      "protocols": [
+        "HTTP/3",
+        "QPACK"
+      ],
+      "scenarios": [
+        {
+          "artifact_dir": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack",
+          "evidence_tier": "independent_certification",
+          "feature": "post-echo-goaway-qpack",
+          "peer": "aioquic",
+          "peer_transcript": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\peer_transcript.json",
+          "protocol": "http3",
+          "qlog": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\qlog.json",
+          "result": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\result.json",
+          "scenario_id": "http3-server-aioquic-client-post-goaway-qpack",
+          "summary": "docs\\review\\conformance\\releases\\0.3.9\\release-0.3.9\\tigrcorn-independent-certification-release-matrix\\http3-server-aioquic-client-post-goaway-qpack\\summary.json"
+        }
+      ],
+      "third_party_required": true,
+      "title": "HTTP/3 QPACK Pressure"
+    }
+  ],
+  "release_matrix": "docs\\review\\conformance\\external_matrix.release.json",
+  "surface_version": 1
+}

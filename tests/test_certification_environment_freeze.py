@@ -22,17 +22,21 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding='utf-8'))
 
 
+def _portable_path(value: str) -> str:
+    return value.replace('\\', '/')
+
+
 def test_certification_environment_docs_bundle_and_workflow_exist() -> None:
     assert (CONFORMANCE / 'CERTIFICATION_ENVIRONMENT_FREEZE.md').exists()
     assert (CONFORMANCE / 'certification_environment_freeze.current.json').exists()
     assert (ROOT / 'docs/review/conformance/delivery/DELIVERY_NOTES_CERTIFICATION_ENVIRONMENT_FREEZE.md').exists()
     assert BUNDLE_ROOT.exists()
-    assert (ROOT / '.github' / 'workflows' / 'phase9-certification-release.yml').exists()
-    assert (ROOT / 'tools' / 'run_phase9_release_workflow.py').exists()
+    assert (ROOT / '.github' / 'workflows' / 'certification-release.yml').exists()
+    assert (ROOT / 'tools' / 'run_certification_release_workflow.py').exists()
 
     manifest = _load_json(RELEASE_ROOT / 'manifest.json')
     assert 'certification_environment' in manifest['bundles']
-    assert manifest['bundles']['certification_environment']['path'] == str(BUNDLE_ROOT.relative_to(ROOT))
+    assert _portable_path(manifest['bundles']['certification_environment']['path']) == BUNDLE_ROOT.relative_to(ROOT).as_posix()
 
     bundle_index = _load_json(BUNDLE_ROOT / 'index.json')
     status = _load_json(CONFORMANCE / 'certification_environment_freeze.current.json')
@@ -48,8 +52,8 @@ def test_certification_environment_snapshot_builder_records_contract() -> None:
     assert snapshot['installation_contract']['install_command'] == 'python -m pip install -e ".[certification,dev]"'
     assert snapshot['installation_contract']['required_extras'] == ['certification', 'dev']
     assert snapshot['validation']['required_imports'] == ['aioquic', 'h2', 'websockets', 'wsproto']
-    assert snapshot['release_workflow']['workflow_path'] == '.github/workflows/phase9-certification-release.yml'
-    assert snapshot['release_workflow']['wrapper_path'] == 'tools/run_phase9_release_workflow.py'
+    assert snapshot['release_workflow']['workflow_path'] == '.github/workflows/certification-release.yml'
+    assert snapshot['release_workflow']['wrapper_path'] == 'tools/run_certification_release_workflow.py'
 
 
 def test_certification_environment_bundle_writer_supports_non_ready_environments() -> None:
@@ -58,8 +62,8 @@ def test_certification_environment_bundle_writer_supports_non_ready_environments
         snapshot = write_certification_environment_bundle(
             ROOT,
             bundle_root=target,
-            workflow_path='.github/workflows/phase9-certification-release.yml',
-            wrapper_path='tools/run_phase9_release_workflow.py',
+            workflow_path='.github/workflows/certification-release.yml',
+            wrapper_path='tools/run_certification_release_workflow.py',
             require_ready=False,
         )
         assert (target / 'environment.json').exists()
@@ -85,12 +89,18 @@ def test_certification_environment_bundle_writer_strict_mode_tracks_readiness() 
                 write_certification_environment_bundle(ROOT, bundle_root=target, require_ready=True)
 
 
-def test_release_workflow_and_wrapper_enforce_freeze_before_phase9_scripts() -> None:
-    workflow = (ROOT / '.github' / 'workflows' / 'phase9-certification-release.yml').read_text(encoding='utf-8')
-    wrapper = (ROOT / 'tools' / 'run_phase9_release_workflow.py').read_text(encoding='utf-8')
-    assert 'pip install -e ".[certification,dev]"' in workflow
-    assert 'tools/freeze_certification_environment.py' in workflow
+def test_release_workflow_and_wrapper_enforce_freeze_before_release_certification_scripts() -> None:
+    workflow = (ROOT / '.github' / 'workflows' / 'certification-release.yml').read_text(encoding='utf-8')
+    installer = (ROOT / 'scripts' / 'ci' / 'install-workspace.sh').read_text(encoding='utf-8')
+    wrapper = (ROOT / 'tools' / 'run_certification_release_workflow.py').read_text(encoding='utf-8')
+    assert 'pip install' in installer
+    assert "-e '.[certification,dev]'" in installer
+    assert (
+        workflow.index('bash ./scripts/ci/install-workspace.sh')
+        < workflow.index('tools/freeze_certification_environment.py')
+        < workflow.index('tools/run_certification_release_workflow.py')
+    )
     assert '--require-imports' in workflow
     assert 'freeze_certification_environment.py' in wrapper
     assert '--require-imports' in wrapper
-    assert 'tools/create_phase9i_release_assembly_checkpoint.py' in wrapper
+    assert 'tools/create_release_assembly_checkpoint.py' in wrapper

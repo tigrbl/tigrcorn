@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0631"
+number: 631
+slug: "scoped-maturation-blocker-contract"
+title: "Scoped maturation blocker contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This specification defines scoped maturation behavior. claim_next_maturation_slice SHALL honor feature_ids, profile_ids, and boundary_ids. Blocked transitions outside the resolved scope SHALL NOT prevent a scoped claim from receiving a lease. Campaign status for a scoped campaign SHALL report scoped incomplete and blocked counts. Global blocked backlog SHALL NOT leak into targeted work responses."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T17:45:20Z"
+    note: "Created to govern SSOT MCP scoped repair and worker maturation behavior."
+    status: "draft"
+references: []
+body: |-
+  This specification defines scoped maturation behavior. claim_next_maturation_slice SHALL honor feature_ids, profile_ids, and boundary_ids. Blocked transitions outside the resolved scope SHALL NOT prevent a scoped claim from receiving a lease. Campaign status for a scoped campaign SHALL report scoped incomplete and blocked counts. Global blocked backlog SHALL NOT leak into targeted work responses.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0630"

@@ -11,9 +11,9 @@ Performance closure is not an RFC claim. It is a release-quality product-perform
 
 The performance section of `evaluate_promotion_target()` is now **green** in-repo.
 
-The preserved performance roots still live under the historical `phase6_reference_baseline/` and `phase6_current_release/` paths, but those roots now carry the stricter Phase 9G metric, threshold, budget, and artifact contract.
+The preserved performance roots still live under the historical `phase6_reference_baseline/` and `phase6_current_release/` paths, but those roots now carry the stricter Strict performance metric, threshold, budget, and artifact contract.
 
-The historical phase6 roots still matter because the phase6 matrix is structurally useful but not yet sufficient on its own without the stricter Phase 9G metric and threshold contract.
+The historical phase6 roots still matter because the phase6 matrix is structurally useful but not yet sufficient on its own without the stricter Strict performance metric and threshold contract.
 
 ## What the strict target requires
 
@@ -43,21 +43,21 @@ The preserved matrix now declares both required lanes:
 The strict performance section is now green, but the overall promotion target is still blocked by non-performance work:
 
 - preserved-but-non-passing HTTP/3 `aioquic` strict-target scenarios
-- Phase 9H evaluator hardening
-- Phase 9I release assembly
+- Promotion hardening evaluator hardening
+- Release assembly release assembly
 
-## Phase 9A contract freeze
+## Promotion contract contract freeze
 
-Phase 9A froze the exact strict-performance contract in:
+Promotion contract froze the exact strict-performance contract in:
 
-- `docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md`
-- `docs/review/conformance/phase9a_promotion_contract.current.json`
-- `docs/review/conformance/phase9a_execution_backlog.current.json`
+- `docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md`
+- `docs/review/conformance/promotion_contract_promotion_contract.current.json`
+- `docs/review/conformance/promotion_contract_execution_backlog.current.json`
 
-## Phase 9G closure checkpoint
+## Strict performance closure checkpoint
 
 This checkpoint is documented through:
 
-- `docs/review/conformance/PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
-- `docs/review/conformance/phase9g_strict_performance.current.json`
-- `docs/review/conformance/delivery/DELIVERY_NOTES_PHASE9G_STRICT_PERFORMANCE_CLOSURE.md`
+- `docs/review/conformance/STRICT_PERFORMANCE_STRICT_PERFORMANCE_CLOSURE.md`
+- `docs/review/conformance/strict_performance_strict_performance.current.json`
+- `docs/review/conformance/delivery/DELIVERY_NOTES_STRICT_PERFORMANCE_STRICT_PERFORMANCE_CLOSURE.md`

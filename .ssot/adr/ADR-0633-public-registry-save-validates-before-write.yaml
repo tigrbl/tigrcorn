@@ -1,0 +1,27 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0633"
+number: 633
+slug: "public-registry-save-validates-before-write"
+title: "Public registry save validates before write"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "`save_registry` is the public Python API for writing `.ssot/registry.json`. Before this decision, that public surface only serialized the write under the registry JSON lock. Most mutation APIs validated before calling it, but a direct import could still persist invalid registry state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  `save_registry` is the public Python API for writing `.ssot/registry.json`. Before this decision, that public surface only serialized the write under the registry JSON lock. Most mutation APIs validated before calling it, but a direct import could still persist invalid registry state.
+  
+  ## Decision
+  
+  The public/default registry save API shall validate the candidate registry document before persistence and fail closed on validation errors. Lock-only persistence remains available only through an explicitly named unchecked helper for bootstrap, migration, and targeted repair flows that have their own surrounding validation policy.
+  
+  ## Consequences
+  
+  Default callers cannot bypass registry validation by importing the save helper directly. Exceptional flows remain possible, but their unchecked behavior is visible in code review and can be constrained by regression tests.

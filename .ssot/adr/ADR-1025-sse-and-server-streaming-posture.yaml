@@ -1,0 +1,27 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1025"
+number: 1025
+slug: "sse-and-server-streaming-posture"
+title: "classify SSE and server streaming through contract bindings"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall classify SSE and server streaming through contract bindings without creating an application framework runtime."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # ADR 1025 - SSE and server streaming posture
+
+  Decision: Tigrcorn shall classify SSE and server streaming through contract bindings without creating an application framework runtime.
+
+  SSE and server-streaming metadata are useful for validation, flow control, and documentation. Tigrcorn remains responsible for server and transport behavior, not application protocol business logic.
+
+  Consequences:
+
+  - SSE can be represented as contract metadata over HTTP.
+  - ASGI3 apps can receive classification metadata through extensions.
+  - Tigrcorn does not own application-level SSE framework semantics.

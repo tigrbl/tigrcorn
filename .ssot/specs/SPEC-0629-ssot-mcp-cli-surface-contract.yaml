@@ -1,0 +1,96 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0629"
+number: 629
+slug: "ssot-mcp-cli-surface-contract"
+title: "SSOT MCP and CLI surface parity contract"
+status: "draft"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Define the SSOT MCP contract for keeping the live `ssot-registry` CLI surface and the SSOT MCP tool surface in parity."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-20T16:21:38Z"
+    note: "Created to define full SSOT CLI delegation through ssot-mcp."
+    status: "draft"
+  -
+    at: "2026-05-22T00:45:11Z"
+    note: "Updated to require discoverable mirrored MCP CLI-path tools and parity drift enforcement."
+    status: "draft"
+references: []
+body: |-
+  ## Purpose
+  
+  Define the SSOT MCP contract for keeping the live `ssot-registry` CLI surface and the SSOT MCP tool surface in parity.
+  
+  ## Required MCP Tools
+  
+  `get_ssot_cli_surface` SHALL return:
+  
+  - `passed`
+  - `global_flags`
+  - `top_level_commands`
+  - `subcommand_paths`
+  - `flags_by_path`
+  - `root_tool_name`
+  - `tool_name_by_path`
+  
+  `run_ssot_cli` SHALL accept argv tokens after `ssot-registry` and SHALL support:
+  
+  - global flags
+  - top-level commands
+  - command flags
+  - subcommands
+  - subcommand flags
+  - help requests
+  - version requests
+  - invalid-argument requests
+  
+  ## Mirrored CLI Path Tools
+  
+  `ssot-mcp` SHALL register a root CLI MCP tool and mirrored MCP tools for the live CLI command paths.
+  
+  The root tool SHALL support full delegated argv execution.
+  
+  Each mirrored path tool SHALL:
+  
+  - map to exactly one live CLI command path
+  - accept root/global flags separately from path-local flags and positional arguments
+  - execute through the same safe in-process CLI delegation path
+  
+  ## Execution Result Contract
+  
+  Mirrored CLI path tools and `run_ssot_cli` SHALL return a structured result with:
+  
+  - `passed`
+  - `exit_code`
+  - `args`
+  - `output`
+  - `stdout`
+  - `stderr`
+  
+  If stdout is JSON, `output` SHOULD contain the parsed JSON payload. If stdout is not JSON, `output` MAY contain the raw stdout text.
+  
+  ## Parser Exit Containment
+  
+  The MCP server SHALL catch CLI parser exits, including argparse `SystemExit`, and return them as normal tool results. Help, version, and invalid-argument flows SHALL NOT close the MCP transport.
+  
+  ## Repository Resolution
+  
+  When `ssot-mcp` is pinned to a repository, delegated CLI execution SHALL run against the pinned repository unless an explicit different repo is rejected by policy. In explicit repo-per-call mode, non-metadata CLI operations SHALL require a repo argument. Metadata-only operations such as help, version, and CLI surface discovery MAY run without a repo.
+  
+  ## Drift Detection
+  
+  Parity SHALL be enforced by tests that compare the live CLI parser surface with the exposed MCP discovery and mirrored MCP tool registration.
+  
+  If a live CLI command path or flag is added, removed, or renamed, MCP parity tests SHALL fail until the MCP surface is updated to match.
+  
+  ## Mutation Notification
+  
+  Successful delegated CLI operations that can mutate registry state SHOULD emit a `registry_updated` event so workers can refresh context.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0628"

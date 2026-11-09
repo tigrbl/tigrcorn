@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1043"
+number: 1043
+slug: "embedded-runtime-resource-ownership"
+title: "Embedded runtime resources require explicit ownership contracts"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall define ownership and lifecycle responsibility for listeners, sockets, transports, TLS contexts, event loops, worker pools, and telemetry exporters in embedded and standalone deployments."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall define ownership and lifecycle responsibility for listeners, sockets, transports, TLS contexts, event loops, worker pools, and telemetry exporters in embedded and standalone deployments.
+  
+  Ownership must be explicit for server-owned, caller-owned, borrowed, and transferred resources. Shutdown, restart, reload, cancellation, and failure cleanup behavior must follow the same ownership contract.
+  
+  Consequences:
+  
+  - Embedded deployments can certify shutdown and cleanup behavior.
+  - Reload and restart flows avoid double-close, leaked sockets, dangling exporters, and orphaned worker pools.
+  - Runtime lifecycle tests can assert ownership behavior instead of relying on implementation-specific side effects.
+  - Profile validation can reject ambiguous resource ownership before runtime startup.

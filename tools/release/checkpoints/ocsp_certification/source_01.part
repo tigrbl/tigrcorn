@@ -1,0 +1,181 @@
+        stale_error = None
+        try:
+            verify_certificate_chain([pem_certificate(stale_leaf), pem_certificate(issuer)], trust, policy=stale_policy)
+        except ProtocolError as exc:
+            stale_error = str(exc)
+        vectors.append({
+            'id': 'ocsp-stale-response-require-fails',
+            'passed': stale_error is not None and 'revocation status could not be established' in stale_error,
+            'result': {'error': stale_error},
+            'source_tests': ['tests/test_ocsp_local_validation.py::test_stale_ocsp_response_fails_in_require_mode'],
+        })
+
+        # revoked client cert require failure
+        revoked_policy = CertificateValidationPolicy(purpose=CertificatePurpose.CLIENT_AUTH, revocation_mode=RevocationMode.REQUIRE)
+        revoked_error = None
+        try:
+            verify_certificate_chain([pem_certificate(revoked_leaf), pem_certificate(issuer)], trust, policy=revoked_policy)
+        except ProtocolError as exc:
+            revoked_error = str(exc)
+        vectors.append({
+            'id': 'ocsp-revoked-client-certificate-fails',
+            'passed': revoked_error is not None and 'revoked' in revoked_error,
+            'result': {'error': revoked_error},
+            'source_tests': ['tests/test_ocsp_local_validation.py::test_revoked_client_certificate_fails_in_require_mode'],
+        })
+
+    unavailable_factory = CertificateFactory()
+    root, root_key = unavailable_factory.make_ca('Root CA', path_length=1)
+    issuer, issuer_key = unavailable_factory.make_ca('Issuer CA', issuer_cert=root, issuer_key=root_key, path_length=0)
+    unreachable_leaf, _ = unavailable_factory.make_client_leaf('client.unreachable.local', issuer_cert=issuer, issuer_key=issuer_key, ocsp_uris=('http://127.0.0.1:9/unreachable',))
+    trust = [pem_certificate(root), pem_certificate(issuer)]
+    soft_policy = CertificateValidationPolicy(
+        purpose=CertificatePurpose.CLIENT_AUTH,
+        revocation_mode=RevocationMode.SOFT_FAIL,
+        revocation_fetch_policy=RevocationFetchPolicy(timeout_seconds=0.25),
+    )
+    require_policy = CertificateValidationPolicy(
+        purpose=CertificatePurpose.CLIENT_AUTH,
+        revocation_mode=RevocationMode.REQUIRE,
+        revocation_fetch_policy=RevocationFetchPolicy(timeout_seconds=0.25),
+    )
+    soft_ok = False
+    require_error = None
+    try:
+        verify_certificate_chain([pem_certificate(unreachable_leaf), pem_certificate(issuer)], trust, policy=soft_policy)
+        soft_ok = True
+    except ProtocolError:
+        soft_ok = False
+    try:
+        verify_certificate_chain([pem_certificate(unreachable_leaf), pem_certificate(issuer)], trust, policy=require_policy)
+    except ProtocolError as exc:
+        require_error = str(exc)
+    vectors.append({
+        'id': 'ocsp-unreachable-soft-fail-vs-require',
+        'passed': soft_ok and require_error is not None and 'OCSP http://127.0.0.1:9/unreachable' in require_error,
+        'result': {'soft_fail_passed': soft_ok, 'require_error': require_error},
+        'source_tests': ['tests/test_ocsp_local_validation.py::test_unreachable_responder_soft_fail_and_require_modes_diverge'],
+    })
+    return vectors
+
+
+def _create_local_validation_bundle() -> None:
+    if LOCAL_VALIDATION_ROOT.exists():
+        shutil.rmtree(LOCAL_VALIDATION_ROOT)
+    LOCAL_VALIDATION_ROOT.mkdir(parents=True, exist_ok=True)
+    vectors = _local_validation_vectors()
+    scenarios = []
+    for vector in vectors:
+        scenario_dir = LOCAL_VALIDATION_ROOT / vector['id']
+        scenario_dir.mkdir(parents=True, exist_ok=True)
+        _write_json(scenario_dir / 'result.json', vector)
+        scenarios.append({'id': vector['id'], 'passed': bool(vector['passed']), 'artifact_dir': str(scenario_dir.relative_to(ROOT))})
+    _write_json(LOCAL_VALIDATION_ROOT / 'manifest.json', {
+        'bundle_kind': 'local_validation_artifacts',
+        'phase': '9E',
+        'rfc': ['RFC 6960'],
+        'generated_at': _now(),
+        'commit_hash': COMMIT_HASH,
+        'description': 'Local OCSP validation vectors preserved during OCSP certification independent OCSP closure work.',
+    })
+    _write_json(LOCAL_VALIDATION_ROOT / 'index.json', {
+        'artifact_root': str(LOCAL_VALIDATION_ROOT.relative_to(ROOT)),
+        'bundle_kind': 'local_validation_artifacts',
+        'total': len(scenarios),
+        'passed': sum(1 for s in scenarios if s['passed']),
+        'failed': sum(1 for s in scenarios if not s['passed']),
+        'scenarios': scenarios,
+    })
+    _write_json(LOCAL_VALIDATION_ROOT / 'summary.json', {
+        'artifact_root': str(LOCAL_VALIDATION_ROOT.relative_to(ROOT)),
+        'bundle_kind': 'local_validation_artifacts',
+        'total': len(scenarios),
+        'passed': sum(1 for s in scenarios if s['passed']),
+        'failed': sum(1 for s in scenarios if not s['passed']),
+        'scenario_ids': [s['id'] for s in scenarios],
+    })
+
+
+def _update_release_root_manifest() -> None:
+    manifest_path = RELEASE_ROOT / 'manifest.json'
+    manifest = _load_json(manifest_path) if manifest_path.exists() else {}
+    manifest.update({
+        'release': '0.3.9',
+        'schema_version': 1,
+        'generated_at': _now(),
+        'source_checkpoint': 'ocsp_certification_ocsp',
+        'status': 'ocsp_certification_ocsp_independent_green_remaining_http3_blockers',
+        'promotion_ready': False,
+        'strict_target_complete': False,
+    })
+    bundles = dict(manifest.get('bundles', {}))
+    bundles['independent_certification'] = {
+        'path': str(INDEPENDENT_ROOT.relative_to(ROOT)),
+        'scenario_count': len(_load_json(INDEPENDENT_ROOT / 'index.json').get('scenarios', [])),
+        'release_gate_eligible': True,
+        'ocsp_validation_scenario': SCENARIO_ID,
+    }
+    bundles['local_ocsp_validation_artifacts'] = {
+        'path': str(LOCAL_VALIDATION_ROOT.relative_to(ROOT)),
+        'release_gate_eligible': False,
+        'vector_count': len(_load_json(LOCAL_VALIDATION_ROOT / 'index.json').get('scenarios', [])),
+    }
+    manifest['bundles'] = bundles
+    notes = list(manifest.get('notes', []))
+    add_notes = [
+        'OCSP certification overlays a passing OpenSSL OCSP validation scenario into the 0.3.9 working release root.',
+        'OCSP certification also preserves local OCSP validation vectors for stale responses, revoked client certificates, soft-fail vs require behavior, and cache reuse.',
+        'This release root remains non-promotable because the remaining HTTP/3 strict-target blockers, flag gaps, and strict performance target are still incomplete.',
+    ]
+    for note in add_notes:
+        if note not in notes:
+            notes.append(note)
+    manifest['notes'] = notes
+    _write_json(manifest_path, manifest)
+
+    readme = RELEASE_ROOT / 'README.md'
+    readme.write_text(
+        '# Release 0.3.9 working promotion root\n\n'
+        'This directory remains the next promotable release root reserved by Promotion contract.\n\n'
+        'Independent harness adds the shared independent-certification harness foundation proof bundle.\n'
+        'RFC 7692 independent closure adds an RFC 7692 independent-artifact overlay into the canonical independent bundle for this working root.\n'
+        'CONNECT relay independent closure adds a CONNECT relay independent-artifact overlay into the canonical independent bundle for this working root.\n'
+        'Trailer fields independent closure adds a trailer-fields independent-artifact overlay into the canonical independent bundle for this working root.\n'
+        'Content coding independent closure adds a content-coding independent-artifact overlay into the canonical independent bundle for this working root.\n'
+        'OCSP certification adds an OpenSSL OCSP validation independent-artifact overlay into the canonical independent bundle for this working root.\n\n'
+        'Current truth:\n\n'
+        '- the release root is **not** yet promotable\n'
+        '- the OpenSSL OCSP validation scenario now passes under the 0.3.9 working release root\n'
+        '- the remaining strict-target blockers are now concentrated in the HTTP/3 third-party scenarios for RFC 7692, CONNECT relay, trailer fields, and content coding\n'
+        '- the strict target is therefore **not** yet complete\n',
+        encoding='utf-8',
+    )
+
+
+def main() -> None:
+    write_wrapper_registry_json(WRAPPER_JSON)
+    if TMP_ROOT.exists():
+        shutil.rmtree(TMP_ROOT)
+    TMP_ROOT.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=TMP_ROOT) as td:
+        tmp_root = Path(td)
+        with revocation_http_server({}) as responder:
+            materials = _build_ocsp_materials(tmp_root / 'materials', responder)
+            matrix_path = _patched_matrix_for_ocsp(materials, tmp_root)
+            summary = run_external_matrix(
+                matrix_path,
+                artifact_root=tmp_root / 'run',
+                source_root=ROOT,
+                scenario_ids=[SCENARIO_ID],
+            )
+            generated_bundle = Path(summary.artifact_root)
+            _overlay_generated_scenario(generated_bundle, responder)
+    _create_local_validation_bundle()
+    _update_release_root_manifest()
+    report = validate_independent_certification_bundle(INDEPENDENT_ROOT, required_scenarios=[SCENARIO_ID])
+    if not report.passed:
+        raise SystemExit('independent bundle validation failed after OCSP certification overlay')
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1049"
+number: 1049
+slug: "http-entity-range-content-coding-certification"
+title: "HTTP entity, range, and content-coding behavior is certified explicitly"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall certify entity tags, conditional requests, range handling, and content-coding behavior as explicit HTTP delivery surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall certify entity tags, conditional requests, range handling, and content-coding behavior as explicit HTTP delivery surfaces.
+  
+  Certification must cover weak validators, strong validators, conditional requests, malformed ranges, overlapping ranges, range amplification, malformed compressed streams, decompression amplification, and compression side-channel posture.
+  
+  Consequences:
+  
+  - HTTP utility package behavior becomes part of release evidence.
+  - Security-sensitive delivery features receive negative and abuse-case tests.
+  - Static delivery can compose with entity, range, and content-coding certification.
+  - Profiles can require or prohibit specific delivery behaviors based on certified posture.

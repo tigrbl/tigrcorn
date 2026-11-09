@@ -1,9 +1,18 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
+
+import pytest
 
 from benchmarks.registry import get_driver
 from tigrcorn.compat.perf_runner import PerfProfile
+from tigrcorn_certification.perf_runner.stats import _percentile
+
+pytestmark = pytest.mark.skipif(
+    os.getenv('TIGRCORN_PERF_TIMING') != '1',
+    reason='set TIGRCORN_PERF_TIMING=1 on a benchmark runner',
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -38,11 +47,8 @@ def _assert_measurement_healthy(measurement: dict, *, max_p99_ms: float = 10.0) 
     assert len(samples) > 0
     assert measurement['total_duration_seconds'] > 0.0
     sorted_samples = sorted(samples)
-    if len(sorted_samples) >= 2:
-        p99_index = int(0.99 * (len(sorted_samples) - 1))
-        assert sorted_samples[p99_index] < max_p99_ms, (
-            f'p99 latency {sorted_samples[p99_index]:.3f}ms exceeds {max_p99_ms}ms bound'
-        )
+    p99_ms = _percentile(sorted_samples, 99.0)
+    assert p99_ms < max_p99_ms, f'p99 latency {p99_ms:.3f}ms exceeds {max_p99_ms}ms bound'
     for key, value in measurement['correctness_checks'].items():
         assert value, f'correctness check failed: {key}'
 

@@ -1,0 +1,47 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:0616"
+number: 616
+slug: "out-of-bounds-implementation-disposition"
+title: "Out-of-bounds implementation disposition is explicit"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "Feature implementation state, planning horizon, and lifecycle state are separate axes. That separation is useful, but it leaves an ambiguous case: a feature can be `out_of_bounds` while still being `partial` or `implemented` in the codebase."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  Feature implementation state, planning horizon, and lifecycle state are separate axes. That separation is useful, but it leaves an ambiguous case: a feature can be `out_of_bounds` while still being `partial` or `implemented` in the codebase.
+  
+  That ambiguity matters because there are two different governance meanings:
+  
+  - partial support may be incidental and acceptable as non-targeted behavior,
+  - partial support may be prohibited and require removal, quarantine, or a release-blocking follow-up.
+  
+  ## Decision
+  
+  SSOT core records the distinction on the feature planning record as `plan.out_of_bounds_disposition`.
+  
+  Allowed values are:
+  
+  - `tolerated`: non-absent implementation exists but is accepted as non-targeted, non-certified, out-of-bounds behavior.
+  - `prohibited`: non-absent implementation exists and is not acceptable; removal or quarantine is required.
+  
+  For any feature where `plan.horizon == out_of_bounds` and `implementation_status` is `partial` or `implemented`, the disposition must be explicit.
+  
+  Tolerated out-of-bounds features must not be included in active boundaries and must carry a lifecycle note explaining the non-targeted status.
+  
+  Prohibited out-of-bounds features must target lifecycle `removed` and, while non-absent, must be tied to an open release-blocking issue or active release-blocking risk.
+  
+  ## Consequences
+  
+  Downstream registries cannot silently carry ambiguous out-of-bounds partial support.
+  
+  Release and certification workflows can distinguish acceptable non-target behavior from prohibited implementation leakage.
+  
+  A removed feature still requires `implementation_status: absent`; `prohibited` is the managed transition state while code or behavior remains present.

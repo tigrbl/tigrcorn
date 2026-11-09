@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from importlib import import_module as _import_module
+import sys as _sys
 
-
-@dataclass(slots=True)
-class HTTP11ConnectionState:
-    requests_served: int = 0
-    keep_alive: bool = True
+_module = _import_module('tigrcorn_protocols.http1.state')
+_sys.modules[__name__] = _module

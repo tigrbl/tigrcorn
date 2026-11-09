@@ -1,0 +1,3 @@
+Tigrcorn transport stack runtime taxonomy T0/T1 pytest evidence
+command: uv run pytest tests/test_transport_stack_taxonomy_t01.py -q
+result: 4 passed

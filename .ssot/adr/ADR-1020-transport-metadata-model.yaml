@@ -1,0 +1,41 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1020"
+number: 1020
+slug: "transport-metadata-model"
+title: "expose transport metadata through the contract model"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall expose transport and TLS metadata through `tigr-asgi-contract` metadata structures."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:27:28Z"
+    note: "Updated to require classification discriminator metadata."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated transport metadata policy with framing and subprotocol metadata boundaries."
+    at: "2026-05-27T17:58:28Z"
+references: []
+body: |-
+  # ADR 1020 - Transport metadata model
+  
+  Decision: Tigrcorn shall expose transport and TLS metadata through `tigr-asgi-contract` metadata structures.
+  
+  Transport details such as protocol, ALPN, peer information, TLS state, and security metadata are contract fields first. ASGI3 compatibility exposes them through documented extension metadata.
+  
+  Consequences:
+  
+  - Metadata claims use one canonical model across native and compatibility paths.
+  - ASGI3 apps can consume richer Tigrcorn metadata without a native rewrite.
+  - Missing metadata is explicit and distinguishable from unsupported metadata.
+  
+  ## Classification update
+  
+  Tigrcorn shall expose classification discriminators through contract metadata when available, including ALPN, TLS and mTLS state, selected binding, WebSocket subprotocol, WebTransport session id, stream id, stream direction, datagram metadata, and WebTransport capability flags. Missing metadata must remain distinguishable from unsupported metadata.
+  
+  Tigrcorn may expose selected app-level framing or framing hints as bridge metadata when known, including WebSocket subprotocol/framing and WebTransport lane framing hints. Exposing such metadata does not make Tigrcorn responsible for application-level payload interpretation unless a separate runtime contract assigns that responsibility.

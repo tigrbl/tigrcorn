@@ -1,0 +1,42 @@
+{
+  "bundle_kind": "expected_negative_outcomes",
+  "bundles": [
+    {
+      "case_count": 1,
+      "path": "docs/conformance/negative_bundles/proxy.json",
+      "surface": "proxy"
+    },
+    {
+      "case_count": 1,
+      "path": "docs/conformance/negative_bundles/early_data.json",
+      "surface": "early_data"
+    },
+    {
+      "case_count": 2,
+      "path": "docs/conformance/negative_bundles/quic.json",
+      "surface": "quic"
+    },
+    {
+      "case_count": 2,
+      "path": "docs/conformance/negative_bundles/origin.json",
+      "surface": "origin"
+    },
+    {
+      "case_count": 2,
+      "path": "docs/conformance/negative_bundles/connect_relay.json",
+      "surface": "connect_relay"
+    },
+    {
+      "case_count": 2,
+      "path": "docs/conformance/negative_bundles/tls_x509.json",
+      "surface": "tls_x509"
+    },
+    {
+      "case_count": 2,
+      "path": "docs/conformance/negative_bundles/mixed_topology.json",
+      "surface": "mixed_topology"
+    }
+  ],
+  "contract_version": 1,
+  "preservation_rule": "Generated bundles are package-owned current-tree expected outcomes; release-root preserved bundles remain authoritative historical evidence where referenced."
+}

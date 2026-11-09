@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1038"
+number: 1038
+slug: "runtime-loop-support-boundary"
+title: "Restrict supported runtime loops to auto, asyncio, and uvloop"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrcorn shall support only `auto`, `asyncio`, and `uvloop` as public runtime loop surfaces in the current package boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Runtime loop support boundary
+  
+  Decision: Tigrcorn shall support only `auto`, `asyncio`, and `uvloop` as public runtime loop surfaces in the current package boundary.
+  
+  Rationale:
+  
+  - The current shipped runtime compatibility matrix, CLI parser, config validation, README, and tests all converge on `auto`, `asyncio`, and `uvloop`.
+  - `trio` is retained only as a reserved dependency path and historical compatibility marker; it is not a supported public runtime loop in the current boundary.
+  - The SSOT decision should match the actual package surface so certification and operator documentation do not overclaim unsupported runtime behavior.
+  
+  Consequences:
+  
+  - `feat:runtime-loop-auto`, `feat:runtime-loop-asyncio`, and `feat:runtime-loop-uvloop` remain in-bound active features.
+  - `feat:runtime-loop-trio` remains tracked, but out of bounds and non-targetable for current certification.
+  - Public docs, packaging metadata, and future runtime work shall not imply Trio runtime support unless a later ADR supersedes this decision.

@@ -1,0 +1,455 @@
+from __future__ import annotations
+
+import asyncio
+import logging
+import socket
+from dataclasses import dataclass, field
+from time import monotonic, time
+from typing import Any, Mapping
+from urllib.parse import urlparse
+
+STATSD_EXPORT_SCHEMA_VERSION = 'statsd-dogstatsd-v1'
+OTEL_EXPORT_SCHEMA_VERSION = 'otlp-http-json-v1'
+STATSD_EXPORT_MODES = ('statsd', 'dogstatsd')
+
+@dataclass(slots=True)
+class Metrics:
+    started_at: float = field(default_factory=monotonic)
+    connections_opened: int = 0
+    connections_closed: int = 0
+    active_connections: int = 0
+    requests_served: int = 0
+    requests_failed: int = 0
+    websocket_connections: int = 0
+    websocket_connections_closed: int = 0
+    active_websocket_connections: int = 0
+    scheduler_tasks_spawned: int = 0
+    scheduler_tasks_rejected: int = 0
+    scheduler_rejections: int = 0
+    streams_opened: int = 0
+    websocket_pings_sent: int = 0
+    websocket_ping_timeouts: int = 0
+    protocol_errors: int = 0
+    bytes_received: int = 0
+    bytes_sent: int = 0
+    quic_datagrams_received: int = 0
+    quic_datagrams_sent: int = 0
+    quic_sessions_opened: int = 0
+    quic_sessions_closed: int = 0
+    active_quic_sessions: int = 0
+    tls_handshakes_completed: int = 0
+    quic_retry_sent: int = 0
+    quic_early_data_attempted: int = 0
+    quic_early_data_accepted: int = 0
+    quic_early_data_rejected: int = 0
+    quic_path_challenges: int = 0
+    quic_path_responses: int = 0
+    quic_path_migrations: int = 0
+    quic_packets_lost: int = 0
+    quic_pto_expirations: int = 0
+    quic_pto_probes: int = 0
+    quic_stream_bytes_retransmitted: int = 0
+    quic_crypto_bytes_retransmitted: int = 0
+    quic_datagram_frames_abandoned: int = 0
+    quic_frames_regenerated: int = 0
+    quic_bytes_in_flight: int = 0
+    quic_congestion_window_bytes: int = 0
+    quic_smoothed_rtt_seconds: float = 0.0
+    quic_pacing_rate_bytes_per_second: float = 0.0
+    quic_pending_outbound_datagrams: int = 0
+    quic_congestion_controller_failures: int = 0
+    quic_persistent_congestion_events: int = 0
+    http3_requests_served: int = 0
+    http3_stream_resets: int = 0
+    http3_goaway_received: int = 0
+    http3_qpack_encoder_streams: int = 0
+    http3_qpack_decoder_streams: int = 0
+    webtransport_profile_draft02_selected: int = 0
+    webtransport_profile_draft13_selected: int = 0
+    webtransport_profile_ietf_current_selected: int = 0
+    webtransport_negotiation_rejected: int = 0
+
+    def connection_opened(self) -> None:
+        self.connections_opened += 1
+        self.active_connections += 1
+
+    def connection_closed(self) -> None:
+        self.connections_closed += 1
+        self.active_connections = max(0, self.active_connections - 1)
+
+    def websocket_opened(self) -> None:
+        self.websocket_connections += 1
+        self.active_websocket_connections += 1
+
+    def websocket_closed(self) -> None:
+        self.websocket_connections_closed += 1
+        self.active_websocket_connections = max(0, self.active_websocket_connections - 1)
+
+    def scheduler_task_spawned(self) -> None:
+        self.scheduler_tasks_spawned += 1
+
+    def scheduler_task_rejected(self) -> None:
+        self.scheduler_tasks_rejected += 1
+        self.scheduler_rejections += 1
+
+    def websocket_ping_sent(self) -> None:
+        self.websocket_pings_sent += 1
+
+    def websocket_ping_timeout(self) -> None:
+        self.websocket_ping_timeouts += 1
+
+    def quic_session_opened(self) -> None:
+        self.quic_sessions_opened += 1
+        self.active_quic_sessions += 1
+
+    def quic_session_closed(self) -> None:
+        self.quic_sessions_closed += 1
+        self.active_quic_sessions = max(0, self.active_quic_sessions - 1)
+
+    def quic_datagram_received(self, length: int = 0) -> None:
+        self.quic_datagrams_received += 1
+        if length > 0:
+            self.bytes_received += int(length)
+
+    def quic_datagram_sent(self, length: int = 0) -> None:
+        self.quic_datagrams_sent += 1
+        if length > 0:
+            self.bytes_sent += int(length)
+
+    def tls_handshake_completed(self) -> None:
+        self.tls_handshakes_completed += 1
+
+    def quic_retry_emitted(self) -> None:
+        self.quic_retry_sent += 1
+
+    def quic_early_data_observed(self, *, accepted: bool) -> None:
+        self.quic_early_data_attempted += 1
+        if accepted:
+            self.quic_early_data_accepted += 1
+        else:
+            self.quic_early_data_rejected += 1
+
+    def quic_path_challenge_observed(self) -> None:
+        self.quic_path_challenges += 1
+
+    def quic_path_response_observed(self) -> None:
+        self.quic_path_responses += 1
+
+    def quic_path_migrated(self) -> None:
+        self.quic_path_migrations += 1
+
+    def quic_packets_lost_observed(self, count: int) -> None:
+        self.quic_packets_lost += max(0, int(count))
+
+    def quic_pto_expired(self) -> None:
+        self.quic_pto_expirations += 1
+
+    def quic_recovery_observed(
+        self,
+        *,
+        pto_probes: int = 0,
+        stream_bytes_retransmitted: int = 0,
+        crypto_bytes_retransmitted: int = 0,
+        datagram_frames_abandoned: int = 0,
+        frames_regenerated: int = 0,
+    ) -> None:
+        self.quic_pto_probes += max(0, int(pto_probes))
+        self.quic_stream_bytes_retransmitted += max(0, int(stream_bytes_retransmitted))
+        self.quic_crypto_bytes_retransmitted += max(0, int(crypto_bytes_retransmitted))
+        self.quic_datagram_frames_abandoned += max(0, int(datagram_frames_abandoned))
+        self.quic_frames_regenerated += max(0, int(frames_regenerated))
+
+    def quic_transport_state_observed(
+        self,
+        *,
+        bytes_in_flight: int,
+        congestion_window: int,
+        smoothed_rtt: float,
+        pacing_rate: float,
+        pending_outbound: int,
+    ) -> None:
+        self.quic_bytes_in_flight = max(0, int(bytes_in_flight))
+        self.quic_congestion_window_bytes = max(0, int(congestion_window))
+        self.quic_smoothed_rtt_seconds = max(0.0, float(smoothed_rtt))
+        self.quic_pacing_rate_bytes_per_second = max(0.0, float(pacing_rate))
+        self.quic_pending_outbound_datagrams = max(0, int(pending_outbound))
+
+    def quic_congestion_controller_failed(self) -> None:
+        self.quic_congestion_controller_failures += 1
+
+    def quic_persistent_congestion_observed(self) -> None:
+        self.quic_persistent_congestion_events += 1
+
+    def http3_request_served(self) -> None:
+        self.http3_requests_served += 1
+
+    def http3_stream_reset(self) -> None:
+        self.http3_stream_resets += 1
+
+    def http3_goaway_observed(self) -> None:
+        self.http3_goaway_received += 1
+
+    def http3_qpack_encoder_stream_opened(self) -> None:
+        self.http3_qpack_encoder_streams += 1
+
+    def http3_qpack_decoder_stream_opened(self) -> None:
+        self.http3_qpack_decoder_streams += 1
+
+    def webtransport_profile_selected(self, profile: str) -> None:
+        field_name = {
+            'draft02': 'webtransport_profile_draft02_selected',
+            'draft13': 'webtransport_profile_draft13_selected',
+            'ietf-current': 'webtransport_profile_ietf_current_selected',
+        }.get(profile)
+        if field_name is not None:
+            setattr(self, field_name, int(getattr(self, field_name)) + 1)
+
+    def webtransport_negotiation_rejected_observed(self) -> None:
+        self.webtransport_negotiation_rejected += 1
+
+    @property
+    def uptime_seconds(self) -> float:
+        return max(0.0, monotonic() - self.started_at)
+
+    def snapshot(self) -> dict[str, Any]:
+        return {
+            'uptime_seconds': round(self.uptime_seconds, 6),
+            'connections_opened': self.connections_opened,
+            'connections_closed': self.connections_closed,
+            'active_connections': self.active_connections,
+            'requests_served': self.requests_served,
+            'requests_failed': self.requests_failed,
+            'websocket_connections': self.websocket_connections,
+            'websocket_connections_closed': self.websocket_connections_closed,
+            'active_websocket_connections': self.active_websocket_connections,
+            'scheduler_tasks_spawned': self.scheduler_tasks_spawned,
+            'scheduler_tasks_rejected': self.scheduler_tasks_rejected,
+            'scheduler_rejections': self.scheduler_rejections,
+            'streams_opened': self.streams_opened,
+            'websocket_pings_sent': self.websocket_pings_sent,
+            'websocket_ping_timeouts': self.websocket_ping_timeouts,
+            'protocol_errors': self.protocol_errors,
+            'bytes_received': self.bytes_received,
+            'bytes_sent': self.bytes_sent,
+            'quic_datagrams_received': self.quic_datagrams_received,
+            'quic_datagrams_sent': self.quic_datagrams_sent,
+            'quic_sessions_opened': self.quic_sessions_opened,
+            'quic_sessions_closed': self.quic_sessions_closed,
+            'active_quic_sessions': self.active_quic_sessions,
+            'tls_handshakes_completed': self.tls_handshakes_completed,
+            'quic_retry_sent': self.quic_retry_sent,
+            'quic_early_data_attempted': self.quic_early_data_attempted,
+            'quic_early_data_accepted': self.quic_early_data_accepted,
+            'quic_early_data_rejected': self.quic_early_data_rejected,
+            'quic_path_challenges': self.quic_path_challenges,
+            'quic_path_responses': self.quic_path_responses,
+            'quic_path_migrations': self.quic_path_migrations,
+            'quic_packets_lost': self.quic_packets_lost,
+            'quic_pto_expirations': self.quic_pto_expirations,
+            'quic_pto_probes': self.quic_pto_probes,
+            'quic_stream_bytes_retransmitted': self.quic_stream_bytes_retransmitted,
+            'quic_crypto_bytes_retransmitted': self.quic_crypto_bytes_retransmitted,
+            'quic_datagram_frames_abandoned': self.quic_datagram_frames_abandoned,
+            'quic_frames_regenerated': self.quic_frames_regenerated,
+            'quic_bytes_in_flight': self.quic_bytes_in_flight,
+            'quic_congestion_window_bytes': self.quic_congestion_window_bytes,
+            'quic_smoothed_rtt_seconds': self.quic_smoothed_rtt_seconds,
+            'quic_pacing_rate_bytes_per_second': self.quic_pacing_rate_bytes_per_second,
+            'quic_pending_outbound_datagrams': self.quic_pending_outbound_datagrams,
+            'quic_congestion_controller_failures': self.quic_congestion_controller_failures,
+            'quic_persistent_congestion_events': self.quic_persistent_congestion_events,
+            'http3_requests_served': self.http3_requests_served,
+            'http3_stream_resets': self.http3_stream_resets,
+            'http3_goaway_received': self.http3_goaway_received,
+            'http3_qpack_encoder_streams': self.http3_qpack_encoder_streams,
+            'http3_qpack_decoder_streams': self.http3_qpack_decoder_streams,
+            'webtransport_profile_draft02_selected': self.webtransport_profile_draft02_selected,
+            'webtransport_profile_draft13_selected': self.webtransport_profile_draft13_selected,
+            'webtransport_profile_ietf_current_selected': self.webtransport_profile_ietf_current_selected,
+            'webtransport_negotiation_rejected': self.webtransport_negotiation_rejected,
+        }
+
+    def render_prometheus(self, *, prefix: str = 'tigrcorn') -> str:
+        snapshot = self.snapshot()
+        lines = []
+        for key, value in snapshot.items():
+            metric_name = f"{prefix}_{key}"
+            lines.append(f"# TYPE {metric_name} gauge")
+            lines.append(f"{metric_name} {value}")
+        return '\n'.join(lines) + '\n'
+
+    def render_statsd(self, *, prefix: str = 'tigrcorn', previous: Mapping[str, Any] | None = None) -> str:
+        return '\n'.join(iter_statsd_lines(self.snapshot(), previous=previous, prefix=prefix))
+
+
+def _is_gauge_metric(name: str) -> bool:
+    return (
+        name.startswith('active_')
+        or name == 'uptime_seconds'
+        or name in {
+            'quic_bytes_in_flight',
+            'quic_congestion_window_bytes',
+            'quic_smoothed_rtt_seconds',
+            'quic_pacing_rate_bytes_per_second',
+            'quic_pending_outbound_datagrams',
+        }
+    )
+
+
+def iter_statsd_lines(snapshot: Mapping[str, Any], *, previous: Mapping[str, Any] | None = None, prefix: str = 'tigrcorn') -> list[str]:
+    lines: list[str] = []
+    previous = previous or {}
+    for key, raw_value in snapshot.items():
+        metric_name = f'{prefix}.{key}'
+        if _is_gauge_metric(key):
+            lines.append(f'{metric_name}:{raw_value}|g')
+            continue
+        current = float(raw_value)
+        baseline = float(previous.get(key, 0))
+        delta = current - baseline
+        if delta < 0:
+            delta = current
+        lines.append(f'{metric_name}:{delta}|c')
+    return lines
+
+
+def parse_statsd_target(target: str) -> tuple[str, int, str]:
+    target = str(target).strip()
+    if not target:
+        raise ValueError('statsd_host cannot be empty')
+    mode = 'statsd'
+    if '://' in target:
+        parsed = urlparse(target)
+        if parsed.scheme not in STATSD_EXPORT_MODES:
+            raise ValueError('statsd_host scheme must be statsd:// or dogstatsd://')
+        if not parsed.hostname or parsed.port is None:
+            raise ValueError('statsd_host URL must include host and port')
+        host = parsed.hostname
+        port_value = int(parsed.port)
+        mode = parsed.scheme
+        if port_value <= 0 or port_value > 65535:
+            raise ValueError('statsd_host port must be between 1 and 65535')
+        return host, port_value, mode
+    if target.startswith('[') and ']:' in target:
+        host, port = target.rsplit(':', 1)
+        host = host[1:-1]
+    elif ':' in target:
+        host, port = target.rsplit(':', 1)
+    else:
+        raise ValueError('statsd_host must be host:port')
+    port_value = int(port)
+    if port_value <= 0 or port_value > 65535:
+        raise ValueError('statsd_host port must be between 1 and 65535')
+    if not host:
+        raise ValueError('statsd_host host cannot be empty')
+    return host, port_value, mode
+
+
+def parse_statsd_host(target: str) -> tuple[str, int]:
+    host, port, _mode = parse_statsd_target(target)
+    return host, port
+
+
+class StatsdExporter:
+    def __init__(self, target: str, *, prefix: str = 'tigrcorn', interval: float = 1.0, logger: logging.Logger | None = None) -> None:
+        self.host, self.port, self.mode = parse_statsd_target(target)
+        self.prefix = prefix
+        self.interval = max(0.1, float(interval))
+        self.logger = logger
+        self._task: asyncio.Task[None] | None = None
+        self._socket: socket.socket | None = None
+        self._sockaddr: tuple[Any, ...] | None = None
+        self._last_snapshot: dict[str, Any] | None = None
+        self.sent_packets = 0
+        self.send_failures = 0
+        self.last_payload: str | None = None
+        self.last_error: str | None = None
+
+    def _ensure_socket(self) -> socket.socket:
+        if self._socket is not None:
+            return self._socket
+        infos = socket.getaddrinfo(self.host, self.port, type=socket.SOCK_DGRAM)
+        family, socktype, proto, _canon, sockaddr = infos[0]
+        sock = socket.socket(family, socktype, proto)
+        sock.setblocking(False)
+        self._socket = sock
+        self._sockaddr = sockaddr
+        return sock
+
+    async def start(self, metrics: Metrics) -> None:
+        if self._task is not None:
+            return
+        await self.export_now(metrics)
+        self._task = asyncio.create_task(self._run(metrics), name='tigrcorn-statsd-exporter')
+
+    async def _run(self, metrics: Metrics) -> None:
+        try:
+            while True:
+                await asyncio.sleep(self.interval)
+                await self.export_now(metrics)
+        except asyncio.CancelledError:
+            raise
+
+    async def export_now(self, metrics: Metrics) -> None:
+        snapshot = metrics.snapshot()
+        payload = '\n'.join(iter_statsd_lines(snapshot, previous=self._last_snapshot, prefix=self.prefix))
+        self._last_snapshot = dict(snapshot)
+        self.last_payload = payload
+        if not payload:
+            return
+        try:
+            sock = self._ensure_socket()
+            assert self._sockaddr is not None
+            loop = asyncio.get_running_loop()
+            packet = payload.encode('utf-8')
+            if hasattr(loop, 'sock_sendto'):
+                await loop.sock_sendto(sock, packet, self._sockaddr)
+            else:  # pragma: no cover - Python 3.10 fallback
+                await loop.run_in_executor(None, sock.sendto, packet, self._sockaddr)
+            self.sent_packets += 1
+        except Exception as exc:  # pragma: no cover - bounded failure path exercised in tests
+            self.send_failures += 1
+            self.last_error = str(exc)
+            if self.logger is not None:
+                self.logger.warning('statsd exporter send failed: %s', exc)
+
+    async def stop(self, metrics: Metrics | None = None) -> None:
+        if metrics is not None:
+            await self.export_now(metrics)
+        if self._task is not None:
+            self._task.cancel()
+            try:
+                await self._task
+            except asyncio.CancelledError:
+                pass
+            self._task = None
+        if self._socket is not None:
+            try:
+                self._socket.close()
+            finally:
+                self._socket = None
+                self._sockaddr = None
+
+
+def otel_metric_payload(snapshot: Mapping[str, Any], *, prefix: str = 'tigrcorn') -> list[dict[str, Any]]:
+    now_nanos = str(int(time() * 1_000_000_000))
+    metrics_payload: list[dict[str, Any]] = []
+    for key, value in snapshot.items():
+        name = f'{prefix}.{key}'
+        if _is_gauge_metric(key):
+            metrics_payload.append({
+                'name': name,
+                'gauge': {
+                    'dataPoints': [{'timeUnixNano': now_nanos, 'asDouble': float(value)}],
+                },
+            })
+        else:
+            metrics_payload.append({
+                'name': name,
+                'sum': {
+                    'aggregationTemporality': 2,
+                    'isMonotonic': True,
+                    'dataPoints': [{'timeUnixNano': now_nanos, 'asInt': int(value)}],
+                },
+            })
+    return metrics_payload

@@ -1,0 +1,29 @@
+﻿schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1076"
+number: 1076
+slug: "transport-congestion-media-rate-separation"
+title: "Separate transport congestion control from media rate adaptation"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "QUIC transport congestion control and application media-rate adaptation are separate extension surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  # Decision
+
+  QUIC transport congestion control and application media-rate adaptation are separate extension surfaces.
+
+  Reno, CUBIC, BBRv3, and Prague are transport congestion-control algorithms. They regulate bytes in flight and packet pacing for a QUIC path. GCC and SCReAMv2 are media-rate controllers. They regulate encoder bitrate, frame production, media queues, stale-frame disposition, and receiver feedback.
+
+  A media controller may consume transport telemetry, but it shall not replace QUIC ACK processing, loss recovery, congestion admission, pacing enforcement, or stream flow control. A QUIC controller shall not directly manipulate application encoders or media queues.
+
+  The current implementation boundary covers the QUIC congestion-controller contract only. A media-rate-control contract requires a separately scoped decision, specification, and implementation boundary.
+
+  # Governed features
+
+  - `feat:media-rate-control-boundary`

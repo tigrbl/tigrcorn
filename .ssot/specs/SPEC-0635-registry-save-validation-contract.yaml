@@ -1,0 +1,37 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:0635"
+number: 635
+slug: "registry-save-validation-contract"
+title: "Registry save validation contract"
+status: "accepted"
+origin: "ssot-origin"
+decision_date: null
+tags: []
+summary: "This SPEC defines the validation contract for public `.ssot/registry.json` save operations."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+  
+  This SPEC defines the validation contract for public `.ssot/registry.json` save operations.
+  
+  ## Requirements
+  
+  - The public/default `save_registry` API shall validate a candidate registry document before persistence.
+  - Validation shall use the same registry validator used by explicit validation commands.
+  - Validation failures shall fail closed and shall not replace the existing registry file.
+  - The public save API shall infer the repository root from `.ssot/registry.json` when a caller does not provide one.
+  - Lock acquisition and atomic replace semantics shall still protect the final write operation.
+  - Lock-only persistence shall be available only through an explicitly named unchecked helper.
+  - Unchecked persistence shall be reserved for bootstrap, migration, and targeted repair flows with separately documented validation policy.
+  - Regression tests shall prove that direct public save rejects invalid payloads and that unchecked save use remains limited to documented callers.
+  
+  ## Out of Scope
+  
+  This SPEC does not change the registry schema, graph export format, release snapshot format, or repo-local automation configuration. Repo-local post-mutation validation remains a separate automation layer.
+spec_kind: "operational"
+adr_ids:
+  - "adr:0633"

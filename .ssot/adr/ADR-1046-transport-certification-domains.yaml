@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1046"
+number: 1046
+slug: "transport-certification-domains"
+title: "Transports certify as independent domains"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn shall certify TCP, UDP, Unix socket, pipe, in-process, and QUIC transports as independent domains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn shall certify TCP, UDP, Unix socket, pipe, in-process, and QUIC transports as independent domains.
+  
+  Transport certification must cover capability discovery, diagnostics, latency, throughput, fairness, resource usage, backpressure, datagram support, and transport-specific operational metadata.
+  
+  Consequences:
+  
+  - Transport behavior is not treated as incidental protocol implementation detail.
+  - Strict profiles can require certified transport domains.
+  - Diagnostics can report transport state such as RTT, loss, migration, connection identifiers, and backpressure without depending on protocol handlers.
+  - Transport package boundaries remain visible in certification evidence.

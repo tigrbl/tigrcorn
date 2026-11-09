@@ -1,0 +1,26 @@
+schema_version: "0.6.0"
+kind: "adr"
+id: "adr:1045"
+number: 1045
+slug: "rfc-to-evidence-traceability-chain"
+title: "Certification requires RFC-to-evidence traceability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn certification shall preserve a traceability chain from RFC or specification requirement to SSOT specification, contract, implementation, tests, claims, and evidence artifacts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn certification shall preserve a traceability chain from RFC or specification requirement to SSOT specification, contract, implementation, tests, claims, and evidence artifacts.
+  
+  Certification cannot rely only on broad package support claims. Each certified requirement must be traceable to the implementation and evidence that proves it, including negative evidence where unsupported behavior must fail closed.
+  
+  Consequences:
+  
+  - Release certification can explain why a surface is certified, partial, provisional, or unsupported.
+  - Evidence gaps become explicit work items instead of hidden certification assumptions.
+  - RFC coverage, contract coverage, and release evidence can be audited independently.
+  - Promotion decisions can require traceability completeness rather than test pass counts alone.

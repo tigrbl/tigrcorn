@@ -1,0 +1,273 @@
+{
+  "baseline_artifact_root": "docs/review/performance/artifacts/vegeta_open_loop_baseline",
+  "current_artifact_root": "docs/review/performance/artifacts/vegeta_open_loop_current",
+  "matrix_name": "tigrcorn-vegeta-open-loop-benchmark-matrix",
+  "metadata": {
+    "certification_platforms": [
+      "operator-local"
+    ],
+    "note": "opt-in Vegeta open-loop pattern benchmarks; separate from strict release promotion performance evidence",
+    "purpose": "scripted HTTP/1.1 offered-load pattern benchmark evidence",
+    "tool": "vegeta"
+  },
+  "profiles": [
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "Vegeta HTTP/1.1 warmup plus baseline offered-load pattern.",
+      "driver": "vegeta_http11_constant_rate",
+      "driver_config": {
+        "connections": 0,
+        "path": "/plain",
+        "pattern_name": "warmup-baseline",
+        "phase_name": "baseline",
+        "phases": [
+          {
+            "duration": "15s",
+            "name": "warmup",
+            "rate": "100/s"
+          },
+          {
+            "duration": "30s",
+            "name": "baseline",
+            "rate": "500/s"
+          }
+        ]
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "vegeta_open_loop",
+      "live_listener_required": true,
+      "profile_id": "vegeta_http11_warmup_baseline",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_handshake_latency_ms": 250.0,
+        "max_p50_ms": 250.0,
+        "max_p95_ms": 500.0,
+        "max_p99_9_ms": 1000.0,
+        "max_p99_ms": 750.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 0,
+        "max_time_to_first_byte_ms": 250.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    },
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "Vegeta HTTP/1.1 step-load offered-rate pattern.",
+      "driver": "vegeta_http11_step_rate",
+      "driver_config": {
+        "connections": 0,
+        "path": "/plain",
+        "pattern_name": "step-load",
+        "phase_name": "step",
+        "phases": [
+          {
+            "duration": "15s",
+            "name": "step-500",
+            "rate": "500/s"
+          },
+          {
+            "duration": "15s",
+            "name": "step-1000",
+            "rate": "1000/s"
+          },
+          {
+            "duration": "15s",
+            "name": "step-2500",
+            "rate": "2500/s"
+          }
+        ]
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "vegeta_open_loop",
+      "live_listener_required": true,
+      "profile_id": "vegeta_http11_step_load",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.0,
+        "max_handshake_latency_ms": 250.0,
+        "max_p50_ms": 500.0,
+        "max_p95_ms": 1000.0,
+        "max_p99_9_ms": 2000.0,
+        "max_p99_ms": 1500.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 0,
+        "max_time_to_first_byte_ms": 500.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    },
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "Vegeta HTTP/1.1 spike offered-load pattern.",
+      "driver": "vegeta_http11_step_rate",
+      "driver_config": {
+        "connections": 0,
+        "path": "/plain",
+        "pattern_name": "spike-load",
+        "phase_name": "spike",
+        "phases": [
+          {
+            "duration": "15s",
+            "name": "baseline",
+            "rate": "500/s"
+          },
+          {
+            "duration": "10s",
+            "name": "spike",
+            "rate": "5000/s"
+          }
+        ]
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "vegeta_open_loop",
+      "live_listener_required": true,
+      "profile_id": "vegeta_http11_spike_load",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.1,
+        "max_handshake_latency_ms": 500.0,
+        "max_p50_ms": 750.0,
+        "max_p95_ms": 1500.0,
+        "max_p99_9_ms": 3000.0,
+        "max_p99_ms": 2500.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 10000,
+        "max_time_to_first_byte_ms": 750.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    },
+    {
+      "certification_platforms": [
+        "operator-local"
+      ],
+      "correctness_required": true,
+      "deployment_profile": "open_loop_http11_local",
+      "description": "Vegeta HTTP/1.1 recovery-after-overload offered-load pattern.",
+      "driver": "vegeta_http11_recovery_pattern",
+      "driver_config": {
+        "connections": 0,
+        "path": "/plain",
+        "pattern_name": "recovery-after-overload",
+        "phase_name": "recovery",
+        "phases": [
+          {
+            "duration": "15s",
+            "name": "baseline",
+            "rate": "500/s"
+          },
+          {
+            "duration": "10s",
+            "name": "overload",
+            "rate": "5000/s"
+          },
+          {
+            "duration": "30s",
+            "name": "recovery",
+            "rate": "500/s"
+          }
+        ]
+      },
+      "family": "OpenLoopHTTP",
+      "hot_path": true,
+      "iterations": 1,
+      "lane": "vegeta_open_loop",
+      "live_listener_required": true,
+      "profile_id": "vegeta_http11_recovery_after_overload",
+      "relative_regression_budget": {
+        "absolute_cpu_slack_seconds": 1.0,
+        "absolute_p99_9_slack_ms": 10.0,
+        "absolute_p99_slack_ms": 10.0,
+        "absolute_rss_slack_kib": 4096.0,
+        "max_cpu_increase_fraction": 1.0,
+        "max_p99_9_increase_fraction": 1.0,
+        "max_p99_increase_fraction": 1.0,
+        "max_rss_increase_fraction": 1.0,
+        "max_throughput_drop_fraction": 0.5
+      },
+      "rfc_targets": [
+        "RFC 9112"
+      ],
+      "thresholds": {
+        "max_error_rate": 0.1,
+        "max_handshake_latency_ms": 500.0,
+        "max_p50_ms": 750.0,
+        "max_p95_ms": 1500.0,
+        "max_p99_9_ms": 3000.0,
+        "max_p99_ms": 2500.0,
+        "max_protocol_stalls": 0,
+        "max_rss_kib": 1048576.0,
+        "max_scheduler_rejections": 10000,
+        "max_time_to_first_byte_ms": 750.0,
+        "min_throughput_ops_per_sec": 1.0
+      },
+      "units_per_iteration": 1,
+      "warmups": 0
+    }
+  ]
+}

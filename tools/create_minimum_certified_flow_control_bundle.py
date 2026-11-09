@@ -105,7 +105,7 @@ def _write_json(path: Path, payload):
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding='utf-8')
 
 def _rel(path: Path) -> str:
-    return str(path.relative_to(ROOT))
+    return path.relative_to(ROOT).as_posix()
 
 def main() -> int:
     vectors = {v['name']: v for v in _load_json(CORPUS_PATH).get('vectors', [])}
@@ -196,7 +196,7 @@ def main() -> int:
             'matrix_kind': 'minimum-certified-flow-control',
             'bundle_root': _rel(FLOW_ROOT),
             'generated_at': datetime.now(timezone.utc).isoformat(),
-            'scope_note': 'Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted in Phase 5.',
+            'scope_note': 'Reference matrix for the minimum independent QUIC/HTTP3 flow-control bundle promoted into the active certification boundary.',
         },
         'scenarios': matrix_scenarios,
     })

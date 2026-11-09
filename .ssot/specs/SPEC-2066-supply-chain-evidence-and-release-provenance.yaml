@@ -1,0 +1,31 @@
+schema_version: "0.6.0"
+kind: "spec"
+id: "spc:2066"
+number: 2066
+slug: "supply-chain-evidence-and-release-provenance"
+title: "Supply-chain evidence and release provenance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrcorn releases shall include supply-chain evidence and release provenance alongside certification artifacts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrcorn releases shall include supply-chain evidence and release provenance alongside certification artifacts.
+  
+  Requirements:
+  
+  - Release evidence shall include SPDX or CycloneDX SBOM output where the release rail can produce it.
+  - Release evidence shall include SLSA provenance or an explicitly documented equivalent provenance artifact where available.
+  - Package manifest integrity shall be checked across the Python and JavaScript package families before publication.
+  - Dependency graph drift and version conflict risks shall be reported before release promotion.
+  - Supply-chain evidence shall link to certification artifacts so operators can evaluate release correctness and artifact provenance together.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:0607"
+  - "adr:1032"
+  - "adr:1052"
+  - "adr:1053"

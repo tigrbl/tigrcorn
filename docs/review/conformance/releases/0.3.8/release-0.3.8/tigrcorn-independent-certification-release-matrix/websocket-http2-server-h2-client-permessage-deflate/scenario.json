@@ -58,7 +58,7 @@
   "metadata": {
     "peer_implementation": "python-h2/wsproto",
     "peer_independence": "third-party",
-    "phase9b_wrapper_id": "h2.http2_websocket_client",
+    "independent_harness_wrapper_id": "h2.http2_websocket_client",
     "rfc": [
       "RFC 7692",
       "RFC 8441",

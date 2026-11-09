@@ -17,7 +17,7 @@ from tigrcorn.protocols.http3 import HTTP3ConnectionCore
 from tigrcorn.transports.quic import QuicConnection
 from tigrcorn.utils.headers import get_header
 
-from tests.test_phase2_entity_semantics_checkpoint import (
+from tests.test_entity_semantics_checkpoint import (
     _read_h2_response,
     _read_http1_response,
     _start_server,

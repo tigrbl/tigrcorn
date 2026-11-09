@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "target_name": "phase8_strict_promotion_performance_slos",
-  "status": "phase9h_hardened_evaluator_performance_section_green",
+  "status": "promotion_hardening_hardened_evaluator_performance_section_green",
   "current_phase6_limitations": [
-    "The historical phase6 roots remain in use as preserved artifact paths, but the preserved artifacts now include the stricter phase9g metric, threshold, budget, lane, and platform keys.",
+    "The historical phase6 roots remain in use as preserved artifact paths, but the preserved artifacts now include the stricter strict_performance metric, threshold, budget, lane, and platform keys.",
     "The hardened promotion evaluator now enforces the full declared strict-performance contract rather than only the earlier checked subset.",
     "The overall promotion target remains blocked only by the preserved-but-non-passing HTTP/3 aioquic evidence rows and final release assembly work."
   ],
@@ -62,13 +62,13 @@
     "require_certification_platforms": true,
     "require_documented_slos_per_profile": true
   },
-  "phase9a_contract_freeze": {
+  "promotion_contract_contract_freeze": {
     "status": "frozen",
-    "status_doc": "docs/review/conformance/PHASE9A_PROMOTION_CONTRACT_FREEZE.md",
-    "status_json": "docs/review/conformance/phase9a_promotion_contract.current.json",
-    "backlog_json": "docs/review/conformance/phase9a_execution_backlog.current.json"
+    "status_doc": "docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md",
+    "status_json": "docs/review/conformance/promotion_contract_promotion_contract.current.json",
+    "backlog_json": "docs/review/conformance/promotion_contract_execution_backlog.current.json"
   },
-  "phase9g_state": {
+  "strict_performance_state": {
     "performance_section_passed": true,
     "current_artifact_root": "docs/review/performance/artifacts/phase6_current_release",
     "baseline_artifact_root": "docs/review/performance/artifacts/phase6_reference_baseline",

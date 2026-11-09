@@ -1,0 +1,44 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1067"
+number: 1067
+slug: "runtime-connection-inventory"
+title: "Runtime connection inventory keeps inspection separate from lifecycle ownership"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision:"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the diagnostics-only runtime connection inventory surface."
+    at: "2026-06-30T07:29:14Z"
+references: []
+body: |-
+  # Runtime connection inventory
+
+  Decision:
+
+  - Tigrcorn shall expose one read-oriented runtime connection inventory for live peer, connection, and protocol-session inspection.
+  - The inventory is diagnostics-only and shall not become the lifecycle owner for sockets, QUIC connections, WebSocket sessions, WebTransport sessions, streams, datagrams, scheduler leases, or governance budgets.
+  - Transport and protocol owners shall retain operational lifecycle authority and shall register/update/close normalized inventory records at their existing lifecycle boundaries.
+  - The primitive shall live in `tigrcorn_protocols.sessions` so runtime and protocol packages can use it without reversing the package dependency direction.
+  - `TigrCornServer.describe()` shall expose the inventory snapshot for diagnostics, metrics, debugging, shutdown inspection, and future admin surfaces.
+  - Peer identity means a remote participant grouping key. V1 may be address-derived, but the model must allow stronger authenticated identities such as mTLS subject, certificate fingerprint, token subject, or tenant principal.
+
+  Rationale:
+
+  - Existing protocol handlers already own the correct lifecycle facts. A global connection manager would either duplicate authority or force unrelated protocol state through one operational object.
+  - Operators still need one stable inspection surface that normalizes TCP-family connections, QUIC/H3 connections, HTTP requests, WebSocket sessions, CONNECT tunnels, and WebTransport sessions.
+  - Keeping ownership distributed and inspection centralized preserves the transport/protocol boundary while making runtime state observable.
+
+  Consequences:
+
+  - Closing or mutating an inventory record must not close the underlying transport or protocol object.
+  - Inventory methods must be idempotent and best-effort under existing lifecycle locks or boundaries.
+  - Snapshots must be JSON-serializable, deterministic, and redacted of secrets.
+  - WebTransport governance remains the budget and policy owner; its peer keys should align with inventory `PeerIdentity.peer_id`.
+  - Client-session topology proof remains governed separately by ADR-1039 and SPEC-2053.
