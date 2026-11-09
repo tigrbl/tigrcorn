@@ -1,0 +1,57 @@
+name: benchmark-pr
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: benchmark-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        with:
+          python-version: '3.12'
+
+      - name: Install workspace packages
+        run: bash scripts/ci/install-workspace.sh
+
+      - name: Run benchmark measurements
+        run: |
+          artifact_root="$RUNNER_TEMP/benchmark-results"
+          mkdir -p "$artifact_root"
+          if python tools/run_perf_matrix.py --establish-baseline --shuffle --artifact-root "$artifact_root"; then
+            exit 0
+          fi
+          test -s "$artifact_root/summary.json"
+          echo "::warning::Some benchmark profiles missed their thresholds. See the measurement artifacts."
+
+      - name: Upload measurements
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: benchmark-results
+          path: ${{ runner.temp }}/benchmark-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+
+      - name: Upload comment summary
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: benchmark-summary
+          path: ${{ runner.temp }}/benchmark-results/summary.json
+          if-no-files-found: ignore
+          retention-days: 7

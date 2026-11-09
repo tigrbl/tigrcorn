@@ -25,6 +25,7 @@ python -m pytest -q \
   tests/test_policy_surface.py \
   tests/test_strict_rfc_surface.py \
   tests/test_rfc7233_range_requests.py \
+  tests/perf/test_driver_checks.py \
   tests/test_flag_surface_truth_reconciliation.py \
   tests/test_http3_priority_lock.py \
   tests/test_release_gates.py \
