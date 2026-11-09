@@ -16,6 +16,7 @@ from tigrcorn.protocols.http2.codec import (
 )
 from tigrcorn.protocols.http2.hpack import decode_header_block, encode_header_block
 from tigrcorn.protocols.http3 import HTTP3ConnectionCore
+from tigrcorn.protocols.http3.codec import SETTING_QPACK_BLOCKED_STREAMS, SETTING_QPACK_MAX_TABLE_CAPACITY
 from tigrcorn.server.runner import TigrCornServer
 from tigrcorn.transports.quic import QuicConnection
 
@@ -112,7 +113,8 @@ async def test_http2_response_trailers_are_emitted():
 
 
 @pytest.mark.asyncio
-async def test_http3_response_trailers_are_emitted():
+@pytest.mark.parametrize('table_capacity', [0, 4096], ids=['static-qpack', 'dynamic-qpack'])
+async def test_http3_response_trailers_are_emitted(table_capacity):
     server, port = await _start_server(http_versions=['3'], transport='udp')
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setblocking(False)
@@ -127,6 +129,12 @@ async def test_http3_response_trailers_are_emitted():
                 if event.kind == 'stream':
                     core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
 
+        control_payload = core.encode_control_stream({
+            SETTING_QPACK_MAX_TABLE_CAPACITY: table_capacity,
+            SETTING_QPACK_BLOCKED_STREAMS: 1,
+        })
+        sock.sendto(client.send_stream_data(2, control_payload), ('127.0.0.1', port))
+
         headers_payload = core.get_request(0).encode_request(
             [
                 (b':method', b'GET'),
@@ -137,17 +145,18 @@ async def test_http3_response_trailers_are_emitted():
         )
         sock.sendto(client.send_stream_data(0, headers_payload, fin=True), ('127.0.0.1', port))
 
-        response_state = None
-        while response_state is None or not response_state.ended:
+        response_state = core.get_request(0).state
+        while not response_state.ended:
             data, _addr = await asyncio.wait_for(loop.sock_recvfrom(sock, 65535), 1.0)
             for event in client.receive_datagram(data):
-                if event.kind == 'stream' and event.stream_id == 0:
-                    response_state = core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
-        assert response_state is not None
+                if event.kind == 'stream':
+                    core.receive_stream_data(event.stream_id, event.data, fin=event.fin)
         assert (b':status', b'200') in response_state.headers
         assert response_state.body == b'ok'
         assert (b'x-trailer-one', b'yes') in response_state.trailers
         assert (b'x-trailer-two', b'done') in response_state.trailers
+        if table_capacity:
+            assert core.qpack_decoder.dynamic_table.lookup_dynamic_exact(b'x-trailer-two', b'done') is not None
     finally:
         sock.close()
         await server.close()

@@ -285,7 +285,6 @@ class HTTP3RequestsMixin:
                 frame_payload.extend(encode_frame(FRAME_HEADERS, interim_header_block))
             header_lines = [(b':status', str(status).encode('ascii')), *headers]
             header_block = session.h3.encode_headers(stream_id, header_lines)
-            qpack_outbound = self._flush_qpack_streams(session)
             frame_payload.extend(encode_frame(FRAME_HEADERS, header_block))
             if body:
                 frame_payload.extend(encode_frame(FRAME_DATA, body))
@@ -296,7 +295,7 @@ class HTTP3RequestsMixin:
             self.sessions[session.addr] = session
             if self.metrics is not None:
                 self.metrics.http3_request_served()
-            return [*qpack_outbound, *session.quic.send_stream_data_packets(stream_id, bytes(frame_payload), fin=True)]
+            return [*self._flush_qpack_streams(session), *session.quic.send_stream_data_packets(stream_id, bytes(frame_payload), fin=True)]
         finally:
             if self.connection_inventory is not None and inventory_session_id is not None:
                 self.connection_inventory.increment_session_counter(inventory_session_id, 'responses')
