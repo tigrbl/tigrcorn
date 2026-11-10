@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigrcorn-quic-cc-reno"
-version = "0.3.18.dev3"
+version = "0.3.18"
 description = "Default Reno congestion-controller provider for Tigrcorn QUIC transports."
 readme = "README.md"
 requires-python = ">=3.10,<3.15"
 license = {file = "LICENSE"}
 authors = [{name = "Jacob Stewart", email = "jacob@swarmauri.com"}]
-dependencies = ["tigrcorn-quic-cc==0.3.18.dev3"]
+dependencies = ["tigrcorn-quic-cc==0.3.18"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Framework :: AsyncIO",
