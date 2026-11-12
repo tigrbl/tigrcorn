@@ -283,5 +283,38 @@ def write_bytes(path: str | Path, payload: bytes) -> Path:
     return target
 
 
+def make_ocsp_replay_env(
+    directory: Path, responder: RevocationHTTPServer
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Create the live OCSP scenario's server and peer environments."""
+    factory = CertificateFactory()
+    root, root_key = factory.make_ca("Root CA", path_length=1)
+    issuer, issuer_key = factory.make_ca("Issuer CA", issuer_cert=root, issuer_key=root_key, path_length=0)
+    server, server_key = factory.make_server_leaf(
+        "localhost", issuer_cert=issuer, issuer_key=issuer_key,
+        san_dns=("localhost",), san_ips=("127.0.0.1",),
+    )
+    client, client_key = factory.make_client_leaf(
+        "client.good.local", issuer_cert=issuer, issuer_key=issuer_key,
+        ocsp_uris=(responder.url("/ocsp-good"),),
+    )
+    responder.responses[("POST", "/ocsp-good")] = ResponseSpec(
+        body=der_ocsp(factory.make_ocsp_response(client, issuer, issuer_key)),
+        headers={"Content-Type": "application/ocsp-response"},
+    )
+    ca = str(write_pem_chain(directory / "ca.pem", [root, issuer]))
+    sut_env = {
+        "INTEROP_OCSP_CERTFILE": str(write_pem_chain(directory / "server.pem", [server, issuer])),
+        "INTEROP_OCSP_KEYFILE": str(write_bytes(directory / "server-key.pem", pem_private_key(server_key))),
+        "INTEROP_OCSP_CA_CERTS": ca,
+    }
+    peer_env = {
+        "INTEROP_CAFILE": ca,
+        "INTEROP_CLIENT_CERT": str(write_pem_chain(directory / "client.pem", [client, issuer])),
+        "INTEROP_CLIENT_KEY": str(write_bytes(directory / "client-key.pem", pem_private_key(client_key))),
+    }
+    return sut_env, peer_env
+
+
 def write_pem_chain(path: str | Path, certificates: list[x509.Certificate]) -> Path:
     return write_bytes(path, b''.join(pem_certificate(cert) for cert in certificates))

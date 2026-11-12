@@ -27,10 +27,6 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _normalized_extension_names(websocket: Any) -> list[str]:
-    return [type(extension).__name__ for extension in getattr(websocket, 'extensions', [])]
-
-
 async def _run(path: str, text: str, *, compression: str) -> int:
     host = os.environ['INTEROP_TARGET_HOST']
     port = int(os.environ['INTEROP_TARGET_PORT'])
@@ -39,26 +35,27 @@ async def _run(path: str, text: str, *, compression: str) -> int:
     async with websockets.connect(url, compression=compression_arg) as websocket:
         await websocket.send(text)
         received = await websocket.recv()
-        response_headers = []
-        try:
-            response_headers = [(str(name), str(value)) for name, value in websocket.response_headers.raw_items()]
-        except Exception:
-            pass
+        response = getattr(websocket, 'response', None)
+        headers = response.headers if response is not None else websocket.response_headers
+        protocol = getattr(websocket, 'protocol', websocket)
+        extension_header = headers.get('Sec-WebSocket-Extensions', '')
+        response_headers = list(headers.raw_items())
+        negotiated_extensions = [type(extension).__name__ for extension in protocol.extensions]
         await websocket.close()
         transcript = {
             'request': {'path': path, 'text': text, 'url': url, 'compression': compression},
             'response': {
                 'text': received,
                 'headers': response_headers,
-                'extension_header': websocket.response_headers.get('Sec-WebSocket-Extensions', '') if getattr(websocket, 'response_headers', None) is not None else '',
+                'extension_header': extension_header,
             },
         }
         negotiation = {
             'implementation': 'websockets',
             'subprotocol': websocket.subprotocol,
             'compression_requested': compression,
-            'negotiated_extensions': _normalized_extension_names(websocket),
-            'response_extension_header': websocket.response_headers.get('Sec-WebSocket-Extensions', '') if getattr(websocket, 'response_headers', None) is not None else '',
+            'negotiated_extensions': negotiated_extensions,
+            'response_extension_header': extension_header,
             'close_code': websocket.close_code,
         }
         _write_json('INTEROP_TRANSCRIPT_PATH', transcript)

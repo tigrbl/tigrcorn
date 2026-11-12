@@ -150,7 +150,9 @@
           "http2",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "ready_pattern": "listening on",
         "version_command": [
@@ -162,7 +164,12 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-http2-websocket",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true",
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       },
       "peer_process": {
         "name": "python-h2-websocket-client",
