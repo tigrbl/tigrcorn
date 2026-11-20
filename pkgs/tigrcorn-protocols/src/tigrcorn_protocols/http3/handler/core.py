@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .imports import *
+from .admission import HTTP3AdmissionMixin
 from .connect import HTTP3ConnectMixin
 from .custom import HTTP3CustomQuicMixin
 from .lifecycle import HTTP3LifecycleMixin
@@ -17,6 +18,7 @@ from .webtransport_support import HTTP3WebTransportSupportMixin
 
 
 class HTTP3DatagramHandler(
+    HTTP3AdmissionMixin,
     HTTP3PacketMixin,
     HTTP3WebTransportStreamFlowMixin,
     HTTP3WebTransportStreamsMixin,

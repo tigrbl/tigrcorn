@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .imports import *
 
+
 class _TigrCornServerLifecycleMixin:
     async def start(self) -> None:
         if self._started:
@@ -11,7 +12,13 @@ class _TigrCornServerLifecycleMixin:
                 self.config.app.profile,
                 required_domains=self._configured_transport_domain_ids(),
             )
-        with span('server.start', attrs={'listener_count': len(self.config.listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
+        with span(
+            "server.start",
+            attrs={"listener_count": len(self.config.listeners)},
+            sink=self._otel_exporter.record_span
+            if self._otel_exporter is not None
+            else None,
+        ):
             try:
                 await self.lifespan.startup()
                 await run_async_hooks(self.config.hooks.on_startup, self)
@@ -21,15 +28,19 @@ class _TigrCornServerLifecycleMixin:
                     self._sync_listener_bound_address(listener_cfg, listener)
                     self._listeners.append(listener)
                     self._record_listener_transport_domains(listener_cfg)
-                    self.logger.info('listening on %s', listener_cfg.label)
+                    self.logger.info("listening on %s", listener_cfg.label)
                 if self.config.metrics.enabled and self.config.metrics.bind:
-                    self._metrics_server = await self._start_metrics_endpoint(self.config.metrics.bind)
+                    self._metrics_server = await self._start_metrics_endpoint(
+                        self.config.metrics.bind
+                    )
                 if self._statsd_exporter is not None:
                     await self._statsd_exporter.start(self.state.metrics)
                 if self._otel_exporter is not None:
                     await self._otel_exporter.start(self.state.metrics)
                 if self._request_budget is not None:
-                    self._request_budget_task = asyncio.create_task(self._monitor_request_budget(), name='tigrcorn-request-budget')
+                    self._request_budget_task = asyncio.create_task(
+                        self._monitor_request_budget(), name="tigrcorn-request-budget"
+                    )
             except Exception:
                 await self.close()
                 raise
@@ -107,7 +118,8 @@ class _TigrCornServerLifecycleMixin:
                 "kind": "telemetry_exporter",
                 "owner": "tigrcorn",
                 "caller_owned": False,
-                "active": self._statsd_exporter is not None and getattr(self._statsd_exporter, "_task", None) is not None,
+                "active": self._statsd_exporter is not None
+                and getattr(self._statsd_exporter, "_task", None) is not None,
                 "close_action": "flush_stop",
             }
         )
@@ -117,7 +129,8 @@ class _TigrCornServerLifecycleMixin:
                 "kind": "telemetry_exporter",
                 "owner": "tigrcorn",
                 "caller_owned": False,
-                "active": self._otel_exporter is not None and getattr(self._otel_exporter, "_task", None) is not None,
+                "active": self._otel_exporter is not None
+                and getattr(self._otel_exporter, "_task", None) is not None,
                 "close_action": "flush_stop",
             }
         )
@@ -136,7 +149,6 @@ class _TigrCornServerLifecycleMixin:
         finally:
             await self.close()
 
-
     def request_shutdown(self) -> None:
         self._should_exit.set()
 
@@ -144,7 +156,13 @@ class _TigrCornServerLifecycleMixin:
         if self.state.shutting_down:
             return
         self.state.shutting_down = True
-        with span('server.shutdown', attrs={'active_listeners': len(self._listeners)}, sink=self._otel_exporter.record_span if self._otel_exporter is not None else None):
+        with span(
+            "server.shutdown",
+            attrs={"active_listeners": len(self._listeners)},
+            sink=self._otel_exporter.record_span
+            if self._otel_exporter is not None
+            else None,
+        ):
             if self._request_budget_task is not None:
                 self._request_budget_task.cancel()
                 with suppress(asyncio.CancelledError, Exception):
@@ -164,11 +182,14 @@ class _TigrCornServerLifecycleMixin:
                     await handler.close()
             self._datagram_handlers.clear()
             with suppress(Exception):
-                await asyncio.wait_for(self.scheduler.close(), timeout=self.config.http.shutdown_timeout)
+                await asyncio.wait_for(
+                    self.scheduler.close(), timeout=self.config.http.shutdown_timeout
+                )
             with suppress(Exception):
                 await self.lifespan.shutdown()
             with suppress(Exception):
                 await run_async_hooks(self.config.hooks.on_shutdown, self)
+        self.scheduler.admission.close()
         if self._statsd_exporter is not None:
             with suppress(Exception):
                 await self._statsd_exporter.stop(self.state.metrics)
@@ -176,4 +197,5 @@ class _TigrCornServerLifecycleMixin:
             with suppress(Exception):
                 await self._otel_exporter.stop(self.state.metrics)
 
-__all__ = [name for name in globals() if not name.startswith('__')]
+
+__all__ = [name for name in globals() if not name.startswith("__")]

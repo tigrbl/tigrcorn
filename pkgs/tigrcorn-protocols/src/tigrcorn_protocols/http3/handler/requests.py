@@ -6,6 +6,13 @@ class HTTP3RequestsMixin:
     def _admit_stream_work(self, session: HTTP3Session, stream_id: int) -> bool:
         if self.scheduler is None:
             return True
+        state=session.h3.requests.get(stream_id)
+        if state is not None and dict(state.state.headers).get(b":protocol") == b"websocket":
+            from tigrcorn_protocols.scheduler.admission import AdmissionDenied
+            try:
+                self._admit_h3_protocol_session(session,stream_id)
+            except AdmissionDenied:
+                return False
         lease = self.scheduler.acquire_work()
         if lease is None:
             if self.metrics is not None:

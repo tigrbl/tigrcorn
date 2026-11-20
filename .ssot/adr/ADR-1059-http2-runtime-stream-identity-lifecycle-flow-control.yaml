@@ -13,9 +13,17 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
     at: "2026-06-17T12:41:45Z"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    status: "accepted"
+  -
+    at: "2026-11-18T08:21:06Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:34:59Z"
 references: []
 body: |-
   Decision: Tigrcorn owns HTTP/2 stream IDs, lifecycle transitions, connection and stream flow control, and runtime evidence for RFC 9113 behavior.
@@ -30,3 +38,9 @@ body: |-
   
   Forbidden claims:
   - Tigrcorn must not use HTTP/2 evidence to claim HTTP/3, QUIC, or WebTransport semantics.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  New HTTP/2 streams pass scheduler admission before application dispatch. Per-connection protocol limits compose with per-source/instance caps and opening-rate limits. RST_STREAM releases terminal active capacity without refunding opening tokens; continuation frames are not new openings.
+  
+  Governed by adr:1077, adr:1078, adr:1079; configuration contract spc:1014.

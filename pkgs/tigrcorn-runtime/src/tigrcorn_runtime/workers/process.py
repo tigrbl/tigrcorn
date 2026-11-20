@@ -10,7 +10,8 @@ from typing import Any, Callable
 
 @dataclass(slots=True)
 class ProcessWorker:
-    name: str = 'process'
+    name: str = "process"
+    admission_owner: str | None = None
     process: multiprocessing.Process | None = None
     target: Callable[..., None] | None = None
     args: tuple[Any, ...] = field(default_factory=tuple)
@@ -24,27 +25,31 @@ class ProcessWorker:
     _ready_parent: Any | None = None
 
     def _ctx(self) -> multiprocessing.context.BaseContext:
-        if os.name == 'posix':
+        if os.name == "posix":
             try:
-                return multiprocessing.get_context('fork')
+                return multiprocessing.get_context("fork")
             except ValueError:
                 pass
         return multiprocessing.get_context()
 
-    def start(self, target: Callable[..., None] | None = None, *args: Any, **kwargs: Any) -> None:
+    def start(
+        self, target: Callable[..., None] | None = None, *args: Any, **kwargs: Any
+    ) -> None:
         if target is not None:
             self.target = target
             self.args = args
             self.kwargs = kwargs
         if self.target is None:
-            raise RuntimeError('process worker target is not configured')
+            raise RuntimeError("process worker target is not configured")
         if self.process is not None and self.process.is_alive():
             return
         ctx = self._ctx()
         parent_ready, child_ready = ctx.Pipe(duplex=False)
         child_kwargs = dict(self.kwargs)
-        child_kwargs['ready_pipe'] = child_ready
-        self.process = ctx.Process(target=self.target, args=self.args, kwargs=child_kwargs, name=self.name)
+        child_kwargs["ready_pipe"] = child_ready
+        self.process = ctx.Process(
+            target=self.target, args=self.args, kwargs=child_kwargs, name=self.name
+        )
         self.process.start()
         self._ready_parent = parent_ready
         self.ready = False
@@ -60,7 +65,7 @@ class ProcessWorker:
                 self._ready_parent.recv()
                 self.ready = True
                 self.ready_at = monotonic()
-        except EOFError:
+        except (EOFError, OSError):
             self._ready_parent = None
 
     def startup_timed_out(self) -> bool:
@@ -107,14 +112,14 @@ class ProcessWorker:
     def health(self) -> dict[str, Any]:
         self.poll_ready()
         return {
-            'name': self.name,
-            'pid': self.process.pid if self.process else None,
-            'alive': self.is_alive(),
-            'ready': self.ready,
-            'exitcode': self.process.exitcode if self.process else None,
-            'start_count': self.start_count,
-            'restart_count': self.restart_count,
-            'last_started_at': self.last_started_at,
-            'ready_at': self.ready_at,
-            'startup_timed_out': self.startup_timed_out(),
+            "name": self.name,
+            "pid": self.process.pid if self.process else None,
+            "alive": self.is_alive(),
+            "ready": self.ready,
+            "exitcode": self.process.exitcode if self.process else None,
+            "start_count": self.start_count,
+            "restart_count": self.restart_count,
+            "last_started_at": self.last_started_at,
+            "ready_at": self.ready_at,
+            "startup_timed_out": self.startup_timed_out(),
         }

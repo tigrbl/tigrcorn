@@ -9,13 +9,19 @@ from tigrcorn_config.files import load_config_source
 from tigrcorn_config.merge import merge_config_dicts
 from tigrcorn_config.model import CongestionControlConfig, ListenerConfig, ServerConfig
 from tigrcorn_config.normalize import normalize_config
-from tigrcorn_config.profiles import resolve_effective_profile_mapping, resolve_requested_profile
+from tigrcorn_config.profiles import (
+    resolve_effective_profile_mapping,
+    resolve_requested_profile,
+)
 from tigrcorn_config.validate import validate_config
 
 
 def _dataclass_to_dict(value: Any) -> Any:
     if dataclasses.is_dataclass(value):
-        return {field.name: _dataclass_to_dict(getattr(value, field.name)) for field in dataclasses.fields(value)}
+        return {
+            field.name: _dataclass_to_dict(getattr(value, field.name))
+            for field in dataclasses.fields(value)
+        }
     if isinstance(value, list):
         return [_dataclass_to_dict(item) for item in value]
     if isinstance(value, tuple):
@@ -30,6 +36,10 @@ def config_to_dict(config: ServerConfig) -> dict[str, Any]:
 def _apply_mapping(target: Any, data: Mapping[str, Any]) -> None:
     for key, value in data.items():
         if not hasattr(target, key):
+            from tigrcorn_config.model.admission import AdmissionConfig
+
+            if isinstance(target, AdmissionConfig):
+                raise ValueError(f"unknown admission field: {key}")
             continue
         current = getattr(target, key)
         if isinstance(current, list) and key == "listeners" and isinstance(value, list):
@@ -52,7 +62,9 @@ def _apply_mapping(target: Any, data: Mapping[str, Any]) -> None:
 
 def config_from_mapping(data: Mapping[str, Any]) -> ServerConfig:
     profile_name = resolve_requested_profile(data)
-    effective_mapping = merge_config_dicts(resolve_effective_profile_mapping(profile_name), data)
+    effective_mapping = merge_config_dicts(
+        resolve_effective_profile_mapping(profile_name), data
+    )
     config = default_config()
     _apply_mapping(config, effective_mapping)
     normalize_config(config)
@@ -60,5 +72,7 @@ def config_from_mapping(data: Mapping[str, Any]) -> ServerConfig:
     return config
 
 
-def config_from_source(source: str | Path | Mapping[str, Any] | Any | None) -> ServerConfig:
+def config_from_source(
+    source: str | Path | Mapping[str, Any] | Any | None,
+) -> ServerConfig:
     return config_from_mapping(load_config_source(source))

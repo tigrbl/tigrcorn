@@ -13,12 +13,29 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted to govern transport stack runtime behavior."
     at: "2026-06-17T12:48:42Z"
+    note: "Accepted to govern transport stack runtime behavior."
+    status: "accepted"
+  -
+    at: "2026-11-18T08:21:12Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:14Z"
 references: []
 body: |-
   Defines Tigrcorn HTTP/2 runtime ownership for stream identifiers, initiator rules, lifecycle transitions, reset handling, and connection-level plus stream-level flow control. Source specification: RFC 9113 https://www.rfc-editor.org/rfc/rfc9113. Runtime evidence for this spec applies to HTTP/2 only.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  Enforce stream caps and opening rates before HTTP/2 app dispatch; test rapid reset, continuation frames, half-close, reconnect across connections, and source/instance limits across workers.
+  
+  Related new contracts: spc:1009, spc:1010, spc:1011, spc:1012.
 spec_kind: "operational"
 adr_ids:
   - "adr:1059"
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

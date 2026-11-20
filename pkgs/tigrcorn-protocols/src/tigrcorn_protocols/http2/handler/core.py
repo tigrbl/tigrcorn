@@ -58,18 +58,35 @@ class HTTP2ConnectionHandler(
         self.connection_id = connection_id
         self.connection_inventory = connection_inventory
         self.state = H2ConnectionState()
-        self.state.local_settings[SETTING_MAX_CONCURRENT_STREAMS] = self.config.http.http2_max_concurrent_streams
-        self.state.local_settings[SETTING_MAX_HEADER_LIST_SIZE] = self.config.http.http2_max_headers_size
-        self.state.local_settings[SETTING_MAX_FRAME_SIZE] = self.config.http.http2_max_frame_size
-        self.state.local_settings[SETTING_INITIAL_WINDOW_SIZE] = self.config.http.http2_initial_stream_window_size
-        self.state.connection_receive_window_target = self.config.http.http2_initial_connection_window_size
+        self.state.local_settings[SETTING_MAX_CONCURRENT_STREAMS] = (
+            self.config.http.http2_max_concurrent_streams
+        )
+        self.state.local_settings[SETTING_MAX_HEADER_LIST_SIZE] = (
+            self.config.http.http2_max_headers_size
+        )
+        self.state.local_settings[SETTING_MAX_FRAME_SIZE] = (
+            self.config.http.http2_max_frame_size
+        )
+        self.state.local_settings[SETTING_INITIAL_WINDOW_SIZE] = (
+            self.config.http.http2_initial_stream_window_size
+        )
+        self.state.connection_receive_window_target = (
+            self.config.http.http2_initial_connection_window_size
+        )
         self._initial_connection_window_increment = max(
             0,
-            self.state.connection_receive_window_target - DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE],
+            self.state.connection_receive_window_target
+            - DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE],
         )
         if self._initial_connection_window_increment:
-            self.state.connection_receive_window.increase(self._initial_connection_window_increment)
+            self.state.connection_receive_window.increase(
+                self._initial_connection_window_increment
+            )
+        self.stream_admission_leases = {}
+        self.session_admission_leases = {}
+        self.admission_refusals = {}
         self.streams = H2StreamRegistry()
+        self.streams.on_close = self._release_admission
         self.stream_tasks: dict[int, asyncio.Task[None]] = {}
         self.stream_work_leases: dict[int, WorkLease] = {}
         self.frame_buffer = FrameBuffer()
@@ -87,8 +104,11 @@ class HTTP2ConnectionHandler(
             ping_interval=self.config.http.http2_keep_alive_interval,
             ping_timeout=self.config.http.http2_keep_alive_timeout,
         )
-        self.keepalive = KeepAliveRuntime(self.keepalive_policy) if self.keepalive_policy.enabled else None
+        self.keepalive = (
+            KeepAliveRuntime(self.keepalive_policy)
+            if self.keepalive_policy.enabled
+            else None
+        )
         self.keepalive_task: asyncio.Task[None] | None = None
         self.running = True
         self._continuation_stream_id: int | None = None
-

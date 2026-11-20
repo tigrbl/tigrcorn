@@ -9,8 +9,14 @@ from typing import Any
 
 from tigrcorn_config.load import config_to_dict
 from tigrcorn_config.model import ServerConfig
-from tigrcorn_runtime.server.bootstrap import prebind_listener_sockets, run_worker_from_config_payload
-from tigrcorn_runtime.server.signals import install_sync_signal_handlers, restore_signal_handlers
+from tigrcorn_runtime.server.bootstrap import (
+    prebind_listener_sockets,
+    run_worker_from_config_payload,
+)
+from tigrcorn_runtime.server.signals import (
+    install_sync_signal_handlers,
+    restore_signal_handlers,
+)
 from tigrcorn_runtime.workers.process import ProcessWorker
 from tigrcorn_runtime.workers.supervisor import WorkerSupervisor
 
@@ -23,8 +29,11 @@ class ServerSupervisor:
     hooks: list[Any] = field(default_factory=list)
     poll_interval: float = 0.2
     bound_sockets: list[Any] = field(default_factory=list)
-    workers: WorkerSupervisor = field(default_factory=lambda: WorkerSupervisor(auto_restart=True))
+    workers: WorkerSupervisor = field(
+        default_factory=lambda: WorkerSupervisor(auto_restart=True)
+    )
     _stopping: bool = False
+    _admission_coordinator: Any = None
 
     def add_shutdown_hook(self, hook) -> None:
         self.hooks.append(hook)
@@ -32,18 +41,38 @@ class ServerSupervisor:
     def request_shutdown(self) -> None:
         self._stopping = True
 
+    def _shared_sockets(self):
+        by_fd={sock.fileno():sock for sock in self.bound_sockets}
+        return [(index,by_fd[listener.fd]) for index,listener in enumerate(self.config.listeners) if listener.fd in by_fd]
+
     def _worker_payload(self) -> dict[str, Any]:
         payload = config_to_dict(self.config)
         if self.app_target is not None:
-            payload.setdefault('app', {})['target'] = self.app_target
+            payload.setdefault("app", {})["target"] = self.app_target
         return payload
 
     def _build_workers(self) -> None:
+        from tigrcorn_protocols.scheduler.admission import AdmissionController
+
+        if self._admission_coordinator is None:
+            self._admission_coordinator = AdmissionController(self.config.admission)
+            self.config.admission.coordinator_path = self._admission_coordinator.path
         worker_count = max(1, self.config.process.workers)
         payload = self._worker_payload()
         for index in range(worker_count):
-            worker = ProcessWorker(name=f'tigrcorn-worker-{index}', healthcheck_timeout=self.config.process.worker_healthcheck_timeout)
-            worker.start(run_worker_from_config_payload, payload)
+            worker = ProcessWorker(
+                name=f"tigrcorn-worker-{index}",
+                healthcheck_timeout=self.config.process.worker_healthcheck_timeout,
+            )
+            from copy import deepcopy
+            from uuid import uuid4
+
+            worker.admission_owner = uuid4().hex
+            worker_payload = deepcopy(payload)
+            worker_payload.setdefault("admission", {})["owner_generation"] = (
+                worker.admission_owner
+            )
+            worker.start(run_worker_from_config_payload, worker_payload, shared_sockets=self._shared_sockets())
             self.workers.add(worker)
 
     def start(self) -> None:
@@ -58,9 +87,26 @@ class ServerSupervisor:
     def replace_worker(self, index: int) -> None:
         payload = self._worker_payload()
         worker = self.workers.workers[index]
-        replacement = ProcessWorker(name=f'{worker.name}-replacement', healthcheck_timeout=self.config.process.worker_healthcheck_timeout)
-        replacement.start(run_worker_from_config_payload, payload)
+        replacement = ProcessWorker(
+            name=f"{worker.name}-replacement",
+            healthcheck_timeout=self.config.process.worker_healthcheck_timeout,
+        )
+        from copy import deepcopy
+        from uuid import uuid4
+
+        replacement.admission_owner = uuid4().hex
+        replacement_payload = deepcopy(payload)
+        replacement_payload.setdefault("admission", {})["owner_generation"] = (
+            replacement.admission_owner
+        )
+        replacement.start(run_worker_from_config_payload, replacement_payload, shared_sockets=self._shared_sockets())
         self.workers.replace(index, replacement)
+        if (
+            self._admission_coordinator is not None
+            and not worker.is_alive()
+            and worker.admission_owner
+        ):
+            self._admission_coordinator.reclaim_owner(worker.admission_owner)
 
     def poll_workers_once(self) -> list[dict[str, Any]]:
         restarted: list[dict[str, Any]] = []
@@ -71,19 +117,47 @@ class ServerSupervisor:
             worker.poll_ready()
             should_restart = worker.process is not None and not worker.is_alive()
             if worker.startup_timed_out() and not self._stopping:
-                worker.stop(timeout=min(5.0, self.config.process.worker_healthcheck_timeout))
+                worker.stop(
+                    timeout=min(5.0, self.config.process.worker_healthcheck_timeout)
+                )
                 should_restart = True
             if should_restart and not self._stopping:
+                if (
+                    self._admission_coordinator is not None
+                    and worker.process is not None
+                    and not worker.is_alive()
+                ):
+                    self._admission_coordinator.reclaim_owner(worker.admission_owner)
                 worker.restart_count += 1
-                replacement = ProcessWorker(name=worker.name, healthcheck_timeout=self.config.process.worker_healthcheck_timeout)
-                replacement.start(run_worker_from_config_payload, payload)
+                replacement = ProcessWorker(
+                    name=worker.name,
+                    healthcheck_timeout=self.config.process.worker_healthcheck_timeout,
+                )
+                from copy import deepcopy
+                from uuid import uuid4
+
+                replacement.admission_owner = uuid4().hex
+                replacement_payload = deepcopy(payload)
+                replacement_payload.setdefault("admission", {})["owner_generation"] = (
+                    replacement.admission_owner
+                )
+                replacement.start(run_worker_from_config_payload, replacement_payload, shared_sockets=self._shared_sockets())
                 self.workers.workers[index] = replacement
-                restarted.append({'index': index, 'name': replacement.name, 'ready': replacement.ready})
+                restarted.append(
+                    {
+                        "index": index,
+                        "name": replacement.name,
+                        "ready": replacement.ready,
+                    }
+                )
         return restarted
 
     def stop(self) -> None:
         self._stopping = True
         self.workers.stop_all(timeout=self.config.http.shutdown_timeout)
+        if self._admission_coordinator is not None:
+            self._admission_coordinator.close()
+            self._admission_coordinator = None
         for hook in self.hooks:
             try:
                 hook()

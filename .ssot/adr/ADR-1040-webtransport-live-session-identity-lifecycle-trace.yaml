@@ -1,4 +1,4 @@
-schema_version: "0.6.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1040"
 number: 1040
@@ -11,9 +11,23 @@ tags: []
 summary: "Tigrcorn owns QUIC, HTTP/3, and WebTransport connection/session lifecycle. Live downstream applications must receive stable transport-owned session identity and traces for packet receive, session create, handshake complete, CONNECT response, stream dispatch, datagram dispatch, close, and cleanup. Session, stream, and datagram ownership must remain keyed by actual QUIC/WebTransport runtime state, including sequential and concurrent sessions on one listener."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-11-18T08:21:05Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:34:58Z"
 references: []
 body: |-
   Tigrcorn owns QUIC, HTTP/3, and WebTransport connection/session lifecycle. Live downstream applications must receive stable transport-owned session identity and traces for packet receive, session create, handshake complete, CONNECT response, stream dispatch, datagram dispatch, close, and cleanup. Session, stream, and datagram ownership must remain keyed by actual QUIC/WebTransport runtime state, including sequential and concurrent sessions on one listener.
-
+  
   H2 fallback and H3 draft-13 runtime traces are distinct carrier cases. HTTP/2 WebTransport session identity is the extended CONNECT stream id and stream/datagram ownership is capsule-backed. HTTP/3 draft-13 WebTransport session identity is tied to the CONNECT stream while data streams, QUIC DATAGRAM payloads, reset/stop events, GOAWAY/drain signals, and `WT_SESSION_GONE` cleanup must preserve carrier-specific ownership metadata.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  WebTransport session and child-stream identities key distinct transport leases. Disconnect, reset, cancellation, and shutdown report terminal events exactly once. The Tigrbl application independently cleans up subscription leases; transport session identity does not establish authenticated tenant identity.
+  
+  Governed by adr:1077, adr:1078, adr:1079; configuration contract spc:1014.

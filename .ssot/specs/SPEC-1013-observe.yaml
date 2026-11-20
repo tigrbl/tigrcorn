@@ -1,0 +1,67 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1013"
+number: 1013
+slug: "observe"
+title: "Admission rejection and observability"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Specify carrier refusal behavior before implementation: HTTP may return 429 for a source"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-11-18T08:21:00Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Implemented with local runtime/configuration/lifecycle verification; no release certification implied."
+    at: "2026-11-18T09:34:50Z"
+references: []
+body: |-
+  ## Requirements
+  
+  Specify carrier refusal behavior before implementation: HTTP may return 429 for a source
+  rate/quota or 503 for aggregate capacity when an HTTP response remains legal; otherwise
+  use a legal stream refusal/reset or connection close. HTTP/2 and HTTP/3 error codes follow
+  the violated protocol rule; capacity policy is not automatically a malformed-protocol error.
+  Only repeated or connection-wide abuse escalates to bounded GOAWAY/connection termination.
+  WebTransport child-stream refusal must not invent an HTTP response on that child stream.
+  Preserve admitted work where protocol safety allows. Rejection must not create unbounded
+  tasks, queues, log records, or response amplification.
+  
+  Inspection reports effective policy, source provenance, enforcement owner, accounting
+  scope, active counts, refusal reasons, and reserved-control usage. Redact identifiers and
+  secrets; avoid per-IP/user metric labels. Report known limitations rather than claiming
+  that an active cap alone prevents all denial of service. Optional native/ASGI metadata is
+  versioned and does not hand lease-release authority to the application.
+  
+  ## Acceptance
+  
+  Validate actual wire outcomes, bounded response work, stable metrics, redaction, and
+  continued progress of admitted/control streams under capacity and rate pressure.
+  
+  ## Delivery posture
+  
+  Implemented locally on 2026-11-18. The linked verification suite passed 90 tests with no skips; see `.ssot/evidence/admission-delivery/implementation.json` for source hashes, commands, and explicit unrelated baseline exclusions. Features are current/implemented with T2 targets. Release certification and published boundaries are unchanged.
+  
+  ## Governed feature mapping
+  
+  - `feat:runtime-connection-inventory`
+  - `feat:transport-admission-inspection`
+  - `feat:transport-admission-refusal`
+  
+  ## Companion repository
+  
+  See https://github.com/tigrbl/tigrbl/tree/master/.ssot for the companion admission records. Cross-repository IDs are repository-qualified and must not be inserted as local registry edges.
+  ## Implementation details
+  
+  Instance coordination uses atomic SQLite transactions shared by all workers, with opaque owner generations and confirmed-death reclamation. Source identity is the socket peer and stays bound across QUIC migration. `admission.max_tracking_entries` (CLI `--max-tracking-entries`, environment `TIGRCORN_MAX_TRACKING_ENTRIES`, Python field of the same name) defaults to 65536 and bounds bucket keys and QUIC stream history. Internal coordinator paths/owner generations are not public CLI options. See `docs/architecture/admission.md`.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

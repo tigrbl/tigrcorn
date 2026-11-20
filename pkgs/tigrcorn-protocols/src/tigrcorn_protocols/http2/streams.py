@@ -8,6 +8,9 @@ from tigrcorn_protocols.http2.state import FlowWindow, H2StreamState
 
 @dataclass(slots=True)
 class H2StreamRegistry:
+    on_close: object = None
+    closed_remote_highwater: int = 0
+    closed_local_highwater: int = 0
     streams: dict[int, H2StreamState] = field(default_factory=dict)
     closed_stream_ids: set[int] = field(default_factory=set)
 
@@ -17,8 +20,10 @@ class H2StreamRegistry:
     def find(self, stream_id: int) -> H2StreamState | None:
         return self.streams.get(stream_id)
 
-    def activate_remote(self, stream_id: int, *, send_window: int, receive_window: int) -> H2StreamState:
-        if stream_id in self.closed_stream_ids:
+    def activate_remote(
+        self, stream_id: int, *, send_window: int, receive_window: int
+    ) -> H2StreamState:
+        if self.is_closed(stream_id):
             raise ProtocolError("HTTP/2 closed stream cannot be reopened")
         state = self.streams.get(stream_id)
         if state is None:
@@ -35,8 +40,10 @@ class H2StreamRegistry:
             state.receive_window_target = receive_window
         return state
 
-    def reserve_local(self, stream_id: int, *, send_window: int, receive_window: int) -> H2StreamState:
-        if stream_id in self.closed_stream_ids:
+    def reserve_local(
+        self, stream_id: int, *, send_window: int, receive_window: int
+    ) -> H2StreamState:
+        if self.is_closed(stream_id):
             raise ProtocolError("HTTP/2 closed stream cannot be reopened")
         if stream_id in self.streams:
             raise ProtocolError("HTTP/2 local stream is already active")
@@ -57,7 +64,15 @@ class H2StreamRegistry:
             state.end_stream_received = True
             state._sync_lifecycle()
             self.streams.pop(stream_id, None)
+        if stream_id % 2:
+            self.closed_remote_highwater = max(self.closed_remote_highwater, stream_id)
+        else:
+            self.closed_local_highwater = max(self.closed_local_highwater, stream_id)
         self.closed_stream_ids.add(stream_id)
+        if len(self.closed_stream_ids) > 4096:
+            self.closed_stream_ids.remove(min(self.closed_stream_ids))
+        if self.on_close is not None:
+            self.on_close(stream_id)
 
     def apply_window_delta(self, delta: int) -> None:
         for state in self.streams.values():
@@ -67,10 +82,25 @@ class H2StreamRegistry:
         return sorted(self.streams)
 
     def active_remote_stream_count(self) -> int:
-        return sum(1 for stream_id, state in self.streams.items() if stream_id % 2 == 1 and not state.closed)
+        return sum(
+            1
+            for stream_id, state in self.streams.items()
+            if stream_id % 2 == 1 and not state.closed
+        )
 
     def active_local_stream_count(self) -> int:
-        return sum(1 for stream_id, state in self.streams.items() if stream_id % 2 == 0 and not state.closed)
+        return sum(
+            1
+            for stream_id, state in self.streams.items()
+            if stream_id % 2 == 0 and not state.closed
+        )
 
     def is_closed(self, stream_id: int) -> bool:
-        return stream_id in self.closed_stream_ids
+        highwater = (
+            self.closed_remote_highwater
+            if stream_id % 2
+            else self.closed_local_highwater
+        )
+        return stream_id in self.closed_stream_ids or (
+            stream_id not in self.streams and stream_id <= highwater
+        )

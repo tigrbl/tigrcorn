@@ -1,0 +1,179 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1078"
+number: 1078
+slug: "churn"
+title: "Stream opening rate and churn accounting"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Use monotonic-clock token buckets for client connection, session, and stream opening"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-11-18T08:20:50Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Implemented with local runtime/configuration/lifecycle verification; no release certification implied."
+    at: "2026-11-18T09:34:40Z"
+references: []
+body: |-
+  ## Decision
+  
+  Use monotonic-clock token buckets for client connection, session, and stream opening
+  attempts, independently of active-resource leases. Apply sustained rates and bursts at
+  connection/session scopes where applicable, per source across connections, and per instance.
+  Charge a recognizable new-opening attempt before expensive allocation. An admitted
+  opening consumes each applicable token even if later authentication, capacity admission,
+  or application work fails. Retransmissions, header continuations, data frames, and duplicate
+  lifecycle callbacks are not new openings. A rejected attempt does not extend its own lease.
+  
+  Closing/resetting releases active capacity but never refunds opening-rate tokens. Reconnect
+  cannot reset per-source or aggregate buckets. Apply a bounded malformed/control-frame
+  abuse policy before a valid opening can be identified; an opening limiter alone is not
+  complete parser protection. Saturated traffic receives bounded processing and responses.
+  
+  ## Rationale
+  
+  Active caps alone do not constrain rapid open/reset churn. Network pacing and receive
+  credit measure bytes, not client-created work. Bound bucket maps and closed-stream
+  history so accounting does not become an exhaustion vector. Never evict an active lease
+  or a bucket with outstanding token debt merely to accept an untracked new source.
+  
+  ## Consequences
+  
+  Expose separate counters for attempts, rate refusals, capacity refusals, reset churn, and
+  successful admission without unbounded source-ID metric labels. A global bucket protects
+  the server from aggregate churn by many sources.
+  
+  ## Delivery posture
+  
+  Implemented locally on 2026-11-18. The linked verification suite passed 90 tests with no skips; see `.ssot/evidence/admission-delivery/implementation.json` for source hashes, commands, and explicit unrelated baseline exclusions. Features are current/implemented with T2 targets. Release certification and published boundaries are unchanged.
+  
+  ## Governed feature mapping
+  
+  - `feat:app-interface-cli-flag`
+  - `feat:app-interface-env-var`
+  - `feat:asgi-extension-bridge`
+  - `feat:asgi2-compat-exclusion`
+  - `feat:asgi3-app-compat-suite`
+  - `feat:asgi3-compat-layer`
+  - `feat:asgi3-endpoint-metadata-extension`
+  - `feat:asgi3-security-metadata-extension`
+  - `feat:asgi3-stream-datagram-extension`
+  - `feat:asgi3-transport-identity-extension`
+  - `feat:client-session-fault-cleanup-modes`
+  - `feat:client-session-pressure-modes`
+  - `feat:compat-feature-parity-matrix`
+  - `feat:contract-datagram-unit-identity`
+  - `feat:contract-http2-stream-identity`
+  - `feat:contract-http3-stream-identity`
+  - `feat:contract-quic-connection-identity`
+  - `feat:contract-webtransport-events`
+  - `feat:contract-webtransport-session-identity`
+  - `feat:contract-webtransport-stream-identity`
+  - `feat:datagram-flow-control-mapping`
+  - `feat:emit-completion-asgi-extension`
+  - `feat:fixture-asgi-http-scope`
+  - `feat:fixture-http2-protocol`
+  - `feat:fixture-http3-protocol`
+  - `feat:fixture-quic-protocol`
+  - `feat:fixture-rawframed-custom-protocol`
+  - `feat:fixture-tigrcorn-custom-scope`
+  - `feat:generic-datagram-runtime`
+  - `feat:generic-stream-runtime`
+  - `feat:http2-bidirectional-stream-interleaving`
+  - `feat:http2-connect-relay-not-general-proxy`
+  - `feat:http2-connection-handler-owned`
+  - `feat:http2-connection-state-owned`
+  - `feat:http2-consumption-driven-window-update`
+  - `feat:http2-incremental-request-body-dispatch`
+  - `feat:http3-connection-core-owned`
+  - `feat:http3-connection-state-owned`
+  - `feat:http3-iana-registry-conformance`
+  - `feat:independent-quic-state-claims`
+  - `feat:perf-http3-peer-aioquic-comparison`
+  - `feat:qlog-logging-support-and-conformance`
+  - `feat:quic-cc-runtime-selection`
+  - `feat:quic-connection-owned`
+  - `feat:quic-fifo-datagram-admission`
+  - `feat:quic-h3-counters`
+  - `feat:quic-negative-corpora`
+  - `feat:quic-operational-security-certification`
+  - `feat:quic-streams`
+  - `feat:rsgi-compat-exclusion`
+  - `feat:runtime-connection-inventory`
+  - `feat:ssot-contract-boundary-sync`
+  - `feat:stream-backpressure-mapping`
+  - `feat:stream-datagram-runtime-label-validation-001`
+  - `feat:surface-http2-runtime-defaults`
+  - `feat:surface-http2-tls-posture`
+  - `feat:surface-http3-control-plane`
+  - `feat:surface-quic-recovery-send-path`
+  - `feat:surface-quic-retry-token-integrity`
+  - `feat:surface-quic-tls-mapping`
+  - `feat:tigrcorn-http2-stream-id-lifecycle-flow-control`
+  - `feat:tigrcorn-http3-quic-stream-runtime-taxonomy`
+  - `feat:tigrcorn-invalid-nested-stack-rejection`
+  - `feat:tigrcorn-listener-composition-separates-carriers`
+  - `feat:tls-metadata-extension`
+  - `feat:transport-admission-cli`
+  - `feat:transport-admission-env`
+  - `feat:transport-admission-inspection`
+  - `feat:transport-admission-leases`
+  - `feat:transport-admission-model`
+  - `feat:transport-admission-python`
+  - `feat:transport-admission-refusal`
+  - `feat:transport-admission-toml`
+  - `feat:transport-certification-domains`
+  - `feat:transport-channel-lifecycle-enforcement`
+  - `feat:transport-churn-defense`
+  - `feat:transport-instance-budget`
+  - `feat:transport-open-rates`
+  - `feat:transport-source-identity`
+  - `feat:websocket-h2-session-owned`
+  - `feat:websocket-h3-session-owned`
+  - `feat:webtransport-carrier-fail-closed`
+  - `feat:webtransport-carrier-normalization`
+  - `feat:webtransport-env-var`
+  - `feat:webtransport-h2-capsule-codec`
+  - `feat:webtransport-h2-datagram-capsule`
+  - `feat:webtransport-h2-operator-carrier-selection`
+  - `feat:webtransport-h2-session-termination`
+  - `feat:webtransport-h2-stream-capsules`
+  - `feat:webtransport-h3-default-profile-enable`
+  - `feat:webtransport-h3-draft13-bidi-streams`
+  - `feat:webtransport-h3-draft13-datagrams`
+  - `feat:webtransport-h3-draft13-reset-stop-streams`
+  - `feat:webtransport-h3-draft13-session-termination`
+  - `feat:webtransport-h3-draft13-unidi-streams`
+  - `feat:webtransport-h3-quic-completion-events`
+  - `feat:webtransport-h3-quic-datagram-events`
+  - `feat:webtransport-h3-quic-datagram-runtime-dispatch`
+  - `feat:webtransport-h3-quic-scope`
+  - `feat:webtransport-h3-quic-session-events`
+  - `feat:webtransport-h3-quic-stream-events`
+  - `feat:webtransport-lane-direction-projection-001`
+  - `feat:webtransport-live-quic-h3-connect-transcript`
+  - `feat:webtransport-live-session-identity-isolation`
+  - `feat:webtransport-live-session-lifecycle-trace`
+  - `feat:webtransport-live-stream-datagram-ownership`
+  - `feat:webtransport-max-datagram-size-flag`
+  - `feat:webtransport-max-sessions-flag`
+  - `feat:webtransport-max-streams-flag`
+  - `feat:webtransport-native-lane-projection-001`
+  - `feat:webtransport-origin-flag`
+  - `feat:webtransport-path-flag`
+  - `feat:webtransport-protocol-cli-flag`
+  - `feat:wsgi-compat-exclusion`
+  
+  ## Companion repository
+  
+  See https://github.com/tigrbl/tigrbl/tree/master/.ssot for the companion admission records. Cross-repository IDs are repository-qualified and must not be inserted as local registry edges.
+  ## Implementation details
+  
+  Instance coordination uses atomic SQLite transactions shared by all workers, with opaque owner generations and confirmed-death reclamation. Source identity is the socket peer and stays bound across QUIC migration. `admission.max_tracking_entries` (CLI `--max-tracking-entries`, environment `TIGRCORN_MAX_TRACKING_ENTRIES`, Python field of the same name) defaults to 65536 and bounds bucket keys and QUIC stream history. Internal coordinator paths/owner generations are not public CLI options. See `docs/architecture/admission.md`.

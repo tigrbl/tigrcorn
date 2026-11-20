@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2034"
 number: 2034
@@ -11,11 +11,16 @@ tags: []
 summary: "Tigrcorn shall maintain a feature parity map for native contract support and ASGI/3 compatibility exposure."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1013"
-  - "ADR-1015"
-  - "ADR-1030"
+status_notes:
+  -
+    at: "2026-11-18T08:21:19Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:10Z"
+references: []
 body: |-
   # ASGI/3 compatibility feature parity
   
@@ -27,5 +32,14 @@ body: |-
   - Degraded or unavailable mappings include the reason and test status.
   - ASGI/3 compatibility parity is validated before support claims are promoted.
   - ASGI2, WSGI, and RSGI are excluded from the supported compatibility matrix.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  Base admission enforcement applies equally to native and ASGI dispatch. Optional metadata does not make standard ASGI apps responsible for transport resource cleanup.
+  
+  Related new contracts: spc:1013, spc:1010.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

@@ -1,8 +1,14 @@
 from .audit import parser_public_defaults, resolve_effective_defaults
 from .env import load_env_config
 from .files import load_config_file
-from .load import build_config, build_config_from_namespace, build_config_from_sources, config_to_dict
+from .load import (
+    build_config,
+    build_config_from_namespace,
+    build_config_from_sources,
+    config_to_dict,
+)
 from .model import (
+    AdmissionConfig,
     AppConfig,
     HTTPConfig,
     ListenerConfig,
@@ -16,9 +22,15 @@ from .model import (
     TLSConfig,
     WebSocketConfig,
 )
-from .profiles import get_profile_spec, list_blessed_profiles, resolve_effective_profile_mapping, resolve_profile_spec
+from .profiles import (
+    get_profile_spec,
+    list_blessed_profiles,
+    resolve_effective_profile_mapping,
+    resolve_profile_spec,
+)
 
 __all__ = [
+    "AdmissionConfig",
     "AppConfig",
     "build_config",
     "build_config_from_namespace",
