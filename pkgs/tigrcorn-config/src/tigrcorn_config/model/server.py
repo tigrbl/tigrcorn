@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
+from .admission import AdmissionConfig
 from .app import AppConfig, HooksConfig, ProcessConfig
 from .http import HTTPConfig, StaticConfig, WebSocketConfig
 from .observability import LoggingConfig, MetricsConfig
@@ -13,6 +14,7 @@ from .transports import ListenerConfig, QUICConfig, WebTransportConfig
 
 @dataclass(slots=True)
 class ServerConfig:
+    admission: AdmissionConfig = field(default_factory=AdmissionConfig)
     app: AppConfig = field(default_factory=AppConfig)
     process: ProcessConfig = field(default_factory=ProcessConfig)
     listeners: list[ListenerConfig] = field(default_factory=lambda: [ListenerConfig()])
@@ -143,7 +145,9 @@ class ServerConfig:
                 normalized.append(
                     (
                         name.encode("latin1") if isinstance(name, str) else bytes(name),
-                        value.encode("latin1") if isinstance(value, str) else bytes(value),
+                        value.encode("latin1")
+                        if isinstance(value, str)
+                        else bytes(value),
                     )
                 )
         return normalized
@@ -171,9 +175,14 @@ class ServerConfig:
         for listener in self.listeners:
             if listener.kind != "udp":
                 continue
-            if "http3" not in listener.enabled_protocols and "3" not in listener.http_versions:
+            if (
+                "http3" not in listener.enabled_protocols
+                and "3" not in listener.http_versions
+            ):
                 continue
-            rendered = f'h3=":{int(listener.port)}"; ma={int(self.http.alt_svc_max_age)}'
+            rendered = (
+                f'h3=":{int(listener.port)}"; ma={int(self.http.alt_svc_max_age)}'
+            )
             if self.http.alt_svc_persist:
                 rendered += "; persist=1"
             payload = rendered.encode("ascii")

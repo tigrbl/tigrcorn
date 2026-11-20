@@ -2,6 +2,36 @@
   "audit_version": 1,
   "claim_id": "TC-AUDIT-DEFAULT-BASE",
   "effective_defaults_flat": {
+    "admission.connection_open_burst_per_instance": null,
+    "admission.connection_open_burst_per_source": null,
+    "admission.connection_open_rate_per_instance": null,
+    "admission.connection_open_rate_per_source": null,
+    "admission.coordinator_path": null,
+    "admission.max_active_streams_per_connection": null,
+    "admission.max_active_streams_per_instance": null,
+    "admission.max_active_streams_per_session": null,
+    "admission.max_active_streams_per_source": null,
+    "admission.max_connections_per_instance": null,
+    "admission.max_connections_per_source": null,
+    "admission.max_sessions_per_connection": null,
+    "admission.max_sessions_per_instance": null,
+    "admission.max_sessions_per_source": null,
+    "admission.max_tracking_entries": 65536,
+    "admission.owner_generation": null,
+    "admission.session_open_burst_per_connection": null,
+    "admission.session_open_burst_per_instance": null,
+    "admission.session_open_burst_per_source": null,
+    "admission.session_open_rate_per_connection": null,
+    "admission.session_open_rate_per_instance": null,
+    "admission.session_open_rate_per_source": null,
+    "admission.stream_open_burst_per_connection": null,
+    "admission.stream_open_burst_per_instance": null,
+    "admission.stream_open_burst_per_session": null,
+    "admission.stream_open_burst_per_source": null,
+    "admission.stream_open_rate_per_connection": null,
+    "admission.stream_open_rate_per_instance": null,
+    "admission.stream_open_rate_per_session": null,
+    "admission.stream_open_rate_per_source": null,
     "app.app_dir": null,
     "app.config_file": null,
     "app.env_file": null,
@@ -1108,6 +1138,202 @@
       "flag": "--quic-congestion-control-options",
       "parser_default": null,
       "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.connection_open_burst_per_instance",
+      "effective_default": null,
+      "flag": "--connection-open-burst-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.connection_open_burst_per_source",
+      "effective_default": null,
+      "flag": "--connection-open-burst-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.connection_open_rate_per_instance",
+      "effective_default": null,
+      "flag": "--connection-open-rate-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.connection_open_rate_per_source",
+      "effective_default": null,
+      "flag": "--connection-open-rate-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_active_streams_per_connection",
+      "effective_default": null,
+      "flag": "--max-active-streams-per-connection",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_active_streams_per_instance",
+      "effective_default": null,
+      "flag": "--max-active-streams-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_active_streams_per_session",
+      "effective_default": null,
+      "flag": "--max-active-streams-per-session",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_active_streams_per_source",
+      "effective_default": null,
+      "flag": "--max-active-streams-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_connections_per_instance",
+      "effective_default": null,
+      "flag": "--max-connections-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_connections_per_source",
+      "effective_default": null,
+      "flag": "--max-connections-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_sessions_per_connection",
+      "effective_default": null,
+      "flag": "--max-sessions-per-connection",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_sessions_per_instance",
+      "effective_default": null,
+      "flag": "--max-sessions-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_sessions_per_source",
+      "effective_default": null,
+      "flag": "--max-sessions-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.max_tracking_entries",
+      "effective_default": 65536,
+      "flag": "--max-tracking-entries",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.session_open_burst_per_connection",
+      "effective_default": null,
+      "flag": "--session-open-burst-per-connection",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.session_open_burst_per_instance",
+      "effective_default": null,
+      "flag": "--session-open-burst-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.session_open_burst_per_source",
+      "effective_default": null,
+      "flag": "--session-open-burst-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.session_open_rate_per_connection",
+      "effective_default": null,
+      "flag": "--session-open-rate-per-connection",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.session_open_rate_per_instance",
+      "effective_default": null,
+      "flag": "--session-open-rate-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.session_open_rate_per_source",
+      "effective_default": null,
+      "flag": "--session-open-rate-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_burst_per_connection",
+      "effective_default": null,
+      "flag": "--stream-open-burst-per-connection",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_burst_per_instance",
+      "effective_default": null,
+      "flag": "--stream-open-burst-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_burst_per_session",
+      "effective_default": null,
+      "flag": "--stream-open-burst-per-session",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_burst_per_source",
+      "effective_default": null,
+      "flag": "--stream-open-burst-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_rate_per_connection",
+      "effective_default": null,
+      "flag": "--stream-open-rate-per-connection",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_rate_per_instance",
+      "effective_default": null,
+      "flag": "--stream-open-rate-per-instance",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_rate_per_session",
+      "effective_default": null,
+      "flag": "--stream-open-rate-per-session",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
+    },
+    {
+      "config_path": "admission.stream_open_rate_per_source",
+      "effective_default": null,
+      "flag": "--stream-open-rate-per-source",
+      "parser_default": null,
+      "review_status": "reviewed_phase2"
     }
   ],
   "normalization_backfills_flat": {
@@ -1211,6 +1437,6 @@
     "webtransport.profiles.to[1]": "draft13",
     "webtransport.profiles.to[2]": "ietf-current"
   },
-  "parser_public_flag_count": 134,
+  "parser_public_flag_count": 162,
   "profile": "default"
 }

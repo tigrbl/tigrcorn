@@ -8,6 +8,8 @@ from typing import Any, Mapping
 
 from .merge import merge_config_dicts
 
+from .model.admission import ADMISSION_FIELDS
+
 _FLAT_ENV_MAP = {
     "APP": ("app", "target"),
     "APP_INTERFACE": ("app", "interface"),
@@ -43,7 +45,10 @@ _FLAT_ENV_MAP = {
     "HTTP2_MAX_HEADERS_SIZE": ("http", "http2_max_headers_size"),
     "HTTP2_MAX_FRAME_SIZE": ("http", "http2_max_frame_size"),
     "HTTP2_ADAPTIVE_WINDOW": ("http", "http2_adaptive_window"),
-    "HTTP2_INITIAL_CONNECTION_WINDOW_SIZE": ("http", "http2_initial_connection_window_size"),
+    "HTTP2_INITIAL_CONNECTION_WINDOW_SIZE": (
+        "http",
+        "http2_initial_connection_window_size",
+    ),
     "HTTP2_INITIAL_STREAM_WINDOW_SIZE": ("http", "http2_initial_stream_window_size"),
     "HTTP2_KEEP_ALIVE_INTERVAL": ("http", "http2_keep_alive_interval"),
     "HTTP2_KEEP_ALIVE_TIMEOUT": ("http", "http2_keep_alive_timeout"),
@@ -81,8 +86,14 @@ _FLAT_ENV_MAP = {
     "WEBTRANSPORT_MAX_SESSIONS": ("webtransport", "max_sessions"),
     "WEBTRANSPORT_MAX_STREAMS": ("webtransport", "max_streams"),
     "WEBTRANSPORT_MAX_DATAGRAM_SIZE": ("webtransport", "max_datagram_size"),
-    "WEBTRANSPORT_STREAM_RECEIVE_COALESCE_BYTES": ("webtransport", "stream_receive_coalesce_bytes"),
-    "WEBTRANSPORT_STREAM_RECEIVE_MAX_DELAY_MS": ("webtransport", "stream_receive_max_delay_ms"),
+    "WEBTRANSPORT_STREAM_RECEIVE_COALESCE_BYTES": (
+        "webtransport",
+        "stream_receive_coalesce_bytes",
+    ),
+    "WEBTRANSPORT_STREAM_RECEIVE_MAX_DELAY_MS": (
+        "webtransport",
+        "stream_receive_max_delay_ms",
+    ),
     "WEBTRANSPORT_ORIGIN": ("webtransport", "origins"),
     "WEBTRANSPORT_PATH": ("webtransport", "path"),
     "WEBTRANSPORT_PROFILES": ("webtransport", "profiles"),
@@ -164,34 +175,41 @@ def load_env_file(path: str | Path | None) -> dict[str, str]:
         return {}
     env_path = Path(path)
     if not env_path.exists():
-        raise EnvFileError(f'env file does not exist: {env_path}')
+        raise EnvFileError(f"env file does not exist: {env_path}")
     result: dict[str, str] = {}
-    for line_no, raw_line in enumerate(env_path.read_text(encoding='utf-8').splitlines(), 1):
+    for line_no, raw_line in enumerate(
+        env_path.read_text(encoding="utf-8").splitlines(), 1
+    ):
         line = raw_line.strip()
-        if not line or line.startswith('#'):
+        if not line or line.startswith("#"):
             continue
-        if line.startswith('export '):
+        if line.startswith("export "):
             line = line[7:].strip()
-        if '=' not in line:
-            raise EnvFileError(f'invalid env file line {line_no}: {raw_line!r}')
-        key, raw_value = line.split('=', 1)
+        if "=" not in line:
+            raise EnvFileError(f"invalid env file line {line_no}: {raw_line!r}")
+        key, raw_value = line.split("=", 1)
         key = key.strip()
         if not key:
-            raise EnvFileError(f'invalid env file line {line_no}: empty key')
+            raise EnvFileError(f"invalid env file line {line_no}: empty key")
         value = raw_value.strip()
         if value and value[0] in {'"', "'"}:
             try:
-                parsed = shlex.split(f'VALUE={value}', posix=True)
-                value = parsed[0].split('=', 1)[1]
+                parsed = shlex.split(f"VALUE={value}", posix=True)
+                value = parsed[0].split("=", 1)[1]
             except Exception as exc:
-                raise EnvFileError(f'invalid quoted value on line {line_no}') from exc
-        elif ' #' in value:
-            value = value.split(' #', 1)[0].rstrip()
+                raise EnvFileError(f"invalid quoted value on line {line_no}") from exc
+        elif " #" in value:
+            value = value.split(" #", 1)[0].rstrip()
         result[key] = value
     return result
 
 
-def load_env_config(prefix: str = "TIGRCORN", *, environ: Mapping[str, str] | None = None) -> dict[str, Any]:
+_FLAT_ENV_MAP.update({name.upper(): ("admission", name) for name in ADMISSION_FIELDS})
+
+
+def load_env_config(
+    prefix: str = "TIGRCORN", *, environ: Mapping[str, str] | None = None
+) -> dict[str, Any]:
     env = dict(os.environ if environ is None else environ)
     normalized_prefix = prefix.upper().replace("-", "_")
     nested_prefix = f"{normalized_prefix}__"
@@ -201,7 +219,7 @@ def load_env_config(prefix: str = "TIGRCORN", *, environ: Mapping[str, str] | No
 
     for key, raw_value in env.items():
         if key.startswith(nested_prefix):
-            path_bits = key[len(nested_prefix):].split("__")
+            path_bits = key[len(nested_prefix) :].split("__")
             path: list[str | int] = []
             for bit in path_bits:
                 if bit.isdigit():
@@ -210,7 +228,7 @@ def load_env_config(prefix: str = "TIGRCORN", *, environ: Mapping[str, str] | No
                     path.append(bit.lower())
             _nested_set(nested, tuple(path), _decode_scalar(raw_value))
         elif key.startswith(flat_prefix):
-            name = key[len(flat_prefix):]
+            name = key[len(flat_prefix) :]
             path = _FLAT_ENV_MAP.get(name)
             if path is not None:
                 _nested_set(flat, path, _decode_scalar(raw_value))

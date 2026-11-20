@@ -88,6 +88,34 @@ usage: tigrcorn [-h] [--app-interface {auto,tigr-asgi-contract,asgi3}]
                 [--webtransport-origin WEBTRANSPORT_ORIGIN]
                 [--webtransport-path WEBTRANSPORT_PATH]
                 [--pipe-mode {rawframed,stream}]
+                [--max-connections-per-source MAX_CONNECTIONS_PER_SOURCE]
+                [--max-connections-per-instance MAX_CONNECTIONS_PER_INSTANCE]
+                [--max-sessions-per-connection MAX_SESSIONS_PER_CONNECTION]
+                [--max-sessions-per-source MAX_SESSIONS_PER_SOURCE]
+                [--max-sessions-per-instance MAX_SESSIONS_PER_INSTANCE]
+                [--max-active-streams-per-connection MAX_ACTIVE_STREAMS_PER_CONNECTION]
+                [--max-active-streams-per-session MAX_ACTIVE_STREAMS_PER_SESSION]
+                [--max-active-streams-per-source MAX_ACTIVE_STREAMS_PER_SOURCE]
+                [--max-active-streams-per-instance MAX_ACTIVE_STREAMS_PER_INSTANCE]
+                [--connection-open-rate-per-source CONNECTION_OPEN_RATE_PER_SOURCE]
+                [--connection-open-burst-per-source CONNECTION_OPEN_BURST_PER_SOURCE]
+                [--connection-open-rate-per-instance CONNECTION_OPEN_RATE_PER_INSTANCE]
+                [--connection-open-burst-per-instance CONNECTION_OPEN_BURST_PER_INSTANCE]
+                [--session-open-rate-per-connection SESSION_OPEN_RATE_PER_CONNECTION]
+                [--session-open-burst-per-connection SESSION_OPEN_BURST_PER_CONNECTION]
+                [--session-open-rate-per-source SESSION_OPEN_RATE_PER_SOURCE]
+                [--session-open-burst-per-source SESSION_OPEN_BURST_PER_SOURCE]
+                [--session-open-rate-per-instance SESSION_OPEN_RATE_PER_INSTANCE]
+                [--session-open-burst-per-instance SESSION_OPEN_BURST_PER_INSTANCE]
+                [--stream-open-rate-per-connection STREAM_OPEN_RATE_PER_CONNECTION]
+                [--stream-open-burst-per-connection STREAM_OPEN_BURST_PER_CONNECTION]
+                [--stream-open-rate-per-session STREAM_OPEN_RATE_PER_SESSION]
+                [--stream-open-burst-per-session STREAM_OPEN_BURST_PER_SESSION]
+                [--stream-open-rate-per-source STREAM_OPEN_RATE_PER_SOURCE]
+                [--stream-open-burst-per-source STREAM_OPEN_BURST_PER_SOURCE]
+                [--stream-open-rate-per-instance STREAM_OPEN_RATE_PER_INSTANCE]
+                [--stream-open-burst-per-instance STREAM_OPEN_BURST_PER_INSTANCE]
+                [--max-tracking-entries MAX_TRACKING_ENTRIES]
                 [app]
 
 ASGI3-compatible transport server
@@ -380,3 +408,62 @@ Protocol / transport:
   --webtransport-path WEBTRANSPORT_PATH
                         WebTransport CONNECT path prefix
   --pipe-mode {rawframed,stream}
+
+Transport admission:
+  --max-connections-per-source MAX_CONNECTIONS_PER_SOURCE
+                        Transport admission: max connections per source
+  --max-connections-per-instance MAX_CONNECTIONS_PER_INSTANCE
+                        Transport admission: max connections per instance
+  --max-sessions-per-connection MAX_SESSIONS_PER_CONNECTION
+                        Transport admission: max sessions per connection
+  --max-sessions-per-source MAX_SESSIONS_PER_SOURCE
+                        Transport admission: max sessions per source
+  --max-sessions-per-instance MAX_SESSIONS_PER_INSTANCE
+                        Transport admission: max sessions per instance
+  --max-active-streams-per-connection MAX_ACTIVE_STREAMS_PER_CONNECTION
+                        Transport admission: max active streams per connection
+  --max-active-streams-per-session MAX_ACTIVE_STREAMS_PER_SESSION
+                        Transport admission: max active streams per session
+  --max-active-streams-per-source MAX_ACTIVE_STREAMS_PER_SOURCE
+                        Transport admission: max active streams per source
+  --max-active-streams-per-instance MAX_ACTIVE_STREAMS_PER_INSTANCE
+                        Transport admission: max active streams per instance
+  --connection-open-rate-per-source CONNECTION_OPEN_RATE_PER_SOURCE
+                        Transport admission: connection open rate per source
+  --connection-open-burst-per-source CONNECTION_OPEN_BURST_PER_SOURCE
+                        Transport admission: connection open burst per source
+  --connection-open-rate-per-instance CONNECTION_OPEN_RATE_PER_INSTANCE
+                        Transport admission: connection open rate per instance
+  --connection-open-burst-per-instance CONNECTION_OPEN_BURST_PER_INSTANCE
+                        Transport admission: connection open burst per
+                        instance
+  --session-open-rate-per-connection SESSION_OPEN_RATE_PER_CONNECTION
+                        Transport admission: session open rate per connection
+  --session-open-burst-per-connection SESSION_OPEN_BURST_PER_CONNECTION
+                        Transport admission: session open burst per connection
+  --session-open-rate-per-source SESSION_OPEN_RATE_PER_SOURCE
+                        Transport admission: session open rate per source
+  --session-open-burst-per-source SESSION_OPEN_BURST_PER_SOURCE
+                        Transport admission: session open burst per source
+  --session-open-rate-per-instance SESSION_OPEN_RATE_PER_INSTANCE
+                        Transport admission: session open rate per instance
+  --session-open-burst-per-instance SESSION_OPEN_BURST_PER_INSTANCE
+                        Transport admission: session open burst per instance
+  --stream-open-rate-per-connection STREAM_OPEN_RATE_PER_CONNECTION
+                        Transport admission: stream open rate per connection
+  --stream-open-burst-per-connection STREAM_OPEN_BURST_PER_CONNECTION
+                        Transport admission: stream open burst per connection
+  --stream-open-rate-per-session STREAM_OPEN_RATE_PER_SESSION
+                        Transport admission: stream open rate per session
+  --stream-open-burst-per-session STREAM_OPEN_BURST_PER_SESSION
+                        Transport admission: stream open burst per session
+  --stream-open-rate-per-source STREAM_OPEN_RATE_PER_SOURCE
+                        Transport admission: stream open rate per source
+  --stream-open-burst-per-source STREAM_OPEN_BURST_PER_SOURCE
+                        Transport admission: stream open burst per source
+  --stream-open-rate-per-instance STREAM_OPEN_RATE_PER_INSTANCE
+                        Transport admission: stream open rate per instance
+  --stream-open-burst-per-instance STREAM_OPEN_BURST_PER_INSTANCE
+                        Transport admission: stream open burst per instance
+  --max-tracking-entries MAX_TRACKING_ENTRIES
+                        Transport admission: max tracking entries

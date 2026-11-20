@@ -22,8 +22,15 @@ def namespace_to_overrides(ns: Namespace) -> dict[str, Any]:
         "logging": {},
         "metrics": {},
         "scheduler": {},
+        "admission": {},
     }
 
+    from tigrcorn_config.model.admission import ADMISSION_FIELDS
+
+    for name in ADMISSION_FIELDS:
+        value = getattr(ns, name, None)
+        if value is not None:
+            blocks["admission"][name] = value
     _populate_app_block(ns, blocks["app"])
     logging_explicit_fields = _populate_mapped_blocks(ns, blocks)
     _populate_special_blocks(ns, blocks, logging_explicit_fields)
@@ -64,7 +71,9 @@ def _populate_app_block(ns: Namespace, app_block: dict[str, Any]) -> None:
         app_block["reload_exclude"] = list(ns.reload_exclude)
 
 
-def _populate_mapped_blocks(ns: Namespace, blocks: dict[str, dict[str, Any]]) -> list[str]:
+def _populate_mapped_blocks(
+    ns: Namespace, blocks: dict[str, dict[str, Any]]
+) -> list[str]:
     logging_explicit_fields: list[str] = []
     for key, (block_name, dest) in _NAMESPACE_MAPPING.items():
         value = getattr(ns, key, None)
@@ -87,7 +96,9 @@ def _populate_special_blocks(
         logging_explicit_fields.append("log_config")
     if getattr(ns, "ssl_revocation_fetch", None) is not None:
         value = ns.ssl_revocation_fetch
-        blocks["tls"]["revocation_fetch"] = value == "on" if isinstance(value, str) else bool(value)
+        blocks["tls"]["revocation_fetch"] = (
+            value == "on" if isinstance(value, str) else bool(value)
+        )
     if ns.forwarded_allow_ips:
         blocks["proxy"]["forwarded_allow_ips"] = listify(ns.forwarded_allow_ips)
     if ns.server_header is not None:
@@ -115,11 +126,19 @@ def _populate_special_blocks(
     if ns.disable_websocket is not None:
         blocks["websocket"]["enabled"] = not ns.disable_websocket
     if ns.quic_secret is not None:
-        blocks["quic"]["quic_secret"] = ns.quic_secret.encode("utf-8") if isinstance(ns.quic_secret, str) else ns.quic_secret
+        blocks["quic"]["quic_secret"] = (
+            ns.quic_secret.encode("utf-8")
+            if isinstance(ns.quic_secret, str)
+            else ns.quic_secret
+        )
     if getattr(ns, "quic_congestion_control", None) is not None:
-        blocks["quic"].setdefault("congestion_control", {})["algorithm"] = ns.quic_congestion_control
+        blocks["quic"].setdefault("congestion_control", {})["algorithm"] = (
+            ns.quic_congestion_control
+        )
     if getattr(ns, "quic_congestion_control_options", None) is not None:
-        blocks["quic"].setdefault("congestion_control", {})["options"] = dict(ns.quic_congestion_control_options)
+        blocks["quic"].setdefault("congestion_control", {})["options"] = dict(
+            ns.quic_congestion_control_options
+        )
     if getattr(ns, "webtransport_origin", None):
         blocks["webtransport"]["origins"] = listify(ns.webtransport_origin)
 
@@ -172,7 +191,10 @@ _NAMESPACE_MAPPING: dict[str, tuple[str, str]] = {
     "http2_max_headers_size": ("http", "http2_max_headers_size"),
     "http2_max_frame_size": ("http", "http2_max_frame_size"),
     "http2_adaptive_window": ("http", "http2_adaptive_window"),
-    "http2_initial_connection_window_size": ("http", "http2_initial_connection_window_size"),
+    "http2_initial_connection_window_size": (
+        "http",
+        "http2_initial_connection_window_size",
+    ),
     "http2_initial_stream_window_size": ("http", "http2_initial_stream_window_size"),
     "http2_keep_alive_interval": ("http", "http2_keep_alive_interval"),
     "http2_keep_alive_timeout": ("http", "http2_keep_alive_timeout"),
@@ -199,8 +221,14 @@ _NAMESPACE_MAPPING: dict[str, tuple[str, str]] = {
     "webtransport_max_sessions": ("webtransport", "max_sessions"),
     "webtransport_max_streams": ("webtransport", "max_streams"),
     "webtransport_max_datagram_size": ("webtransport", "max_datagram_size"),
-    "webtransport_stream_receive_coalesce_bytes": ("webtransport", "stream_receive_coalesce_bytes"),
-    "webtransport_stream_receive_max_delay_ms": ("webtransport", "stream_receive_max_delay_ms"),
+    "webtransport_stream_receive_coalesce_bytes": (
+        "webtransport",
+        "stream_receive_coalesce_bytes",
+    ),
+    "webtransport_stream_receive_max_delay_ms": (
+        "webtransport",
+        "stream_receive_max_delay_ms",
+    ),
     "webtransport_path": ("webtransport", "path"),
     "webtransport_profiles": ("webtransport", "profiles"),
     "webtransport_preferred_profile": ("webtransport", "preferred_profile"),

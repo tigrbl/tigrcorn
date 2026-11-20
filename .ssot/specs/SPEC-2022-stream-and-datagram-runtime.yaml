@@ -16,6 +16,14 @@ status_notes:
     at: "2026-05-27T17:41:02Z"
     note: "Updated stream and datagram validation against contract classification matrix."
     status: "draft"
+  -
+    at: "2026-11-18T08:21:16Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:08Z"
 references: []
 body: |-
   # Stream and datagram runtime
@@ -35,6 +43,12 @@ body: |-
   - Datagram labels validate against the contract classification matrix before they are exposed as `family=datagram`.
   - ASGI/3 compatibility exposes these families only through documented extensions.
   - Client-session proof uses stream and datagram identifiers under `spc:2053` without promoting internal lane labels into the governed proof schema.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  All stream and datagram carriers preserve resource taxonomy and terminal lifecycle. Datagram byte/rate protection remains separate; datagrams do not count as new streams or subscriptions.
+  
+  Related new contracts: spc:1009, spc:1012.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1011"
@@ -43,3 +57,6 @@ adr_ids:
   - "adr:1050"
   - "adr:1055"
   - "adr:1073"
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

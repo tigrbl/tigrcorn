@@ -1,0 +1,147 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1014"
+number: 1014
+slug: "config"
+title: "Transport admission configuration parity"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The canonical Python configuration has an `admission` section. TOML `[admission]`, CLI,"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-11-18T08:21:02Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Implemented with local runtime/configuration/lifecycle verification; no release certification implied."
+    at: "2026-11-18T09:34:52Z"
+references: []
+body: |-
+  ## Configuration contract
+  
+  The canonical Python configuration has an `admission` section. TOML `[admission]`, CLI,
+  environment, and Python inputs normalize into that model and run identical validation.
+  The following table defines required public parity; sample values below are examples,
+  not capacity promises or new implicit defaults.
+  
+  | TOML key | CLI flag | Environment variable | Python field |
+  |---|---|---|---|
+  | `admission.max_connections_per_source` | `--max-connections-per-source` | `TIGRCORN_MAX_CONNECTIONS_PER_SOURCE` | `admission.max_connections_per_source` |
+  | `admission.max_connections_per_instance` | `--max-connections-per-instance` | `TIGRCORN_MAX_CONNECTIONS_PER_INSTANCE` | `admission.max_connections_per_instance` |
+  | `admission.max_sessions_per_connection` | `--max-sessions-per-connection` | `TIGRCORN_MAX_SESSIONS_PER_CONNECTION` | `admission.max_sessions_per_connection` |
+  | `admission.max_sessions_per_source` | `--max-sessions-per-source` | `TIGRCORN_MAX_SESSIONS_PER_SOURCE` | `admission.max_sessions_per_source` |
+  | `admission.max_sessions_per_instance` | `--max-sessions-per-instance` | `TIGRCORN_MAX_SESSIONS_PER_INSTANCE` | `admission.max_sessions_per_instance` |
+  | `admission.max_active_streams_per_connection` | `--max-active-streams-per-connection` | `TIGRCORN_MAX_ACTIVE_STREAMS_PER_CONNECTION` | `admission.max_active_streams_per_connection` |
+  | `admission.max_active_streams_per_session` | `--max-active-streams-per-session` | `TIGRCORN_MAX_ACTIVE_STREAMS_PER_SESSION` | `admission.max_active_streams_per_session` |
+  | `admission.max_active_streams_per_source` | `--max-active-streams-per-source` | `TIGRCORN_MAX_ACTIVE_STREAMS_PER_SOURCE` | `admission.max_active_streams_per_source` |
+  | `admission.max_active_streams_per_instance` | `--max-active-streams-per-instance` | `TIGRCORN_MAX_ACTIVE_STREAMS_PER_INSTANCE` | `admission.max_active_streams_per_instance` |
+  | `admission.connection_open_rate_per_source` | `--connection-open-rate-per-source` | `TIGRCORN_CONNECTION_OPEN_RATE_PER_SOURCE` | `admission.connection_open_rate_per_source` |
+  | `admission.connection_open_burst_per_source` | `--connection-open-burst-per-source` | `TIGRCORN_CONNECTION_OPEN_BURST_PER_SOURCE` | `admission.connection_open_burst_per_source` |
+  | `admission.connection_open_rate_per_instance` | `--connection-open-rate-per-instance` | `TIGRCORN_CONNECTION_OPEN_RATE_PER_INSTANCE` | `admission.connection_open_rate_per_instance` |
+  | `admission.connection_open_burst_per_instance` | `--connection-open-burst-per-instance` | `TIGRCORN_CONNECTION_OPEN_BURST_PER_INSTANCE` | `admission.connection_open_burst_per_instance` |
+  | `admission.session_open_rate_per_connection` | `--session-open-rate-per-connection` | `TIGRCORN_SESSION_OPEN_RATE_PER_CONNECTION` | `admission.session_open_rate_per_connection` |
+  | `admission.session_open_burst_per_connection` | `--session-open-burst-per-connection` | `TIGRCORN_SESSION_OPEN_BURST_PER_CONNECTION` | `admission.session_open_burst_per_connection` |
+  | `admission.session_open_rate_per_source` | `--session-open-rate-per-source` | `TIGRCORN_SESSION_OPEN_RATE_PER_SOURCE` | `admission.session_open_rate_per_source` |
+  | `admission.session_open_burst_per_source` | `--session-open-burst-per-source` | `TIGRCORN_SESSION_OPEN_BURST_PER_SOURCE` | `admission.session_open_burst_per_source` |
+  | `admission.session_open_rate_per_instance` | `--session-open-rate-per-instance` | `TIGRCORN_SESSION_OPEN_RATE_PER_INSTANCE` | `admission.session_open_rate_per_instance` |
+  | `admission.session_open_burst_per_instance` | `--session-open-burst-per-instance` | `TIGRCORN_SESSION_OPEN_BURST_PER_INSTANCE` | `admission.session_open_burst_per_instance` |
+  | `admission.stream_open_rate_per_connection` | `--stream-open-rate-per-connection` | `TIGRCORN_STREAM_OPEN_RATE_PER_CONNECTION` | `admission.stream_open_rate_per_connection` |
+  | `admission.stream_open_burst_per_connection` | `--stream-open-burst-per-connection` | `TIGRCORN_STREAM_OPEN_BURST_PER_CONNECTION` | `admission.stream_open_burst_per_connection` |
+  | `admission.stream_open_rate_per_session` | `--stream-open-rate-per-session` | `TIGRCORN_STREAM_OPEN_RATE_PER_SESSION` | `admission.stream_open_rate_per_session` |
+  | `admission.stream_open_burst_per_session` | `--stream-open-burst-per-session` | `TIGRCORN_STREAM_OPEN_BURST_PER_SESSION` | `admission.stream_open_burst_per_session` |
+  | `admission.stream_open_rate_per_source` | `--stream-open-rate-per-source` | `TIGRCORN_STREAM_OPEN_RATE_PER_SOURCE` | `admission.stream_open_rate_per_source` |
+  | `admission.stream_open_burst_per_source` | `--stream-open-burst-per-source` | `TIGRCORN_STREAM_OPEN_BURST_PER_SOURCE` | `admission.stream_open_burst_per_source` |
+  | `admission.stream_open_rate_per_instance` | `--stream-open-rate-per-instance` | `TIGRCORN_STREAM_OPEN_RATE_PER_INSTANCE` | `admission.stream_open_rate_per_instance` |
+  | `admission.stream_open_burst_per_instance` | `--stream-open-burst-per-instance` | `TIGRCORN_STREAM_OPEN_BURST_PER_INSTANCE` | `admission.stream_open_burst_per_instance` |
+  
+  All new limit/rate fields default to unset (inherit existing behavior); existing protocol
+  defaults remain unchanged. A configured active cap must be an integer >= 1; rate is finite
+  and > 0; burst is an integer >= 1. Booleans are not integers. Rate/burst must be supplied
+  together after merging. TOML omission, Python None, and absent env/CLI mean unspecified;
+  zero, NaN, infinity, blank strings, and unknown fields fail validation. Explicit disabling
+  requires a separately documented policy, not a zero sentinel. Diagnostics show unset
+  controls plainly. A production bounded profile must provide explicit finite values.
+  
+  CLI > environment > TOML > defaults. For direct Python embedding, explicit non-None
+  keyword overrides > environment > TOML > defaults; an explicit typed configuration is
+  authoritative and is not implicitly changed by ambient environment. A run API rejects
+  ambiguous simultaneous authoritative-config and conflicting override forms. Adapters
+  pass the resolved model once, retaining provenance; defaults are not fabricated as
+  explicit overrides. This prevents Tigrbl's parser defaults masking a TOML policy.
+  
+  Existing `--http2-max-concurrent-streams`, `--webtransport-max-sessions`, and
+  `--webtransport-max-streams` retain protocol-specific meanings. Aggregate admission caps
+  compose with them; they are not aliases. Python `limit_concurrency` and legacy runner
+  names require an explicit versioned adapter, never dropped unknown kwargs.
+  
+  ## Proposed usage (requires implementation)
+  
+  ```toml
+  [admission]
+  max_active_streams_per_connection = 64
+  max_active_streams_per_source = 128
+  max_active_streams_per_instance = 4096
+  stream_open_rate_per_source = 40
+  stream_open_burst_per_source = 80
+  ```
+  
+  ```powershell
+  $env:TIGRCORN_MAX_ACTIVE_STREAMS_PER_SOURCE = '128'
+  tigrcorn app:app --config server.toml --stream-open-rate-per-source 40 --stream-open-burst-per-source 80
+  ```
+  
+  ```python
+  # Proposed public typed configuration; not a current import/API availability claim.
+  config = TigrcornConfig(admission=AdmissionConfig(
+      max_active_streams_per_source=128,
+      stream_open_rate_per_source=40, stream_open_burst_per_source=80,
+  ))
+  run(app, config=config)
+  ```
+  
+  ## Acceptance
+  
+  Exercise every table row through all four surfaces, merge precedence and provenance,
+  invalid values, omitted defaults, legacy flag composition, unsupported worker topology,
+  and Tigrbl/direct-Tigrcorn effective-policy equivalence. Parser help, config schema,
+  environment inventory, Python signatures, and default audits must agree.
+  
+  ## Delivery posture
+  
+  Implemented locally on 2026-11-18. The linked verification suite passed 90 tests with no skips; see `.ssot/evidence/admission-delivery/implementation.json` for source hashes, commands, and explicit unrelated baseline exclusions. Features are current/implemented with T2 targets. Release certification and published boundaries are unchanged.
+  
+  ## Governed feature mapping
+  
+  - `feat:transport-admission-cli`
+  - `feat:transport-admission-env`
+  - `feat:transport-admission-inspection`
+  - `feat:transport-admission-model`
+  - `feat:transport-admission-python`
+  - `feat:transport-admission-toml`
+  - `feat:webtransport-max-sessions-flag`
+  - `feat:webtransport-max-streams-flag`
+  
+  ## Companion repository
+  
+  See https://github.com/tigrbl/tigrbl/tree/master/.ssot for the companion admission records. Cross-repository IDs are repository-qualified and must not be inserted as local registry edges.
+  ## Paired implementation contracts
+  
+  - [tigrbl:ADR-1203](https://github.com/tigrbl/tigrbl/blob/master/.ssot/adr/ADR-1203-runner.yaml)
+  - [tigrbl:ADR-1204](https://github.com/tigrbl/tigrbl/blob/master/.ssot/adr/ADR-1204-subquota.yaml)
+  - [tigrbl:ADR-1205](https://github.com/tigrbl/tigrbl/blob/master/.ssot/adr/ADR-1205-sublease.yaml)
+  - [tigrbl:SPEC-1153](https://github.com/tigrbl/tigrbl/blob/master/.ssot/specs/SPEC-1153-qconfig.yaml)
+  
+  Implementation acceptance must exercise Tigrbl launched through its Tigrcorn adapter and direct Tigrcorn with equivalent effective transport policy. Verify source and instance refusal before app dispatch, plus independent authenticated subscription refusal and cleanup across shared carriers.
+  ## Implementation details
+  
+  Instance coordination uses atomic SQLite transactions shared by all workers, with opaque owner generations and confirmed-death reclamation. Source identity is the socket peer and stays bound across QUIC migration. `admission.max_tracking_entries` (CLI `--max-tracking-entries`, environment `TIGRCORN_MAX_TRACKING_ENTRIES`, Python field of the same name) defaults to 65536 and bounds bucket keys and QUIC stream history. Internal coordinator paths/owner generations are not public CLI options. See `docs/architecture/admission.md`.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

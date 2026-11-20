@@ -291,6 +291,9 @@ FLAG_HELP: dict[str, str] = {
 }
 
 
+from tigrcorn_config.model.admission import ADMISSION_FIELDS
+FLAG_HELP.update({"--"+name.replace("_","-"): "Transport admission: "+name.replace("_"," ") for name in ADMISSION_FIELDS})
+
 def flag_help(flag: str, fallback: str | None = None) -> str | None:
     return FLAG_HELP.get(flag, fallback)
 

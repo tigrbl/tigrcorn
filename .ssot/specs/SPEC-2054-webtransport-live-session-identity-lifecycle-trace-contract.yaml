@@ -11,7 +11,15 @@ tags: []
 summary: "Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener across H3 native and H2 capsule-backed carriers."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-11-18T08:21:15Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:12Z"
 references: []
 body: |-
   Defines Tigrcorn's live WebTransport proof obligations for repeated and concurrent sessions on one listener across H3 native and H2 capsule-backed carriers.
@@ -23,9 +31,18 @@ body: |-
   - H2 WebTransport traces shall include settings negotiation, extended CONNECT response, capsule parsing, session-scoped stream/datagram ownership, flow-control capsule effects, close/drain, and malformed capsule rejection.
   - Carrier metadata shall distinguish H3/QUIC native stream/datagram backing from H2 capsule backing in evidence.
   - Global diagnostics inventory for WebTransport session records is governed by `spc:2081`; this SPEC remains the WebTransport-specific live identity and trace contract.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  Account WebTransport session and child-stream lifetimes separately. Session close drains child leases; individual child refusal does not fabricate an HTTP status or corrupt existing session state.
+  
+  Related new contracts: spc:1009, spc:1010, spc:1012.
 spec_kind: "operational"
 adr_ids:
   - "adr:1011"
   - "adr:1040"
   - "adr:1055"
   - "adr:1073"
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

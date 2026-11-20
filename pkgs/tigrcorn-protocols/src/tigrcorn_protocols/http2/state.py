@@ -63,7 +63,10 @@ class H2StreamState:
     receive_window: FlowWindow = field(default_factory=lambda: FlowWindow(DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE]))
     receive_window_target: int = DEFAULT_SETTINGS[SETTING_INITIAL_WINDOW_SIZE]
     receive_consumed_since_update: int = 0
-    buffered_body_size: int = 0
+    received_body_size: int = 0
+    unconsumed_body_size: int = 0
+    final_response_started: bool = False
+    request_body_rejected: bool = False
     expected_content_length: int | None = None
     header_block_bytes: int = 0
     current_header_block_is_trailers: bool = False
@@ -146,7 +149,7 @@ class H2StreamState:
     def append_body(self, payload: bytes) -> None:
         if payload:
             self.body_parts.append(payload)
-            self.buffered_body_size += len(payload)
+            self.received_body_size += len(payload)
 
 
 @dataclass(slots=True)

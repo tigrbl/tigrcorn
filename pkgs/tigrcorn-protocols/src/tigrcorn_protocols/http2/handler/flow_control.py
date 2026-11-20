@@ -12,7 +12,7 @@ class HTTP2FlowControlMixin:
             raise ProtocolError("HTTP/2 connection flow-control window exceeded")
         state = self.streams.find(stream_id)
         if state is None:
-            raise ProtocolError("HTTP/2 stream flow-control used after closure")
+            return
         state.receive_window.consume(amount)
         if state.receive_window.available < 0:
             raise ProtocolError("HTTP/2 stream flow-control window exceeded")
@@ -78,6 +78,8 @@ class HTTP2FlowControlMixin:
         if frame.stream_id == 0:
             raise ProtocolError("DATA must use a stream id")
         if self.streams.is_closed(frame.stream_id):
+            await self._consume_receive_flow(frame.stream_id, len(frame.payload))
+            await self._maybe_replenish_receive_credit(frame.stream_id, len(frame.payload))
             return
         state = self.streams.find(frame.stream_id)
         if state is None:
@@ -89,23 +91,30 @@ class HTTP2FlowControlMixin:
         if state.trailers_complete or state.end_stream_received or state.closed:
             raise ProtocolError("DATA on half-closed HTTP/2 stream")
         payload = strip_padding(frame.payload, frame.flags)
-        await self._consume_receive_flow(frame.stream_id, len(payload))
+        await self._consume_receive_flow(frame.stream_id, len(frame.payload))
+        await self._maybe_replenish_receive_credit(frame.stream_id, len(frame.payload) - len(payload))
         if state.websocket_session is not None:
             await state.websocket_session.feed_data(payload, end_stream=bool(frame.flags & FLAG_END_STREAM))
         elif state.connect_tunnel is not None:
             await state.connect_tunnel.feed_client_data(payload, end_stream=bool(frame.flags & FLAG_END_STREAM))
         elif payload:
-            if state.buffered_body_size + len(payload) > self.config.max_body_size:
-                raise ProtocolError("request body exceeds configured max_body_size")
+            body_size = state.received_body_size + len(payload)
+            state.unconsumed_body_size += len(payload)
+            if body_size > self.config.max_body_size:
+                if frame.flags & FLAG_END_STREAM:
+                    state.receive_end_stream()
+                await self._reject_oversized_body(state)
+                return
+            if (
+                state.expected_content_length is not None
+                and body_size > state.expected_content_length
+            ):
+                raise ProtocolError("request body exceeds content-length")
             if state.request_receive is not None:
+                state.received_body_size = body_size
                 await state.request_receive.put_body(payload, more_body=not bool(frame.flags & FLAG_END_STREAM))
             else:
                 state.append_body(payload)
-            if (
-                state.expected_content_length is not None
-                and state.buffered_body_size > state.expected_content_length
-            ):
-                raise ProtocolError("request body exceeds content-length")
         if frame.flags & FLAG_END_STREAM:
             state.receive_end_stream()
             if state.request_receive is not None and not payload:

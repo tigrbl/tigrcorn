@@ -7,6 +7,7 @@ This repository includes a stdlib-only HTTP/3 core integrated with the bundled Q
 - frame codec
 - settings codec
 - request-stream parsing and control-stream validation
+- `--max-body-size` applies to the declared length and cumulative DATA payload bytes. An over-limit HTTP request receives `413 Content Too Large` on its stream. The independent 64 KiB parse-buffer guard uses `H3_EXCESSIVE_LOAD` for parser overflow.
 - QPACK encoder stream, decoder stream, and dynamic table state
 - UDP server integration over the bundled QUIC transport core
 - public API / CLI startup for certificate-driven QUIC-TLS listeners

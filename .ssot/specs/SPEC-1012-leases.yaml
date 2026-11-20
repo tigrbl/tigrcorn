@@ -1,0 +1,65 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1012"
+number: 1012
+slug: "leases"
+title: "Admission lease lifecycle"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Use atomic multi-scope acquire/rollback and opaque ownership/generation IDs. Release is"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-11-18T08:20:59Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Implemented with local runtime/configuration/lifecycle verification; no release certification implied."
+    at: "2026-11-18T09:34:49Z"
+references: []
+body: |-
+  ## Requirements
+  
+  Use atomic multi-scope acquire/rollback and opaque ownership/generation IDs. Release is
+  idempotent and occurs on terminal completion, reset, disconnect, cancellation, dispatch
+  failure, worker death, and shutdown. A half-close is not necessarily terminal. Capacity
+  release does not refund rate tokens. Bound pending reservations and their deadlines.
+  
+  Instance coordination includes source counters and rate buckets across all workers.
+  Fence ownership before reclaiming resources from an unresponsive worker. Startup and
+  runtime coordinator failure cannot substitute worker-local accounting under an instance
+  label. Reject new admissions on coordination loss and preserve bounded existing work.
+  
+  ## Acceptance
+  
+  Race acquire/release/reset and duplicate terminal events. Exercise worker kill/reload,
+  coordinator outage, stale owner generations, exception rollback, and orphan reconciliation.
+  Assert counters return to baseline and maximum concurrent resources never exceed caps.
+  
+  ## Delivery posture
+  
+  Implemented locally on 2026-11-18. The linked verification suite passed 90 tests with no skips; see `.ssot/evidence/admission-delivery/implementation.json` for source hashes, commands, and explicit unrelated baseline exclusions. Features are current/implemented with T2 targets. Release certification and published boundaries are unchanged.
+  
+  ## Governed feature mapping
+  
+  - `feat:client-session-fault-cleanup-modes`
+  - `feat:client-session-pressure-modes`
+  - `feat:transport-admission-leases`
+  - `feat:transport-churn-defense`
+  - `feat:transport-instance-budget`
+  
+  ## Companion repository
+  
+  See https://github.com/tigrbl/tigrbl/tree/master/.ssot for the companion admission records. Cross-repository IDs are repository-qualified and must not be inserted as local registry edges.
+  ## Implementation details
+  
+  Instance coordination uses atomic SQLite transactions shared by all workers, with opaque owner generations and confirmed-death reclamation. Source identity is the socket peer and stays bound across QUIC migration. `admission.max_tracking_entries` (CLI `--max-tracking-entries`, environment `TIGRCORN_MAX_TRACKING_ENTRIES`, Python field of the same name) defaults to 65536 and bounds bucket keys and QUIC stream history. Internal coordinator paths/owner generations are not public CLI options. See `docs/architecture/admission.md`.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

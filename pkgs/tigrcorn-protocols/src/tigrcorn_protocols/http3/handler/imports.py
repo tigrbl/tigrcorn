@@ -26,6 +26,7 @@ from tigrcorn_protocols.http3.codec import (
     FRAME_HEADERS,
     H3_CONNECT_ERROR,
     H3_ID_ERROR,
+    H3_NO_ERROR,
     H3_GENERAL_PROTOCOL_ERROR,
     H3_REQUEST_CANCELLED,
     SETTING_ENABLE_CONNECT_PROTOCOL,

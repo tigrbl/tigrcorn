@@ -6,7 +6,6 @@ from tigrcorn_config.model import ServerConfig
 from tigrcorn_config.normalize import normalize_config
 from tigrcorn_core.constants import SUPPORTED_RUNTIMES, SUPPORTED_WORKER_CLASS_ALIASES
 from tigrcorn_protocols.connect import validate_connect_allow_entry
-from tigrcorn_observability.logging import validate_logging_contract
 from tigrcorn_observability.metrics import parse_statsd_host
 from tigrcorn_observability.tracing import validate_otel_endpoint
 from tigrcorn_core.errors import ConfigError
@@ -24,6 +23,8 @@ def _require_positive(name: str, value: int | float | None) -> None:
 
 
 def validate_config(config: ServerConfig) -> None:
+    from tigrcorn_observability.logging import validate_logging_contract
+    config.admission.validate()
     if config.webtransport.compatibility not in {'current', 'draft13'}:
         raise ConfigError("webtransport.compatibility must be 'current' or 'draft13'")
     normalize_config(config)

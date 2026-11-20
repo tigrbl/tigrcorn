@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2014"
 number: 2014
@@ -11,9 +11,16 @@ tags: []
 summary: "Tigrcorn shall expose contract-native metadata and capabilities to ASGI/3 apps through documented extensions."
 supersedes: []
 superseded_by: []
-status_notes: []
-references:
-  - "ADR-1015"
+status_notes:
+  -
+    at: "2026-11-18T08:21:18Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:07Z"
+references: []
 body: |-
   # ASGI/3 extension bridge
   
@@ -25,5 +32,14 @@ body: |-
   - Extensions do not change standard ASGI/3 behavior for applications that ignore them.
   - Every native feature exposed to ASGI/3 has a documented extension or an explicit not-mappable decision.
   - Extension payloads preserve contract validation semantics where possible.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  Any exposed admission metadata uses a versioned optional extension, immutable identities and terminal reasons, and effective scopes. Apps receive no authority to release transport leases.
+  
+  Related new contracts: spc:1013.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .imports import *
 
+
 class _TigrCornServerDiagnosticsMixin:
     def describe(self) -> dict[str, Any]:
         configured_protocols: set[str] = set()
@@ -18,10 +19,14 @@ class _TigrCornServerDiagnosticsMixin:
                     "active": self._started and index < len(self._listeners),
                     "kind": listener.kind,
                     "label": listener.label,
-                    "bound_endpoint": bound_endpoints[index] if index < len(bound_endpoints) else None,
+                    "bound_endpoint": bound_endpoints[index]
+                    if index < len(bound_endpoints)
+                    else None,
                     "protocols": list(protocols),
                     "http_versions": list(listener.http_versions),
-                    "quic_congestion_control": self._describe_congestion_control(listener),
+                    "quic_congestion_control": self._describe_congestion_control(
+                        listener
+                    ),
                     "tls": {
                         "enabled": listener.ssl_enabled,
                         "alpn_protocols": list(listener.alpn_protocols),
@@ -61,7 +66,15 @@ class _TigrCornServerDiagnosticsMixin:
                     "transport.udp",
                     "transport.unix",
                 ],
-                "protocols": ["http1", "http2", "http3", "lifespan", "quic", "websocket", "webtransport"],
+                "protocols": [
+                    "http1",
+                    "http2",
+                    "http3",
+                    "lifespan",
+                    "quic",
+                    "websocket",
+                    "webtransport",
+                ],
                 "transports": sorted(TRANSPORTS),
             },
             "configured_protocols": sorted(configured_protocols),
@@ -111,7 +124,9 @@ class _TigrCornServerDiagnosticsMixin:
         return transport_domain_diagnostics(
             accounting=self._transport_domain_accounting,
             active_domains=active_domains,
-            endpoint_identities=self._transport_domain_endpoint_identities(active_domains),
+            endpoint_identities=self._transport_domain_endpoint_identities(
+                active_domains
+            ),
         )
 
     def quic_operational_security_evidence(self) -> dict[str, Any]:
@@ -119,6 +134,9 @@ class _TigrCornServerDiagnosticsMixin:
             label: collector.runtime_evidence()
             for label, collector in sorted(self._quic_operational_security.items())
         }
+
+    def admission_snapshot(self) -> dict[str, Any]:
+        return self.scheduler.admission.snapshot()
 
     def connection_inventory(self) -> dict[str, Any]:
         return self._jsonable(self._connection_inventory.snapshot())
@@ -147,7 +165,9 @@ class _TigrCornServerDiagnosticsMixin:
             domains.add("quic")
         return tuple(sorted(domains))
 
-    def _transport_domain_endpoint_identities(self, active_domains: Iterable[str]) -> dict[str, str | None]:
+    def _transport_domain_endpoint_identities(
+        self, active_domains: Iterable[str]
+    ) -> dict[str, str | None]:
         endpoint = ",".join(self._bound_endpoint_strings()) or None
         return {domain_id: endpoint for domain_id in active_domains}
 
@@ -159,11 +179,15 @@ class _TigrCornServerDiagnosticsMixin:
     def _redact_provider_options(options: dict[str, Any]) -> dict[str, Any]:
         sensitive = ("secret", "token", "password", "credential", "key")
         return {
-            key: "<redacted>" if any(part in key.lower() for part in sensitive) else value
+            key: "<redacted>"
+            if any(part in key.lower() for part in sensitive)
+            else value
             for key, value in options.items()
         }
 
-    def _describe_congestion_control(self, listener: ListenerConfig) -> dict[str, Any] | None:
+    def _describe_congestion_control(
+        self, listener: ListenerConfig
+    ) -> dict[str, Any] | None:
         if listener.kind != "udp":
             return None
         congestion_control = (
@@ -182,9 +206,7 @@ class _TigrCornServerDiagnosticsMixin:
             }
         return {
             "algorithm": congestion_control.algorithm,
-            "options": self._redact_provider_options(
-                congestion_control.options
-            ),
+            "options": self._redact_provider_options(congestion_control.options),
             "resolved_provider": metadata,
         }
 
@@ -201,4 +223,5 @@ class _TigrCornServerDiagnosticsMixin:
             }
         return value
 
-__all__ = [name for name in globals() if not name.startswith('__')]
+
+__all__ = [name for name in globals() if not name.startswith("__")]

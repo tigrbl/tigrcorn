@@ -13,9 +13,17 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
     at: "2026-06-17T12:41:47Z"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    status: "accepted"
+  -
+    at: "2026-11-18T08:21:08Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:01Z"
 references: []
 body: |-
   Decision: Tigrcorn owns HTTP/3 runtime stream taxonomy over QUIC, including request, push, control, QPACK, reset, GOAWAY, and transport lifecycle behavior.
@@ -31,3 +39,9 @@ body: |-
   Forbidden claims:
   - Tigrcorn must not treat WebTransport lanes as plain HTTP/3 app streams.
   - Tigrcorn must not use WebSocket-over-H3 evidence to claim generic WebTransport behavior.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  Classify request, WebTransport child, and reserved control/QPACK streams before admission. Bidirectional and unidirectional credit stays protocol-owned. Bound control reservations separately; stream reset and FIN projections drive terminal accounting.
+  
+  Governed by adr:1077, adr:1078, adr:1079; configuration contract spc:1014.

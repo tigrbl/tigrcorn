@@ -1,0 +1,1 @@
+{"claim_ids":["clm:admission-delivery.t0","clm:admission-delivery.t1","clm:admission-delivery.t2"],"feature_id":"feat:admission-delivery","schema_version":"ssot.evidence.scaffold.v1","status":"planned","target_tier":"T2","test_ids":["tst:pytest.admission-delivery.t0.proof-graph","tst:pytest.admission-delivery.t1.proof-graph","tst:pytest.admission-delivery.t2.proof-graph"]}

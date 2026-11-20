@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .imports import *
+from tigrcorn_protocols.scheduler.admission import AdmissionDenied
 from .webtransport import _HTTP3WebTransportSession
 from .webtransport_stream_flow import send_nonpriority_stream_data
 
@@ -330,7 +331,7 @@ class HTTP3WebTransportStreamsMixin:
         try:
             self._webtransport_register_session(session, webtransport)
             self._webtransport_register_stream(webtransport, stream_id)
-        except WebTransportGovernanceError:
+        except (WebTransportGovernanceError, AdmissionDenied):
             if self.connection_inventory is not None:
                 self.connection_inventory.close_session(webtransport.session_id, reason='webtransport-governance-rejected')
             session.webtransport_sessions.pop(stream_id, None)

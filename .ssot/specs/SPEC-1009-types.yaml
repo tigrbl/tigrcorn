@@ -1,0 +1,73 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1009"
+number: 1009
+slug: "types"
+title: "Transport resource accounting taxonomy"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "does not create a new connection budget. HTTP/1.1 keep-alive reuse does not create one."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-11-18T08:20:54Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Implemented with local runtime/configuration/lifecycle verification; no release certification implied."
+    at: "2026-11-18T09:34:43Z"
+references: []
+body: |-
+  ## Resource taxonomy and ownership
+  
+  - A connection is a TCP/Unix transport association or a QUIC connection. QUIC migration
+    does not create a new connection budget. HTTP/1.1 keep-alive reuse does not create one.
+  - HTTP/2 streams and HTTP/3 request/QUIC streams have transport-owned identities.
+    HTTP/1.1 message-body lifetimes are separately classified; do not invent QUIC-style IDs.
+  - A protocol session is a WebSocket or WebTransport interaction, not an authentication
+    or database session. WebSocket H2/H3 sessions occupy an underlying CONNECT stream;
+    WebTransport has a CONNECT session plus child streams. Account resource classes
+    separately; no duplicate reservation of the same resource within one class.
+  - Application subscriptions are Tigrbl-owned logical resources, possibly many per
+    session/control stream. Tigrcorn does not infer subscriptions from frame/message counts.
+  - Source identity defaults to the socket peer's canonical address, without ephemeral
+    port. Forwarded identity requires an explicit trusted-proxy contract. QUIC identity
+    remains stable across migration; any source-key transition is atomic and cannot reset
+    existing budgets. IP quotas are coarse abuse controls, not authenticated account quotas.
+  
+  ## Requirements and acceptance
+  
+  Expose separate connection, protocol-session, bidirectional/unidirectional application
+  stream, and reserved-control counters. Count an H2/H3 CONNECT stream once as a stream
+  and its protocol session once as a session. Specify FIN, reset, stop-sending, and half-close
+  rules for each direction; a bidirectional stream remains active until both directions are
+  terminal. Validate HTTP/1.1, H2, H3, WebSocket H1/H2/H3, and WebTransport carriers using
+  the same taxonomy. Reconnect creates fresh transport resources and releases old resources
+  only on their terminal lifecycle. Subscription or engine-session identities are not inputs
+  to these counters.
+  
+  ## Delivery posture
+  
+  Implemented locally on 2026-11-18. The linked verification suite passed 90 tests with no skips; see `.ssot/evidence/admission-delivery/implementation.json` for source hashes, commands, and explicit unrelated baseline exclusions. Features are current/implemented with T2 targets. Release certification and published boundaries are unchanged.
+  
+  ## Governed feature mapping
+  
+  - `feat:transport-connection-caps`
+  - `feat:transport-resource-taxonomy`
+  - `feat:transport-session-caps`
+  - `feat:transport-source-identity`
+  - `feat:transport-stream-caps`
+  
+  ## Companion repository
+  
+  See https://github.com/tigrbl/tigrbl/tree/master/.ssot for the companion admission records. Cross-repository IDs are repository-qualified and must not be inserted as local registry edges.
+  ## Implementation details
+  
+  Instance coordination uses atomic SQLite transactions shared by all workers, with opaque owner generations and confirmed-death reclamation. Source identity is the socket peer and stays bound across QUIC migration. `admission.max_tracking_entries` (CLI `--max-tracking-entries`, environment `TIGRCORN_MAX_TRACKING_ENTRIES`, Python field of the same name) defaults to 65536 and bounds bucket keys and QUIC stream history. Internal coordinator paths/owner generations are not public CLI options. See `docs/architecture/admission.md`.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1077"

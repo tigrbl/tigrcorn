@@ -10,13 +10,22 @@ from tigrcorn_protocols.webtransport.negotiation import WebTransportNegotiationR
 
 from .priority_lock import PriorityLock
 
+
 @dataclass(slots=True)
 class HTTP3Session:
     addr: tuple[str, int]
     quic: QuicConnection
     lock: PriorityLock = field(default_factory=PriorityLock)
-    runtime_id: str = ''
-    h3: HTTP3ConnectionCore = field(default_factory=lambda: HTTP3ConnectionCore(role='server'))
+    admission_connection: object | None = None
+    admission_source: object | None = None
+    admission_streams: dict = field(default_factory=dict)
+    admission_sessions: dict = field(default_factory=dict)
+    admission_controls: set = field(default_factory=set)
+    admission_pending_controls: set = field(default_factory=set)
+    runtime_id: str = ""
+    h3: HTTP3ConnectionCore = field(
+        default_factory=lambda: HTTP3ConnectionCore(role="server")
+    )
     server_control_stream_sent: bool = False
     server_control_stream_id: int | None = None
     responded_streams: set[int] = field(default_factory=set)
@@ -32,7 +41,9 @@ class HTTP3Session:
     last_activity_at: float = field(default_factory=time.monotonic)
     connect_tunnels: dict[int, _HTTP3ConnectTunnel] = field(default_factory=dict)
     websocket_sessions: dict[int, H3WebSocketSession] = field(default_factory=dict)
-    webtransport_sessions: dict[int, _HTTP3WebTransportSession] = field(default_factory=dict)
+    webtransport_sessions: dict[int, _HTTP3WebTransportSession] = field(
+        default_factory=dict
+    )
     webtransport_streams: set[int] = field(default_factory=set)
     webtransport_stream_owners: dict[int, int] = field(default_factory=dict)
     webtransport_stream_prefaces: dict[int, bytearray] = field(default_factory=dict)

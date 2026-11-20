@@ -1,4 +1,4 @@
-﻿schema_version: "0.8.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2008"
 number: 2008
@@ -16,51 +16,68 @@ status_notes:
     at: "2026-04-26T05:47:34Z"
     note: "Public CLI protocol and WebTransport tuning flags are now governed."
     status: "accepted"
+  -
+    at: "2026-11-18T08:21:11Z"
+    note: "2026-11-18 admission design scope; runtime implementation and conformance remain pending."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Admission extension implemented and locally verified; existing release assurance is unchanged."
+    at: "2026-11-18T09:35:05Z"
 references: []
 body: |-
   ## Content
-
+  
   # CLI operator reference
-
+  
   Tigrcorn shall expose a public CLI for configuring application loading, listener binding, protocol selection, protocol tuning, security, observability, resources, and delivery surfaces.
-
+  
   ## Public protocol selection
-
+  
   - `--protocol` shall accept `http1`, `http2`, `http3`, `quic`, `websocket`, `webtransport`, `rawframed`, and `custom`.
   - `--protocol webtransport` shall select the WebTransport protocol surface.
   - `--protocol webtransport` shall not create a REST or JSON-RPC runtime.
   - `--protocol webtransport` shall select the canonical HTTP/3/QUIC WebTransport carrier unless a separately governed HTTP/2 fallback selector is explicitly added.
   - WebTransport over HTTP/2 shall require explicit operator configuration once implemented; it shall not be selected implicitly by HTTP/2 WebSocket extended CONNECT support.
   - Protocol selection shall be resolved through the same config precedence model as other public CLI flags: CLI greater than environment greater than config file greater than defaults.
-
+  
   ## WebTransport CLI tuning
-
+  
   Tigrcorn shall expose these public WebTransport tuning flags:
-
+  
   - `--webtransport-max-sessions`
   - `--webtransport-max-streams`
   - `--webtransport-max-datagram-size`
   - `--webtransport-origin`
   - `--webtransport-path`
-
+  
   The WebTransport CLI tuning flags shall map to the `webtransport.*` config model and shall have equivalent config, environment, and public API surfaces where applicable.
-
+  
   ## QUIC congestion-control selection
-
+  
   - `--quic-congestion-control <provider-id>` shall select the provider for newly created QUIC connections on the listener.
   - Repeatable `--quic-congestion-option KEY=VALUE` values shall populate the selected provider's validated option namespace.
   - Selection and options shall obey CLI greater than environment greater than config file greater than defaults precedence.
   - Missing providers, incompatible API versions, unknown options, and invalid values shall fail startup closed rather than silently falling back.
   - Inspection and describe output shall report the effective provider identity and redacted effective options.
-
+  
   ## Validation and generated truth
-
+  
   - Public CLI behavior shall be reflected in parser help, CLI flag surface metadata, flag contracts, default audits, SSOT test links, and executable tests.
   - Public protocol and tuning flags shall fail closed on invalid enum values, invalid numeric values, or invalid WebTransport carrier state.
   - Hidden experimental flags are not part of the public certified CLI surface unless explicitly declared by feature rows.
+  
+  ## Admission implementation extension (2026-11-18)
+  
+  Add all CLI flags, environment variables, TOML keys, and Python fields from the admission configuration parity table. Preserve CLI > environment > TOML > defaults; report resolved enforcement scope and provenance. Public help and default audits must cover every control.
+  
+  Related new contracts: spc:1014.
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1011"
   - "adr:1050"
   - "adr:1055"
   - "adr:1075"
+  - "adr:1077"
+  - "adr:1078"
+  - "adr:1079"

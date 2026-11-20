@@ -283,7 +283,18 @@ def run(
         None.
     """
 
-    runtime = config.process.runtime if config is not None else 'auto'
+    if config is not None and config.process.workers > 1:
+        if not isinstance(app, str):
+            raise ValueError(
+                "multiple workers require an importable application target"
+            )
+        from tigrcorn_runtime.server.supervisor import ServerSupervisor
+
+        config.app.target = app
+        config.app.factory = config.app.factory or factory
+        ServerSupervisor(app_target=app, config=config).run()
+        return
+    runtime = config.process.runtime if config is not None else "auto"
     if isinstance(app, str):
         run_coro_with_runtime(
             lambda: serve_import_string(

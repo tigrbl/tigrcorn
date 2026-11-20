@@ -220,6 +220,17 @@ def run_config(config: ServerConfig, *, ready_pipe: Any | None = None) -> None:
     run_coro_with_runtime(lambda: serve_from_config(config, ready_pipe=ready_pipe), runtime=config.process.runtime)
 
 
-def run_worker_from_config_payload(payload: Mapping[str, Any], ready_pipe: Any | None = None) -> None:
+def run_worker_from_config_payload(payload: Mapping[str, Any], ready_pipe: Any | None = None, shared_sockets=None) -> None:
     config = config_from_mapping(payload)
+    # multiprocessing transfers socket handles on Windows; a parent's integer FD
+    # alone is not a valid child-process socket. Transfer sole ownership to listener.
+    for index, sock in shared_sockets or ():
+        config.listeners[index].fd = sock.detach()
+        config.listeners[index].endpoint = f"fd://{config.listeners[index].fd}"
+    import os
+    if os.name == 'nt' and config.process.workers > 1:
+        # Shared Windows listener sockets cannot be attached to independent IOCPs.
+        # Selectors support the shared accept handle in each worker process.
+        import asyncio
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     run_config(config, ready_pipe=ready_pipe)
