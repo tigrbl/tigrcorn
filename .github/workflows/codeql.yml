@@ -3,7 +3,7 @@ name: codeql
 on:
   push:
     branches:
-      - main
+      - master
       - "release/*"
   pull_request:
   schedule:
