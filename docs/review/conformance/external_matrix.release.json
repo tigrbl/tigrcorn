@@ -607,7 +607,10 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-http2",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true"
+        }
       },
       "peer_process": {
         "name": "python-h2-connect-relay-client",
@@ -716,7 +719,10 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-http2",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true"
+        }
       },
       "peer_process": {
         "name": "python-h2-content-coding-client",
@@ -868,7 +874,9 @@
           "--disable-websocket",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--http",
+          "2"
         ],
         "implementation_identity": "tigrcorn-http2",
         "implementation_source": "tigrcorn",
@@ -882,7 +890,10 @@
           "-m",
           "tigrcorn",
           "--help"
-        ]
+        ],
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true"
+        }
       }
     },
     {
@@ -969,7 +980,9 @@
           "--disable-websocket",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--http",
+          "2"
         ],
         "implementation_identity": "tigrcorn-http2",
         "implementation_source": "tigrcorn",
@@ -983,7 +996,10 @@
           "-m",
           "tigrcorn",
           "--help"
-        ]
+        ],
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true"
+        }
       }
     },
     {
@@ -1265,7 +1281,10 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-http2",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true"
+        }
       },
       "peer_process": {
         "name": "python-h2-trailer-fields-client",
@@ -2419,7 +2438,9 @@
           "--no-access-log",
           "--lifespan",
           "off",
-          "--disable-websocket"
+          "--disable-websocket",
+          "--quic-early-data-policy",
+          "allow"
         ],
         "implementation_identity": "tigrcorn-http3-zero-rtt",
         "implementation_source": "tigrcorn",
@@ -2834,7 +2855,9 @@
           "permessage-deflate",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "ready_pattern": "listening on",
         "version_command": [
@@ -2846,7 +2869,11 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-websocket",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       },
       "peer_process": {
         "name": "websockets-client",
@@ -2995,7 +3022,9 @@
           "http2",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "implementation_identity": "tigrcorn-http2-websocket",
         "implementation_source": "tigrcorn",
@@ -3009,7 +3038,12 @@
           "-m",
           "tigrcorn",
           "--help"
-        ]
+        ],
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true",
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       }
     },
     {
@@ -3050,7 +3084,9 @@
           "permessage-deflate",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "ready_pattern": "listening on",
         "version_command": [
@@ -3062,7 +3098,12 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-http2-websocket",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN_ENABLE_H2C": "true",
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       },
       "peer_process": {
         "name": "python-h2-websocket-client",
@@ -3236,7 +3277,9 @@
           "tests/fixtures_certs/interop-localhost-key.pem",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "implementation_identity": "tigrcorn-http3-websocket",
         "implementation_source": "tigrcorn",
@@ -3250,7 +3293,11 @@
           "-m",
           "tigrcorn",
           "--help"
-        ]
+        ],
+        "env": {
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       }
     },
     {
@@ -3365,7 +3412,9 @@
           "off",
           "--ssl-ca-certs",
           "tests/fixtures_certs/interop-client-cert.pem",
-          "--ssl-require-client-cert"
+          "--ssl-require-client-cert",
+          "--protocol",
+          "websocket"
         ],
         "implementation_identity": "tigrcorn-http3-websocket-mtls",
         "implementation_source": "tigrcorn",
@@ -3379,7 +3428,11 @@
           "-m",
           "tigrcorn",
           "--help"
-        ]
+        ],
+        "env": {
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       }
     },
     {
@@ -3430,7 +3483,9 @@
           "tests/fixtures_certs/interop-localhost-key.pem",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "ready_pattern": "listening on",
         "version_command": [
@@ -3442,7 +3497,11 @@
         "provenance_kind": "package_owned",
         "implementation_source": "tigrcorn",
         "implementation_identity": "tigrcorn-http3-websocket",
-        "implementation_version": "0.3.6"
+        "implementation_version": "0.3.6",
+        "env": {
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       },
       "peer_process": {
         "name": "aioquic-http3-websocket-client",
@@ -3598,7 +3657,9 @@
           "http1",
           "--no-access-log",
           "--lifespan",
-          "off"
+          "off",
+          "--protocol",
+          "websocket"
         ],
         "implementation_identity": "tigrcorn-websocket",
         "implementation_source": "tigrcorn",
@@ -3612,7 +3673,11 @@
           "-m",
           "tigrcorn",
           "--help"
-        ]
+        ],
+        "env": {
+          "TIGRCORN__WEBSOCKET__ENABLED": "true",
+          "TIGRCORN__LISTENERS__0__WEBSOCKET": "true"
+        }
       }
     }
   ]
