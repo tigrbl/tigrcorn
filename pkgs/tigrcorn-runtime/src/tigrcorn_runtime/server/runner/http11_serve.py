@@ -35,6 +35,8 @@ class _TigrCornServerHTTP11ServeMixin:
         trailers: list[tuple[bytes, bytes]] = []
         try:
             await self.app(scope, receive, send)
+            if getattr(receive, 'body_too_large', False):
+                raise RequestBodyTooLarge('request body exceeds configured max_body_size')
             send.finalize()
             assert send.status is not None
             status = send.status
@@ -167,6 +169,10 @@ class _TigrCornServerHTTP11ServeMixin:
                 self._connection_inventory.increment_connection_counter(connection_id, 'requests')
             if session_id is not None:
                 self._connection_inventory.increment_session_counter(session_id, 'responses')
+        except RequestBodyTooLarge:
+            self.state.metrics.requests_failed += 1
+            await self._write_error(writer, 413, b'content too large', keep_alive=False)
+            return False
         except ProtocolError:
             self.state.metrics.requests_failed += 1
             await self._write_error(writer, 400, b'bad request trailers', keep_alive=False)

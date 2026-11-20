@@ -75,6 +75,7 @@ class HTTP3RequestState:
     body_parts: list[bytes] = field(default_factory=list)
     ended: bool = False
     parse_buffer: bytearray = field(default_factory=bytearray)
+    body_too_large: bool = False
     blocked_header_sections: list[HTTP3BlockedSection] = field(default_factory=list)
     phase: str = HTTP3_REQUEST_PHASE_INITIAL
     received_initial_headers: bool = False

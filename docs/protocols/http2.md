@@ -13,6 +13,7 @@ This build includes a pure-Python HTTP/2 prior-knowledge server path with an exp
 - monotonic GOAWAY handling and rejection of new inbound streams after GOAWAY
 - receive-side flow-control accounting with thresholded WINDOW_UPDATE emission instead of immediate echo updates
 - bounded request buffering using configured header/body size limits
+- `--max-body-size` applies to the declared length and cumulative DATA payload bytes, including bytes already delivered to the app. An over-limit request receives `413 Content Too Large` on its stream if final response headers are still pending.
 - CONTINUATION/header-block lifecycle enforcement, including strict same-stream continuation sequencing
 - request-header validation for pseudo-header ordering, duplicates, lowercase field names, and forbidden connection-specific fields
 - HPACK dynamic table support with differential coverage

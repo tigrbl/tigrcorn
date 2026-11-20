@@ -130,6 +130,9 @@ class HTTP3PacketMixin:
                         return
                     session = HTTP3Session(
                         addr=packet.addr,
+                        h3=HTTP3ConnectionCore(
+                            role="server", max_body_size=self.config.http.max_body_size
+                        ),
                         quic=QuicConnection(
                             is_client=False,
                             secret=self.listener.quic_secret,
@@ -453,7 +456,7 @@ class HTTP3PacketMixin:
                             self._close_session(session)
                             break
                         outbound.extend(self._flush_qpack_streams(session))
-                        if request_state is not None:
+                        if request_state is not None and not request_state.abandoned:
                             header_map: dict[bytes, bytes] | None = None
                             if request_state.received_initial_headers:
                                 try:

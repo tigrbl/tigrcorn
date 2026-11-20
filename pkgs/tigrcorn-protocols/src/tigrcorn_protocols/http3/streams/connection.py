@@ -36,6 +36,7 @@ class HTTP3ConnectionCore:
     qpack_encoder: QpackEncoder = field(default_factory=QpackEncoder)
     qpack_decoder: QpackDecoder = field(default_factory=QpackDecoder)
     max_request_parse_buffer_size: int = DEFAULT_HTTP3_REQUEST_PARSE_BUFFER_LIMIT
+    max_body_size: int | None = None
 
     def _update_request_codecs(self) -> None:
         for request in self.requests.values():
@@ -98,6 +99,7 @@ class HTTP3ConnectionCore:
                 connection_state=self.state,
                 role=self.role,
                 parse_buffer_limit=self.max_request_parse_buffer_size,
+                max_body_size=self.max_body_size,
             ),
         )
 

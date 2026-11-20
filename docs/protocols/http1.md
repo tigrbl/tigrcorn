@@ -6,6 +6,7 @@ Implemented in this build:
 - origin-form, absolute-form, authority-form, and asterisk-form request targets
 - `Content-Length` and `Transfer-Encoding: chunked` request bodies
 - request-body streaming onto ASGI `http.request` events for the TCP/Unix server path
+- oversized request bodies receive `413 Content Too Large` and the connection closes. `--max-body-size` applies to the declared length and to cumulative chunk sizes as the body is read.
 - request-trailer exposure through a custom `http.request.trailers` extension event on the chunked HTTP/1.1 path
 - `Expect: 100-continue` on the HTTP/1.1 server path
 - keep-alive handling for HTTP/1.0 and HTTP/1.1 requests

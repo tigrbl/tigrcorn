@@ -281,7 +281,7 @@ class HTTP2HeadersMixin:
         headers = [(k, v) for k, v in state.headers if not k.startswith(b":")]
         method = pseudo.get(b":method", b"GET").decode("ascii", "strict")
         if state.expected_content_length is not None:
-            observed = len(state.body)
+            observed = state.received_body_size
             if observed > state.expected_content_length:
                 raise ProtocolError("request body exceeds content-length")
             if state.end_stream_received and observed != state.expected_content_length:

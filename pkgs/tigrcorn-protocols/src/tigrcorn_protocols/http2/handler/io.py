@@ -69,9 +69,10 @@ class HTTP2IOMixin:
 
 
     async def _write_raw(self, data: bytes, *, record_activity: bool = True) -> None:
-        async with self.writer_lock:
-            self.writer.write(data)
-            await self.writer.drain()
+        # Queue each frame batch before yielding so cancellation cannot leave
+        # HPACK or flow-control state ahead of the bytes on the connection.
+        self.writer.write(data)
+        await self.writer.drain()
         if record_activity:
             self._record_keepalive_activity()
 

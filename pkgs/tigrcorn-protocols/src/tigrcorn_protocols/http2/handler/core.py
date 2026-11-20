@@ -91,7 +91,6 @@ class HTTP2ConnectionHandler(
         self.stream_work_leases: dict[int, WorkLease] = {}
         self.frame_buffer = FrameBuffer()
         self.frame_writer = FrameWriter(self.state.max_frame_size)
-        self.writer_lock = asyncio.Lock()
         self.waiters: dict[int, FlowWaiter] = {}
         self.hpack_decoder = HPACKDecoder(
             max_table_size=DEFAULT_SETTINGS[0x1],

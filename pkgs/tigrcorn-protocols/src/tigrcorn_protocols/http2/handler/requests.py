@@ -130,10 +130,14 @@ class HTTP2RequestsMixin:
             root_path=self.config.proxy.root_path,
             proxy=self.config.proxy,
         )
+        async def body_consumed(amount: int) -> None:
+            state.unconsumed_body_size -= amount
+            await self._maybe_replenish_receive_credit(stream_id, amount)
+
         receive = HTTP2QueuedRequestReceive(
             trailers=request_trailers,
             trailer_policy=self.config.http.trailer_policy,
-            on_body_consumed=lambda amount: self._maybe_replenish_receive_credit(stream_id, amount),
+            on_body_consumed=body_consumed,
         )
         state.request_receive = receive
         for part in state.body_parts:
@@ -148,6 +152,8 @@ class HTTP2RequestsMixin:
 
         async def send(message: dict) -> None:
             nonlocal response_started, response_complete, final_status
+            if state.request_body_rejected:
+                raise asyncio.CancelledError
             message_type = message.get("type")
             if message_type == "http.response.push":
                 if not allow_push or not self.state.client_allows_push:
@@ -183,6 +189,8 @@ class HTTP2RequestsMixin:
 
         try:
             await self.app(scope, receive, send)
+            if state.request_body_rejected:
+                raise asyncio.CancelledError
             if not response_complete:
                 if not response_started:
                     response_started = True
@@ -192,6 +200,8 @@ class HTTP2RequestsMixin:
                 response_complete = True
             return final_status
         except Exception:
+            if state.request_body_rejected:
+                raise asyncio.CancelledError
             if not response_started and self.streams.find(stream_id) is not None:
                 await self._send_response(stream_id, 500, [(b"content-type", b"text/plain")], b"internal server error")
             elif response_started and not response_complete and self.streams.find(stream_id) is not None:

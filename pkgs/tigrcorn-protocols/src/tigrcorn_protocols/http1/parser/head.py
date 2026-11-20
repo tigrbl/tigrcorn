@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 from typing import Literal
 
-from tigrcorn_core.errors import ProtocolError, UnsupportedFeature
+from tigrcorn_core.errors import ProtocolError, RequestBodyTooLarge, UnsupportedFeature
 from tigrcorn_core.types import StreamReaderLike
 from tigrcorn_core.utils.headers import header_contains_token
 from tigrcorn_protocols.http1.keepalive import expect_continue, keep_alive_for_request
@@ -161,7 +161,7 @@ async def read_http11_request_head(
     if parsed is None:
         return None
     if parsed.content_length is not None and parsed.content_length > max_body_size:
-        raise ProtocolError('request body exceeds configured max_body_size')
+        raise RequestBodyTooLarge('request body exceeds configured max_body_size')
     return parsed
 
 

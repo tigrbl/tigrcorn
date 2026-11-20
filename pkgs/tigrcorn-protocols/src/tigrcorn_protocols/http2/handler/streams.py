@@ -15,6 +15,15 @@ class HTTP2StreamsMixin:
         state = self.streams.find(stream_id)
         if state is None or state.dispatched or not state.headers_complete:
             return
+        content_length = state.expected_content_length
+        if (
+            content_length is not None
+            and content_length > self.config.max_body_size
+            and self._pseudo_headers(state.headers).get(b":method") != b"CONNECT"
+        ):
+            self._validate_request_headers(state.headers)
+            await self._reject_oversized_body(state)
+            return
         admission = getattr(self.scheduler, "admission", None)
         if (
             admission is not None
@@ -107,6 +116,22 @@ class HTTP2StreamsMixin:
             self._run_stream(stream_id), name=f"tigrcorn-h2-stream-{stream_id}"
         )
         self.stream_tasks[stream_id] = task
+
+    async def _reject_oversized_body(self, state: H2StreamState) -> None:
+        stream_id = state.stream_id
+        state.request_body_rejected = True
+        self._cancel_stream(stream_id)
+        if not state.final_response_started:
+            await self._send_response(stream_id, 413, [(b"content-length", b"0")], b"")
+        if not state.local_closed:
+            # A final response is already on the wire and cannot be replaced.
+            await self._write_raw(serialize_rst_stream(stream_id, H2_CANCEL))
+        elif not state.end_stream_received:
+            await self._write_raw(serialize_rst_stream(stream_id, H2_NO_ERROR))
+        self._close_inventory_session(stream_id, reason="request-body-too-large")
+        self.streams.close(stream_id)
+        await self._maybe_replenish_receive_credit(stream_id, state.unconsumed_body_size)
+        self._maybe_finish_after_goaway()
 
     def _release_stream_work_lease(self, stream_id: int) -> None:
         lease = self.stream_work_leases.pop(stream_id, None)

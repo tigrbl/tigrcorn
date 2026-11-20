@@ -7,7 +7,7 @@ from tigrcorn_asgi.receive import HTTPRequestReceive, HTTPStreamingRequestReceiv
 from tigrcorn_asgi.scopes.http import build_http_scope
 from tigrcorn_asgi.send import FileBodySegment, HTTPResponseCollector, iter_response_body_segments, response_body_segments_have_bytes
 from tigrcorn_runtime.app_interfaces import resolve_app_dispatch
-from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError, RequestBodyTooLarge
 from tigrcorn_config.model import ListenerConfig, ServerConfig
 from tigrcorn_core.constants import H2_PREFACE
 from tigrcorn_transports.listeners.inproc import InProcListener

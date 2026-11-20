@@ -161,10 +161,10 @@ class HTTP2ResponsesMixin:
         if not data and not end_stream:
             return
         if not data:
+            state.send_end_stream()
             await self._write_raw(
                 self.frame_writer.data(stream_id, b"", end_stream=True)
             )
-            state.send_end_stream()
             return
         offset = 0
         while offset < len(data):
@@ -187,11 +187,11 @@ class HTTP2ResponsesMixin:
             self.state.connection_send_window.consume(len(chunk))
             state.send_window.consume(len(chunk))
             final_chunk = end_stream and offset == len(data)
+            if final_chunk:
+                state.send_end_stream()
             await self._write_raw(
                 self.frame_writer.data(stream_id, chunk, end_stream=final_chunk)
             )
-            if final_chunk:
-                state.send_end_stream()
 
     async def _send_stream_headers(
         self,
@@ -220,11 +220,13 @@ class HTTP2ResponsesMixin:
         header_block = self.hpack_encoder.encode_header_block(
             [(b":status", str(status).encode("ascii")), *policy_headers]
         )
+        if status >= 200:
+            state.final_response_started = True
+        if end_stream:
+            state.send_end_stream()
         await self._write_raw(
             self.frame_writer.headers(stream_id, header_block, end_stream=end_stream)
         )
-        if end_stream:
-            state.send_end_stream()
 
     async def _send_response(
         self,
@@ -262,16 +264,18 @@ class HTTP2ResponsesMixin:
         )
         trailers = list(trailers or [])
         end_after_headers = not body and not streamed_body and not trailers
+        state.final_response_started = True
+        if end_after_headers:
+            state.send_end_stream()
         await self._write_raw(
             self.frame_writer.headers(
                 stream_id, header_block, end_stream=end_after_headers
             )
         )
+        if end_after_headers:
+            self._finalize_stream_if_complete(stream_id)
+            return
         if body_segments is not None:
-            if not streamed_body and not trailers:
-                state.send_end_stream()
-                self._finalize_stream_if_complete(stream_id)
-                return
             if streamed_body:
                 async for chunk in iter_response_body_segments(
                     body_segments, chunk_size=self.state.max_frame_size
@@ -286,10 +290,6 @@ class HTTP2ResponsesMixin:
                 self._finalize_stream_if_complete(stream_id)
                 return
             await self._send_stream_data(stream_id, b"", end_stream=True)
-            self._finalize_stream_if_complete(stream_id)
-            return
-        if not body and not trailers:
-            state.send_end_stream()
             self._finalize_stream_if_complete(stream_id)
             return
         if not body and trailers:

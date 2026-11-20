@@ -55,6 +55,9 @@ class _TigrCornServerHTTP11Mixin:
                 )
             except asyncio.TimeoutError:
                 break
+            except RequestBodyTooLarge:
+                await self._write_error(writer, 413, b"content too large", keep_alive=False)
+                break
             except Exception as exc:
                 self.state.metrics.protocol_errors += 1
                 self.logger.warning("protocol error from %s: %s", client, exc)

@@ -5,7 +5,7 @@ from collections.abc import Awaitable, Callable
 
 from tigrcorn_asgi.events.http import http_disconnect, http_request, http_request_trailers
 from tigrcorn_asgi.events.lifespan import lifespan_shutdown, lifespan_startup
-from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError, RequestBodyTooLarge
 from tigrcorn_protocols.http1.parser import _validate_header_name, _validate_header_value
 from tigrcorn_core.types import Message, StreamReaderLike
 
@@ -133,12 +133,15 @@ class HTTPStreamingRequestReceive:
         self._sent_final = False
         self._disconnected = False
         self._total_read = 0
+        self.body_too_large = False
         self.body_complete = not chunked and (content_length is None or content_length == 0)
         self._trailers_sent = False
         self.trailer_policy = trailer_policy
         self.trailers: list[tuple[bytes, bytes]] = []
 
     async def __call__(self) -> Message:
+        if self.body_too_large:
+            raise RequestBodyTooLarge('request body exceeds configured max_body_size')
         if self._disconnected:
             return http_disconnect()
         if self._sent_final:
@@ -155,16 +158,20 @@ class HTTPStreamingRequestReceive:
             self._sent_final = True
             return http_request(b'', False)
         amount = min(self._remaining, self._max_chunk_size)
+        self._check_body_size(amount)
         data = await self._readexactly(amount)
         self._remaining -= len(data)
         self._total_read += len(data)
-        if self._total_read > self._max_body_size:
-            raise ProtocolError('request body exceeds configured max_body_size')
         more_body = self._remaining > 0
         if not more_body:
             self.body_complete = True
             self._sent_final = True
         return http_request(data, more_body)
+
+    def _check_body_size(self, amount: int) -> None:
+        if self._total_read + amount > self._max_body_size:
+            self.body_too_large = True
+            raise RequestBodyTooLarge('request body exceeds configured max_body_size')
 
     async def _maybe_send_continue(self) -> None:
         if (
@@ -220,13 +227,12 @@ class HTTPStreamingRequestReceive:
             self.body_complete = True
             self._sent_final = True
             return http_request(b'', False)
+        self._check_body_size(size)
         data = await self._readexactly(size)
         terminator = await self._readexactly(2)
         if terminator != b'\r\n':
             raise ProtocolError('invalid chunk terminator')
         self._total_read += size
-        if self._total_read > self._max_body_size:
-            raise ProtocolError('request body exceeds configured max_body_size')
         return http_request(data, True)
 
 

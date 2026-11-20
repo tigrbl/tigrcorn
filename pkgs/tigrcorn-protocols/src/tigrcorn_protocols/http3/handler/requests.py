@@ -53,11 +53,27 @@ class HTTP3RequestsMixin:
         )
     async def _respond_ready_requests(self, session: HTTP3Session, endpoint: UDPEndpoint) -> list[bytes]:
         outbound: list[bytes] = []
-        for request_state in session.h3.ready_request_states():
+        for request in list(session.h3.requests.values()):
+            request_state = request.state
             stream_id = request_state.stream_id
-            if not request_state.ended or stream_id in session.responded_streams:
+            if stream_id in session.responded_streams:
                 continue
-            outbound.extend(await self._invoke_http_app(session, stream_id, request_state, endpoint))
+            if request_state.body_too_large:
+                try:
+                    self._validate_request_headers(request_state.headers)
+                except ProtocolError:
+                    status = 400
+                else:
+                    status = 413
+                outbound.extend(self._build_http3_response_datagrams_locked(
+                    session, stream_id, status, [(b'content-length', b'0')], b'', end_stream=True,
+                ))
+                if not request_state.ended:
+                    outbound.append(session.quic.stop_sending(stream_id, H3_NO_ERROR))
+            elif request_state.ready:
+                outbound.extend(await self._invoke_http_app(session, stream_id, request_state, endpoint))
+            else:
+                continue
             session.responded_streams.add(stream_id)
         return outbound
 

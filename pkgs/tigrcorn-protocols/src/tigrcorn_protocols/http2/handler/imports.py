@@ -18,7 +18,9 @@ from tigrcorn_http.entity import apply_response_entity_semantics, plan_file_back
 from tigrcorn_protocols.http1.parser import ParsedRequest
 from tigrcorn_protocols.http2.codec import (
     DEFAULT_SETTINGS,
+    H2_CANCEL,
     H2_CONNECT_ERROR,
+    H2_NO_ERROR,
     FLAG_ACK,
     FLAG_END_HEADERS,
     FLAG_END_STREAM,

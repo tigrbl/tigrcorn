@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 
-from tigrcorn_core.errors import ProtocolError
+from tigrcorn_core.errors import ProtocolError, RequestBodyTooLarge
 from tigrcorn_core.types import StreamReaderLike
 
 from .validation import _validate_header_name, _validate_header_value
@@ -75,5 +75,5 @@ async def _read_chunked_body(reader: StreamReaderLike, *, max_body_size: int) ->
             raise ProtocolError('invalid chunk terminator')
         total += size
         if total > max_body_size:
-            raise ProtocolError('request body exceeds configured max_body_size')
+            raise RequestBodyTooLarge('request body exceeds configured max_body_size')
         parts.append(chunk)

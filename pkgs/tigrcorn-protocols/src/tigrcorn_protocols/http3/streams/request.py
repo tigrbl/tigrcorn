@@ -76,6 +76,7 @@ class HTTP3RequestStream:
     connection_state: HTTP3ConnectionState | None = None
     role: str | None = None
     parse_buffer_limit: int = DEFAULT_HTTP3_REQUEST_PARSE_BUFFER_LIMIT
+    max_body_size: int | None = None
 
     def encode_request(self, headers: list[tuple[bytes, bytes]], body: bytes = b'') -> bytes:
         raw = bytearray()
@@ -136,6 +137,14 @@ class HTTP3RequestStream:
                 stream_id=self.state.stream_id,
             )
 
+    def _exceeds_body_limit(self, size: int) -> bool:
+        return (
+            self.role == 'server'
+            and self.max_body_size is not None
+            and size > self.max_body_size
+            and (b':method', b'CONNECT') not in self.state.headers
+        )
+
     def _apply_initial_headers(self, headers: list[tuple[bytes, bytes]]) -> None:
         self._enforce_field_section_size(headers)
         status_code = _extract_status_code(headers)
@@ -154,6 +163,7 @@ class HTTP3RequestStream:
                     error_code=H3_MESSAGE_ERROR,
                     stream_id=self.state.stream_id,
                 )
+            self.state.body_too_large = self._exceeds_body_limit(content_length)
 
     def _apply_trailers(self, headers: list[tuple[bytes, bytes]]) -> None:
         self._enforce_field_section_size(headers)
@@ -237,8 +247,10 @@ class HTTP3RequestStream:
             raise HTTP3ConnectionError('DATA frame before initial HEADERS', error_code=H3_FRAME_UNEXPECTED)
         if self.state.phase == _REQUEST_STATE_TRAILERS:
             raise HTTP3ConnectionError('DATA frame after trailing HEADERS', error_code=H3_FRAME_UNEXPECTED)
-        self.state.body_parts.append(payload)
         self.state.received_content_length += len(payload)
+        if self._exceeds_body_limit(self.state.received_content_length):
+            self.state.body_too_large = True
+            return False
         expected = self.state.expected_content_length
         if expected is not None and self.state.received_content_length > expected:
             raise HTTP3StreamError(
@@ -246,6 +258,7 @@ class HTTP3RequestStream:
                 error_code=H3_MESSAGE_ERROR,
                 stream_id=self.state.stream_id,
             )
+        self.state.body_parts.append(payload)
         return False
 
     def _handle_push_promise_frame(self, payload: bytes) -> bool:
@@ -280,6 +293,10 @@ class HTTP3RequestStream:
                 break
             offset = next_offset
             blocked = self._handle_frame(frame.frame_type, frame.payload)
+            if self.state.body_too_large:
+                self.state.body_parts.clear()
+                self.abandon()
+                return
             if blocked:
                 break
         remaining = data[offset:]
@@ -288,7 +305,7 @@ class HTTP3RequestStream:
         self._enforce_parse_buffer_limit()
 
     def _finalize_complete_message(self) -> None:
-        if not self.state.ended:
+        if not self.state.ended or self.state.abandoned:
             return
         if self.state.blocked_header_sections:
             return
@@ -313,6 +330,8 @@ class HTTP3RequestStream:
             )
 
     def retry_blocked(self) -> bool:
+        if self.state.abandoned:
+            return False
         if self.qpack_decoder is None or not self.state.blocked_header_sections:
             self._finalize_complete_message()
             return False
@@ -326,6 +345,9 @@ class HTTP3RequestStream:
                 continue
             progressed = True
         self.state.blocked_header_sections = remaining
+        if self.state.body_too_large:
+            self.abandon()
+            return progressed
         if progressed and not self.state.blocked_header_sections and self.state.parse_buffer:
             self._process_parse_buffer()
         self._finalize_complete_message()
