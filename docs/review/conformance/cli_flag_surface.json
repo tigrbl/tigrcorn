@@ -592,8 +592,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -614,8 +614,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -636,8 +636,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -658,8 +658,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -680,8 +680,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -702,8 +702,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -724,8 +724,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -746,8 +746,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -768,8 +768,8 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -790,8 +790,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --connection-open-burst-per-source"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -812,8 +813,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --connection-open-rate-per-source"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -834,8 +836,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --connection-open-burst-per-instance"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -856,8 +859,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --connection-open-rate-per-instance"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -878,8 +882,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --session-open-burst-per-connection"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -900,8 +905,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --session-open-rate-per-connection"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -922,8 +928,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --session-open-burst-per-source"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -944,8 +951,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --session-open-rate-per-source"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -966,8 +974,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --session-open-burst-per-instance"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -988,8 +997,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --session-open-rate-per-instance"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1010,8 +1020,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-connection"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1032,8 +1043,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-connection"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1054,8 +1066,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-session"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1076,8 +1089,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-session"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1098,8 +1112,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-source"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1120,8 +1135,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-source"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1142,8 +1158,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive finite number",
-        "rate and burst are paired where applicable"
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-instance"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1164,8 +1181,9 @@
       "rfc_targets": [],
       "default_value": null,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-instance"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1186,8 +1204,8 @@
       "rfc_targets": [],
       "default_value": 65536,
       "validation_rules": [
-        "positive integer; booleans rejected",
-        "rate and burst are paired where applicable"
+        "finite positive integer",
+        "booleans rejected"
       ],
       "unit_tests": [
         "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
@@ -1199,5 +1217,5 @@
     }
   ],
   "public_flag_string_count": 162,
-  "promotion_ready_count": 134
+  "promotion_ready_count": 162
 }

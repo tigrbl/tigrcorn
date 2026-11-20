@@ -2,7 +2,7 @@
   "schema_version": 1,
   "target_name": "phase8_flag_covering_array",
   "status": "planned",
-  "public_flag_string_count": 134,
+  "public_flag_string_count": 162,
   "strategy": {
     "one_way": "Every concrete public flag appears at least once; enumerated flags appear once per declared value.",
     "pairwise": "Interacting families are closed with explicit hazard clusters instead of a full cartesian explosion.",
@@ -3621,6 +3621,365 @@
 
       "status": "implemented"
 
+    },
+    {
+      "case_id": "admission_connection_open_rate_per_instance",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--connection-open-rate-per-instance",
+          "value": 2.5
+        },
+        {
+          "flag": "--connection-open-burst-per-instance",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_connection_open_rate_per_source",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--connection-open-rate-per-source",
+          "value": 2.5
+        },
+        {
+          "flag": "--connection-open-burst-per-source",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_active_streams_per_connection",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-active-streams-per-connection",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_active_streams_per_instance",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-active-streams-per-instance",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_active_streams_per_session",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-active-streams-per-session",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_active_streams_per_source",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-active-streams-per-source",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_connections_per_instance",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-connections-per-instance",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_connections_per_source",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-connections-per-source",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_sessions_per_connection",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-sessions-per-connection",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_sessions_per_instance",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-sessions-per-instance",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_sessions_per_source",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-sessions-per-source",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_max_tracking_entries",
+      "strength": 1,
+      "dimensions": [
+        {
+          "flag": "--max-tracking-entries",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_session_open_rate_per_connection",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--session-open-rate-per-connection",
+          "value": 2.5
+        },
+        {
+          "flag": "--session-open-burst-per-connection",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_session_open_rate_per_instance",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--session-open-rate-per-instance",
+          "value": 2.5
+        },
+        {
+          "flag": "--session-open-burst-per-instance",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_session_open_rate_per_source",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--session-open-rate-per-source",
+          "value": 2.5
+        },
+        {
+          "flag": "--session-open-burst-per-source",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_stream_open_rate_per_connection",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--stream-open-rate-per-connection",
+          "value": 2.5
+        },
+        {
+          "flag": "--stream-open-burst-per-connection",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_stream_open_rate_per_instance",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--stream-open-rate-per-instance",
+          "value": 2.5
+        },
+        {
+          "flag": "--stream-open-burst-per-instance",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_stream_open_rate_per_session",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--stream-open-rate-per-session",
+          "value": 2.5
+        },
+        {
+          "flag": "--stream-open-burst-per-session",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
+    },
+    {
+      "case_id": "admission_stream_open_rate_per_source",
+      "strength": 2,
+      "dimensions": [
+        {
+          "flag": "--stream-open-rate-per-source",
+          "value": 2.5
+        },
+        {
+          "flag": "--stream-open-burst-per-source",
+          "value": 4
+        }
+      ],
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "claim_plane": "pure_operator",
+      "status": "planned"
     }
   ],
   "promotion_contract_contract_freeze": {

@@ -10816,11 +10816,1615 @@
           "pacing_gain": 1.0
         }
       }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --connection-open-burst-per-instance at admission.connection_open_burst_per_instance.",
+      "config_path": "admission.connection_open_burst_per_instance",
+      "contract_id": "admission_connection_open_burst_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_connection_open_burst_per_instance",
+      "flag_strings": [
+        "--connection-open-burst-per-instance"
+      ],
+      "help_text": "Transport admission: connection open burst per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --connection-open-rate-per-instance"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--connection-open-rate-per-instance",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --connection-open-burst-per-source at admission.connection_open_burst_per_source.",
+      "config_path": "admission.connection_open_burst_per_source",
+      "contract_id": "admission_connection_open_burst_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_connection_open_burst_per_source",
+      "flag_strings": [
+        "--connection-open-burst-per-source"
+      ],
+      "help_text": "Transport admission: connection open burst per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --connection-open-rate-per-source"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--connection-open-rate-per-source",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --connection-open-rate-per-instance at admission.connection_open_rate_per_instance.",
+      "config_path": "admission.connection_open_rate_per_instance",
+      "contract_id": "admission_connection_open_rate_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_connection_open_rate_per_instance",
+      "flag_strings": [
+        "--connection-open-rate-per-instance"
+      ],
+      "help_text": "Transport admission: connection open rate per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --connection-open-burst-per-instance"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--connection-open-burst-per-instance",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --connection-open-rate-per-source at admission.connection_open_rate_per_source.",
+      "config_path": "admission.connection_open_rate_per_source",
+      "contract_id": "admission_connection_open_rate_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_connection_open_rate_per_source",
+      "flag_strings": [
+        "--connection-open-rate-per-source"
+      ],
+      "help_text": "Transport admission: connection open rate per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --connection-open-burst-per-source"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--connection-open-burst-per-source",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-active-streams-per-connection at admission.max_active_streams_per_connection.",
+      "config_path": "admission.max_active_streams_per_connection",
+      "contract_id": "admission_max_active_streams_per_connection",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_active_streams_per_connection",
+      "flag_strings": [
+        "--max-active-streams-per-connection"
+      ],
+      "help_text": "Transport admission: max active streams per connection",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-active-streams-per-instance at admission.max_active_streams_per_instance.",
+      "config_path": "admission.max_active_streams_per_instance",
+      "contract_id": "admission_max_active_streams_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_active_streams_per_instance",
+      "flag_strings": [
+        "--max-active-streams-per-instance"
+      ],
+      "help_text": "Transport admission: max active streams per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-active-streams-per-session at admission.max_active_streams_per_session.",
+      "config_path": "admission.max_active_streams_per_session",
+      "contract_id": "admission_max_active_streams_per_session",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_active_streams_per_session",
+      "flag_strings": [
+        "--max-active-streams-per-session"
+      ],
+      "help_text": "Transport admission: max active streams per session",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-active-streams-per-source at admission.max_active_streams_per_source.",
+      "config_path": "admission.max_active_streams_per_source",
+      "contract_id": "admission_max_active_streams_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_active_streams_per_source",
+      "flag_strings": [
+        "--max-active-streams-per-source"
+      ],
+      "help_text": "Transport admission: max active streams per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-connections-per-instance at admission.max_connections_per_instance.",
+      "config_path": "admission.max_connections_per_instance",
+      "contract_id": "admission_max_connections_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_connections_per_instance",
+      "flag_strings": [
+        "--max-connections-per-instance"
+      ],
+      "help_text": "Transport admission: max connections per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-connections-per-source at admission.max_connections_per_source.",
+      "config_path": "admission.max_connections_per_source",
+      "contract_id": "admission_max_connections_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_connections_per_source",
+      "flag_strings": [
+        "--max-connections-per-source"
+      ],
+      "help_text": "Transport admission: max connections per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-sessions-per-connection at admission.max_sessions_per_connection.",
+      "config_path": "admission.max_sessions_per_connection",
+      "contract_id": "admission_max_sessions_per_connection",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_sessions_per_connection",
+      "flag_strings": [
+        "--max-sessions-per-connection"
+      ],
+      "help_text": "Transport admission: max sessions per connection",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-sessions-per-instance at admission.max_sessions_per_instance.",
+      "config_path": "admission.max_sessions_per_instance",
+      "contract_id": "admission_max_sessions_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_sessions_per_instance",
+      "flag_strings": [
+        "--max-sessions-per-instance"
+      ],
+      "help_text": "Transport admission: max sessions per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-sessions-per-source at admission.max_sessions_per_source.",
+      "config_path": "admission.max_sessions_per_source",
+      "contract_id": "admission_max_sessions_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_sessions_per_source",
+      "flag_strings": [
+        "--max-sessions-per-source"
+      ],
+      "help_text": "Transport admission: max sessions per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --max-tracking-entries at admission.max_tracking_entries.",
+      "config_path": "admission.max_tracking_entries",
+      "contract_id": "admission_max_tracking_entries",
+      "default": 65536,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_max_tracking_entries",
+      "flag_strings": [
+        "--max-tracking-entries"
+      ],
+      "help_text": "Transport admission: max tracking entries",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --session-open-burst-per-connection at admission.session_open_burst_per_connection.",
+      "config_path": "admission.session_open_burst_per_connection",
+      "contract_id": "admission_session_open_burst_per_connection",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_session_open_burst_per_connection",
+      "flag_strings": [
+        "--session-open-burst-per-connection"
+      ],
+      "help_text": "Transport admission: session open burst per connection",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --session-open-rate-per-connection"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--session-open-rate-per-connection",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --session-open-burst-per-instance at admission.session_open_burst_per_instance.",
+      "config_path": "admission.session_open_burst_per_instance",
+      "contract_id": "admission_session_open_burst_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_session_open_burst_per_instance",
+      "flag_strings": [
+        "--session-open-burst-per-instance"
+      ],
+      "help_text": "Transport admission: session open burst per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --session-open-rate-per-instance"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--session-open-rate-per-instance",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --session-open-burst-per-source at admission.session_open_burst_per_source.",
+      "config_path": "admission.session_open_burst_per_source",
+      "contract_id": "admission_session_open_burst_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_session_open_burst_per_source",
+      "flag_strings": [
+        "--session-open-burst-per-source"
+      ],
+      "help_text": "Transport admission: session open burst per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --session-open-rate-per-source"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--session-open-rate-per-source",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --session-open-rate-per-connection at admission.session_open_rate_per_connection.",
+      "config_path": "admission.session_open_rate_per_connection",
+      "contract_id": "admission_session_open_rate_per_connection",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_session_open_rate_per_connection",
+      "flag_strings": [
+        "--session-open-rate-per-connection"
+      ],
+      "help_text": "Transport admission: session open rate per connection",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --session-open-burst-per-connection"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--session-open-burst-per-connection",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --session-open-rate-per-instance at admission.session_open_rate_per_instance.",
+      "config_path": "admission.session_open_rate_per_instance",
+      "contract_id": "admission_session_open_rate_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_session_open_rate_per_instance",
+      "flag_strings": [
+        "--session-open-rate-per-instance"
+      ],
+      "help_text": "Transport admission: session open rate per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --session-open-burst-per-instance"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--session-open-burst-per-instance",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --session-open-rate-per-source at admission.session_open_rate_per_source.",
+      "config_path": "admission.session_open_rate_per_source",
+      "contract_id": "admission_session_open_rate_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_session_open_rate_per_source",
+      "flag_strings": [
+        "--session-open-rate-per-source"
+      ],
+      "help_text": "Transport admission: session open rate per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --session-open-burst-per-source"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--session-open-burst-per-source",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-burst-per-connection at admission.stream_open_burst_per_connection.",
+      "config_path": "admission.stream_open_burst_per_connection",
+      "contract_id": "admission_stream_open_burst_per_connection",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_burst_per_connection",
+      "flag_strings": [
+        "--stream-open-burst-per-connection"
+      ],
+      "help_text": "Transport admission: stream open burst per connection",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-connection"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--stream-open-rate-per-connection",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-burst-per-instance at admission.stream_open_burst_per_instance.",
+      "config_path": "admission.stream_open_burst_per_instance",
+      "contract_id": "admission_stream_open_burst_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_burst_per_instance",
+      "flag_strings": [
+        "--stream-open-burst-per-instance"
+      ],
+      "help_text": "Transport admission: stream open burst per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-instance"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--stream-open-rate-per-instance",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-burst-per-session at admission.stream_open_burst_per_session.",
+      "config_path": "admission.stream_open_burst_per_session",
+      "contract_id": "admission_stream_open_burst_per_session",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_burst_per_session",
+      "flag_strings": [
+        "--stream-open-burst-per-session"
+      ],
+      "help_text": "Transport admission: stream open burst per session",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-session"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--stream-open-rate-per-session",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-burst-per-source at admission.stream_open_burst_per_source.",
+      "config_path": "admission.stream_open_burst_per_source",
+      "contract_id": "admission_stream_open_burst_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_burst_per_source",
+      "flag_strings": [
+        "--stream-open-burst-per-source"
+      ],
+      "help_text": "Transport admission: stream open burst per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive integer",
+        "booleans rejected",
+        "requires --stream-open-rate-per-source"
+      ],
+      "value_space": {
+        "kind": "integer",
+        "required_companion": "--stream-open-rate-per-source",
+        "sample": 4
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-rate-per-connection at admission.stream_open_rate_per_connection.",
+      "config_path": "admission.stream_open_rate_per_connection",
+      "contract_id": "admission_stream_open_rate_per_connection",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_rate_per_connection",
+      "flag_strings": [
+        "--stream-open-rate-per-connection"
+      ],
+      "help_text": "Transport admission: stream open rate per connection",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-connection"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--stream-open-burst-per-connection",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-rate-per-instance at admission.stream_open_rate_per_instance.",
+      "config_path": "admission.stream_open_rate_per_instance",
+      "contract_id": "admission_stream_open_rate_per_instance",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_rate_per_instance",
+      "flag_strings": [
+        "--stream-open-rate-per-instance"
+      ],
+      "help_text": "Transport admission: stream open rate per instance",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-instance"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--stream-open-burst-per-instance",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-rate-per-session at admission.stream_open_rate_per_session.",
+      "config_path": "admission.stream_open_rate_per_session",
+      "contract_id": "admission_stream_open_rate_per_session",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_rate_per_session",
+      "flag_strings": [
+        "--stream-open-rate-per-session"
+      ],
+      "help_text": "Transport admission: stream open rate per session",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-session"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--stream-open-burst-per-session",
+        "sample": 2.5
+      }
+    },
+    {
+      "claim_class": "pure_operator",
+      "claim_text": "Public operator contract for --stream-open-rate-per-source at admission.stream_open_rate_per_source.",
+      "config_path": "admission.stream_open_rate_per_source",
+      "contract_id": "admission_stream_open_rate_per_source",
+      "default": null,
+      "deployment_profiles": [
+        "http1_baseline",
+        "http2_tls",
+        "http3_quic"
+      ],
+      "disable_form": null,
+      "family": "Transport admission",
+      "flag_id": "admission_stream_open_rate_per_source",
+      "flag_strings": [
+        "--stream-open-rate-per-source"
+      ],
+      "help_text": "Transport admission: stream open rate per source",
+      "interop_scenarios": [],
+      "parser_default": null,
+      "performance_profiles": [],
+      "phase2_review": {
+        "default_audit": "DEFAULT_AUDIT.json",
+        "help_parity": true,
+        "profile_defaults_dir": ".ssot/reports/profile-defaults",
+        "profile_overrides": {},
+        "review_status": "reviewed_phase2",
+        "reviewed": true,
+        "runtime_parity": true
+      },
+      "rfc_targets": [],
+      "runtime_modules": [
+        "pkgs/tigrcorn-runtime/src/tigrcorn_runtime/cli.py",
+        "pkgs/tigrcorn-config/src/tigrcorn_config/model/admission.py",
+        "pkgs/tigrcorn-protocols/src/tigrcorn_protocols/scheduler/admission.py"
+      ],
+      "scope": "global",
+      "status": {
+        "contract_defined": true,
+        "current_evidence_state": "local_conformance",
+        "current_runtime_state": "implemented",
+        "promotion_ready": true
+      },
+      "unit_tests": [
+        "tests/test_admission.py::test_all_fields_have_cli_toml_environment_and_python_parity",
+        "tests/test_admission.py::test_strict_admission_validation"
+      ],
+      "validation_rules": [
+        "finite positive number",
+        "booleans rejected",
+        "requires --stream-open-burst-per-source"
+      ],
+      "value_space": {
+        "kind": "number",
+        "required_companion": "--stream-open-burst-per-source",
+        "sample": 2.5
+      }
     }
   ],
   "current_authoritative_boundary": "docs/review/conformance/certification_boundary.json",
   "current_state": {
-    "contract_rows_defined": 134,
+    "contract_rows_defined": 162,
     "notes": [
       "WebTransport operator surface adds --protocol webtransport and WebTransport-specific tuning flags with CLI/config/env/API tests.",
       "Phase 7 reconciles markdown, JSON, CLI help snapshots, and current-state truth for the full 124-flag public surface.",
@@ -10837,9 +12441,9 @@
       "Step 2 descopes trio from the public runtime surface until an end-to-end trio server core is implemented.",
       "Phase 2 adds server-native static route/mount/index/expires controls and closes standard ASGI http.response.pathsend-backed file delivery."
     ],
-    "promotion_ready_rows": 134,
+    "promotion_ready_rows": 162,
     "review_status": "reviewed_phase2",
-    "reviewed_contract_rows": 134,
+    "reviewed_contract_rows": 162,
     "runtime_gap_flags": [],
     "strict_target_pending_flags": [
       "--connect-allow",
@@ -10856,14 +12460,14 @@
       "--websocket-compression"
     ]
   },
-  "family_count": 7,
+  "family_count": 8,
   "phase2_review": {
     "default_audit": "DEFAULT_AUDIT.json",
     "profile_defaults_dir": ".ssot/reports/profile-defaults",
-    "public_flag_string_count": 134,
+    "public_flag_string_count": 162,
     "review_status": "reviewed_phase2",
     "reviewed": true,
-    "reviewed_contract_rows": 134
+    "reviewed_contract_rows": 162
   },
   "phase3_review": {
     "contract_doc": "docs/conformance/proxy_contract.md",
@@ -10921,7 +12525,7 @@
     "status": "frozen",
     "status_doc": "docs/review/conformance/PROMOTION_CONTRACT_PROMOTION_CONTRACT_FREEZE.md"
   },
-  "public_flag_string_count": 134,
+  "public_flag_string_count": 162,
   "schema_version": 1,
   "strict_target_boundary": "docs/review/conformance/certification_boundary.strict_target.json",
   "target_name": "phase8_family_flag_contracts"
